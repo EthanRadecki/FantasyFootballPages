@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draft Analysis | Preach Fantasy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after { margin:0;padding:0;box-sizing:border-box; }
+
+:root {
+  --bg:        #d5cfc8;
+  --glass:     rgba(255,252,248,0.35);
+  --glass-border: rgba(255,255,255,0.45);
+  --glass-shadow: rgba(120,100,80,0.08);
+  --text:      #2c2a28;
+  --text-mid:  #5a5550;
+  --muted:     #8a8480;
+  --accent:    #9c949c;
+  --accent-rgb: 156,148,156;
+  --accent-glow: rgba(156,148,156,0.18);
+  --palm:      #3d3a38;
+  --gold:      #d4af37;
+  --green:     #5a8a5a;
+  --red:       #a85a5a;
+  --radius:    16px;
+  --radius-sm: 10px;
+  --font:      'Outfit', sans-serif;
+  --font-display: 'Playfair Display', serif;
+}
+
+html { scroll-behavior:smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-wrap { position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden; }
+.bg-grain {
+  position:absolute;inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size:200px;
+}
+.bg-gradient {
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(var(--accent-rgb),0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 80%, rgba(var(--accent-rgb),0.1) 0%, transparent 50%);
+}
+
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 24px var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.content {
+  position:relative;z-index:1;
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 1.5rem 3rem;
+}
+
+/* ── NAV ── */
+nav {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.85rem 1.75rem;margin-bottom:2rem;
+  border-radius:0 0 var(--radius) var(--radius) !important;
+}
+.nav-brand {
+  display:flex;align-items:center;gap:0.7rem;text-decoration:none;color:var(--text);
+}
+.nav-brand img { width:38px;height:38px;border-radius:9px;object-fit:cover; }
+.nav-brand span { font-family:var(--font-display);font-weight:800;font-size:1.15rem;letter-spacing:-0.02em; }
+.nav-links { display:flex;gap:0.1rem;flex-wrap:wrap; }
+.nav-links a {
+  text-decoration:none;color:var(--text-mid);font-size:0.78rem;font-weight:500;
+  padding:0.4rem 0.7rem;border-radius:var(--radius-sm);transition:all 0.2s;white-space:nowrap;
+}
+.nav-links a:hover { background:var(--accent-glow);color:var(--accent); }
+.nav-links a.active { background:var(--accent-glow);color:var(--accent);font-weight:600; }
+.nav-hamburger { display:none;background:none;border:none;cursor:pointer;padding:0.4rem;color:var(--text-mid); }
+.nav-hamburger svg { width:22px;height:22px; }
+.mobile-menu {
+  display:none;position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.mobile-menu.active { display:flex;align-items:center;justify-content:center; }
+.mobile-menu-inner {
+  background:var(--bg);border-radius:var(--radius);padding:2rem;min-width:260px;
+  box-shadow:0 16px 64px rgba(0,0,0,0.2);display:flex;flex-direction:column;gap:0.25rem;
+}
+.mobile-menu-inner a {
+  text-decoration:none;color:var(--text-mid);font-size:0.95rem;font-weight:500;
+  padding:0.75rem 1rem;border-radius:var(--radius-sm);transition:all 0.15s;
+}
+.mobile-menu-inner a:hover { background:var(--accent-glow);color:var(--accent); }
+.mobile-menu-inner a.active { color:var(--accent);font-weight:600; }
+.mobile-menu-close {
+  align-self:flex-end;background:none;border:none;cursor:pointer;
+  font-size:1.2rem;color:var(--muted);padding:0.25rem;margin-bottom:0.5rem;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  text-align:center;padding:2.25rem 2rem;margin-bottom:2rem;
+  border:1px solid rgba(var(--accent-rgb),0.2);
+}
+.page-header h1 {
+  font-family:var(--font-display);font-size:2.2rem;font-weight:900;
+  letter-spacing:-0.03em;color:var(--palm);margin-bottom:0.35rem;
+}
+.page-header p { font-size:0.85rem;color:var(--muted);font-weight:400; }
+
+/* ── SECTION LABELS ── */
+.section-label {
+  font-size:0.68rem;text-transform:uppercase;letter-spacing:0.14em;
+  color:var(--accent);font-weight:700;margin-bottom:0.5rem;
+}
+.section-title {
+  font-family:var(--font-display);font-size:1.4rem;font-weight:800;
+  color:var(--palm);letter-spacing:-0.02em;margin-bottom:1.25rem;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  padding:1.25rem 1.5rem;margin-bottom:2rem;
+  border-left:3px solid var(--accent);
+}
+.callout-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--accent);font-weight:700;margin-bottom:0.4rem;
+}
+.callout p { font-size:0.85rem;color:var(--muted);line-height:1.65; }
+.callout strong { color:var(--palm); }
+
+/* ── CHART IMAGES ── */
+.chart-grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;
+  margin-bottom:2rem;
+}
+.chart-card {
+  padding:1.25rem;overflow:hidden;
+}
+.chart-card-label {
+  font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--accent);font-weight:700;margin-bottom:0.75rem;
+}
+.chart-img {
+  width:100%;border-radius:10px;display:block;
+  cursor:zoom-in;transition:transform 0.2s;
+  box-shadow:0 4px 16px rgba(0,0,0,0.06);
+}
+.chart-img:hover { transform:scale(1.01); }
+
+/* ── TABLES ── */
+.table-wrap {
+  padding:1.5rem;margin-bottom:2rem;overflow-x:auto;
+}
+.da-table {
+  width:100%;border-collapse:collapse;font-size:0.82rem;
+}
+.da-table thead th {
+  text-align:left;padding:0.7rem 0.75rem;
+  font-size:0.66rem;text-transform:uppercase;letter-spacing:0.08em;
+  font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);
+  white-space:nowrap;
+}
+.da-table tbody tr {
+  border-bottom:1px solid rgba(var(--accent-rgb),0.08);
+  transition:background 0.15s;
+}
+.da-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.da-table tbody td {
+  padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap;
+}
+.val-green { color:var(--green);font-weight:700; }
+.val-red { color:var(--red);font-weight:700; }
+.val-bold { font-weight:700;color:var(--palm); }
+
+/* Cell background color coding */
+.cell-good { background:rgba(90,138,90,0.1); }
+.cell-mid { background:rgba(212,175,55,0.08); }
+.cell-bad { background:rgba(168,90,90,0.1); }
+
+/* ── SLOT GRID (Who Picked From Each Slot) ── */
+.slot-grid {
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;
+  margin-bottom:2rem;
+}
+.slot-card {
+  padding:1rem 1.25rem;
+  border-left:2px solid var(--accent);
+}
+.slot-num {
+  font-family:var(--font-display);font-size:1.1rem;font-weight:900;
+  color:var(--accent);margin-bottom:0.4rem;
+}
+.slot-managers {
+  font-size:0.78rem;color:var(--muted);line-height:1.6;
+}
+
+/* ── LIGHTBOX ── */
+.lightbox-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,0.88);
+  z-index:999;display:none;align-items:center;justify-content:center;
+  cursor:zoom-out;padding:1.5rem;
+}
+.lightbox-overlay.active { display:flex; }
+.lightbox-overlay img {
+  max-width:90vw;max-height:90vh;border-radius:12px;
+  box-shadow:0 24px 80px rgba(0,0,0,0.5);object-fit:contain;
+}
+.lightbox-close {
+  position:absolute;top:1.5rem;right:1.5rem;
+  background:none;border:none;color:#fff;font-size:1.5rem;
+  cursor:pointer;opacity:0.7;
+}
+.lightbox-close:hover { opacity:1; }
+
+/* ── FOOTER ── */
+footer {
+  text-align:center;padding:2rem 1rem;border-top:1px solid rgba(var(--accent-rgb),0.12);
+}
+footer p { font-size:0.78rem;color:var(--muted); }
+footer a { color:var(--accent);text-decoration:none;font-weight:600; }
+footer a:hover { text-decoration:underline; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px) {
+  .page-header h1 { font-size:1.7rem; }
+  nav { padding:0.7rem 1rem; }
+  .nav-links { display:none; }
+  .nav-hamburger { display:block; }
+  .chart-grid { grid-template-columns:1fr; }
+  .slot-grid { grid-template-columns:repeat(2,1fr); }
+  .table-wrap { padding:1rem; }
+}
+@media(max-width:480px) {
+  .slot-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-wrap">
+  <div class="bg-grain"></div>
+  <div class="bg-gradient"></div>
+</div>
+
+<div class="content">
+
+  <!-- NAV -->
+  <nav class="glass">
+    <a href="index.html" class="nav-brand">
+      <img src="preach_logo.png" alt="Preach Fantasy">
+      <span>Preach Fantasy</span>
+    </a>
+    <div class="nav-links">
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html" class="active">Draft Analysis</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+    </div>
+    <button class="nav-hamburger" onclick="document.getElementById('mobile-menu').classList.add('active')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu" onclick="if(event.target===this)this.classList.remove('active')">
+    <div class="mobile-menu-inner">
+      <button class="mobile-menu-close" onclick="document.getElementById('mobile-menu').classList.remove('active')">✕</button>
+      <a href="index.html">Home</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html" class="active">Draft Analysis</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+    </div>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header glass">
+    <h1>Draft Slot Analysis</h1>
+    <p>Analyzing draft position success and controlling for manager quality (2020-2025)</p>
+  </div>
+
+  <!-- METHODOLOGY CALLOUT -->
+  <div class="callout glass">
+    <div class="callout-label">How It Works</div>
+    <p><strong>Dominance Score</strong> measures how much better or worse a team scored compared to the league average each week. Positive scores mean consistent outperformance. <strong>Manager-Adjusted Performance</strong> compares how a manager actually performed from each draft slot versus what we'd expect based on their career average. A positive value means that slot tends to produce better results than the manager's baseline.</p>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="section-label">Visual Breakdown</div>
+  <div class="section-title">Playoff rate and adjusted performance by slot.</div>
+  <div class="chart-grid">
+    <div class="chart-card glass">
+      <div class="chart-card-label">Playoff Rate by Draft Slot</div>
+      <img src="images/analysis/preach_draft_playoff_rate.png" class="chart-img" alt="Playoff rate by draft slot" onclick="openLightbox(this.src, this.alt)">
+    </div>
+    <div class="chart-card glass">
+      <div class="chart-card-label">Manager-Adjusted Performance</div>
+      <img src="images/analysis/preach_draft_adjusted_performance.png" class="chart-img" alt="Manager-adjusted dominance score by draft slot" onclick="openLightbox(this.src, this.alt)">
+    </div>
+  </div>
+
+  <!-- PERFORMANCE TABLE -->
+  <div class="section-label">Detailed Breakdown</div>
+  <div class="section-title">Draft slot performance by the numbers.</div>
+  <div class="table-wrap glass">
+    <table class="da-table">
+      <thead>
+        <tr>
+          <th>Slot</th>
+          <th>Seasons</th>
+          <th>Playoff %</th>
+          <th>Champ %</th>
+          <th>Avg PF/G</th>
+          <th>Avg Dominance</th>
+          <th>Expected Dominance</th>
+          <th>Over/Under</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Placeholder rows - will be populated from CSV data -->
+        <tr>
+          <td class="val-bold">1</td><td>6</td>
+          <td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">112.4</td>
+          <td class="cell-good val-green">+0.18</td><td class="val-green">+0.43</td>
+          <td class="cell-bad val-red">-0.25 ▼</td>
+        </tr>
+        <tr>
+          <td class="val-bold">2</td><td>6</td>
+          <td class="cell-mid val-bold">66.7%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">115.8</td>
+          <td class="cell-good val-green">+0.31</td><td class="val-green">+0.05</td>
+          <td class="cell-good val-green">+0.26 ▲</td>
+        </tr>
+        <tr>
+          <td class="val-bold">3</td><td>6</td>
+          <td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-bad">108.2</td>
+          <td class="cell-bad val-red">-0.22</td><td class="val-green">+0.21</td>
+          <td class="cell-bad val-red">-0.43 ▼</td>
+        </tr>
+        <tr>
+          <td class="val-bold">4</td><td>6</td>
+          <td class="cell-bad val-bold">33.3%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">109.5</td>
+          <td class="cell-bad val-red">-0.14</td><td class="val-red">-0.07</td>
+          <td class="cell-bad val-red">-0.07 ▼</td>
+        </tr>
+        <tr>
+          <td class="val-bold">5</td><td>6</td>
+          <td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">110.1</td>
+          <td class="cell-bad val-red">-0.08</td><td class="val-green">+0.07</td>
+          <td class="cell-bad val-red">-0.15 ▼</td>
+        </tr>
+        <tr>
+          <td class="val-bold">6</td><td>6</td>
+          <td class="cell-mid val-bold">50.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-bad">105.3</td>
+          <td class="cell-bad val-red">-0.45</td><td class="val-green">+0.20</td>
+          <td class="cell-bad val-red">-0.65 ▼</td>
+        </tr>
+        <tr>
+          <td class="val-bold">7</td><td>6</td>
+          <td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">114.2</td>
+          <td class="cell-good val-green">+0.22</td><td class="val-green">+0.11</td>
+          <td class="cell-good val-green">+0.11 ▲</td>
+        </tr>
+        <tr>
+          <td class="val-bold">8</td><td>6</td>
+          <td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-mid">111.8</td>
+          <td class="cell-good val-green">+0.06</td><td class="val-green">+0.12</td>
+          <td class="cell-bad val-red">-0.06 ▼</td>
+        </tr>
+        <tr>
+          <td class="val-bold">9</td><td>6</td>
+          <td class="cell-mid val-bold">50.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">109.9</td>
+          <td class="cell-bad val-red">-0.10</td><td class="val-red">-0.13</td>
+          <td class="cell-good val-green">+0.03 ▲</td>
+        </tr>
+        <tr>
+          <td class="val-bold">10</td><td>6</td>
+          <td class="cell-mid val-bold">50.0%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">113.7</td>
+          <td class="cell-good val-green">+0.15</td><td class="val-red">-0.18</td>
+          <td class="cell-good val-green">+0.33 ▲</td>
+        </tr>
+        <tr>
+          <td class="val-bold">11</td><td>6</td>
+          <td class="cell-good val-bold">83.3%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">110.4</td>
+          <td class="cell-bad val-red">-0.04</td><td class="val-green">+0.12</td>
+          <td class="cell-bad val-red">-0.16 ▼</td>
+        </tr>
+        <tr>
+          <td class="val-bold">12</td><td>6</td>
+          <td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-good">112.6</td>
+          <td class="cell-good val-green">+0.10</td><td class="val-red">-0.12</td>
+          <td class="cell-good val-green">+0.22 ▲</td>
+        </tr>
+        <tr>
+          <td class="val-bold">13</td><td>6</td>
+          <td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">115.1</td>
+          <td class="cell-good val-green">+0.28</td><td class="val-red">-0.09</td>
+          <td class="cell-good val-green">+0.37 ▲</td>
+        </tr>
+        <tr>
+          <td class="val-bold">14</td><td>6</td>
+          <td class="cell-mid val-bold">50.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-good">112.9</td>
+          <td class="cell-good val-green">+0.20</td><td class="val-red">-0.25</td>
+          <td class="cell-good val-green">+0.45 ▲</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WHO PICKED FROM EACH SLOT -->
+  <div class="section-label">Manager Distribution</div>
+  <div class="section-title">Who picked from each slot?</div>
+  <div class="slot-grid">
+    <!-- Will be populated from CSV data. Format: Manager Name (Year) -->
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 1</div>
+      <div class="slot-managers">Manager A (2020)<br>Manager B (2022)<br>Manager C (2024)</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 2</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 3</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 4</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 5</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 6</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 7</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 8</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 9</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 10</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 11</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 12</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 13</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+    <div class="slot-card glass">
+      <div class="slot-num">Slot 14</div>
+      <div class="slot-managers">Data pending</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
+  </footer>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+function openLightbox(src, alt) {
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  img.src = src; img.alt = alt || '';
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+
+</body>
+</html>
