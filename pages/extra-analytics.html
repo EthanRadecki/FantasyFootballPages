@@ -7,10 +7,78 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
+<style>
+/* ── EXTRA ANALYTICS PAGE STYLES ── */
+.analysis-section {
+  margin-bottom:3rem;
+}
+.analysis-section:last-of-type {
+  margin-bottom:2rem;
+}
+.section-divider {
+  border:none;
+  border-top:1px solid rgba(var(--accent-rgb),0.12);
+  margin:0 0 2.5rem 0;
+}
+.full-chart {
+  padding:1.5rem;margin-bottom:1.5rem;overflow:hidden;
+}
+.full-chart-img {
+  width:100%;border-radius:10px;display:block;
+  cursor:zoom-in;transition:transform 0.2s;
+  box-shadow:0 4px 16px rgba(0,0,0,0.06);
+}
+.full-chart-img:hover { transform:scale(1.005); }
+.chart-caption {
+  font-size:0.76rem;color:var(--muted);margin-top:0.75rem;
+  font-style:italic;text-align:center;
+}
+
+/* Similarity grid needs extra width */
+.similarity-wrap {
+  padding:1.5rem;margin-bottom:1.5rem;overflow-x:auto;
+}
+.similarity-img {
+  width:100%;min-width:800px;border-radius:10px;display:block;
+  cursor:zoom-in;transition:transform 0.2s;
+  box-shadow:0 4px 16px rgba(0,0,0,0.06);
+}
+.similarity-img:hover { transform:scale(1.003); }
+
+/* Weight table for similarity engine */
+.weight-table {
+  width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:1rem;
+}
+.weight-table th {
+  text-align:left;padding:0.6rem 0.75rem;
+  font-size:0.66rem;text-transform:uppercase;letter-spacing:0.08em;
+  font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);
+}
+.weight-table td {
+  padding:0.5rem 0.75rem;color:var(--text-mid);
+  border-bottom:1px solid rgba(var(--accent-rgb),0.08);
+}
+.weight-table tr:last-child td { border-bottom:none; }
+.weight-val {
+  font-weight:700;color:var(--palm);
+}
+.weight-bar-wrap {
+  width:100px;height:6px;border-radius:3px;
+  background:rgba(var(--accent-rgb),0.12);
+}
+.weight-bar-fill {
+  height:100%;border-radius:3px;
+  background:var(--accent);
+}
+</style>
 </head>
 <body>
+
 <div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+
 <div class="content">
+
   <nav class="glass">
     <a href="../index.html" class="nav-brand">
       <img src="../preach_logo.png" alt="Preach Fantasy">
@@ -28,6 +96,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </nav>
+
   <div class="mobile-menu" id="mobile-menu" onclick="if(event.target===this)closeMobileMenu()">
     <div class="mobile-menu-inner">
       <button class="mobile-menu-close" onclick="closeMobileMenu()">&#10005;</button>
@@ -40,18 +109,123 @@
       <a href="extra-analytics.html" class="active">Extra Analytics</a>
     </div>
   </div>
+
   <div class="page-header glass">
     <h1>Extra Analytics</h1>
-    <p>Schedule luck, historical similarity, seasonal trends, and more</p>
+    <p>Deep dives into schedule luck, seasonal trends, historical similarity, and more</p>
   </div>
-  <div class="callout glass">
-    <div class="callout-label">Coming Soon</div>
-    <p>This page is under construction. Content will be added soon.</p>
+
+  <!-- ═══════════════════════════════════
+       SCHEDULE LUCK
+       ═══════════════════════════════════ -->
+  <div class="analysis-section">
+    <div class="section-label">Schedule Luck</div>
+    <div class="section-title">Who has the schedule been kind to?</div>
+
+    <div class="callout glass">
+      <div class="callout-label">How It Works</div>
+      <p>Each week, every manager's score is compared to the <strong>league median</strong>. If you scored above the median, you "should have" won that week regardless of your actual opponent. The difference between your actual wins and these expected wins is your schedule luck. Positive means the schedule gifted you wins; negative means it took them away.</p>
+    </div>
+
+    <div class="full-chart glass">
+      <img src="../images/analysis/preach_luck_analysis.png" class="full-chart-img" alt="All-time schedule luck analysis (2020-2025)" onclick="openLightbox(this.src, this.alt)">
+      <p class="chart-caption">All-time schedule luck rankings (2020-2025). Luck = actual wins minus expected wins against the weekly league median.</p>
+    </div>
   </div>
+
+  <hr class="section-divider">
+
+  <!-- ═══════════════════════════════════
+       SEASONAL ANALYSIS
+       ═══════════════════════════════════ -->
+  <div class="analysis-section">
+    <div class="section-label">Seasonal Analysis</div>
+    <div class="section-title">Which quarter of the season matters most?</div>
+
+    <div class="callout glass">
+      <div class="callout-label">Methodology</div>
+      <p>A logistic regression tested which part of the season best predicts playoff qualification, using average points scored each quarter as independent variables. <strong>The model achieved an AUC of 0.83</strong>, indicating strong predictive accuracy. Q2 (Weeks 4-6) and Q4 (Weeks 10-13) are statistically significant at p&lt;0.05, while Q3 (Weeks 7-9) is the weakest predictor.</p>
+    </div>
+
+    <div class="full-chart glass">
+      <img src="../images/analysis/preach_quarterly_regression.png" class="full-chart-img" alt="Quarterly regression predicting playoff appearance" onclick="openLightbox(this.src, this.alt)">
+      <p class="chart-caption">Logistic regression coefficients and Pearson correlations for each quarter as predictors of playoff appearance.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ═══════════════════════════════════
+       HEAD-TO-HEAD MATRIX
+       ═══════════════════════════════════ -->
+  <div class="analysis-section">
+    <div class="section-label">Head-to-Head</div>
+    <div class="section-title">All-time rivalry records.</div>
+
+    <div class="callout glass">
+      <div class="callout-label">What You're Looking At</div>
+      <p>Every manager's all-time record against every other manager, color-coded by win percentage. <strong>Green cells indicate winning records, red indicates losing</strong>. Color intensity reflects the degree of dominance in each matchup.</p>
+    </div>
+
+    <div class="similarity-wrap glass">
+      <img src="../images/analysis/preach_h2h_matrix.png" class="similarity-img" alt="All-time head-to-head matrix (2020-2025)" onclick="openLightbox(this.src, this.alt)">
+      <p class="chart-caption">All-time head-to-head matrix, Preach Fantasy (2020-2025).</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ═══════════════════════════════════
+       HISTORICAL SIMILARITY
+       ═══════════════════════════════════ -->
+  <div class="analysis-section">
+    <div class="section-label">Historical Similarity</div>
+    <div class="section-title">2025 playoff teams matched to league history.</div>
+
+    <div class="callout glass">
+      <div class="callout-label">About This Analysis</div>
+      <p>For each 2025 playoff team, a <strong>weighted Euclidean distance algorithm</strong> identified the three most statistically similar teams from 2020-2024 across seven performance features. Features are normalized via StandardScaler, with custom weights reflecting each metric's relative importance to playoff performance.</p>
+    </div>
+
+    <div class="table-wrap glass">
+      <table class="weight-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Weight</th>
+            <th>Reasoning</th>
+            <th>Importance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Late Season PF/G (Wks 10-13)</td><td class="weight-val">2.0</td><td>Best predictor of playoff form</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:100%"></div></div></td></tr>
+          <tr><td>Season PF/G</td><td class="weight-val">1.7</td><td>Overall scoring ability</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:85%"></div></div></td></tr>
+          <tr><td>Win Percentage</td><td class="weight-val">1.4</td><td>Season-level consistency</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:70%"></div></div></td></tr>
+          <tr><td>Luck Score (LR Z-Score)</td><td class="weight-val">1.1</td><td>Schedule context</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:55%"></div></div></td></tr>
+          <tr><td>Dominance Score</td><td class="weight-val">0.9</td><td>Relative scoring dominance</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:45%"></div></div></td></tr>
+          <tr><td>Draft Slot</td><td class="weight-val">0.6</td><td>Roster construction context</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:30%"></div></div></td></tr>
+          <tr><td>Point Differential</td><td class="weight-val">0.4</td><td>Secondary performance signal</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:20%"></div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="similarity-wrap glass">
+      <img src="../images/analysis/preach_similarity_grid.png" class="similarity-img" alt="Historical team similarity analysis - 2025 Playoffs" onclick="openLightbox(this.src, this.alt)">
+      <p class="chart-caption">2025 playoff team similarity cards. Each card shows the 3 most statistically similar teams from league history, ranked by weighted Euclidean distance across 7 performance features.</p>
+    </div>
+  </div>
+
   <footer>
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
   </footer>
+
 </div>
+
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
 <script src="../shared.js"></script>
 </body>
 </html>

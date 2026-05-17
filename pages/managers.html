@@ -7,10 +7,183 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
+<style>
+/* ── MANAGER SELECTOR GRID ── */
+.mgr-grid {
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
+  gap:0.6rem;margin-bottom:2rem;
+}
+.mgr-pill {
+  padding:0.9rem 0.75rem;text-align:center;cursor:pointer;
+  transition:all 0.2s;border-left:3px solid transparent;
+  text-decoration:none;color:var(--text-mid);
+}
+.mgr-pill:hover {
+  transform:translateY(-2px);border-left-color:var(--accent);
+}
+.mgr-pill.active {
+  border-left-color:var(--accent);
+  background:rgba(var(--accent-rgb),0.08) !important;
+}
+.mgr-pill .mgr-name {
+  font-family:var(--font-display);font-size:0.85rem;font-weight:800;
+  color:var(--palm);line-height:1.2;margin-bottom:0.2rem;
+}
+.mgr-pill .mgr-quick {
+  font-size:0.68rem;color:var(--muted);
+}
+.mgr-pill.active .mgr-name { color:var(--accent); }
+
+/* ── PROFILE SECTION ── */
+#manager-profile { display:none; }
+#manager-profile.visible { display:block; }
+
+.profile-header {
+  display:flex;align-items:center;gap:1.5rem;
+  padding:2rem;margin-bottom:1.5rem;
+  border-left:3px solid var(--accent);
+}
+.profile-name-wrap { flex:1; }
+.profile-name {
+  font-family:var(--font-display);font-size:1.8rem;font-weight:900;
+  color:var(--palm);letter-spacing:-0.02em;margin-bottom:0.15rem;
+}
+.profile-subtitle {
+  font-size:0.82rem;color:var(--muted);
+}
+.profile-champ-badges {
+  display:flex;gap:0.4rem;margin-top:0.4rem;
+}
+
+/* ── CAREER STATS GRID ── */
+.career-grid {
+  display:grid;grid-template-columns:repeat(6,1fr);gap:0.6rem;
+  margin-bottom:1.5rem;
+}
+.career-stat {
+  padding:1.1rem 0.75rem;text-align:center;
+  position:relative;
+}
+.career-stat .stat-value {
+  font-family:var(--font-display);font-size:1.6rem;font-weight:900;
+  color:var(--palm);line-height:1;margin-bottom:0.25rem;
+}
+.career-stat .stat-label {
+  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--muted);font-weight:600;
+}
+.career-stat .stat-rank {
+  font-size:0.6rem;font-weight:700;
+  padding:0.15rem 0.4rem;border-radius:4px;
+  display:inline-block;margin-top:0.3rem;
+}
+
+/* ── RIVALRY CARDS ── */
+.rivalry-row {
+  display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;
+  margin-bottom:1.5rem;
+}
+.rivalry-card {
+  padding:1.25rem;display:flex;align-items:center;gap:1rem;
+}
+.rivalry-icon { font-size:1.4rem; }
+.rivalry-info { flex:1; }
+.rivalry-label {
+  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;
+  font-weight:700;margin-bottom:0.15rem;
+}
+.rivalry-label.best { color:var(--green); }
+.rivalry-label.worst { color:var(--red); }
+.rivalry-name {
+  font-family:var(--font-display);font-size:0.95rem;font-weight:800;color:var(--palm);
+}
+.rivalry-record { font-size:0.8rem;color:var(--muted); }
+
+/* ── SEASON TABLE ── */
+.season-table {
+  width:100%;border-collapse:collapse;font-size:0.82rem;
+}
+.season-table thead th {
+  text-align:left;padding:0.65rem 0.7rem;
+  font-size:0.64rem;text-transform:uppercase;letter-spacing:0.08em;
+  font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);
+  white-space:nowrap;
+}
+.season-table tbody tr {
+  border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s;
+}
+.season-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.season-table tbody td {
+  padding:0.55rem 0.7rem;color:var(--text-mid);white-space:nowrap;
+}
+.season-table .playoff-yes {
+  color:var(--green);font-weight:700;
+}
+.season-table .playoff-no {
+  color:var(--red);
+}
+
+/* ── CHART SECTIONS ── */
+.chart-section {
+  margin-bottom:1.5rem;
+}
+.chart-section-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--accent);font-weight:700;margin-bottom:0.75rem;
+  padding-left:0.25rem;
+}
+.chart-area {
+  padding:1.5rem;min-height:320px;
+  display:flex;align-items:center;justify-content:center;
+}
+.chart-placeholder {
+  text-align:center;color:var(--muted);font-size:0.82rem;
+}
+.chart-placeholder .placeholder-icon {
+  font-size:2rem;margin-bottom:0.5rem;display:block;opacity:0.4;
+}
+
+/* Two-chart row */
+.chart-row {
+  display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;
+  margin-bottom:1.5rem;
+}
+
+/* ── SELECT PROMPT ── */
+.select-prompt {
+  text-align:center;padding:4rem 2rem;
+}
+.select-prompt .prompt-icon {
+  font-size:2.5rem;margin-bottom:1rem;display:block;opacity:0.3;
+}
+.select-prompt p {
+  font-size:0.95rem;color:var(--muted);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px) {
+  .career-grid { grid-template-columns:repeat(3,1fr); }
+  .chart-row { grid-template-columns:1fr; }
+}
+@media(max-width:768px) {
+  .mgr-grid { grid-template-columns:repeat(3,1fr); }
+  .profile-header { flex-direction:column;text-align:center;gap:0.75rem; }
+  .career-grid { grid-template-columns:repeat(2,1fr); }
+  .rivalry-row { grid-template-columns:1fr; }
+  .profile-name { font-size:1.5rem; }
+}
+@media(max-width:480px) {
+  .mgr-grid { grid-template-columns:repeat(2,1fr); }
+}
+</style>
 </head>
 <body>
+
 <div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+
 <div class="content">
+
   <nav class="glass">
     <a href="../index.html" class="nav-brand">
       <img src="../preach_logo.png" alt="Preach Fantasy">
@@ -28,6 +201,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </nav>
+
   <div class="mobile-menu" id="mobile-menu" onclick="if(event.target===this)closeMobileMenu()">
     <div class="mobile-menu-inner">
       <button class="mobile-menu-close" onclick="closeMobileMenu()">&#10005;</button>
@@ -40,18 +214,263 @@
       <a href="extra-analytics.html">Extra Analytics</a>
     </div>
   </div>
+
   <div class="page-header glass">
     <h1>Manager Profiles</h1>
-    <p>Individual dashboards for every Preach Fantasy manager</p>
+    <p>Select a manager to view their full career dashboard</p>
   </div>
-  <div class="callout glass">
-    <div class="callout-label">Coming Soon</div>
-    <p>This page is under construction. Content will be added soon.</p>
+
+  <!-- MANAGER SELECTOR GRID -->
+  <div class="mgr-grid" id="mgr-grid">
+    <div class="mgr-pill glass" data-manager="Ethan Radecki" onclick="selectManager(this)">
+      <div class="mgr-name">Ethan Radecki</div>
+      <div class="mgr-quick">52-30 · .634</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Baylen Slansky" onclick="selectManager(this)">
+      <div class="mgr-name">Baylen Slansky</div>
+      <div class="mgr-quick">47-35 · .573</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Carmine Pittelli Jr" onclick="selectManager(this)">
+      <div class="mgr-name">Carmine Pittelli Jr</div>
+      <div class="mgr-quick">47-35 · .573</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Brandon Hancock" onclick="selectManager(this)">
+      <div class="mgr-name">Brandon Hancock</div>
+      <div class="mgr-quick">45-37 · .549</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Anthony Kelly" onclick="selectManager(this)">
+      <div class="mgr-name">Anthony Kelly</div>
+      <div class="mgr-quick">43-39 · .524</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Andrew Root" onclick="selectManager(this)">
+      <div class="mgr-name">Andrew Root</div>
+      <div class="mgr-quick">41-41 · .500</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Ryan McQuaid" onclick="selectManager(this)">
+      <div class="mgr-name">Ryan McQuaid</div>
+      <div class="mgr-quick">40-30 · .571</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Ben Castaldo" onclick="selectManager(this)">
+      <div class="mgr-name">Ben Castaldo</div>
+      <div class="mgr-quick">40-42 · .488</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Cole Maney" onclick="selectManager(this)">
+      <div class="mgr-name">Cole Maney</div>
+      <div class="mgr-quick">39-43 · .476</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Charlie Gorman" onclick="selectManager(this)">
+      <div class="mgr-name">Charlie Gorman</div>
+      <div class="mgr-quick">39-43 · .476</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Max Malich" onclick="selectManager(this)">
+      <div class="mgr-name">Max Malich</div>
+      <div class="mgr-quick">39-43 · .476</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Deniz Bileydi" onclick="selectManager(this)">
+      <div class="mgr-name">Deniz Bileydi</div>
+      <div class="mgr-quick">32-50 · .390</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Quin Gegwich" onclick="selectManager(this)">
+      <div class="mgr-name">Quin Gegwich</div>
+      <div class="mgr-quick">30-52 · .366</div>
+    </div>
+    <div class="mgr-pill glass" data-manager="Aidan Quigley" onclick="selectManager(this)">
+      <div class="mgr-name">Aidan Quigley</div>
+      <div class="mgr-quick">27-55 · .329</div>
+    </div>
   </div>
+
+  <!-- SELECT PROMPT (shown when no manager selected) -->
+  <div class="select-prompt glass" id="select-prompt">
+    <span class="prompt-icon">&#128100;</span>
+    <p>Select a manager above to view their career dashboard</p>
+  </div>
+
+  <!-- MANAGER PROFILE (hidden until selection) -->
+  <div id="manager-profile">
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header glass">
+      <div class="profile-name-wrap">
+        <div class="profile-name" id="profile-name">Ethan Radecki</div>
+        <div class="profile-subtitle" id="profile-subtitle">6 seasons (2020-2025)</div>
+        <div class="profile-champ-badges" id="profile-badges"></div>
+      </div>
+    </div>
+
+    <!-- CAREER STATS -->
+    <div class="career-grid">
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-wins">52</div>
+        <div class="stat-label">Wins</div>
+        <div class="stat-rank" id="rank-wins" style="background:rgba(90,138,90,0.15);color:var(--green);">#1</div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-losses">30</div>
+        <div class="stat-label">Losses</div>
+        <div class="stat-rank" id="rank-losses" style="background:rgba(90,138,90,0.15);color:var(--green);">#1</div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-winpct">.634</div>
+        <div class="stat-label">Win %</div>
+        <div class="stat-rank" id="rank-winpct" style="background:rgba(90,138,90,0.15);color:var(--green);">#1</div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-playoffs">5</div>
+        <div class="stat-label">Playoffs</div>
+        <div class="stat-rank" id="rank-playoffs" style="background:rgba(90,138,90,0.15);color:var(--green);">#1</div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-champs">1</div>
+        <div class="stat-label">Championships</div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-pfg">116.1</div>
+        <div class="stat-label">Career PF/G</div>
+        <div class="stat-rank" id="rank-pfg" style="background:rgba(90,138,90,0.15);color:var(--green);">#5</div>
+      </div>
+    </div>
+
+    <!-- RIVALRIES -->
+    <div class="rivalry-row">
+      <div class="rivalry-card glass">
+        <div class="rivalry-icon">&#9989;</div>
+        <div class="rivalry-info">
+          <div class="rivalry-label best">Best Matchup</div>
+          <div class="rivalry-name" id="rival-best-name">Ryan McQuaid</div>
+          <div class="rivalry-record" id="rival-best-record">10-2 (83.3%)</div>
+        </div>
+      </div>
+      <div class="rivalry-card glass">
+        <div class="rivalry-icon">&#10060;</div>
+        <div class="rivalry-info">
+          <div class="rivalry-label worst">Worst Matchup</div>
+          <div class="rivalry-name" id="rival-worst-name">Baylen Slansky</div>
+          <div class="rivalry-record" id="rival-worst-record">3-5 (37.5%)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEASON TABLE -->
+    <div class="chart-section">
+      <div class="chart-section-label">Season-by-Season</div>
+      <div class="table-wrap glass">
+        <table class="season-table" id="season-table">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Team</th>
+              <th>Record</th>
+              <th>Win %</th>
+              <th>PF/G</th>
+              <th>PA/G</th>
+              <th>Diff</th>
+              <th>Draft</th>
+              <th>Playoffs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Placeholder rows - will be populated from CSV -->
+            <tr><td class="val-bold">2025</td><td>Slant Boy v2</td><td>12-2</td><td class="val-bold">.857</td><td class="cell-good">126.2</td><td>108.5</td><td class="val-green">+17.7</td><td>6</td><td class="playoff-yes">&#10003;</td></tr>
+            <tr><td class="val-bold">2024</td><td>Oh He Likes Cooking!</td><td>9-5</td><td class="val-bold">.643</td><td class="cell-mid">117.0</td><td>112.3</td><td class="val-green">+4.7</td><td>8</td><td class="playoff-yes">&#10003;</td></tr>
+            <tr><td class="val-bold">2023</td><td>Slant Boy</td><td>9-5</td><td class="val-bold">.643</td><td class="cell-mid">115.8</td><td>109.1</td><td class="val-green">+6.7</td><td>3</td><td class="playoff-yes">&#10003;</td></tr>
+            <tr><td class="val-bold">2022</td><td>Tua Chainz</td><td>8-6</td><td class="val-bold">.571</td><td class="cell-mid">112.4</td><td>110.8</td><td class="val-green">+1.6</td><td>11</td><td class="playoff-yes">&#10003;</td></tr>
+            <tr><td class="val-bold">2021</td><td>Team Ethan</td><td>5-9</td><td class="val-bold">.357</td><td class="cell-bad">104.2</td><td>115.6</td><td class="val-red">-11.4</td><td>7</td><td class="playoff-no">&#10007;</td></tr>
+            <tr><td class="val-bold">2020</td><td>Waiver Wire Boyz</td><td>9-3</td><td class="val-bold">.750</td><td class="cell-good">121.5</td><td>105.2</td><td class="val-green">+16.3</td><td>9</td><td class="playoff-yes">&#10003;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COMBINED CHART: Win % + PF/G -->
+    <div class="chart-section">
+      <div class="chart-section-label">Performance Over Time</div>
+      <div class="chart-area glass">
+        <div class="chart-placeholder">
+          <span class="placeholder-icon">&#128200;</span>
+          Win % line + PF/G bars vs league average<br>
+          <em>Chart will be built with Chart.js from CSV data</em>
+        </div>
+      </div>
+    </div>
+
+    <!-- LUCK MATRIX -->
+    <div class="chart-section">
+      <div class="chart-section-label">Schedule Luck Matrix</div>
+      <div class="chart-area glass">
+        <div class="chart-placeholder">
+          <span class="placeholder-icon">&#127808;</span>
+          Actual wins vs predicted wins (vs league median) by season<br>
+          <em>Matrix will be built from CSV data</em>
+        </div>
+      </div>
+    </div>
+
+    <!-- H2H + SCORING DIST -->
+    <div class="chart-row">
+      <div class="chart-section">
+        <div class="chart-section-label">Head-to-Head Records</div>
+        <div class="chart-area glass">
+          <div class="chart-placeholder">
+            <span class="placeholder-icon">&#9878;</span>
+            Record vs every opponent<br>
+            <em>Built from matchup data</em>
+          </div>
+        </div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-section-label">Scoring Distribution</div>
+        <div class="chart-area glass">
+          <div class="chart-placeholder">
+            <span class="placeholder-icon">&#128202;</span>
+            Weekly score histogram<br>
+            <em>Built from matchup data</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEASONAL TRENDS -->
+    <div class="chart-section">
+      <div class="chart-section-label">Seasonal Scoring Trends</div>
+      <div class="chart-area glass">
+        <div class="chart-placeholder">
+          <span class="placeholder-icon">&#128200;</span>
+          Week-by-week scoring patterns across seasons<br>
+          <em>Built from matchup data</em>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <footer>
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
   </footer>
+
 </div>
+
 <script src="../shared.js"></script>
+<script>
+function selectManager(el) {
+  // Update active pill
+  document.querySelectorAll('.mgr-pill').forEach(function(p) { p.classList.remove('active'); });
+  el.classList.add('active');
+
+  // Hide prompt, show profile
+  document.getElementById('select-prompt').style.display = 'none';
+  var profile = document.getElementById('manager-profile');
+  profile.classList.add('visible');
+
+  // Scroll to profile
+  profile.scrollIntoView({ behavior:'smooth', block:'start' });
+
+  // TODO: When CSV data is wired up, this function will:
+  // 1. Read the manager name from data-manager attribute
+  // 2. Filter CSV data for that manager
+  // 3. Populate career stats, season table, rivalry cards
+  // 4. Rebuild all Chart.js charts for this manager
+}
+</script>
 </body>
 </html>
