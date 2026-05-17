@@ -2,7 +2,6 @@
    Preach Fantasy - Shared Styles
    ══════════════════════════════════════ */
 
-/* ── RESET & VARIABLES ── */
 *,*::before,*::after { margin:0;padding:0;box-sizing:border-box; }
 
 :root {
@@ -36,7 +35,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── BACKGROUND ATMOSPHERE ── */
+/* ── BACKGROUND ── */
 .bg-wrap { position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden; }
 .bg-grain {
   position:absolute;inset:0;
@@ -164,25 +163,22 @@ nav {
   font-size:0.72rem;color:var(--muted);margin-bottom:1rem;font-style:italic;
 }
 
-/* ── COLOR VALUE UTILITIES ── */
+/* ── COLOR UTILITIES ── */
 .val-green { color:var(--green);font-weight:700; }
 .val-red { color:var(--red);font-weight:700; }
 .val-bold { font-weight:700;color:var(--palm); }
 .val-small { font-size:0.78rem;color:var(--muted); }
-
-/* Cell background color coding */
 .cell-good { background:rgba(90,138,90,0.1); }
 .cell-mid { background:rgba(212,175,55,0.08); }
 .cell-bad { background:rgba(168,90,90,0.1); }
 
-/* Manager name link */
+/* ── LINKS ── */
 .manager-link {
   text-decoration:none;color:var(--palm);font-weight:700;
   transition:color 0.15s;
 }
 .manager-link:hover { color:var(--accent); }
 
-/* Championship badge */
 .champ-badge {
   display:inline-flex;align-items:center;gap:0.25rem;
   background:rgba(212,175,55,0.12);color:var(--gold);
@@ -195,9 +191,7 @@ nav {
   display:grid;grid-template-columns:1fr 1fr;gap:1rem;
   margin-bottom:2rem;
 }
-.chart-card {
-  padding:1.25rem;overflow:hidden;
-}
+.chart-card { padding:1.25rem;overflow:hidden; }
 .chart-card-label {
   font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;
   color:var(--accent);font-weight:700;margin-bottom:0.75rem;
