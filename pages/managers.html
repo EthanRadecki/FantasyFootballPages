@@ -848,62 +848,197 @@ function renderH2HChart(profile) {
 
 // ── 4. Scoring Distribution ──────────────────────────────────────────────────
 // Histogram with 5-point bins, global x-axis range so it stays consistent
+// ── Utility: percentile from a sorted array ──────────────────────────────────
+function percentile(sorted, p) {
+  var idx = (p / 100) * (sorted.length - 1);
+  var lo  = Math.floor(idx);
+  var hi  = Math.ceil(idx);
+  if (lo === hi) return sorted[lo];
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+}
+
 function renderDistChart(profile) {
   destroyChart('dist');
   var scores = profile.weeklyScores;
 
-  // Global range from all manager scores (computed once, stored on window)
-  if (!window._scoreRange) {
+  // Global scores + percentiles computed once and cached
+  if (!window._scoreCache) {
     var allScores = [];
     if (allMatchupData) {
       allMatchupData.forEach(function(r) {
+        if (EXCLUDED.indexOf(r.Team_Name) !== -1) return;
         if (r.Week && r.Week.indexOf('Week') === 0) {
           var v = parseFloat(r.Team_Score);
           if (v > 0) allScores.push(v);
         }
       });
     }
-    var gMin = allScores.length ? Math.floor(Math.min.apply(null, allScores) / 5) * 5 : 50;
-    var gMax = allScores.length ? Math.ceil(Math.max.apply(null, allScores) / 5) * 5 : 250;
-    window._scoreRange = { min: gMin, max: gMax };
+    allScores.sort(function(a, b){ return a - b; });
+    var gMin = allScores.length ? Math.floor(allScores[0] / 5) * 5 : 50;
+    var gMax = allScores.length ? Math.ceil(allScores[allScores.length - 1] / 5) * 5 : 250;
+    window._scoreCache = {
+      min:  gMin,
+      max:  gMax,
+      p25:  allScores.length ? +percentile(allScores, 25).toFixed(1) : null,
+      p50:  allScores.length ? +percentile(allScores, 50).toFixed(1) : null,
+      p75:  allScores.length ? +percentile(allScores, 75).toFixed(1) : null,
+    };
   }
-  var gMin = window._scoreRange.min;
-  var gMax = window._scoreRange.max;
+  var cache = window._scoreCache;
+  var gMin  = cache.min;
+  var gMax  = cache.max;
+
+  // Manager average (regular season only, already in weeklyScores)
+  var mgrAvg = scores.length
+    ? +(scores.reduce(function(s, v){ return s + v; }, 0) / scores.length).toFixed(1)
+    : null;
 
   // Build histogram bins
   var bins = [];
   var binLabels = [];
+  var binMids = [];   // midpoint of each bin, used to position annotation lines
   for (var b = gMin; b < gMax; b += 5) {
     bins.push(0);
     binLabels.push(b + '-' + (b + 5));
+    binMids.push(b + 2.5);
   }
   scores.forEach(function(s) {
     var idx = Math.floor((s - gMin) / 5);
     if (idx >= 0 && idx < bins.length) bins[idx]++;
   });
 
+  // Convert a raw score to a fractional bin index for annotation x positioning
+  function scoreToIndex(score) {
+    return (score - gMin) / 5;
+  }
+
+  // Annotation lines plugin (inline, no external plugin needed)
+  // We draw them as zero-height scatter datasets layered on top
+  function annotationDataset(score, color, dash, label) {
+    if (score === null) return null;
+    var xi = scoreToIndex(score);
+    // Vertical line: two points at same x, y 0 and a large value
+    // Chart.js doesn't have native vertical annotations without a plugin,
+    // so we use a line dataset with a single x value repeated at y=0 and y=999
+    return {
+      type: 'line',
+      label: label,
+      data: binLabels.map(function(_, i) {
+        // Place points only at the two closest bin indices to the score
+        var dist = Math.abs(i - xi);
+        return dist < 0.55 ? null : null; // unused — see afterDraw plugin below
+      }),
+      borderColor: color,
+      borderWidth: 0,
+      pointRadius: 0,
+      _annotationX: xi,
+      _annotationColor: color,
+      _annotationDash: dash || [],
+      _annotationLabel: label,
+      _annotationScore: score,
+    };
+  }
+
+  // Custom plugin to draw vertical lines from annotation datasets
+  var verticalLinesPlugin = {
+    id: 'verticalLines',
+    afterDraw: function(chart) {
+      var ctx2 = chart.ctx;
+      var xAxis = chart.scales.x;
+      var yAxis = chart.scales.y;
+      var top    = yAxis.top;
+      var bottom = yAxis.bottom;
+
+      chart.data.datasets.forEach(function(ds) {
+        if (!ds._annotationX && ds._annotationX !== 0) return;
+        var xi  = ds._annotationX;
+        var px  = xAxis.getPixelForValue(xi);
+        ctx2.save();
+        ctx2.beginPath();
+        ctx2.strokeStyle = ds._annotationColor;
+        ctx2.lineWidth   = 1.8;
+        if (ds._annotationDash && ds._annotationDash.length) {
+          ctx2.setLineDash(ds._annotationDash);
+        }
+        ctx2.moveTo(px, top);
+        ctx2.lineTo(px, bottom);
+        ctx2.stroke();
+
+        // Label at top
+        ctx2.setLineDash([]);
+        ctx2.font = '600 10px Outfit, sans-serif';
+        ctx2.fillStyle = ds._annotationColor;
+        ctx2.textAlign = 'center';
+        ctx2.fillText(ds._annotationLabel, px, top - 4);
+        ctx2.restore();
+      });
+    }
+  };
+
+  // Build annotation datasets
+  var annotDatasets = [
+    annotationDataset(cache.p25, 'rgba(156,148,156,0.7)',  [4,3], 'P25 ' + cache.p25),
+    annotationDataset(cache.p50, 'rgba(90,138,90,0.85)',   [4,3], 'P50 ' + cache.p50),
+    annotationDataset(cache.p75, 'rgba(156,148,156,0.7)',  [4,3], 'P75 ' + cache.p75),
+    annotationDataset(mgrAvg,    'rgba(212,175,55,1.0)',   [],    'Avg ' + mgrAvg),
+  ].filter(Boolean);
+
   var ctx = document.getElementById('chart-dist').getContext('2d');
   charts['dist'] = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: binLabels,
-      datasets: [{
-        label: 'Games',
-        data: bins,
-        backgroundColor: 'rgba(156,148,156,0.55)',
-        borderColor: 'rgba(156,148,156,0.9)',
-        borderWidth: 1,
-        borderRadius: 2,
-      }]
+      datasets: [
+        {
+          label: 'Games',
+          data: bins,
+          backgroundColor: 'rgba(156,148,156,0.5)',
+          borderColor: 'rgba(156,148,156,0.85)',
+          borderWidth: 1,
+          borderRadius: 2,
+          order: 2,
+        }
+      ].concat(annotDatasets.map(function(d){ d.order = 1; return d; }))
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { display: false },
+        legend: {
+          display: true,
+          position: 'top',
+          align: 'end',
+          labels: {
+            color: C_TEXT_MID,
+            boxWidth: 12,
+            padding: 12,
+            font: { size: 11 },
+            filter: function(item) {
+              // Only show annotation datasets in legend, not the bar dataset
+              return item.datasetIndex > 0;
+            },
+            generateLabels: function(chart) {
+              return chart.data.datasets.slice(1).map(function(ds, i) {
+                return {
+                  text: ds._annotationLabel,
+                  fillStyle: ds._annotationColor,
+                  strokeStyle: ds._annotationColor,
+                  lineWidth: 2,
+                  datasetIndex: i + 1,
+                  hidden: false,
+                };
+              });
+            }
+          }
+        },
         tooltip: {
           callbacks: {
             title: function(items){ return items[0].label + ' pts'; },
-            label: function(ctx){ return ctx.parsed.y + ' game' + (ctx.parsed.y !== 1 ? 's' : ''); }
+            label: function(ctx){
+              if (ctx.datasetIndex === 0) {
+                return ctx.parsed.y + ' game' + (ctx.parsed.y !== 1 ? 's' : '');
+              }
+              return null;
+            }
           }
         }
       },
@@ -913,7 +1048,6 @@ function renderDistChart(profile) {
           ticks: Object.assign(tickStyle(), {
             maxRotation: 45,
             font: { size: 10 },
-            // Show every other label to avoid crowding
             callback: function(val, idx) { return idx % 2 === 0 ? this.getLabelForValue(val) : ''; }
           }),
         },
@@ -924,7 +1058,8 @@ function renderDistChart(profile) {
           min: 0,
         }
       }
-    }
+    },
+    plugins: [verticalLinesPlugin]
   });
 }
 
@@ -936,45 +1071,111 @@ function renderTrendsChart(profile) {
 
   if (!allMatchupData) return;
 
-  // Get regular season matchups for this manager
-  var rows = allMatchupData.filter(function(r) {
-    return (r.Team_Name === managerName || r.Team_Name === managerName + '.')
-      && r.Week && r.Week.indexOf('Week') === 0;
+  // Regular season rows only
+  var allRegRows = allMatchupData.filter(function(r) {
+    return r.Week && r.Week.indexOf('Week') === 0 && parseFloat(r.Team_Score) > 0;
   });
 
-  // Group by season then week
+  // Manager rows (handle Carmine period variant), store outcome too
+  var rows = allRegRows.filter(function(r) {
+    return r.Team_Name === managerName || r.Team_Name === managerName + '.';
+  });
+
+  // Group manager data by season+week: { score, outcome }
   var bySeason = {};
   rows.forEach(function(r) {
     var yr = parseInt(r.Season_Year);
     var wk = parseInt(r.Week.replace('Week ', ''));
-    var sc = parseFloat(r.Team_Score) || 0;
     if (!bySeason[yr]) bySeason[yr] = {};
-    bySeason[yr][wk] = sc;
+    bySeason[yr][wk] = { score: parseFloat(r.Team_Score) || 0, win: r.Outcome === 'Win' };
   });
+
+  // League average score per week, across all non-excluded managers
+  // Cached on window since it doesn't change between manager switches
+  if (!window._leagueWeekAvg) {
+    var leagueByWk = {};
+    allRegRows.forEach(function(r) {
+      if (EXCLUDED.indexOf(r.Team_Name) !== -1) return;
+      var wk = parseInt(r.Week.replace('Week ', ''));
+      if (!leagueByWk[wk]) leagueByWk[wk] = [];
+      leagueByWk[wk].push(parseFloat(r.Team_Score));
+    });
+    var avgByWk = {};
+    Object.keys(leagueByWk).forEach(function(wk) {
+      var arr = leagueByWk[wk];
+      avgByWk[parseInt(wk)] = +(arr.reduce(function(s,v){ return s+v; },0) / arr.length).toFixed(1);
+    });
+    window._leagueWeekAvg = avgByWk;
+  }
+  var leagueAvgByWk = window._leagueWeekAvg;
 
   var seasons = Object.keys(bySeason).map(Number).sort();
   var weekLabels = [];
   for (var w = 1; w <= 13; w++) weekLabels.push('Wk ' + w);
 
+  // One dataset per season -- per-point marker style encodes win/loss
   var datasets = seasons.map(function(yr, i) {
     var color = SEASON_COLORS[i % SEASON_COLORS.length];
-    var data = [];
+    var data         = [];
+    var pointBg      = [];  // filled = win, hollow (white fill) = loss
+    var pointRadius  = [];
+    var pointBorderW = [];
+
     for (var w = 1; w <= 13; w++) {
-      data.push(bySeason[yr][w] !== undefined ? +bySeason[yr][w].toFixed(1) : null);
+      if (bySeason[yr][w] !== undefined) {
+        var entry = bySeason[yr][w];
+        data.push(+entry.score.toFixed(1));
+        if (entry.win) {
+          pointBg.push(color);       // filled circle = win
+          pointRadius.push(5);
+          pointBorderW.push(1.5);
+        } else {
+          pointBg.push('#d5cfc8');   // hollow circle = loss (bg color fill)
+          pointRadius.push(5);
+          pointBorderW.push(2);
+        }
+      } else {
+        data.push(null);
+        pointBg.push(color);
+        pointRadius.push(4);
+        pointBorderW.push(1.5);
+      }
     }
+
     return {
       label: String(yr),
       data: data,
       borderColor: color,
       backgroundColor: 'transparent',
       borderWidth: 2,
-      pointRadius: 4,
-      pointBackgroundColor: color,
-      pointBorderColor: '#fff',
-      pointBorderWidth: 1,
+      pointRadius: pointRadius,
+      pointBackgroundColor: pointBg,
+      pointBorderColor: color,
+      pointBorderWidth: pointBorderW,
+      pointHoverRadius: 7,
       tension: 0.3,
       spanGaps: false,
+      _outcomes: bySeason[yr],  // stash for tooltip
     };
+  });
+
+  // League average reference line
+  var leagueAvgData = [];
+  for (var w = 1; w <= 13; w++) {
+    leagueAvgData.push(leagueAvgByWk[w] !== undefined ? leagueAvgByWk[w] : null);
+  }
+  datasets.push({
+    label: 'League Avg',
+    data: leagueAvgData,
+    borderColor: 'rgba(138,132,128,0.55)',
+    borderWidth: 1.5,
+    borderDash: [5, 4],
+    backgroundColor: 'transparent',
+    pointRadius: 0,
+    pointHoverRadius: 0,
+    tension: 0.3,
+    spanGaps: true,
+    order: 99,
   });
 
   var ctx = document.getElementById('chart-trends').getContext('2d');
@@ -988,13 +1189,50 @@ function renderTrendsChart(profile) {
         legend: {
           position: 'top',
           align: 'end',
-          labels: { boxWidth: 12, padding: 14, color: C_TEXT_MID }
+          labels: {
+            boxWidth: 12,
+            padding: 14,
+            color: C_TEXT_MID,
+            generateLabels: function(chart) {
+              // Season lines: show filled square in season color
+              // League avg: dashed indicator
+              // Win/loss key: two extra entries
+              var items = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+              // Append win/loss key entries
+              items.push({
+                text: 'Win',
+                fillStyle: 'rgba(61,58,56,0.7)',
+                strokeStyle: 'rgba(61,58,56,0.7)',
+                lineWidth: 0,
+                pointStyle: 'circle',
+                hidden: false,
+                datasetIndex: -1,
+              });
+              items.push({
+                text: 'Loss',
+                fillStyle: '#d5cfc8',
+                strokeStyle: 'rgba(61,58,56,0.7)',
+                lineWidth: 2,
+                pointStyle: 'circle',
+                hidden: false,
+                datasetIndex: -1,
+              });
+              return items;
+            }
+          }
         },
         tooltip: {
           callbacks: {
             label: function(ctx) {
               if (ctx.parsed.y === null) return null;
-              return ctx.dataset.label + ': ' + ctx.parsed.y + ' pts';
+              if (ctx.dataset.label === 'League Avg') {
+                return 'League Avg: ' + ctx.parsed.y + ' pts';
+              }
+              var yr  = parseInt(ctx.dataset.label);
+              var wk  = ctx.dataIndex + 1;
+              var entry = ctx.dataset._outcomes && ctx.dataset._outcomes[wk];
+              var outcome = entry ? (entry.win ? ' (W)' : ' (L)') : '';
+              return ctx.dataset.label + ': ' + ctx.parsed.y + ' pts' + outcome;
             }
           }
         }
