@@ -115,7 +115,7 @@ function sortTable(colIndex) {
   var rows = Array.from(tbody.querySelectorAll('tr'));
   var headers = table.querySelectorAll('thead th');
   if (currentSort.col === colIndex) { currentSort.asc = !currentSort.asc; }
-  else { currentSort.col = colIndex; currentSort.asc = (colIndex === 0 || colIndex === 9); }
+  else { currentSort.col = colIndex; currentSort.asc = (colIndex === 0); }
   headers.forEach(function(th, i) {
     var arrow = th.querySelector('.sort-arrow');
     th.classList.remove('sorted');
