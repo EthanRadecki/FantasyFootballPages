@@ -127,6 +127,121 @@
 
 @media(max-width:1024px) { .sim-grid { grid-template-columns:repeat(2,1fr); } }
 @media(max-width:600px)  { .sim-grid { grid-template-columns:1fr; } }
+
+/* ── CHAMPIONSHIP GAUNTLET ── */
+.gauntlet-legend {
+  display:flex;gap:1.25rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem;
+}
+.gauntlet-legend-item {
+  display:flex;align-items:center;gap:0.45rem;font-size:0.78rem;color:var(--text-mid);
+}
+.gauntlet-legend-dot { width:9px;height:9px;border-radius:50%;flex-shrink:0; }
+.gauntlet-ranking-bar {
+  display:flex;border-radius:var(--radius);overflow:hidden;
+  margin-bottom:2.25rem;box-shadow:0 2px 12px rgba(0,0,0,0.1);
+}
+.gauntlet-rank-slot {
+  flex:1;padding:0.65rem 0.4rem;text-align:center;cursor:pointer;
+  transition:filter 0.2s;color:#fff;
+}
+.gauntlet-rank-slot:hover { filter:brightness(1.1); }
+.gauntlet-rank-slot .grs-lbl {
+  font-size:0.64rem;text-transform:uppercase;letter-spacing:0.07em;
+  font-weight:600;opacity:0.8;
+}
+.gauntlet-rank-slot .grs-name {
+  font-family:var(--font-display);font-size:0.84rem;font-weight:700;
+}
+.gauntlet-rank-slot .grs-year { font-size:0.66rem;opacity:0.7;margin-top:0.08rem; }
+.gauntlet-grid { display:flex;flex-direction:column;gap:1.1rem; }
+.gauntlet-card {
+  background:rgba(255,255,255,0.45);backdrop-filter:blur(10px);
+  border-radius:var(--radius);border:1px solid rgba(var(--accent-rgb),0.2);
+  overflow:hidden;transition:box-shadow 0.2s,transform 0.2s;
+}
+.gauntlet-card:hover { box-shadow:0 6px 24px rgba(0,0,0,0.1);transform:translateY(-1px); }
+.gauntlet-card-header {
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;
+  gap:1.1rem;padding:1.1rem 1.4rem;
+}
+.gauntlet-rank-badge {
+  width:2.2rem;height:2.2rem;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-family:var(--font-display);
+  font-size:1rem;font-weight:800;color:#fff;flex-shrink:0;
+}
+.gauntlet-card-meta { min-width:0; }
+.gauntlet-card-meta .gcm-name {
+  font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.gauntlet-card-meta .gcm-team { font-size:0.78rem;color:var(--text-mid);margin-top:0.08rem; }
+.gauntlet-card-meta .gcm-year { font-size:0.72rem;color:var(--muted); }
+.gauntlet-score-block { text-align:right;flex-shrink:0; }
+.gauntlet-score-block .gsb-num {
+  font-family:var(--font-display);font-size:1.9rem;font-weight:800;line-height:1;
+}
+.gauntlet-score-block .gsb-lbl {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--muted);margin-top:0.15rem;
+}
+.gauntlet-score-block .gsb-verdict { font-size:0.72rem;font-weight:600;margin-top:0.1rem; }
+.gauntlet-bar-section {
+  padding:0 1.4rem 0.5rem;display:flex;flex-direction:column;gap:0.45rem;
+}
+.gauntlet-brow {
+  display:grid;grid-template-columns:130px 1fr 46px;align-items:center;gap:0.65rem;
+}
+.gauntlet-brow-label { font-size:0.73rem;color:var(--text-mid);text-align:right; }
+.gauntlet-brow-label small { font-size:0.64rem;color:var(--muted);display:block; }
+.gauntlet-btrack {
+  height:5px;background:rgba(0,0,0,0.09);border-radius:99px;overflow:hidden;
+}
+.gauntlet-bfill { height:100%;border-radius:99px; }
+.gauntlet-bval { font-size:0.7rem;color:var(--muted);font-weight:600; }
+.gauntlet-toggle {
+  display:flex;align-items:center;gap:0.35rem;font-size:0.73rem;
+  color:var(--accent);font-weight:600;cursor:pointer;
+  padding:0.35rem 1.4rem 0.8rem;user-select:none;
+}
+.gauntlet-toggle:hover { opacity:0.7; }
+.gauntlet-toggle-arrow { font-size:0.6rem;transition:transform 0.3s;display:inline-block; }
+.gauntlet-games { max-height:0;overflow:hidden;transition:max-height 0.4s ease; }
+.gauntlet-games.open { max-height:550px; }
+.gauntlet-games-inner {
+  padding:0 1.4rem 1.1rem;border-top:1px solid rgba(var(--accent-rgb),0.15);
+  padding-top:0.9rem;
+}
+.gg-round-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.09em;
+  color:var(--muted);font-weight:600;margin-bottom:0.5rem;
+}
+.gg-game-row {
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  gap:0.4rem;padding:0.45rem 0.6rem;border-radius:8px;
+  background:rgba(255,255,255,0.3);margin-bottom:0.3rem;
+}
+.gg-opp-name { font-size:0.79rem;font-weight:600;color:var(--text); }
+.gg-opp-team { font-size:0.68rem;color:var(--text-mid); }
+.gg-score-bubble {
+  font-family:var(--font-display);font-size:0.82rem;font-weight:700;
+  text-align:center;padding:0.15rem 0.5rem;border-radius:99px;
+  background:rgba(var(--accent-rgb),0.12);white-space:nowrap;line-height:1.35;
+}
+.gg-score-bubble.gg-close { color:var(--red); }
+.gg-score-bubble.gg-blow  { color:var(--green); }
+.gg-opp-stats { text-align:right; }
+.gg-stat-row { font-size:0.68rem;color:var(--text-mid); }
+.gg-stat-row b { color:var(--text);font-weight:600; }
+.gauntlet-method-note {
+  font-size:0.74rem;color:var(--muted);line-height:1.65;margin-top:1.1rem;
+  padding:0.7rem 0.95rem;border-radius:10px;
+  background:rgba(0,0,0,0.04);border-left:3px solid rgba(var(--accent-rgb),0.35);
+}
+@media(max-width:600px) {
+  .gauntlet-card-header { grid-template-columns:auto 1fr; }
+  .gauntlet-score-block { display:none; }
+  .gauntlet-brow { grid-template-columns:100px 1fr 40px; }
+}
 </style>
 </head>
 <body>
@@ -256,6 +371,39 @@
       </table>
     </div>
     <div class="sim-grid" id="sim-grid" style="margin-top:1rem;"></div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       CHAMPIONSHIP GAUNTLET
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section">
+    <div class="section-label">Championship Gauntlet</div>
+    <div class="section-title">Who had to earn it?</div>
+    <div class="callout glass">
+      <div class="callout-label">How It Works</div>
+      <p>Each title run is scored across three components: average opponent <strong>regular-season dominance z-score</strong> (how good were the teams in the champion's path relative to that season's field), average <strong>opponent playoff PPG</strong> (how hot were those opponents actually running), and <strong>inverse margin of victory</strong> (tighter games signal a harder path). Components are normalized 0-100 across all six title runs and combined at 40/35/25 weights into a single Gauntlet Score.</p>
+    </div>
+
+    <div class="gauntlet-legend">
+      <div class="gauntlet-legend-item">
+        <div class="gauntlet-legend-dot" style="background:#a85a5a"></div>Opp. Dominance (40%)
+      </div>
+      <div class="gauntlet-legend-item">
+        <div class="gauntlet-legend-dot" style="background:#9c849c"></div>Opp. Playoff PPG (35%)
+      </div>
+      <div class="gauntlet-legend-item">
+        <div class="gauntlet-legend-dot" style="background:#5a8a6a"></div>Margin Tightness (25%)
+      </div>
+    </div>
+
+    <div class="gauntlet-ranking-bar" id="gauntletRankingBar"></div>
+    <div class="gauntlet-grid" id="gauntletGrid"></div>
+
+    <p class="gauntlet-method-note">
+      Gauntlet Score is a composite of three normalized components: average opponent regular-season dominance z-score, average opponent playoff PPG, and inverse average margin of victory. Components are weighted 40/35/25 and scaled 0-100 across all six title runs. A score near 100 means the hardest path on every dimension; a score near 0 means the field cooperated.
+    </p>
   </div>
 
   <footer>
@@ -621,6 +769,133 @@ function shortName(n) {
       + '</div>'
       + '<div class="sim-matches">' + matchesHtml + '</div>';
 
+    grid.appendChild(card);
+  });
+})();
+/* ── 5. CHAMPIONSHIP GAUNTLET ─────────────────────────────────────────────── */
+(function() {
+  var CHAMPIONS = [
+    {year:2024,champion:'Baylen Slansky',team:'STATION GRITS',gs:90.0,nd:100.0,np:100.0,nm:59.9,avg_dom:1.26,avg_ppg:125.5,avg_mar:19.4,
+     games:[{r:'Round 1',opp:'Max Malich',ot:'Dent.',cs:119.3,os:116.6,m:2.7,dom:1.65,rppg:128.7,pppg:116.6},
+            {r:'Round 2',opp:'Cole Maney',ot:'Glass of Charbonnet',cs:150.2,os:120.8,m:29.4,dom:0.634,rppg:119.5,pppg:120.0},
+            {r:'Round 3',opp:'Brandon Hancock',ot:'The Minutemen',cs:170.6,os:144.6,m:26.0,dom:1.495,rppg:127.3,pppg:140.0}]},
+    {year:2022,champion:'Anthony Kelly',team:'Rolls With Butter',gs:74.5,nd:76.2,np:54.3,nm:100.0,avg_dom:0.887,avg_ppg:119.1,avg_mar:12.7,
+     games:[{r:'Round 1',opp:'Ethan Radecki',ot:'Tiger King',cs:153.4,os:153.1,m:0.3,dom:1.388,rppg:119.3,pppg:153.1},
+            {r:'Round 2',opp:'Brandon Hancock',ot:'The Minutemen',cs:130.6,os:109.1,m:21.5,dom:1.325,rppg:118.9,pppg:104.6},
+            {r:'Round 3',opp:'Ryan P McQuaid',ot:'Mike White',cs:103.8,os:87.4,m:16.4,dom:-0.051,rppg:110.2,pppg:99.6}]},
+    {year:2020,champion:'Ethan Radecki',team:'Slant Boy v2',gs:44.2,nd:0.0,np:90.7,nm:49.7,avg_dom:-0.31,avg_ppg:124.2,avg_mar:21.1,
+     games:[{r:'Round 1',opp:'Ryan P McQuaid',ot:'New York Jets',cs:124.6,os:117.1,m:7.4,dom:-1.06,rppg:97.4,pppg:117.1},
+            {r:'Round 2',opp:'Andrew Root',ot:'N.Y. Routensss',cs:134.5,os:105.8,m:28.7,dom:-0.098,rppg:110.1,pppg:124.5},
+            {r:'Round 3',opp:'Deniz Bileydi',ot:'Chicago We got um',cs:119.4,os:106.7,m:12.7,dom:0.648,rppg:119.9,pppg:134.1},
+            {r:'Round 4',opp:'Brandon Hancock',ot:'The Minutemen',cs:146.4,os:111.0,m:35.4,dom:-0.728,rppg:101.8,pppg:121.2}]},
+    {year:2025,champion:'Anthony Kelly',team:'Rolls With Butter',gs:38.6,nd:73.4,np:26.4,nm:0.0,avg_dom:0.843,avg_ppg:115.2,avg_mar:29.4,
+     games:[{r:'Round 1',opp:'Cole Maney',ot:'Shakir to death',cs:121.0,os:109.9,m:11.1,dom:2.202,rppg:129.6,pppg:109.9},
+            {r:'Round 2',opp:'Ethan Radecki',ot:'Oh He Likes Cooking!',cs:112.6,os:65.3,m:47.3,dom:0.589,rppg:116.1,pppg:117.2},
+            {r:'Round 3',opp:'Charlie Gorman',ot:'Worthy of a Warren(t)',cs:100.9,os:71.1,m:29.8,dom:-0.26,rppg:109.0,pppg:118.6}]},
+    {year:2023,champion:'Carmine Pittelli Jr.',team:'Thank You Max!',gs:34.8,nd:75.9,np:0.0,nm:18.0,avg_dom:0.881,avg_ppg:111.5,avg_mar:26.4,
+     games:[{r:'Round 1',opp:'Aidan Quigley',ot:'Tony Fkn Romo',cs:110.5,os:79.3,m:31.2,dom:0.398,rppg:117.0,pppg:79.3},
+            {r:'Round 2',opp:'Charlie Gorman',ot:'San Giacomos FF',cs:138.4,os:124.1,m:14.3,dom:1.517,rppg:131.9,pppg:140.6},
+            {r:'Round 3',opp:'Cole Maney',ot:'Addison Square Garden',cs:130.2,os:96.5,m:33.7,dom:0.729,rppg:121.4,pppg:114.5}]},
+    {year:2021,champion:'Ben Castaldo',team:'I shoot b n s',gs:17.0,nd:19.4,np:5.7,nm:28.7,avg_dom:-0.005,avg_ppg:112.3,avg_mar:24.6,
+     games:[{r:'Round 2',opp:'Baylen Slansky',ot:'AND I...AM ...IRON MAN',cs:121.1,os:107.7,m:13.3,dom:0.618,rppg:118.0,pppg:107.7},
+            {r:'Round 3',opp:'Andrew Root',ot:'N.Y. Routensss',cs:137.1,os:100.2,m:36.8,dom:-2.16,rppg:92.0,pppg:100.4},
+            {r:'Round 4',opp:'Anthony Kelly',ot:'Zay Sutherland',cs:138.8,os:115.0,m:23.8,dom:1.526,rppg:126.5,pppg:128.7}]}
+  ];
+
+  var COLORS  = ['#a85a5a','#b87060','#9c849c','#7a90a0','#6a9a7a','#5a8a6a'];
+  var VERDICTS = ['Pure Gauntlet','Battle-Tested','Earned It','Smooth Operator','Favorable Draw','Cakewalk'];
+
+  // Ranking bar
+  var rbar = document.getElementById('gauntletRankingBar');
+  CHAMPIONS.forEach(function(c, i) {
+    var slot = document.createElement('div');
+    slot.className = 'gauntlet-rank-slot';
+    slot.style.background = COLORS[i] + (i > 0 ? 'cc' : '');
+    slot.innerHTML = '<div class="grs-lbl">#' + (i+1) + '</div>'
+      + '<div class="grs-name">' + c.champion.split(' ')[0] + '</div>'
+      + '<div class="grs-year">' + c.year + '</div>';
+    slot.addEventListener('click', function() {
+      var card = document.getElementById('gc' + i);
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    rbar.appendChild(slot);
+  });
+
+  // Cards
+  var grid = document.getElementById('gauntletGrid');
+  CHAMPIONS.forEach(function(c, i) {
+    var col = COLORS[i];
+    var domStr = (c.avg_dom >= 0 ? '+' : '') + c.avg_dom;
+
+    var card = document.createElement('div');
+    card.className = 'gauntlet-card';
+    card.id = 'gc' + i;
+
+    var header = document.createElement('div');
+    header.className = 'gauntlet-card-header';
+    header.innerHTML = '<div class="gauntlet-rank-badge" style="background:' + col + '">' + (i+1) + '</div>'
+      + '<div class="gauntlet-card-meta">'
+      + '<div class="gcm-name">' + c.champion + '</div>'
+      + '<div class="gcm-team">' + c.team + '</div>'
+      + '<div class="gcm-year">' + c.year + ' &nbsp;&bull;&nbsp; ' + c.games.length + ' playoff games</div>'
+      + '</div>'
+      + '<div class="gauntlet-score-block">'
+      + '<div class="gsb-num" style="color:' + col + '">' + c.gs + '</div>'
+      + '<div class="gsb-lbl">Gauntlet Score</div>'
+      + '<div class="gsb-verdict" style="color:' + col + '">' + VERDICTS[i] + '</div>'
+      + '</div>';
+
+    var bars = document.createElement('div');
+    bars.className = 'gauntlet-bar-section';
+    [{lbl:'Opp. Dominance',sub:'avg z-score ' + domStr,val:c.nd,col:'#a85a5a'},
+     {lbl:'Opp. Playoff PPG',sub:'avg ' + c.avg_ppg + ' pts',val:c.np,col:'#9c849c'},
+     {lbl:'Margin Tightness',sub:'avg margin +' + c.avg_mar,val:c.nm,col:'#5a8a6a'}
+    ].forEach(function(b) {
+      var row = document.createElement('div');
+      row.className = 'gauntlet-brow';
+      row.innerHTML = '<div class="gauntlet-brow-label">' + b.lbl + '<small>' + b.sub + '</small></div>'
+        + '<div class="gauntlet-btrack"><div class="gauntlet-bfill" style="width:' + b.val + '%;background:' + b.col + '"></div></div>'
+        + '<div class="gauntlet-bval">' + b.val + '</div>';
+      bars.appendChild(row);
+    });
+
+    var tog = document.createElement('div');
+    tog.className = 'gauntlet-toggle';
+    tog.innerHTML = 'Game-by-game breakdown <span class="gauntlet-toggle-arrow">&#9660;</span>';
+
+    var gamesDiv = document.createElement('div');
+    gamesDiv.className = 'gauntlet-games';
+    var inner = document.createElement('div');
+    inner.className = 'gauntlet-games-inner';
+    inner.innerHTML = '<div class="gg-round-label">Playoff results</div>';
+    c.games.forEach(function(g) {
+      var closeClass = g.m < 5 ? 'gg-close' : g.m > 30 ? 'gg-blow' : '';
+      var ms = (g.m > 0 ? '+' : '') + g.m;
+      var domG = (g.dom >= 0 ? '+' : '') + g.dom;
+      var row = document.createElement('div');
+      row.className = 'gg-game-row';
+      row.innerHTML = '<div><div class="gg-opp-name">vs. ' + g.opp + '</div>'
+        + '<div class="gg-opp-team">' + g.ot + ' &bull; ' + g.r + '</div></div>'
+        + '<div class="gg-score-bubble ' + closeClass + '">' + g.cs + '&ndash;' + g.os
+        + '<br><span style="font-size:0.68rem;font-weight:400">' + ms + '</span></div>'
+        + '<div class="gg-opp-stats">'
+        + '<div class="gg-stat-row">Reg PPG <b>' + g.rppg + '</b></div>'
+        + '<div class="gg-stat-row">Playoff PPG <b>' + g.pppg + '</b></div>'
+        + '<div class="gg-stat-row">Dom z <b>' + domG + '</b></div>'
+        + '</div>';
+      inner.appendChild(row);
+    });
+    gamesDiv.appendChild(inner);
+
+    tog.addEventListener('click', function() {
+      var open = gamesDiv.classList.toggle('open');
+      tog.querySelector('.gauntlet-toggle-arrow').style.transform = open ? 'rotate(180deg)' : '';
+    });
+
+    card.appendChild(header);
+    card.appendChild(bars);
+    card.appendChild(tog);
+    card.appendChild(gamesDiv);
     grid.appendChild(card);
   });
 })();
