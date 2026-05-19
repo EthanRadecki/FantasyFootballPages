@@ -649,20 +649,71 @@ function renderPerfChart(profile) {
 }
 
 // ── 2. Schedule Luck by Season ───────────────────────────────────────────────
-// Grouped bars: actual wins (solid) vs predicted wins (dashed border) per season
-// Luck_Rating = actual - predicted, so predicted = actual - luck_rating
+// Replicates export_luck_analysis.py:
+//   For each regular-season week, compute league median score.
+//   Predicted win = scored above median that week.
+//   Luck = actual wins - predicted wins, aggregated per season.
+function computeLuckBySeason(managerName) {
+  if (!allMatchupData) return {};
+
+  // Regular season rows only, exclude bad scores
+  var regRows = allMatchupData.filter(function(r) {
+    return r.Week && r.Week.indexOf('Week') === 0 && parseFloat(r.Team_Score) > 0;
+  });
+
+  // League median per season+week
+  var medians = {};
+  var byKey = {};
+  regRows.forEach(function(r) {
+    var key = r.Season_Year + '|' + r.Week;
+    if (!byKey[key]) byKey[key] = [];
+    byKey[key].push(parseFloat(r.Team_Score));
+  });
+  Object.keys(byKey).forEach(function(key) {
+    var arr = byKey[key].slice().sort(function(a,b){ return a-b; });
+    var mid = Math.floor(arr.length / 2);
+    medians[key] = arr.length % 2 !== 0 ? arr[mid] : (arr[mid-1] + arr[mid]) / 2;
+  });
+
+  // Filter to this manager's rows (handle Carmine period variant)
+  var myRows = regRows.filter(function(r) {
+    return r.Team_Name === managerName || r.Team_Name === managerName + '.';
+  });
+
+  // Aggregate per season
+  var bySeason = {};
+  myRows.forEach(function(r) {
+    var yr = parseInt(r.Season_Year);
+    var key = r.Season_Year + '|' + r.Week;
+    var score = parseFloat(r.Team_Score);
+    var median = medians[key] || 0;
+    var actualWin    = r.Outcome === 'Win' ? 1 : 0;
+    var predictedWin = score > median ? 1 : 0;
+    if (!bySeason[yr]) bySeason[yr] = { actual: 0, predicted: 0 };
+    bySeason[yr].actual    += actualWin;
+    bySeason[yr].predicted += predictedWin;
+  });
+
+  return bySeason;
+}
+
 function renderLuckChart(profile) {
   destroyChart('luck');
-  var seasons = profile.seasons.slice().sort(function(a,b){ return a.year - b.year; });
+  var luckBySeason = computeLuckBySeason(profile.name);
+  var seasons = Object.keys(luckBySeason).map(Number).sort();
 
-  var labels    = seasons.map(function(s){ return s.year; });
-  var actual    = seasons.map(function(s){ return s.w; });
-  var predicted = seasons.map(function(s){ return Math.max(0, s.w - s.luckRating); });
-  var luckVals  = seasons.map(function(s){ return s.luckRating; });
+  if (seasons.length === 0) return;
 
-  // Bar colors: green if lucky (positive luck = more wins than predicted), red if unlucky
-  var actualColors  = seasons.map(function(s){ return s.luckRating >= 0 ? 'rgba(90,138,90,0.72)' : 'rgba(168,90,90,0.72)'; });
-  var actualBorders = seasons.map(function(s){ return s.luckRating >= 0 ? 'rgba(90,138,90,1)' : 'rgba(168,90,90,1)'; });
+  var labels    = seasons;
+  var actual    = seasons.map(function(yr){ return luckBySeason[yr].actual; });
+  var predicted = seasons.map(function(yr){ return +luckBySeason[yr].predicted.toFixed(1); });
+  var luckVals  = seasons.map(function(yr){
+    return +(luckBySeason[yr].actual - luckBySeason[yr].predicted).toFixed(1);
+  });
+
+  // Green if lucky (actual > predicted), red if unlucky
+  var actualColors  = luckVals.map(function(lv){ return lv >= 0 ? 'rgba(90,138,90,0.72)' : 'rgba(168,90,90,0.72)'; });
+  var actualBorders = luckVals.map(function(lv){ return lv >= 0 ? 'rgba(90,138,90,1)' : 'rgba(168,90,90,1)'; });
 
   var ctx = document.getElementById('chart-luck').getContext('2d');
   charts['luck'] = new Chart(ctx, {
@@ -684,7 +735,6 @@ function renderLuckChart(profile) {
           backgroundColor: 'rgba(156,148,156,0.18)',
           borderColor: 'rgba(156,148,156,0.6)',
           borderWidth: 1.5,
-          borderDash: [4, 3],
           order: 2,
         }
       ]
@@ -704,7 +754,7 @@ function renderLuckChart(profile) {
               var idx = items[0].dataIndex;
               var lv = luckVals[idx];
               var prefix = lv > 0 ? '+' : '';
-              return ['Luck: ' + prefix + lv + ' wins'];
+              return ['Luck: ' + prefix + lv + ' wins vs expected'];
             }
           }
         }
