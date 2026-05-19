@@ -859,10 +859,10 @@ function percentile(sorted, p) {
 
 function renderDistChart(profile) {
   destroyChart('dist');
-  var scores = profile.weeklyScores;
+  var scores = profile.weeklyScores.slice();
 
-  // Global scores + percentiles computed once and cached
-  if (!window._scoreCache) {
+  // Global x-axis range from all managers, computed once
+  if (!window._scoreRange) {
     var allScores = [];
     if (allMatchupData) {
       allMatchupData.forEach(function(r) {
@@ -874,22 +874,20 @@ function renderDistChart(profile) {
       });
     }
     allScores.sort(function(a, b){ return a - b; });
-    var gMin = allScores.length ? Math.floor(allScores[0] / 5) * 5 : 50;
-    var gMax = allScores.length ? Math.ceil(allScores[allScores.length - 1] / 5) * 5 : 250;
-    window._scoreCache = {
-      min: gMin,
-      max: gMax,
-      p25: allScores.length ? +percentile(allScores, 25).toFixed(1) : null,
-      p75: allScores.length ? +percentile(allScores, 75).toFixed(1) : null,
+    window._scoreRange = {
+      min: allScores.length ? Math.floor(allScores[0] / 5) * 5 : 50,
+      max: allScores.length ? Math.ceil(allScores[allScores.length - 1] / 5) * 5 : 250,
     };
   }
-  var cache = window._scoreCache;
-  var gMin  = cache.min;
-  var gMax  = cache.max;
+  var gMin = window._scoreRange.min;
+  var gMax = window._scoreRange.max;
 
-  // Manager average
-  var mgrAvg = scores.length
-    ? +(scores.reduce(function(s, v){ return s + v; }, 0) / scores.length).toFixed(1)
+  // Manager-own percentiles and average
+  var sorted = scores.slice().sort(function(a, b){ return a - b; });
+  var mgrP25 = sorted.length ? +percentile(sorted, 25).toFixed(1) : null;
+  var mgrP75 = sorted.length ? +percentile(sorted, 75).toFixed(1) : null;
+  var mgrAvg = sorted.length
+    ? +(sorted.reduce(function(s, v){ return s + v; }, 0) / sorted.length).toFixed(1)
     : null;
 
   // Build histogram bins
@@ -904,62 +902,96 @@ function renderDistChart(profile) {
     if (idx >= 0 && idx < bins.length) bins[idx]++;
   });
 
-  // Convert a raw score to fractional bin index for canvas pixel lookup
+  // Convert raw score to fractional bin index
   function scoreToIndex(score) {
     return (score - gMin) / 5;
   }
 
-  // Plugin: shaded P25-P75 band + single manager avg vertical line
+  // Plugin: three colored background regions + black avg line
   var overlayPlugin = {
     id: 'distOverlay',
-    afterDraw: function(chart) {
+    beforeDatasetsDraw: function(chart) {
+      // Draw regions behind the bars
       var ctx2  = chart.ctx;
       var xAxis = chart.scales.x;
       var yAxis = chart.scales.y;
       var top    = yAxis.top;
       var bottom = yAxis.bottom;
+      var left   = xAxis.left;
+      var right  = xAxis.right;
 
-      // P25-P75 shaded band
-      if (cache.p25 !== null && cache.p75 !== null) {
-        var xP25 = xAxis.getPixelForValue(scoreToIndex(cache.p25));
-        var xP75 = xAxis.getPixelForValue(scoreToIndex(cache.p75));
-        ctx2.save();
-        ctx2.fillStyle = 'rgba(156,148,156,0.10)';
-        ctx2.fillRect(xP25, top, xP75 - xP25, bottom - top);
-        // Soft border lines on band edges
-        ctx2.strokeStyle = 'rgba(156,148,156,0.35)';
-        ctx2.lineWidth = 1;
-        ctx2.setLineDash([3, 3]);
-        ctx2.beginPath(); ctx2.moveTo(xP25, top); ctx2.lineTo(xP25, bottom); ctx2.stroke();
-        ctx2.beginPath(); ctx2.moveTo(xP75, top); ctx2.lineTo(xP75, bottom); ctx2.stroke();
-        // Band label centered in the region
-        ctx2.setLineDash([]);
-        ctx2.font = '500 10px Outfit, sans-serif';
-        ctx2.fillStyle = 'rgba(138,132,128,0.7)';
-        ctx2.textAlign = 'center';
-        ctx2.fillText('League P25-P75', (xP25 + xP75) / 2, top + 12);
-        ctx2.restore();
-      }
+      if (mgrP25 === null || mgrP75 === null) return;
 
-      // Manager avg vertical line
-      if (mgrAvg !== null) {
-        var xAvg = xAxis.getPixelForValue(scoreToIndex(mgrAvg));
-        ctx2.save();
-        ctx2.strokeStyle = 'rgba(212,175,55,0.9)';
-        ctx2.lineWidth = 2;
-        ctx2.beginPath();
-        ctx2.moveTo(xAvg, top);
-        ctx2.lineTo(xAvg, bottom);
-        ctx2.stroke();
-        // Label
-        ctx2.font = '600 10px Outfit, sans-serif';
-        ctx2.fillStyle = 'rgba(212,175,55,1.0)';
-        ctx2.textAlign = 'center';
-        ctx2.fillText('Avg ' + mgrAvg, xAvg, top + 12);
-        ctx2.restore();
-      }
+      var xP25 = xAxis.getPixelForValue(scoreToIndex(mgrP25));
+      var xP75 = xAxis.getPixelForValue(scoreToIndex(mgrP75));
+
+      ctx2.save();
+
+      // Bottom 25% -- light red
+      ctx2.fillStyle = 'rgba(168,90,90,0.10)';
+      ctx2.fillRect(left, top, xP25 - left, bottom - top);
+
+      // Middle 50% -- light yellow
+      ctx2.fillStyle = 'rgba(212,175,55,0.10)';
+      ctx2.fillRect(xP25, top, xP75 - xP25, bottom - top);
+
+      // Top 25% -- light green
+      ctx2.fillStyle = 'rgba(90,138,90,0.10)';
+      ctx2.fillRect(xP75, top, right - xP75, bottom - top);
+
+      ctx2.restore();
+    },
+    afterDatasetsDraw: function(chart) {
+      // Draw avg line on top of bars
+      if (mgrAvg === null) return;
+      var ctx2  = chart.ctx;
+      var xAxis = chart.scales.x;
+      var yAxis = chart.scales.y;
+      var xAvg  = xAxis.getPixelForValue(scoreToIndex(mgrAvg));
+
+      ctx2.save();
+      ctx2.strokeStyle = 'rgba(44,42,40,0.85)';
+      ctx2.lineWidth   = 2;
+      ctx2.beginPath();
+      ctx2.moveTo(xAvg, yAxis.top);
+      ctx2.lineTo(xAvg, yAxis.bottom);
+      ctx2.stroke();
+      ctx2.restore();
     }
   };
+
+  // Legend uses dummy datasets with no data
+  var legendDatasets = [
+    {
+      label: 'Bottom 25%',
+      data: [],
+      backgroundColor: 'rgba(168,90,90,0.30)',
+      borderColor: 'rgba(168,90,90,0)',
+      borderWidth: 0,
+    },
+    {
+      label: 'Middle 50%',
+      data: [],
+      backgroundColor: 'rgba(212,175,55,0.35)',
+      borderColor: 'rgba(212,175,55,0)',
+      borderWidth: 0,
+    },
+    {
+      label: 'Top 25%',
+      data: [],
+      backgroundColor: 'rgba(90,138,90,0.30)',
+      borderColor: 'rgba(90,138,90,0)',
+      borderWidth: 0,
+    },
+    {
+      label: 'Avg ' + mgrAvg,
+      data: [],
+      backgroundColor: 'rgba(44,42,40,0)',
+      borderColor: 'rgba(44,42,40,0.85)',
+      borderWidth: 2,
+      type: 'line',
+    },
+  ];
 
   var ctx = document.getElementById('chart-dist').getContext('2d');
   charts['dist'] = new Chart(ctx, {
@@ -973,16 +1005,31 @@ function renderDistChart(profile) {
         borderColor: 'rgba(156,148,156,0.85)',
         borderWidth: 1,
         borderRadius: 2,
-      }]
+      }].concat(legendDatasets)
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { display: false },
+        legend: {
+          display: true,
+          position: 'top',
+          align: 'end',
+          labels: {
+            color: C_TEXT_MID,
+            boxWidth: 12,
+            padding: 14,
+            font: { size: 11 },
+            filter: function(item) {
+              // Hide the 'Games' bar from legend, show only the four overlay entries
+              return item.datasetIndex > 0;
+            }
+          }
+        },
         tooltip: {
           callbacks: {
             title: function(items){ return items[0].label + ' pts'; },
             label: function(ctx){
+              if (ctx.datasetIndex !== 0) return null;
               return ctx.parsed.y + ' game' + (ctx.parsed.y !== 1 ? 's' : '');
             }
           }

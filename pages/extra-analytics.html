@@ -7,52 +7,113 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-/* ── EXTRA ANALYTICS PAGE STYLES ── */
-.analysis-section {
-  margin-bottom:3rem;
-}
-.analysis-section:last-of-type {
-  margin-bottom:2rem;
-}
+.analysis-section { margin-bottom:3rem; }
+.analysis-section:last-of-type { margin-bottom:2rem; }
 .section-divider {
-  border:none;
-  border-top:1px solid rgba(var(--accent-rgb),0.12);
+  border:none;border-top:1px solid rgba(var(--accent-rgb),0.12);
   margin:0 0 2.5rem 0;
 }
-.full-chart {
-  padding:1.5rem;margin-bottom:1.5rem;overflow:hidden;
+.chart-area-pad { padding:1.5rem; }
+.chart-area-pad canvas { display:block;width:100% !important; }
+
+/* ── H2H MATRIX ── */
+.h2h-scroll { overflow-x:auto; padding:1.5rem; }
+.h2h-table {
+  border-collapse:collapse;font-size:0.72rem;
+  white-space:nowrap;margin:0 auto;
 }
-.full-chart-img {
-  width:100%;border-radius:10px;display:block;
-  cursor:zoom-in;transition:transform 0.2s;
-  box-shadow:0 4px 16px rgba(0,0,0,0.06);
+.h2h-table th {
+  padding:0.4rem 0.5rem;font-size:0.6rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.2);
 }
-.full-chart-img:hover { transform:scale(1.005); }
-.chart-caption {
-  font-size:0.76rem;color:var(--muted);margin-top:0.75rem;
-  font-style:italic;text-align:center;
+.h2h-table th.row-header { text-align:left;min-width:110px; }
+.h2h-table td {
+  padding:0.35rem 0.45rem;text-align:center;
+  border:1px solid rgba(var(--accent-rgb),0.07);
+  font-size:0.69rem;color:var(--text-mid);
+  transition:filter 0.15s;cursor:default;
+  min-width:52px;
+}
+.h2h-table td:hover { filter:brightness(0.92); }
+.h2h-table td.self {
+  background:rgba(61,58,56,0.08);color:var(--muted);
+  font-size:0.8rem;
+}
+.h2h-table td.win-high  { background:rgba(90,138,90,0.55);color:#1e3a1e;font-weight:700; }
+.h2h-table td.win-mid   { background:rgba(90,138,90,0.28);color:#2a4a2a; }
+.h2h-table td.even      { background:rgba(212,175,55,0.22);color:#5a4a10; }
+.h2h-table td.loss-mid  { background:rgba(168,90,90,0.28);color:#4a1a1a; }
+.h2h-table td.loss-high { background:rgba(168,90,90,0.55);color:#3a0a0a;font-weight:700; }
+.h2h-table tr td:first-child {
+  text-align:left;font-weight:600;color:var(--palm);
+  padding-left:0.6rem;font-size:0.72rem;
 }
 
-/* Similarity grid needs extra width */
-.similarity-wrap {
-  padding:1.5rem;margin-bottom:1.5rem;overflow-x:auto;
+/* ── SIMILARITY CARDS ── */
+.sim-grid {
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;
 }
-.similarity-img {
-  width:100%;min-width:800px;border-radius:10px;display:block;
-  cursor:zoom-in;transition:transform 0.2s;
-  box-shadow:0 4px 16px rgba(0,0,0,0.06);
+.sim-card { padding:1.1rem 1.1rem 0.9rem; }
+.sim-card-header {
+  display:flex;align-items:baseline;gap:0.5rem;
+  margin-bottom:0.6rem;padding-bottom:0.6rem;
+  border-bottom:1px solid rgba(var(--accent-rgb),0.12);
 }
-.similarity-img:hover { transform:scale(1.003); }
+.sim-seed {
+  font-size:0.6rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.1em;color:var(--accent);flex-shrink:0;
+}
+.sim-manager {
+  font-family:var(--font-display);font-size:0.88rem;font-weight:900;
+  color:var(--palm);line-height:1.1;
+}
+.sim-team-name {
+  font-size:0.68rem;color:var(--muted);margin-bottom:0.55rem;font-style:italic;
+}
+.sim-current-stats {
+  display:flex;gap:0.6rem;margin-bottom:0.75rem;flex-wrap:wrap;
+}
+.sim-stat-pill {
+  font-size:0.62rem;padding:0.15rem 0.45rem;border-radius:20px;
+  background:rgba(var(--accent-rgb),0.1);color:var(--text-mid);font-weight:600;
+}
+.sim-matches { display:flex;flex-direction:column;gap:0.45rem; }
+.sim-match {
+  padding:0.55rem 0.6rem;border-radius:8px;
+  background:rgba(var(--accent-rgb),0.05);
+  border-left:2px solid transparent;
+}
+.sim-match.rank-1 { border-left-color:var(--accent); }
+.sim-match.rank-2 { border-left-color:rgba(var(--accent-rgb),0.55); }
+.sim-match.rank-3 { border-left-color:rgba(var(--accent-rgb),0.28); }
+.sim-match-top {
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:0.2rem;
+}
+.sim-match-name {
+  font-size:0.73rem;font-weight:700;color:var(--palm);line-height:1.2;
+}
+.sim-match-score {
+  font-family:var(--font-display);font-size:0.85rem;font-weight:900;
+  flex-shrink:0;margin-left:0.4rem;
+}
+.sim-match-meta { font-size:0.62rem;color:var(--muted);margin-bottom:0.25rem; }
+.sim-match-stats { font-size:0.61rem;color:var(--text-mid);margin-bottom:0.2rem;font-variant-numeric:tabular-nums; }
+.sim-match-result { font-size:0.65rem;font-weight:700; }
+.result-champ  { color:var(--gold); }
+.result-runner { color:var(--muted); }
+.result-win    { color:var(--green); }
+.result-loss   { color:var(--red); }
+.result-miss   { color:var(--muted); }
 
-/* Weight table for similarity engine */
-.weight-table {
-  width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:1rem;
-}
+/* Weight table */
+.weight-table { width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:1rem; }
 .weight-table th {
-  text-align:left;padding:0.6rem 0.75rem;
-  font-size:0.66rem;text-transform:uppercase;letter-spacing:0.08em;
-  font-weight:700;color:var(--accent);
+  text-align:left;padding:0.6rem 0.75rem;font-size:0.66rem;
+  text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--accent);
   border-bottom:2px solid rgba(var(--accent-rgb),0.25);
 }
 .weight-table td {
@@ -60,17 +121,12 @@
   border-bottom:1px solid rgba(var(--accent-rgb),0.08);
 }
 .weight-table tr:last-child td { border-bottom:none; }
-.weight-val {
-  font-weight:700;color:var(--palm);
-}
-.weight-bar-wrap {
-  width:100px;height:6px;border-radius:3px;
-  background:rgba(var(--accent-rgb),0.12);
-}
-.weight-bar-fill {
-  height:100%;border-radius:3px;
-  background:var(--accent);
-}
+.weight-val { font-weight:700;color:var(--palm); }
+.weight-bar-wrap { width:100px;height:6px;border-radius:3px;background:rgba(var(--accent-rgb),0.12); }
+.weight-bar-fill { height:100%;border-radius:3px;background:var(--accent); }
+
+@media(max-width:1024px) { .sim-grid { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:600px)  { .sim-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -115,87 +171,76 @@
     <p>Deep dives into schedule luck, seasonal trends, historical similarity, and more</p>
   </div>
 
-  <!-- ═══════════════════════════════════
+  <!-- ══════════════════════════════════════════
        SCHEDULE LUCK
-       ═══════════════════════════════════ -->
+       ══════════════════════════════════════════ -->
   <div class="analysis-section">
     <div class="section-label">Schedule Luck</div>
     <div class="section-title">Who has the schedule been kind to?</div>
-
     <div class="callout glass">
       <div class="callout-label">How It Works</div>
       <p>Each week, every manager's score is compared to the <strong>league median</strong>. If you scored above the median, you "should have" won that week regardless of your actual opponent. The difference between your actual wins and these expected wins is your schedule luck. Positive means the schedule gifted you wins; negative means it took them away.</p>
     </div>
-
-    <div class="full-chart glass">
-      <img src="../images/analysis/preach_luck_analysis.png" class="full-chart-img" alt="All-time schedule luck analysis (2020-2025)" onclick="openLightbox(this.src, this.alt)">
-      <p class="chart-caption">All-time schedule luck rankings (2020-2025). Luck = actual wins minus expected wins against the weekly league median.</p>
+    <div class="chart-area-pad glass">
+      <canvas id="chart-luck" height="80"></canvas>
     </div>
   </div>
 
   <hr class="section-divider">
 
-  <!-- ═══════════════════════════════════
+  <!-- ══════════════════════════════════════════
        SEASONAL ANALYSIS
-       ═══════════════════════════════════ -->
+       ══════════════════════════════════════════ -->
   <div class="analysis-section">
     <div class="section-label">Seasonal Analysis</div>
     <div class="section-title">Which quarter of the season matters most?</div>
-
     <div class="callout glass">
       <div class="callout-label">Methodology</div>
-      <p>A logistic regression tested which part of the season best predicts playoff qualification, using average points scored each quarter as independent variables. <strong>The model achieved an AUC of 0.83</strong>, indicating strong predictive accuracy. Q2 (Weeks 4-6) and Q4 (Weeks 10-13) are statistically significant at p&lt;0.05, while Q3 (Weeks 7-9) is the weakest predictor.</p>
+      <p>A logistic regression tested which part of the season best predicts playoff qualification, using average points scored each quarter as independent variables. <strong>The model achieved an AUC of 0.83</strong>, indicating strong predictive accuracy. Q2 (Weeks 4-6) and Q4 (Weeks 10-13) carry the largest coefficients, while Q3 (Weeks 7-9) is the weakest predictor.</p>
     </div>
-
-    <div class="full-chart glass">
-      <img src="../images/analysis/preach_quarterly_regression.png" class="full-chart-img" alt="Quarterly regression predicting playoff appearance" onclick="openLightbox(this.src, this.alt)">
-      <p class="chart-caption">Logistic regression coefficients and Pearson correlations for each quarter as predictors of playoff appearance.</p>
+    <div class="chart-grid">
+      <div class="chart-area-pad glass">
+        <canvas id="chart-q-coef" height="200"></canvas>
+      </div>
+      <div class="chart-area-pad glass">
+        <canvas id="chart-q-corr" height="200"></canvas>
+      </div>
     </div>
   </div>
 
   <hr class="section-divider">
 
-  <!-- ═══════════════════════════════════
-       HEAD-TO-HEAD MATRIX
-       ═══════════════════════════════════ -->
+  <!-- ══════════════════════════════════════════
+       H2H MATRIX
+       ══════════════════════════════════════════ -->
   <div class="analysis-section">
     <div class="section-label">Head-to-Head</div>
     <div class="section-title">All-time rivalry records.</div>
-
     <div class="callout glass">
       <div class="callout-label">What You're Looking At</div>
-      <p>Every manager's all-time record against every other manager, color-coded by win percentage. <strong>Green cells indicate winning records, red indicates losing</strong>. Color intensity reflects the degree of dominance in each matchup.</p>
+      <p>Every manager's all-time record against every other manager. Row is the manager, column is the opponent. <strong>Green cells indicate winning records, red indicates losing.</strong> Hover any cell for the exact record.</p>
     </div>
-
-    <div class="similarity-wrap glass">
-      <img src="../images/analysis/preach_h2h_matrix.png" class="similarity-img" alt="All-time head-to-head matrix (2020-2025)" onclick="openLightbox(this.src, this.alt)">
-      <p class="chart-caption">All-time head-to-head matrix, Preach Fantasy (2020-2025).</p>
+    <div class="h2h-scroll glass">
+      <table class="h2h-table" id="h2h-table"></table>
     </div>
   </div>
 
   <hr class="section-divider">
 
-  <!-- ═══════════════════════════════════
+  <!-- ══════════════════════════════════════════
        HISTORICAL SIMILARITY
-       ═══════════════════════════════════ -->
+       ══════════════════════════════════════════ -->
   <div class="analysis-section">
     <div class="section-label">Historical Similarity</div>
     <div class="section-title">2025 playoff teams matched to league history.</div>
-
     <div class="callout glass">
       <div class="callout-label">About This Analysis</div>
       <p>For each 2025 playoff team, a <strong>weighted Euclidean distance algorithm</strong> identified the three most statistically similar teams from 2020-2024 across seven performance features. Features are normalized via StandardScaler, with custom weights reflecting each metric's relative importance to playoff performance.</p>
     </div>
-
     <div class="table-wrap glass">
       <table class="weight-table">
         <thead>
-          <tr>
-            <th>Feature</th>
-            <th>Weight</th>
-            <th>Reasoning</th>
-            <th>Importance</th>
-          </tr>
+          <tr><th>Feature</th><th>Weight</th><th>Reasoning</th><th>Importance</th></tr>
         </thead>
         <tbody>
           <tr><td>Late Season PF/G (Wks 10-13)</td><td class="weight-val">2.0</td><td>Best predictor of playoff form</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:100%"></div></div></td></tr>
@@ -208,11 +253,7 @@
         </tbody>
       </table>
     </div>
-
-    <div class="similarity-wrap glass">
-      <img src="../images/analysis/preach_similarity_grid.png" class="similarity-img" alt="Historical team similarity analysis - 2025 Playoffs" onclick="openLightbox(this.src, this.alt)">
-      <p class="chart-caption">2025 playoff team similarity cards. Each card shows the 3 most statistically similar teams from league history, ranked by weighted Euclidean distance across 7 performance features.</p>
-    </div>
+    <div class="sim-grid" id="sim-grid" style="margin-top:1rem;"></div>
   </div>
 
   <footer>
@@ -221,11 +262,348 @@
 
 </div>
 
-<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
-  <img id="lightbox-img" src="" alt="">
-</div>
-
 <script src="../shared.js"></script>
+<script>
+/* ══════════════════════════════════════
+   Extra Analytics — all four sections
+   ══════════════════════════════════════ */
+
+Chart.defaults.font.family = "'Outfit', sans-serif";
+Chart.defaults.font.size   = 12;
+Chart.defaults.color       = '#5a5550';
+
+var C_TEXT_MID = '#5a5550';
+var C_MUTED    = '#8a8480';
+var C_GREEN    = '#5a8a5a';
+var C_RED      = '#a85a5a';
+var C_GOLD     = '#d4af37';
+var C_ACCENT   = '#9c949c';
+
+function gridStyle() { return { color:'rgba(156,148,156,0.15)', drawBorder:false }; }
+function tickStyle() { return { color: C_MUTED }; }
+
+function shortName(n) {
+  n = n.replace(' Jr.','').replace('Ryan P ','Ryan ');
+  var p = n.split(' ');
+  return p[0] + ' ' + p[p.length-1][0] + '.';
+}
+
+/* ── 1. SCHEDULE LUCK ─────────────────────────────────────────────────────── */
+(function() {
+  var luckData = [
+    {name:'Aidan Quigley',    actual:27, predicted:35, luck:-8},
+    {name:'Brandon Hancock',  actual:45, predicted:52, luck:-7},
+    {name:'Cole Maney',       actual:39, predicted:43, luck:-4},
+    {name:'Quin Gegwich',     actual:30, predicted:32, luck:-2},
+    {name:'Deniz Bileydi',    actual:32, predicted:33, luck:-1},
+    {name:'Ethan Radecki',    actual:52, predicted:53, luck:-1},
+    {name:'Carmine Pittelli Jr.', actual:47, predicted:48, luck:-1},
+    {name:'Max Malich',       actual:39, predicted:39, luck:0},
+    {name:'Anthony Kelly',    actual:43, predicted:42, luck:1},
+    {name:'Charlie Gorman',   actual:39, predicted:38, luck:1},
+    {name:'Ben Castaldo',     actual:40, predicted:38, luck:2},
+    {name:'Baylen Slansky',   actual:47, predicted:44, luck:3},
+    {name:'Andrew Root',      actual:41, predicted:33, luck:8},
+    {name:'Ryan P McQuaid',   actual:40, predicted:30, luck:10},
+  ];
+
+  var labels  = luckData.map(function(d){ return shortName(d.name); });
+  var actual  = luckData.map(function(d){ return d.actual; });
+  var pred    = luckData.map(function(d){ return d.predicted; });
+  var luck    = luckData.map(function(d){ return d.luck; });
+
+  var actualBg = luckData.map(function(d){
+    return d.luck > 0 ? 'rgba(90,138,90,0.7)' : d.luck < 0 ? 'rgba(168,90,90,0.7)' : 'rgba(212,175,55,0.7)';
+  });
+  var actualBd = luckData.map(function(d){
+    return d.luck > 0 ? 'rgba(90,138,90,1)' : d.luck < 0 ? 'rgba(168,90,90,1)' : 'rgba(212,175,55,1)';
+  });
+
+  new Chart(document.getElementById('chart-luck').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Actual Wins',
+          data: actual,
+          backgroundColor: actualBg,
+          borderColor: actualBd,
+          borderWidth: 1.5,
+          borderRadius: 3,
+          order: 1,
+        },
+        {
+          label: 'Expected Wins',
+          data: pred,
+          backgroundColor: 'rgba(156,148,156,0.18)',
+          borderColor: 'rgba(156,148,156,0.55)',
+          borderWidth: 1.5,
+          borderRadius: 3,
+          order: 2,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        legend: {
+          position:'top', align:'end',
+          labels: { boxWidth:12, padding:16, color:C_TEXT_MID }
+        },
+        tooltip: {
+          callbacks: {
+            afterBody: function(items) {
+              var idx = items[0].dataIndex;
+              var lv  = luck[idx];
+              return ['Luck: ' + (lv > 0 ? '+' : '') + lv + ' wins vs expected'];
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid:gridStyle(), ticks:Object.assign(tickStyle(), { maxRotation:35, font:{size:11} }) },
+        y: {
+          grid: gridStyle(),
+          ticks: Object.assign(tickStyle(), { stepSize:5 }),
+          title: { display:true, text:'Wins', color:C_MUTED, font:{size:11} },
+          min: 0,
+        }
+      }
+    }
+  });
+})();
+
+/* ── 2. QUARTERLY REGRESSION ─────────────────────────────────────────────── */
+(function() {
+  var labels = ['Q1 (Wks 1-3)', 'Q2 (Wks 4-6)', 'Q3 (Wks 7-9)', 'Q4 (Wks 10-13)'];
+  var coefs  = [0.386, 0.735, 0.274, 0.736];
+  var corrs  = [0.281, 0.372, 0.256, 0.397];
+  var pvals  = [0.000, 0.000, 0.013, 0.000];
+
+  function pLabel(p) { return p < 0.01 ? '***' : p < 0.05 ? '**' : p < 0.1 ? '*' : ''; }
+
+  // Gradient green by value
+  function greenScale(vals, alpha) {
+    var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+    return vals.map(function(v) {
+      var t = mx !== mn ? (v - mn) / (mx - mn) : 0.5;
+      var r = Math.round(180 + (40  - 180) * t);
+      var g = Math.round(220 + (120 - 220) * t);
+      var b = Math.round(180 + (70  - 180) * t);
+      return 'rgba('+r+','+g+','+b+','+alpha+')';
+    });
+  }
+
+  // Chart 1: Coefficients
+  new Chart(document.getElementById('chart-q-coef').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Coefficient',
+        data: coefs,
+        backgroundColor: greenScale(coefs, 0.75),
+        borderColor: greenScale(coefs, 1.0),
+        borderWidth: 1.5,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var p = pvals[ctx.dataIndex];
+              return 'Coef: +' + ctx.parsed.y.toFixed(3) + '  p=' + p.toFixed(3) + pLabel(p);
+            }
+          }
+        },
+        title: {
+          display: true,
+          text: 'Logistic Regression Coefficients  |  AUC 0.83',
+          color: C_TEXT_MID,
+          font: { size:12, weight:'600' },
+          padding: { bottom:12 }
+        }
+      },
+      scales: {
+        x: { grid:gridStyle(), ticks:Object.assign(tickStyle(), { font:{size:11} }) },
+        y: {
+          grid: gridStyle(), ticks: tickStyle(),
+          title: { display:true, text:'Coefficient', color:C_MUTED, font:{size:11} },
+          min: 0,
+        }
+      }
+    }
+  });
+
+  // Chart 2: Correlations
+  new Chart(document.getElementById('chart-q-corr').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Pearson r',
+        data: corrs,
+        backgroundColor: greenScale(corrs, 0.75),
+        borderColor: greenScale(corrs, 1.0),
+        borderWidth: 1.5,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) { return 'Pearson r: ' + ctx.parsed.y.toFixed(3); }
+          }
+        },
+        title: {
+          display: true,
+          text: 'Pearson Correlation with Playoff Appearance',
+          color: C_TEXT_MID,
+          font: { size:12, weight:'600' },
+          padding: { bottom:12 }
+        }
+      },
+      scales: {
+        x: { grid:gridStyle(), ticks:Object.assign(tickStyle(), { font:{size:11} }) },
+        y: {
+          grid: gridStyle(), ticks: tickStyle(),
+          title: { display:true, text:'Pearson r', color:C_MUTED, font:{size:11} },
+          min: 0,
+        }
+      }
+    }
+  });
+})();
+
+/* ── 3. H2H MATRIX ────────────────────────────────────────────────────────── */
+(function() {
+  var managers = ["Aidan Quigley","Andrew Root","Anthony Kelly","Baylen Slansky","Ben Castaldo","Brandon Hancock","Carmine Pittelli Jr.","Charlie Gorman","Cole Maney","Deniz Bileydi","Ethan Radecki","Max Malich","Quin Gegwich","Ryan P McQuaid"];
+
+  var h2h = {"Aidan Quigley":{"Andrew Root":{"w":1,"l":5,"pct":0.167},"Anthony Kelly":{"w":1,"l":6,"pct":0.143},"Baylen Slansky":{"w":4,"l":4,"pct":0.5},"Ben Castaldo":{"w":4,"l":2,"pct":0.667},"Brandon Hancock":{"w":1,"l":6,"pct":0.143},"Carmine Pittelli Jr.":{"w":3,"l":5,"pct":0.375},"Charlie Gorman":{"w":5,"l":3,"pct":0.625},"Cole Maney":{"w":2,"l":4,"pct":0.333},"Deniz Bileydi":{"w":2,"l":3,"pct":0.4},"Ethan Radecki":{"w":1,"l":4,"pct":0.2},"Max Malich":{"w":1,"l":5,"pct":0.167},"Quin Gegwich":{"w":4,"l":3,"pct":0.571},"Ryan P McQuaid":{"w":3,"l":2,"pct":0.6}},"Andrew Root":{"Aidan Quigley":{"w":5,"l":1,"pct":0.833},"Anthony Kelly":{"w":3,"l":5,"pct":0.375},"Baylen Slansky":{"w":2,"l":4,"pct":0.333},"Ben Castaldo":{"w":2,"l":5,"pct":0.286},"Brandon Hancock":{"w":1,"l":8,"pct":0.111},"Carmine Pittelli Jr.":{"w":4,"l":1,"pct":0.8},"Charlie Gorman":{"w":4,"l":4,"pct":0.5},"Cole Maney":{"w":2,"l":4,"pct":0.333},"Deniz Bileydi":{"w":5,"l":3,"pct":0.625},"Ethan Radecki":{"w":5,"l":4,"pct":0.556},"Max Malich":{"w":6,"l":2,"pct":0.75},"Quin Gegwich":{"w":7,"l":3,"pct":0.7},"Ryan P McQuaid":{"w":3,"l":5,"pct":0.375}},"Anthony Kelly":{"Aidan Quigley":{"w":6,"l":1,"pct":0.857},"Andrew Root":{"w":5,"l":3,"pct":0.625},"Baylen Slansky":{"w":2,"l":4,"pct":0.333},"Ben Castaldo":{"w":3,"l":5,"pct":0.375},"Brandon Hancock":{"w":5,"l":2,"pct":0.714},"Carmine Pittelli Jr.":{"w":3,"l":4,"pct":0.429},"Charlie Gorman":{"w":4,"l":4,"pct":0.5},"Cole Maney":{"w":4,"l":3,"pct":0.571},"Deniz Bileydi":{"w":5,"l":2,"pct":0.714},"Ethan Radecki":{"w":5,"l":3,"pct":0.625},"Max Malich":{"w":6,"l":4,"pct":0.6},"Quin Gegwich":{"w":3,"l":3,"pct":0.5},"Ryan P McQuaid":{"w":5,"l":4,"pct":0.556}},"Baylen Slansky":{"Aidan Quigley":{"w":4,"l":4,"pct":0.5},"Andrew Root":{"w":4,"l":2,"pct":0.667},"Anthony Kelly":{"w":4,"l":2,"pct":0.667},"Ben Castaldo":{"w":4,"l":3,"pct":0.571},"Brandon Hancock":{"w":7,"l":3,"pct":0.7},"Carmine Pittelli Jr.":{"w":2,"l":4,"pct":0.333},"Charlie Gorman":{"w":5,"l":4,"pct":0.556},"Cole Maney":{"w":5,"l":2,"pct":0.714},"Deniz Bileydi":{"w":4,"l":3,"pct":0.571},"Ethan Radecki":{"w":2,"l":6,"pct":0.25},"Max Malich":{"w":4,"l":3,"pct":0.571},"Quin Gegwich":{"w":5,"l":4,"pct":0.556},"Ryan P McQuaid":{"w":1,"l":4,"pct":0.2}},"Ben Castaldo":{"Aidan Quigley":{"w":2,"l":4,"pct":0.333},"Andrew Root":{"w":5,"l":2,"pct":0.714},"Anthony Kelly":{"w":5,"l":3,"pct":0.625},"Baylen Slansky":{"w":3,"l":4,"pct":0.429},"Brandon Hancock":{"w":3,"l":4,"pct":0.429},"Carmine Pittelli Jr.":{"w":4,"l":6,"pct":0.4},"Charlie Gorman":{"w":3,"l":5,"pct":0.375},"Cole Maney":{"w":7,"l":1,"pct":0.875},"Deniz Bileydi":{"w":5,"l":5,"pct":0.5},"Ethan Radecki":{"w":3,"l":3,"pct":0.5},"Max Malich":{"w":3,"l":2,"pct":0.6},"Quin Gegwich":{"w":5,"l":3,"pct":0.625},"Ryan P McQuaid":{"w":1,"l":5,"pct":0.167}},"Brandon Hancock":{"Aidan Quigley":{"w":6,"l":1,"pct":0.857},"Andrew Root":{"w":8,"l":1,"pct":0.889},"Anthony Kelly":{"w":2,"l":5,"pct":0.286},"Baylen Slansky":{"w":3,"l":7,"pct":0.3},"Ben Castaldo":{"w":4,"l":3,"pct":0.571},"Carmine Pittelli Jr.":{"w":5,"l":5,"pct":0.5},"Charlie Gorman":{"w":2,"l":4,"pct":0.333},"Cole Maney":{"w":3,"l":5,"pct":0.375},"Deniz Bileydi":{"w":5,"l":0,"pct":1.0},"Ethan Radecki":{"w":1,"l":5,"pct":0.167},"Max Malich":{"w":5,"l":3,"pct":0.625},"Quin Gegwich":{"w":7,"l":2,"pct":0.778},"Ryan P McQuaid":{"w":5,"l":2,"pct":0.714}},"Carmine Pittelli Jr.":{"Aidan Quigley":{"w":5,"l":3,"pct":0.625},"Andrew Root":{"w":1,"l":4,"pct":0.2},"Anthony Kelly":{"w":4,"l":3,"pct":0.571},"Baylen Slansky":{"w":4,"l":2,"pct":0.667},"Ben Castaldo":{"w":6,"l":4,"pct":0.6},"Brandon Hancock":{"w":5,"l":5,"pct":0.5},"Charlie Gorman":{"w":6,"l":2,"pct":0.75},"Cole Maney":{"w":5,"l":4,"pct":0.556},"Deniz Bileydi":{"w":5,"l":1,"pct":0.833},"Ethan Radecki":{"w":4,"l":3,"pct":0.571},"Max Malich":{"w":4,"l":3,"pct":0.571},"Quin Gegwich":{"w":4,"l":1,"pct":0.8},"Ryan P McQuaid":{"w":3,"l":4,"pct":0.429}},"Charlie Gorman":{"Aidan Quigley":{"w":3,"l":5,"pct":0.375},"Andrew Root":{"w":4,"l":4,"pct":0.5},"Anthony Kelly":{"w":4,"l":4,"pct":0.5},"Baylen Slansky":{"w":4,"l":5,"pct":0.444},"Ben Castaldo":{"w":5,"l":3,"pct":0.625},"Brandon Hancock":{"w":4,"l":2,"pct":0.667},"Carmine Pittelli Jr.":{"w":2,"l":6,"pct":0.25},"Cole Maney":{"w":3,"l":6,"pct":0.333},"Deniz Bileydi":{"w":7,"l":1,"pct":0.875},"Ethan Radecki":{"w":4,"l":2,"pct":0.667},"Max Malich":{"w":2,"l":5,"pct":0.286},"Quin Gegwich":{"w":4,"l":3,"pct":0.571},"Ryan P McQuaid":{"w":2,"l":4,"pct":0.333}},"Cole Maney":{"Aidan Quigley":{"w":4,"l":2,"pct":0.667},"Andrew Root":{"w":4,"l":2,"pct":0.667},"Anthony Kelly":{"w":3,"l":4,"pct":0.429},"Baylen Slansky":{"w":2,"l":5,"pct":0.286},"Ben Castaldo":{"w":1,"l":7,"pct":0.125},"Brandon Hancock":{"w":5,"l":3,"pct":0.625},"Carmine Pittelli Jr.":{"w":4,"l":5,"pct":0.444},"Charlie Gorman":{"w":6,"l":3,"pct":0.667},"Deniz Bileydi":{"w":3,"l":3,"pct":0.5},"Ethan Radecki":{"w":3,"l":5,"pct":0.375},"Max Malich":{"w":3,"l":3,"pct":0.5},"Quin Gegwich":{"w":4,"l":4,"pct":0.5},"Ryan P McQuaid":{"w":7,"l":1,"pct":0.875}},"Deniz Bileydi":{"Aidan Quigley":{"w":3,"l":2,"pct":0.6},"Andrew Root":{"w":3,"l":5,"pct":0.375},"Anthony Kelly":{"w":2,"l":5,"pct":0.286},"Baylen Slansky":{"w":3,"l":4,"pct":0.429},"Ben Castaldo":{"w":5,"l":5,"pct":0.5},"Brandon Hancock":{"w":0,"l":5,"pct":0.0},"Carmine Pittelli Jr.":{"w":1,"l":5,"pct":0.167},"Charlie Gorman":{"w":1,"l":7,"pct":0.125},"Cole Maney":{"w":3,"l":3,"pct":0.5},"Ethan Radecki":{"w":6,"l":3,"pct":0.667},"Max Malich":{"w":4,"l":9,"pct":0.308},"Quin Gegwich":{"w":1,"l":5,"pct":0.167},"Ryan P McQuaid":{"w":5,"l":2,"pct":0.714}},"Ethan Radecki":{"Aidan Quigley":{"w":4,"l":1,"pct":0.8},"Andrew Root":{"w":4,"l":5,"pct":0.444},"Anthony Kelly":{"w":3,"l":5,"pct":0.375},"Baylen Slansky":{"w":6,"l":2,"pct":0.75},"Ben Castaldo":{"w":3,"l":3,"pct":0.5},"Brandon Hancock":{"w":5,"l":1,"pct":0.833},"Carmine Pittelli Jr.":{"w":3,"l":4,"pct":0.429},"Charlie Gorman":{"w":2,"l":4,"pct":0.333},"Cole Maney":{"w":5,"l":3,"pct":0.625},"Deniz Bileydi":{"w":3,"l":6,"pct":0.333},"Max Malich":{"w":6,"l":1,"pct":0.857},"Quin Gegwich":{"w":6,"l":1,"pct":0.857},"Ryan P McQuaid":{"w":10,"l":2,"pct":0.833}},"Max Malich":{"Aidan Quigley":{"w":5,"l":1,"pct":0.833},"Andrew Root":{"w":2,"l":6,"pct":0.25},"Anthony Kelly":{"w":4,"l":6,"pct":0.4},"Baylen Slansky":{"w":3,"l":4,"pct":0.429},"Ben Castaldo":{"w":2,"l":3,"pct":0.4},"Brandon Hancock":{"w":3,"l":5,"pct":0.375},"Carmine Pittelli Jr.":{"w":3,"l":4,"pct":0.429},"Charlie Gorman":{"w":5,"l":2,"pct":0.714},"Cole Maney":{"w":3,"l":3,"pct":0.5},"Deniz Bileydi":{"w":9,"l":4,"pct":0.692},"Ethan Radecki":{"w":1,"l":6,"pct":0.143},"Quin Gegwich":{"w":3,"l":5,"pct":0.375},"Ryan P McQuaid":{"w":4,"l":3,"pct":0.571}},"Quin Gegwich":{"Aidan Quigley":{"w":3,"l":4,"pct":0.429},"Andrew Root":{"w":3,"l":7,"pct":0.3},"Anthony Kelly":{"w":3,"l":3,"pct":0.5},"Baylen Slansky":{"w":4,"l":5,"pct":0.444},"Ben Castaldo":{"w":3,"l":5,"pct":0.375},"Brandon Hancock":{"w":2,"l":7,"pct":0.222},"Carmine Pittelli Jr.":{"w":1,"l":4,"pct":0.2},"Charlie Gorman":{"w":3,"l":4,"pct":0.429},"Cole Maney":{"w":4,"l":4,"pct":0.5},"Deniz Bileydi":{"w":5,"l":1,"pct":0.833},"Ethan Radecki":{"w":1,"l":6,"pct":0.143},"Max Malich":{"w":5,"l":3,"pct":0.625},"Ryan P McQuaid":{"w":3,"l":5,"pct":0.375}},"Ryan P McQuaid":{"Aidan Quigley":{"w":2,"l":3,"pct":0.4},"Andrew Root":{"w":5,"l":3,"pct":0.625},"Anthony Kelly":{"w":4,"l":5,"pct":0.444},"Baylen Slansky":{"w":4,"l":1,"pct":0.8},"Ben Castaldo":{"w":5,"l":1,"pct":0.833},"Brandon Hancock":{"w":2,"l":5,"pct":0.286},"Carmine Pittelli Jr.":{"w":4,"l":3,"pct":0.571},"Charlie Gorman":{"w":4,"l":2,"pct":0.667},"Cole Maney":{"w":1,"l":7,"pct":0.125},"Deniz Bileydi":{"w":2,"l":5,"pct":0.286},"Ethan Radecki":{"w":2,"l":10,"pct":0.167},"Max Malich":{"w":3,"l":4,"pct":0.429},"Quin Gegwich":{"w":4,"l":4,"pct":0.5}}};
+
+  function cellClass(pct) {
+    if (pct === null)  return 'self';
+    if (pct >= 0.7)    return 'win-high';
+    if (pct >= 0.55)   return 'win-mid';
+    if (pct >= 0.45)   return 'even';
+    if (pct >= 0.3)    return 'loss-mid';
+    return 'loss-high';
+  }
+
+  var table = document.getElementById('h2h-table');
+  var shortNames = managers.map(shortName);
+
+  // Header row
+  var thead = document.createElement('thead');
+  var hrow  = document.createElement('tr');
+  var th0   = document.createElement('th');
+  th0.className = 'row-header';
+  th0.textContent = '';
+  hrow.appendChild(th0);
+  shortNames.forEach(function(sn) {
+    var th = document.createElement('th');
+    th.textContent = sn;
+    hrow.appendChild(th);
+  });
+  thead.appendChild(hrow);
+  table.appendChild(thead);
+
+  // Body rows
+  var tbody = document.createElement('tbody');
+  managers.forEach(function(mgr, ri) {
+    var tr = document.createElement('tr');
+    var th = document.createElement('td');
+    th.textContent = shortName(mgr);
+    th.style.cssText = 'font-weight:600;color:var(--palm);';
+    tr.appendChild(th);
+
+    managers.forEach(function(opp, ci) {
+      var td = document.createElement('td');
+      if (mgr === opp) {
+        td.className = 'self';
+        td.textContent = '—';
+      } else {
+        var rec = h2h[mgr] && h2h[mgr][opp];
+        if (rec) {
+          td.className = cellClass(rec.pct);
+          td.textContent = rec.w + '-' + rec.l;
+          td.title = shortName(mgr) + ' vs ' + shortName(opp) + ': ' + rec.w + '-' + rec.l + ' (' + Math.round(rec.pct*100) + '%)';
+        } else {
+          td.textContent = '—';
+          td.style.color = 'var(--muted)';
+        }
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+})();
+
+/* ── 4. SIMILARITY CARDS ──────────────────────────────────────────────────── */
+(function() {
+  var simData = [{"seed":1,"manager":"Ben Castaldo","team":"A$AP Monke","winPct":0.786,"pfg":114.9,"late":112.2,"matches":[{"team":"I shoot b n s","manager":"Ben Castaldo","year":2021,"winPct":0.69,"pfg":120.1,"late":120.0,"score":82.3,"champW":1,"champApp":1,"playoffs":1,"elimRound":null},{"team":"The Minutemen","manager":"Brandon Hancock","year":2022,"winPct":0.64,"pfg":118.9,"late":115.3,"score":78.8,"champW":0,"champApp":0,"playoffs":1,"elimRound":2},{"team":"Oh He Likes Cooking!","manager":"Ethan Radecki","year":2024,"winPct":0.79,"pfg":117.0,"late":127.6,"score":72.6,"champW":0,"champApp":0,"playoffs":1,"elimRound":1}]},{"seed":2,"manager":"Cole Maney","team":"Shakir to death","winPct":0.643,"pfg":129.6,"late":123.5,"matches":[{"team":"The Minutemen","manager":"Brandon Hancock","year":2024,"winPct":0.64,"pfg":127.3,"late":118.7,"score":88.8,"champW":0,"champApp":1,"playoffs":1,"elimRound":3},{"team":"Dent.","manager":"Max Malich","year":2024,"winPct":0.64,"pfg":128.7,"late":124.2,"score":87.2,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"Team Kelly","manager":"Anthony Kelly","year":2020,"winPct":0.667,"pfg":126.3,"late":116.7,"score":79.9,"champW":0,"champApp":0,"playoffs":1,"elimRound":2}]},{"seed":3,"manager":"Ryan P McQuaid","team":"Make Fantasy Great Again","winPct":0.714,"pfg":110.1,"late":92.5,"matches":[{"team":"San Giacomos FF","manager":"Charlie Gorman","year":2020,"winPct":0.5,"pfg":109.5,"late":96.3,"score":76.3,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"Mike White","manager":"Ryan P McQuaid","year":2022,"winPct":0.57,"pfg":110.2,"late":96.3,"score":76.0,"champW":0,"champApp":1,"playoffs":1,"elimRound":3},{"team":"Fresh Prince Of Helaire","manager":"Carmine Pittelli Jr.","year":2021,"winPct":0.69,"pfg":116.3,"late":91.8,"score":70.9,"champW":0,"champApp":0,"playoffs":1,"elimRound":2}]},{"seed":4,"manager":"Baylen Slansky","team":"STATION GRITS","winPct":0.643,"pfg":117.2,"late":112.2,"matches":[{"team":"NKD MAGA","manager":"Carmine Pittelli Jr.","year":2020,"winPct":0.667,"pfg":119.8,"late":115.1,"score":90.9,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"The Minutemen","manager":"Brandon Hancock","year":2021,"winPct":0.69,"pfg":120.0,"late":117.2,"score":86.4,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"JOSH JACOBS FAN CLUB","manager":"Quin Gegwich","year":2024,"winPct":0.57,"pfg":119.2,"late":112.8,"score":83.8,"champW":0,"champApp":0,"playoffs":1,"elimRound":2}]},{"seed":5,"manager":"Carmine Pittelli Jr.","team":"LaPorta Potty","winPct":0.643,"pfg":113.4,"late":106.1,"matches":[{"team":"Chi Town MS?","manager":"Deniz Bileydi","year":2022,"winPct":0.5,"pfg":113.8,"late":109.2,"score":78.8,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"Rolls With butter","manager":"Anthony Kelly","year":2022,"winPct":0.5,"pfg":111.3,"late":110.9,"score":74.6,"champW":1,"champApp":1,"playoffs":1,"elimRound":null},{"team":"The Less Fourtunette","manager":"Ben Castaldo","year":2022,"winPct":0.5,"pfg":106.7,"late":108.4,"score":73.3,"champW":0,"champApp":0,"playoffs":0,"elimRound":null}]},{"seed":6,"manager":"Ethan Radecki","team":"Oh He Likes Cooking!","winPct":0.5,"pfg":116.1,"late":126.2,"matches":[{"team":"AND I...AM ...IRON MAN","manager":"Baylen Slansky","year":2021,"winPct":0.54,"pfg":118.0,"late":132.0,"score":88.5,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":". Can you Digg it","manager":"Max Malich","year":2020,"winPct":0.5,"pfg":120.2,"late":131.3,"score":85.6,"champW":0,"champApp":0,"playoffs":1,"elimRound":3},{"team":"N.Y. Routensss","manager":"Andrew Root","year":2020,"winPct":0.583,"pfg":110.1,"late":119.3,"score":80.4,"champW":0,"champApp":0,"playoffs":1,"elimRound":2}]},{"seed":7,"manager":"Anthony Kelly","team":"Rolls With Butter","winPct":0.5,"pfg":115.3,"late":113.9,"matches":[{"team":"Rolls With butter","manager":"Anthony Kelly","year":2022,"winPct":0.5,"pfg":111.3,"late":110.9,"score":88.1,"champW":1,"champApp":1,"playoffs":1,"elimRound":null},{"team":"Chi Town MS?","manager":"Deniz Bileydi","year":2022,"winPct":0.5,"pfg":113.8,"late":109.2,"score":87.1,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"Tony Fkn Romo","manager":"Aidan Quigley","year":2021,"winPct":0.54,"pfg":121.1,"late":116.6,"score":82.7,"champW":0,"champApp":0,"playoffs":1,"elimRound":1}]},{"seed":8,"manager":"Charlie Gorman","team":"Worthy of a Warren(t)","winPct":0.5,"pfg":109.0,"late":103.0,"matches":[{"team":"Jungle Le Monke","manager":"Ben Castaldo","year":2020,"winPct":0.462,"pfg":108.4,"late":103.4,"score":91.7,"champW":0,"champApp":0,"playoffs":1,"elimRound":2},{"team":".Hocken","manager":"Max Malich","year":2021,"winPct":0.38,"pfg":108.6,"late":104.3,"score":86.9,"champW":0,"champApp":0,"playoffs":0,"elimRound":null},{"team":"The Less Fourtunette","manager":"Ben Castaldo","year":2022,"winPct":0.5,"pfg":106.7,"late":108.4,"score":84.8,"champW":0,"champApp":0,"playoffs":0,"elimRound":null}]}];
+
+  // Score color: high = accent, mid = muted
+  function scoreColor(s) {
+    if (s >= 88) return '#9c949c';
+    if (s >= 80) return '#b0a8b0';
+    return '#c8c0c8';
+  }
+
+  function resultHtml(m) {
+    if (m.champW)    return '<span class="sim-match-result result-champ">&#9733; Champion</span>';
+    if (m.champApp)  return '<span class="sim-match-result result-runner">&#9670; Runner-Up</span>';
+    if (!m.playoffs) return '<span class="sim-match-result result-miss">Missed Playoffs</span>';
+    // Made playoffs -- determine how far
+    var round_names_std  = {1:'Quarterfinals', 2:'Semifinals', 3:'Finals'};
+    if (m.elimRound) {
+      return '<span class="sim-match-result result-loss">Lost in ' + (round_names_std[m.elimRound] || 'Round ' + m.elimRound) + '</span>';
+    }
+    return '<span class="sim-match-result result-win">Made Playoffs</span>';
+  }
+
+  var grid = document.getElementById('sim-grid');
+  simData.forEach(function(d) {
+    var card = document.createElement('div');
+    card.className = 'sim-card glass';
+
+    var matchesHtml = d.matches.map(function(m, i) {
+      return '<div class="sim-match rank-' + (i+1) + '">'
+        + '<div class="sim-match-top">'
+        + '<div class="sim-match-name">' + m.team + '</div>'
+        + '<div class="sim-match-score" style="color:' + scoreColor(m.score) + '">' + m.score.toFixed(0) + '%</div>'
+        + '</div>'
+        + '<div class="sim-match-meta">' + m.manager.replace(' Jr.','') + ' &middot; ' + m.year + '</div>'
+        + '<div class="sim-match-stats">W% ' + m.winPct.toFixed(3) + ' &nbsp; PF/G ' + m.pfg.toFixed(1) + ' &nbsp; Late ' + m.late.toFixed(1) + '</div>'
+        + resultHtml(m)
+        + '</div>';
+    }).join('');
+
+    card.innerHTML = '<div class="sim-card-header">'
+      + '<div class="sim-seed">Seed ' + d.seed + '</div>'
+      + '<div class="sim-manager">' + d.manager.replace(' Jr.','').replace('Ryan P ','Ryan ') + '</div>'
+      + '</div>'
+      + '<div class="sim-team-name">' + d.team + '</div>'
+      + '<div class="sim-current-stats">'
+      + '<span class="sim-stat-pill">W% ' + d.winPct.toFixed(3) + '</span>'
+      + '<span class="sim-stat-pill">PF/G ' + d.pfg.toFixed(1) + '</span>'
+      + '<span class="sim-stat-pill">Late ' + d.late.toFixed(1) + '</span>'
+      + '</div>'
+      + '<div class="sim-matches">' + matchesHtml + '</div>';
+
+    grid.appendChild(card);
+  });
+})();
+</script>
 </body>
 </html>
