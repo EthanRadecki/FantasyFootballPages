@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 /* ── MANAGER SELECTOR GRID ── */
 .mgr-grid {
@@ -146,14 +147,10 @@
   padding-left:0.25rem;
 }
 .chart-area {
-  padding:1.5rem;min-height:320px;
-  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
 }
-.chart-placeholder {
-  text-align:center;color:var(--muted);font-size:0.82rem;
-}
-.chart-placeholder .placeholder-icon {
-  font-size:2rem;margin-bottom:0.5rem;display:block;opacity:0.4;
+.chart-area canvas {
+  display:block;width:100% !important;
 }
 
 /* Two-chart row */
@@ -237,72 +234,72 @@
     <div class="mgr-pill glass" data-manager="Deniz Bileydi" data-lastname="Bileydi" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Bileydi.png" alt="">
       <div class="mgr-name">Deniz Bileydi</div>
-      <div class="mgr-quick">32-50 · .390</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Ben Castaldo" data-lastname="Castaldo" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Castaldo.png" alt="">
       <div class="mgr-name">Ben Castaldo</div>
-      <div class="mgr-quick">40-42 · .488</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Quin Gegwich" data-lastname="Gegwich" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Gegwich.png" alt="">
       <div class="mgr-name">Quin Gegwich</div>
-      <div class="mgr-quick">30-52 · .366</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Charlie Gorman" data-lastname="Gorman" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Gorman.png" alt="">
       <div class="mgr-name">Charlie Gorman</div>
-      <div class="mgr-quick">39-43 · .476</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Brandon Hancock" data-lastname="Hancock" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Hancock.png" alt="">
       <div class="mgr-name">Brandon Hancock</div>
-      <div class="mgr-quick">45-37 · .549</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Anthony Kelly" data-lastname="Kelly" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Kelly.png" alt="">
       <div class="mgr-name">Anthony Kelly</div>
-      <div class="mgr-quick">43-39 · .524</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Max Malich" data-lastname="Malich" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Malich.png" alt="">
       <div class="mgr-name">Max Malich</div>
-      <div class="mgr-quick">39-43 · .476</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Cole Maney" data-lastname="Maney" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Maney.png" alt="">
       <div class="mgr-name">Cole Maney</div>
-      <div class="mgr-quick">39-43 · .476</div>
+      <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Ryan McQuaid" data-lastname="McQuaid" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Ryan P McQuaid" data-lastname="McQuaid" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/McQuaid.png" alt="">
       <div class="mgr-name">Ryan McQuaid</div>
-      <div class="mgr-quick">40-30 · .571</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Carmine Pittelli Jr" data-lastname="Pittelli" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Pittelli.png" alt="">
       <div class="mgr-name">Carmine Pittelli Jr</div>
-      <div class="mgr-quick">47-35 · .573</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Aidan Quigley" data-lastname="Quigley" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Quigley.png" alt="">
       <div class="mgr-name">Aidan Quigley</div>
-      <div class="mgr-quick">27-55 · .329</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Ethan Radecki" data-lastname="Radecki" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Radecki.png" alt="">
       <div class="mgr-name">Ethan Radecki</div>
-      <div class="mgr-quick">52-30 · .634</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Andrew Root" data-lastname="Root" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Root.png" alt="">
       <div class="mgr-name">Andrew Root</div>
-      <div class="mgr-quick">41-41 · .500</div>
+      <div class="mgr-quick">--</div>
     </div>
     <div class="mgr-pill glass" data-manager="Baylen Slansky" data-lastname="Slansky" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Slansky.png" alt="">
       <div class="mgr-name">Baylen Slansky</div>
-      <div class="mgr-quick">47-35 · .573</div>
+      <div class="mgr-quick">--</div>
     </div>
   </div>
 
@@ -317,10 +314,10 @@
 
     <!-- PROFILE HEADER -->
     <div class="profile-header glass">
-      <img class="profile-logo" id="profile-logo" src="../images/logos/Radecki.png" alt="">
+      <img class="profile-logo" id="profile-logo" src="" alt="">
       <div class="profile-name-wrap">
-        <div class="profile-name" id="profile-name">Ethan Radecki</div>
-        <div class="profile-subtitle" id="profile-subtitle">6 seasons (2020-2025)</div>
+        <div class="profile-name" id="profile-name"></div>
+        <div class="profile-subtitle" id="profile-subtitle"></div>
         <div class="profile-champ-badges" id="profile-badges"></div>
       </div>
     </div>
@@ -328,52 +325,52 @@
     <!-- CAREER STATS -->
     <div class="career-grid">
       <div class="career-stat glass">
-        <div class="stat-value" id="stat-wins">52</div>
+        <div class="stat-value" id="stat-wins"></div>
         <div class="stat-label">Wins</div>
-        <div class="stat-rank" id="rank-wins" style="background:rgba(90,138,90,0.15);color:var(--green);">#1</div>
+        <div class="stat-rank" id="rank-wins"></div>
       </div>
       <div class="career-stat glass">
-        <div class="stat-value" id="stat-losses">30</div>
+        <div class="stat-value" id="stat-losses"></div>
         <div class="stat-label">Losses</div>
-        <div class="stat-rank" id="rank-losses" style="background:rgba(90,138,90,0.15);color:var(--green);">#1</div>
+        <div class="stat-rank" id="rank-losses"></div>
       </div>
       <div class="career-stat glass">
-        <div class="stat-value" id="stat-winpct">.634</div>
+        <div class="stat-value" id="stat-winpct"></div>
         <div class="stat-label">Win %</div>
-        <div class="stat-rank" id="rank-winpct" style="background:rgba(90,138,90,0.15);color:var(--green);">#1</div>
+        <div class="stat-rank" id="rank-winpct"></div>
       </div>
       <div class="career-stat glass">
-        <div class="stat-value" id="stat-playoffs">5</div>
+        <div class="stat-value" id="stat-playoffs"></div>
         <div class="stat-label">Playoffs</div>
-        <div class="stat-rank" id="rank-playoffs" style="background:rgba(90,138,90,0.15);color:var(--green);">#1</div>
+        <div class="stat-rank" id="rank-playoffs"></div>
       </div>
       <div class="career-stat glass">
-        <div class="stat-value" id="stat-champs">1</div>
+        <div class="stat-value" id="stat-champs"></div>
         <div class="stat-label">Championships</div>
       </div>
       <div class="career-stat glass">
-        <div class="stat-value" id="stat-pfg">116.1</div>
+        <div class="stat-value" id="stat-pfg"></div>
         <div class="stat-label">Career PF/G</div>
-        <div class="stat-rank" id="rank-pfg" style="background:rgba(90,138,90,0.15);color:var(--green);">#5</div>
+        <div class="stat-rank" id="rank-pfg"></div>
       </div>
     </div>
 
     <!-- RIVALRIES -->
     <div class="rivalry-row">
       <div class="rivalry-card glass">
-        <img class="rivalry-logo" id="rival-best-logo" src="../images/logos/McQuaid.png" alt="">
+        <img class="rivalry-logo" id="rival-best-logo" src="" alt="">
         <div class="rivalry-info">
           <div class="rivalry-label best">Best Matchup</div>
-          <div class="rivalry-name" id="rival-best-name">Ryan McQuaid</div>
-          <div class="rivalry-record" id="rival-best-record">10-2 (83.3%)</div>
+          <div class="rivalry-name" id="rival-best-name"></div>
+          <div class="rivalry-record" id="rival-best-record"></div>
         </div>
       </div>
       <div class="rivalry-card glass">
-        <img class="rivalry-logo" id="rival-worst-logo" src="../images/logos/Slansky.png" alt="">
+        <img class="rivalry-logo" id="rival-worst-logo" src="" alt="">
         <div class="rivalry-info">
           <div class="rivalry-label worst">Worst Matchup</div>
-          <div class="rivalry-name" id="rival-worst-name">Baylen Slansky</div>
-          <div class="rivalry-record" id="rival-worst-record">3-5 (37.5%)</div>
+          <div class="rivalry-name" id="rival-worst-name"></div>
+          <div class="rivalry-record" id="rival-worst-record"></div>
         </div>
       </div>
     </div>
@@ -396,40 +393,24 @@
               <th>Playoffs</th>
             </tr>
           </thead>
-          <tbody>
-            <!-- Placeholder rows - will be populated from CSV -->
-            <tr><td class="val-bold">2025</td><td>Slant Boy v2</td><td>12-2</td><td class="val-bold">.857</td><td class="cell-good">126.2</td><td>108.5</td><td class="val-green">+17.7</td><td>6</td><td class="playoff-yes">&#10003;</td></tr>
-            <tr><td class="val-bold">2024</td><td>Oh He Likes Cooking!</td><td>9-5</td><td class="val-bold">.643</td><td class="cell-mid">117.0</td><td>112.3</td><td class="val-green">+4.7</td><td>8</td><td class="playoff-yes">&#10003;</td></tr>
-            <tr><td class="val-bold">2023</td><td>Slant Boy</td><td>9-5</td><td class="val-bold">.643</td><td class="cell-mid">115.8</td><td>109.1</td><td class="val-green">+6.7</td><td>3</td><td class="playoff-yes">&#10003;</td></tr>
-            <tr><td class="val-bold">2022</td><td>Tua Chainz</td><td>8-6</td><td class="val-bold">.571</td><td class="cell-mid">112.4</td><td>110.8</td><td class="val-green">+1.6</td><td>11</td><td class="playoff-yes">&#10003;</td></tr>
-            <tr><td class="val-bold">2021</td><td>Team Ethan</td><td>5-9</td><td class="val-bold">.357</td><td class="cell-bad">104.2</td><td>115.6</td><td class="val-red">-11.4</td><td>7</td><td class="playoff-no">&#10007;</td></tr>
-            <tr><td class="val-bold">2020</td><td>Waiver Wire Boyz</td><td>9-3</td><td class="val-bold">.750</td><td class="cell-good">121.5</td><td>105.2</td><td class="val-green">+16.3</td><td>9</td><td class="playoff-yes">&#10003;</td></tr>
-          </tbody>
+          <tbody></tbody>
         </table>
       </div>
     </div>
 
-    <!-- COMBINED CHART: Win % + PF/G -->
+    <!-- PERFORMANCE OVER TIME -->
     <div class="chart-section">
       <div class="chart-section-label">Performance Over Time</div>
       <div class="chart-area glass">
-        <div class="chart-placeholder">
-          <span class="placeholder-icon">&#128200;</span>
-          Win % line + PF/G bars vs league average<br>
-          <em>Chart will be built with Chart.js from CSV data</em>
-        </div>
+        <canvas id="chart-perf" height="110"></canvas>
       </div>
     </div>
 
-    <!-- LUCK MATRIX -->
+    <!-- SCHEDULE LUCK -->
     <div class="chart-section">
-      <div class="chart-section-label">Schedule Luck Matrix</div>
+      <div class="chart-section-label">Schedule Luck by Season</div>
       <div class="chart-area glass">
-        <div class="chart-placeholder">
-          <span class="placeholder-icon">&#127808;</span>
-          Actual wins vs predicted wins (vs league median) by season<br>
-          <em>Matrix will be built from CSV data</em>
-        </div>
+        <canvas id="chart-luck" height="110"></canvas>
       </div>
     </div>
 
@@ -438,38 +419,26 @@
       <div class="chart-section">
         <div class="chart-section-label">Head-to-Head Records</div>
         <div class="chart-area glass">
-          <div class="chart-placeholder">
-            <span class="placeholder-icon">&#9878;</span>
-            Record vs every opponent<br>
-            <em>Built from matchup data</em>
-          </div>
+          <canvas id="chart-h2h" height="260"></canvas>
         </div>
       </div>
       <div class="chart-section">
         <div class="chart-section-label">Scoring Distribution</div>
         <div class="chart-area glass">
-          <div class="chart-placeholder">
-            <span class="placeholder-icon">&#128202;</span>
-            Weekly score histogram<br>
-            <em>Built from matchup data</em>
-          </div>
+          <canvas id="chart-dist" height="260"></canvas>
         </div>
       </div>
     </div>
 
-    <!-- SEASONAL TRENDS -->
+    <!-- SEASONAL SCORING TRENDS -->
     <div class="chart-section">
       <div class="chart-section-label">Seasonal Scoring Trends</div>
       <div class="chart-area glass">
-        <div class="chart-placeholder">
-          <span class="placeholder-icon">&#128200;</span>
-          Week-by-week scoring patterns across seasons<br>
-          <em>Built from matchup data</em>
-        </div>
+        <canvas id="chart-trends" height="110"></canvas>
       </div>
     </div>
 
-  </div>
+  </div><!-- end #manager-profile -->
 
   <footer>
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
@@ -480,20 +449,536 @@
 <script src="../shared.js"></script>
 <script src="../data-engine.js"></script>
 <script>
+/* ══════════════════════════════════════
+   Managers page — chart rendering
+   ══════════════════════════════════════ */
+
 var profileLookup = null;
 var totalManagers = 0;
+var allMatchupData = null;   // raw matchup rows, kept for chart use
+var allStatsData   = null;   // raw stats rows, kept for league avg
 
+// Chart instances — destroyed and rebuilt on each manager switch
+var charts = {};
+
+// ── Palette constants (match CSS vars) ──────────────────────────────────────
+var C_ACCENT   = '#9c949c';
+var C_GREEN    = '#5a8a5a';
+var C_RED      = '#a85a5a';
+var C_GOLD     = '#d4af37';
+var C_PALM     = '#3d3a38';
+var C_MUTED    = '#8a8480';
+var C_TEXT_MID = '#5a5550';
+var C_BG       = 'rgba(213,207,200,0)'; // transparent for chart bg
+
+// Season line palette — one color per season (2020-2025)
+var SEASON_COLORS = [
+  '#9c949c',  // 2020 — accent/mauve
+  '#7a9cbf',  // 2021 — slate blue
+  '#c4996e',  // 2022 — warm terra
+  '#7aab8a',  // 2023 — sage green
+  '#b88fae',  // 2024 — soft lavender
+  '#d4af37',  // 2025 — gold
+];
+
+// ── Shared Chart.js defaults ─────────────────────────────────────────────────
+Chart.defaults.font.family = "'Outfit', sans-serif";
+Chart.defaults.font.size   = 12;
+Chart.defaults.color       = C_TEXT_MID;
+
+// ── Utility: destroy chart if it exists ─────────────────────────────────────
+function destroyChart(id) {
+  if (charts[id]) {
+    charts[id].destroy();
+    delete charts[id];
+  }
+}
+
+// ── Utility: PF/G rank color ─────────────────────────────────────────────────
+// rank 1-5 green, 6-10 gold, 11-14 red
+function pfgRankColor(rank, alpha) {
+  alpha = alpha || 0.7;
+  if (rank <= 5)  return 'rgba(90,138,90,' + alpha + ')';
+  if (rank <= 10) return 'rgba(212,175,55,' + alpha + ')';
+  return 'rgba(168,90,90,' + alpha + ')';
+}
+
+// ── Utility: luck z-score color ──────────────────────────────────────────────
+function luckColor(zscore, alpha) {
+  alpha = alpha || 0.75;
+  if (zscore > 0.5)  return 'rgba(168,90,90,' + alpha + ')';   // unlucky = red
+  if (zscore < -0.5) return 'rgba(90,138,90,' + alpha + ')';   // lucky = green
+  return 'rgba(212,175,55,' + alpha + ')';
+}
+
+// ── Utility: H2H win % color ─────────────────────────────────────────────────
+function h2hColor(pct, alpha) {
+  alpha = alpha || 0.72;
+  if (pct >= 0.6)  return 'rgba(90,138,90,' + alpha + ')';
+  if (pct >= 0.4)  return 'rgba(212,175,55,' + alpha + ')';
+  return 'rgba(168,90,90,' + alpha + ')';
+}
+
+// ── Shared axis style ────────────────────────────────────────────────────────
+function gridStyle() {
+  return { color: 'rgba(156,148,156,0.15)', drawBorder: false };
+}
+function tickStyle() {
+  return { color: C_MUTED };
+}
+
+// ── 1. Performance Over Time ─────────────────────────────────────────────────
+// Dual-axis: PF/G bars (right) colored by rank, Win% line (left), league avg PF/G dotted line
+function renderPerfChart(profile) {
+  destroyChart('perf');
+  var seasons = profile.seasons.slice().sort(function(a,b){ return a.year - b.year; });
+
+  // Compute league avg PF/G per year from allStatsData
+  var leagueAvg = {};
+  if (allStatsData) {
+    var byYear = {};
+    allStatsData.forEach(function(r) {
+      if (EXCLUDED.indexOf(r.Manager) !== -1) return;
+      var y = parseInt(r.Year);
+      var v = parseFloat(r['PF/G']) || 0;
+      if (!byYear[y]) byYear[y] = [];
+      byYear[y].push(v);
+    });
+    Object.keys(byYear).forEach(function(y) {
+      var arr = byYear[y];
+      leagueAvg[parseInt(y)] = arr.reduce(function(s,v){ return s+v; },0) / arr.length;
+    });
+  }
+
+  var labels    = seasons.map(function(s){ return s.year; });
+  var pfgVals   = seasons.map(function(s){ return +s.pfg.toFixed(1); });
+  var winPcts   = seasons.map(function(s){ return +(s.winPct * 100).toFixed(1); });
+  var leagueAvgVals = seasons.map(function(s){ return leagueAvg[s.year] ? +leagueAvg[s.year].toFixed(1) : null; });
+  var barColors = seasons.map(function(s){ return pfgRankColor(s.pfgRank, 0.72); });
+  var barBorders = seasons.map(function(s){ return pfgRankColor(s.pfgRank, 1.0); });
+
+  var ctx = document.getElementById('chart-perf').getContext('2d');
+  charts['perf'] = new Chart(ctx, {
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          type: 'bar',
+          label: 'PF/G',
+          data: pfgVals,
+          backgroundColor: barColors,
+          borderColor: barBorders,
+          borderWidth: 1.5,
+          yAxisID: 'yRight',
+          order: 2,
+        },
+        {
+          type: 'line',
+          label: 'Win %',
+          data: winPcts,
+          borderColor: C_ACCENT,
+          backgroundColor: 'rgba(156,148,156,0.08)',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointBackgroundColor: C_ACCENT,
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1.5,
+          tension: 0.35,
+          fill: false,
+          yAxisID: 'yLeft',
+          order: 1,
+        },
+        {
+          type: 'line',
+          label: 'League Avg PF/G',
+          data: leagueAvgVals,
+          borderColor: C_MUTED,
+          borderWidth: 1.5,
+          borderDash: [5, 4],
+          pointRadius: 0,
+          fill: false,
+          yAxisID: 'yRight',
+          order: 3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+          labels: { boxWidth: 12, padding: 16, color: C_TEXT_MID }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.dataset.label === 'Win %') return 'Win %: ' + ctx.parsed.y + '%';
+              return ctx.dataset.label + ': ' + ctx.parsed.y;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: gridStyle(),
+          ticks: tickStyle(),
+        },
+        yLeft: {
+          type: 'linear',
+          position: 'left',
+          title: { display: true, text: 'Win %', color: C_MUTED, font: { size: 11 } },
+          ticks: Object.assign(tickStyle(), {
+            callback: function(v){ return v + '%'; }
+          }),
+          grid: gridStyle(),
+          min: 0,
+          max: 100,
+        },
+        yRight: {
+          type: 'linear',
+          position: 'right',
+          title: { display: true, text: 'PF/G', color: C_MUTED, font: { size: 11 } },
+          ticks: tickStyle(),
+          grid: { drawOnChartArea: false },
+        }
+      }
+    }
+  });
+}
+
+// ── 2. Schedule Luck by Season ───────────────────────────────────────────────
+// Grouped bars: actual wins (solid) vs predicted wins (dashed border) per season
+// Luck_Rating = actual - predicted, so predicted = actual - luck_rating
+function renderLuckChart(profile) {
+  destroyChart('luck');
+  var seasons = profile.seasons.slice().sort(function(a,b){ return a.year - b.year; });
+
+  var labels    = seasons.map(function(s){ return s.year; });
+  var actual    = seasons.map(function(s){ return s.w; });
+  var predicted = seasons.map(function(s){ return Math.max(0, s.w - s.luckRating); });
+  var luckVals  = seasons.map(function(s){ return s.luckRating; });
+
+  // Bar colors: green if lucky (positive luck = more wins than predicted), red if unlucky
+  var actualColors  = seasons.map(function(s){ return s.luckRating >= 0 ? 'rgba(90,138,90,0.72)' : 'rgba(168,90,90,0.72)'; });
+  var actualBorders = seasons.map(function(s){ return s.luckRating >= 0 ? 'rgba(90,138,90,1)' : 'rgba(168,90,90,1)'; });
+
+  var ctx = document.getElementById('chart-luck').getContext('2d');
+  charts['luck'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Actual Wins',
+          data: actual,
+          backgroundColor: actualColors,
+          borderColor: actualBorders,
+          borderWidth: 1.5,
+          order: 1,
+        },
+        {
+          label: 'Expected Wins',
+          data: predicted,
+          backgroundColor: 'rgba(156,148,156,0.18)',
+          borderColor: 'rgba(156,148,156,0.6)',
+          borderWidth: 1.5,
+          borderDash: [4, 3],
+          order: 2,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+          labels: { boxWidth: 12, padding: 16, color: C_TEXT_MID }
+        },
+        tooltip: {
+          callbacks: {
+            afterBody: function(items) {
+              var idx = items[0].dataIndex;
+              var lv = luckVals[idx];
+              var prefix = lv > 0 ? '+' : '';
+              return ['Luck: ' + prefix + lv + ' wins'];
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: gridStyle(), ticks: tickStyle() },
+        y: {
+          grid: gridStyle(),
+          ticks: Object.assign(tickStyle(), { stepSize: 1 }),
+          title: { display: true, text: 'Wins', color: C_MUTED, font: { size: 11 } },
+          min: 0,
+        }
+      }
+    }
+  });
+}
+
+// ── 3. H2H Records ───────────────────────────────────────────────────────────
+// Horizontal bar chart sorted by win %, record label on each bar
+function renderH2HChart(profile) {
+  destroyChart('h2h');
+  var h2h = profile.h2h;
+  var opps = Object.keys(h2h).filter(function(opp){
+    return EXCLUDED.indexOf(opp) === -1;
+  });
+
+  // Sort by win % descending
+  opps.sort(function(a, b) {
+    var pctA = h2h[a].w / (h2h[a].w + h2h[a].l);
+    var pctB = h2h[b].w / (h2h[b].w + h2h[b].l);
+    return pctB - pctA;
+  });
+
+  // Shorten names for axis
+  function shortName(n) {
+    var parts = n.replace(' Jr.', '').split(' ');
+    return parts[0] + ' ' + (parts[parts.length - 1][0] + '.');
+  }
+
+  var labels  = opps.map(shortName);
+  var pcts    = opps.map(function(o){ return +((h2h[o].w / (h2h[o].w + h2h[o].l)) * 100).toFixed(1); });
+  var records = opps.map(function(o){ return h2h[o].w + '-' + h2h[o].l; });
+  var bgColors = pcts.map(function(p){ return h2hColor(p / 100, 0.7); });
+  var bdColors = pcts.map(function(p){ return h2hColor(p / 100, 1.0); });
+
+  var ctx = document.getElementById('chart-h2h').getContext('2d');
+  charts['h2h'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Win %',
+        data: pcts,
+        backgroundColor: bgColors,
+        borderColor: bdColors,
+        borderWidth: 1.5,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var idx = ctx.dataIndex;
+              return records[idx] + '  (' + pcts[idx] + '%)';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: gridStyle(),
+          ticks: Object.assign(tickStyle(), {
+            callback: function(v){ return v + '%'; }
+          }),
+          min: 0,
+          max: 100,
+        },
+        y: {
+          grid: { display: false },
+          ticks: Object.assign(tickStyle(), { font: { size: 11 } }),
+        }
+      }
+    }
+  });
+}
+
+// ── 4. Scoring Distribution ──────────────────────────────────────────────────
+// Histogram with 5-point bins, global x-axis range so it stays consistent
+function renderDistChart(profile) {
+  destroyChart('dist');
+  var scores = profile.weeklyScores;
+
+  // Global range from all manager scores (computed once, stored on window)
+  if (!window._scoreRange) {
+    var allScores = [];
+    if (allMatchupData) {
+      allMatchupData.forEach(function(r) {
+        if (r.Week && r.Week.indexOf('Week') === 0) {
+          var v = parseFloat(r.Team_Score);
+          if (v > 0) allScores.push(v);
+        }
+      });
+    }
+    var gMin = allScores.length ? Math.floor(Math.min.apply(null, allScores) / 5) * 5 : 50;
+    var gMax = allScores.length ? Math.ceil(Math.max.apply(null, allScores) / 5) * 5 : 250;
+    window._scoreRange = { min: gMin, max: gMax };
+  }
+  var gMin = window._scoreRange.min;
+  var gMax = window._scoreRange.max;
+
+  // Build histogram bins
+  var bins = [];
+  var binLabels = [];
+  for (var b = gMin; b < gMax; b += 5) {
+    bins.push(0);
+    binLabels.push(b + '-' + (b + 5));
+  }
+  scores.forEach(function(s) {
+    var idx = Math.floor((s - gMin) / 5);
+    if (idx >= 0 && idx < bins.length) bins[idx]++;
+  });
+
+  var ctx = document.getElementById('chart-dist').getContext('2d');
+  charts['dist'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: binLabels,
+      datasets: [{
+        label: 'Games',
+        data: bins,
+        backgroundColor: 'rgba(156,148,156,0.55)',
+        borderColor: 'rgba(156,148,156,0.9)',
+        borderWidth: 1,
+        borderRadius: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items){ return items[0].label + ' pts'; },
+            label: function(ctx){ return ctx.parsed.y + ' game' + (ctx.parsed.y !== 1 ? 's' : ''); }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: Object.assign(tickStyle(), {
+            maxRotation: 45,
+            font: { size: 10 },
+            // Show every other label to avoid crowding
+            callback: function(val, idx) { return idx % 2 === 0 ? this.getLabelForValue(val) : ''; }
+          }),
+        },
+        y: {
+          grid: gridStyle(),
+          ticks: Object.assign(tickStyle(), { stepSize: 1 }),
+          title: { display: true, text: 'Games', color: C_MUTED, font: { size: 11 } },
+          min: 0,
+        }
+      }
+    }
+  });
+}
+
+// ── 5. Seasonal Scoring Trends ───────────────────────────────────────────────
+// Multi-line: one line per season, x = week number 1-13, y = score
+function renderTrendsChart(profile) {
+  destroyChart('trends');
+  var managerName = profile.name;
+
+  if (!allMatchupData) return;
+
+  // Get regular season matchups for this manager
+  var rows = allMatchupData.filter(function(r) {
+    return (r.Team_Name === managerName || r.Team_Name === managerName + '.')
+      && r.Week && r.Week.indexOf('Week') === 0;
+  });
+
+  // Group by season then week
+  var bySeason = {};
+  rows.forEach(function(r) {
+    var yr = parseInt(r.Season_Year);
+    var wk = parseInt(r.Week.replace('Week ', ''));
+    var sc = parseFloat(r.Team_Score) || 0;
+    if (!bySeason[yr]) bySeason[yr] = {};
+    bySeason[yr][wk] = sc;
+  });
+
+  var seasons = Object.keys(bySeason).map(Number).sort();
+  var weekLabels = [];
+  for (var w = 1; w <= 13; w++) weekLabels.push('Wk ' + w);
+
+  var datasets = seasons.map(function(yr, i) {
+    var color = SEASON_COLORS[i % SEASON_COLORS.length];
+    var data = [];
+    for (var w = 1; w <= 13; w++) {
+      data.push(bySeason[yr][w] !== undefined ? +bySeason[yr][w].toFixed(1) : null);
+    }
+    return {
+      label: String(yr),
+      data: data,
+      borderColor: color,
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      pointRadius: 4,
+      pointBackgroundColor: color,
+      pointBorderColor: '#fff',
+      pointBorderWidth: 1,
+      tension: 0.3,
+      spanGaps: false,
+    };
+  });
+
+  var ctx = document.getElementById('chart-trends').getContext('2d');
+  charts['trends'] = new Chart(ctx, {
+    type: 'line',
+    data: { labels: weekLabels, datasets: datasets },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+          labels: { boxWidth: 12, padding: 14, color: C_TEXT_MID }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.parsed.y === null) return null;
+              return ctx.dataset.label + ': ' + ctx.parsed.y + ' pts';
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: gridStyle(), ticks: tickStyle() },
+        y: {
+          grid: gridStyle(),
+          ticks: tickStyle(),
+          title: { display: true, text: 'Points', color: C_MUTED, font: { size: 11 } },
+        }
+      }
+    }
+  });
+}
+
+// ── Render all charts for a profile ─────────────────────────────────────────
+function renderAllCharts(profile) {
+  renderPerfChart(profile);
+  renderLuckChart(profile);
+  renderH2HChart(profile);
+  renderDistChart(profile);
+  renderTrendsChart(profile);
+}
+
+// ── Manager selection ────────────────────────────────────────────────────────
 function selectManager(el) {
-  // Update active pill
-  document.querySelectorAll('.mgr-pill').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.mgr-pill').forEach(function(p){ p.classList.remove('active'); });
   el.classList.add('active');
 
-  // Hide prompt, show profile
   document.getElementById('select-prompt').style.display = 'none';
   var profileEl = document.getElementById('manager-profile');
   profileEl.classList.add('visible');
 
-  // Get manager name - try with and without period for Carmine
   var name = el.getAttribute('data-manager');
   var profile = null;
   if (profileLookup) {
@@ -502,20 +987,22 @@ function selectManager(el) {
 
   if (profile) {
     renderManagerProfile(profile, totalManagers);
+    renderAllCharts(profile);
   }
 
-  // Scroll to profile
-  profileEl.scrollIntoView({ behavior:'smooth', block:'start' });
+  profileEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// Load data on page ready
+// ── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   Promise.all([
     loadCSV('../data/preach_manager_stats.csv'),
     loadCSV('../data/matchup_data.csv')
   ]).then(function(results) {
-    profileLookup = buildManagerProfiles(results[0], results[1]);
-    totalManagers = Object.keys(profileLookup).length;
+    allStatsData   = results[0];
+    allMatchupData = results[1];
+    profileLookup  = buildManagerProfiles(allStatsData, allMatchupData);
+    totalManagers  = Object.keys(profileLookup).length;
     updateManagerPills(profileLookup);
   });
 });
