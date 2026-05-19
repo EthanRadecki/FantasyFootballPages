@@ -1,0 +1,1415 @@
+,Team_Name,Outcome,Team_Score,Opponent_Name,Opponent_Score,Week,Season_Year,Is_Playoff
+1,Quin Gegwich,Loss,96.9,Thomas Sullivan,126.42,Week 1,2020,No
+2,Thomas Sullivan,Win,126.42,Quin Gegwich,96.9,Week 1,2020,No
+3,Ryan P McQuaid,Loss,96.74,Charlie Gorman,151.28,Week 1,2020,No
+4,Charlie Gorman,Win,151.28,Ryan P McQuaid,96.74,Week 1,2020,No
+5,Carmine Pittelli Jr.,Loss,116.9,Anthony Kelly,136.6,Week 1,2020,No
+6,Anthony Kelly,Win,136.6,Carmine Pittelli Jr.,116.9,Week 1,2020,No
+7,Ben Castaldo,Win,162.56,Brandon Hancock,97.14,Week 1,2020,No
+8,Brandon Hancock,Loss,97.14,Ben Castaldo,162.56,Week 1,2020,No
+9,Deniz Bileydi,Win,164.1,Ethan Radecki,74.38,Week 1,2020,No
+10,Ethan Radecki,Loss,74.38,Deniz Bileydi,164.1,Week 1,2020,No
+11,Max Malich,Loss,95.9,Andrew Root,107.46,Week 1,2020,No
+12,Andrew Root,Win,107.46,Max Malich,95.9,Week 1,2020,No
+13,Baylen Slansky,Win,146.68,Cole Maney,77.06,Week 1,2020,No
+14,Cole Maney,Loss,77.06,Baylen Slansky,146.68,Week 1,2020,No
+15,Ryan P McQuaid,Win,136.9,Quin Gegwich,86.32,Week 2,2020,No
+16,Quin Gegwich,Loss,86.32,Ryan P McQuaid,136.9,Week 2,2020,No
+17,Thomas Sullivan,Win,111.5,Carmine Pittelli Jr.,92.42,Week 2,2020,No
+18,Carmine Pittelli Jr.,Loss,92.42,Thomas Sullivan,111.5,Week 2,2020,No
+19,Charlie Gorman,Win,122.22,Ben Castaldo,82.18,Week 2,2020,No
+20,Ben Castaldo,Loss,82.18,Charlie Gorman,122.22,Week 2,2020,No
+21,Anthony Kelly,Win,146.34,Brandon Hancock,132.98,Week 2,2020,No
+22,Brandon Hancock,Loss,132.98,Anthony Kelly,146.34,Week 2,2020,No
+23,William Serafin,Win,122.44,Deniz Bileydi,87.56,Week 2,2020,No
+24,Deniz Bileydi,Loss,87.56,William Serafin,122.44,Week 2,2020,No
+25,Ethan Radecki,Win,134.76,Max Malich,108.58,Week 2,2020,No
+26,Max Malich,Loss,108.58,Ethan Radecki,134.76,Week 2,2020,No
+27,Andrew Root,Win,121.7,Cole Maney,88.94,Week 2,2020,No
+28,Cole Maney,Loss,88.94,Andrew Root,121.7,Week 2,2020,No
+29,Quin Gegwich,Loss,64.92,Carmine Pittelli Jr.,152.2,Week 3,2020,No
+30,Carmine Pittelli Jr.,Win,152.2,Quin Gegwich,64.92,Week 3,2020,No
+31,Ben Castaldo,Loss,83.08,Ryan P McQuaid,84.08,Week 3,2020,No
+32,Ryan P McQuaid,Win,84.08,Ben Castaldo,83.08,Week 3,2020,No
+33,Brandon Hancock,Win,146.8,Thomas Sullivan,132.06,Week 3,2020,No
+34,Thomas Sullivan,Loss,132.06,Brandon Hancock,146.8,Week 3,2020,No
+35,Anthony Kelly,Win,100.4,Charlie Gorman,94.7,Week 3,2020,No
+36,Charlie Gorman,Loss,94.7,Anthony Kelly,100.4,Week 3,2020,No
+37,Deniz Bileydi,Win,126.18,Max Malich,112.74,Week 3,2020,No
+38,Max Malich,Loss,112.74,Deniz Bileydi,126.18,Week 3,2020,No
+39,Baylen Slansky,Win,162.44,William Serafin,76.6,Week 3,2020,No
+40,William Serafin,Loss,76.6,Baylen Slansky,162.44,Week 3,2020,No
+41,Cole Maney,Loss,125.78,Ethan Radecki,131.5,Week 3,2020,No
+42,Ethan Radecki,Win,131.5,Cole Maney,125.78,Week 3,2020,No
+43,Ben Castaldo,Loss,106.84,Quin Gegwich,148,Week 4,2020,No
+44,Quin Gegwich,Win,148,Ben Castaldo,106.84,Week 4,2020,No
+45,Carmine Pittelli Jr.,Win,124.2,Brandon Hancock,101.14,Week 4,2020,No
+46,Brandon Hancock,Loss,101.14,Carmine Pittelli Jr.,124.2,Week 4,2020,No
+47,Ryan P McQuaid,Win,128.38,Anthony Kelly,116.12,Week 4,2020,No
+48,Anthony Kelly,Loss,116.12,Ryan P McQuaid,128.38,Week 4,2020,No
+49,Thomas Sullivan,Loss,56.9,Charlie Gorman,131,Week 4,2020,No
+50,Charlie Gorman,Win,131,Thomas Sullivan,56.9,Week 4,2020,No
+51,Baylen Slansky,Win,145.92,Deniz Bileydi,116.02,Week 4,2020,No
+52,Deniz Bileydi,Loss,116.02,Baylen Slansky,145.92,Week 4,2020,No
+53,Max Malich,Loss,109,Cole Maney,121.24,Week 4,2020,No
+54,Cole Maney,Win,121.24,Max Malich,109,Week 4,2020,No
+55,William Serafin,Loss,113.34,Andrew Root,125.98,Week 4,2020,No
+56,Andrew Root,Win,125.98,William Serafin,113.34,Week 4,2020,No
+57,Quin Gegwich,Win,96.74,Brandon Hancock,96.6,Week 5,2020,No
+58,Brandon Hancock,Loss,96.6,Quin Gegwich,96.74,Week 5,2020,No
+59,Anthony Kelly,Win,102,Ben Castaldo,85.62,Week 5,2020,No
+60,Ben Castaldo,Loss,85.62,Anthony Kelly,102,Week 5,2020,No
+61,Charlie Gorman,Loss,138.98,Carmine Pittelli Jr.,150,Week 5,2020,No
+62,Carmine Pittelli Jr.,Win,150,Charlie Gorman,138.98,Week 5,2020,No
+63,Thomas Sullivan,Loss,87.06,Ryan P McQuaid,96.64,Week 5,2020,No
+64,Ryan P McQuaid,Win,96.64,Thomas Sullivan,87.06,Week 5,2020,No
+65,Deniz Bileydi,Win,159,Cole Maney,105.28,Week 5,2020,No
+66,Cole Maney,Loss,105.28,Deniz Bileydi,159,Week 5,2020,No
+67,Andrew Root,Loss,99.22,Baylen Slansky,161.82,Week 5,2020,No
+68,Baylen Slansky,Win,161.82,Andrew Root,99.22,Week 5,2020,No
+69,Ethan Radecki,Loss,87.12,William Serafin,107.94,Week 5,2020,No
+70,William Serafin,Win,107.94,Ethan Radecki,87.12,Week 5,2020,No
+71,Anthony Kelly,Win,146.82,Quin Gegwich,90.04,Week 6,2020,No
+72,Quin Gegwich,Loss,90.04,Anthony Kelly,146.82,Week 6,2020,No
+73,Brandon Hancock,Loss,70.4,Charlie Gorman,96.7,Week 6,2020,No
+74,Charlie Gorman,Win,96.7,Brandon Hancock,70.4,Week 6,2020,No
+75,Ben Castaldo,Loss,83.24,Thomas Sullivan,89.2,Week 6,2020,No
+76,Thomas Sullivan,Win,89.2,Ben Castaldo,83.24,Week 6,2020,No
+77,Carmine Pittelli Jr.,Win,120.94,Ryan P McQuaid,109.9,Week 6,2020,No
+78,Ryan P McQuaid,Loss,109.9,Carmine Pittelli Jr.,120.94,Week 6,2020,No
+79,Andrew Root,Loss,60.7,Deniz Bileydi,112.84,Week 6,2020,No
+80,Deniz Bileydi,Win,112.84,Andrew Root,60.7,Week 6,2020,No
+81,Baylen Slansky,Loss,104.28,Ethan Radecki,114.32,Week 6,2020,No
+82,Ethan Radecki,Win,114.32,Baylen Slansky,104.28,Week 6,2020,No
+83,Max Malich,Win,171.22,William Serafin,73.12,Week 6,2020,No
+84,William Serafin,Loss,73.12,Max Malich,171.22,Week 6,2020,No
+85,Quin Gegwich,Loss,65.02,Charlie Gorman,122.42,Week 7,2020,No
+86,Charlie Gorman,Win,122.42,Quin Gegwich,65.02,Week 7,2020,No
+87,Thomas Sullivan,Win,135.26,Anthony Kelly,129.3,Week 7,2020,No
+88,Anthony Kelly,Loss,129.3,Thomas Sullivan,135.26,Week 7,2020,No
+89,Ryan P McQuaid,Loss,75.18,Brandon Hancock,92.9,Week 7,2020,No
+90,Brandon Hancock,Win,92.9,Ryan P McQuaid,75.18,Week 7,2020,No
+91,Carmine Pittelli Jr.,Loss,78.72,Ben Castaldo,157.56,Week 7,2020,No
+92,Ben Castaldo,Win,157.56,Carmine Pittelli Jr.,78.72,Week 7,2020,No
+93,Ethan Radecki,Win,154.74,Andrew Root,146.92,Week 7,2020,No
+94,Andrew Root,Loss,146.92,Ethan Radecki,154.74,Week 7,2020,No
+95,William Serafin,Win,93.72,Cole Maney,64.62,Week 7,2020,No
+96,Cole Maney,Loss,64.62,William Serafin,93.72,Week 7,2020,No
+97,Max Malich,Win,139.68,Baylen Slansky,79.18,Week 7,2020,No
+98,Baylen Slansky,Loss,79.18,Max Malich,139.68,Week 7,2020,No
+99,Quin Gegwich,Win,109.02,Deniz Bileydi,106.92,Week 8,2020,No
+100,Deniz Bileydi,Loss,106.92,Quin Gegwich,109.02,Week 8,2020,No
+101,Thomas Sullivan,Loss,95.58,Ethan Radecki,122.96,Week 8,2020,No
+102,Ethan Radecki,Win,122.96,Thomas Sullivan,95.58,Week 8,2020,No
+103,Ryan P McQuaid,Loss,88.4,William Serafin,105.04,Week 8,2020,No
+104,William Serafin,Win,105.04,Ryan P McQuaid,88.4,Week 8,2020,No
+105,Carmine Pittelli Jr.,Win,113.46,Max Malich,85.62,Week 8,2020,No
+106,Max Malich,Loss,85.62,Carmine Pittelli Jr.,113.46,Week 8,2020,No
+107,Ben Castaldo,Loss,126.06,Baylen Slansky,173.86,Week 8,2020,No
+108,Baylen Slansky,Win,173.86,Ben Castaldo,126.06,Week 8,2020,No
+109,Brandon Hancock,Win,90.74,Cole Maney,62.24,Week 8,2020,No
+110,Cole Maney,Loss,62.24,Brandon Hancock,90.74,Week 8,2020,No
+111,Anthony Kelly,Win,113.5,Andrew Root,97.14,Week 8,2020,No
+112,Andrew Root,Loss,97.14,Anthony Kelly,113.5,Week 8,2020,No
+113,Deniz Bileydi,Loss,94,Thomas Sullivan,95.64,Week 9,2020,No
+114,Thomas Sullivan,Win,95.64,Deniz Bileydi,94,Week 9,2020,No
+115,Ethan Radecki,Win,100.04,Ryan P McQuaid,96.4,Week 9,2020,No
+116,Ryan P McQuaid,Loss,96.4,Ethan Radecki,100.04,Week 9,2020,No
+117,William Serafin,Loss,138.98,Carmine Pittelli Jr.,143.76,Week 9,2020,No
+118,Carmine Pittelli Jr.,Win,143.76,William Serafin,138.98,Week 9,2020,No
+119,Max Malich,Loss,95.14,Ben Castaldo,108.66,Week 9,2020,No
+120,Ben Castaldo,Win,108.66,Max Malich,95.14,Week 9,2020,No
+121,Baylen Slansky,Win,150.3,Brandon Hancock,101.98,Week 9,2020,No
+122,Brandon Hancock,Loss,101.98,Baylen Slansky,150.3,Week 9,2020,No
+123,Cole Maney,Loss,88.94,Anthony Kelly,174.32,Week 9,2020,No
+124,Anthony Kelly,Win,174.32,Cole Maney,88.94,Week 9,2020,No
+125,Andrew Root,Win,84.7,Charlie Gorman,71.3,Week 9,2020,No
+126,Charlie Gorman,Loss,71.3,Andrew Root,84.7,Week 9,2020,No
+127,Ryan P McQuaid,Loss,78.78,Deniz Bileydi,131.56,Week 10,2020,No
+128,Deniz Bileydi,Win,131.56,Ryan P McQuaid,78.78,Week 10,2020,No
+129,Carmine Pittelli Jr.,Win,131.12,Ethan Radecki,99.32,Week 10,2020,No
+130,Ethan Radecki,Loss,99.32,Carmine Pittelli Jr.,131.12,Week 10,2020,No
+131,Ben Castaldo,Win,112.24,William Serafin,105.26,Week 10,2020,No
+132,William Serafin,Loss,105.26,Ben Castaldo,112.24,Week 10,2020,No
+133,Brandon Hancock,Loss,99.68,Max Malich,128.08,Week 10,2020,No
+134,Max Malich,Win,128.08,Brandon Hancock,99.68,Week 10,2020,No
+135,Anthony Kelly,Win,105.7,Baylen Slansky,104.36,Week 10,2020,No
+136,Baylen Slansky,Loss,104.36,Anthony Kelly,105.7,Week 10,2020,No
+137,Charlie Gorman,Loss,71.22,Cole Maney,90.62,Week 10,2020,No
+138,Cole Maney,Win,90.62,Charlie Gorman,71.22,Week 10,2020,No
+139,Quin Gegwich,Win,125.98,Andrew Root,97.5,Week 10,2020,No
+140,Andrew Root,Loss,97.5,Quin Gegwich,125.98,Week 10,2020,No
+141,Deniz Bileydi,Loss,91.24,Carmine Pittelli Jr.,119.86,Week 11,2020,No
+142,Carmine Pittelli Jr.,Win,119.86,Deniz Bileydi,91.24,Week 11,2020,No
+143,Ethan Radecki,Loss,99.5,Ben Castaldo,114.74,Week 11,2020,No
+144,Ben Castaldo,Win,114.74,Ethan Radecki,99.5,Week 11,2020,No
+145,William Serafin,Win,94.24,Brandon Hancock,89.32,Week 11,2020,No
+146,Brandon Hancock,Loss,89.32,William Serafin,94.24,Week 11,2020,No
+147,Max Malich,Win,136.04,Anthony Kelly,129.96,Week 11,2020,No
+148,Anthony Kelly,Loss,129.96,Max Malich,136.04,Week 11,2020,No
+149,Baylen Slansky,Win,148.26,Charlie Gorman,102.88,Week 11,2020,No
+150,Charlie Gorman,Loss,102.88,Baylen Slansky,148.26,Week 11,2020,No
+151,Cole Maney,Loss,75.38,Quin Gegwich,115.1,Week 11,2020,No
+152,Quin Gegwich,Win,115.1,Cole Maney,75.38,Week 11,2020,No
+153,Andrew Root,Win,141.24,Thomas Sullivan,121.86,Week 11,2020,No
+154,Thomas Sullivan,Loss,121.86,Andrew Root,141.24,Week 11,2020,No
+155,Ben Castaldo,Loss,77.6,Deniz Bileydi,130.98,Week 12,2020,No
+156,Deniz Bileydi,Win,130.98,Ben Castaldo,77.6,Week 12,2020,No
+157,Brandon Hancock,Loss,119.68,Ethan Radecki,140.8,Week 12,2020,No
+158,Ethan Radecki,Win,140.8,Brandon Hancock,119.68,Week 12,2020,No
+159,Anthony Kelly,Loss,114.5,William Serafin,121.42,Week 12,2020,No
+160,William Serafin,Win,121.42,Anthony Kelly,114.5,Week 12,2020,No
+161,Charlie Gorman,Loss,83.1,Max Malich,163.84,Week 12,2020,No
+162,Max Malich,Win,163.84,Charlie Gorman,83.1,Week 12,2020,No
+163,Quin Gegwich,Loss,81.6,Baylen Slansky,172.68,Week 12,2020,No
+164,Baylen Slansky,Win,172.68,Quin Gegwich,81.6,Week 12,2020,No
+165,Thomas Sullivan,Win,134.32,Cole Maney,67.96,Week 12,2020,No
+166,Cole Maney,Loss,67.96,Thomas Sullivan,134.32,Week 12,2020,No
+167,Ryan P McQuaid,Loss,86.42,Andrew Root,118.94,Week 12,2020,No
+168,Andrew Root,Win,118.94,Ryan P McQuaid,86.42,Week 12,2020,No
+169,William Serafin,Win,116.5,Carmine Pittelli Jr.,94.42,Week 13,2020,No
+170,Carmine Pittelli Jr.,Loss,94.42,William Serafin,116.5,Week 13,2020,No
+171,Andrew Root,Win,119.7,Quin Gegwich,90.06,Week 13,2020,No
+172,Quin Gegwich,Loss,90.06,Andrew Root,119.7,Week 13,2020,No
+173,Max Malich,Win,97.06,Brandon Hancock,83.82,Week 13,2020,No
+174,Brandon Hancock,Loss,83.82,Max Malich,97.06,Week 13,2020,No
+175,Deniz Bileydi,Loss,118.98,Charlie Gorman,127.82,Week 13,2020,No
+176,Charlie Gorman,Win,127.82,Deniz Bileydi,118.98,Week 13,2020,No
+177,Cole Maney,Loss,103.24,Ben Castaldo,109.18,Week 13,2020,No
+178,Ben Castaldo,Win,109.18,Cole Maney,103.24,Week 13,2020,No
+179,Ethan Radecki,Win,154.28,Ryan P McQuaid,90.98,Week 13,2020,No
+180,Ryan P McQuaid,Loss,90.98,Ethan Radecki,154.28,Week 13,2020,No
+181,Baylen Slansky,Win,147.2,Thomas Sullivan,82.44,Week 13,2020,No
+182,Thomas Sullivan,Loss,82.44,Baylen Slansky,147.2,Week 13,2020,No
+183,Charlie Gorman,Loss,66.44,Deniz Bileydi,153.32,Playoff Round 1,2020,Yes
+184,Deniz Bileydi,Win,153.32,Charlie Gorman,66.44,Playoff Round 1,2020,Yes
+185,Quin Gegwich,Loss,115.88,Andrew Root,143.2,Playoff Round 1,2020,Yes
+186,Andrew Root,Win,143.2,Quin Gegwich,115.88,Playoff Round 1,2020,Yes
+187,Ryan P McQuaid,Loss,117.12,Ethan Radecki,124.56,Playoff Round 1,2020,Yes
+188,Ethan Radecki,Win,124.56,Ryan P McQuaid,117.12,Playoff Round 1,2020,Yes
+189,Ben Castaldo,Win,105.32,William Serafin,83.98,Playoff Round 1,2020,Yes
+190,William Serafin,Loss,83.98,Ben Castaldo,105.32,Playoff Round 1,2020,Yes
+191,Brandon Hancock,Win,101.42,Carmine Pittelli Jr.,63.06,Playoff Round 1,2020,Yes
+192,Carmine Pittelli Jr.,Loss,63.06,Brandon Hancock,101.42,Playoff Round 1,2020,Yes
+193,Thomas Sullivan,Loss,132.46,Max Malich,135.02,Playoff Round 1,2020,Yes
+194,Max Malich,Win,135.02,Thomas Sullivan,132.46,Playoff Round 1,2020,Yes
+195,Cole Maney,Loss,85.68,Anthony Kelly,113.46,Playoff Round 1,2020,Yes
+196,Anthony Kelly,Win,113.46,Cole Maney,85.68,Playoff Round 1,2020,Yes
+197,Deniz Bileydi,Win,142.12,Baylen Slansky,130.16,Playoff Round 2,2020,Yes
+198,Baylen Slansky,Loss,130.16,Deniz Bileydi,142.12,Playoff Round 2,2020,Yes
+199,Andrew Root,Loss,105.82,Ethan Radecki,134.52,Playoff Round 2,2020,Yes
+200,Ethan Radecki,Win,134.52,Andrew Root,105.82,Playoff Round 2,2020,Yes
+201,Brandon Hancock,Win,132.16,Ben Castaldo,131.3,Playoff Round 2,2020,Yes
+202,Ben Castaldo,Loss,131.3,Brandon Hancock,132.16,Playoff Round 2,2020,Yes
+203,Max Malich,Win,131.46,Anthony Kelly,88.54,Playoff Round 2,2020,Yes
+204,Anthony Kelly,Loss,88.54,Max Malich,131.46,Playoff Round 2,2020,Yes
+205,William Serafin,Loss,63.6,Carmine Pittelli Jr.,118.84,Playoff Round 2,2020,No
+206,Carmine Pittelli Jr.,Win,118.84,William Serafin,63.6,Playoff Round 2,2020,No
+207,Thomas Sullivan,Win,103.22,Charlie Gorman,64.04,Playoff Round 2,2020,No
+208,Charlie Gorman,Loss,64.04,Thomas Sullivan,103.22,Playoff Round 2,2020,No
+209,Ryan P McQuaid,Loss,11,Quin Gegwich,11,Playoff Round 2,2020,No
+210,Quin Gegwich,Loss,11,Ryan P McQuaid,11,Playoff Round 2,2020,No
+211,Deniz Bileydi,Loss,106.72,Ethan Radecki,119.44,Playoff Round 3,2020,Yes
+212,Ethan Radecki,Win,119.44,Deniz Bileydi,106.72,Playoff Round 3,2020,Yes
+213,Brandon Hancock,Win,140.12,Max Malich,135.22,Playoff Round 3,2020,Yes
+214,Max Malich,Loss,135.22,Brandon Hancock,140.12,Playoff Round 3,2020,Yes
+215,Anthony Kelly,Win,164.48,Baylen Slansky,134.1,Playoff Round 3,2020,No
+216,Baylen Slansky,Loss,134.1,Anthony Kelly,164.48,Playoff Round 3,2020,No
+217,Ben Castaldo,Loss,43.2,Andrew Root,111.34,Playoff Round 3,2020,No
+218,Andrew Root,Win,111.34,Ben Castaldo,43.2,Playoff Round 3,2020,No
+219,Thomas Sullivan,Win,95.36,Carmine Pittelli Jr.,59.6,Playoff Round 3,2020,No
+220,Carmine Pittelli Jr.,Loss,59.6,Thomas Sullivan,95.36,Playoff Round 3,2020,No
+221,Quin Gegwich,Loss,60.64,William Serafin,120.78,Playoff Round 3,2020,No
+222,William Serafin,Win,120.78,Quin Gegwich,60.64,Playoff Round 3,2020,No
+223,Cole Maney,Win,122.14,Charlie Gorman,98.8,Playoff Round 3,2020,No
+224,Charlie Gorman,Loss,98.8,Cole Maney,122.14,Playoff Round 3,2020,No
+225,Brandon Hancock,Loss,110.96,Ethan Radecki,146.36,Playoff Round 4,2020,Yes
+226,Ethan Radecki,Win,146.36,Brandon Hancock,110.96,Playoff Round 4,2020,Yes
+227,Deniz Bileydi,Win,153.02,Max Malich,114.48,Playoff Round 4,2020,No
+228,Max Malich,Loss,114.48,Deniz Bileydi,153.02,Playoff Round 4,2020,No
+229,Andrew Root,Win,147.04,Anthony Kelly,72.58,Playoff Round 4,2020,No
+230,Anthony Kelly,Loss,72.58,Andrew Root,147.04,Playoff Round 4,2020,No
+231,Thomas Sullivan,Win,117.5,Baylen Slansky,110.86,Playoff Round 4,2020,No
+232,Baylen Slansky,Loss,110.86,Thomas Sullivan,117.5,Playoff Round 4,2020,No
+233,Ben Castaldo,Loss,16.6,William Serafin,101.56,Playoff Round 4,2020,No
+234,William Serafin,Win,101.56,Ben Castaldo,16.6,Playoff Round 4,2020,No
+235,Cole Maney,Win,117.44,Carmine Pittelli Jr.,70.2,Playoff Round 4,2020,No
+236,Carmine Pittelli Jr.,Loss,70.2,Cole Maney,117.44,Playoff Round 4,2020,No
+237,Ryan P McQuaid,Loss,-1,Quin Gegwich,132.14,Playoff Round 4,2020,No
+238,Quin Gegwich,Win,132.14,Ryan P McQuaid,-1,Playoff Round 4,2020,No
+239,Max Malich,Loss,96.42,Anthony Kelly,133.74,Week 1,2021,No
+240,Anthony Kelly,Win,133.74,Max Malich,96.42,Week 1,2021,No
+241,Quin Gegwich,Loss,93.24,Ben Castaldo,142.44,Week 1,2021,No
+242,Ben Castaldo,Win,142.44,Quin Gegwich,93.24,Week 1,2021,No
+243,Baylen Slansky,Loss,95.98,Deniz Bileydi,135.46,Week 1,2021,No
+244,Deniz Bileydi,Win,135.46,Baylen Slansky,95.98,Week 1,2021,No
+245,Brandon Hancock,Win,142.56,Charlie Gorman,88,Week 1,2021,No
+246,Charlie Gorman,Loss,88,Brandon Hancock,142.56,Week 1,2021,No
+247,Cole Maney,Loss,98.34,Andrew Root,132.28,Week 1,2021,No
+248,Andrew Root,Win,132.28,Cole Maney,98.34,Week 1,2021,No
+249,Ryan P McQuaid,Win,137.18,Carmine Pittelli Jr.,122.56,Week 1,2021,No
+250,Carmine Pittelli Jr.,Loss,122.56,Ryan P McQuaid,137.18,Week 1,2021,No
+251,Ethan Radecki,Loss,127.82,Aidan Quigley,160.26,Week 1,2021,No
+252,Aidan Quigley,Win,160.26,Ethan Radecki,127.82,Week 1,2021,No
+253,Baylen Slansky,Loss,92.92,Quin Gegwich,140.82,Week 2,2021,No
+254,Quin Gegwich,Win,140.82,Baylen Slansky,92.92,Week 2,2021,No
+255,Anthony Kelly,Win,107.38,Brandon Hancock,104.64,Week 2,2021,No
+256,Brandon Hancock,Loss,104.64,Anthony Kelly,107.38,Week 2,2021,No
+257,Max Malich,Win,153.4,Cole Maney,138.12,Week 2,2021,No
+258,Cole Maney,Loss,138.12,Max Malich,153.4,Week 2,2021,No
+259,Ben Castaldo,Loss,95.06,Ryan P McQuaid,98.48,Week 2,2021,No
+260,Ryan P McQuaid,Win,98.48,Ben Castaldo,95.06,Week 2,2021,No
+261,Deniz Bileydi,Win,130.7,Ethan Radecki,107.58,Week 2,2021,No
+262,Ethan Radecki,Loss,107.58,Deniz Bileydi,130.7,Week 2,2021,No
+263,Charlie Gorman,Win,172.26,Carmine Pittelli Jr.,142.4,Week 2,2021,No
+264,Carmine Pittelli Jr.,Loss,142.4,Charlie Gorman,172.26,Week 2,2021,No
+265,Andrew Root,Win,106.82,Aidan Quigley,96.82,Week 2,2021,No
+266,Aidan Quigley,Loss,96.82,Andrew Root,106.82,Week 2,2021,No
+267,Cole Maney,Win,140.92,Brandon Hancock,103.68,Week 3,2021,No
+268,Brandon Hancock,Loss,103.68,Cole Maney,140.92,Week 3,2021,No
+269,Ryan P McQuaid,Loss,93.86,Quin Gegwich,113.12,Week 3,2021,No
+270,Quin Gegwich,Win,113.12,Ryan P McQuaid,93.86,Week 3,2021,No
+271,Ethan Radecki,Win,152.68,Baylen Slansky,132.94,Week 3,2021,No
+272,Baylen Slansky,Loss,132.94,Ethan Radecki,152.68,Week 3,2021,No
+273,Carmine Pittelli Jr.,Win,136.54,Anthony Kelly,130.62,Week 3,2021,No
+274,Anthony Kelly,Loss,130.62,Carmine Pittelli Jr.,136.54,Week 3,2021,No
+275,Aidan Quigley,Loss,110.42,Max Malich,127.44,Week 3,2021,No
+276,Max Malich,Win,127.44,Aidan Quigley,110.42,Week 3,2021,No
+277,Charlie Gorman,Loss,91.48,Ben Castaldo,133.82,Week 3,2021,No
+278,Ben Castaldo,Win,133.82,Charlie Gorman,91.48,Week 3,2021,No
+279,Andrew Root,Loss,59,Deniz Bileydi,94.54,Week 3,2021,No
+280,Deniz Bileydi,Win,94.54,Andrew Root,59,Week 3,2021,No
+281,Ethan Radecki,Win,113.62,Ryan P McQuaid,113.02,Week 4,2021,No
+282,Ryan P McQuaid,Loss,113.02,Ethan Radecki,113.62,Week 4,2021,No
+283,Brandon Hancock,Loss,124.86,Carmine Pittelli Jr.,160.42,Week 4,2021,No
+284,Carmine Pittelli Jr.,Win,160.42,Brandon Hancock,124.86,Week 4,2021,No
+285,Cole Maney,Loss,113.2,Aidan Quigley,128.36,Week 4,2021,No
+286,Aidan Quigley,Win,128.36,Cole Maney,113.2,Week 4,2021,No
+287,Quin Gegwich,Loss,83.14,Charlie Gorman,104.64,Week 4,2021,No
+288,Charlie Gorman,Win,104.64,Quin Gegwich,83.14,Week 4,2021,No
+289,Baylen Slansky,Loss,92.58,Andrew Root,114.52,Week 4,2021,No
+290,Andrew Root,Win,114.52,Baylen Slansky,92.58,Week 4,2021,No
+291,Anthony Kelly,Loss,96.32,Ben Castaldo,162.12,Week 4,2021,No
+292,Ben Castaldo,Win,162.12,Anthony Kelly,96.32,Week 4,2021,No
+293,Max Malich,Loss,88.92,Deniz Bileydi,119.98,Week 4,2021,No
+294,Deniz Bileydi,Win,119.98,Max Malich,88.92,Week 4,2021,No
+295,Aidan Quigley,Loss,137.68,Carmine Pittelli Jr.,137.86,Week 5,2021,No
+296,Carmine Pittelli Jr.,Win,137.86,Aidan Quigley,137.68,Week 5,2021,No
+297,Charlie Gorman,Win,135.68,Ryan P McQuaid,134.28,Week 5,2021,No
+298,Ryan P McQuaid,Loss,134.28,Charlie Gorman,135.68,Week 5,2021,No
+299,Andrew Root,Win,106.58,Ethan Radecki,100.08,Week 5,2021,No
+300,Ethan Radecki,Loss,100.08,Andrew Root,106.58,Week 5,2021,No
+301,Ben Castaldo,Win,122.5,Brandon Hancock,118.74,Week 5,2021,No
+302,Brandon Hancock,Loss,118.74,Ben Castaldo,122.5,Week 5,2021,No
+303,Deniz Bileydi,Loss,82.92,Cole Maney,159.8,Week 5,2021,No
+304,Cole Maney,Win,159.8,Deniz Bileydi,82.92,Week 5,2021,No
+305,Anthony Kelly,Win,140.08,Quin Gegwich,90.44,Week 5,2021,No
+306,Quin Gegwich,Loss,90.44,Anthony Kelly,140.08,Week 5,2021,No
+307,Max Malich,Win,159.76,Baylen Slansky,143.92,Week 5,2021,No
+308,Baylen Slansky,Loss,143.92,Max Malich,159.76,Week 5,2021,No
+309,Andrew Root,Win,143.48,Charlie Gorman,106.98,Week 6,2021,No
+310,Charlie Gorman,Loss,106.98,Andrew Root,143.48,Week 6,2021,No
+311,Carmine Pittelli Jr.,Win,120.46,Ben Castaldo,94.02,Week 6,2021,No
+312,Ben Castaldo,Loss,94.02,Carmine Pittelli Jr.,120.46,Week 6,2021,No
+313,Aidan Quigley,Win,147.62,Deniz Bileydi,131.2,Week 6,2021,No
+314,Deniz Bileydi,Loss,131.2,Aidan Quigley,147.62,Week 6,2021,No
+315,Ryan P McQuaid,Loss,94.08,Anthony Kelly,128.3,Week 6,2021,No
+316,Anthony Kelly,Win,128.3,Ryan P McQuaid,94.08,Week 6,2021,No
+317,Ethan Radecki,Win,108.74,Max Malich,80.6,Week 6,2021,No
+318,Max Malich,Loss,80.6,Ethan Radecki,108.74,Week 6,2021,No
+319,Brandon Hancock,Win,140.88,Quin Gegwich,109.04,Week 6,2021,No
+320,Quin Gegwich,Loss,109.04,Brandon Hancock,140.88,Week 6,2021,No
+321,Cole Maney,Loss,128.14,Baylen Slansky,146.1,Week 6,2021,No
+322,Baylen Slansky,Win,146.1,Cole Maney,128.14,Week 6,2021,No
+323,Deniz Bileydi,Loss,83.24,Ben Castaldo,133.3,Week 7,2021,No
+324,Ben Castaldo,Win,133.3,Deniz Bileydi,83.24,Week 7,2021,No
+325,Anthony Kelly,Loss,123.64,Charlie Gorman,129.88,Week 7,2021,No
+326,Charlie Gorman,Win,129.88,Anthony Kelly,123.64,Week 7,2021,No
+327,Max Malich,Win,108.76,Andrew Root,97.84,Week 7,2021,No
+328,Andrew Root,Loss,97.84,Max Malich,108.76,Week 7,2021,No
+329,Quin Gegwich,Loss,100.72,Carmine Pittelli Jr.,122.14,Week 7,2021,No
+330,Carmine Pittelli Jr.,Win,122.14,Quin Gegwich,100.72,Week 7,2021,No
+331,Baylen Slansky,Win,109.04,Aidan Quigley,96.08,Week 7,2021,No
+332,Aidan Quigley,Loss,96.08,Baylen Slansky,109.04,Week 7,2021,No
+333,Brandon Hancock,Win,144.94,Ryan P McQuaid,119.88,Week 7,2021,No
+334,Ryan P McQuaid,Loss,119.88,Brandon Hancock,144.94,Week 7,2021,No
+335,Cole Maney,Win,118.46,Ethan Radecki,104.8,Week 7,2021,No
+336,Ethan Radecki,Loss,104.8,Cole Maney,118.46,Week 7,2021,No
+337,Quin Gegwich,Win,137.1,Max Malich,80.66,Week 8,2021,No
+338,Max Malich,Loss,80.66,Quin Gegwich,137.1,Week 8,2021,No
+339,Brandon Hancock,Win,108.3,Baylen Slansky,104.12,Week 8,2021,No
+340,Baylen Slansky,Loss,104.12,Brandon Hancock,108.3,Week 8,2021,No
+341,Ryan P McQuaid,Loss,102.06,Cole Maney,129.3,Week 8,2021,No
+342,Cole Maney,Win,129.3,Ryan P McQuaid,102.06,Week 8,2021,No
+343,Carmine Pittelli Jr.,Win,100.66,Ethan Radecki,97.2,Week 8,2021,No
+344,Ethan Radecki,Loss,97.2,Carmine Pittelli Jr.,100.66,Week 8,2021,No
+345,Charlie Gorman,Loss,105.48,Aidan Quigley,115.36,Week 8,2021,No
+346,Aidan Quigley,Win,115.36,Charlie Gorman,105.48,Week 8,2021,No
+347,Ben Castaldo,Win,112.36,Andrew Root,72.16,Week 8,2021,No
+348,Andrew Root,Loss,72.16,Ben Castaldo,112.36,Week 8,2021,No
+349,Anthony Kelly,Win,140.96,Deniz Bileydi,100.52,Week 8,2021,No
+350,Deniz Bileydi,Loss,100.52,Anthony Kelly,140.96,Week 8,2021,No
+351,Max Malich,Loss,98.12,Brandon Hancock,103,Week 9,2021,No
+352,Brandon Hancock,Win,103,Max Malich,98.12,Week 9,2021,No
+353,Baylen Slansky,Win,88.44,Ryan P McQuaid,68.38,Week 9,2021,No
+354,Ryan P McQuaid,Loss,68.38,Baylen Slansky,88.44,Week 9,2021,No
+355,Cole Maney,Loss,69.46,Carmine Pittelli Jr.,101.82,Week 9,2021,No
+356,Carmine Pittelli Jr.,Win,101.82,Cole Maney,69.46,Week 9,2021,No
+357,Ethan Radecki,Loss,123.52,Charlie Gorman,135.94,Week 9,2021,No
+358,Charlie Gorman,Win,135.94,Ethan Radecki,123.52,Week 9,2021,No
+359,Aidan Quigley,Win,115.78,Ben Castaldo,85.86,Week 9,2021,No
+360,Ben Castaldo,Loss,85.86,Aidan Quigley,115.78,Week 9,2021,No
+361,Andrew Root,Loss,64.74,Anthony Kelly,130.58,Week 9,2021,No
+362,Anthony Kelly,Win,130.58,Andrew Root,64.74,Week 9,2021,No
+363,Deniz Bileydi,Loss,94.98,Quin Gegwich,137.34,Week 9,2021,No
+364,Quin Gegwich,Win,137.34,Deniz Bileydi,94.98,Week 9,2021,No
+365,Ryan P McQuaid,Win,104.38,Max Malich,90.88,Week 10,2021,No
+366,Max Malich,Loss,90.88,Ryan P McQuaid,104.38,Week 10,2021,No
+367,Carmine Pittelli Jr.,Loss,71.6,Baylen Slansky,102.76,Week 10,2021,No
+368,Baylen Slansky,Win,102.76,Carmine Pittelli Jr.,71.6,Week 10,2021,No
+369,Charlie Gorman,Loss,68.72,Cole Maney,77.32,Week 10,2021,No
+370,Cole Maney,Win,77.32,Charlie Gorman,68.72,Week 10,2021,No
+371,Ben Castaldo,Win,131.14,Ethan Radecki,102.42,Week 10,2021,No
+372,Ethan Radecki,Loss,102.42,Ben Castaldo,131.14,Week 10,2021,No
+373,Anthony Kelly,Win,124.94,Aidan Quigley,107.04,Week 10,2021,No
+374,Aidan Quigley,Loss,107.04,Anthony Kelly,124.94,Week 10,2021,No
+375,Quin Gegwich,Win,127.04,Andrew Root,104.44,Week 10,2021,No
+376,Andrew Root,Loss,104.44,Quin Gegwich,127.04,Week 10,2021,No
+377,Brandon Hancock,Win,105.9,Deniz Bileydi,102.42,Week 10,2021,No
+378,Deniz Bileydi,Loss,102.42,Brandon Hancock,105.9,Week 10,2021,No
+379,Max Malich,Loss,91.6,Carmine Pittelli Jr.,111.02,Week 11,2021,No
+380,Carmine Pittelli Jr.,Win,111.02,Max Malich,91.6,Week 11,2021,No
+381,Baylen Slansky,Win,118.88,Charlie Gorman,60.18,Week 11,2021,No
+382,Charlie Gorman,Loss,60.18,Baylen Slansky,118.88,Week 11,2021,No
+383,Cole Maney,Loss,82.68,Ben Castaldo,112.86,Week 11,2021,No
+384,Ben Castaldo,Win,112.86,Cole Maney,82.68,Week 11,2021,No
+385,Ethan Radecki,Loss,111.22,Anthony Kelly,140.54,Week 11,2021,No
+386,Anthony Kelly,Win,140.54,Ethan Radecki,111.22,Week 11,2021,No
+387,Aidan Quigley,Win,136.08,Quin Gegwich,125.2,Week 11,2021,No
+388,Quin Gegwich,Loss,125.2,Aidan Quigley,136.08,Week 11,2021,No
+389,Andrew Root,Loss,85.1,Brandon Hancock,96.58,Week 11,2021,No
+390,Brandon Hancock,Win,96.58,Andrew Root,85.1,Week 11,2021,No
+391,Deniz Bileydi,Win,115.98,Ryan P McQuaid,104.12,Week 11,2021,No
+392,Ryan P McQuaid,Loss,104.12,Deniz Bileydi,115.98,Week 11,2021,No
+393,Charlie Gorman,Loss,55.9,Max Malich,119.38,Week 12,2021,No
+394,Max Malich,Win,119.38,Charlie Gorman,55.9,Week 12,2021,No
+395,Ben Castaldo,Loss,88.46,Baylen Slansky,168.62,Week 12,2021,No
+396,Baylen Slansky,Win,168.62,Ben Castaldo,88.46,Week 12,2021,No
+397,Anthony Kelly,Win,126.7,Cole Maney,81.28,Week 12,2021,No
+398,Cole Maney,Loss,81.28,Anthony Kelly,126.7,Week 12,2021,No
+399,Quin Gegwich,Loss,100.52,Ethan Radecki,110.48,Week 12,2021,No
+400,Ethan Radecki,Win,110.48,Quin Gegwich,100.52,Week 12,2021,No
+401,Brandon Hancock,Win,116.34,Aidan Quigley,107.32,Week 12,2021,No
+402,Aidan Quigley,Loss,107.32,Brandon Hancock,116.34,Week 12,2021,No
+403,Ryan P McQuaid,Win,98.9,Andrew Root,54.38,Week 12,2021,No
+404,Andrew Root,Loss,54.38,Ryan P McQuaid,98.9,Week 12,2021,No
+405,Carmine Pittelli Jr.,Win,89.92,Deniz Bileydi,79.26,Week 12,2021,No
+406,Deniz Bileydi,Loss,79.26,Carmine Pittelli Jr.,89.92,Week 12,2021,No
+407,Anthony Kelly,Win,121.02,Max Malich,115.34,Week 13,2021,No
+408,Max Malich,Loss,115.34,Anthony Kelly,121.02,Week 13,2021,No
+409,Quin Gegwich,Loss,77.46,Baylen Slansky,137.68,Week 13,2021,No
+410,Baylen Slansky,Win,137.68,Quin Gegwich,77.46,Week 13,2021,No
+411,Brandon Hancock,Win,149.82,Cole Maney,99.7,Week 13,2021,No
+412,Cole Maney,Loss,99.7,Brandon Hancock,149.82,Week 13,2021,No
+413,Ryan P McQuaid,Loss,129.46,Ethan Radecki,150.94,Week 13,2021,No
+414,Ethan Radecki,Win,150.94,Ryan P McQuaid,129.46,Week 13,2021,No
+415,Carmine Pittelli Jr.,Loss,94.62,Aidan Quigley,116,Week 13,2021,No
+416,Aidan Quigley,Win,116,Carmine Pittelli Jr.,94.62,Week 13,2021,No
+417,Charlie Gorman,Loss,51.52,Andrew Root,54.86,Week 13,2021,No
+418,Andrew Root,Win,54.86,Charlie Gorman,51.52,Week 13,2021,No
+419,Ben Castaldo,Win,147.6,Deniz Bileydi,72.16,Week 13,2021,No
+420,Deniz Bileydi,Loss,72.16,Ben Castaldo,147.6,Week 13,2021,No
+421,Cole Maney,Loss,135.68,Ethan Radecki,151.5,Playoff Round 1,2021,Yes
+422,Ethan Radecki,Win,151.5,Cole Maney,135.68,Playoff Round 1,2021,Yes
+423,Max Malich,Win,114.24,Quin Gegwich,94.22,Playoff Round 1,2021,No
+424,Quin Gegwich,Loss,94.22,Max Malich,114.24,Playoff Round 1,2021,No
+425,Charlie Gorman,Win,77.38,Deniz Bileydi,58.3,Playoff Round 1,2021,No
+426,Deniz Bileydi,Loss,58.3,Charlie Gorman,77.38,Playoff Round 1,2021,No
+427,Ethan Radecki,Loss,92.4,Anthony Kelly,120.28,Playoff Round 2,2021,Yes
+428,Anthony Kelly,Win,120.28,Ethan Radecki,92.4,Playoff Round 2,2021,Yes
+429,Carmine Pittelli Jr.,Win,119.88,Brandon Hancock,108.56,Playoff Round 2,2021,Yes
+430,Brandon Hancock,Loss,108.56,Carmine Pittelli Jr.,119.88,Playoff Round 2,2021,Yes
+431,Baylen Slansky,Loss,107.74,Ben Castaldo,121.08,Playoff Round 2,2021,Yes
+432,Ben Castaldo,Win,121.08,Baylen Slansky,107.74,Playoff Round 2,2021,Yes
+433,Andrew Root,Win,100.6,Aidan Quigley,87.58,Playoff Round 2,2021,Yes
+434,Aidan Quigley,Loss,87.58,Andrew Root,100.6,Playoff Round 2,2021,Yes
+435,Charlie Gorman,Loss,62.6,Max Malich,126.42,Playoff Round 2,2021,No
+436,Max Malich,Win,126.42,Charlie Gorman,62.6,Playoff Round 2,2021,No
+437,Ryan P McQuaid,Loss,42.3,Quin Gegwich,67.14,Playoff Round 2,2021,No
+438,Quin Gegwich,Win,67.14,Ryan P McQuaid,42.3,Playoff Round 2,2021,No
+439,Carmine Pittelli Jr.,Loss,132.1,Anthony Kelly,150.7,Playoff Round 3,2021,Yes
+440,Anthony Kelly,Win,150.7,Carmine Pittelli Jr.,132.1,Playoff Round 3,2021,Yes
+441,Andrew Root,Loss,100.22,Ben Castaldo,137.06,Playoff Round 3,2021,Yes
+442,Ben Castaldo,Win,137.06,Andrew Root,100.22,Playoff Round 3,2021,Yes
+443,Brandon Hancock,Win,112.48,Aidan Quigley,71.7,Playoff Round 3,2021,No
+444,Aidan Quigley,Loss,71.7,Brandon Hancock,112.48,Playoff Round 3,2021,No
+445,Ethan Radecki,Loss,95.14,Baylen Slansky,108.24,Playoff Round 3,2021,No
+446,Baylen Slansky,Win,108.24,Ethan Radecki,95.14,Playoff Round 3,2021,No
+447,Max Malich,Loss,101.68,Quin Gegwich,132.84,Playoff Round 3,2021,No
+448,Quin Gegwich,Win,132.84,Max Malich,101.68,Playoff Round 3,2021,No
+449,Charlie Gorman,Win,72,Deniz Bileydi,69.66,Playoff Round 3,2021,No
+450,Deniz Bileydi,Loss,69.66,Charlie Gorman,72,Playoff Round 3,2021,No
+451,Ben Castaldo,Win,138.8,Anthony Kelly,115.04,Playoff Round 4,2021,Yes
+452,Anthony Kelly,Loss,115.04,Ben Castaldo,138.8,Playoff Round 4,2021,Yes
+453,Andrew Root,Loss,111.86,Carmine Pittelli Jr.,126.32,Playoff Round 4,2021,No
+454,Carmine Pittelli Jr.,Win,126.32,Andrew Root,111.86,Playoff Round 4,2021,No
+455,Baylen Slansky,Loss,68.68,Brandon Hancock,135.3,Playoff Round 4,2021,No
+456,Brandon Hancock,Win,135.3,Baylen Slansky,68.68,Playoff Round 4,2021,No
+457,Cole Maney,Win,191.56,Aidan Quigley,69.1,Playoff Round 4,2021,No
+458,Aidan Quigley,Loss,69.1,Cole Maney,191.56,Playoff Round 4,2021,No
+459,Charlie Gorman,Loss,62.6,Quin Gegwich,101.6,Playoff Round 4,2021,No
+460,Quin Gegwich,Win,101.6,Charlie Gorman,62.6,Playoff Round 4,2021,No
+461,Ryan P McQuaid,Loss,67.36,Max Malich,77.52,Playoff Round 4,2021,No
+462,Max Malich,Win,77.52,Ryan P McQuaid,67.36,Playoff Round 4,2021,No
+463,Max Malich,Loss,77.32,Anthony Kelly,113.1,Week 1,2022,No
+464,Anthony Kelly,Win,113.1,Max Malich,77.32,Week 1,2022,No
+465,Quin Gegwich,Loss,102.08,Ben Castaldo,138.38,Week 1,2022,No
+466,Ben Castaldo,Win,138.38,Quin Gegwich,102.08,Week 1,2022,No
+467,Baylen Slansky,Win,152.76,Deniz Bileydi,112.22,Week 1,2022,No
+468,Deniz Bileydi,Loss,112.22,Baylen Slansky,152.76,Week 1,2022,No
+469,Brandon Hancock,Loss,104.1,Charlie Gorman,112.56,Week 1,2022,No
+470,Charlie Gorman,Win,112.56,Brandon Hancock,104.1,Week 1,2022,No
+471,Cole Maney,Win,118.5,Andrew Root,100.62,Week 1,2022,No
+472,Andrew Root,Loss,100.62,Cole Maney,118.5,Week 1,2022,No
+473,Ryan P McQuaid,Win,124.96,Carmine Pittelli Jr.,116.4,Week 1,2022,No
+474,Carmine Pittelli Jr.,Loss,116.4,Ryan P McQuaid,124.96,Week 1,2022,No
+475,Ethan Radecki,Win,126.22,Aidan Quigley,119,Week 1,2022,No
+476,Aidan Quigley,Loss,119,Ethan Radecki,126.22,Week 1,2022,No
+477,Baylen Slansky,Win,126.16,Quin Gegwich,104.8,Week 2,2022,No
+478,Quin Gegwich,Loss,104.8,Baylen Slansky,126.16,Week 2,2022,No
+479,Anthony Kelly,Loss,92.86,Brandon Hancock,146.78,Week 2,2022,No
+480,Brandon Hancock,Win,146.78,Anthony Kelly,92.86,Week 2,2022,No
+481,Max Malich,Win,135.52,Cole Maney,88.88,Week 2,2022,No
+482,Cole Maney,Loss,88.88,Max Malich,135.52,Week 2,2022,No
+483,Ben Castaldo,Loss,85.98,Ryan P McQuaid,131.58,Week 2,2022,No
+484,Ryan P McQuaid,Win,131.58,Ben Castaldo,85.98,Week 2,2022,No
+485,Deniz Bileydi,Win,158.88,Ethan Radecki,93.86,Week 2,2022,No
+486,Ethan Radecki,Loss,93.86,Deniz Bileydi,158.88,Week 2,2022,No
+487,Charlie Gorman,Loss,108.24,Carmine Pittelli Jr.,125.86,Week 2,2022,No
+488,Carmine Pittelli Jr.,Win,125.86,Charlie Gorman,108.24,Week 2,2022,No
+489,Andrew Root,Win,144.02,Aidan Quigley,111.6,Week 2,2022,No
+490,Aidan Quigley,Loss,111.6,Andrew Root,144.02,Week 2,2022,No
+491,Cole Maney,Loss,71.46,Brandon Hancock,92.72,Week 3,2022,No
+492,Brandon Hancock,Win,92.72,Cole Maney,71.46,Week 3,2022,No
+493,Ryan P McQuaid,Win,120.84,Quin Gegwich,105.54,Week 3,2022,No
+494,Quin Gegwich,Loss,105.54,Ryan P McQuaid,120.84,Week 3,2022,No
+495,Ethan Radecki,Win,126.5,Baylen Slansky,85.78,Week 3,2022,No
+496,Baylen Slansky,Loss,85.78,Ethan Radecki,126.5,Week 3,2022,No
+497,Carmine Pittelli Jr.,Loss,80.26,Anthony Kelly,93.9,Week 3,2022,No
+498,Anthony Kelly,Win,93.9,Carmine Pittelli Jr.,80.26,Week 3,2022,No
+499,Aidan Quigley,Loss,116.08,Max Malich,154.12,Week 3,2022,No
+500,Max Malich,Win,154.12,Aidan Quigley,116.08,Week 3,2022,No
+501,Charlie Gorman,Win,143.6,Ben Castaldo,96,Week 3,2022,No
+502,Ben Castaldo,Loss,96,Charlie Gorman,143.6,Week 3,2022,No
+503,Andrew Root,Win,108.6,Deniz Bileydi,94.36,Week 3,2022,No
+504,Deniz Bileydi,Loss,94.36,Andrew Root,108.6,Week 3,2022,No
+505,Ethan Radecki,Win,127.78,Ryan P McQuaid,122.2,Week 4,2022,No
+506,Ryan P McQuaid,Loss,122.2,Ethan Radecki,127.78,Week 4,2022,No
+507,Brandon Hancock,Win,177.7,Carmine Pittelli Jr.,124.2,Week 4,2022,No
+508,Carmine Pittelli Jr.,Loss,124.2,Brandon Hancock,177.7,Week 4,2022,No
+509,Cole Maney,Win,122.3,Aidan Quigley,120.36,Week 4,2022,No
+510,Aidan Quigley,Loss,120.36,Cole Maney,122.3,Week 4,2022,No
+511,Quin Gegwich,Win,117.2,Charlie Gorman,93.72,Week 4,2022,No
+512,Charlie Gorman,Loss,93.72,Quin Gegwich,117.2,Week 4,2022,No
+513,Baylen Slansky,Loss,108.8,Andrew Root,116.96,Week 4,2022,No
+514,Andrew Root,Win,116.96,Baylen Slansky,108.8,Week 4,2022,No
+515,Anthony Kelly,Win,106.74,Ben Castaldo,100.62,Week 4,2022,No
+516,Ben Castaldo,Loss,100.62,Anthony Kelly,106.74,Week 4,2022,No
+517,Max Malich,Win,120.36,Deniz Bileydi,107.38,Week 4,2022,No
+518,Deniz Bileydi,Loss,107.38,Max Malich,120.36,Week 4,2022,No
+519,Aidan Quigley,Win,144.28,Brandon Hancock,84.12,Week 5,2022,No
+520,Brandon Hancock,Loss,84.12,Aidan Quigley,144.28,Week 5,2022,No
+521,Andrew Root,Win,131.86,Ryan P McQuaid,99.34,Week 5,2022,No
+522,Ryan P McQuaid,Loss,99.34,Andrew Root,131.86,Week 5,2022,No
+523,Quin Gegwich,Loss,79.64,Ethan Radecki,126.28,Week 5,2022,No
+524,Ethan Radecki,Win,126.28,Quin Gegwich,79.64,Week 5,2022,No
+525,Ben Castaldo,Win,150.76,Carmine Pittelli Jr.,85.56,Week 5,2022,No
+526,Carmine Pittelli Jr.,Loss,85.56,Ben Castaldo,150.76,Week 5,2022,No
+527,Charlie Gorman,Win,122.34,Cole Maney,95.52,Week 5,2022,No
+528,Cole Maney,Loss,95.52,Charlie Gorman,122.34,Week 5,2022,No
+529,Anthony Kelly,Loss,91.26,Deniz Bileydi,122.7,Week 5,2022,No
+530,Deniz Bileydi,Win,122.7,Anthony Kelly,91.26,Week 5,2022,No
+531,Max Malich,Win,125.46,Baylen Slansky,76.32,Week 5,2022,No
+532,Baylen Slansky,Loss,76.32,Max Malich,125.46,Week 5,2022,No
+533,Andrew Root,Loss,75.4,Charlie Gorman,116.4,Week 6,2022,No
+534,Charlie Gorman,Win,116.4,Andrew Root,75.4,Week 6,2022,No
+535,Brandon Hancock,Win,104.18,Ben Castaldo,76.96,Week 6,2022,No
+536,Ben Castaldo,Loss,76.96,Brandon Hancock,104.18,Week 6,2022,No
+537,Deniz Bileydi,Loss,83.08,Carmine Pittelli Jr.,104.12,Week 6,2022,No
+538,Carmine Pittelli Jr.,Win,104.12,Deniz Bileydi,83.08,Week 6,2022,No
+539,Ryan P McQuaid,Loss,69.16,Anthony Kelly,121.44,Week 6,2022,No
+540,Anthony Kelly,Win,121.44,Ryan P McQuaid,69.16,Week 6,2022,No
+541,Ethan Radecki,Win,157.1,Max Malich,91.6,Week 6,2022,No
+542,Max Malich,Loss,91.6,Ethan Radecki,157.1,Week 6,2022,No
+543,Cole Maney,Loss,70.82,Quin Gegwich,78.46,Week 6,2022,No
+544,Quin Gegwich,Win,78.46,Cole Maney,70.82,Week 6,2022,No
+545,Aidan Quigley,Win,88.92,Baylen Slansky,86.72,Week 6,2022,No
+546,Baylen Slansky,Loss,86.72,Aidan Quigley,88.92,Week 6,2022,No
+547,Deniz Bileydi,Win,113.36,Ben Castaldo,84.52,Week 7,2022,No
+548,Ben Castaldo,Loss,84.52,Deniz Bileydi,113.36,Week 7,2022,No
+549,Carmine Pittelli Jr.,Win,113.34,Charlie Gorman,85.18,Week 7,2022,No
+550,Charlie Gorman,Loss,85.18,Carmine Pittelli Jr.,113.34,Week 7,2022,No
+551,Max Malich,Loss,99.7,Andrew Root,134.34,Week 7,2022,No
+552,Andrew Root,Win,134.34,Max Malich,99.7,Week 7,2022,No
+553,Quin Gegwich,Win,103.1,Baylen Slansky,100.52,Week 7,2022,No
+554,Baylen Slansky,Loss,100.52,Quin Gegwich,103.1,Week 7,2022,No
+555,Anthony Kelly,Win,141.16,Aidan Quigley,96.62,Week 7,2022,No
+556,Aidan Quigley,Loss,96.62,Anthony Kelly,141.16,Week 7,2022,No
+557,Brandon Hancock,Loss,85.2,Ryan P McQuaid,101.74,Week 7,2022,No
+558,Ryan P McQuaid,Win,101.74,Brandon Hancock,85.2,Week 7,2022,No
+559,Cole Maney,Loss,104.02,Ethan Radecki,132.14,Week 7,2022,No
+560,Ethan Radecki,Win,132.14,Cole Maney,104.02,Week 7,2022,No
+561,Deniz Bileydi,Loss,147.54,Max Malich,148.82,Week 8,2022,No
+562,Max Malich,Win,148.82,Deniz Bileydi,147.54,Week 8,2022,No
+563,Brandon Hancock,Loss,139.74,Baylen Slansky,161.92,Week 8,2022,No
+564,Baylen Slansky,Win,161.92,Brandon Hancock,139.74,Week 8,2022,No
+565,Ryan P McQuaid,Loss,108.34,Cole Maney,123.08,Week 8,2022,No
+566,Cole Maney,Win,123.08,Ryan P McQuaid,108.34,Week 8,2022,No
+567,Carmine Pittelli Jr.,Win,126.44,Ethan Radecki,103.98,Week 8,2022,No
+568,Ethan Radecki,Loss,103.98,Carmine Pittelli Jr.,126.44,Week 8,2022,No
+569,Charlie Gorman,Loss,92.24,Aidan Quigley,115.56,Week 8,2022,No
+570,Aidan Quigley,Win,115.56,Charlie Gorman,92.24,Week 8,2022,No
+571,Ben Castaldo,Win,99.32,Andrew Root,88.8,Week 8,2022,No
+572,Andrew Root,Loss,88.8,Ben Castaldo,99.32,Week 8,2022,No
+573,Anthony Kelly,Loss,115.04,Quin Gegwich,139.58,Week 8,2022,No
+574,Quin Gegwich,Win,139.58,Anthony Kelly,115.04,Week 8,2022,No
+575,Max Malich,Loss,106.22,Brandon Hancock,118.8,Week 9,2022,No
+576,Brandon Hancock,Win,118.8,Max Malich,106.22,Week 9,2022,No
+577,Baylen Slansky,Loss,98.7,Ryan P McQuaid,156.5,Week 9,2022,No
+578,Ryan P McQuaid,Win,156.5,Baylen Slansky,98.7,Week 9,2022,No
+579,Cole Maney,Loss,88.1,Carmine Pittelli Jr.,107.78,Week 9,2022,No
+580,Carmine Pittelli Jr.,Win,107.78,Cole Maney,88.1,Week 9,2022,No
+581,Ethan Radecki,Loss,90.64,Charlie Gorman,103.8,Week 9,2022,No
+582,Charlie Gorman,Win,103.8,Ethan Radecki,90.64,Week 9,2022,No
+583,Aidan Quigley,Win,127.54,Ben Castaldo,99.5,Week 9,2022,No
+584,Ben Castaldo,Loss,99.5,Aidan Quigley,127.54,Week 9,2022,No
+585,Andrew Root,Loss,100.52,Anthony Kelly,146.02,Week 9,2022,No
+586,Anthony Kelly,Win,146.02,Andrew Root,100.52,Week 9,2022,No
+587,Deniz Bileydi,Win,111.7,Quin Gegwich,102.48,Week 9,2022,No
+588,Quin Gegwich,Loss,102.48,Deniz Bileydi,111.7,Week 9,2022,No
+589,Ryan P McQuaid,Loss,83.66,Max Malich,89.28,Week 10,2022,No
+590,Max Malich,Win,89.28,Ryan P McQuaid,83.66,Week 10,2022,No
+591,Carmine Pittelli Jr.,Win,112.1,Baylen Slansky,110.64,Week 10,2022,No
+592,Baylen Slansky,Loss,110.64,Carmine Pittelli Jr.,112.1,Week 10,2022,No
+593,Charlie Gorman,Loss,55.18,Cole Maney,124.2,Week 10,2022,No
+594,Cole Maney,Win,124.2,Charlie Gorman,55.18,Week 10,2022,No
+595,Ben Castaldo,Loss,120.2,Ethan Radecki,128.44,Week 10,2022,No
+596,Ethan Radecki,Win,128.44,Ben Castaldo,120.2,Week 10,2022,No
+597,Anthony Kelly,Loss,119.28,Aidan Quigley,129.64,Week 10,2022,No
+598,Aidan Quigley,Win,129.64,Anthony Kelly,119.28,Week 10,2022,No
+599,Quin Gegwich,Loss,78.82,Andrew Root,139.8,Week 10,2022,No
+600,Andrew Root,Win,139.8,Quin Gegwich,78.82,Week 10,2022,No
+601,Brandon Hancock,Win,121.3,Deniz Bileydi,91.46,Week 10,2022,No
+602,Deniz Bileydi,Loss,91.46,Brandon Hancock,121.3,Week 10,2022,No
+603,Max Malich,Win,116.56,Carmine Pittelli Jr.,97.38,Week 11,2022,No
+604,Carmine Pittelli Jr.,Loss,97.38,Max Malich,116.56,Week 11,2022,No
+605,Baylen Slansky,Loss,113.9,Charlie Gorman,125.24,Week 11,2022,No
+606,Charlie Gorman,Win,125.24,Baylen Slansky,113.9,Week 11,2022,No
+607,Cole Maney,Loss,99.12,Ben Castaldo,120.48,Week 11,2022,No
+608,Ben Castaldo,Win,120.48,Cole Maney,99.12,Week 11,2022,No
+609,Ethan Radecki,Win,131,Anthony Kelly,119.72,Week 11,2022,No
+610,Anthony Kelly,Loss,119.72,Ethan Radecki,131,Week 11,2022,No
+611,Aidan Quigley,Loss,105.26,Quin Gegwich,150.54,Week 11,2022,No
+612,Quin Gegwich,Win,150.54,Aidan Quigley,105.26,Week 11,2022,No
+613,Andrew Root,Win,100.3,Brandon Hancock,73.68,Week 11,2022,No
+614,Brandon Hancock,Loss,73.68,Andrew Root,100.3,Week 11,2022,No
+615,Deniz Bileydi,Win,116.2,Ryan P McQuaid,81.76,Week 11,2022,No
+616,Ryan P McQuaid,Loss,81.76,Deniz Bileydi,116.2,Week 11,2022,No
+617,Charlie Gorman,Loss,90.14,Ryan P McQuaid,96.5,Week 12,2022,No
+618,Ryan P McQuaid,Win,96.5,Charlie Gorman,90.14,Week 12,2022,No
+619,Anthony Kelly,Loss,92.8,Baylen Slansky,139.86,Week 12,2022,No
+620,Baylen Slansky,Win,139.86,Anthony Kelly,92.8,Week 12,2022,No
+621,Cole Maney,Loss,108.82,Deniz Bileydi,119.94,Week 12,2022,No
+622,Deniz Bileydi,Win,119.94,Cole Maney,108.82,Week 12,2022,No
+623,Andrew Root,Win,163.32,Ethan Radecki,125.2,Week 12,2022,No
+624,Ethan Radecki,Loss,125.2,Andrew Root,163.32,Week 12,2022,No
+625,Brandon Hancock,Win,143.42,Quin Gegwich,106.04,Week 12,2022,No
+626,Quin Gegwich,Loss,106.04,Brandon Hancock,143.42,Week 12,2022,No
+627,Max Malich,Loss,79.06,Ben Castaldo,80.42,Week 12,2022,No
+628,Ben Castaldo,Win,80.42,Max Malich,79.06,Week 12,2022,No
+629,Carmine Pittelli Jr.,Win,147.36,Aidan Quigley,105.2,Week 12,2022,No
+630,Aidan Quigley,Loss,105.2,Carmine Pittelli Jr.,147.36,Week 12,2022,No
+631,Anthony Kelly,Win,111.86,Max Malich,93.14,Week 13,2022,No
+632,Max Malich,Loss,93.14,Anthony Kelly,111.86,Week 13,2022,No
+633,Cole Maney,Loss,78.44,Baylen Slansky,112.04,Week 13,2022,No
+634,Baylen Slansky,Win,112.04,Cole Maney,78.44,Week 13,2022,No
+635,Brandon Hancock,Win,122.98,Carmine Pittelli Jr.,80.44,Week 13,2022,No
+636,Carmine Pittelli Jr.,Loss,80.44,Brandon Hancock,122.98,Week 13,2022,No
+637,Quin Gegwich,Loss,87.4,Ethan Radecki,119.34,Week 13,2022,No
+638,Ethan Radecki,Win,119.34,Quin Gegwich,87.4,Week 13,2022,No
+639,Ryan P McQuaid,Win,123.46,Aidan Quigley,118.62,Week 13,2022,No
+640,Aidan Quigley,Loss,118.62,Ryan P McQuaid,123.46,Week 13,2022,No
+641,Charlie Gorman,Loss,85.9,Andrew Root,138.8,Week 13,2022,No
+642,Andrew Root,Win,138.8,Charlie Gorman,85.9,Week 13,2022,No
+643,Ben Castaldo,Win,112.42,Deniz Bileydi,109.2,Week 13,2022,No
+644,Deniz Bileydi,Loss,109.2,Ben Castaldo,112.42,Week 13,2022,No
+645,Andrew Root,Win,119.18,Carmine Pittelli Jr.,118.52,Week 14,2022,No
+646,Carmine Pittelli Jr.,Loss,118.52,Andrew Root,119.18,Week 14,2022,No
+647,Aidan Quigley,Win,105.88,Quin Gegwich,103.8,Week 14,2022,No
+648,Quin Gegwich,Loss,103.8,Aidan Quigley,105.88,Week 14,2022,No
+649,Ethan Radecki,Loss,81.46,Brandon Hancock,150.16,Week 14,2022,No
+650,Brandon Hancock,Win,150.16,Ethan Radecki,81.46,Week 14,2022,No
+651,Max Malich,Loss,68.22,Charlie Gorman,70.16,Week 14,2022,No
+652,Charlie Gorman,Win,70.16,Max Malich,68.22,Week 14,2022,No
+653,Deniz Bileydi,Win,105.26,Anthony Kelly,93.68,Week 14,2022,No
+654,Anthony Kelly,Loss,93.68,Deniz Bileydi,105.26,Week 14,2022,No
+655,Baylen Slansky,Loss,86.18,Ben Castaldo,127.98,Week 14,2022,No
+656,Ben Castaldo,Win,127.98,Baylen Slansky,86.18,Week 14,2022,No
+657,Cole Maney,Loss,109.7,Ryan P McQuaid,122.22,Week 14,2022,No
+658,Ryan P McQuaid,Win,122.22,Cole Maney,109.7,Week 14,2022,No
+659,Max Malich,Loss,87.98,Andrew Root,128.4,Playoff Round 1,2022,Yes
+660,Andrew Root,Win,128.4,Max Malich,87.98,Playoff Round 1,2022,Yes
+661,Deniz Bileydi,Loss,106.38,Ryan P McQuaid,114.72,Playoff Round 1,2022,Yes
+662,Ryan P McQuaid,Win,114.72,Deniz Bileydi,106.38,Playoff Round 1,2022,Yes
+663,Anthony Kelly,Win,153.38,Ethan Radecki,153.1,Playoff Round 1,2022,Yes
+664,Ethan Radecki,Loss,153.1,Anthony Kelly,153.38,Playoff Round 1,2022,Yes
+665,Carmine Pittelli Jr.,Loss,91.32,Brandon Hancock,100.12,Playoff Round 1,2022,Yes
+666,Brandon Hancock,Win,100.12,Carmine Pittelli Jr.,91.32,Playoff Round 1,2022,Yes
+667,Charlie Gorman,Loss,76.5,Ben Castaldo,104.36,Playoff Round 1,2022,No
+668,Ben Castaldo,Win,104.36,Charlie Gorman,76.5,Playoff Round 1,2022,No
+669,Baylen Slansky,Loss,95.22,Aidan Quigley,115.74,Playoff Round 1,2022,No
+670,Aidan Quigley,Win,115.74,Baylen Slansky,95.22,Playoff Round 1,2022,No
+671,Cole Maney,Win,130.38,Quin Gegwich,99.06,Playoff Round 1,2022,No
+672,Quin Gegwich,Loss,99.06,Cole Maney,130.38,Playoff Round 1,2022,No
+673,Ryan P McQuaid,Win,96.8,Andrew Root,70.78,Playoff Round 2,2022,Yes
+674,Andrew Root,Loss,70.78,Ryan P McQuaid,96.8,Playoff Round 2,2022,Yes
+675,Anthony Kelly,Win,130.56,Brandon Hancock,109.1,Playoff Round 2,2022,Yes
+676,Brandon Hancock,Loss,109.1,Anthony Kelly,130.56,Playoff Round 2,2022,Yes
+677,Deniz Bileydi,Loss,97.1,Ethan Radecki,174.5,Playoff Round 2,2022,No
+678,Ethan Radecki,Win,174.5,Deniz Bileydi,97.1,Playoff Round 2,2022,No
+679,Max Malich,Loss,87.84,Carmine Pittelli Jr.,108.3,Playoff Round 2,2022,No
+680,Carmine Pittelli Jr.,Win,108.3,Max Malich,87.84,Playoff Round 2,2022,No
+681,Aidan Quigley,Loss,96.86,Ben Castaldo,131.58,Playoff Round 2,2022,No
+682,Ben Castaldo,Win,131.58,Aidan Quigley,96.86,Playoff Round 2,2022,No
+683,Cole Maney,Win,116.56,Charlie Gorman,71.96,Playoff Round 2,2022,No
+684,Charlie Gorman,Loss,71.96,Cole Maney,116.56,Playoff Round 2,2022,No
+685,Quin Gegwich,Win,101.1,Baylen Slansky,74.7,Playoff Round 2,2022,No
+686,Baylen Slansky,Loss,74.7,Quin Gegwich,101.1,Playoff Round 2,2022,No
+687,Anthony Kelly,Win,103.8,Ryan P McQuaid,87.38,Playoff Round 3,2022,Yes
+688,Ryan P McQuaid,Loss,87.38,Anthony Kelly,103.8,Playoff Round 3,2022,Yes
+689,Brandon Hancock,Win,90.62,Andrew Root,77.88,Playoff Round 3,2022,No
+690,Andrew Root,Loss,77.88,Brandon Hancock,90.62,Playoff Round 3,2022,No
+691,Carmine Pittelli Jr.,Win,120.54,Ethan Radecki,68.6,Playoff Round 3,2022,No
+692,Ethan Radecki,Loss,68.6,Carmine Pittelli Jr.,120.54,Playoff Round 3,2022,No
+693,Max Malich,Win,153.88,Deniz Bileydi,95.5,Playoff Round 3,2022,No
+694,Deniz Bileydi,Loss,95.5,Max Malich,153.88,Playoff Round 3,2022,No
+695,Cole Maney,Loss,82.06,Ben Castaldo,117.8,Playoff Round 3,2022,No
+696,Ben Castaldo,Win,117.8,Cole Maney,82.06,Playoff Round 3,2022,No
+697,Quin Gegwich,Loss,66.8,Aidan Quigley,72.72,Playoff Round 3,2022,No
+698,Aidan Quigley,Win,72.72,Quin Gegwich,66.8,Playoff Round 3,2022,No
+699,Baylen Slansky,Loss,65.88,Charlie Gorman,139.08,Playoff Round 3,2022,No
+700,Charlie Gorman,Win,139.08,Baylen Slansky,65.88,Playoff Round 3,2022,No
+701,Max Malich,Loss,77.64,Ryan P McQuaid,95.8,Week 1,2023,No
+702,Ryan P McQuaid,Win,95.8,Max Malich,77.64,Week 1,2023,No
+703,Quin Gegwich,Win,109.34,Cole Maney,103.6,Week 1,2023,No
+704,Cole Maney,Loss,103.6,Quin Gegwich,109.34,Week 1,2023,No
+705,Baylen Slansky,Loss,57.94,Deniz Bileydi,107.74,Week 1,2023,No
+706,Deniz Bileydi,Win,107.74,Baylen Slansky,57.94,Week 1,2023,No
+707,Brandon Hancock,Loss,114.78,Ethan Radecki,145.36,Week 1,2023,No
+708,Ethan Radecki,Win,145.36,Brandon Hancock,114.78,Week 1,2023,No
+709,Ben Castaldo,Loss,89.26,Carmine Pittelli Jr.,124.38,Week 1,2023,No
+710,Carmine Pittelli Jr.,Win,124.38,Ben Castaldo,89.26,Week 1,2023,No
+711,Anthony Kelly,Loss,76.14,Charlie Gorman,104.36,Week 1,2023,No
+712,Charlie Gorman,Win,104.36,Anthony Kelly,76.14,Week 1,2023,No
+713,Andrew Root,Loss,79.86,Aidan Quigley,89.92,Week 1,2023,No
+714,Aidan Quigley,Win,89.92,Andrew Root,79.86,Week 1,2023,No
+715,Baylen Slansky,Loss,102.24,Aidan Quigley,122.7,Week 2,2023,No
+716,Aidan Quigley,Win,122.7,Baylen Slansky,102.24,Week 2,2023,No
+717,Anthony Kelly,Loss,108.1,Max Malich,153.02,Week 2,2023,No
+718,Max Malich,Win,153.02,Anthony Kelly,108.1,Week 2,2023,No
+719,Brandon Hancock,Loss,109.88,Carmine Pittelli Jr.,175.46,Week 2,2023,No
+720,Carmine Pittelli Jr.,Win,175.46,Brandon Hancock,109.88,Week 2,2023,No
+721,Ben Castaldo,Loss,137.2,Ethan Radecki,146.4,Week 2,2023,No
+722,Ethan Radecki,Win,146.4,Ben Castaldo,137.2,Week 2,2023,No
+723,Deniz Bileydi,Loss,71.06,Andrew Root,77.58,Week 2,2023,No
+724,Andrew Root,Win,77.58,Deniz Bileydi,71.06,Week 2,2023,No
+725,Charlie Gorman,Win,114.26,Quin Gegwich,68.84,Week 2,2023,No
+726,Quin Gegwich,Loss,68.84,Charlie Gorman,114.26,Week 2,2023,No
+727,Ryan P McQuaid,Loss,96.44,Cole Maney,134.72,Week 2,2023,No
+728,Cole Maney,Win,134.72,Ryan P McQuaid,96.44,Week 2,2023,No
+729,Cole Maney,Win,148.34,Carmine Pittelli Jr.,110.12,Week 3,2023,No
+730,Carmine Pittelli Jr.,Loss,110.12,Cole Maney,148.34,Week 3,2023,No
+731,Ryan P McQuaid,Win,125.38,Charlie Gorman,125.28,Week 3,2023,No
+732,Charlie Gorman,Loss,125.28,Ryan P McQuaid,125.38,Week 3,2023,No
+733,Ethan Radecki,Win,113.5,Anthony Kelly,70.3,Week 3,2023,No
+734,Anthony Kelly,Loss,70.3,Ethan Radecki,113.5,Week 3,2023,No
+735,Brandon Hancock,Win,126.26,Andrew Root,109.58,Week 3,2023,No
+736,Andrew Root,Loss,109.58,Brandon Hancock,126.26,Week 3,2023,No
+737,Aidan Quigley,Win,108.36,Quin Gegwich,70.36,Week 3,2023,No
+738,Quin Gegwich,Loss,70.36,Aidan Quigley,108.36,Week 3,2023,No
+739,Max Malich,Loss,98.94,Baylen Slansky,111.36,Week 3,2023,No
+740,Baylen Slansky,Win,111.36,Max Malich,98.94,Week 3,2023,No
+741,Ben Castaldo,Loss,166.06,Deniz Bileydi,176.16,Week 3,2023,No
+742,Deniz Bileydi,Win,176.16,Ben Castaldo,166.06,Week 3,2023,No
+743,Ethan Radecki,Win,190.88,Charlie Gorman,90.66,Week 4,2023,No
+744,Charlie Gorman,Loss,90.66,Ethan Radecki,190.88,Week 4,2023,No
+745,Brandon Hancock,Win,119.54,Ben Castaldo,83.56,Week 4,2023,No
+746,Ben Castaldo,Loss,83.56,Brandon Hancock,119.54,Week 4,2023,No
+747,Cole Maney,Loss,98.14,Baylen Slansky,111.8,Week 4,2023,No
+748,Baylen Slansky,Win,111.8,Cole Maney,98.14,Week 4,2023,No
+749,Quin Gegwich,Loss,82.98,Ryan P McQuaid,104.62,Week 4,2023,No
+750,Ryan P McQuaid,Win,104.62,Quin Gegwich,82.98,Week 4,2023,No
+751,Aidan Quigley,Loss,84.24,Anthony Kelly,100.9,Week 4,2023,No
+752,Anthony Kelly,Win,100.9,Aidan Quigley,84.24,Week 4,2023,No
+753,Andrew Root,Win,157.54,Max Malich,98.9,Week 4,2023,No
+754,Max Malich,Loss,98.9,Andrew Root,157.54,Week 4,2023,No
+755,Carmine Pittelli Jr.,Win,131.3,Deniz Bileydi,91.88,Week 4,2023,No
+756,Deniz Bileydi,Loss,91.88,Carmine Pittelli Jr.,131.3,Week 4,2023,No
+757,Aidan Quigley,Loss,127.02,Max Malich,132.72,Week 5,2023,No
+758,Max Malich,Win,132.72,Aidan Quigley,127.02,Week 5,2023,No
+759,Andrew Root,Win,96.94,Quin Gegwich,83.16,Week 5,2023,No
+760,Quin Gegwich,Loss,83.16,Andrew Root,96.94,Week 5,2023,No
+761,Ryan P McQuaid,Loss,91.24,Brandon Hancock,168.68,Week 5,2023,No
+762,Brandon Hancock,Win,168.68,Ryan P McQuaid,91.24,Week 5,2023,No
+763,Ben Castaldo,Win,118.34,Cole Maney,104.72,Week 5,2023,No
+764,Cole Maney,Loss,104.72,Ben Castaldo,118.34,Week 5,2023,No
+765,Charlie Gorman,Win,139.96,Carmine Pittelli Jr.,120.36,Week 5,2023,No
+766,Carmine Pittelli Jr.,Loss,120.36,Charlie Gorman,139.96,Week 5,2023,No
+767,Anthony Kelly,Loss,65.22,Baylen Slansky,142.78,Week 5,2023,No
+768,Baylen Slansky,Win,142.78,Anthony Kelly,65.22,Week 5,2023,No
+769,Ethan Radecki,Loss,58.4,Deniz Bileydi,108.72,Week 5,2023,No
+770,Deniz Bileydi,Win,108.72,Ethan Radecki,58.4,Week 5,2023,No
+771,Andrew Root,Loss,96.22,Baylen Slansky,127.22,Week 6,2023,No
+772,Baylen Slansky,Win,127.22,Andrew Root,96.22,Week 6,2023,No
+773,Brandon Hancock,Loss,104.8,Anthony Kelly,111.4,Week 6,2023,No
+774,Anthony Kelly,Win,111.4,Brandon Hancock,104.8,Week 6,2023,No
+775,Deniz Bileydi,Loss,112.18,Aidan Quigley,128.28,Week 6,2023,No
+776,Aidan Quigley,Win,128.28,Deniz Bileydi,112.18,Week 6,2023,No
+777,Ryan P McQuaid,Loss,92.54,Carmine Pittelli Jr.,106.46,Week 6,2023,No
+778,Carmine Pittelli Jr.,Win,106.46,Ryan P McQuaid,92.54,Week 6,2023,No
+779,Ethan Radecki,Win,115.58,Quin Gegwich,83.84,Week 6,2023,No
+780,Quin Gegwich,Loss,83.84,Ethan Radecki,115.58,Week 6,2023,No
+781,Cole Maney,Win,134.2,Max Malich,79.64,Week 6,2023,No
+782,Max Malich,Loss,79.64,Cole Maney,134.2,Week 6,2023,No
+783,Ben Castaldo,Loss,113.54,Charlie Gorman,113.74,Week 6,2023,No
+784,Charlie Gorman,Win,113.74,Ben Castaldo,113.54,Week 6,2023,No
+785,Deniz Bileydi,Loss,86.44,Anthony Kelly,101.28,Week 7,2023,No
+786,Anthony Kelly,Win,101.28,Deniz Bileydi,86.44,Week 7,2023,No
+787,Carmine Pittelli Jr.,Loss,118.2,Andrew Root,126.18,Week 7,2023,No
+788,Andrew Root,Win,126.18,Carmine Pittelli Jr.,118.2,Week 7,2023,No
+789,Max Malich,Win,120.56,Ben Castaldo,59.6,Week 7,2023,No
+790,Ben Castaldo,Loss,59.6,Max Malich,120.56,Week 7,2023,No
+791,Quin Gegwich,Loss,75.26,Baylen Slansky,97.26,Week 7,2023,No
+792,Baylen Slansky,Win,97.26,Quin Gegwich,75.26,Week 7,2023,No
+793,Charlie Gorman,Win,133.52,Brandon Hancock,104.3,Week 7,2023,No
+794,Brandon Hancock,Loss,104.3,Charlie Gorman,133.52,Week 7,2023,No
+795,Aidan Quigley,Win,143.26,Ryan P McQuaid,118.76,Week 7,2023,No
+796,Ryan P McQuaid,Loss,118.76,Aidan Quigley,143.26,Week 7,2023,No
+797,Cole Maney,Loss,108.26,Ethan Radecki,134.66,Week 7,2023,No
+798,Ethan Radecki,Win,134.66,Cole Maney,108.26,Week 7,2023,No
+799,Deniz Bileydi,Win,103.96,Ryan P McQuaid,94.2,Week 8,2023,No
+800,Ryan P McQuaid,Loss,94.2,Deniz Bileydi,103.96,Week 8,2023,No
+801,Brandon Hancock,Win,119.56,Baylen Slansky,89.7,Week 8,2023,No
+802,Baylen Slansky,Loss,89.7,Brandon Hancock,119.56,Week 8,2023,No
+803,Max Malich,Loss,98.2,Ethan Radecki,162.42,Week 8,2023,No
+804,Ethan Radecki,Win,162.42,Max Malich,98.2,Week 8,2023,No
+805,Carmine Pittelli Jr.,Win,155.66,Ben Castaldo,80.02,Week 8,2023,No
+806,Ben Castaldo,Loss,80.02,Carmine Pittelli Jr.,155.66,Week 8,2023,No
+807,Charlie Gorman,Loss,142.16,Aidan Quigley,144.26,Week 8,2023,No
+808,Aidan Quigley,Win,144.26,Charlie Gorman,142.16,Week 8,2023,No
+809,Cole Maney,Win,124.46,Quin Gegwich,122.88,Week 8,2023,No
+810,Quin Gegwich,Loss,122.88,Cole Maney,124.46,Week 8,2023,No
+811,Anthony Kelly,Win,102,Andrew Root,91.48,Week 8,2023,No
+812,Andrew Root,Loss,91.48,Anthony Kelly,102,Week 8,2023,No
+813,Max Malich,Loss,87.24,Carmine Pittelli Jr.,130.32,Week 9,2023,No
+814,Carmine Pittelli Jr.,Win,130.32,Max Malich,87.24,Week 9,2023,No
+815,Baylen Slansky,Win,141.92,Charlie Gorman,132.7,Week 9,2023,No
+816,Charlie Gorman,Loss,132.7,Baylen Slansky,141.92,Week 9,2023,No
+817,Cole Maney,Loss,86.08,Deniz Bileydi,126.02,Week 9,2023,No
+818,Deniz Bileydi,Win,126.02,Cole Maney,86.08,Week 9,2023,No
+819,Ethan Radecki,Win,117.64,Aidan Quigley,90.06,Week 9,2023,No
+820,Aidan Quigley,Loss,90.06,Ethan Radecki,117.64,Week 9,2023,No
+821,Ryan P McQuaid,Loss,74.3,Ben Castaldo,81.28,Week 9,2023,No
+822,Ben Castaldo,Win,81.28,Ryan P McQuaid,74.3,Week 9,2023,No
+823,Quin Gegwich,Loss,121.4,Anthony Kelly,134.62,Week 9,2023,No
+824,Anthony Kelly,Win,134.62,Quin Gegwich,121.4,Week 9,2023,No
+825,Brandon Hancock,Win,95.82,Andrew Root,73.88,Week 9,2023,No
+826,Andrew Root,Loss,73.88,Brandon Hancock,95.82,Week 9,2023,No
+827,Andrew Root,Loss,79.72,Cole Maney,150.7,Week 10,2023,No
+828,Cole Maney,Win,150.7,Andrew Root,79.72,Week 10,2023,No
+829,Carmine Pittelli Jr.,Win,138.18,Baylen Slansky,76.74,Week 10,2023,No
+830,Baylen Slansky,Loss,76.74,Carmine Pittelli Jr.,138.18,Week 10,2023,No
+831,Charlie Gorman,Loss,106.58,Max Malich,123.96,Week 10,2023,No
+832,Max Malich,Win,123.96,Charlie Gorman,106.58,Week 10,2023,No
+833,Ryan P McQuaid,Loss,105.5,Ethan Radecki,119.72,Week 10,2023,No
+834,Ethan Radecki,Win,119.72,Ryan P McQuaid,105.5,Week 10,2023,No
+835,Anthony Kelly,Win,107.28,Ben Castaldo,88.12,Week 10,2023,No
+836,Ben Castaldo,Loss,88.12,Anthony Kelly,107.28,Week 10,2023,No
+837,Brandon Hancock,Win,141.24,Aidan Quigley,133.46,Week 10,2023,No
+838,Aidan Quigley,Loss,133.46,Brandon Hancock,141.24,Week 10,2023,No
+839,Quin Gegwich,Win,105.42,Deniz Bileydi,104.66,Week 10,2023,No
+840,Deniz Bileydi,Loss,104.66,Quin Gegwich,105.42,Week 10,2023,No
+841,Max Malich,Win,133.96,Quin Gegwich,101.22,Week 11,2023,No
+842,Quin Gegwich,Loss,101.22,Max Malich,133.96,Week 11,2023,No
+843,Baylen Slansky,Loss,71.94,Ryan P McQuaid,82.68,Week 11,2023,No
+844,Ryan P McQuaid,Win,82.68,Baylen Slansky,71.94,Week 11,2023,No
+845,Cole Maney,Win,115.2,Anthony Kelly,95.44,Week 11,2023,No
+846,Anthony Kelly,Loss,95.44,Cole Maney,115.2,Week 11,2023,No
+847,Ethan Radecki,Win,148.6,Carmine Pittelli Jr.,144.5,Week 11,2023,No
+848,Carmine Pittelli Jr.,Loss,144.5,Ethan Radecki,148.6,Week 11,2023,No
+849,Aidan Quigley,Win,117.26,Ben Castaldo,96.74,Week 11,2023,No
+850,Ben Castaldo,Loss,96.74,Aidan Quigley,117.26,Week 11,2023,No
+851,Brandon Hancock,Win,117.32,Deniz Bileydi,102,Week 11,2023,No
+852,Deniz Bileydi,Loss,102,Brandon Hancock,117.32,Week 11,2023,No
+853,Charlie Gorman,Win,128.84,Andrew Root,112.86,Week 11,2023,No
+854,Andrew Root,Loss,112.86,Charlie Gorman,128.84,Week 11,2023,No
+855,Charlie Gorman,Win,171.3,Deniz Bileydi,89.52,Week 12,2023,No
+856,Deniz Bileydi,Loss,89.52,Charlie Gorman,171.3,Week 12,2023,No
+857,Ethan Radecki,Win,140.18,Baylen Slansky,130.56,Week 12,2023,No
+858,Baylen Slansky,Loss,130.56,Ethan Radecki,140.18,Week 12,2023,No
+859,Cole Maney,Win,146.1,Aidan Quigley,130.24,Week 12,2023,No
+860,Aidan Quigley,Loss,130.24,Cole Maney,146.1,Week 12,2023,No
+861,Andrew Root,Loss,87.88,Ryan P McQuaid,118.92,Week 12,2023,No
+862,Ryan P McQuaid,Win,118.92,Andrew Root,87.88,Week 12,2023,No
+863,Brandon Hancock,Win,122.76,Max Malich,112.34,Week 12,2023,No
+864,Max Malich,Loss,112.34,Brandon Hancock,122.76,Week 12,2023,No
+865,Quin Gegwich,Loss,91.76,Ben Castaldo,106.1,Week 12,2023,No
+866,Ben Castaldo,Win,106.1,Quin Gegwich,91.76,Week 12,2023,No
+867,Carmine Pittelli Jr.,Win,149.76,Anthony Kelly,96.26,Week 12,2023,No
+868,Anthony Kelly,Loss,96.26,Carmine Pittelli Jr.,149.76,Week 12,2023,No
+869,Ryan P McQuaid,Win,156.7,Max Malich,86,Week 13,2023,No
+870,Max Malich,Loss,86,Ryan P McQuaid,156.7,Week 13,2023,No
+871,Ben Castaldo,Win,109.8,Andrew Root,82.82,Week 13,2023,No
+872,Andrew Root,Loss,82.82,Ben Castaldo,109.8,Week 13,2023,No
+873,Brandon Hancock,Loss,124.76,Cole Maney,126.32,Week 13,2023,No
+874,Cole Maney,Win,126.32,Brandon Hancock,124.76,Week 13,2023,No
+875,Quin Gegwich,Loss,103.58,Carmine Pittelli Jr.,110.48,Week 13,2023,No
+876,Carmine Pittelli Jr.,Win,110.48,Quin Gegwich,103.58,Week 13,2023,No
+877,Baylen Slansky,Win,157.18,Aidan Quigley,98.56,Week 13,2023,No
+878,Aidan Quigley,Loss,98.56,Baylen Slansky,157.18,Week 13,2023,No
+879,Charlie Gorman,Win,186.78,Anthony Kelly,70.32,Week 13,2023,No
+880,Anthony Kelly,Loss,70.32,Charlie Gorman,186.78,Week 13,2023,No
+881,Ethan Radecki,Win,95.18,Deniz Bileydi,82.7,Week 13,2023,No
+882,Deniz Bileydi,Loss,82.7,Ethan Radecki,95.18,Week 13,2023,No
+883,Aidan Quigley,Loss,120.44,Carmine Pittelli Jr.,159.22,Week 14,2023,No
+884,Carmine Pittelli Jr.,Win,159.22,Aidan Quigley,120.44,Week 14,2023,No
+885,Andrew Root,Win,124.24,Ethan Radecki,65.74,Week 14,2023,No
+886,Ethan Radecki,Loss,65.74,Andrew Root,124.24,Week 14,2023,No
+887,Quin Gegwich,Loss,93.66,Brandon Hancock,116.62,Week 14,2023,No
+888,Brandon Hancock,Win,116.62,Quin Gegwich,93.66,Week 14,2023,No
+889,Max Malich,Win,137.8,Deniz Bileydi,68.4,Week 14,2023,No
+890,Deniz Bileydi,Loss,68.4,Max Malich,137.8,Week 14,2023,No
+891,Charlie Gorman,Win,156.96,Cole Maney,119.18,Week 14,2023,No
+892,Cole Maney,Loss,119.18,Charlie Gorman,156.96,Week 14,2023,No
+893,Baylen Slansky,Win,87.02,Ben Castaldo,84.3,Week 14,2023,No
+894,Ben Castaldo,Loss,84.3,Baylen Slansky,87.02,Week 14,2023,No
+895,Anthony Kelly,Loss,90.48,Ryan P McQuaid,103.84,Week 14,2023,No
+896,Ryan P McQuaid,Win,103.84,Anthony Kelly,90.48,Week 14,2023,No
+897,Ryan P McQuaid,Loss,87.5,Ethan Radecki,134.36,Playoff Round 1,2023,Yes
+898,Ethan Radecki,Win,134.36,Ryan P McQuaid,87.5,Playoff Round 1,2023,Yes
+899,Cole Maney,Win,130.32,Brandon Hancock,100.78,Playoff Round 1,2023,Yes
+900,Brandon Hancock,Loss,100.78,Cole Maney,130.32,Playoff Round 1,2023,Yes
+901,Baylen Slansky,Loss,113.54,Charlie Gorman,157.08,Playoff Round 1,2023,Yes
+902,Charlie Gorman,Win,157.08,Baylen Slansky,113.54,Playoff Round 1,2023,Yes
+903,Aidan Quigley,Loss,79.26,Carmine Pittelli Jr.,110.46,Playoff Round 1,2023,Yes
+904,Carmine Pittelli Jr.,Win,110.46,Aidan Quigley,79.26,Playoff Round 1,2023,Yes
+905,Anthony Kelly,Win,105.96,Max Malich,105.14,Playoff Round 1,2023,No
+906,Max Malich,Loss,105.14,Anthony Kelly,105.96,Playoff Round 1,2023,No
+907,Andrew Root,Win,100.74,Deniz Bileydi,93.56,Playoff Round 1,2023,No
+908,Deniz Bileydi,Loss,93.56,Andrew Root,100.74,Playoff Round 1,2023,No
+909,Quin Gegwich,Win,135.04,Ben Castaldo,112.96,Playoff Round 1,2023,No
+910,Ben Castaldo,Loss,112.96,Quin Gegwich,135.04,Playoff Round 1,2023,No
+911,Cole Maney,Win,116.72,Ethan Radecki,114.9,Playoff Round 2,2023,Yes
+912,Ethan Radecki,Loss,114.9,Cole Maney,116.72,Playoff Round 2,2023,Yes
+913,Charlie Gorman,Loss,124.12,Carmine Pittelli Jr.,138.38,Playoff Round 2,2023,Yes
+914,Carmine Pittelli Jr.,Win,138.38,Charlie Gorman,124.12,Playoff Round 2,2023,Yes
+915,Baylen Slansky,Win,64.2,Brandon Hancock,63.7,Playoff Round 2,2023,No
+916,Brandon Hancock,Loss,63.7,Baylen Slansky,64.2,Playoff Round 2,2023,No
+917,Ryan P McQuaid,Loss,98,Aidan Quigley,98.32,Playoff Round 2,2023,No
+918,Aidan Quigley,Win,98.32,Ryan P McQuaid,98,Playoff Round 2,2023,No
+919,Andrew Root,Win,125.98,Anthony Kelly,121.04,Playoff Round 2,2023,No
+920,Anthony Kelly,Loss,121.04,Andrew Root,125.98,Playoff Round 2,2023,No
+921,Quin Gegwich,Win,132.62,Max Malich,94.6,Playoff Round 2,2023,No
+922,Max Malich,Loss,94.6,Quin Gegwich,132.62,Playoff Round 2,2023,No
+923,Ben Castaldo,Win,127.7,Deniz Bileydi,80.72,Playoff Round 2,2023,No
+924,Deniz Bileydi,Loss,80.72,Ben Castaldo,127.7,Playoff Round 2,2023,No
+925,Cole Maney,Loss,96.48,Carmine Pittelli Jr.,130.16,Playoff Round 3,2023,Yes
+926,Carmine Pittelli Jr.,Win,130.16,Cole Maney,96.48,Playoff Round 3,2023,Yes
+927,Charlie Gorman,Win,132.8,Ethan Radecki,106.68,Playoff Round 3,2023,No
+928,Ethan Radecki,Loss,106.68,Charlie Gorman,132.8,Playoff Round 3,2023,No
+929,Aidan Quigley,Loss,124.6,Baylen Slansky,129.32,Playoff Round 3,2023,No
+930,Baylen Slansky,Win,129.32,Aidan Quigley,124.6,Playoff Round 3,2023,No
+931,Ryan P McQuaid,Loss,88.44,Brandon Hancock,155.3,Playoff Round 3,2023,No
+932,Brandon Hancock,Win,155.3,Ryan P McQuaid,88.44,Playoff Round 3,2023,No
+933,Quin Gegwich,Loss,62.16,Andrew Root,133.74,Playoff Round 3,2023,No
+934,Andrew Root,Win,133.74,Quin Gegwich,62.16,Playoff Round 3,2023,No
+935,Ben Castaldo,Win,104.7,Anthony Kelly,65.2,Playoff Round 3,2023,No
+936,Anthony Kelly,Loss,65.2,Ben Castaldo,104.7,Playoff Round 3,2023,No
+937,Deniz Bileydi,Loss,83.78,Max Malich,99.78,Playoff Round 3,2023,No
+938,Max Malich,Win,99.78,Deniz Bileydi,83.78,Playoff Round 3,2023,No
+939,Max Malich,Win,130.48,Deniz Bileydi,119.66,Week 1,2024,No
+940,Deniz Bileydi,Loss,119.66,Max Malich,130.48,Week 1,2024,No
+941,Quin Gegwich,Loss,110.7,Brandon Hancock,112.52,Week 1,2024,No
+942,Brandon Hancock,Win,112.52,Quin Gegwich,110.7,Week 1,2024,No
+943,Baylen Slansky,Win,115.98,Ben Castaldo,88.56,Week 1,2024,No
+944,Ben Castaldo,Loss,88.56,Baylen Slansky,115.98,Week 1,2024,No
+945,Andrew Root,Win,143.18,Ethan Radecki,118.18,Week 1,2024,No
+946,Ethan Radecki,Loss,118.18,Andrew Root,143.18,Week 1,2024,No
+947,Cole Maney,Win,99.84,Carmine Pittelli Jr.,76.22,Week 1,2024,No
+948,Carmine Pittelli Jr.,Loss,76.22,Cole Maney,99.84,Week 1,2024,No
+949,Anthony Kelly,Win,117.82,Ryan P McQuaid,98.18,Week 1,2024,No
+950,Ryan P McQuaid,Loss,98.18,Anthony Kelly,117.82,Week 1,2024,No
+951,Charlie Gorman,Loss,111.96,Aidan Quigley,136.36,Week 1,2024,No
+952,Aidan Quigley,Win,136.36,Charlie Gorman,111.96,Week 1,2024,No
+953,Baylen Slansky,Loss,99.36,Ethan Radecki,100.68,Week 2,2024,No
+954,Ethan Radecki,Win,100.68,Baylen Slansky,99.36,Week 2,2024,No
+955,Anthony Kelly,Win,111.06,Aidan Quigley,109.72,Week 2,2024,No
+956,Aidan Quigley,Loss,109.72,Anthony Kelly,111.06,Week 2,2024,No
+957,Brandon Hancock,Win,127.18,Deniz Bileydi,108.5,Week 2,2024,No
+958,Deniz Bileydi,Loss,108.5,Brandon Hancock,127.18,Week 2,2024,No
+959,Ben Castaldo,Loss,88.22,Ryan P McQuaid,111.16,Week 2,2024,No
+960,Ryan P McQuaid,Win,111.16,Ben Castaldo,88.22,Week 2,2024,No
+961,Carmine Pittelli Jr.,Loss,122.62,Andrew Root,140.94,Week 2,2024,No
+962,Andrew Root,Win,140.94,Carmine Pittelli Jr.,122.62,Week 2,2024,No
+963,Charlie Gorman,Loss,95.44,Max Malich,121.46,Week 2,2024,No
+964,Max Malich,Win,121.46,Charlie Gorman,95.44,Week 2,2024,No
+965,Quin Gegwich,Win,120.5,Cole Maney,106.24,Week 2,2024,No
+966,Cole Maney,Loss,106.24,Quin Gegwich,120.5,Week 2,2024,No
+967,Cole Maney,Win,108.28,Deniz Bileydi,90.3,Week 3,2024,No
+968,Deniz Bileydi,Loss,90.3,Cole Maney,108.28,Week 3,2024,No
+969,Ryan P McQuaid,Win,142.38,Baylen Slansky,79.28,Week 3,2024,No
+970,Baylen Slansky,Loss,79.28,Ryan P McQuaid,142.38,Week 3,2024,No
+971,Ethan Radecki,Win,118.82,Carmine Pittelli Jr.,93.14,Week 3,2024,No
+972,Carmine Pittelli Jr.,Loss,93.14,Ethan Radecki,118.82,Week 3,2024,No
+973,Brandon Hancock,Loss,115.68,Charlie Gorman,125.76,Week 3,2024,No
+974,Charlie Gorman,Win,125.76,Brandon Hancock,115.68,Week 3,2024,No
+975,Aidan Quigley,Win,137.38,Ben Castaldo,101.26,Week 3,2024,No
+976,Ben Castaldo,Loss,101.26,Aidan Quigley,137.38,Week 3,2024,No
+977,Max Malich,Win,183.42,Anthony Kelly,76.04,Week 3,2024,No
+978,Anthony Kelly,Loss,76.04,Max Malich,183.42,Week 3,2024,No
+979,Quin Gegwich,Loss,71.92,Andrew Root,126.18,Week 3,2024,No
+980,Andrew Root,Win,126.18,Quin Gegwich,71.92,Week 3,2024,No
+981,Ethan Radecki,Win,119.88,Ryan P McQuaid,87.62,Week 4,2024,No
+982,Ryan P McQuaid,Loss,87.62,Ethan Radecki,119.88,Week 4,2024,No
+983,Brandon Hancock,Win,115.44,Anthony Kelly,91.7,Week 4,2024,No
+984,Anthony Kelly,Loss,91.7,Brandon Hancock,115.44,Week 4,2024,No
+985,Cole Maney,Loss,112,Charlie Gorman,127.72,Week 4,2024,No
+986,Charlie Gorman,Win,127.72,Cole Maney,112,Week 4,2024,No
+987,Quin Gegwich,Win,135.78,Carmine Pittelli Jr.,88.22,Week 4,2024,No
+988,Carmine Pittelli Jr.,Loss,88.22,Quin Gegwich,135.78,Week 4,2024,No
+989,Aidan Quigley,Win,117.52,Baylen Slansky,94.84,Week 4,2024,No
+990,Baylen Slansky,Loss,94.84,Aidan Quigley,117.52,Week 4,2024,No
+991,Ben Castaldo,Loss,91.68,Max Malich,124.6,Week 4,2024,No
+992,Max Malich,Win,124.6,Ben Castaldo,91.68,Week 4,2024,No
+993,Andrew Root,Loss,86.28,Deniz Bileydi,138.1,Week 4,2024,No
+994,Deniz Bileydi,Win,138.1,Andrew Root,86.28,Week 4,2024,No
+995,Baylen Slansky,Win,97.56,Max Malich,90.24,Week 5,2024,No
+996,Max Malich,Loss,90.24,Baylen Slansky,97.56,Week 5,2024,No
+997,Andrew Root,Loss,109.4,Charlie Gorman,128.42,Week 5,2024,No
+998,Charlie Gorman,Win,128.42,Andrew Root,109.4,Week 5,2024,No
+999,Ryan P McQuaid,Loss,78.66,Aidan Quigley,108.68,Week 5,2024,No
+1000,Aidan Quigley,Win,108.68,Ryan P McQuaid,78.66,Week 5,2024,No
+1001,Ben Castaldo,Loss,140.98,Brandon Hancock,144.52,Week 5,2024,No
+1002,Brandon Hancock,Win,144.52,Ben Castaldo,140.98,Week 5,2024,No
+1003,Deniz Bileydi,Win,154.14,Carmine Pittelli Jr.,146.14,Week 5,2024,No
+1004,Carmine Pittelli Jr.,Loss,146.14,Deniz Bileydi,154.14,Week 5,2024,No
+1005,Anthony Kelly,Loss,101.56,Cole Maney,152.26,Week 5,2024,No
+1006,Cole Maney,Win,152.26,Anthony Kelly,101.56,Week 5,2024,No
+1007,Ethan Radecki,Win,110.04,Quin Gegwich,109.86,Week 5,2024,No
+1008,Quin Gegwich,Loss,109.86,Ethan Radecki,110.04,Week 5,2024,No
+1009,Andrew Root,Loss,114.96,Anthony Kelly,147.24,Week 6,2024,No
+1010,Anthony Kelly,Win,147.24,Andrew Root,114.96,Week 6,2024,No
+1011,Brandon Hancock,Loss,96.82,Baylen Slansky,133.1,Week 6,2024,No
+1012,Baylen Slansky,Win,133.1,Brandon Hancock,96.82,Week 6,2024,No
+1013,Deniz Bileydi,Loss,116.08,Quin Gegwich,133.92,Week 6,2024,No
+1014,Quin Gegwich,Win,133.92,Deniz Bileydi,116.08,Week 6,2024,No
+1015,Ryan P McQuaid,Loss,84.2,Max Malich,130.5,Week 6,2024,No
+1016,Max Malich,Win,130.5,Ryan P McQuaid,84.2,Week 6,2024,No
+1017,Ethan Radecki,Win,117.66,Aidan Quigley,71.62,Week 6,2024,No
+1018,Aidan Quigley,Loss,71.62,Ethan Radecki,117.66,Week 6,2024,No
+1019,Cole Maney,Win,101.58,Ben Castaldo,80.52,Week 6,2024,No
+1020,Ben Castaldo,Loss,80.52,Cole Maney,101.58,Week 6,2024,No
+1021,Carmine Pittelli Jr.,Win,139.6,Charlie Gorman,102.76,Week 6,2024,No
+1022,Charlie Gorman,Loss,102.76,Carmine Pittelli Jr.,139.6,Week 6,2024,No
+1023,Deniz Bileydi,Win,115.94,Ethan Radecki,81.76,Week 7,2024,No
+1024,Ethan Radecki,Loss,81.76,Deniz Bileydi,115.94,Week 7,2024,No
+1025,Ben Castaldo,Loss,80.94,Andrew Root,94.4,Week 7,2024,No
+1026,Andrew Root,Win,94.4,Ben Castaldo,80.94,Week 7,2024,No
+1027,Max Malich,Win,115.62,Aidan Quigley,113.08,Week 7,2024,No
+1028,Aidan Quigley,Loss,113.08,Max Malich,115.62,Week 7,2024,No
+1029,Quin Gegwich,Win,135.6,Charlie Gorman,71.94,Week 7,2024,No
+1030,Charlie Gorman,Loss,71.94,Quin Gegwich,135.6,Week 7,2024,No
+1031,Baylen Slansky,Loss,94.16,Cole Maney,108.78,Week 7,2024,No
+1032,Cole Maney,Win,108.78,Baylen Slansky,94.16,Week 7,2024,No
+1033,Carmine Pittelli Jr.,Win,116.06,Anthony Kelly,110.36,Week 7,2024,No
+1034,Anthony Kelly,Loss,110.36,Carmine Pittelli Jr.,116.06,Week 7,2024,No
+1035,Brandon Hancock,Win,164.54,Ryan P McQuaid,109.48,Week 7,2024,No
+1036,Ryan P McQuaid,Loss,109.48,Brandon Hancock,164.54,Week 7,2024,No
+1037,Deniz Bileydi,Loss,91.8,Charlie Gorman,153.44,Week 8,2024,No
+1038,Charlie Gorman,Win,153.44,Deniz Bileydi,91.8,Week 8,2024,No
+1039,Brandon Hancock,Win,147.78,Aidan Quigley,137.82,Week 8,2024,No
+1040,Aidan Quigley,Loss,137.82,Brandon Hancock,147.78,Week 8,2024,No
+1041,Max Malich,Loss,126.72,Ethan Radecki,145.04,Week 8,2024,No
+1042,Ethan Radecki,Win,145.04,Max Malich,126.72,Week 8,2024,No
+1043,Carmine Pittelli Jr.,Win,115.32,Ben Castaldo,69.76,Week 8,2024,No
+1044,Ben Castaldo,Loss,69.76,Carmine Pittelli Jr.,115.32,Week 8,2024,No
+1045,Ryan P McQuaid,Loss,101.5,Cole Maney,104,Week 8,2024,No
+1046,Cole Maney,Win,104,Ryan P McQuaid,101.5,Week 8,2024,No
+1047,Baylen Slansky,Win,185.96,Andrew Root,109.18,Week 8,2024,No
+1048,Andrew Root,Loss,109.18,Baylen Slansky,185.96,Week 8,2024,No
+1049,Anthony Kelly,Loss,113.9,Quin Gegwich,128.54,Week 8,2024,No
+1050,Quin Gegwich,Win,128.54,Anthony Kelly,113.9,Week 8,2024,No
+1051,Max Malich,Win,146.1,Brandon Hancock,135.58,Week 9,2024,No
+1052,Brandon Hancock,Loss,135.58,Max Malich,146.1,Week 9,2024,No
+1053,Cole Maney,Win,129.12,Aidan Quigley,101.48,Week 9,2024,No
+1054,Aidan Quigley,Loss,101.48,Cole Maney,129.12,Week 9,2024,No
+1055,Anthony Kelly,Win,114.6,Deniz Bileydi,108.82,Week 9,2024,No
+1056,Deniz Bileydi,Loss,108.82,Anthony Kelly,114.6,Week 9,2024,No
+1057,Ethan Radecki,Win,114.1,Charlie Gorman,88.06,Week 9,2024,No
+1058,Charlie Gorman,Loss,88.06,Ethan Radecki,114.1,Week 9,2024,No
+1059,Quin Gegwich,Win,139.7,Ben Castaldo,88.74,Week 9,2024,No
+1060,Ben Castaldo,Loss,88.74,Quin Gegwich,139.7,Week 9,2024,No
+1061,Ryan P McQuaid,Win,128.94,Andrew Root,98.56,Week 9,2024,No
+1062,Andrew Root,Loss,98.56,Ryan P McQuaid,128.94,Week 9,2024,No
+1063,Carmine Pittelli Jr.,Win,117.34,Baylen Slansky,111.02,Week 9,2024,No
+1064,Baylen Slansky,Loss,111.02,Carmine Pittelli Jr.,117.34,Week 9,2024,No
+1065,Andrew Root,Win,134.54,Aidan Quigley,109.54,Week 10,2024,No
+1066,Aidan Quigley,Loss,109.54,Andrew Root,134.54,Week 10,2024,No
+1067,Quin Gegwich,Loss,76.14,Baylen Slansky,111.8,Week 10,2024,No
+1068,Baylen Slansky,Win,111.8,Quin Gegwich,76.14,Week 10,2024,No
+1069,Charlie Gorman,Loss,101.28,Anthony Kelly,110.34,Week 10,2024,No
+1070,Anthony Kelly,Win,110.34,Charlie Gorman,101.28,Week 10,2024,No
+1071,Brandon Hancock,Loss,115,Ethan Radecki,126.18,Week 10,2024,No
+1072,Ethan Radecki,Win,126.18,Brandon Hancock,115,Week 10,2024,No
+1073,Max Malich,Loss,125.1,Cole Maney,127.34,Week 10,2024,No
+1074,Cole Maney,Win,127.34,Max Malich,125.1,Week 10,2024,No
+1075,Ryan P McQuaid,Win,106.82,Carmine Pittelli Jr.,106.5,Week 10,2024,No
+1076,Carmine Pittelli Jr.,Loss,106.5,Ryan P McQuaid,106.82,Week 10,2024,No
+1077,Ben Castaldo,Win,98.72,Deniz Bileydi,77.58,Week 10,2024,No
+1078,Deniz Bileydi,Loss,77.58,Ben Castaldo,98.72,Week 10,2024,No
+1079,Max Malich,Loss,107.88,Andrew Root,110.98,Week 11,2024,No
+1080,Andrew Root,Win,110.98,Max Malich,107.88,Week 11,2024,No
+1081,Baylen Slansky,Win,156.58,Deniz Bileydi,70.78,Week 11,2024,No
+1082,Deniz Bileydi,Loss,70.78,Baylen Slansky,156.58,Week 11,2024,No
+1083,Cole Maney,Win,147.34,Brandon Hancock,129.18,Week 11,2024,No
+1084,Brandon Hancock,Loss,129.18,Cole Maney,147.34,Week 11,2024,No
+1085,Ethan Radecki,Win,107.94,Anthony Kelly,99.94,Week 11,2024,No
+1086,Anthony Kelly,Loss,99.94,Ethan Radecki,107.94,Week 11,2024,No
+1087,Aidan Quigley,Win,127.72,Carmine Pittelli Jr.,90.4,Week 11,2024,No
+1088,Carmine Pittelli Jr.,Loss,90.4,Aidan Quigley,127.72,Week 11,2024,No
+1089,Ben Castaldo,Win,116.14,Charlie Gorman,99.08,Week 11,2024,No
+1090,Charlie Gorman,Loss,99.08,Ben Castaldo,116.14,Week 11,2024,No
+1091,Ryan P McQuaid,Win,102.66,Quin Gegwich,97.94,Week 11,2024,No
+1092,Quin Gegwich,Loss,97.94,Ryan P McQuaid,102.66,Week 11,2024,No
+1093,Charlie Gorman,Loss,99,Baylen Slansky,133.42,Week 12,2024,No
+1094,Baylen Slansky,Win,133.42,Charlie Gorman,99,Week 12,2024,No
+1095,Ethan Radecki,Win,133.36,Cole Maney,104.76,Week 12,2024,No
+1096,Cole Maney,Loss,104.76,Ethan Radecki,133.36,Week 12,2024,No
+1097,Deniz Bileydi,Win,104.88,Ryan P McQuaid,90.56,Week 12,2024,No
+1098,Ryan P McQuaid,Loss,90.56,Deniz Bileydi,104.88,Week 12,2024,No
+1099,Andrew Root,Loss,94.9,Brandon Hancock,96.08,Week 12,2024,No
+1100,Brandon Hancock,Win,96.08,Andrew Root,94.9,Week 12,2024,No
+1101,Aidan Quigley,Loss,101.08,Quin Gegwich,134.16,Week 12,2024,No
+1102,Quin Gegwich,Win,134.16,Aidan Quigley,101.08,Week 12,2024,No
+1103,Max Malich,Win,124.06,Carmine Pittelli Jr.,95.5,Week 12,2024,No
+1104,Carmine Pittelli Jr.,Loss,95.5,Max Malich,124.06,Week 12,2024,No
+1105,Ben Castaldo,Win,138.48,Anthony Kelly,128.2,Week 12,2024,No
+1106,Anthony Kelly,Loss,128.2,Ben Castaldo,138.48,Week 12,2024,No
+1107,Ryan P McQuaid,Win,134.4,Charlie Gorman,111.44,Week 13,2024,No
+1108,Charlie Gorman,Loss,111.44,Ryan P McQuaid,134.4,Week 13,2024,No
+1109,Cole Maney,Win,126.94,Andrew Root,110.1,Week 13,2024,No
+1110,Andrew Root,Loss,110.1,Cole Maney,126.94,Week 13,2024,No
+1111,Brandon Hancock,Win,134.68,Carmine Pittelli Jr.,87.4,Week 13,2024,No
+1112,Carmine Pittelli Jr.,Loss,87.4,Brandon Hancock,134.68,Week 13,2024,No
+1113,Quin Gegwich,Win,142.8,Max Malich,139.62,Week 13,2024,No
+1114,Max Malich,Loss,139.62,Quin Gegwich,142.8,Week 13,2024,No
+1115,Deniz Bileydi,Win,116.28,Aidan Quigley,91.1,Week 13,2024,No
+1116,Aidan Quigley,Loss,91.1,Deniz Bileydi,116.28,Week 13,2024,No
+1117,Baylen Slansky,Win,120.66,Anthony Kelly,116,Week 13,2024,No
+1118,Anthony Kelly,Loss,116,Baylen Slansky,120.66,Week 13,2024,No
+1119,Ethan Radecki,Win,142.82,Ben Castaldo,117.36,Week 13,2024,No
+1120,Ben Castaldo,Loss,117.36,Ethan Radecki,142.82,Week 13,2024,No
+1121,Cole Maney,Win,144.2,Carmine Pittelli Jr.,139.34,Week 14,2024,No
+1122,Carmine Pittelli Jr.,Loss,139.34,Cole Maney,144.2,Week 14,2024,No
+1123,Andrew Root,Win,114.06,Ethan Radecki,101.02,Week 14,2024,No
+1124,Ethan Radecki,Loss,101.02,Andrew Root,114.06,Week 14,2024,No
+1125,Quin Gegwich,Loss,130.54,Brandon Hancock,146.72,Week 14,2024,No
+1126,Brandon Hancock,Win,146.72,Quin Gegwich,130.54,Week 14,2024,No
+1127,Max Malich,Win,136.58,Deniz Bileydi,107.3,Week 14,2024,No
+1128,Deniz Bileydi,Loss,107.3,Max Malich,136.58,Week 14,2024,No
+1129,Charlie Gorman,Win,118.62,Aidan Quigley,91.02,Week 14,2024,No
+1130,Aidan Quigley,Loss,91.02,Charlie Gorman,118.62,Week 14,2024,No
+1131,Baylen Slansky,Win,128.52,Ben Castaldo,0,Week 14,2024,No
+1132,Ben Castaldo,Loss,0,Baylen Slansky,128.52,Week 14,2024,No
+1133,Anthony Kelly,Loss,106.28,Ryan P McQuaid,115.7,Week 14,2024,No
+1134,Ryan P McQuaid,Win,115.7,Anthony Kelly,106.28,Week 14,2024,No
+1135,Ryan P McQuaid,Loss,89.58,Cole Maney,119.26,Playoff Round 1,2024,Yes
+1136,Cole Maney,Win,119.26,Ryan P McQuaid,89.58,Playoff Round 1,2024,Yes
+1137,Baylen Slansky,Win,119.3,Max Malich,116.58,Playoff Round 1,2024,Yes
+1138,Max Malich,Loss,116.58,Baylen Slansky,119.3,Playoff Round 1,2024,Yes
+1139,Quin Gegwich,Win,176.12,Ethan Radecki,175.5,Playoff Round 1,2024,Yes
+1140,Ethan Radecki,Loss,175.5,Quin Gegwich,176.12,Playoff Round 1,2024,Yes
+1141,Andrew Root,Loss,98.86,Brandon Hancock,111,Playoff Round 1,2024,Yes
+1142,Brandon Hancock,Win,111,Andrew Root,98.86,Playoff Round 1,2024,Yes
+1143,Anthony Kelly,Win,98.74,Aidan Quigley,89.76,Playoff Round 1,2024,No
+1144,Aidan Quigley,Loss,89.76,Anthony Kelly,98.74,Playoff Round 1,2024,No
+1145,Deniz Bileydi,Loss,124.7,Charlie Gorman,124.94,Playoff Round 1,2024,No
+1146,Charlie Gorman,Win,124.94,Deniz Bileydi,124.7,Playoff Round 1,2024,No
+1147,Ben Castaldo,Loss,44.58,Carmine Pittelli Jr.,80.54,Playoff Round 1,2024,No
+1148,Carmine Pittelli Jr.,Win,80.54,Ben Castaldo,44.58,Playoff Round 1,2024,No
+1149,Baylen Slansky,Win,150.24,Cole Maney,120.8,Playoff Round 2,2024,Yes
+1150,Cole Maney,Loss,120.8,Baylen Slansky,150.24,Playoff Round 2,2024,Yes
+1151,Quin Gegwich,Loss,119.02,Brandon Hancock,164.28,Playoff Round 2,2024,Yes
+1152,Brandon Hancock,Win,164.28,Quin Gegwich,119.02,Playoff Round 2,2024,Yes
+1153,Max Malich,Win,124.56,Ethan Radecki,124.34,Playoff Round 2,2024,No
+1154,Ethan Radecki,Loss,124.34,Max Malich,124.56,Playoff Round 2,2024,No
+1155,Ryan P McQuaid,Loss,113.24,Andrew Root,131.58,Playoff Round 2,2024,No
+1156,Andrew Root,Win,131.58,Ryan P McQuaid,113.24,Playoff Round 2,2024,No
+1157,Charlie Gorman,Win,140.72,Anthony Kelly,116.04,Playoff Round 2,2024,No
+1158,Anthony Kelly,Loss,116.04,Charlie Gorman,140.72,Playoff Round 2,2024,No
+1159,Carmine Pittelli Jr.,Loss,96.6,Aidan Quigley,97.68,Playoff Round 2,2024,No
+1160,Aidan Quigley,Win,97.68,Carmine Pittelli Jr.,96.6,Playoff Round 2,2024,No
+1161,Ben Castaldo,Loss,32.34,Deniz Bileydi,98.5,Playoff Round 2,2024,No
+1162,Deniz Bileydi,Win,98.5,Ben Castaldo,32.34,Playoff Round 2,2024,No
+1163,Baylen Slansky,Win,170.62,Brandon Hancock,144.62,Playoff Round 3,2024,Yes
+1164,Brandon Hancock,Loss,144.62,Baylen Slansky,170.62,Playoff Round 3,2024,Yes
+1165,Quin Gegwich,Loss,85.86,Cole Maney,118.9,Playoff Round 3,2024,No
+1166,Cole Maney,Win,118.9,Quin Gegwich,85.86,Playoff Round 3,2024,No
+1167,Andrew Root,Loss,115.54,Max Malich,164.18,Playoff Round 3,2024,No
+1168,Max Malich,Win,164.18,Andrew Root,115.54,Playoff Round 3,2024,No
+1169,Ryan P McQuaid,Win,93.28,Ethan Radecki,79.3,Playoff Round 3,2024,No
+1170,Ethan Radecki,Loss,79.3,Ryan P McQuaid,93.28,Playoff Round 3,2024,No
+1171,Charlie Gorman,Win,175.08,Aidan Quigley,74.18,Playoff Round 3,2024,No
+1172,Aidan Quigley,Loss,74.18,Charlie Gorman,175.08,Playoff Round 3,2024,No
+1173,Deniz Bileydi,Loss,84.46,Anthony Kelly,108.58,Playoff Round 3,2024,No
+1174,Anthony Kelly,Win,108.58,Deniz Bileydi,84.46,Playoff Round 3,2024,No
+1175,Ben Castaldo,Loss,61.98,Carmine Pittelli Jr.,67.6,Playoff Round 3,2024,No
+1176,Carmine Pittelli Jr.,Win,67.6,Ben Castaldo,61.98,Playoff Round 3,2024,No
+1177,Max Malich,Win,98.78,Deniz Bileydi,92.04,Week 1,2025,No
+1178,Deniz Bileydi,Loss,92.04,Max Malich,98.78,Week 1,2025,No
+1179,Quin Gegwich,Loss,102.02,Ben Castaldo,105.22,Week 1,2025,No
+1180,Ben Castaldo,Win,105.22,Quin Gegwich,102.02,Week 1,2025,No
+1181,Baylen Slansky,Win,140.08,Brandon Hancock,103.12,Week 1,2025,No
+1182,Brandon Hancock,Loss,103.12,Baylen Slansky,140.08,Week 1,2025,No
+1183,Andrew Root,Loss,74.92,Ethan Radecki,116.76,Week 1,2025,No
+1184,Ethan Radecki,Win,116.76,Andrew Root,74.92,Week 1,2025,No
+1185,Cole Maney,Loss,116.22,Carmine Pittelli Jr.,141.02,Week 1,2025,No
+1186,Carmine Pittelli Jr.,Win,141.02,Cole Maney,116.22,Week 1,2025,No
+1187,Anthony Kelly,Loss,92.6,Ryan P McQuaid,123.86,Week 1,2025,No
+1188,Ryan P McQuaid,Win,123.86,Anthony Kelly,92.6,Week 1,2025,No
+1189,Charlie Gorman,Loss,73.02,Aidan Quigley,83.48,Week 1,2025,No
+1190,Aidan Quigley,Win,83.48,Charlie Gorman,73.02,Week 1,2025,No
+1191,Max Malich,Loss,89.8,Ethan Radecki,123.92,Week 2,2025,No
+1192,Ethan Radecki,Win,123.92,Max Malich,89.8,Week 2,2025,No
+1193,Anthony Kelly,Loss,95.74,Quin Gegwich,116.28,Week 2,2025,No
+1194,Quin Gegwich,Win,116.28,Anthony Kelly,95.74,Week 2,2025,No
+1195,Brandon Hancock,Loss,91.4,Ryan P McQuaid,103.2,Week 2,2025,No
+1196,Ryan P McQuaid,Win,103.2,Brandon Hancock,91.4,Week 2,2025,No
+1197,Ben Castaldo,Win,133.44,Carmine Pittelli Jr.,84.58,Week 2,2025,No
+1198,Carmine Pittelli Jr.,Loss,84.58,Ben Castaldo,133.44,Week 2,2025,No
+1199,Aidan Quigley,Loss,122.14,Andrew Root,142.48,Week 2,2025,No
+1200,Andrew Root,Win,142.48,Aidan Quigley,122.14,Week 2,2025,No
+1201,Charlie Gorman,Loss,116,Baylen Slansky,131.1,Week 2,2025,No
+1202,Baylen Slansky,Win,131.1,Charlie Gorman,116,Week 2,2025,No
+1203,Deniz Bileydi,Loss,129.54,Cole Maney,146.38,Week 2,2025,No
+1204,Cole Maney,Win,146.38,Deniz Bileydi,129.54,Week 2,2025,No
+1205,Cole Maney,Loss,119.56,Max Malich,123.42,Week 3,2025,No
+1206,Max Malich,Win,123.42,Cole Maney,119.56,Week 3,2025,No
+1207,Andrew Root,Loss,100,Baylen Slansky,128.82,Week 3,2025,No
+1208,Baylen Slansky,Win,128.82,Andrew Root,100,Week 3,2025,No
+1209,Ethan Radecki,Win,118.52,Aidan Quigley,108.44,Week 3,2025,No
+1210,Aidan Quigley,Loss,108.44,Ethan Radecki,118.52,Week 3,2025,No
+1211,Ryan P McQuaid,Win,132.12,Charlie Gorman,98.56,Week 3,2025,No
+1212,Charlie Gorman,Loss,98.56,Ryan P McQuaid,132.12,Week 3,2025,No
+1213,Carmine Pittelli Jr.,Win,135.66,Anthony Kelly,99.18,Week 3,2025,No
+1214,Anthony Kelly,Loss,99.18,Carmine Pittelli Jr.,135.66,Week 3,2025,No
+1215,Deniz Bileydi,Win,96.82,Ben Castaldo,91.54,Week 3,2025,No
+1216,Ben Castaldo,Loss,91.54,Deniz Bileydi,96.82,Week 3,2025,No
+1217,Quin Gegwich,Loss,98.62,Brandon Hancock,164.3,Week 3,2025,No
+1218,Brandon Hancock,Win,164.3,Quin Gegwich,98.62,Week 3,2025,No
+1219,Ethan Radecki,Loss,108.76,Cole Maney,132.1,Week 4,2025,No
+1220,Cole Maney,Win,132.1,Ethan Radecki,108.76,Week 4,2025,No
+1221,Brandon Hancock,Loss,98.58,Carmine Pittelli Jr.,122.14,Week 4,2025,No
+1222,Carmine Pittelli Jr.,Win,122.14,Brandon Hancock,98.58,Week 4,2025,No
+1223,Ryan P McQuaid,Win,132.28,Andrew Root,108.82,Week 4,2025,No
+1224,Andrew Root,Loss,108.82,Ryan P McQuaid,132.28,Week 4,2025,No
+1225,Quin Gegwich,Loss,135.52,Charlie Gorman,144.1,Week 4,2025,No
+1226,Charlie Gorman,Win,144.1,Quin Gegwich,135.52,Week 4,2025,No
+1227,Aidan Quigley,Loss,86.2,Baylen Slansky,136.46,Week 4,2025,No
+1228,Baylen Slansky,Win,136.46,Aidan Quigley,86.2,Week 4,2025,No
+1229,Ben Castaldo,Win,95.76,Max Malich,93.48,Week 4,2025,No
+1230,Max Malich,Loss,93.48,Ben Castaldo,95.76,Week 4,2025,No
+1231,Anthony Kelly,Win,120.22,Deniz Bileydi,119.74,Week 4,2025,No
+1232,Deniz Bileydi,Loss,119.74,Anthony Kelly,120.22,Week 4,2025,No
+1233,Baylen Slansky,Win,120.76,Ethan Radecki,89.42,Week 5,2025,No
+1234,Ethan Radecki,Loss,89.42,Baylen Slansky,120.76,Week 5,2025,No
+1235,Andrew Root,Win,116.04,Quin Gegwich,98.42,Week 5,2025,No
+1236,Quin Gegwich,Loss,98.42,Andrew Root,116.04,Week 5,2025,No
+1237,Ryan P McQuaid,Win,130.94,Aidan Quigley,103.2,Week 5,2025,No
+1238,Aidan Quigley,Loss,103.2,Ryan P McQuaid,130.94,Week 5,2025,No
+1239,Cole Maney,Loss,120.12,Ben Castaldo,147.68,Week 5,2025,No
+1240,Ben Castaldo,Win,147.68,Cole Maney,120.12,Week 5,2025,No
+1241,Deniz Bileydi,Loss,93.78,Brandon Hancock,139.56,Week 5,2025,No
+1242,Brandon Hancock,Win,139.56,Deniz Bileydi,93.78,Week 5,2025,No
+1243,Charlie Gorman,Loss,86.6,Carmine Pittelli Jr.,150.42,Week 5,2025,No
+1244,Carmine Pittelli Jr.,Win,150.42,Charlie Gorman,86.6,Week 5,2025,No
+1245,Max Malich,Loss,93.78,Anthony Kelly,159.12,Week 5,2025,No
+1246,Anthony Kelly,Win,159.12,Max Malich,93.78,Week 5,2025,No
+1247,Andrew Root,Win,98.06,Carmine Pittelli Jr.,94.2,Week 6,2025,No
+1248,Carmine Pittelli Jr.,Loss,94.2,Andrew Root,98.06,Week 6,2025,No
+1249,Brandon Hancock,Win,111.24,Max Malich,103.38,Week 6,2025,No
+1250,Max Malich,Loss,103.38,Brandon Hancock,111.24,Week 6,2025,No
+1251,Anthony Kelly,Loss,141.02,Cole Maney,146.78,Week 6,2025,No
+1252,Cole Maney,Win,146.78,Anthony Kelly,141.02,Week 6,2025,No
+1253,Ryan P McQuaid,Win,123,Baylen Slansky,110.64,Week 6,2025,No
+1254,Baylen Slansky,Loss,110.64,Ryan P McQuaid,123,Week 6,2025,No
+1255,Ethan Radecki,Loss,100.6,Ben Castaldo,116.24,Week 6,2025,No
+1256,Ben Castaldo,Win,116.24,Ethan Radecki,100.6,Week 6,2025,No
+1257,Quin Gegwich,Win,102.94,Aidan Quigley,95.04,Week 6,2025,No
+1258,Aidan Quigley,Loss,95.04,Quin Gegwich,102.94,Week 6,2025,No
+1259,Deniz Bileydi,Loss,70.86,Charlie Gorman,110.64,Week 6,2025,No
+1260,Charlie Gorman,Win,110.64,Deniz Bileydi,70.86,Week 6,2025,No
+1261,Ryan P McQuaid,Win,122.16,Ethan Radecki,73.7,Week 7,2025,No
+1262,Ethan Radecki,Loss,73.7,Ryan P McQuaid,122.16,Week 7,2025,No
+1263,Deniz Bileydi,Loss,120.26,Andrew Root,133.4,Week 7,2025,No
+1264,Andrew Root,Win,133.4,Deniz Bileydi,120.26,Week 7,2025,No
+1265,Max Malich,Loss,71.38,Charlie Gorman,115.38,Week 7,2025,No
+1266,Charlie Gorman,Win,115.38,Max Malich,71.38,Week 7,2025,No
+1267,Quin Gegwich,Win,129.28,Baylen Slansky,79.22,Week 7,2025,No
+1268,Baylen Slansky,Loss,79.22,Quin Gegwich,129.28,Week 7,2025,No
+1269,Anthony Kelly,Loss,94.54,Ben Castaldo,126.36,Week 7,2025,No
+1270,Ben Castaldo,Win,126.36,Anthony Kelly,94.54,Week 7,2025,No
+1271,Carmine Pittelli Jr.,Win,111.24,Aidan Quigley,95.84,Week 7,2025,No
+1272,Aidan Quigley,Loss,95.84,Carmine Pittelli Jr.,111.24,Week 7,2025,No
+1273,Brandon Hancock,Loss,123.04,Cole Maney,188.74,Week 7,2025,No
+1274,Cole Maney,Win,188.74,Brandon Hancock,123.04,Week 7,2025,No
+1275,Deniz Bileydi,Win,133.78,Aidan Quigley,111.56,Week 8,2025,No
+1276,Aidan Quigley,Loss,111.56,Deniz Bileydi,133.78,Week 8,2025,No
+1277,Brandon Hancock,Loss,91.18,Ben Castaldo,93.82,Week 8,2025,No
+1278,Ben Castaldo,Win,93.82,Brandon Hancock,91.18,Week 8,2025,No
+1279,Anthony Kelly,Win,108.48,Ethan Radecki,105.02,Week 8,2025,No
+1280,Ethan Radecki,Loss,105.02,Anthony Kelly,108.48,Week 8,2025,No
+1281,Andrew Root,Win,158.88,Max Malich,75.2,Week 8,2025,No
+1282,Max Malich,Loss,75.2,Andrew Root,158.88,Week 8,2025,No
+1283,Charlie Gorman,Loss,115.66,Cole Maney,133.06,Week 8,2025,No
+1284,Cole Maney,Win,133.06,Charlie Gorman,115.66,Week 8,2025,No
+1285,Baylen Slansky,Loss,64.38,Carmine Pittelli Jr.,143.32,Week 8,2025,No
+1286,Carmine Pittelli Jr.,Win,143.32,Baylen Slansky,64.38,Week 8,2025,No
+1287,Ryan P McQuaid,Loss,112.26,Quin Gegwich,120.38,Week 8,2025,No
+1288,Quin Gegwich,Win,120.38,Ryan P McQuaid,112.26,Week 8,2025,No
+1289,Baylen Slansky,Win,128.9,Deniz Bileydi,87.42,Week 9,2025,No
+1290,Deniz Bileydi,Loss,87.42,Baylen Slansky,128.9,Week 9,2025,No
+1291,Max Malich,Win,96.54,Aidan Quigley,90.12,Week 9,2025,No
+1292,Aidan Quigley,Loss,90.12,Max Malich,96.54,Week 9,2025,No
+1293,Anthony Kelly,Win,142.06,Brandon Hancock,96.98,Week 9,2025,No
+1294,Brandon Hancock,Loss,96.98,Anthony Kelly,142.06,Week 9,2025,No
+1295,Ethan Radecki,Win,143.12,Quin Gegwich,115.96,Week 9,2025,No
+1296,Quin Gegwich,Loss,115.96,Ethan Radecki,143.12,Week 9,2025,No
+1297,Charlie Gorman,Win,128.44,Ben Castaldo,120.7,Week 9,2025,No
+1298,Ben Castaldo,Loss,120.7,Charlie Gorman,128.44,Week 9,2025,No
+1299,Cole Maney,Win,132.8,Andrew Root,116.2,Week 9,2025,No
+1300,Andrew Root,Loss,116.2,Cole Maney,132.8,Week 9,2025,No
+1301,Carmine Pittelli Jr.,Loss,93.26,Ryan P McQuaid,105.06,Week 9,2025,No
+1302,Ryan P McQuaid,Win,105.06,Carmine Pittelli Jr.,93.26,Week 9,2025,No
+1303,Andrew Root,Loss,60,Ben Castaldo,134.12,Week 10,2025,No
+1304,Ben Castaldo,Win,134.12,Andrew Root,60,Week 10,2025,No
+1305,Quin Gegwich,Loss,124.6,Carmine Pittelli Jr.,131.06,Week 10,2025,No
+1306,Carmine Pittelli Jr.,Win,131.06,Quin Gegwich,124.6,Week 10,2025,No
+1307,Charlie Gorman,Loss,70.8,Anthony Kelly,154.7,Week 10,2025,No
+1308,Anthony Kelly,Win,154.7,Charlie Gorman,70.8,Week 10,2025,No
+1309,Brandon Hancock,Loss,110.5,Ethan Radecki,147.94,Week 10,2025,No
+1310,Ethan Radecki,Win,147.94,Brandon Hancock,110.5,Week 10,2025,No
+1311,Max Malich,Loss,112.48,Baylen Slansky,120.32,Week 10,2025,No
+1312,Baylen Slansky,Win,120.32,Max Malich,112.48,Week 10,2025,No
+1313,Ryan P McQuaid,Win,101.34,Deniz Bileydi,93.2,Week 10,2025,No
+1314,Deniz Bileydi,Loss,93.2,Ryan P McQuaid,101.34,Week 10,2025,No
+1315,Aidan Quigley,Win,108.62,Cole Maney,81.36,Week 10,2025,No
+1316,Cole Maney,Loss,81.36,Aidan Quigley,108.62,Week 10,2025,No
+1317,Anthony Kelly,Loss,90.56,Andrew Root,98.44,Week 11,2025,No
+1318,Andrew Root,Win,98.44,Anthony Kelly,90.56,Week 11,2025,No
+1319,Quin Gegwich,Win,114.44,Deniz Bileydi,102.3,Week 11,2025,No
+1320,Deniz Bileydi,Loss,102.3,Quin Gegwich,114.44,Week 11,2025,No
+1321,Charlie Gorman,Loss,94.9,Brandon Hancock,107.54,Week 11,2025,No
+1322,Brandon Hancock,Win,107.54,Charlie Gorman,94.9,Week 11,2025,No
+1323,Ethan Radecki,Win,167.78,Carmine Pittelli Jr.,96.24,Week 11,2025,No
+1324,Carmine Pittelli Jr.,Loss,96.24,Ethan Radecki,167.78,Week 11,2025,No
+1325,Aidan Quigley,Loss,68.3,Ben Castaldo,102.8,Week 11,2025,No
+1326,Ben Castaldo,Win,102.8,Aidan Quigley,68.3,Week 11,2025,No
+1327,Baylen Slansky,Loss,84.32,Cole Maney,108.04,Week 11,2025,No
+1328,Cole Maney,Win,108.04,Baylen Slansky,84.32,Week 11,2025,No
+1329,Ryan P McQuaid,Loss,79.72,Max Malich,86.52,Week 11,2025,No
+1330,Max Malich,Win,86.52,Ryan P McQuaid,79.72,Week 11,2025,No
+1331,Anthony Kelly,Win,109.36,Aidan Quigley,103.96,Week 12,2025,No
+1332,Andrew Root,Loss,107.96,Brandon Hancock,130.94,Week 12,2025,No
+1333,Quin Gegwich,Loss,105.16,Max Malich,141.56,Week 12,2025,No
+1334,Deniz Bileydi,Loss,67.74,Carmine Pittelli Jr.,106.32,Week 12,2025,No
+1335,Charlie Gorman,Win,136.62,Ethan Radecki,92.32,Week 12,2025,No
+1336,Brandon Hancock,Win,130.94,Andrew Root,107.96,Week 12,2025,No
+1337,Ethan Radecki,Loss,92.32,Charlie Gorman,136.62,Week 12,2025,No
+1338,Carmine Pittelli Jr.,Win,106.32,Deniz Bileydi,67.74,Week 12,2025,No
+1339,Aidan Quigley,Loss,103.96,Anthony Kelly,109.36,Week 12,2025,No
+1340,Ben Castaldo,Win,144.52,Baylen Slansky,104.78,Week 12,2025,No
+1341,Baylen Slansky,Loss,104.78,Ben Castaldo,144.52,Week 12,2025,No
+1342,Cole Maney,Win,146.58,Ryan P McQuaid,84.62,Week 12,2025,No
+1343,Ryan P McQuaid,Loss,84.62,Cole Maney,146.58,Week 12,2025,No
+1344,Max Malich,Win,141.56,Quin Gegwich,105.16,Week 12,2025,No
+1345,Anthony Kelly,Loss,101.14,Baylen Slansky,139.54,Week 13,2025,No
+1346,Andrew Root,Loss,103.24,Charlie Gorman,109.62,Week 13,2025,No
+1347,Quin Gegwich,Loss,96.18,Cole Maney,158.14,Week 13,2025,No
+1348,Deniz Bileydi,Win,100.74,Ethan Radecki,96.82,Week 13,2025,No
+1349,Charlie Gorman,Win,109.62,Andrew Root,103.24,Week 13,2025,No
+1350,Brandon Hancock,Win,114.94,Aidan Quigley,75.4,Week 13,2025,No
+1351,Ethan Radecki,Loss,96.82,Deniz Bileydi,100.74,Week 13,2025,No
+1352,Carmine Pittelli Jr.,Loss,90.64,Max Malich,110.76,Week 13,2025,No
+1353,Aidan Quigley,Loss,75.4,Brandon Hancock,114.94,Week 13,2025,No
+1354,Ben Castaldo,Loss,67.3,Ryan P McQuaid,104.24,Week 13,2025,No
+1355,Baylen Slansky,Win,139.54,Anthony Kelly,101.14,Week 13,2025,No
+1356,Cole Maney,Win,158.14,Quin Gegwich,96.18,Week 13,2025,No
+1357,Ryan P McQuaid,Win,104.24,Ben Castaldo,67.3,Week 13,2025,No
+1358,Max Malich,Win,110.76,Carmine Pittelli Jr.,90.64,Week 13,2025,No
+1359,Anthony Kelly,Win,104.96,Ryan P McQuaid,84.46,Week 14,2025,No
+1360,Andrew Root,Loss,98.26,Ethan Radecki,140.64,Week 14,2025,No
+1361,Quin Gegwich,Loss,105.84,Ben Castaldo,128.44,Week 14,2025,No
+1362,Deniz Bileydi,Win,92.04,Max Malich,115.88,Week 14,2025,No
+1363,Charlie Gorman,Win,125.24,Aidan Quigley,93,Week 14,2025,No
+1364,Brandon Hancock,Loss,104.9,Baylen Slansky,151.04,Week 14,2025,No
+1365,Ethan Radecki,Win,140.64,Andrew Root,98.26,Week 14,2025,No
+1366,Carmine Pittelli Jr.,Win,88.12,Cole Maney,85,Week 14,2025,No
+1367,Aidan Quigley,Loss,93,Charlie Gorman,125.24,Week 14,2025,No
+1368,Ben Castaldo,Win,128.44,Quin Gegwich,105.84,Week 14,2025,No
+1369,Baylen Slansky,Win,151.04,Brandon Hancock,104.9,Week 14,2025,No
+1370,Cole Maney,Loss,85,Carmine Pittelli Jr.,88.12,Week 14,2025,No
+1371,Ryan P McQuaid,Loss,86.46,Anthony Kelly,104.96,Week 14,2025,No
+1372,Max Malich,Loss,92.04,Deniz Bileydi,115.88,Week 14,2025,No
+1373,Anthony Kelly,Win,121,Cole Maney,109.86,Playoff Round 1,2025,Yes
+1374,Cole Maney,Loss,109.86,Anthony Kelly,121,Playoff Round 1,2025,Yes
+1375,Ben Castaldo,Loss,101.96,Charlie Gorman,112.92,Playoff Round 1,2025,Yes
+1376,Charlie Gorman,Win,112.92,Ben Castaldo,101.96,Playoff Round 1,2025,Yes
+1377,Ethan Radecki,Win,169.02,Ryan P McQuaid,119.3,Playoff Round 1,2025,Yes
+1378,Ryan P McQuaid,Loss,119.3,Ethan Radecki,169.02,Playoff Round 1,2025,Yes
+1379,Baylen Slansky,Win,151.4,Carmine Pittelli Jr.,139.4,Playoff Round 1,2025,Yes
+1380,Carmine Pittelli Jr.,Loss,139.4,Baylen Slansky,151.4,Playoff Round 1,2025,Yes
+1381,Andrew Root,Loss,107.8,Brandon Hancock,143.04,Playoff Round 1,2025,No
+1382,Brandon Hancock,Win,143.04,Andrew Root,107.8,Playoff Round 1,2025,No
+1383,Max Malich,Loss,112.24,Quin Gegwich,117.9,Playoff Round 1,2025,No
+1384,Quin Gegwich,Win,117.9,Max Malich,112.24,Playoff Round 1,2025,No
+1385,Deniz Bileydi,Win,155.18,Aidan Quigley,106.3,Playoff Round 1,2025,No
+1386,Aidan Quigley,Loss,106.3,Deniz Bileydi,155.18,Playoff Round 1,2025,No
+1387,Anthony Kelly,Win,112.56,Ethan Radecki,65.3,Playoff Round 2,2025,Yes
+1388,Ethan Radecki,Loss,65.3,Anthony Kelly,112.56,Playoff Round 2,2025,Yes
+1389,Baylen Slansky,Loss,130.62,Charlie Gorman,171.88,Playoff Round 2,2025,Yes
+1390,Charlie Gorman,Win,171.88,Baylen Slansky,130.62,Playoff Round 2,2025,Yes
+1391,Cole Maney,Loss,126.62,Ben Castaldo,132.86,Playoff Round 2,2025,No
+1392,Ben Castaldo,Win,132.86,Cole Maney,126.62,Playoff Round 2,2025,No
+1393,Carmine Pittelli Jr.,Win,109.28,Ryan P McQuaid,91.44,Playoff Round 2,2025,No
+1394,Ryan P McQuaid,Loss,91.44,Carmine Pittelli Jr.,109.28,Playoff Round 2,2025,No
+1395,Quin Gegwich,Win,165.2,Brandon Hancock,96.5,Playoff Round 2,2025,No
+1396,Brandon Hancock,Loss,96.5,Quin Gegwich,165.2,Playoff Round 2,2025,No
+1397,Deniz Bileydi,Loss,100.88,Andrew Root,162.5,Playoff Round 2,2025,No
+1398,Andrew Root,Win,162.5,Deniz Bileydi,100.88,Playoff Round 2,2025,No
+1399,Aidan Quigley,Win,95.9,Max Malich,74.22,Playoff Round 2,2025,No
+1400,Max Malich,Loss,74.22,Aidan Quigley,95.9,Playoff Round 2,2025,No
+1401,Anthony Kelly,Win,100.9,Charlie Gorman,71.06,Playoff Round 3,2025,Yes
+1402,Charlie Gorman,Loss,71.06,Anthony Kelly,100.9,Playoff Round 3,2025,Yes
+1403,Ethan Radecki,Win,148.88,Baylen Slansky,84.58,Playoff Round 3,2025,No
+1404,Baylen Slansky,Loss,84.58,Ethan Radecki,148.88,Playoff Round 3,2025,No
+1405,Carmine Pittelli Jr.,Loss,105.76,Ben Castaldo,106.58,Playoff Round 3,2025,No
+1406,Ben Castaldo,Win,106.58,Carmine Pittelli Jr.,105.76,Playoff Round 3,2025,No
+1407,Ryan P McQuaid,Loss,107.8,Cole Maney,122.2,Playoff Round 3,2025,No
+1408,Cole Maney,Win,122.2,Ryan P McQuaid,107.8,Playoff Round 3,2025,No
+1409,Quin Gegwich,Win,120.94,Andrew Root,99.54,Playoff Round 3,2025,No
+1410,Andrew Root,Loss,99.54,Quin Gegwich,120.94,Playoff Round 3,2025,No
+1411,Aidan Quigley,Loss,53.2,Brandon Hancock,71.8,Playoff Round 3,2025,No
+1412,Brandon Hancock,Win,71.8,Aidan Quigley,53.2,Playoff Round 3,2025,No
+1413,Max Malich,Win,143.18,Deniz Bileydi,91.48,Playoff Round 3,2025,No
+1414,Deniz Bileydi,Loss,91.48,Max Malich,143.18,Playoff Round 3,2025,No
