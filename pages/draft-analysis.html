@@ -135,7 +135,7 @@
         <tr><td class="val-bold">11</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">110.4</td><td class="cell-bad val-red">-0.18</td><td class="val-red">-0.03</td><td class="cell-bad val-red">-0.16 &#9660;</td></tr>
         <tr><td class="val-bold">12</td><td>6</td><td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-good">112.6</td><td class="cell-good val-green">+0.29</td><td class="val-green">+0.08</td><td class="cell-good val-green">+0.22 &#9650;</td></tr>
         <tr><td class="val-bold">13</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">115.1</td><td class="cell-good val-green">+0.21</td><td class="val-red">-0.16</td><td class="cell-good val-green">+0.37 &#9650;</td></tr>
-        <tr><td class="val-bold">14</td><td>5</td><td class="cell-mid val-bold">40.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-good">112.9</td><td class="cell-good val-green">+0.34</td><td class="val-red">-0.19</td><td class="cell-good val-green">+0.54 &#9650;</td></tr>
+        <tr><td class="val-bold">14</td><td>6</td><td class="cell-mid val-bold">50.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-good">112.3</td><td class="cell-good val-green">+0.21</td><td class="val-red">-0.23</td><td class="cell-good val-green">+0.45 &#9650;</td></tr>
       </tbody>
     </table>
   </div>
@@ -198,8 +198,8 @@ function gradientColor(val, min, max, alpha) {
 
 /* ── Data ────────────────────────────────────────────────────── */
 var SLOTS = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
-var PLAYOFF_RATES = [83.3, 66.7, 66.7, 33.3, 66.7, 50.0, 83.3, 83.3, 50.0, 50.0, 83.3, 66.7, 83.3, 40.0];
-var OVERPERFS     = [-0.250, 0.263, -0.430, -0.068, -0.149, -0.655, 0.112, -0.063, 0.026, 0.331, -0.155, 0.219, 0.371, 0.538];
+var PLAYOFF_RATES = [83.3, 66.7, 66.7, 33.3, 66.7, 50.0, 83.3, 83.3, 50.0, 50.0, 83.3, 66.7, 83.3, 50.0];
+var OVERPERFS     = [-0.250, 0.263, -0.430, -0.068, -0.149, -0.655, 0.112, -0.063, 0.026, 0.331, -0.155, 0.219, 0.371, 0.448];
 
 /* Slot grid data: slot -> [{ name, year }, ...] */
 var SLOT_DATA = {
@@ -216,7 +216,7 @@ var SLOT_DATA = {
   11: [['Quin Gegwich',2020],['Max Malich',2021],['Max Malich',2022],['Cole Maney',2023],['Ethan Radecki',2024],['Charlie Gorman',2025]],
   12: [['Deniz Bileydi',2020],['Brandon Hancock',2021],['Ben Castaldo',2022],['Brandon Hancock',2023],['Max Malich',2024],['Max Malich',2025]],
   13: [['Ben Castaldo',2020],['Quin Gegwich',2021],['Deniz Bileydi',2022],['Carmine Pittelli',2023],['Ryan McQuaid',2024],['Carmine Pittelli',2025]],
-  14: [['Anthony Kelly',2021],['Andrew Root',2022],['Andrew Root',2023],['Aidan Quigley',2024],['Quin Gegwich',2025]],
+  14: [['Thomas Sullivan',2020],['Anthony Kelly',2021],['Andrew Root',2022],['Andrew Root',2023],['Aidan Quigley',2024],['Quin Gegwich',2025]],
 };
 
 /* ── Chart 1: Playoff Rate ───────────────────────────────────── */
