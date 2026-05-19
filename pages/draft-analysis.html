@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 .da-table {
   width:100%;border-collapse:collapse;font-size:0.82rem;
@@ -23,6 +24,18 @@
 .da-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .da-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
 
+/* Interactive chart containers */
+.chart-card-interactive {
+  padding:1.5rem;
+}
+.chart-card-interactive .chart-card-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--accent);font-weight:700;margin-bottom:1rem;
+}
+.chart-card-interactive canvas {
+  display:block;width:100% !important;
+}
+
 .slot-grid {
   display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:2rem;
 }
@@ -31,7 +44,8 @@
   font-family:var(--font-display);font-size:1.1rem;font-weight:900;
   color:var(--accent);margin-bottom:0.4rem;
 }
-.slot-managers { font-size:0.78rem;color:var(--muted);line-height:1.6; }
+.slot-managers { font-size:0.78rem;color:var(--muted);line-height:1.7; }
+.slot-managers span { color:var(--text-mid); }
 
 @media(max-width:768px) { .slot-grid { grid-template-columns:repeat(2,1fr); } }
 @media(max-width:480px) { .slot-grid { grid-template-columns:1fr; } }
@@ -87,13 +101,13 @@
   <div class="section-label">Visual Breakdown</div>
   <div class="section-title">Playoff rate and adjusted performance by slot.</div>
   <div class="chart-grid">
-    <div class="chart-card glass">
+    <div class="chart-card-interactive glass">
       <div class="chart-card-label">Playoff Rate by Draft Slot</div>
-      <img src="../images/analysis/preach_draft_playoff_rate.png" class="chart-img" alt="Playoff rate by draft slot" onclick="openLightbox(this.src, this.alt)">
+      <canvas id="chart-playoff-rate" height="200"></canvas>
     </div>
-    <div class="chart-card glass">
+    <div class="chart-card-interactive glass">
       <div class="chart-card-label">Manager-Adjusted Performance</div>
-      <img src="../images/analysis/preach_draft_adjusted_performance.png" class="chart-img" alt="Manager-adjusted dominance score by draft slot" onclick="openLightbox(this.src, this.alt)">
+      <canvas id="chart-adj-perf" height="200"></canvas>
     </div>
   </div>
 
@@ -108,41 +122,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td class="val-bold">1</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">112.4</td><td class="cell-good val-green">+0.18</td><td class="val-green">+0.43</td><td class="cell-bad val-red">-0.25 &#9660;</td></tr>
-        <tr><td class="val-bold">2</td><td>6</td><td class="cell-mid val-bold">66.7%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">115.8</td><td class="cell-good val-green">+0.31</td><td class="val-green">+0.05</td><td class="cell-good val-green">+0.26 &#9650;</td></tr>
-        <tr><td class="val-bold">3</td><td>6</td><td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-bad">108.2</td><td class="cell-bad val-red">-0.22</td><td class="val-green">+0.21</td><td class="cell-bad val-red">-0.43 &#9660;</td></tr>
-        <tr><td class="val-bold">4</td><td>6</td><td class="cell-bad val-bold">33.3%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">109.5</td><td class="cell-bad val-red">-0.14</td><td class="val-red">-0.07</td><td class="cell-bad val-red">-0.07 &#9660;</td></tr>
-        <tr><td class="val-bold">5</td><td>6</td><td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">110.1</td><td class="cell-bad val-red">-0.08</td><td class="val-green">+0.07</td><td class="cell-bad val-red">-0.15 &#9660;</td></tr>
-        <tr><td class="val-bold">6</td><td>6</td><td class="cell-mid val-bold">50.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-bad">105.3</td><td class="cell-bad val-red">-0.45</td><td class="val-green">+0.20</td><td class="cell-bad val-red">-0.65 &#9660;</td></tr>
-        <tr><td class="val-bold">7</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">114.2</td><td class="cell-good val-green">+0.22</td><td class="val-green">+0.11</td><td class="cell-good val-green">+0.11 &#9650;</td></tr>
-        <tr><td class="val-bold">8</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-mid">111.8</td><td class="cell-good val-green">+0.06</td><td class="val-green">+0.12</td><td class="cell-bad val-red">-0.06 &#9660;</td></tr>
-        <tr><td class="val-bold">9</td><td>6</td><td class="cell-mid val-bold">50.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">109.9</td><td class="cell-bad val-red">-0.10</td><td class="val-red">-0.13</td><td class="cell-good val-green">+0.03 &#9650;</td></tr>
-        <tr><td class="val-bold">10</td><td>6</td><td class="cell-mid val-bold">50.0%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">113.7</td><td class="cell-good val-green">+0.15</td><td class="val-red">-0.18</td><td class="cell-good val-green">+0.33 &#9650;</td></tr>
-        <tr><td class="val-bold">11</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">110.4</td><td class="cell-bad val-red">-0.04</td><td class="val-green">+0.12</td><td class="cell-bad val-red">-0.16 &#9660;</td></tr>
-        <tr><td class="val-bold">12</td><td>6</td><td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-good">112.6</td><td class="cell-good val-green">+0.10</td><td class="val-red">-0.12</td><td class="cell-good val-green">+0.22 &#9650;</td></tr>
-        <tr><td class="val-bold">13</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">115.1</td><td class="cell-good val-green">+0.28</td><td class="val-red">-0.09</td><td class="cell-good val-green">+0.37 &#9650;</td></tr>
-        <tr><td class="val-bold">14</td><td>6</td><td class="cell-mid val-bold">50.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-good">112.9</td><td class="cell-good val-green">+0.20</td><td class="val-red">-0.25</td><td class="cell-good val-green">+0.45 &#9650;</td></tr>
+        <tr><td class="val-bold">1</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">112.4</td><td class="cell-bad val-red">-0.56</td><td class="val-red">-0.31</td><td class="cell-bad val-red">-0.25 &#9660;</td></tr>
+        <tr><td class="val-bold">2</td><td>6</td><td class="cell-mid val-bold">66.7%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">115.8</td><td class="cell-good val-green">+0.03</td><td class="val-red">-0.23</td><td class="cell-good val-green">+0.26 &#9650;</td></tr>
+        <tr><td class="val-bold">3</td><td>6</td><td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-bad">108.2</td><td class="cell-bad val-red">-0.52</td><td class="val-red">-0.09</td><td class="cell-bad val-red">-0.43 &#9660;</td></tr>
+        <tr><td class="val-bold">4</td><td>6</td><td class="cell-bad val-bold">33.3%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">109.5</td><td class="cell-bad val-red">-0.21</td><td class="val-red">-0.14</td><td class="cell-bad val-red">-0.07 &#9660;</td></tr>
+        <tr><td class="val-bold">5</td><td>6</td><td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">110.1</td><td class="cell-good val-green">+0.23</td><td class="val-green">+0.38</td><td class="cell-bad val-red">-0.15 &#9660;</td></tr>
+        <tr><td class="val-bold">6</td><td>6</td><td class="cell-mid val-bold">50.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-bad">105.3</td><td class="cell-bad val-red">-0.58</td><td class="val-green">+0.08</td><td class="cell-bad val-red">-0.66 &#9660;</td></tr>
+        <tr><td class="val-bold">7</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">114.2</td><td class="cell-good val-green">+0.07</td><td class="val-red">-0.04</td><td class="cell-good val-green">+0.11 &#9650;</td></tr>
+        <tr><td class="val-bold">8</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-mid">111.8</td><td class="cell-good val-green">+0.36</td><td class="val-green">+0.43</td><td class="cell-bad val-red">-0.06 &#9660;</td></tr>
+        <tr><td class="val-bold">9</td><td>6</td><td class="cell-mid val-bold">50.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">109.9</td><td class="cell-good val-green">+0.27</td><td class="val-green">+0.25</td><td class="cell-good val-green">+0.03 &#9650;</td></tr>
+        <tr><td class="val-bold">10</td><td>6</td><td class="cell-mid val-bold">50.0%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">113.7</td><td class="cell-good val-green">+0.44</td><td class="val-green">+0.11</td><td class="cell-good val-green">+0.33 &#9650;</td></tr>
+        <tr><td class="val-bold">11</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-mid">110.4</td><td class="cell-bad val-red">-0.18</td><td class="val-red">-0.03</td><td class="cell-bad val-red">-0.16 &#9660;</td></tr>
+        <tr><td class="val-bold">12</td><td>6</td><td class="cell-mid val-bold">66.7%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-good">112.6</td><td class="cell-good val-green">+0.29</td><td class="val-green">+0.08</td><td class="cell-good val-green">+0.22 &#9650;</td></tr>
+        <tr><td class="val-bold">13</td><td>6</td><td class="cell-good val-bold">83.3%</td><td class="cell-good val-bold">16.7%</td><td class="cell-good">115.1</td><td class="cell-good val-green">+0.21</td><td class="val-red">-0.16</td><td class="cell-good val-green">+0.37 &#9650;</td></tr>
+        <tr><td class="val-bold">14</td><td>5</td><td class="cell-mid val-bold">40.0%</td><td class="cell-bad val-bold">0.0%</td><td class="cell-good">112.9</td><td class="cell-good val-green">+0.34</td><td class="val-red">-0.19</td><td class="cell-good val-green">+0.54 &#9650;</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="section-label">Manager Distribution</div>
   <div class="section-title">Who picked from each slot?</div>
-  <div class="slot-grid">
-    <div class="slot-card glass"><div class="slot-num">Slot 1</div><div class="slot-managers">Manager A (2020)<br>Manager B (2022)<br>Manager C (2024)</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 2</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 3</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 4</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 5</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 6</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 7</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 8</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 9</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 10</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 11</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 12</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 13</div><div class="slot-managers">Data pending</div></div>
-    <div class="slot-card glass"><div class="slot-num">Slot 14</div><div class="slot-managers">Data pending</div></div>
+  <div class="slot-grid" id="slot-grid">
+    <!-- Populated by JS below -->
   </div>
 
   <footer>
@@ -151,11 +152,238 @@
 
 </div>
 
-<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
-  <img id="lightbox-img" src="" alt="">
-</div>
-
 <script src="../shared.js"></script>
+<script src="../data-engine.js"></script>
+<script>
+/* ══════════════════════════════════════
+   Draft Analysis — interactive charts + slot grid
+   ══════════════════════════════════════ */
+
+Chart.defaults.font.family = "'Outfit', sans-serif";
+Chart.defaults.font.size   = 12;
+Chart.defaults.color       = '#5a5550';
+
+var C_TEXT_MID = '#5a5550';
+var C_MUTED    = '#8a8480';
+var C_GREEN    = '#5a8a5a';
+var C_RED      = '#a85a5a';
+var C_GOLD     = '#d4af37';
+var C_ACCENT   = '#9c949c';
+
+function gridStyle() {
+  return { color: 'rgba(156,148,156,0.15)', drawBorder: false };
+}
+function tickStyle() {
+  return { color: C_MUTED };
+}
+
+/* ── Gradient color: red (low) → bone (mid) → green (high) ── */
+function gradientColor(val, min, max, alpha) {
+  alpha = alpha !== undefined ? alpha : 0.72;
+  var p = max !== min ? (val - min) / (max - min) : 0.5;
+  var r, g, b;
+  if (p <= 0.5) {
+    var t = p / 0.5;
+    r = Math.round(192 + (245 - 192) * t);
+    g = Math.round(58  + (240 - 58)  * t);
+    b = Math.round(58  + (232 - 58)  * t);
+  } else {
+    var t = (p - 0.5) / 0.5;
+    r = Math.round(245 + (74  - 245) * t);
+    g = Math.round(240 + (168 - 240) * t);
+    b = Math.round(232 + (58  - 232) * t);
+  }
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
+/* ── Data ────────────────────────────────────────────────────── */
+var SLOTS = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+var PLAYOFF_RATES = [83.3, 66.7, 66.7, 33.3, 66.7, 50.0, 83.3, 83.3, 50.0, 50.0, 83.3, 66.7, 83.3, 40.0];
+var OVERPERFS     = [-0.250, 0.263, -0.430, -0.068, -0.149, -0.655, 0.112, -0.063, 0.026, 0.331, -0.155, 0.219, 0.371, 0.538];
+
+/* Slot grid data: slot -> [{ name, year }, ...] */
+var SLOT_DATA = {
+  1:  [['Anthony Kelly',2020],['Andrew Root',2021],['Charlie Gorman',2022],['Ryan McQuaid',2023],['Andrew Root',2024],['Ryan McQuaid',2025]],
+  2:  [['Andrew Root',2020],['Deniz Bileydi',2021],['Ryan McQuaid',2022],['Ethan Radecki',2023],['Quin Gegwich',2024],['Andrew Root',2025]],
+  3:  [['Charlie Gorman',2020],['Ben Castaldo',2021],['Carmine Pittelli',2022],['Baylen Slansky',2023],['Ben Castaldo',2024],['Deniz Bileydi',2025]],
+  4:  [['Baylen Slansky',2020],['Charlie Gorman',2021],['Quin Gegwich',2022],['Quin Gegwich',2023],['Anthony Kelly',2024],['Ben Castaldo',2025]],
+  5:  [['Brandon Hancock',2020],['Baylen Slansky',2021],['Ethan Radecki',2022],['Aidan Quigley',2023],['Deniz Bileydi',2024],['Brandon Hancock',2025]],
+  6:  [['Cole Maney',2020],['Ryan McQuaid',2021],['Cole Maney',2022],['Ben Castaldo',2023],['Baylen Slansky',2024],['Ethan Radecki',2025]],
+  7:  [['Ryan McQuaid',2020],['Cole Maney',2021],['Brandon Hancock',2022],['Charlie Gorman',2023],['Cole Maney',2024],['Aidan Quigley',2025]],
+  8:  [['Max Malich',2020],['Ethan Radecki',2021],['Anthony Kelly',2022],['Anthony Kelly',2023],['Brandon Hancock',2024],['Baylen Slansky',2025]],
+  9:  [['Carmine Pittelli',2020],['Carmine Pittelli',2021],['Aidan Quigley',2022],['Max Malich',2023],['Carmine Pittelli',2024],['Anthony Kelly',2025]],
+  10: [['Ethan Radecki',2020],['Aidan Quigley',2021],['Baylen Slansky',2022],['Deniz Bileydi',2023],['Charlie Gorman',2024],['Cole Maney',2025]],
+  11: [['Quin Gegwich',2020],['Max Malich',2021],['Max Malich',2022],['Cole Maney',2023],['Ethan Radecki',2024],['Charlie Gorman',2025]],
+  12: [['Deniz Bileydi',2020],['Brandon Hancock',2021],['Ben Castaldo',2022],['Brandon Hancock',2023],['Max Malich',2024],['Max Malich',2025]],
+  13: [['Ben Castaldo',2020],['Quin Gegwich',2021],['Deniz Bileydi',2022],['Carmine Pittelli',2023],['Ryan McQuaid',2024],['Carmine Pittelli',2025]],
+  14: [['Anthony Kelly',2021],['Andrew Root',2022],['Andrew Root',2023],['Aidan Quigley',2024],['Quin Gegwich',2025]],
+};
+
+/* ── Chart 1: Playoff Rate ───────────────────────────────────── */
+(function() {
+  var min = Math.min.apply(null, PLAYOFF_RATES);
+  var max = Math.max.apply(null, PLAYOFF_RATES);
+  var bgColors = PLAYOFF_RATES.map(function(v){ return gradientColor(v, min, max, 0.72); });
+  var bdColors = PLAYOFF_RATES.map(function(v){ return gradientColor(v, min, max, 1.0); });
+
+  new Chart(document.getElementById('chart-playoff-rate').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: SLOTS,
+      datasets: [{
+        label: 'Playoff Rate',
+        data: PLAYOFF_RATES,
+        backgroundColor: bgColors,
+        borderColor: bdColors,
+        borderWidth: 1.5,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items){ return 'Slot ' + items[0].label; },
+            label: function(ctx){
+              var slot = ctx.dataIndex + 1;
+              var entries = SLOT_DATA[slot] || [];
+              var lines = ['Playoff Rate: ' + ctx.parsed.y + '%', ''];
+              entries.forEach(function(e){ lines.push(e[0] + ' (' + e[1] + ')'); });
+              return lines;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: gridStyle(),
+          ticks: tickStyle(),
+          title: { display: true, text: 'Draft Slot', color: C_MUTED, font: { size: 11 } },
+        },
+        y: {
+          grid: gridStyle(),
+          ticks: Object.assign(tickStyle(), {
+            callback: function(v){ return v + '%'; }
+          }),
+          title: { display: true, text: 'Playoff Rate', color: C_MUTED, font: { size: 11 } },
+          min: 0,
+          max: 110,
+        }
+      }
+    }
+  });
+})();
+
+/* ── Chart 2: Manager-Adjusted Performance ───────────────────── */
+(function() {
+  var min = Math.min.apply(null, OVERPERFS);
+  var max = Math.max.apply(null, OVERPERFS);
+  var bgColors = OVERPERFS.map(function(v){ return gradientColor(v, min, max, 0.72); });
+  var bdColors = OVERPERFS.map(function(v){ return gradientColor(v, min, max, 1.0); });
+
+  new Chart(document.getElementById('chart-adj-perf').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: SLOTS,
+      datasets: [{
+        label: 'Over/Under Expected',
+        data: OVERPERFS,
+        backgroundColor: bgColors,
+        borderColor: bdColors,
+        borderWidth: 1.5,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items){ return 'Slot ' + items[0].label; },
+            label: function(ctx){
+              var val = ctx.parsed.y;
+              var prefix = val >= 0 ? '+' : '';
+              var slot = ctx.dataIndex + 1;
+              var entries = SLOT_DATA[slot] || [];
+              var lines = ['Over/Under: ' + prefix + val.toFixed(3), ''];
+              entries.forEach(function(e){ lines.push(e[0] + ' (' + e[1] + ')'); });
+              return lines;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: gridStyle(),
+          ticks: tickStyle(),
+          title: { display: true, text: 'Draft Slot', color: C_MUTED, font: { size: 11 } },
+        },
+        y: {
+          grid: gridStyle(),
+          ticks: tickStyle(),
+          title: { display: true, text: 'Dominance Over/Under Expected', color: C_MUTED, font: { size: 11 } },
+        }
+      },
+      // Zero baseline plugin
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items){ return 'Slot ' + items[0].label; },
+            label: function(ctx){
+              var val = ctx.parsed.y;
+              var prefix = val >= 0 ? '+' : '';
+              var slot = ctx.dataIndex + 1;
+              var entries = SLOT_DATA[slot] || [];
+              var lines = ['Over/Under: ' + prefix + val.toFixed(3), ''];
+              entries.forEach(function(e){ lines.push(e[0] + ' (' + e[1] + ')'); });
+              return lines;
+            }
+          }
+        }
+      }
+    },
+    plugins: [{
+      id: 'zeroLine',
+      afterDraw: function(chart) {
+        var ctx2 = chart.ctx;
+        var yAxis = chart.scales.y;
+        var xAxis = chart.scales.x;
+        var y0 = yAxis.getPixelForValue(0);
+        ctx2.save();
+        ctx2.beginPath();
+        ctx2.strokeStyle = 'rgba(138,132,128,0.5)';
+        ctx2.lineWidth = 1.5;
+        ctx2.setLineDash([5, 4]);
+        ctx2.moveTo(xAxis.left, y0);
+        ctx2.lineTo(xAxis.right, y0);
+        ctx2.stroke();
+        ctx2.restore();
+      }
+    }]
+  });
+})();
+
+/* ── Slot Grid ───────────────────────────────────────────────── */
+(function() {
+  var grid = document.getElementById('slot-grid');
+  if (!grid) return;
+  var html = '';
+  for (var slot = 1; slot <= 14; slot++) {
+    var entries = SLOT_DATA[slot] || [];
+    var managersHtml = entries.map(function(e){
+      return '<span>' + e[0] + '</span> (' + e[1] + ')';
+    }).join('<br>');
+    html += '<div class="slot-card glass">'
+          + '<div class="slot-num">Slot ' + slot + '</div>'
+          + '<div class="slot-managers">' + managersHtml + '</div>'
+          + '</div>';
+  }
+  grid.innerHTML = html;
+})();
+</script>
 </body>
 </html>

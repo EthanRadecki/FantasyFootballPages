@@ -877,18 +877,17 @@ function renderDistChart(profile) {
     var gMin = allScores.length ? Math.floor(allScores[0] / 5) * 5 : 50;
     var gMax = allScores.length ? Math.ceil(allScores[allScores.length - 1] / 5) * 5 : 250;
     window._scoreCache = {
-      min:  gMin,
-      max:  gMax,
-      p25:  allScores.length ? +percentile(allScores, 25).toFixed(1) : null,
-      p50:  allScores.length ? +percentile(allScores, 50).toFixed(1) : null,
-      p75:  allScores.length ? +percentile(allScores, 75).toFixed(1) : null,
+      min: gMin,
+      max: gMax,
+      p25: allScores.length ? +percentile(allScores, 25).toFixed(1) : null,
+      p75: allScores.length ? +percentile(allScores, 75).toFixed(1) : null,
     };
   }
   var cache = window._scoreCache;
   var gMin  = cache.min;
   var gMax  = cache.max;
 
-  // Manager average (regular season only, already in weeklyScores)
+  // Manager average
   var mgrAvg = scores.length
     ? +(scores.reduce(function(s, v){ return s + v; }, 0) / scores.length).toFixed(1)
     : null;
@@ -896,148 +895,95 @@ function renderDistChart(profile) {
   // Build histogram bins
   var bins = [];
   var binLabels = [];
-  var binMids = [];   // midpoint of each bin, used to position annotation lines
   for (var b = gMin; b < gMax; b += 5) {
     bins.push(0);
     binLabels.push(b + '-' + (b + 5));
-    binMids.push(b + 2.5);
   }
   scores.forEach(function(s) {
     var idx = Math.floor((s - gMin) / 5);
     if (idx >= 0 && idx < bins.length) bins[idx]++;
   });
 
-  // Convert a raw score to a fractional bin index for annotation x positioning
+  // Convert a raw score to fractional bin index for canvas pixel lookup
   function scoreToIndex(score) {
     return (score - gMin) / 5;
   }
 
-  // Annotation lines plugin (inline, no external plugin needed)
-  // We draw them as zero-height scatter datasets layered on top
-  function annotationDataset(score, color, dash, label) {
-    if (score === null) return null;
-    var xi = scoreToIndex(score);
-    // Vertical line: two points at same x, y 0 and a large value
-    // Chart.js doesn't have native vertical annotations without a plugin,
-    // so we use a line dataset with a single x value repeated at y=0 and y=999
-    return {
-      type: 'line',
-      label: label,
-      data: binLabels.map(function(_, i) {
-        // Place points only at the two closest bin indices to the score
-        var dist = Math.abs(i - xi);
-        return dist < 0.55 ? null : null; // unused — see afterDraw plugin below
-      }),
-      borderColor: color,
-      borderWidth: 0,
-      pointRadius: 0,
-      _annotationX: xi,
-      _annotationColor: color,
-      _annotationDash: dash || [],
-      _annotationLabel: label,
-      _annotationScore: score,
-    };
-  }
-
-  // Custom plugin to draw vertical lines from annotation datasets
-  var verticalLinesPlugin = {
-    id: 'verticalLines',
+  // Plugin: shaded P25-P75 band + single manager avg vertical line
+  var overlayPlugin = {
+    id: 'distOverlay',
     afterDraw: function(chart) {
-      var ctx2 = chart.ctx;
+      var ctx2  = chart.ctx;
       var xAxis = chart.scales.x;
       var yAxis = chart.scales.y;
       var top    = yAxis.top;
       var bottom = yAxis.bottom;
 
-      chart.data.datasets.forEach(function(ds) {
-        if (!ds._annotationX && ds._annotationX !== 0) return;
-        var xi  = ds._annotationX;
-        var px  = xAxis.getPixelForValue(xi);
+      // P25-P75 shaded band
+      if (cache.p25 !== null && cache.p75 !== null) {
+        var xP25 = xAxis.getPixelForValue(scoreToIndex(cache.p25));
+        var xP75 = xAxis.getPixelForValue(scoreToIndex(cache.p75));
         ctx2.save();
-        ctx2.beginPath();
-        ctx2.strokeStyle = ds._annotationColor;
-        ctx2.lineWidth   = 1.8;
-        if (ds._annotationDash && ds._annotationDash.length) {
-          ctx2.setLineDash(ds._annotationDash);
-        }
-        ctx2.moveTo(px, top);
-        ctx2.lineTo(px, bottom);
-        ctx2.stroke();
-
-        // Label at top
+        ctx2.fillStyle = 'rgba(156,148,156,0.10)';
+        ctx2.fillRect(xP25, top, xP75 - xP25, bottom - top);
+        // Soft border lines on band edges
+        ctx2.strokeStyle = 'rgba(156,148,156,0.35)';
+        ctx2.lineWidth = 1;
+        ctx2.setLineDash([3, 3]);
+        ctx2.beginPath(); ctx2.moveTo(xP25, top); ctx2.lineTo(xP25, bottom); ctx2.stroke();
+        ctx2.beginPath(); ctx2.moveTo(xP75, top); ctx2.lineTo(xP75, bottom); ctx2.stroke();
+        // Band label centered in the region
         ctx2.setLineDash([]);
-        ctx2.font = '600 10px Outfit, sans-serif';
-        ctx2.fillStyle = ds._annotationColor;
+        ctx2.font = '500 10px Outfit, sans-serif';
+        ctx2.fillStyle = 'rgba(138,132,128,0.7)';
         ctx2.textAlign = 'center';
-        ctx2.fillText(ds._annotationLabel, px, top - 4);
+        ctx2.fillText('League P25-P75', (xP25 + xP75) / 2, top + 12);
         ctx2.restore();
-      });
+      }
+
+      // Manager avg vertical line
+      if (mgrAvg !== null) {
+        var xAvg = xAxis.getPixelForValue(scoreToIndex(mgrAvg));
+        ctx2.save();
+        ctx2.strokeStyle = 'rgba(212,175,55,0.9)';
+        ctx2.lineWidth = 2;
+        ctx2.beginPath();
+        ctx2.moveTo(xAvg, top);
+        ctx2.lineTo(xAvg, bottom);
+        ctx2.stroke();
+        // Label
+        ctx2.font = '600 10px Outfit, sans-serif';
+        ctx2.fillStyle = 'rgba(212,175,55,1.0)';
+        ctx2.textAlign = 'center';
+        ctx2.fillText('Avg ' + mgrAvg, xAvg, top + 12);
+        ctx2.restore();
+      }
     }
   };
-
-  // Build annotation datasets
-  var annotDatasets = [
-    annotationDataset(cache.p25, 'rgba(156,148,156,0.7)',  [4,3], 'P25 ' + cache.p25),
-    annotationDataset(cache.p50, 'rgba(90,138,90,0.85)',   [4,3], 'P50 ' + cache.p50),
-    annotationDataset(cache.p75, 'rgba(156,148,156,0.7)',  [4,3], 'P75 ' + cache.p75),
-    annotationDataset(mgrAvg,    'rgba(212,175,55,1.0)',   [],    'Avg ' + mgrAvg),
-  ].filter(Boolean);
 
   var ctx = document.getElementById('chart-dist').getContext('2d');
   charts['dist'] = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: binLabels,
-      datasets: [
-        {
-          label: 'Games',
-          data: bins,
-          backgroundColor: 'rgba(156,148,156,0.5)',
-          borderColor: 'rgba(156,148,156,0.85)',
-          borderWidth: 1,
-          borderRadius: 2,
-          order: 2,
-        }
-      ].concat(annotDatasets.map(function(d){ d.order = 1; return d; }))
+      datasets: [{
+        label: 'Games',
+        data: bins,
+        backgroundColor: 'rgba(156,148,156,0.5)',
+        borderColor: 'rgba(156,148,156,0.85)',
+        borderWidth: 1,
+        borderRadius: 2,
+      }]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-          align: 'end',
-          labels: {
-            color: C_TEXT_MID,
-            boxWidth: 12,
-            padding: 12,
-            font: { size: 11 },
-            filter: function(item) {
-              // Only show annotation datasets in legend, not the bar dataset
-              return item.datasetIndex > 0;
-            },
-            generateLabels: function(chart) {
-              return chart.data.datasets.slice(1).map(function(ds, i) {
-                return {
-                  text: ds._annotationLabel,
-                  fillStyle: ds._annotationColor,
-                  strokeStyle: ds._annotationColor,
-                  lineWidth: 2,
-                  datasetIndex: i + 1,
-                  hidden: false,
-                };
-              });
-            }
-          }
-        },
+        legend: { display: false },
         tooltip: {
           callbacks: {
             title: function(items){ return items[0].label + ' pts'; },
             label: function(ctx){
-              if (ctx.datasetIndex === 0) {
-                return ctx.parsed.y + ' game' + (ctx.parsed.y !== 1 ? 's' : '');
-              }
-              return null;
+              return ctx.parsed.y + ' game' + (ctx.parsed.y !== 1 ? 's' : '');
             }
           }
         }
@@ -1059,7 +1005,7 @@ function renderDistChart(profile) {
         }
       }
     },
-    plugins: [verticalLinesPlugin]
+    plugins: [overlayPlugin]
   });
 }
 
