@@ -478,7 +478,11 @@
 </div>
 
 <script src="../shared.js"></script>
+<script src="../data-engine.js"></script>
 <script>
+var profileLookup = null;
+var totalManagers = 0;
+
 function selectManager(el) {
   // Update active pill
   document.querySelectorAll('.mgr-pill').forEach(function(p) { p.classList.remove('active'); });
@@ -486,23 +490,35 @@ function selectManager(el) {
 
   // Hide prompt, show profile
   document.getElementById('select-prompt').style.display = 'none';
-  var profile = document.getElementById('manager-profile');
-  profile.classList.add('visible');
+  var profileEl = document.getElementById('manager-profile');
+  profileEl.classList.add('visible');
 
-  // Update profile logo
-  var lastname = el.getAttribute('data-lastname');
-  document.getElementById('profile-logo').src = '../images/logos/' + lastname + '.png';
+  // Get manager name - try with and without period for Carmine
+  var name = el.getAttribute('data-manager');
+  var profile = null;
+  if (profileLookup) {
+    profile = profileLookup[name] || profileLookup[name + '.'];
+  }
+
+  if (profile) {
+    renderManagerProfile(profile, totalManagers);
+  }
 
   // Scroll to profile
-  profile.scrollIntoView({ behavior:'smooth', block:'start' });
-
-  // TODO: When CSV data is wired up, this function will:
-  // 1. Read the manager name from data-manager attribute
-  // 2. Filter CSV data for that manager
-  // 3. Populate career stats, season table, rivalry cards
-  // 4. Update rivalry logos via rival-best-logo and rival-worst-logo src
-  // 5. Rebuild all Chart.js charts for this manager
+  profileEl.scrollIntoView({ behavior:'smooth', block:'start' });
 }
+
+// Load data on page ready
+document.addEventListener('DOMContentLoaded', function() {
+  Promise.all([
+    loadCSV('../data/preach_manager_stats.csv'),
+    loadCSV('../data/matchup_data.csv')
+  ]).then(function(results) {
+    profileLookup = buildManagerProfiles(results[0], results[1]);
+    totalManagers = Object.keys(profileLookup).length;
+    updateManagerPills(profileLookup);
+  });
+});
 </script>
 </body>
 </html>

@@ -94,20 +94,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td><a href="#" class="manager-link">Ethan Radecki</a></td><td class="val-green">52</td><td class="val-red">30</td><td class="val-bold">.634</td><td>5</td><td><span class="champ-badge">1 &#127942;</span></td><td>116.1</td><td class="val-green">-0.12</td><td class="val-small">12-2 (2025)</td><td class="val-small">5-9 (2021)</td></tr>
-        <tr><td><a href="#" class="manager-link">Baylen Slansky</a></td><td class="val-green">47</td><td class="val-red">35</td><td class="val-bold">.573</td><td>5</td><td><span class="champ-badge">1 &#127942;</span></td><td>117.2</td><td class="val-red">0.08</td><td class="val-small">10-4 (2022)</td><td class="val-small">6-8 (2021)</td></tr>
-        <tr><td><a href="#" class="manager-link">Carmine Pittelli Jr</a></td><td class="val-green">47</td><td class="val-red">35</td><td class="val-bold">.573</td><td>4</td><td>0</td><td>113.4</td><td class="val-green">-0.05</td><td class="val-small">10-4 (2023)</td><td class="val-small">5-9 (2020)</td></tr>
-        <tr><td><a href="#" class="manager-link">Brandon Hancock</a></td><td class="val-green">45</td><td class="val-red">37</td><td class="val-bold">.549</td><td>4</td><td><span class="champ-badge">1 &#127942;</span></td><td>118.9</td><td class="val-green">-0.31</td><td class="val-small">10-4 (2020)</td><td class="val-small">5-9 (2023)</td></tr>
-        <tr><td><a href="#" class="manager-link">Anthony Kelly</a></td><td class="val-green">43</td><td class="val-red">39</td><td class="val-bold">.524</td><td>3</td><td>0</td><td>115.3</td><td class="val-red">0.14</td><td class="val-small">9-5 (2024)</td><td class="val-small">5-9 (2020)</td></tr>
-        <tr><td><a href="#" class="manager-link">Andrew Root</a></td><td class="val-green">41</td><td class="val-red">41</td><td class="val-bold">.500</td><td>3</td><td>0</td><td>109.5</td><td class="val-red">0.22</td><td class="val-small">9-5 (2022)</td><td class="val-small">4-10 (2021)</td></tr>
-        <tr><td><a href="#" class="manager-link">Ryan McQuaid</a></td><td class="val-green">40</td><td class="val-red">30</td><td class="val-bold">.571</td><td>4</td><td>0</td><td>118.1</td><td class="val-red">0.35</td><td class="val-small">10-4 (2024)</td><td class="val-small">5-9 (2022)</td></tr>
-        <tr><td><a href="#" class="manager-link">Ben Castaldo</a></td><td class="val-green">40</td><td class="val-red">42</td><td class="val-bold">.488</td><td>3</td><td><span class="champ-badge">1 &#127942;</span></td><td>114.9</td><td class="val-red">0.11</td><td class="val-small">9-5 (2021)</td><td class="val-small">5-9 (2024)</td></tr>
-        <tr><td><a href="#" class="manager-link">Cole Maney</a></td><td class="val-green">39</td><td class="val-red">43</td><td class="val-bold">.476</td><td>3</td><td>0</td><td>129.6</td><td class="val-green">-0.18</td><td class="val-small">9-5 (2025)</td><td class="val-small">4-10 (2020)</td></tr>
-        <tr><td><a href="#" class="manager-link">Max Malich</a></td><td class="val-green">39</td><td class="val-red">43</td><td class="val-bold">.476</td><td>3</td><td>0</td><td>108.6</td><td class="val-green">-0.09</td><td class="val-small">8-6 (2023)</td><td class="val-small">4-10 (2021)</td></tr>
-        <tr><td><a href="#" class="manager-link">Charlie Gorman</a></td><td class="val-green">39</td><td class="val-red">43</td><td class="val-bold">.476</td><td>2</td><td><span class="champ-badge">1 &#127942;</span></td><td>109.0</td><td class="val-red">0.06</td><td class="val-small">8-6 (2024)</td><td class="val-small">4-10 (2022)</td></tr>
-        <tr><td><a href="#" class="manager-link">Deniz Bileydi</a></td><td class="val-green">32</td><td class="val-red">50</td><td class="val-bold">.390</td><td>1</td><td>0</td><td>105.2</td><td class="val-green">-0.04</td><td class="val-small">7-7 (2023)</td><td class="val-small">3-11 (2021)</td></tr>
-        <tr><td><a href="#" class="manager-link">Quin Gegwich</a></td><td class="val-green">30</td><td class="val-red">52</td><td class="val-bold">.366</td><td>1</td><td>0</td><td>119.2</td><td class="val-green">-0.15</td><td class="val-small">7-7 (2024)</td><td class="val-small">3-11 (2020)</td></tr>
-        <tr><td><a href="#" class="manager-link">Aidan Quigley</a></td><td class="val-green">27</td><td class="val-red">55</td><td class="val-bold">.329</td><td>0</td><td>0</td><td>104.8</td><td class="val-green">-0.21</td><td class="val-small">6-8 (2024)</td><td class="val-small">2-12 (2020)</td></tr>
+        <!-- Populated dynamically from CSV -->
       </tbody>
     </table>
   </div>
@@ -119,6 +106,7 @@
 </div>
 
 <script src="../shared.js"></script>
+<script src="../data-engine.js"></script>
 <script>
 var currentSort = { col: 3, asc: false };
 function sortTable(colIndex) {
@@ -149,6 +137,14 @@ function sortTable(colIndex) {
   });
   rows.forEach(function(r) { tbody.appendChild(r); });
 }
+
+// Load data on page ready
+document.addEventListener('DOMContentLoaded', function() {
+  loadCSV('../data/preach_manager_stats.csv').then(function(statsData) {
+    var list = buildLeaderboard(statsData);
+    renderLeaderboard(list);
+  });
+});
 </script>
 </body>
 </html>
