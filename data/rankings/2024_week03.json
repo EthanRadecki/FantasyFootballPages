@@ -1,0 +1,160 @@
+{
+  "season": 2024,
+  "week": 3,
+  "teams": [
+    {
+      "manager": "Andrew Root",
+      "rank": 1,
+      "prev_rank": 1,
+      "rank_change": 0,
+      "avg_rank": 1.5,
+      "ppg_to_date": 142.06,
+      "record_to_date": "2-0",
+      "last_score": 140.94,
+      "streak": "W2"
+    },
+    {
+      "manager": "Max Malich",
+      "rank": 2,
+      "prev_rank": 3,
+      "rank_change": 1,
+      "avg_rank": 5.0,
+      "ppg_to_date": 125.97,
+      "record_to_date": "2-0",
+      "last_score": 121.46,
+      "streak": "W2"
+    },
+    {
+      "manager": "Aidan Quigley",
+      "rank": 3,
+      "prev_rank": 2,
+      "rank_change": -1,
+      "avg_rank": 3.0,
+      "ppg_to_date": 123.04,
+      "record_to_date": "1-1",
+      "last_score": 109.72,
+      "streak": "L1"
+    },
+    {
+      "manager": "Brandon Hancock",
+      "rank": 4,
+      "prev_rank": 6,
+      "rank_change": 2,
+      "avg_rank": 6.0,
+      "ppg_to_date": 119.85,
+      "record_to_date": "2-0",
+      "last_score": 127.18,
+      "streak": "W2"
+    },
+    {
+      "manager": "Anthony Kelly",
+      "rank": 5,
+      "prev_rank": 5,
+      "rank_change": 0,
+      "avg_rank": 7.5,
+      "ppg_to_date": 114.44,
+      "record_to_date": "2-0",
+      "last_score": 111.06,
+      "streak": "W2"
+    },
+    {
+      "manager": "Quin Gegwich",
+      "rank": 6,
+      "prev_rank": 11,
+      "rank_change": 5,
+      "avg_rank": 6.0,
+      "ppg_to_date": 115.6,
+      "record_to_date": "1-1",
+      "last_score": 120.5,
+      "streak": "W1"
+    },
+    {
+      "manager": "Baylen Slansky",
+      "rank": 7,
+      "prev_rank": 4,
+      "rank_change": -3,
+      "avg_rank": 4.5,
+      "ppg_to_date": 107.67,
+      "record_to_date": "1-1",
+      "last_score": 99.36,
+      "streak": "L1"
+    },
+    {
+      "manager": "Deniz Bileydi",
+      "rank": 8,
+      "prev_rank": 8,
+      "rank_change": 0,
+      "avg_rank": 9.5,
+      "ppg_to_date": 114.08,
+      "record_to_date": "0-2",
+      "last_score": 108.5,
+      "streak": "L2"
+    },
+    {
+      "manager": "Ryan P McQuaid",
+      "rank": 9,
+      "prev_rank": 10,
+      "rank_change": 1,
+      "avg_rank": 6.5,
+      "ppg_to_date": 104.67,
+      "record_to_date": "1-1",
+      "last_score": 111.16,
+      "streak": "W1"
+    },
+    {
+      "manager": "Cole Maney",
+      "rank": 10,
+      "prev_rank": 9,
+      "rank_change": -1,
+      "avg_rank": 11.0,
+      "ppg_to_date": 103.04,
+      "record_to_date": "1-1",
+      "last_score": 106.24,
+      "streak": "L1"
+    },
+    {
+      "manager": "Carmine Pittelli Jr.",
+      "rank": 11,
+      "prev_rank": 14,
+      "rank_change": 3,
+      "avg_rank": 11.5,
+      "ppg_to_date": 99.42,
+      "record_to_date": "0-2",
+      "last_score": 122.62,
+      "streak": "L2"
+    },
+    {
+      "manager": "Ethan Radecki",
+      "rank": 12,
+      "prev_rank": 7,
+      "rank_change": -5,
+      "avg_rank": 9.5,
+      "ppg_to_date": 109.43,
+      "record_to_date": "1-1",
+      "last_score": 100.68,
+      "streak": "W1"
+    },
+    {
+      "manager": "Charlie Gorman",
+      "rank": 13,
+      "prev_rank": 12,
+      "rank_change": -1,
+      "avg_rank": 10.0,
+      "ppg_to_date": 103.7,
+      "record_to_date": "0-2",
+      "last_score": 95.44,
+      "streak": "L2"
+    },
+    {
+      "manager": "Ben Castaldo",
+      "rank": 14,
+      "prev_rank": 13,
+      "rank_change": -1,
+      "avg_rank": 13.5,
+      "ppg_to_date": 88.39,
+      "record_to_date": "0-2",
+      "last_score": 88.22,
+      "streak": "L2"
+    }
+  ]
+}
