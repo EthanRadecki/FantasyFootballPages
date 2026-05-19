@@ -59,23 +59,140 @@
 }
 .nav-card {
   text-decoration:none;color:var(--text);
-  padding:1.75rem 1.5rem;transition:all 0.25s;position:relative;
+  padding:1.75rem 1.5rem;transition:all 0.25s;position:relative;overflow:hidden;
   border-left:3px solid var(--accent);
 }
 .nav-card:hover { transform:translateY(-2px); }
 .nav-card h3 {
   font-family:var(--font-display);font-size:1.05rem;font-weight:800;
   color:var(--palm);margin-bottom:0.3rem;
-  display:flex;align-items:center;gap:0.5rem;
+  display:flex;align-items:center;gap:0.5rem;position:relative;z-index:1;
 }
 .nav-card h3 .icon { font-size:1.1rem; }
-.nav-card p { font-size:0.78rem;color:var(--muted);line-height:1.5; }
+.nav-card p { font-size:0.78rem;color:var(--muted);line-height:1.5;position:relative;z-index:1; }
 .nav-card .card-arrow {
   display:inline-flex;align-items:center;gap:0.25rem;
   margin-top:0.75rem;font-size:0.75rem;font-weight:600;
-  color:var(--accent);transition:gap 0.2s;
+  transition:gap 0.2s;position:relative;z-index:1;
 }
 .nav-card:hover .card-arrow { gap:0.5rem; }
+
+/* Background watermark pseudo-element */
+.nav-card::before {
+  content:'';position:absolute;inset:0;pointer-events:none;
+  opacity:0;transition:opacity 0.3s;z-index:0;
+}
+.nav-card:hover::before { opacity:1; }
+
+/* ── LEADERBOARD -- slate blue, rank lines ── */
+.card-leaderboard {
+  border-left-color:#4a7fa8;
+  --card-accent:#4a7fa8;
+}
+.card-leaderboard::after {
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(
+    180deg,
+    transparent,
+    transparent 18px,
+    rgba(74,127,168,0.055) 18px,
+    rgba(74,127,168,0.055) 19px
+  );
+}
+.card-leaderboard::before {
+  background:radial-gradient(ellipse 80% 60% at 90% 110%, rgba(74,127,168,0.1), transparent 65%);
+}
+.card-leaderboard .card-arrow { color:#4a7fa8; }
+
+/* ── MANAGERS -- terra, arc watermark ── */
+.card-managers {
+  border-left-color:#b07050;
+  --card-accent:#b07050;
+}
+.card-managers::after {
+  content:'';position:absolute;right:-30px;bottom:-30px;
+  width:140px;height:140px;border-radius:50%;pointer-events:none;z-index:0;
+  border:18px solid rgba(176,112,80,0.07);
+  box-shadow:0 0 0 18px rgba(176,112,80,0.04);
+}
+.card-managers::before {
+  background:radial-gradient(ellipse 70% 70% at 85% 100%, rgba(176,112,80,0.1), transparent 65%);
+}
+.card-managers .card-arrow { color:#b07050; }
+
+/* ── DRAFT ANALYSIS -- sage green, diagonal grid ── */
+.card-draft {
+  border-left-color:#5a8a6a;
+  --card-accent:#5a8a6a;
+}
+.card-draft::after {
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 12px,
+    rgba(90,138,106,0.05) 12px,
+    rgba(90,138,106,0.05) 13px
+  );
+}
+.card-draft::before {
+  background:radial-gradient(ellipse 70% 60% at 95% 5%, rgba(90,138,106,0.1), transparent 65%);
+}
+.card-draft .card-arrow { color:#5a8a6a; }
+
+/* ── WEEKLY RANKINGS -- lavender, wave lines ── */
+.card-rankings {
+  border-left-color:#8878a8;
+  --card-accent:#8878a8;
+}
+.card-rankings::after {
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 200% 20% at 50% 30%, rgba(136,120,168,0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 200% 20% at 50% 60%, rgba(136,120,168,0.04) 0%, transparent 100%),
+    radial-gradient(ellipse 200% 20% at 50% 90%, rgba(136,120,168,0.03) 0%, transparent 100%);
+}
+.card-rankings::before {
+  background:radial-gradient(ellipse 80% 60% at 10% 0%, rgba(136,120,168,0.1), transparent 65%);
+}
+.card-rankings .card-arrow { color:#8878a8; }
+
+/* ── CHAMPIONS -- gold, shimmer ── */
+.card-champions {
+  border-left-color:var(--gold);
+  --card-accent:var(--gold);
+}
+.card-champions::after {
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(135deg,
+    rgba(212,175,55,0.07) 0%,
+    transparent 40%,
+    rgba(212,175,55,0.04) 60%,
+    transparent 100%
+  );
+}
+.card-champions::before {
+  background:radial-gradient(ellipse 60% 60% at 85% 15%, rgba(212,175,55,0.14), transparent 65%);
+}
+.card-champions .card-arrow { color:var(--gold); }
+
+/* ── EXTRA ANALYTICS -- mauve, scatter dots ── */
+.card-analytics {
+  border-left-color:#9c849c;
+  --card-accent:#9c849c;
+}
+.card-analytics::after {
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(circle, rgba(156,132,156,0.18) 1px, transparent 1px),
+    radial-gradient(circle, rgba(156,132,156,0.10) 1px, transparent 1px);
+  background-size:22px 22px, 11px 11px;
+  background-position:0 0, 11px 11px;
+}
+.card-analytics::before {
+  background:radial-gradient(ellipse 70% 60% at 90% 90%, rgba(156,132,156,0.1), transparent 65%);
+}
+.card-analytics .card-arrow { color:#9c849c; }
 
 @media(max-width:900px) { .nav-grid { grid-template-columns:repeat(2,1fr); } }
 @media(max-width:768px) {
@@ -133,39 +250,39 @@
     <div class="champ-trophy">&#127942;</div>
     <div class="champ-info">
       <div class="champ-eyebrow">2025 Champion</div>
-      <h3>Charlie Gorman</h3>
+      <h3>Anthony Kelly</h3>
       <p>Rolls With Butter</p>
     </div>
     <span class="champ-arrow">&#8594;</span>
   </a>
 
   <div class="nav-grid">
-    <a href="pages/leaderboard.html" class="nav-card glass">
+    <a href="pages/leaderboard.html" class="nav-card card-leaderboard glass">
       <h3><span class="icon">&#128202;</span> Leaderboard</h3>
       <p>All-time career stats, win percentage, and rankings across six seasons.</p>
       <span class="card-arrow">View leaderboard &#8594;</span>
     </a>
-    <a href="pages/managers.html" class="nav-card glass">
+    <a href="pages/managers.html" class="nav-card card-managers glass">
       <h3><span class="icon">&#128100;</span> Manager Profiles</h3>
       <p>Individual dashboards with season history, scoring trends, and rivalry breakdowns.</p>
       <span class="card-arrow">Browse managers &#8594;</span>
     </a>
-    <a href="pages/draft-analysis.html" class="nav-card glass">
+    <a href="pages/draft-analysis.html" class="nav-card card-draft glass">
       <h3><span class="icon">&#128200;</span> Draft Analysis</h3>
       <p>Does draft position matter? Manager-adjusted slot performance across all seasons.</p>
       <span class="card-arrow">View analysis &#8594;</span>
     </a>
-    <a href="pages/weekly-rankings.html" class="nav-card glass">
+    <a href="pages/weekly-rankings.html" class="nav-card card-rankings glass">
       <h3><span class="icon">&#128197;</span> Weekly Rankings</h3>
       <p>Power rankings, previews, and recaps filterable by season and week.</p>
       <span class="card-arrow">View rankings &#8594;</span>
     </a>
-    <a href="pages/champions.html" class="nav-card glass">
+    <a href="pages/champions.html" class="nav-card card-champions glass">
       <h3><span class="icon">&#127942;</span> Champions</h3>
       <p>Hall of champions from every season since the league's founding.</p>
       <span class="card-arrow">View champions &#8594;</span>
     </a>
-    <a href="pages/extra-analytics.html" class="nav-card glass">
+    <a href="pages/extra-analytics.html" class="nav-card card-analytics glass">
       <h3><span class="icon">&#128300;</span> Extra Analytics</h3>
       <p>Schedule luck, historical similarity, seasonal trends, and more deep dives.</p>
       <span class="card-arrow">Explore &#8594;</span>
