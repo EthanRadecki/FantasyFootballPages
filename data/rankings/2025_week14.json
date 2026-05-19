@@ -1,0 +1,172 @@
+{
+  "season": 2025,
+  "week": 14,
+  "top_stories": [
+    "Final week of the regular season. Six teams have clinched, two spots remain.",
+    "Cole Maney posts the highest single-week score of the season at 168.4.",
+    "Aidan Quigley mathematically eliminated from playoff contention after Week 13 loss."
+  ],
+  "trades": [
+    {
+      "team_a": "Brandon Hancock",
+      "team_b": "Charlie Gorman",
+      "summary": "Hancock sends Travis Kelce and a 2026 2nd for Brock Bowers and a 2026 4th."
+    }
+  ],
+  "rankings": [
+    {
+      "rank": 1,
+      "prev_rank": 1,
+      "manager": "Ethan Radecki",
+      "lastname": "Radecki",
+      "team": "Slant Boy v2",
+      "record": "12-1",
+      "week_score": 134.2,
+      "season_pfg": 126.2,
+      "blurb": "Locked up the #1 seed three weeks ago and hasn't slowed down. The most complete roster in the league."
+    },
+    {
+      "rank": 2,
+      "prev_rank": 3,
+      "manager": "Cole Maney",
+      "lastname": "Maney",
+      "team": "Paydirt",
+      "record": "9-4",
+      "week_score": 168.4,
+      "season_pfg": 129.6,
+      "blurb": "Highest-scoring team in the league just posted the highest single-week score of the year. Peaking at the right time."
+    },
+    {
+      "rank": 3,
+      "prev_rank": 2,
+      "manager": "Ryan McQuaid",
+      "lastname": "McQuaid",
+      "team": "San Giacomos",
+      "record": "9-4",
+      "week_score": 108.7,
+      "season_pfg": 118.1,
+      "blurb": "Quiet week but the body of work speaks for itself. Still a legitimate title threat."
+    },
+    {
+      "rank": 4,
+      "prev_rank": 4,
+      "manager": "Baylen Slansky",
+      "lastname": "Slansky",
+      "team": "Ben Slansky",
+      "record": "8-5",
+      "week_score": 121.6,
+      "season_pfg": 117.2,
+      "blurb": "Consistent all season. Not flashy, but you can pencil in 115+ every single week."
+    },
+    {
+      "rank": 5,
+      "prev_rank": 7,
+      "manager": "Carmine Pittelli Jr",
+      "lastname": "Pittelli",
+      "team": "The Pittelli Problem",
+      "record": "8-5",
+      "week_score": 141.3,
+      "season_pfg": 113.4,
+      "blurb": "Surging at the right time. Back-to-back 140+ weeks heading into the playoffs."
+    },
+    {
+      "rank": 6,
+      "prev_rank": 5,
+      "manager": "Brandon Hancock",
+      "lastname": "Hancock",
+      "team": "The Minutemen",
+      "record": "8-5",
+      "week_score": 98.4,
+      "season_pfg": 118.9,
+      "blurb": "Worst week of the season at the worst possible time. Needs to regroup before playoffs."
+    },
+    {
+      "rank": 7,
+      "prev_rank": 6,
+      "manager": "Anthony Kelly",
+      "lastname": "Kelly",
+      "team": "Rolls With Butter",
+      "record": "7-6",
+      "week_score": 105.2,
+      "season_pfg": 115.3,
+      "blurb": "Bubble team that needs a win or help to get in. The schedule has not been kind."
+    },
+    {
+      "rank": 8,
+      "prev_rank": 9,
+      "manager": "Ben Castaldo",
+      "lastname": "Castaldo",
+      "team": "I shoot b n s",
+      "record": "7-6",
+      "week_score": 127.8,
+      "season_pfg": 114.9,
+      "blurb": "Fighting for the last playoff spot. This week is essentially a playoff game."
+    },
+    {
+      "rank": 9,
+      "prev_rank": 8,
+      "manager": "Charlie Gorman",
+      "lastname": "Gorman",
+      "team": "Chuck's Team",
+      "record": "6-7",
+      "week_score": 94.1,
+      "season_pfg": 109.0,
+      "blurb": "Season slipping away. Needs to win out and get help to have any shot."
+    },
+    {
+      "rank": 10,
+      "prev_rank": 10,
+      "manager": "Andrew Root",
+      "lastname": "Root",
+      "team": "N.Y. Routensss",
+      "record": "6-7",
+      "week_score": 112.5,
+      "season_pfg": 109.5,
+      "blurb": "Middling all year. Not bad enough to blow up, not good enough to compete."
+    },
+    {
+      "rank": 11,
+      "prev_rank": 12,
+      "manager": "Max Malich",
+      "lastname": "Malich",
+      "team": "Dent.",
+      "record": "5-8",
+      "week_score": 131.4,
+      "season_pfg": 108.6,
+      "blurb": "The most frustrating team in the league. Elite weeks mixed with total duds."
+    },
+    {
+      "rank": 12,
+      "prev_rank": 11,
+      "manager": "Deniz Bileydi",
+      "lastname": "Bileydi",
+      "team": "Chi Town MS?",
+      "record": "5-8",
+      "week_score": 88.9,
+      "season_pfg": 105.2,
+      "blurb": "Mathematically alive but realistically done. Already looking toward the draft."
+    },
+    {
+      "rank": 13,
+      "prev_rank": 14,
+      "manager": "Quin Gegwich",
+      "lastname": "Gegwich",
+      "team": "JOSH JACOBS FAN CLUB",
+      "record": "4-9",
+      "week_score": 145.2,
+      "season_pfg": 119.2,
+      "blurb": "The talent is there. The consistency is not. A 145 week that means nothing in the standings."
+    },
+    {
+      "rank": 14,
+      "prev_rank": 13,
+      "manager": "Aidan Quigley",
+      "lastname": "Quigley",
+      "team": "Team Quigley",
+      "record": "3-10",
+      "week_score": 82.3,
+      "season_pfg": 104.8,
+      "blurb": "Officially eliminated. A tough season from start to finish."
+    }
+  ]
+}

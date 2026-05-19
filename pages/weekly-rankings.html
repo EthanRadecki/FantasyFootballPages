@@ -7,10 +7,234 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
+<style>
+/* ── FILTER BAR ── */
+.filter-bar {
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem 1.5rem;margin-bottom:2rem;
+  flex-wrap:wrap;
+}
+.filter-bar label {
+  font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;
+  font-weight:700;color:var(--accent);margin-right:0.25rem;
+}
+.filter-select {
+  font-family:var(--font);font-size:0.85rem;font-weight:600;
+  color:var(--palm);background:rgba(var(--accent-rgb),0.08);
+  border:1px solid rgba(var(--accent-rgb),0.2);
+  border-radius:var(--radius-sm);padding:0.5rem 0.9rem;
+  cursor:pointer;outline:none;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239c949c'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 0.75rem center;
+  padding-right:2rem;
+}
+.filter-select:hover { border-color:var(--accent); }
+.filter-group { display:flex;align-items:center;gap:0.4rem; }
+
+/* ── TOP STORIES ── */
+.stories-card {
+  padding:1.75rem;margin-bottom:1.5rem;
+  border-left:3px solid var(--accent);
+}
+.stories-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  font-weight:700;color:var(--accent);margin-bottom:0.75rem;
+}
+.story-item {
+  font-size:0.88rem;color:var(--text-mid);line-height:1.6;
+  padding:0.4rem 0;
+  border-bottom:1px solid rgba(var(--accent-rgb),0.06);
+}
+.story-item:last-child { border-bottom:none; }
+.story-bullet {
+  color:var(--accent);font-weight:700;margin-right:0.5rem;
+}
+
+/* ── TRADES ── */
+.trades-section { margin-bottom:1.5rem; }
+.trades-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  font-weight:700;color:var(--accent);margin-bottom:0.75rem;
+}
+.trade-card {
+  padding:1.25rem 1.5rem;margin-bottom:0.6rem;
+  display:flex;align-items:center;gap:1rem;
+  border-left:3px solid var(--accent);
+}
+.trade-icon {
+  font-size:1.2rem;flex-shrink:0;
+}
+.trade-teams {
+  font-size:0.88rem;font-weight:700;color:var(--palm);
+}
+.trade-summary {
+  font-size:0.82rem;color:var(--muted);margin-top:0.15rem;
+}
+
+/* ── RANKINGS SECTION ── */
+.rankings-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  font-weight:700;color:var(--accent);margin-bottom:1rem;
+}
+.rankings-list {
+  display:flex;flex-direction:column;gap:0.6rem;
+  margin-bottom:2.5rem;
+}
+
+/* ── RANK CARD ── */
+.rank-card {
+  display:grid;
+  grid-template-columns:70px 48px 1fr auto;
+  align-items:center;gap:1rem;
+  padding:1.2rem 1.5rem;
+  transition:all 0.25s;
+  position:relative;
+  overflow:hidden;
+  border-left:3px solid transparent;
+}
+.rank-card:hover { transform:translateX(3px); }
+
+/* Rank number + change */
+.rank-num-wrap { text-align:center; }
+.rank-num {
+  font-family:var(--font-display);font-weight:900;line-height:1;
+  color:var(--palm);
+}
+.rank-change {
+  font-size:0.65rem;font-weight:700;margin-top:0.2rem;
+}
+.rank-up { color:var(--green); }
+.rank-down { color:var(--red); }
+.rank-same { color:var(--muted); }
+
+/* Logo */
+.rank-logo {
+  width:44px;height:44px;border-radius:0;object-fit:contain;
+}
+
+/* Info */
+.rank-info { min-width:0; }
+.rank-team {
+  font-family:var(--font-display);font-weight:800;color:var(--palm);
+  font-size:0.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.rank-manager {
+  font-size:0.78rem;color:var(--muted);
+}
+.rank-blurb {
+  font-size:0.8rem;color:var(--text-mid);font-style:italic;
+  margin-top:0.4rem;line-height:1.5;
+}
+
+/* Stats */
+.rank-stats { text-align:right;flex-shrink:0; }
+.rank-record {
+  font-family:var(--font-display);font-weight:800;color:var(--palm);
+  font-size:1rem;
+}
+.rank-scores {
+  font-size:0.7rem;color:var(--muted);margin-top:0.15rem;
+}
+.rank-week-score {
+  font-weight:700;
+}
+
+/* ═══ ESCALATING FLAIR ═══ */
+
+/* Tier: mid-pack (ranks 8-5) — subtle accent border */
+.rank-card.tier-mid {
+  border-left-color:rgba(var(--accent-rgb),0.3);
+}
+.rank-card.tier-mid .rank-num { font-size:1.4rem; }
+
+/* Tier: contender (rank 4) — stronger accent */
+.rank-card.tier-contender {
+  border-left-color:var(--accent);
+}
+.rank-card.tier-contender .rank-num { font-size:1.6rem; }
+
+/* Tier: podium #3 — bronze */
+.rank-card.tier-bronze {
+  border-left-color:#cd7f32;
+  background:linear-gradient(135deg, rgba(205,127,50,0.04), var(--glass)) !important;
+}
+.rank-card.tier-bronze .rank-num {
+  font-size:1.8rem;color:#cd7f32;
+}
+
+/* Tier: podium #2 — silver */
+.rank-card.tier-silver {
+  border-left-color:#a8a8a8;
+  background:linear-gradient(135deg, rgba(168,168,168,0.06), var(--glass)) !important;
+}
+.rank-card.tier-silver .rank-num {
+  font-size:2rem;color:#707070;
+}
+
+/* Tier: #1 — GOLD, biggest card */
+.rank-card.tier-gold {
+  border-left:4px solid var(--gold);
+  padding:1.75rem 1.75rem;
+  background:linear-gradient(135deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02), var(--glass)) !important;
+  box-shadow:0 6px 32px rgba(212,175,55,0.08), 0 4px 24px var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+}
+.rank-card.tier-gold .rank-num {
+  font-size:2.4rem;color:var(--gold);
+}
+.rank-card.tier-gold .rank-team {
+  font-size:1.1rem;
+}
+.rank-card.tier-gold .rank-logo {
+  width:56px;height:56px;
+}
+.rank-card.tier-gold .rank-record {
+  font-size:1.15rem;
+}
+
+/* Bottom tier (ranks 14-9) — muted, smaller */
+.rank-card.tier-bottom .rank-num {
+  font-size:1.1rem;color:var(--muted);
+}
+.rank-card.tier-bottom .rank-team {
+  font-size:0.88rem;
+}
+.rank-card.tier-bottom .rank-blurb {
+  font-size:0.76rem;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align:center;padding:4rem 2rem;
+}
+.empty-state .empty-icon {
+  font-size:2.5rem;margin-bottom:1rem;display:block;opacity:0.3;
+}
+.empty-state p { font-size:0.95rem;color:var(--muted); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px) {
+  .rank-card {
+    grid-template-columns:55px 40px 1fr;
+    gap:0.75rem;padding:1rem 1.25rem;
+  }
+  .rank-stats { display:none; }
+  .rank-card.tier-gold { padding:1.25rem; }
+  .rank-card.tier-gold .rank-logo { width:48px;height:48px; }
+  .filter-bar { gap:0.75rem; }
+}
+@media(max-width:480px) {
+  .rank-card { grid-template-columns:45px 36px 1fr; }
+}
+</style>
 </head>
 <body>
+
 <div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+
 <div class="content">
+
   <nav class="glass">
     <a href="../index.html" class="nav-brand">
       <img src="../preach_logo.png" alt="Preach Fantasy">
@@ -28,6 +252,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
   </nav>
+
   <div class="mobile-menu" id="mobile-menu" onclick="if(event.target===this)closeMobileMenu()">
     <div class="mobile-menu-inner">
       <button class="mobile-menu-close" onclick="closeMobileMenu()">&#10005;</button>
@@ -40,18 +265,159 @@
       <a href="extra-analytics.html">Extra Analytics</a>
     </div>
   </div>
+
   <div class="page-header glass">
     <h1>Weekly Rankings</h1>
-    <p>Power rankings, previews, and recaps filterable by season and week</p>
+    <p>Power rankings, top stories, and trade reviews</p>
   </div>
-  <div class="callout glass">
-    <div class="callout-label">Coming Soon</div>
-    <p>This page is under construction. Content will be added soon.</p>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar glass">
+    <div class="filter-group">
+      <label>Season</label>
+      <select class="filter-select" id="season-select" onchange="loadRankings()">
+        <option value="2025">2025</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Week</label>
+      <select class="filter-select" id="week-select" onchange="loadRankings()">
+        <option value="14">Week 14</option>
+        <option value="12">Week 12</option>
+        <option value="11">Week 11</option>
+      </select>
+    </div>
   </div>
+
+  <!-- CONTENT CONTAINER (populated by JS) -->
+  <div id="rankings-content">
+    <div class="empty-state glass">
+      <span class="empty-icon">&#128202;</span>
+      <p>Loading rankings...</p>
+    </div>
+  </div>
+
   <footer>
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
   </footer>
+
 </div>
+
 <script src="../shared.js"></script>
+<script>
+function getTierClass(rank) {
+  if (rank === 1) return 'tier-gold';
+  if (rank === 2) return 'tier-silver';
+  if (rank === 3) return 'tier-bronze';
+  if (rank === 4) return 'tier-contender';
+  if (rank >= 5 && rank <= 8) return 'tier-mid';
+  return 'tier-bottom';
+}
+
+function getRankChange(rank, prevRank) {
+  var diff = prevRank - rank;
+  if (diff > 0) return '<span class="rank-change rank-up">&#9650; ' + diff + '</span>';
+  if (diff < 0) return '<span class="rank-change rank-down">&#9660; ' + Math.abs(diff) + '</span>';
+  return '<span class="rank-change rank-same">&#8212;</span>';
+}
+
+function renderRankings(data) {
+  var container = document.getElementById('rankings-content');
+  var html = '';
+
+  // Top Stories
+  if (data.top_stories && data.top_stories.length > 0) {
+    html += '<div class="stories-card glass">';
+    html += '<div class="stories-label">&#128240; Top Stories</div>';
+    for (var i = 0; i < data.top_stories.length; i++) {
+      html += '<div class="story-item"><span class="story-bullet">&#9656;</span>' + data.top_stories[i] + '</div>';
+    }
+    html += '</div>';
+  }
+
+  // Trades
+  if (data.trades && data.trades.length > 0) {
+    html += '<div class="trades-section">';
+    html += '<div class="trades-label">&#128260; Trades</div>';
+    for (var t = 0; t < data.trades.length; t++) {
+      var trade = data.trades[t];
+      html += '<div class="trade-card glass">';
+      html += '<div class="trade-icon">&#128260;</div>';
+      html += '<div><div class="trade-teams">' + trade.team_a + ' &#8596; ' + trade.team_b + '</div>';
+      html += '<div class="trade-summary">' + trade.summary + '</div></div>';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+
+  // Rankings (reversed: 14 at top, 1 at bottom)
+  html += '<div class="rankings-label">&#128202; Power Rankings</div>';
+  html += '<div class="rankings-list">';
+
+  var sorted = data.rankings.slice().sort(function(a, b) { return b.rank - a.rank; });
+
+  for (var r = 0; r < sorted.length; r++) {
+    var m = sorted[r];
+    var tier = getTierClass(m.rank);
+    var change = getRankChange(m.rank, m.prev_rank);
+    var logoPath = '../images/logos/' + m.lastname + '.png';
+
+    html += '<div class="rank-card glass ' + tier + '">';
+
+    // Rank number + change
+    html += '<div class="rank-num-wrap">';
+    html += '<div class="rank-num">#' + m.rank + '</div>';
+    html += change;
+    html += '</div>';
+
+    // Logo
+    html += '<img class="rank-logo" src="' + logoPath + '" alt="">';
+
+    // Info
+    html += '<div class="rank-info">';
+    html += '<div class="rank-team">' + m.team + '</div>';
+    html += '<div class="rank-manager">' + m.manager + '</div>';
+    html += '<div class="rank-blurb">"' + m.blurb + '"</div>';
+    html += '</div>';
+
+    // Stats
+    html += '<div class="rank-stats">';
+    html += '<div class="rank-record">' + m.record + '</div>';
+    html += '<div class="rank-scores">' + m.season_pfg + ' PF/G</div>';
+    html += '<div class="rank-scores">Wk: <span class="rank-week-score">' + m.week_score + '</span></div>';
+    html += '</div>';
+
+    html += '</div>';
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function loadRankings() {
+  var season = document.getElementById('season-select').value;
+  var week = document.getElementById('week-select').value;
+  var path = '../data/rankings/' + season + '_week' + week + '.json';
+  var container = document.getElementById('rankings-content');
+
+  container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#9203;</span><p>Loading...</p></div>';
+
+  fetch(path)
+    .then(function(res) {
+      if (!res.ok) throw new Error('Not found');
+      return res.json();
+    })
+    .then(function(data) {
+      renderRankings(data);
+    })
+    .catch(function() {
+      container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#128203;</span><p>No rankings available for this week yet.</p></div>';
+    });
+}
+
+// Load on page ready
+document.addEventListener('DOMContentLoaded', loadRankings);
+</script>
+
 </body>
 </html>
