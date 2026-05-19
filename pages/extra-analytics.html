@@ -182,7 +182,7 @@
       <p>Each week, every manager's score is compared to the <strong>league median</strong>. If you scored above the median, you "should have" won that week regardless of your actual opponent. The difference between your actual wins and these expected wins is your schedule luck. Positive means the schedule gifted you wins; negative means it took them away.</p>
     </div>
     <div class="chart-area-pad glass">
-      <canvas id="chart-luck" height="80"></canvas>
+      <canvas id="chart-luck" height="55"></canvas>
     </div>
   </div>
 
@@ -290,88 +290,105 @@ function shortName(n) {
 
 /* ── 1. SCHEDULE LUCK ─────────────────────────────────────────────────────── */
 (function() {
+  // Sorted unlucky → lucky (ascending luck delta)
   var luckData = [
-    {name:'Aidan Quigley',    actual:27, predicted:35, luck:-8},
-    {name:'Brandon Hancock',  actual:45, predicted:52, luck:-7},
-    {name:'Cole Maney',       actual:39, predicted:43, luck:-4},
-    {name:'Quin Gegwich',     actual:30, predicted:32, luck:-2},
-    {name:'Deniz Bileydi',    actual:32, predicted:33, luck:-1},
-    {name:'Ethan Radecki',    actual:52, predicted:53, luck:-1},
-    {name:'Carmine Pittelli Jr.', actual:47, predicted:48, luck:-1},
-    {name:'Max Malich',       actual:39, predicted:39, luck:0},
-    {name:'Anthony Kelly',    actual:43, predicted:42, luck:1},
-    {name:'Charlie Gorman',   actual:39, predicted:38, luck:1},
-    {name:'Ben Castaldo',     actual:40, predicted:38, luck:2},
-    {name:'Baylen Slansky',   actual:47, predicted:44, luck:3},
-    {name:'Andrew Root',      actual:41, predicted:33, luck:8},
-    {name:'Ryan P McQuaid',   actual:40, predicted:30, luck:10},
+    {name:'Aidan Quigley',       actual:27, predicted:35, luck:-8},
+    {name:'Brandon Hancock',     actual:45, predicted:52, luck:-7},
+    {name:'Cole Maney',          actual:39, predicted:43, luck:-4},
+    {name:'Quin Gegwich',        actual:30, predicted:32, luck:-2},
+    {name:'Deniz Bileydi',       actual:32, predicted:33, luck:-1},
+    {name:'Ethan Radecki',       actual:52, predicted:53, luck:-1},
+    {name:'Carmine Pittelli Jr.',actual:47, predicted:48, luck:-1},
+    {name:'Max Malich',          actual:39, predicted:39, luck: 0},
+    {name:'Anthony Kelly',       actual:43, predicted:42, luck: 1},
+    {name:'Charlie Gorman',      actual:39, predicted:38, luck: 1},
+    {name:'Ben Castaldo',        actual:40, predicted:38, luck: 2},
+    {name:'Baylen Slansky',      actual:47, predicted:44, luck: 3},
+    {name:'Andrew Root',         actual:41, predicted:33, luck: 8},
+    {name:'Ryan P McQuaid',      actual:40, predicted:30, luck:10},
   ];
 
-  var labels  = luckData.map(function(d){ return shortName(d.name); });
-  var actual  = luckData.map(function(d){ return d.actual; });
-  var pred    = luckData.map(function(d){ return d.predicted; });
-  var luck    = luckData.map(function(d){ return d.luck; });
+  var labels = luckData.map(function(d){ return shortName(d.name); });
+  var deltas = luckData.map(function(d){ return d.luck; });
+  var actual = luckData.map(function(d){ return d.actual; });
+  var pred   = luckData.map(function(d){ return d.predicted; });
 
-  var actualBg = luckData.map(function(d){
-    return d.luck > 0 ? 'rgba(90,138,90,0.7)' : d.luck < 0 ? 'rgba(168,90,90,0.7)' : 'rgba(212,175,55,0.7)';
+  var bgColors = deltas.map(function(v){
+    return v > 0 ? 'rgba(90,138,90,0.72)' : v < 0 ? 'rgba(168,90,90,0.72)' : 'rgba(212,175,55,0.72)';
   });
-  var actualBd = luckData.map(function(d){
-    return d.luck > 0 ? 'rgba(90,138,90,1)' : d.luck < 0 ? 'rgba(168,90,90,1)' : 'rgba(212,175,55,1)';
+  var bdColors = deltas.map(function(v){
+    return v > 0 ? 'rgba(90,138,90,1)' : v < 0 ? 'rgba(168,90,90,1)' : 'rgba(212,175,55,1)';
   });
+
+  // Zero-line plugin
+  var zeroPlugin = {
+    id: 'zeroLine',
+    afterDraw: function(chart) {
+      var ctx2  = chart.ctx;
+      var xAxis = chart.scales.x;
+      var yAxis = chart.scales.y;
+      var x0 = xAxis.getPixelForValue(0);
+      ctx2.save();
+      ctx2.strokeStyle = 'rgba(138,132,128,0.45)';
+      ctx2.lineWidth = 1.5;
+      ctx2.setLineDash([4, 3]);
+      ctx2.beginPath();
+      ctx2.moveTo(x0, yAxis.top);
+      ctx2.lineTo(x0, yAxis.bottom);
+      ctx2.stroke();
+      ctx2.restore();
+    }
+  };
 
   new Chart(document.getElementById('chart-luck').getContext('2d'), {
     type: 'bar',
     data: {
       labels: labels,
-      datasets: [
-        {
-          label: 'Actual Wins',
-          data: actual,
-          backgroundColor: actualBg,
-          borderColor: actualBd,
-          borderWidth: 1.5,
-          borderRadius: 3,
-          order: 1,
-        },
-        {
-          label: 'Expected Wins',
-          data: pred,
-          backgroundColor: 'rgba(156,148,156,0.18)',
-          borderColor: 'rgba(156,148,156,0.55)',
-          borderWidth: 1.5,
-          borderRadius: 3,
-          order: 2,
-        }
-      ]
+      datasets: [{
+        label: 'Gifted Wins',
+        data: deltas,
+        backgroundColor: bgColors,
+        borderColor: bdColors,
+        borderWidth: 1.5,
+        borderRadius: 3,
+      }]
     },
     options: {
+      indexAxis: 'y',
       responsive: true,
-      interaction: { mode:'index', intersect:false },
       plugins: {
-        legend: {
-          position:'top', align:'end',
-          labels: { boxWidth:12, padding:16, color:C_TEXT_MID }
-        },
+        legend: { display: false },
         tooltip: {
           callbacks: {
-            afterBody: function(items) {
-              var idx = items[0].dataIndex;
-              var lv  = luck[idx];
-              return ['Luck: ' + (lv > 0 ? '+' : '') + lv + ' wins vs expected'];
+            title: function(items){ return luckData[items[0].dataIndex].name; },
+            label: function(ctx) {
+              var idx = ctx.dataIndex;
+              var lv  = deltas[idx];
+              var prefix = lv > 0 ? '+' : '';
+              return [
+                'Luck: ' + prefix + lv + ' wins vs expected',
+                'Actual: ' + actual[idx] + 'W  |  Expected: ' + pred[idx] + 'W',
+              ];
             }
           }
         }
       },
       scales: {
-        x: { grid:gridStyle(), ticks:Object.assign(tickStyle(), { maxRotation:35, font:{size:11} }) },
-        y: {
+        x: {
           grid: gridStyle(),
-          ticks: Object.assign(tickStyle(), { stepSize:5 }),
-          title: { display:true, text:'Wins', color:C_MUTED, font:{size:11} },
-          min: 0,
+          ticks: Object.assign(tickStyle(), {
+            stepSize: 2,
+            callback: function(v){ return (v > 0 ? '+' : '') + v; }
+          }),
+          title: { display:true, text:'Gifted Wins (Actual minus Expected)', color:C_MUTED, font:{size:11} },
+        },
+        y: {
+          grid: { display: false },
+          ticks: Object.assign(tickStyle(), { font:{ size:12 } }),
         }
       }
-    }
+    },
+    plugins: [zeroPlugin]
   });
 })();
 
