@@ -11,8 +11,7 @@
 /* ── FILTER BAR ── */
 .filter-bar {
   display:flex;align-items:center;gap:1rem;
-  padding:1rem 1.5rem;margin-bottom:2rem;
-  flex-wrap:wrap;
+  padding:1rem 1.5rem;margin-bottom:2rem;flex-wrap:wrap;
 }
 .filter-bar label {
   font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;
@@ -26,62 +25,17 @@
   cursor:pointer;outline:none;
   -webkit-appearance:none;appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239c949c'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 0.75rem center;
-  padding-right:2rem;
+  background-repeat:no-repeat;background-position:right 0.75rem center;padding-right:2rem;
 }
 .filter-select:hover { border-color:var(--accent); }
 .filter-group { display:flex;align-items:center;gap:0.4rem; }
 
-/* ── TOP STORIES ── */
-.stories-card {
-  padding:1.75rem;margin-bottom:1.5rem;
-  border-left:3px solid var(--accent);
-}
-.stories-label {
-  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
-  font-weight:700;color:var(--accent);margin-bottom:0.75rem;
-}
-.story-item {
-  font-size:0.88rem;color:var(--text-mid);line-height:1.6;
-  padding:0.4rem 0;
-  border-bottom:1px solid rgba(var(--accent-rgb),0.06);
-}
-.story-item:last-child { border-bottom:none; }
-.story-bullet {
-  color:var(--accent);font-weight:700;margin-right:0.5rem;
-}
-
-/* ── TRADES ── */
-.trades-section { margin-bottom:1.5rem; }
-.trades-label {
-  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
-  font-weight:700;color:var(--accent);margin-bottom:0.75rem;
-}
-.trade-card {
-  padding:1.25rem 1.5rem;margin-bottom:0.6rem;
-  display:flex;align-items:center;gap:1rem;
-  border-left:3px solid var(--accent);
-}
-.trade-icon {
-  font-size:1.2rem;flex-shrink:0;
-}
-.trade-teams {
-  font-size:0.88rem;font-weight:700;color:var(--palm);
-}
-.trade-summary {
-  font-size:0.82rem;color:var(--muted);margin-top:0.15rem;
-}
-
-/* ── RANKINGS SECTION ── */
+/* ── RANKINGS LIST ── */
 .rankings-label {
   font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
   font-weight:700;color:var(--accent);margin-bottom:1rem;
 }
-.rankings-list {
-  display:flex;flex-direction:column;gap:0.6rem;
-  margin-bottom:2.5rem;
-}
+.rankings-list { display:flex;flex-direction:column;gap:0.6rem;margin-bottom:2.5rem; }
 
 /* ── RANK CARD ── */
 .rank-card {
@@ -89,136 +43,90 @@
   grid-template-columns:70px 48px 1fr auto;
   align-items:center;gap:1rem;
   padding:1.2rem 1.5rem;
-  transition:all 0.25s;
-  position:relative;
-  overflow:hidden;
+  transition:all 0.25s;position:relative;overflow:hidden;
   border-left:3px solid transparent;
 }
 .rank-card:hover { transform:translateX(3px); }
 
-/* Rank number + change */
 .rank-num-wrap { text-align:center; }
 .rank-num {
-  font-family:var(--font-display);font-weight:900;line-height:1;
-  color:var(--palm);
+  font-family:var(--font-display);font-weight:900;line-height:1;color:var(--palm);
 }
-.rank-change {
-  font-size:0.65rem;font-weight:700;margin-top:0.2rem;
-}
-.rank-up { color:var(--green); }
+.rank-change { font-size:0.65rem;font-weight:700;margin-top:0.2rem; }
+.rank-up   { color:var(--green); }
 .rank-down { color:var(--red); }
 .rank-same { color:var(--muted); }
 
-/* Logo */
-.rank-logo {
-  width:44px;height:44px;border-radius:0;object-fit:contain;
-}
+.rank-logo { width:44px;height:44px;border-radius:0;object-fit:contain; }
 
-/* Info */
 .rank-info { min-width:0; }
-.rank-team {
+.rank-manager {
   font-family:var(--font-display);font-weight:800;color:var(--palm);
   font-size:0.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.rank-manager {
-  font-size:0.78rem;color:var(--muted);
-}
-.rank-blurb {
+.rank-sub { font-size:0.78rem;color:var(--muted);margin-top:0.1rem; }
+.rank-synopsis {
   font-size:0.8rem;color:var(--text-mid);font-style:italic;
   margin-top:0.4rem;line-height:1.5;
 }
 
-/* Stats */
+/* Stats column */
 .rank-stats { text-align:right;flex-shrink:0; }
 .rank-record {
-  font-family:var(--font-display);font-weight:800;color:var(--palm);
-  font-size:1rem;
+  font-family:var(--font-display);font-weight:800;color:var(--palm);font-size:1rem;
 }
-.rank-scores {
-  font-size:0.7rem;color:var(--muted);margin-top:0.15rem;
-}
-.rank-week-score {
-  font-weight:700;
-}
+.rank-stat-line { font-size:0.7rem;color:var(--muted);margin-top:0.15rem; }
+.rank-stat-line strong { color:var(--text-mid);font-weight:700; }
 
-/* ═══ ESCALATING FLAIR ═══ */
-
-/* Tier: mid-pack (ranks 8-5) — subtle accent border */
-.rank-card.tier-mid {
-  border-left-color:rgba(var(--accent-rgb),0.3);
+/* Streak badge */
+.streak-badge {
+  display:inline-block;font-size:0.62rem;font-weight:800;
+  padding:0.1rem 0.4rem;border-radius:20px;margin-left:0.3rem;
+  vertical-align:middle;
 }
+.streak-w { background:rgba(90,138,90,0.15);color:var(--green); }
+.streak-l { background:rgba(168,90,90,0.15);color:var(--red); }
+
+/* ── TIER FLAIR ── */
+.rank-card.tier-bottom .rank-num { font-size:1.1rem;color:var(--muted); }
+.rank-card.tier-bottom .rank-manager { font-size:0.88rem; }
+
+.rank-card.tier-mid { border-left-color:rgba(var(--accent-rgb),0.3); }
 .rank-card.tier-mid .rank-num { font-size:1.4rem; }
 
-/* Tier: contender (rank 4) — stronger accent */
-.rank-card.tier-contender {
-  border-left-color:var(--accent);
-}
+.rank-card.tier-contender { border-left-color:var(--accent); }
 .rank-card.tier-contender .rank-num { font-size:1.6rem; }
 
-/* Tier: podium #3 — bronze */
 .rank-card.tier-bronze {
   border-left-color:#cd7f32;
-  background:linear-gradient(135deg, rgba(205,127,50,0.04), var(--glass)) !important;
+  background:linear-gradient(135deg,rgba(205,127,50,0.04),var(--glass)) !important;
 }
-.rank-card.tier-bronze .rank-num {
-  font-size:1.8rem;color:#cd7f32;
-}
+.rank-card.tier-bronze .rank-num { font-size:1.8rem;color:#cd7f32; }
 
-/* Tier: podium #2 — silver */
 .rank-card.tier-silver {
   border-left-color:#a8a8a8;
-  background:linear-gradient(135deg, rgba(168,168,168,0.06), var(--glass)) !important;
+  background:linear-gradient(135deg,rgba(168,168,168,0.06),var(--glass)) !important;
 }
-.rank-card.tier-silver .rank-num {
-  font-size:2rem;color:#707070;
-}
+.rank-card.tier-silver .rank-num { font-size:2rem;color:#707070; }
 
-/* Tier: #1 — GOLD, biggest card */
 .rank-card.tier-gold {
-  border-left:4px solid var(--gold);
-  padding:1.75rem 1.75rem;
-  background:linear-gradient(135deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02), var(--glass)) !important;
-  box-shadow:0 6px 32px rgba(212,175,55,0.08), 0 4px 24px var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+  border-left:4px solid var(--gold);padding:1.75rem 1.75rem;
+  background:linear-gradient(135deg,rgba(212,175,55,0.06),rgba(212,175,55,0.02),var(--glass)) !important;
+  box-shadow:0 6px 32px rgba(212,175,55,0.08),0 4px 24px var(--glass-shadow),inset 0 1px 0 rgba(255,255,255,0.5) !important;
 }
-.rank-card.tier-gold .rank-num {
-  font-size:2.4rem;color:var(--gold);
-}
-.rank-card.tier-gold .rank-team {
-  font-size:1.1rem;
-}
-.rank-card.tier-gold .rank-logo {
-  width:56px;height:56px;
-}
-.rank-card.tier-gold .rank-record {
-  font-size:1.15rem;
-}
+.rank-card.tier-gold .rank-num  { font-size:2.4rem;color:var(--gold); }
+.rank-card.tier-gold .rank-manager { font-size:1.1rem; }
+.rank-card.tier-gold .rank-logo { width:56px;height:56px; }
+.rank-card.tier-gold .rank-record { font-size:1.15rem; }
 
-/* Bottom tier (ranks 14-9) — muted, smaller */
-.rank-card.tier-bottom .rank-num {
-  font-size:1.1rem;color:var(--muted);
-}
-.rank-card.tier-bottom .rank-team {
-  font-size:0.88rem;
-}
-.rank-card.tier-bottom .rank-blurb {
-  font-size:0.76rem;
-}
-
-/* ── EMPTY STATE ── */
-.empty-state {
-  text-align:center;padding:4rem 2rem;
-}
-.empty-state .empty-icon {
-  font-size:2.5rem;margin-bottom:1rem;display:block;opacity:0.3;
-}
+/* ── EMPTY / LOADING ── */
+.empty-state { text-align:center;padding:4rem 2rem; }
+.empty-state .empty-icon { font-size:2.5rem;margin-bottom:1rem;display:block;opacity:0.3; }
 .empty-state p { font-size:0.95rem;color:var(--muted); }
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px) {
-  .rank-card {
-    grid-template-columns:55px 40px 1fr;
-    gap:0.75rem;padding:1rem 1.25rem;
-  }
+  .rank-card { grid-template-columns:55px 40px 1fr;gap:0.75rem;padding:1rem 1.25rem; }
   .rank-stats { display:none; }
   .rank-card.tier-gold { padding:1.25rem; }
   .rank-card.tier-gold .rank-logo { width:48px;height:48px; }
@@ -268,28 +176,20 @@
 
   <div class="page-header glass">
     <h1>Weekly Rankings</h1>
-    <p>Power rankings, top stories, and trade reviews</p>
+    <p>Power rankings across every season of Preach Fantasy</p>
   </div>
 
-  <!-- FILTER BAR -->
   <div class="filter-bar glass">
     <div class="filter-group">
       <label>Season</label>
-      <select class="filter-select" id="season-select" onchange="loadRankings()">
-        <option value="2025">2025</option>
-      </select>
+      <select class="filter-select" id="season-select" onchange="onSeasonChange()"></select>
     </div>
     <div class="filter-group">
       <label>Week</label>
-      <select class="filter-select" id="week-select" onchange="loadRankings()">
-        <option value="14">Week 14</option>
-        <option value="12">Week 12</option>
-        <option value="11">Week 11</option>
-      </select>
+      <select class="filter-select" id="week-select" onchange="loadRankings()"></select>
     </div>
   </div>
 
-  <!-- CONTENT CONTAINER (populated by JS) -->
   <div id="rankings-content">
     <div class="empty-state glass">
       <span class="empty-icon">&#128202;</span>
@@ -305,119 +205,166 @@
 
 <script src="../shared.js"></script>
 <script>
+/* ══════════════════════════════════════
+   Weekly Rankings
+   ══════════════════════════════════════ */
+
+var LASTNAME_MAP = {
+  'Aidan Quigley':'Quigley','Andrew Root':'Root','Anthony Kelly':'Kelly',
+  'Baylen Slansky':'Slansky','Ben Castaldo':'Castaldo','Brandon Hancock':'Hancock',
+  'Carmine Pittelli Jr.':'Pittelli','Charlie Gorman':'Gorman','Cole Maney':'Maney',
+  'Deniz Bileydi':'Bileydi','Ethan Radecki':'Radecki','Max Malich':'Malich',
+  'Quin Gegwich':'Gegwich','Ryan P McQuaid':'McQuaid'
+};
+
+var manifest = null;  // loaded from manifest.json
+
+/* ── Tier ─────────────────────────────────────────────────────── */
 function getTierClass(rank) {
-  if (rank === 1) return 'tier-gold';
-  if (rank === 2) return 'tier-silver';
-  if (rank === 3) return 'tier-bronze';
-  if (rank === 4) return 'tier-contender';
-  if (rank >= 5 && rank <= 8) return 'tier-mid';
+  if (rank === 1)  return 'tier-gold';
+  if (rank === 2)  return 'tier-silver';
+  if (rank === 3)  return 'tier-bronze';
+  if (rank === 4)  return 'tier-contender';
+  if (rank <= 8)   return 'tier-mid';
   return 'tier-bottom';
 }
 
-function getRankChange(rank, prevRank) {
-  var diff = prevRank - rank;
-  if (diff > 0) return '<span class="rank-change rank-up">&#9650; ' + diff + '</span>';
-  if (diff < 0) return '<span class="rank-change rank-down">&#9660; ' + Math.abs(diff) + '</span>';
+/* ── Rank change HTML ─────────────────────────────────────────── */
+function rankChangeHtml(change) {
+  if (change === null || change === undefined) return '<span class="rank-change rank-same">NEW</span>';
+  if (change > 0)  return '<span class="rank-change rank-up">&#9650; ' + change + '</span>';
+  if (change < 0)  return '<span class="rank-change rank-down">&#9660; ' + Math.abs(change) + '</span>';
   return '<span class="rank-change rank-same">&#8212;</span>';
 }
 
+/* ── Streak badge ─────────────────────────────────────────────── */
+function streakHtml(streak) {
+  if (!streak) return '';
+  var cls = streak[0] === 'W' ? 'streak-w' : 'streak-l';
+  return '<span class="streak-badge ' + cls + '">' + streak + '</span>';
+}
+
+/* ── Render ───────────────────────────────────────────────────── */
 function renderRankings(data) {
   var container = document.getElementById('rankings-content');
   var html = '';
 
-  // Top Stories
-  if (data.top_stories && data.top_stories.length > 0) {
-    html += '<div class="stories-card glass">';
-    html += '<div class="stories-label">&#128240; Top Stories</div>';
-    for (var i = 0; i < data.top_stories.length; i++) {
-      html += '<div class="story-item"><span class="story-bullet">&#9656;</span>' + data.top_stories[i] + '</div>';
-    }
-    html += '</div>';
-  }
-
-  // Trades
-  if (data.trades && data.trades.length > 0) {
-    html += '<div class="trades-section">';
-    html += '<div class="trades-label">&#128260; Trades</div>';
-    for (var t = 0; t < data.trades.length; t++) {
-      var trade = data.trades[t];
-      html += '<div class="trade-card glass">';
-      html += '<div class="trade-icon">&#128260;</div>';
-      html += '<div><div class="trade-teams">' + trade.team_a + ' &#8596; ' + trade.team_b + '</div>';
-      html += '<div class="trade-summary">' + trade.summary + '</div></div>';
-      html += '</div>';
-    }
-    html += '</div>';
-  }
-
-  // Rankings (reversed: 14 at top, 1 at bottom)
-  html += '<div class="rankings-label">&#128202; Power Rankings</div>';
+  html += '<div class="rankings-label">&#128202; Power Rankings &mdash; ' + data.season + ' Week ' + data.week + '</div>';
   html += '<div class="rankings-list">';
 
-  var sorted = data.rankings.slice().sort(function(a, b) { return b.rank - a.rank; });
+  // Sort worst to best (14 first) for suspense reveal
+  var teams = data.teams.slice().sort(function(a, b){ return b.rank - a.rank; });
 
-  for (var r = 0; r < sorted.length; r++) {
-    var m = sorted[r];
-    var tier = getTierClass(m.rank);
-    var change = getRankChange(m.rank, m.prev_rank);
-    var logoPath = '../images/logos/' + m.lastname + '.png';
+  teams.forEach(function(t) {
+    var tier     = getTierClass(t.rank);
+    var lastname = LASTNAME_MAP[t.manager] || '';
+    var logo     = '../images/logos/' + lastname + '.png';
+
+    // Sub-line: avg rank + streak
+    var subParts = [];
+    if (t.avg_rank !== null)   subParts.push('Avg rank #' + t.avg_rank.toFixed(1));
+    if (t.streak)              subParts.push(streakHtml(t.streak));
+    var subHtml = subParts.join(' &middot; ');
+
+    // Stats column
+    var statsHtml = '';
+    if (t.record_to_date) {
+      statsHtml += '<div class="rank-record">' + t.record_to_date + '</div>';
+    }
+    if (t.ppg_to_date !== null) {
+      statsHtml += '<div class="rank-stat-line"><strong>' + t.ppg_to_date.toFixed(1) + '</strong> PF/G</div>';
+    }
+    if (t.last_score !== null) {
+      statsHtml += '<div class="rank-stat-line">Last: <strong>' + t.last_score + '</strong></div>';
+    }
 
     html += '<div class="rank-card glass ' + tier + '">';
 
-    // Rank number + change
-    html += '<div class="rank-num-wrap">';
-    html += '<div class="rank-num">#' + m.rank + '</div>';
-    html += change;
-    html += '</div>';
+    // Rank + change
+    html += '<div class="rank-num-wrap">'
+          + '<div class="rank-num">#' + t.rank + '</div>'
+          + rankChangeHtml(t.rank_change)
+          + '</div>';
 
     // Logo
-    html += '<img class="rank-logo" src="' + logoPath + '" alt="">';
+    html += '<img class="rank-logo" src="' + logo + '" alt="">';
 
     // Info
-    html += '<div class="rank-info">';
-    html += '<div class="rank-team">' + m.team + '</div>';
-    html += '<div class="rank-manager">' + m.manager + '</div>';
-    html += '<div class="rank-blurb">"' + m.blurb + '"</div>';
-    html += '</div>';
+    html += '<div class="rank-info">'
+          + '<div class="rank-manager">' + t.manager + '</div>'
+          + (subHtml ? '<div class="rank-sub">' + subHtml + '</div>' : '')
+          + (t.synopsis ? '<div class="rank-synopsis">&ldquo;' + t.synopsis + '&rdquo;</div>' : '')
+          + '</div>';
 
     // Stats
-    html += '<div class="rank-stats">';
-    html += '<div class="rank-record">' + m.record + '</div>';
-    html += '<div class="rank-scores">' + m.season_pfg + ' PF/G</div>';
-    html += '<div class="rank-scores">Wk: <span class="rank-week-score">' + m.week_score + '</span></div>';
-    html += '</div>';
+    html += '<div class="rank-stats">' + statsHtml + '</div>';
 
     html += '</div>';
-  }
+  });
 
   html += '</div>';
   container.innerHTML = html;
 }
 
+/* ── Load rankings JSON ───────────────────────────────────────── */
 function loadRankings() {
-  var season = document.getElementById('season-select').value;
-  var week = document.getElementById('week-select').value;
-  var path = '../data/rankings/' + season + '_week' + week + '.json';
+  var season  = document.getElementById('season-select').value;
+  var week    = document.getElementById('week-select').value;
+  if (!season || !week) return;
+
+  var wkPad   = String(week).length < 2 ? '0' + week : week;
+  var path    = '../data/rankings/' + season + '_week' + wkPad + '.json';
   var container = document.getElementById('rankings-content');
 
   container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#9203;</span><p>Loading...</p></div>';
 
   fetch(path)
-    .then(function(res) {
-      if (!res.ok) throw new Error('Not found');
-      return res.json();
-    })
-    .then(function(data) {
-      renderRankings(data);
-    })
+    .then(function(r){ if (!r.ok) throw new Error(); return r.json(); })
+    .then(renderRankings)
     .catch(function() {
       container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#128203;</span><p>No rankings available for this week yet.</p></div>';
     });
 }
 
-// Load on page ready
-document.addEventListener('DOMContentLoaded', loadRankings);
-</script>
+/* ── Season change: repopulate week dropdown ──────────────────── */
+function onSeasonChange() {
+  var season   = parseInt(document.getElementById('season-select').value);
+  var weekSel  = document.getElementById('week-select');
+  var entry    = manifest.find(function(m){ return m.season === season; });
+  weekSel.innerHTML = '';
+  if (entry) {
+    // Highest week first
+    entry.weeks.slice().reverse().forEach(function(w) {
+      var opt = document.createElement('option');
+      opt.value = w;
+      opt.textContent = 'Week ' + w;
+      weekSel.appendChild(opt);
+    });
+  }
+  loadRankings();
+}
 
+/* ── Init: load manifest, populate dropdowns ──────────────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('../data/rankings/manifest.json')
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      manifest = data;
+      var seasonSel = document.getElementById('season-select');
+      // Most recent season first
+      data.forEach(function(entry) {
+        var opt = document.createElement('option');
+        opt.value = entry.season;
+        opt.textContent = entry.season;
+        seasonSel.appendChild(opt);
+      });
+      onSeasonChange();
+    })
+    .catch(function() {
+      document.getElementById('rankings-content').innerHTML =
+        '<div class="empty-state glass"><span class="empty-icon">&#128203;</span><p>Could not load rankings data.</p></div>';
+    });
+});
+</script>
 </body>
 </html>
