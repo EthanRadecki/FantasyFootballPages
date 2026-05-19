@@ -8,42 +8,107 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <style>
-.champ-list { display:flex;flex-direction:column;gap:1.5rem;margin-bottom:2.5rem; }
-.champ-entry {
-  padding:2rem;border-left:3px solid var(--gold);position:relative;overflow:hidden;
+/* ── CHAMPION CARD ── */
+.champ-card {
+  padding:0;overflow:hidden;margin-bottom:1.5rem;
+  border-left:3px solid var(--gold);position:relative;
 }
-.champ-entry::before {
+.champ-card::before {
   content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg, rgba(212,175,55,0.04), transparent 50%);
-  pointer-events:none;
+  background:linear-gradient(135deg,rgba(212,175,55,0.05),transparent 55%);
+  pointer-events:none;z-index:0;
+}
+
+/* Year banner */
+.champ-banner {
+  padding:1.4rem 2rem 1rem;position:relative;z-index:1;
+  border-bottom:1px solid rgba(212,175,55,0.15);
 }
 .champ-year-badge {
   display:inline-flex;align-items:center;gap:0.4rem;
   font-size:0.65rem;text-transform:uppercase;letter-spacing:0.14em;
-  font-weight:700;color:var(--gold);margin-bottom:1rem;position:relative;
+  font-weight:700;color:var(--gold);margin-bottom:0.5rem;
 }
-.champ-slide {
-  width:100%;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.1);
-  display:block;cursor:zoom-in;transition:transform 0.2s;
+.champ-title {
+  font-family:var(--font-display);font-size:1.8rem;font-weight:900;
+  color:var(--palm);letter-spacing:-0.02em;line-height:1.1;
+  margin-bottom:0.2rem;
 }
-.champ-slide:hover { transform:scale(1.005); }
-.trophy-photo-wrap {
-  padding:2rem;text-align:center;margin-bottom:0;border-left:3px solid var(--accent);
+.champ-manager-line {
+  font-size:0.82rem;color:var(--muted);
 }
-.trophy-photo-label {
+.champ-manager-line strong { color:var(--text-mid); }
+
+/* Stats bar */
+.champ-stats {
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid rgba(212,175,55,0.12);
+  position:relative;z-index:1;
+}
+.champ-stat {
+  padding:1.1rem 1.5rem;text-align:center;
+  border-right:1px solid rgba(212,175,55,0.1);
+}
+.champ-stat:last-child { border-right:none; }
+.champ-stat-value {
+  font-family:var(--font-display);font-size:1.5rem;font-weight:900;
+  color:var(--palm);line-height:1;margin-bottom:0.2rem;
+}
+.champ-stat-value.gold { color:var(--gold); }
+.champ-stat-label {
+  font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;
+  font-weight:700;color:var(--muted);
+}
+
+/* Roster */
+.champ-roster {
+  padding:1.25rem 2rem 1.5rem;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0.5rem 1rem;
+  position:relative;z-index:1;
+}
+.roster-slot {
+  display:flex;align-items:baseline;gap:0.5rem;
+}
+.roster-pos {
+  font-size:0.62rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.08em;color:var(--accent);flex-shrink:0;
+  min-width:2.4rem;
+}
+.roster-name {
+  font-size:0.8rem;font-weight:600;color:var(--text-mid);
+  line-height:1.3;
+}
+
+/* Trophy handoff */
+.trophy-wrap {
+  padding:2rem;text-align:center;margin-bottom:1.5rem;
+  border-left:3px solid var(--accent);
+}
+.trophy-label {
   display:inline-flex;align-items:center;gap:0.4rem;
   font-size:0.65rem;text-transform:uppercase;letter-spacing:0.14em;
   font-weight:700;color:var(--accent);margin-bottom:1rem;
 }
 .trophy-photo {
-  max-width:60%;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.1);
-  cursor:zoom-in;transition:transform 0.2s;
+  max-width:60%;border-radius:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.1);
+  cursor:zoom-in;transition:transform 0.2s;display:block;margin:0 auto;
 }
 .trophy-photo:hover { transform:scale(1.005); }
-@media(max-width:768px) {
-  .champ-entry { padding:1.25rem; }
-  .trophy-photo { max-width:85%; }
-  .trophy-photo-wrap { padding:1.25rem; }
+
+@media(max-width:900px) {
+  .champ-stats { grid-template-columns:repeat(2,1fr); }
+  .champ-roster { grid-template-columns:repeat(2,1fr); }
+  .champ-title  { font-size:1.4rem; }
+}
+@media(max-width:600px) {
+  .champ-banner { padding:1rem 1.25rem 0.75rem; }
+  .champ-stat   { padding:0.9rem 0.75rem; }
+  .champ-stat-value { font-size:1.2rem; }
+  .champ-roster { padding:1rem 1.25rem 1.25rem;grid-template-columns:1fr 1fr; }
+  .trophy-photo { max-width:90%; }
+  .trophy-wrap  { padding:1.25rem; }
 }
 </style>
 </head>
@@ -89,36 +154,7 @@
     <p>Every championship team since Preach Fantasy's founding</p>
   </div>
 
-  <div class="champ-list">
-    <div class="champ-entry glass">
-      <div class="champ-year-badge">&#127942; 2025 Champion</div>
-      <img src="../images/champions/champion_2025.png" class="champ-slide" alt="2025 Champion - Rolls With Butter" onclick="openLightbox(this.src, this.alt)">
-    </div>
-    <div class="trophy-photo-wrap glass">
-      <div class="trophy-photo-label">&#128248; Passing of the Trophy</div><br>
-      <img src="../images/champions/champion_photo_2025.jpeg" class="trophy-photo" alt="2024 Champion passes trophy to 2025 Champion" onclick="openLightbox(this.src, this.alt)">
-    </div>
-    <div class="champ-entry glass">
-      <div class="champ-year-badge">&#127942; 2024 Champion</div>
-      <img src="../images/champions/champion_2024.png" class="champ-slide" alt="2024 Champion" onclick="openLightbox(this.src, this.alt)">
-    </div>
-    <div class="champ-entry glass">
-      <div class="champ-year-badge">&#127942; 2023 Champion</div>
-      <img src="../images/champions/champion_2023.png" class="champ-slide" alt="2023 Champion" onclick="openLightbox(this.src, this.alt)">
-    </div>
-    <div class="champ-entry glass">
-      <div class="champ-year-badge">&#127942; 2022 Champion</div>
-      <img src="../images/champions/champion_2022.png" class="champ-slide" alt="2022 Champion" onclick="openLightbox(this.src, this.alt)">
-    </div>
-    <div class="champ-entry glass">
-      <div class="champ-year-badge">&#127942; 2021 Champion</div>
-      <img src="../images/champions/champion_2021.png" class="champ-slide" alt="2021 Champion" onclick="openLightbox(this.src, this.alt)">
-    </div>
-    <div class="champ-entry glass">
-      <div class="champ-year-badge">&#127942; 2020 Champion</div>
-      <img src="../images/champions/champion_2020.png" class="champ-slide" alt="2020 Champion" onclick="openLightbox(this.src, this.alt)">
-    </div>
-  </div>
+  <div id="champ-list"></div>
 
   <footer>
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
@@ -132,5 +168,173 @@
 </div>
 
 <script src="../shared.js"></script>
+<script>
+var CHAMPS = [
+  {
+    year: 2025,
+    manager: 'Anthony Kelly',
+    team: 'Rolls With Butter',
+    record: '7-7',
+    rs_ppg: 115.26,
+    po_ppg: 111.49,
+    runner_up: 'Charlie Gorman',
+    roster: [
+      {pos:'QB',   name:'Joe Burrow'},
+      {pos:'RB',   name:'Rico Dowdle'},
+      {pos:'RB',   name:'Kyren Williams'},
+      {pos:'WR',   name:'Amon-Ra St. Brown'},
+      {pos:'WR',   name:'Drake London'},
+      {pos:'TE',   name:'Juwan Johnson'},
+      {pos:'FLEX', name:'Tet McMillan'},
+    ]
+  },
+  {
+    year: 2024,
+    manager: 'Baylen Slansky',
+    team: 'STATION GRITS',
+    record: '9-5',
+    rs_ppg: 118.70,
+    po_ppg: 146.72,
+    runner_up: 'Brandon Hancock',
+    roster: [
+      {pos:'QB',   name:'Jared Goff'},
+      {pos:'RB',   name:'Jahmyr Gibbs'},
+      {pos:'RB',   name:"De'Von Achane"},
+      {pos:'WR',   name:'Puka Nacua'},
+      {pos:'WR',   name:'Ladd McConkey'},
+      {pos:'TE',   name:'Zach Ertz'},
+      {pos:'FLEX', name:'Jameson Williams'},
+    ]
+  },
+  {
+    year: 2023,
+    manager: 'Carmine Pittelli Jr.',
+    team: 'Thank You Max!',
+    record: '10-4',
+    rs_ppg: 133.90,
+    po_ppg: 126.33,
+    runner_up: 'Cole Maney',
+    roster: [
+      {pos:'QB',   name:'Josh Allen'},
+      {pos:'RB',   name:'Saquon Barkley'},
+      {pos:'RB',   name:'Tony Pollard'},
+      {pos:'WR',   name:'CeeDee Lamb'},
+      {pos:'WR',   name:'Garrett Wilson'},
+      {pos:'TE',   name:'T.J. Hockenson'},
+      {pos:'FLEX', name:'Cooper Kupp'},
+    ]
+  },
+  {
+    year: 2022,
+    manager: 'Anthony Kelly',
+    team: 'Rolls With butter',
+    record: '7-7',
+    rs_ppg: 111.30,
+    po_ppg: 129.25,
+    runner_up: 'Ryan P McQuaid',
+    roster: [
+      {pos:'QB',   name:'Justin Fields'},
+      {pos:'RB',   name:'Travis Etienne'},
+      {pos:'RB',   name:'Zack Moss'},
+      {pos:'WR',   name:"Ja'Marr Chase"},
+      {pos:'WR',   name:'A.J. Brown'},
+      {pos:'TE',   name:'George Kittle'},
+      {pos:'FLEX', name:'Jaylen Waddle'},
+    ]
+  },
+  {
+    year: 2021,
+    manager: 'Ben Castaldo',
+    team: 'I Shoot Blanks N Shit',
+    record: '9-4',
+    rs_ppg: 120.10,
+    po_ppg: 132.31,
+    runner_up: 'Anthony Kelly',
+    roster: [
+      {pos:'QB',   name:'Josh Allen'},
+      {pos:'RB',   name:'Alvin Kamara'},
+      {pos:'RB',   name:'David Montgomery'},
+      {pos:'WR',   name:'Justin Jefferson'},
+      {pos:'WR',   name:'Deebo Samuel'},
+      {pos:'TE',   name:'Dallas Goedert'},
+      {pos:'FLEX', name:'Tyler Boyd'},
+    ]
+  },
+  {
+    year: 2020,
+    manager: 'Ethan Radecki',
+    team: 'Slant Boy v2',
+    record: '8-4',
+    rs_ppg: 117.81,
+    po_ppg: 131.22,
+    runner_up: 'Brandon Hancock',
+    roster: [
+      {pos:'QB',   name:'Drew Brees'},
+      {pos:'RB',   name:'Nick Chubb'},
+      {pos:'RB',   name:'David Montgomery'},
+      {pos:'WR',   name:'Chris Godwin'},
+      {pos:'WR',   name:'Julio Jones'},
+      {pos:'TE',   name:'Travis Kelce'},
+      {pos:'FLEX', name:'Michael Thomas'},
+    ]
+  },
+];
+
+function buildCard(c) {
+  var rosterHtml = c.roster.map(function(r) {
+    return '<div class="roster-slot">'
+      + '<span class="roster-pos">' + r.pos + '</span>'
+      + '<span class="roster-name">' + r.name + '</span>'
+      + '</div>';
+  }).join('');
+
+  return '<div class="champ-card glass">'
+    + '<div class="champ-banner">'
+    +   '<div class="champ-year-badge">&#127942; ' + c.year + ' Champion</div>'
+    +   '<div class="champ-title">' + c.team + '</div>'
+    +   '<div class="champ-manager-line"><strong>' + c.manager + '</strong></div>'
+    + '</div>'
+    + '<div class="champ-stats">'
+    +   '<div class="champ-stat">'
+    +     '<div class="champ-stat-value gold">' + c.record + '</div>'
+    +     '<div class="champ-stat-label">Record</div>'
+    +   '</div>'
+    +   '<div class="champ-stat">'
+    +     '<div class="champ-stat-value">' + c.rs_ppg.toFixed(1) + '</div>'
+    +     '<div class="champ-stat-label">Reg Season PPG</div>'
+    +   '</div>'
+    +   '<div class="champ-stat">'
+    +     '<div class="champ-stat-value">' + (c.po_ppg !== null ? c.po_ppg.toFixed(1) : '--') + '</div>'
+    +     '<div class="champ-stat-label">Playoff PPG</div>'
+    +   '</div>'
+    +   '<div class="champ-stat">'
+    +     '<div class="champ-stat-value">' + c.runner_up.split(' ')[0] + '</div>'
+    +     '<div class="champ-stat-label">Runner-Up</div>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="champ-roster">' + rosterHtml + '</div>'
+    + '</div>';
+}
+
+(function() {
+  var list = document.getElementById('champ-list');
+  var html = '';
+
+  CHAMPS.forEach(function(c, i) {
+    html += buildCard(c);
+    // Insert trophy handoff photo between 2025 and 2024
+    if (i === 0) {
+      html += '<div class="trophy-wrap glass">'
+        + '<div class="trophy-label">&#128248; Passing of the Trophy</div>'
+        + '<img src="../images/champions/2024_2025_champs.jpeg" class="trophy-photo" '
+        + 'alt="2024 Champion passes trophy to 2025 Champion" '
+        + 'onclick="openLightbox(this.src, this.alt)">'
+        + '</div>';
+    }
+  });
+
+  list.innerHTML = html;
+})();
+</script>
 </body>
 </html>
