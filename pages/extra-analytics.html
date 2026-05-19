@@ -182,7 +182,9 @@
       <p>Each week, every manager's score is compared to the <strong>league median</strong>. If you scored above the median, you "should have" won that week regardless of your actual opponent. The difference between your actual wins and these expected wins is your schedule luck. Positive means the schedule gifted you wins; negative means it took them away.</p>
     </div>
     <div class="chart-area-pad glass">
-      <canvas id="chart-luck" height="55"></canvas>
+      <div style="position:relative;height:380px;">
+        <canvas id="chart-luck"></canvas>
+      </div>
     </div>
   </div>
 
@@ -356,6 +358,7 @@ function shortName(n) {
     options: {
       indexAxis: 'y',
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
         tooltip: {
