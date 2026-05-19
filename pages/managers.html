@@ -438,6 +438,14 @@
       </div>
     </div>
 
+    <!-- RANK TRAJECTORY -->
+    <div class="chart-section">
+      <div class="chart-section-label">Power Ranking Trajectory</div>
+      <div class="chart-area glass">
+        <canvas id="chart-rank" height="110"></canvas>
+      </div>
+    </div>
+
   </div><!-- end #manager-profile -->
 
   <footer>
@@ -457,6 +465,7 @@ var profileLookup = null;
 var totalManagers = 0;
 var allMatchupData = null;   // raw matchup rows, kept for chart use
 var allStatsData   = null;   // raw stats rows, kept for league avg
+var allRankingData = null;   // { manager -> { year -> { week -> rank } } }, loaded from JSONs
 
 // Chart instances — destroyed and rebuilt on each manager switch
 var charts = {};
@@ -1243,12 +1252,94 @@ function renderTrendsChart(profile) {
 }
 
 // ── Render all charts for a profile ─────────────────────────────────────────
+// ── 6. Power Ranking Trajectory ──────────────────────────────────────────────
+function renderRankChart(profile) {
+  destroyChart('rank');
+  if (!allRankingData) return;
+
+  var managerName = profile.name;
+  var bySeason    = allRankingData[managerName] || allRankingData[managerName + '.'];
+  if (!bySeason || Object.keys(bySeason).length === 0) return;
+
+  var seasons = Object.keys(bySeason).map(Number).sort();
+
+  // Find max week across all seasons for x-axis
+  var maxWeek = 0;
+  seasons.forEach(function(yr) {
+    Object.keys(bySeason[yr]).forEach(function(wk) {
+      if (parseInt(wk) > maxWeek) maxWeek = parseInt(wk);
+    });
+  });
+
+  var weekLabels = [];
+  for (var w = 1; w <= maxWeek; w++) weekLabels.push('Wk ' + w);
+
+  var datasets = seasons.map(function(yr, i) {
+    var color = SEASON_COLORS[i % SEASON_COLORS.length];
+    var data  = [];
+    for (var w = 1; w <= maxWeek; w++) {
+      var r = bySeason[yr][w];
+      data.push(r !== undefined ? r : null);
+    }
+    return {
+      label:              String(yr),
+      data:               data,
+      borderColor:        color,
+      backgroundColor:    'transparent',
+      borderWidth:        2,
+      pointRadius:        4,
+      pointBackgroundColor: color,
+      pointBorderColor:   '#fff',
+      pointBorderWidth:   1.5,
+      pointHoverRadius:   7,
+      tension:            0.3,
+      spanGaps:           false,
+    };
+  });
+
+  var ctx = document.getElementById('chart-rank').getContext('2d');
+  charts['rank'] = new Chart(ctx, {
+    type: 'line',
+    data: { labels: weekLabels, datasets: datasets },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top', align: 'end',
+          labels: { boxWidth: 12, padding: 14, color: C_TEXT_MID }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.parsed.y === null) return null;
+              return ctx.dataset.label + ': #' + ctx.parsed.y;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: gridStyle(), ticks: tickStyle() },
+        y: {
+          grid:    gridStyle(),
+          ticks:   Object.assign(tickStyle(), { stepSize: 1, callback: function(v){ return '#' + v; } }),
+          title:   { display: true, text: 'Rank', color: C_MUTED, font: { size: 11 } },
+          reverse: true,    // rank 1 at top
+          min:     1,
+          max:     14,
+        }
+      }
+    }
+  });
+}
+
 function renderAllCharts(profile) {
   renderPerfChart(profile);
   renderLuckChart(profile);
   renderH2HChart(profile);
   renderDistChart(profile);
   renderTrendsChart(profile);
+  renderRankChart(profile);
 }
 
 // ── Manager selection ────────────────────────────────────────────────────────
@@ -1276,7 +1367,8 @@ function selectManager(el) {
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  Promise.all([
+  // Load CSV data and ranking JSONs in parallel
+  var csvPromise = Promise.all([
     loadCSV('../data/preach_manager_stats.csv'),
     loadCSV('../data/matchup_data.csv')
   ]).then(function(results) {
@@ -1286,6 +1378,37 @@ document.addEventListener('DOMContentLoaded', function() {
     totalManagers  = Object.keys(profileLookup).length;
     updateManagerPills(profileLookup);
   });
+
+  // Load manifest then fetch all ranking JSONs and build lookup
+  var rankPromise = fetch('../data/rankings/manifest.json')
+    .then(function(r){ return r.json(); })
+    .then(function(manifest) {
+      var fetches = [];
+      manifest.forEach(function(entry) {
+        entry.weeks.forEach(function(wk) {
+          var pad  = wk < 10 ? '0' + wk : wk;
+          var path = '../data/rankings/' + entry.season + '_week' + pad + '.json';
+          fetches.push(fetch(path).then(function(r){ return r.json(); }));
+        });
+      });
+      return Promise.all(fetches);
+    })
+    .then(function(files) {
+      // Build { manager -> { year -> { week -> rank } } }
+      var lookup = {};
+      files.forEach(function(data) {
+        data.teams.forEach(function(t) {
+          if (!lookup[t.manager]) lookup[t.manager] = {};
+          if (!lookup[t.manager][data.season]) lookup[t.manager][data.season] = {};
+          lookup[t.manager][data.season][data.week] = t.rank;
+        });
+      });
+      allRankingData = lookup;
+    })
+    .catch(function() {
+      // Rankings not available -- chart will silently not render
+      allRankingData = {};
+    });
 });
 </script>
 </body>
