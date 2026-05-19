@@ -168,9 +168,9 @@ nav {
 .val-red { color:var(--red);font-weight:700; }
 .val-bold { font-weight:700;color:var(--palm); }
 .val-small { font-size:0.78rem;color:var(--muted); }
-.cell-good { background:rgba(90,138,90,0.1); }
-.cell-mid { background:rgba(212,175,55,0.08); }
-.cell-bad { background:rgba(168,90,90,0.1); }
+.cell-good { background:rgba(90,138,90,0.18);color:#4a7a4a;font-weight:700; }
+.cell-mid { background:rgba(212,175,55,0.15);color:#8a7020;font-weight:600; }
+.cell-bad { background:rgba(168,90,90,0.18);color:#a05050;font-weight:700; }
 
 /* ── LINKS ── */
 .manager-link {
