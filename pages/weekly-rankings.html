@@ -197,11 +197,23 @@
     </div>
   </div>
 
+  <!-- TRAJECTORY CHART -- below cards so it doesn't spoil the reveal -->
+  <div id="trajectory-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#128200; Season Ranking Trajectory</div>
+    <div class="glass" style="padding:1.5rem;">
+      <div style="position:relative;height:400px;">
+        <canvas id="chart-trajectory"></canvas>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
   </footer>
 
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 
 <script src="../shared.js"></script>
 <script>
@@ -218,6 +230,26 @@ var LASTNAME_MAP = {
 };
 
 var manifest = null;  // loaded from manifest.json
+var jsonCache = {};   // { 'year_week': data } -- avoid re-fetching
+var trajectoryChart = null;
+
+// One color per manager (consistent across seasons)
+var MANAGER_COLORS = {
+  'Aidan Quigley':       '#9c949c',
+  'Andrew Root':         '#4a7fa8',
+  'Anthony Kelly':       '#5a8a6a',
+  'Baylen Slansky':      '#d4af37',
+  'Ben Castaldo':        '#b07050',
+  'Brandon Hancock':     '#8878a8',
+  'Carmine Pittelli Jr.':'#c04a4a',
+  'Charlie Gorman':      '#4a9aa8',
+  'Cole Maney':          '#a8884a',
+  'Deniz Bileydi':       '#7a6aa8',
+  'Ethan Radecki':       '#4a8a5a',
+  'Max Malich':          '#a84a7a',
+  'Quin Gegwich':        '#5a7aa8',
+  'Ryan P McQuaid':      '#c07840',
+};
 
 /* ── Tier ─────────────────────────────────────────────────────── */
 function getTierClass(rank) {
@@ -306,21 +338,145 @@ function renderRankings(data) {
   container.innerHTML = html;
 }
 
+/* ── Trajectory chart ─────────────────────────────────────────── */
+function renderTrajectoryChart(season, upToWeek, weeksData) {
+  // weeksData: array of week JSON objects sorted by week ascending
+
+  var managers = Object.keys(MANAGER_COLORS);
+  var weeks    = weeksData.map(function(d){ return d.week; });
+  var labels   = weeks.map(function(w){ return 'Wk ' + w; });
+
+  // Build per-manager rank series
+  var datasets = managers.map(function(mgr) {
+    var color = MANAGER_COLORS[mgr] || '#9c949c';
+    var data  = weeks.map(function(w) {
+      var weekData = weeksData.find(function(d){ return d.week === w; });
+      if (!weekData) return null;
+      var team = weekData.teams.find(function(t){ return t.manager === mgr; });
+      return team ? team.rank : null;
+    });
+
+    // Highlight current week point
+    var pointRadii = data.map(function(_, i){
+      return i === data.length - 1 ? 6 : 3;
+    });
+    var pointBorderWidths = data.map(function(_, i){
+      return i === data.length - 1 ? 2 : 1;
+    });
+
+    return {
+      label:                mgr.replace(' Jr.','').replace('Ryan P ','Ryan '),
+      data:                 data,
+      borderColor:          color,
+      backgroundColor:      'transparent',
+      borderWidth:          2,
+      pointRadius:          pointRadii,
+      pointBackgroundColor: color,
+      pointBorderColor:     '#fff',
+      pointBorderWidth:     pointBorderWidths,
+      pointHoverRadius:     8,
+      tension:              0.3,
+      spanGaps:             false,
+    };
+  });
+
+  if (trajectoryChart) {
+    trajectoryChart.destroy();
+    trajectoryChart = null;
+  }
+
+  Chart.defaults.font.family = "'Outfit', sans-serif";
+  Chart.defaults.color       = '#5a5550';
+
+  var ctx = document.getElementById('chart-trajectory').getContext('2d');
+  trajectoryChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive:          true,
+      maintainAspectRatio: false,
+      interaction:         { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: {
+            boxWidth: 10,
+            padding:  10,
+            color:    '#5a5550',
+            font:     { size: 11 },
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.parsed.y === null) return null;
+              return ctx.dataset.label + ': #' + ctx.parsed.y;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid:  { color: 'rgba(156,148,156,0.15)', drawBorder: false },
+          ticks: { color: '#8a8480' },
+        },
+        y: {
+          reverse: true,
+          min:     1,
+          max:     14,
+          grid:    { color: 'rgba(156,148,156,0.15)', drawBorder: false },
+          ticks:   { color: '#8a8480', stepSize: 1, callback: function(v){ return '#' + v; } },
+          title:   { display: true, text: 'Rank', color: '#8a8480', font: { size: 11 } },
+        }
+      }
+    }
+  });
+
+  document.getElementById('trajectory-wrap').style.display = 'block';
+}
+
+/* ── Fetch a single week JSON (with cache) ────────────────────── */
+function fetchWeek(season, week) {
+  var key  = season + '_' + week;
+  if (jsonCache[key]) return Promise.resolve(jsonCache[key]);
+  var pad  = week < 10 ? '0' + week : week;
+  var path = '../data/rankings/' + season + '_week' + pad + '.json';
+  return fetch(path)
+    .then(function(r){ if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(data){ jsonCache[key] = data; return data; });
+}
+
 /* ── Load rankings JSON ───────────────────────────────────────── */
 function loadRankings() {
-  var season  = document.getElementById('season-select').value;
-  var week    = document.getElementById('week-select').value;
+  var season  = parseInt(document.getElementById('season-select').value);
+  var week    = parseInt(document.getElementById('week-select').value);
   if (!season || !week) return;
 
-  var wkPad   = String(week).length < 2 ? '0' + week : week;
-  var path    = '../data/rankings/' + season + '_week' + wkPad + '.json';
+  var wkPad     = week < 10 ? '0' + week : week;
+  var path      = '../data/rankings/' + season + '_week' + wkPad + '.json';
   var container = document.getElementById('rankings-content');
 
   container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#9203;</span><p>Loading...</p></div>';
+  document.getElementById('trajectory-wrap').style.display = 'none';
 
-  fetch(path)
-    .then(function(r){ if (!r.ok) throw new Error(); return r.json(); })
-    .then(renderRankings)
+  // Fetch the selected week for the ranking cards
+  fetchWeek(season, week)
+    .then(function(data) {
+      renderRankings(data);
+
+      // Fetch all weeks up to and including selected week for trajectory
+      var entry    = manifest.find(function(m){ return m.season === season; });
+      var allWeeks = entry ? entry.weeks.filter(function(w){ return w <= week; }) : [];
+      var fetches  = allWeeks.map(function(w){ return fetchWeek(season, w); });
+
+      return Promise.all(fetches);
+    })
+    .then(function(weeksData) {
+      var season = parseInt(document.getElementById('season-select').value);
+      var week   = parseInt(document.getElementById('week-select').value);
+      var sorted = weeksData.slice().sort(function(a, b){ return a.week - b.week; });
+      renderTrajectoryChart(season, week, sorted);
+    })
     .catch(function() {
       container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#128203;</span><p>No rankings available for this week yet.</p></div>';
     });
