@@ -97,24 +97,50 @@ function renderLeaderboard(list) {
   if (!tbody) return;
   tbody.innerHTML = '';
 
+  var total = list.length;
+
+  // Pre-compute ranks for color coding
+  function getRanks(arr, key, ascending) {
+    var sorted = arr.slice().sort(function(a, b) {
+      return ascending ? a[key] - b[key] : b[key] - a[key];
+    });
+    var ranks = {};
+    sorted.forEach(function(item, i) { ranks[item.name] = i + 1; });
+    return ranks;
+  }
+
+  var winRanks = getRanks(list, 'totalW', false);
+  var lossRanks = getRanks(list, 'totalL', true); // fewer losses = better
+  var winPctRanks = getRanks(list, 'winPct', false);
+  var playoffRanks = getRanks(list, 'totalPlayoffs', false);
+  var pfgRanks = getRanks(list, 'avgPfg', false);
+
+  function cellColor(rank, total) {
+    var norm = (rank - 1) / (total - 1);
+    if (norm <= 0.3) return 'cell-good val-bold';
+    if (norm <= 0.6) return 'cell-mid';
+    return 'cell-bad';
+  }
+
   list.forEach(function(m) {
     var tr = document.createElement('tr');
     var champCell = m.totalChamps > 0
       ? '<span class="champ-badge">' + m.totalChamps + ' &#127942;</span>'
-      : '0';
+      : '<span style="color:var(--muted);">0</span>';
     var bestRec = m.bestSeason.w + '-' + m.bestSeason.l + ' (' + m.bestSeason.year + ')';
     var worstRec = m.worstSeason.w + '-' + m.worstSeason.l + ' (' + m.worstSeason.year + ')';
     var luckClass = m.avgLuck <= 0 ? 'val-green' : 'val-red';
+    var luckPrefix = m.avgLuck > 0 ? '+' : '';
 
     tr.innerHTML =
       '<td><a href="#" class="manager-link">' + m.name + '</a></td>' +
-      '<td class="val-green">' + m.totalW + '</td>' +
-      '<td class="val-red">' + m.totalL + '</td>' +
-      '<td class="val-bold">' + m.winPct.toFixed(3) + '</td>' +
-      '<td>' + m.totalPlayoffs + '</td>' +
+      '<td class="' + cellColor(winRanks[m.name], total) + '">' + m.totalW + '</td>' +
+      '<td class="' + cellColor(lossRanks[m.name], total) + '">' + m.totalL + '</td>' +
+      '<td class="' + cellColor(winPctRanks[m.name], total) + '">' + m.winPct.toFixed(3) + '</td>' +
+      '<td class="' + cellColor(playoffRanks[m.name], total) + '">' + m.totalPlayoffs + '</td>' +
       '<td>' + champCell + '</td>' +
-      '<td>' + m.avgPfg.toFixed(1) + '</td>' +
-      '<td class="' + luckClass + '">' + m.avgLuck.toFixed(2) + '</td>' +
+      '<td class="' + cellColor(pfgRanks[m.name], total) + '">' + m.avgPfg.toFixed(1) + '</td>' +
+      '<td class="' + luckClass + '">' + luckPrefix + m.avgLuck.toFixed(2) + '</td>' +
       '<td class="val-small">' + bestRec + '</td>' +
       '<td class="val-small">' + worstRec + '</td>';
     tbody.appendChild(tr);
