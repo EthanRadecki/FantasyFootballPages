@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="../style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
+/* ── Existing table styles ── */
 .da-table {
   width:100%;border-collapse:collapse;font-size:0.82rem;
 }
@@ -24,7 +25,7 @@
 .da-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .da-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
 
-/* Interactive chart containers */
+/* ── Interactive chart containers ── */
 .chart-card-interactive {
   padding:1.5rem;
 }
@@ -36,6 +37,7 @@
   display:block;width:100% !important;
 }
 
+/* ── Slot grid ── */
 .slot-grid {
   display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:2rem;
 }
@@ -47,8 +49,63 @@
 .slot-managers { font-size:0.78rem;color:var(--muted);line-height:1.7; }
 .slot-managers span { color:var(--text-mid); }
 
-@media(max-width:768px) { .slot-grid { grid-template-columns:repeat(2,1fr); } }
-@media(max-width:480px) { .slot-grid { grid-template-columns:1fr; } }
+/* ── Hit Rate section ── */
+.hr-stat-row {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;
+}
+.hr-stat-card {
+  padding:1.25rem 1.5rem;text-align:center;
+}
+.hr-stat-tier {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  font-weight:700;color:var(--accent);margin-bottom:0.5rem;
+}
+.hr-stat-pct {
+  font-family:var(--font-display);font-size:2.2rem;font-weight:900;
+  line-height:1;margin-bottom:0.25rem;
+}
+.hr-stat-sub {
+  font-size:0.75rem;color:var(--muted);
+}
+.hr-early  { color:#5a8a5a; }
+.hr-middle { color:#d4af37; }
+.hr-late   { color:#a85a5a; }
+
+/* ── Steals table ── */
+.steals-table {
+  width:100%;border-collapse:collapse;font-size:0.82rem;
+}
+.steals-table thead th {
+  text-align:left;padding:0.7rem 0.75rem;
+  font-size:0.66rem;text-transform:uppercase;letter-spacing:0.08em;
+  font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
+}
+.steals-table tbody tr {
+  border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s;
+}
+.steals-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.steals-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
+.steal-rank {
+  font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent);
+}
+.pos-badge {
+  display:inline-block;padding:0.15rem 0.5rem;border-radius:3px;
+  font-size:0.68rem;font-weight:700;letter-spacing:0.06em;
+}
+.pos-rb { background:rgba(90,138,90,0.18);color:#5a8a5a; }
+.pos-wr { background:rgba(74,127,168,0.18);color:#4a7fa8; }
+.pos-qb { background:rgba(168,90,90,0.18);color:#a85a5a; }
+.pos-te { background:rgba(212,175,55,0.18);color:#b8960a; }
+
+/* ── Responsive ── */
+@media(max-width:768px) {
+  .slot-grid { grid-template-columns:repeat(2,1fr); }
+  .hr-stat-row { grid-template-columns:1fr; }
+}
+@media(max-width:480px) {
+  .slot-grid { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
@@ -88,9 +145,13 @@
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════
+       SECTION 1 — DRAFT SLOT ANALYSIS
+       ═══════════════════════════════════════ -->
+
   <div class="page-header glass">
-    <h1>Draft Slot Analysis</h1>
-    <p>Analyzing draft position success and controlling for manager quality (2020-2025)</p>
+    <h1>Draft Analysis</h1>
+    <p>Draft slot success, player hit rates, and the greatest steals in league history (2020–2025)</p>
   </div>
 
   <div class="callout glass">
@@ -98,7 +159,7 @@
     <p><strong>Dominance Score</strong> measures how much better or worse a team scored compared to the league average each week. Positive scores mean consistent outperformance. <strong>Manager-Adjusted Performance</strong> compares how a manager actually performed from each draft slot versus what we'd expect based on their career average. A positive value means that slot tends to produce better results than the manager's baseline.</p>
   </div>
 
-  <div class="section-label">Visual Breakdown</div>
+  <div class="section-label">Draft Slot Analysis</div>
   <div class="section-title">Playoff rate and adjusted performance by slot.</div>
   <div class="chart-grid">
     <div class="chart-card-interactive glass">
@@ -142,22 +203,97 @@
 
   <div class="section-label">Manager Distribution</div>
   <div class="section-title">Who picked from each slot?</div>
-  <div class="slot-grid" id="slot-grid">
-    <!-- Populated by JS below -->
+  <div class="slot-grid" id="slot-grid"></div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 2 — HIT RATE BY ROUND
+       ═══════════════════════════════════════ -->
+
+  <div class="section-label" style="margin-top:1rem;">Hit Rate by Round</div>
+  <div class="section-title">How often does each draft tier produce a contributing player?</div>
+
+  <div class="callout glass">
+    <div class="callout-label">Methodology</div>
+    <p>A pick is a <strong>hit</strong> if the player finished in the top 24 (WR/RB) or top 12 (QB/TE) in PPR points per game for that season — measured relative to that year's scoring environment, not a fixed threshold. Data covers 2020–2024 (5 seasons). 2025 excluded pending stats availability.</p>
+  </div>
+
+  <div class="hr-stat-row">
+    <div class="hr-stat-card glass">
+      <div class="hr-stat-tier">Early Rounds (1–3)</div>
+      <div class="hr-stat-pct hr-early">76.1%</div>
+      <div class="hr-stat-sub">162 hits from 213 picks</div>
+    </div>
+    <div class="hr-stat-card glass">
+      <div class="hr-stat-tier">Middle Rounds (4–7)</div>
+      <div class="hr-stat-pct hr-middle">51.1%</div>
+      <div class="hr-stat-sub">145 hits from 284 picks</div>
+    </div>
+    <div class="hr-stat-card glass">
+      <div class="hr-stat-tier">Late Rounds (8+)</div>
+      <div class="hr-stat-pct hr-late">18.2%</div>
+      <div class="hr-stat-sub">89 hits from 489 picks</div>
+    </div>
+  </div>
+
+  <div class="chart-grid" style="grid-template-columns:1fr;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Hit Rate by Round — All Positions</div>
+      <canvas id="chart-hit-rate-round" height="120"></canvas>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Position Breakdown</div>
+  <div class="section-title">Which positions hit most reliably at each tier?</div>
+
+  <div class="chart-grid">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Hit Rate by Position — Early Rounds (1–3)</div>
+      <canvas id="chart-hit-pos-early" height="200"></canvas>
+    </div>
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Hit Rate by Position — Middle Rounds (4–7)</div>
+      <canvas id="chart-hit-pos-mid" height="200"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-grid" style="grid-template-columns:1fr;margin-top:0;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Hit Rate by Position — Late Rounds (8+)</div>
+      <canvas id="chart-hit-pos-late" height="120"></canvas>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 3 — LATE ROUND STEALS
+       ═══════════════════════════════════════ -->
+
+  <div class="section-label" style="margin-top:2rem;">Late-Round Legends</div>
+  <div class="section-title">The greatest steals in Preach Fantasy history (Round 8+).</div>
+
+  <div class="table-wrap glass">
+    <table class="steals-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Player</th><th>Pos</th><th>Round</th><th>Slot</th>
+          <th>Season</th><th>PPR/G</th><th>Manager</th>
+        </tr>
+      </thead>
+      <tbody id="steals-tbody"></tbody>
+    </table>
   </div>
 
   <footer>
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
   </footer>
 
-</div>
+</div><!-- /.content -->
 
 <script src="../shared.js"></script>
 <script src="../data-engine.js"></script>
 <script>
-/* ══════════════════════════════════════
-   Draft Analysis — interactive charts + slot grid
-   ══════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   Draft Analysis — all charts and tables
+   ══════════════════════════════════════════════════════════════ */
 
 Chart.defaults.font.family = "'Outfit', sans-serif";
 Chart.defaults.font.size   = 12;
@@ -177,7 +313,7 @@ function tickStyle() {
   return { color: C_MUTED };
 }
 
-/* ── Gradient color: red (low) → bone (mid) → green (high) ── */
+/* ── Gradient: red → bone → green ── */
 function gradientColor(val, min, max, alpha) {
   alpha = alpha !== undefined ? alpha : 0.72;
   var p = max !== min ? (val - min) / (max - min) : 0.5;
@@ -196,12 +332,14 @@ function gradientColor(val, min, max, alpha) {
   return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
 }
 
-/* ── Data ────────────────────────────────────────────────────── */
-var SLOTS = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
-var PLAYOFF_RATES = [83.3, 66.7, 66.7, 33.3, 66.7, 50.0, 83.3, 83.3, 50.0, 50.0, 83.3, 66.7, 83.3, 50.0];
-var OVERPERFS     = [-0.250, 0.263, -0.430, -0.068, -0.149, -0.655, 0.112, -0.063, 0.026, 0.331, -0.155, 0.219, 0.371, 0.448];
+/* ════════════════════════════════════════
+   SECTION 1 DATA — Draft Slot Analysis
+   ════════════════════════════════════════ */
 
-/* Slot grid data: slot -> [{ name, year }, ...] */
+var SLOTS        = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+var PLAYOFF_RATES = [83.3,66.7,66.7,33.3,66.7,50.0,83.3,83.3,50.0,50.0,83.3,66.7,83.3,50.0];
+var OVERPERFS     = [-0.250,0.263,-0.430,-0.068,-0.149,-0.655,0.112,-0.063,0.026,0.331,-0.155,0.219,0.371,0.448];
+
 var SLOT_DATA = {
   1:  [['Anthony Kelly',2020],['Andrew Root',2021],['Charlie Gorman',2022],['Ryan McQuaid',2023],['Andrew Root',2024],['Ryan McQuaid',2025]],
   2:  [['Andrew Root',2020],['Deniz Bileydi',2021],['Ryan McQuaid',2022],['Ethan Radecki',2023],['Quin Gegwich',2024],['Andrew Root',2025]],
@@ -219,7 +357,7 @@ var SLOT_DATA = {
   14: [['Thomas Sullivan',2020],['Anthony Kelly',2021],['Andrew Root',2022],['Andrew Root',2023],['Aidan Quigley',2024],['Quin Gegwich',2025]],
 };
 
-/* ── Chart 1: Playoff Rate ───────────────────────────────────── */
+/* ── Chart 1: Playoff Rate ── */
 (function() {
   var min = Math.min.apply(null, PLAYOFF_RATES);
   var max = Math.max.apply(null, PLAYOFF_RATES);
@@ -257,26 +395,15 @@ var SLOT_DATA = {
         }
       },
       scales: {
-        x: {
-          grid: gridStyle(),
-          ticks: tickStyle(),
-          title: { display: true, text: 'Draft Slot', color: C_MUTED, font: { size: 11 } },
-        },
-        y: {
-          grid: gridStyle(),
-          ticks: Object.assign(tickStyle(), {
-            callback: function(v){ return v + '%'; }
-          }),
-          title: { display: true, text: 'Playoff Rate', color: C_MUTED, font: { size: 11 } },
-          min: 0,
-          max: 110,
-        }
+        x: { grid: gridStyle(), ticks: tickStyle(), title: { display:true, text:'Draft Slot', color:C_MUTED, font:{size:11} } },
+        y: { grid: gridStyle(), ticks: Object.assign(tickStyle(), { callback: function(v){ return v+'%'; } }),
+             title: { display:true, text:'Playoff Rate', color:C_MUTED, font:{size:11} }, min:0, max:110 }
       }
     }
   });
 })();
 
-/* ── Chart 2: Manager-Adjusted Performance ───────────────────── */
+/* ── Chart 2: Manager-Adjusted Performance ── */
 (function() {
   var min = Math.min.apply(null, OVERPERFS);
   var max = Math.max.apply(null, OVERPERFS);
@@ -316,34 +443,8 @@ var SLOT_DATA = {
         }
       },
       scales: {
-        x: {
-          grid: gridStyle(),
-          ticks: tickStyle(),
-          title: { display: true, text: 'Draft Slot', color: C_MUTED, font: { size: 11 } },
-        },
-        y: {
-          grid: gridStyle(),
-          ticks: tickStyle(),
-          title: { display: true, text: 'Dominance Over/Under Expected', color: C_MUTED, font: { size: 11 } },
-        }
-      },
-      // Zero baseline plugin
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            title: function(items){ return 'Slot ' + items[0].label; },
-            label: function(ctx){
-              var val = ctx.parsed.y;
-              var prefix = val >= 0 ? '+' : '';
-              var slot = ctx.dataIndex + 1;
-              var entries = SLOT_DATA[slot] || [];
-              var lines = ['Over/Under: ' + prefix + val.toFixed(3), ''];
-              entries.forEach(function(e){ lines.push(e[0] + ' (' + e[1] + ')'); });
-              return lines;
-            }
-          }
-        }
+        x: { grid: gridStyle(), ticks: tickStyle(), title: { display:true, text:'Draft Slot', color:C_MUTED, font:{size:11} } },
+        y: { grid: gridStyle(), ticks: tickStyle(), title: { display:true, text:'Dominance Over/Under Expected', color:C_MUTED, font:{size:11} } }
       }
     },
     plugins: [{
@@ -367,7 +468,7 @@ var SLOT_DATA = {
   });
 })();
 
-/* ── Slot Grid ───────────────────────────────────────────────── */
+/* ── Slot Grid ── */
 (function() {
   var grid = document.getElementById('slot-grid');
   if (!grid) return;
@@ -383,6 +484,196 @@ var SLOT_DATA = {
           + '</div>';
   }
   grid.innerHTML = html;
+})();
+
+/* ════════════════════════════════════════
+   SECTION 2 DATA — Hit Rate by Round
+   ════════════════════════════════════════ */
+
+var HR_BY_ROUND = [
+  {round:1,  tier:'Early',  hit_rate:88.7, total_picks:71,  hits:63},
+  {round:2,  tier:'Early',  hit_rate:77.5, total_picks:71,  hits:55},
+  {round:3,  tier:'Early',  hit_rate:62.0, total_picks:71,  hits:44},
+  {round:4,  tier:'Middle', hit_rate:60.6, total_picks:71,  hits:43},
+  {round:5,  tier:'Middle', hit_rate:62.0, total_picks:71,  hits:44},
+  {round:6,  tier:'Middle', hit_rate:46.5, total_picks:71,  hits:33},
+  {round:7,  tier:'Middle', hit_rate:35.2, total_picks:71,  hits:25},
+  {round:8,  tier:'Late',   hit_rate:17.4, total_picks:69,  hits:12},
+  {round:9,  tier:'Late',   hit_rate:35.3, total_picks:68,  hits:24},
+  {round:10, tier:'Late',   hit_rate:15.8, total_picks:57,  hits:9},
+  {round:11, tier:'Late',   hit_rate:21.7, total_picks:46,  hits:10},
+  {round:12, tier:'Late',   hit_rate:22.2, total_picks:45,  hits:10},
+  {round:13, tier:'Late',   hit_rate:14.6, total_picks:41,  hits:6},
+  {round:14, tier:'Late',   hit_rate:13.8, total_picks:58,  hits:8},
+  {round:15, tier:'Late',   hit_rate:10.9, total_picks:55,  hits:6},
+  {round:16, tier:'Late',   hit_rate:8.0,  total_picks:50,  hits:4},
+];
+
+/* [Early, Middle, Late] per position */
+var HR_BY_POS = {
+  RB: [80.2, 51.5, 16.7],
+  WR: [68.6, 40.5, 13.0],
+  QB: [100.0, 63.2, 25.4],
+  TE: [100.0, 62.2, 34.6],
+};
+
+var TOP_STEALS = [
+  {rank:1,  player:'Darrel Williams',  pos:'RB', round:13, slot:13, season:2020, ppg:21.30, manager:'Ben Castaldo'},
+  {rank:2,  player:'Jamaal Williams',  pos:'RB', round:14, slot:4,  season:2020, ppg:21.30, manager:'Baylen Slansky'},
+  {rank:3,  player:'Baker Mayfield',   pos:'QB', round:12, slot:1,  season:2024, ppg:21.08, manager:'Andrew Root'},
+  {rank:4,  player:'Jayden Daniels',   pos:'QB', round:9,  slot:10, season:2024, ppg:21.01, manager:'Charlie Gorman'},
+  {rank:5,  player:'Curtis Samuel',    pos:'WR', round:9,  slot:10, season:2021, ppg:20.74, manager:'Aidan Quigley'},
+  {rank:6,  player:'Deebo Samuel',     pos:'WR', round:9,  slot:3,  season:2021, ppg:20.74, manager:'Ben Castaldo'},
+  {rank:7,  player:'Ryan Tannehill',   pos:'QB', round:10, slot:11, season:2020, ppg:20.68, manager:'Quin Gegwich'},
+  {rank:8,  player:'Kyren Williams',   pos:'RB', round:14, slot:7,  season:2023, ppg:20.23, manager:'Charlie Gorman'},
+  {rank:9,  player:'Justin Fields',    pos:'QB', round:14, slot:11, season:2022, ppg:19.60, manager:'Max Malich'},
+  {rank:10, player:'Kirk Cousins',     pos:'QB', round:15, slot:5,  season:2021, ppg:18.77, manager:'Baylen Slansky'},
+];
+
+var TIER_COLORS = {
+  Early:  {bg:'rgba(90,138,90,0.65)',  bd:'rgba(90,138,90,1)'},
+  Middle: {bg:'rgba(212,175,55,0.65)', bd:'rgba(212,175,55,1)'},
+  Late:   {bg:'rgba(168,90,90,0.65)',  bd:'rgba(168,90,90,1)'},
+};
+
+/* ── Chart 3: Hit Rate by Round ── */
+(function() {
+  var labels   = HR_BY_ROUND.map(function(d){ return 'Rd ' + d.round; });
+  var rates    = HR_BY_ROUND.map(function(d){ return d.hit_rate; });
+  var bgColors = HR_BY_ROUND.map(function(d){ return TIER_COLORS[d.tier].bg; });
+  var bdColors = HR_BY_ROUND.map(function(d){ return TIER_COLORS[d.tier].bd; });
+
+  new Chart(document.getElementById('chart-hit-rate-round').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Hit Rate',
+        data: rates,
+        backgroundColor: bgColors,
+        borderColor: bdColors,
+        borderWidth: 1.5,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items){
+              var d = HR_BY_ROUND[items[0].dataIndex];
+              return 'Round ' + d.round + ' (' + d.tier + ')';
+            },
+            label: function(ctx){
+              var d = HR_BY_ROUND[ctx.dataIndex];
+              return [
+                'Hit Rate: ' + d.hit_rate + '%',
+                d.hits + ' hits from ' + d.total_picks + ' picks',
+              ];
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: gridStyle(), ticks: tickStyle() },
+        y: {
+          grid: gridStyle(),
+          ticks: Object.assign(tickStyle(), { callback: function(v){ return v + '%'; } }),
+          title: { display:true, text:'Hit Rate', color:C_MUTED, font:{size:11} },
+          min: 0, max: 100,
+        }
+      }
+    },
+    plugins: [{
+      id: 'tierDividers',
+      afterDraw: function(chart) {
+        var ctx2 = chart.ctx;
+        var xAxis = chart.scales.x;
+        var yAxis = chart.scales.y;
+        [2.5, 6.5].forEach(function(idx) {
+          var x = xAxis.getPixelForValue(idx);
+          ctx2.save();
+          ctx2.beginPath();
+          ctx2.strokeStyle = 'rgba(138,132,128,0.4)';
+          ctx2.lineWidth = 1;
+          ctx2.setLineDash([4, 3]);
+          ctx2.moveTo(x, yAxis.top);
+          ctx2.lineTo(x, yAxis.bottom);
+          ctx2.stroke();
+          ctx2.restore();
+        });
+      }
+    }]
+  });
+})();
+
+/* ── Charts 4-6: Hit Rate by Position per Tier ── */
+function makePosChart(canvasId, tierIndex) {
+  var positions = ['RB', 'WR', 'QB', 'TE'];
+  var tiers     = ['Early', 'Middle', 'Late'];
+  var tier      = tiers[tierIndex];
+  var color     = TIER_COLORS[tier];
+  var data      = positions.map(function(p){ return HR_BY_POS[p][tierIndex]; });
+
+  new Chart(document.getElementById(canvasId).getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: positions,
+      datasets: [{
+        data: data,
+        backgroundColor: color.bg,
+        borderColor: color.bd,
+        borderWidth: 1.5,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx){ return ctx.parsed.y + '% hit rate'; }
+          }
+        }
+      },
+      scales: {
+        x: { grid: gridStyle(), ticks: tickStyle() },
+        y: {
+          grid: gridStyle(),
+          ticks: Object.assign(tickStyle(), { callback: function(v){ return v + '%'; } }),
+          min: 0, max: 105,
+        }
+      }
+    }
+  });
+}
+
+makePosChart('chart-hit-pos-early', 0);
+makePosChart('chart-hit-pos-mid',   1);
+makePosChart('chart-hit-pos-late',  2);
+
+/* ── Steals Table ── */
+(function() {
+  var tbody = document.getElementById('steals-tbody');
+  if (!tbody) return;
+  var html = '';
+  TOP_STEALS.forEach(function(s) {
+    var posClass = 'pos-' + s.pos.toLowerCase();
+    html += '<tr>'
+      + '<td class="steal-rank">' + s.rank + '</td>'
+      + '<td style="font-weight:600;color:var(--text-light)">' + s.player + '</td>'
+      + '<td><span class="pos-badge ' + posClass + '">' + s.pos + '</span></td>'
+      + '<td>' + s.round + '</td>'
+      + '<td>' + s.slot + '</td>'
+      + '<td>' + s.season + '</td>'
+      + '<td style="font-weight:600;color:var(--accent)">' + s.ppg.toFixed(1) + '</td>'
+      + '<td>' + s.manager + '</td>'
+      + '</tr>';
+  });
+  tbody.innerHTML = html;
 })();
 </script>
 </body>
