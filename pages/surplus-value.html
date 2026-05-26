@@ -152,7 +152,7 @@
   <div class="chart-grid" style="grid-template-columns:1fr;">
     <div class="chart-card-interactive glass">
       <div class="chart-card-label">Average Surplus Per Pick - Career (2020-2024)</div>
-      <canvas id="chart-career" style="height:250px;"></canvas>
+      <div style="position:relative;height:320px;"><canvas id="chart-career"></canvas></div>
     </div>
   </div>
 
@@ -455,7 +455,7 @@ var SEASON_WORST = {
     options:{
       indexAxis:'y',
       responsive:true,
-      maintainAspectRatio:false,
+      maintainAspectRatio:true,
       plugins:{legend:{display:false},tooltip:{callbacks:{
         label:function(ctx){
           var d=data[ctx.dataIndex];
