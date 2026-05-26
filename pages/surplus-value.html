@@ -152,7 +152,7 @@
   <div class="chart-grid" style="grid-template-columns:1fr;">
     <div class="chart-card-interactive glass">
       <div class="chart-card-label">Average Surplus Per Pick - Career (2020-2024)</div>
-      <canvas id="chart-career" height="100"></canvas>
+      <canvas id="chart-career" style="height:250px;"></canvas>
     </div>
   </div>
 
@@ -448,11 +448,14 @@ var SEASON_WORST = {
       data:values,
       backgroundColor:values.map(function(v){return gradientColor(v,min,max,0.72);}),
       borderColor:values.map(function(v){return gradientColor(v,min,max,1);}),
-      borderWidth:1.5,borderRadius:3
+      borderWidth:1.5,
+      borderRadius:4,
+      barThickness:10,
     }]},
     options:{
       indexAxis:'y',
       responsive:true,
+      maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{
         label:function(ctx){
           var d=data[ctx.dataIndex];
@@ -464,8 +467,21 @@ var SEASON_WORST = {
         }
       }}},
       scales:{
-        x:{grid:gridStyle(),ticks:tickStyle(),title:{display:true,text:'Avg Surplus Per Pick',color:C_MUTED,font:{size:11}}},
-        y:{grid:gridStyle(),ticks:tickStyle()}
+        x:{
+          grid:gridStyle(),
+          ticks:Object.assign(tickStyle(),{font:{size:11}}),
+          title:{display:true,text:'Avg Surplus Per Pick',color:C_MUTED,font:{size:11}},
+        },
+        y:{
+          grid:{display:false},
+          ticks:Object.assign(tickStyle(),{
+            font:{size:12},
+            color:'#3d3a38',
+          }),
+        }
+      },
+      layout:{
+        padding:{left:0,right:16,top:8,bottom:8}
       }
     },
     plugins:[{id:'zeroLine',afterDraw:function(chart){
