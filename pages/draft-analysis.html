@@ -9,23 +9,16 @@
 <link rel="stylesheet" href="../style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-/* ── Existing table styles ── */
-.da-table {
-  width:100%;border-collapse:collapse;font-size:0.82rem;
-}
+.da-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
 .da-table thead th {
-  text-align:left;padding:0.7rem 0.75rem;
-  font-size:0.66rem;text-transform:uppercase;letter-spacing:0.08em;
-  font-weight:700;color:var(--accent);
+  text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
   border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
 }
-.da-table tbody tr {
-  border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s;
-}
+.da-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
 .da-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .da-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
 
-/* ── Interactive chart containers ── */
 .chart-card-interactive { padding:1.5rem; }
 .chart-card-interactive .chart-card-label {
   font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
@@ -33,64 +26,55 @@
 }
 .chart-card-interactive canvas { display:block;width:100% !important; }
 
-/* ── Slot grid ── */
-.slot-grid {
-  display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:2rem;
-}
+.slot-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:2rem; }
 .slot-card { padding:1rem 1.25rem;border-left:2px solid var(--accent); }
-.slot-num {
-  font-family:var(--font-display);font-size:1.1rem;font-weight:900;
-  color:var(--accent);margin-bottom:0.4rem;
-}
+.slot-num { font-family:var(--font-display);font-size:1.1rem;font-weight:900;color:var(--accent);margin-bottom:0.4rem; }
 .slot-managers { font-size:0.78rem;color:var(--muted);line-height:1.7; }
 .slot-managers span { color:var(--text-mid); }
 
-/* ── Hit Rate section ── */
-.hr-stat-row {
-  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;
-}
+.hr-stat-row { display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem; }
 .hr-stat-card { padding:1.25rem 1.5rem;text-align:center; }
-.hr-stat-tier {
-  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
-  font-weight:700;color:var(--accent);margin-bottom:0.5rem;
-}
-.hr-stat-pct {
-  font-family:var(--font-display);font-size:2.2rem;font-weight:900;
-  line-height:1;margin-bottom:0.25rem;
-}
+.hr-stat-tier { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--accent);margin-bottom:0.5rem; }
+.hr-stat-pct { font-family:var(--font-display);font-size:2.2rem;font-weight:900;line-height:1;margin-bottom:0.25rem; }
 .hr-stat-sub { font-size:0.75rem;color:var(--muted); }
 .hr-early  { color:#5a8a5a; }
 .hr-middle { color:#d4af37; }
 .hr-late   { color:#a85a5a; }
 
-/* ── Steals table ── */
-.steals-table {
-  width:100%;border-collapse:collapse;font-size:0.82rem;
-}
+.steals-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
 .steals-table thead th {
-  text-align:left;padding:0.7rem 0.75rem;
-  font-size:0.66rem;text-transform:uppercase;letter-spacing:0.08em;
-  font-weight:700;color:var(--accent);
+  text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
   border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
 }
-.steals-table tbody tr {
-  border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s;
-}
+.steals-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
 .steals-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .steals-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
-.steal-rank {
-  font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent);
-}
-.pos-badge {
-  display:inline-block;padding:0.15rem 0.5rem;border-radius:3px;
-  font-size:0.68rem;font-weight:700;letter-spacing:0.06em;
-}
+.steal-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
+
+.pos-badge { display:inline-block;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;letter-spacing:0.06em; }
 .pos-rb { background:rgba(90,138,90,0.18);color:#5a8a5a; }
 .pos-wr { background:rgba(74,127,168,0.18);color:#4a7fa8; }
 .pos-qb { background:rgba(168,90,90,0.18);color:#a85a5a; }
 .pos-te { background:rgba(212,175,55,0.18);color:#b8960a; }
 
-/* ── Responsive ── */
+.season-filter-row {
+  display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;
+}
+.season-btn {
+  padding:0.35rem 0.85rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font-body);font-size:0.8rem;
+  font-weight:500;cursor:pointer;transition:all 0.15s;
+}
+.season-btn:hover { background:rgba(var(--accent-rgb),0.08); }
+.season-btn.active {
+  background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
+}
+.season-filter-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;
+  font-weight:700;color:var(--accent);
+}
+
 @media(max-width:768px) {
   .slot-grid { grid-template-columns:repeat(2,1fr); }
   .hr-stat-row { grid-template-columns:1fr; }
@@ -118,7 +102,9 @@
       <a href="extra-analytics.html">Extra Analytics</a>
     </div>
     <button class="nav-hamburger" onclick="openMobileMenu()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
     </button>
   </nav>
 
@@ -135,18 +121,16 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════
-       SECTION 1 — DRAFT SLOT ANALYSIS
-       ═══════════════════════════════════════ -->
+  <!-- SECTION 1: DRAFT SLOT ANALYSIS -->
 
   <div class="page-header glass">
     <h1>Draft Analysis</h1>
-    <p>Draft slot success, player hit rates, and the greatest steals in league history (2020–2025)</p>
+    <p>Draft slot success, player hit rates, and the greatest steals in league history (2020-2025)</p>
   </div>
 
   <div class="callout glass">
     <div class="callout-label">How It Works</div>
-    <p><strong>Dominance Score</strong> measures how much better or worse a team scored compared to the league average each week. Positive scores mean consistent outperformance. <strong>Manager-Adjusted Performance</strong> compares how a manager actually performed from each draft slot versus what we'd expect based on their career average. A positive value means that slot tends to produce better results than the manager's baseline.</p>
+    <p><strong>Dominance Score</strong> measures how much better or worse a team scored compared to the league average each week. Positive scores mean consistent outperformance. <strong>Manager-Adjusted Performance</strong> compares how a manager actually performed from each draft slot versus what we would expect based on their career average. A positive value means that slot tends to produce better results than the manager's baseline.</p>
   </div>
 
   <div class="section-label">Draft Slot Analysis</div>
@@ -195,40 +179,45 @@
   <div class="section-title">Who picked from each slot?</div>
   <div class="slot-grid" id="slot-grid"></div>
 
-  <!-- ═══════════════════════════════════════
-       SECTION 2 — HIT RATE BY ROUND
-       ═══════════════════════════════════════ -->
+  <!-- SECTION 2: HIT RATE BY ROUND -->
 
   <div class="section-label" style="margin-top:1rem;">Hit Rate by Round</div>
   <div class="section-title">How often does each draft tier produce a contributing player?</div>
 
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
-    <p>A pick is a <strong>hit</strong> if the player finished in the top 24 (WR/RB) or top 7 (QB/TE) at their position in PPR points per game for that season — calibrated to the league size and measured relative to that year's scoring environment. Data covers 2020–2024. Late-round steals are ranked by <strong>points above position average</strong> so skill positions aren't unfairly compared to QBs on raw scoring.</p>
+    <p>A pick is a <strong>hit</strong> if the player finished in the top 24 (WR/RB) or top 7 (QB/TE) at their position in PPR points per game for that season, calibrated to the league size and measured relative to that year's scoring environment. Late-round steals are ranked by <strong>points above position average</strong> so skill positions are not unfairly compared to QBs on raw scoring. Data covers 2020-2024. Minimum 4 games played to qualify.</p>
   </div>
 
   <div class="hr-stat-row">
     <div class="hr-stat-card glass">
-      <div class="hr-stat-tier">Early Rounds (1–3)</div>
+      <div class="hr-stat-tier">Early Rounds (1-3)</div>
       <div class="hr-stat-pct hr-early">75.6%</div>
       <div class="hr-stat-sub">161 hits from 213 picks</div>
     </div>
     <div class="hr-stat-card glass">
-      <div class="hr-stat-tier">Middle Rounds (4–7)</div>
+      <div class="hr-stat-tier">Middle Rounds (4-7)</div>
       <div class="hr-stat-pct hr-middle">43.3%</div>
       <div class="hr-stat-sub">123 hits from 284 picks</div>
     </div>
     <div class="hr-stat-card glass">
       <div class="hr-stat-tier">Late Rounds (8+)</div>
-      <div class="hr-stat-pct hr-late">13.5%</div>
-      <div class="hr-stat-sub">66 hits from 489 picks</div>
+      <div class="hr-stat-pct hr-late">13.3%</div>
+      <div class="hr-stat-sub">65 hits from 489 picks</div>
     </div>
   </div>
 
   <div class="chart-grid" style="grid-template-columns:1fr;">
     <div class="chart-card-interactive glass">
-      <div class="chart-card-label">Hit Rate by Round — All Positions</div>
+      <div class="chart-card-label">Hit Rate by Round</div>
       <canvas id="chart-hit-rate-round" height="120"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-grid" style="grid-template-columns:1fr;margin-top:0;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Position Concentration by Round</div>
+      <canvas id="chart-pos-concentration" height="120"></canvas>
     </div>
   </div>
 
@@ -237,29 +226,36 @@
 
   <div class="chart-grid">
     <div class="chart-card-interactive glass">
-      <div class="chart-card-label">Hit Rate by Position — Early Rounds (1–3)</div>
+      <div class="chart-card-label">Hit Rate by Position - Early Rounds (1-3)</div>
       <canvas id="chart-hit-pos-early" height="200"></canvas>
     </div>
     <div class="chart-card-interactive glass">
-      <div class="chart-card-label">Hit Rate by Position — Middle Rounds (4–7)</div>
+      <div class="chart-card-label">Hit Rate by Position - Middle Rounds (4-7)</div>
       <canvas id="chart-hit-pos-mid" height="200"></canvas>
     </div>
   </div>
   <div class="chart-grid" style="grid-template-columns:1fr;margin-top:0;">
     <div class="chart-card-interactive glass">
-      <div class="chart-card-label">Hit Rate by Position — Late Rounds (8+)</div>
+      <div class="chart-card-label">Hit Rate by Position - Late Rounds (8+)</div>
       <canvas id="chart-hit-pos-late" height="120"></canvas>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════
-       SECTION 3 — LATE ROUND STEALS
-       ═══════════════════════════════════════ -->
+  <!-- SECTION 3: LATE ROUND STEALS -->
 
   <div class="section-label" style="margin-top:2rem;">Late-Round Legends</div>
   <div class="section-title">The greatest steals in Preach Fantasy history (Round 8+, min. 4 games).</div>
 
-  <div class="table-wrap glass">
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="season-filter-row">
+      <span class="season-filter-label">Season:</span>
+      <button class="season-btn active" onclick="filterSteals('all', this)">All Time</button>
+      <button class="season-btn" onclick="filterSteals(2020, this)">2020</button>
+      <button class="season-btn" onclick="filterSteals(2021, this)">2021</button>
+      <button class="season-btn" onclick="filterSteals(2022, this)">2022</button>
+      <button class="season-btn" onclick="filterSteals(2023, this)">2023</button>
+      <button class="season-btn" onclick="filterSteals(2024, this)">2024</button>
+    </div>
     <table class="steals-table">
       <thead>
         <tr>
@@ -272,18 +268,14 @@
   </div>
 
   <footer>
-    <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
+    <p>Preach Fantasy &middot; Est. 2020 &middot; Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
   </footer>
 
-</div><!-- /.content -->
+</div>
 
 <script src="../shared.js"></script>
 <script src="../data-engine.js"></script>
 <script>
-/* ══════════════════════════════════════════════════════════════
-   Draft Analysis — all charts and tables
-   ══════════════════════════════════════════════════════════════ */
-
 Chart.defaults.font.family = "'Outfit', sans-serif";
 Chart.defaults.font.size   = 12;
 Chart.defaults.color       = '#5a5550';
@@ -304,7 +296,7 @@ function gradientColor(val, min, max, alpha) {
   var r, g, b, t;
   if (p <= 0.5) {
     t = p / 0.5;
-    r = Math.round(192 + (245-192)*t); g = Math.round(58+(240-58)*t); b = Math.round(58+(232-58)*t);
+    r = Math.round(192+(245-192)*t); g = Math.round(58+(240-58)*t); b = Math.round(58+(232-58)*t);
   } else {
     t = (p-0.5)/0.5;
     r = Math.round(245+(74-245)*t); g = Math.round(240+(168-240)*t); b = Math.round(232+(58-232)*t);
@@ -313,7 +305,7 @@ function gradientColor(val, min, max, alpha) {
 }
 
 /* ════════════════════════════════════════
-   SECTION 1 — Draft Slot Analysis
+   SECTION 1 - Draft Slot Analysis
    ════════════════════════════════════════ */
 
 var SLOTS         = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
@@ -337,176 +329,214 @@ var SLOT_DATA = {
   14: [['Thomas Sullivan',2020],['Anthony Kelly',2021],['Andrew Root',2022],['Andrew Root',2023],['Aidan Quigley',2024],['Quin Gegwich',2025]],
 };
 
-/* ── Chart 1: Playoff Rate ── */
 (function() {
-  var min = Math.min.apply(null, PLAYOFF_RATES);
-  var max = Math.max.apply(null, PLAYOFF_RATES);
-  var bgColors = PLAYOFF_RATES.map(function(v){ return gradientColor(v,min,max,0.72); });
-  var bdColors = PLAYOFF_RATES.map(function(v){ return gradientColor(v,min,max,1.0); });
+  var min=Math.min.apply(null,PLAYOFF_RATES), max=Math.max.apply(null,PLAYOFF_RATES);
   new Chart(document.getElementById('chart-playoff-rate').getContext('2d'), {
     type:'bar',
-    data:{ labels:SLOTS, datasets:[{ label:'Playoff Rate', data:PLAYOFF_RATES, backgroundColor:bgColors, borderColor:bdColors, borderWidth:1.5, borderRadius:3 }] },
+    data:{ labels:SLOTS, datasets:[{
+      data:PLAYOFF_RATES,
+      backgroundColor:PLAYOFF_RATES.map(function(v){return gradientColor(v,min,max,0.72);}),
+      borderColor:PLAYOFF_RATES.map(function(v){return gradientColor(v,min,max,1.0);}),
+      borderWidth:1.5, borderRadius:3
+    }]},
     options:{
       responsive:true,
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{
-        title:function(i){ return 'Slot '+i[0].label; },
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{
+        title:function(i){return 'Slot '+i[0].label;},
         label:function(ctx){
           var slot=ctx.dataIndex+1, entries=SLOT_DATA[slot]||[];
           var lines=['Playoff Rate: '+ctx.parsed.y+'%',''];
-          entries.forEach(function(e){ lines.push(e[0]+' ('+e[1]+')'); });
+          entries.forEach(function(e){lines.push(e[0]+' ('+e[1]+')');});
           return lines;
         }
       }}},
       scales:{
-        x:{ grid:gridStyle(), ticks:tickStyle(), title:{display:true,text:'Draft Slot',color:C_MUTED,font:{size:11}} },
-        y:{ grid:gridStyle(), ticks:Object.assign(tickStyle(),{callback:function(v){return v+'%';}}), title:{display:true,text:'Playoff Rate',color:C_MUTED,font:{size:11}}, min:0, max:110 }
+        x:{grid:gridStyle(),ticks:tickStyle(),title:{display:true,text:'Draft Slot',color:C_MUTED,font:{size:11}}},
+        y:{grid:gridStyle(),ticks:Object.assign(tickStyle(),{callback:function(v){return v+'%';}}),title:{display:true,text:'Playoff Rate',color:C_MUTED,font:{size:11}},min:0,max:110}
       }
     }
   });
 })();
 
-/* ── Chart 2: Manager-Adjusted Performance ── */
 (function() {
-  var min = Math.min.apply(null, OVERPERFS);
-  var max = Math.max.apply(null, OVERPERFS);
-  var bgColors = OVERPERFS.map(function(v){ return gradientColor(v,min,max,0.72); });
-  var bdColors = OVERPERFS.map(function(v){ return gradientColor(v,min,max,1.0); });
+  var min=Math.min.apply(null,OVERPERFS), max=Math.max.apply(null,OVERPERFS);
   new Chart(document.getElementById('chart-adj-perf').getContext('2d'), {
     type:'bar',
-    data:{ labels:SLOTS, datasets:[{ label:'Over/Under Expected', data:OVERPERFS, backgroundColor:bgColors, borderColor:bdColors, borderWidth:1.5, borderRadius:3 }] },
+    data:{ labels:SLOTS, datasets:[{
+      data:OVERPERFS,
+      backgroundColor:OVERPERFS.map(function(v){return gradientColor(v,min,max,0.72);}),
+      borderColor:OVERPERFS.map(function(v){return gradientColor(v,min,max,1.0);}),
+      borderWidth:1.5, borderRadius:3
+    }]},
     options:{
       responsive:true,
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{
-        title:function(i){ return 'Slot '+i[0].label; },
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{
+        title:function(i){return 'Slot '+i[0].label;},
         label:function(ctx){
           var val=ctx.parsed.y, prefix=val>=0?'+':'', slot=ctx.dataIndex+1, entries=SLOT_DATA[slot]||[];
           var lines=['Over/Under: '+prefix+val.toFixed(3),''];
-          entries.forEach(function(e){ lines.push(e[0]+' ('+e[1]+')'); });
+          entries.forEach(function(e){lines.push(e[0]+' ('+e[1]+')');});
           return lines;
         }
       }}},
       scales:{
-        x:{ grid:gridStyle(), ticks:tickStyle(), title:{display:true,text:'Draft Slot',color:C_MUTED,font:{size:11}} },
-        y:{ grid:gridStyle(), ticks:tickStyle(), title:{display:true,text:'Dominance Over/Under Expected',color:C_MUTED,font:{size:11}} }
+        x:{grid:gridStyle(),ticks:tickStyle(),title:{display:true,text:'Draft Slot',color:C_MUTED,font:{size:11}}},
+        y:{grid:gridStyle(),ticks:tickStyle(),title:{display:true,text:'Dominance Over/Under Expected',color:C_MUTED,font:{size:11}}}
       }
     },
-    plugins:[{ id:'zeroLine', afterDraw:function(chart){
-      var ctx2=chart.ctx, yAxis=chart.scales.y, xAxis=chart.scales.x, y0=yAxis.getPixelForValue(0);
-      ctx2.save(); ctx2.beginPath(); ctx2.strokeStyle='rgba(138,132,128,0.5)'; ctx2.lineWidth=1.5; ctx2.setLineDash([5,4]);
-      ctx2.moveTo(xAxis.left,y0); ctx2.lineTo(xAxis.right,y0); ctx2.stroke(); ctx2.restore();
+    plugins:[{id:'zeroLine',afterDraw:function(chart){
+      var c=chart.ctx,y=chart.scales.y,x=chart.scales.x,y0=y.getPixelForValue(0);
+      c.save();c.beginPath();c.strokeStyle='rgba(138,132,128,0.5)';c.lineWidth=1.5;c.setLineDash([5,4]);
+      c.moveTo(x.left,y0);c.lineTo(x.right,y0);c.stroke();c.restore();
     }}]
   });
 })();
 
-/* ── Slot Grid ── */
 (function() {
-  var grid = document.getElementById('slot-grid');
-  if (!grid) return;
-  var html = '';
-  for (var slot = 1; slot <= 14; slot++) {
-    var entries = SLOT_DATA[slot] || [];
-    var managersHtml = entries.map(function(e){ return '<span>'+e[0]+'</span> ('+e[1]+')'; }).join('<br>');
-    html += '<div class="slot-card glass"><div class="slot-num">Slot '+slot+'</div><div class="slot-managers">'+managersHtml+'</div></div>';
+  var grid=document.getElementById('slot-grid');
+  if(!grid) return;
+  var html='';
+  for(var slot=1;slot<=14;slot++){
+    var entries=SLOT_DATA[slot]||[];
+    var mHtml=entries.map(function(e){return '<span>'+e[0]+'</span> ('+e[1]+')';}).join('<br>');
+    html+='<div class="slot-card glass"><div class="slot-num">Slot '+slot+'</div><div class="slot-managers">'+mHtml+'</div></div>';
   }
-  grid.innerHTML = html;
+  grid.innerHTML=html;
 })();
 
 /* ════════════════════════════════════════
-   SECTION 2 — Hit Rate by Round
+   SECTION 2 - Hit Rate by Round
    ════════════════════════════════════════ */
 
 var HR_BY_ROUND = [
-  {round:1,  tier:'Early',  hit_rate:88.7, total_picks:71, hits:63},
-  {round:2,  tier:'Early',  hit_rate:76.1, total_picks:71, hits:54},
-  {round:3,  tier:'Early',  hit_rate:62.0, total_picks:71, hits:44},
-  {round:4,  tier:'Middle', hit_rate:54.9, total_picks:71, hits:39},
-  {round:5,  tier:'Middle', hit_rate:47.9, total_picks:71, hits:34},
-  {round:6,  tier:'Middle', hit_rate:40.8, total_picks:71, hits:29},
-  {round:7,  tier:'Middle', hit_rate:29.6, total_picks:71, hits:21},
-  {round:8,  tier:'Late',   hit_rate:13.0, total_picks:69, hits:9},
-  {round:9,  tier:'Late',   hit_rate:33.8, total_picks:68, hits:23},
-  {round:10, tier:'Late',   hit_rate:7.0,  total_picks:57, hits:4},
-  {round:11, tier:'Late',   hit_rate:17.4, total_picks:46, hits:8},
-  {round:12, tier:'Late',   hit_rate:17.8, total_picks:45, hits:8},
-  {round:13, tier:'Late',   hit_rate:7.3,  total_picks:41, hits:3},
-  {round:14, tier:'Late',   hit_rate:8.6,  total_picks:58, hits:5},
-  {round:15, tier:'Late',   hit_rate:3.6,  total_picks:55, hits:2},
-  {round:16, tier:'Late',   hit_rate:8.0,  total_picks:50, hits:4},
+  {round:1,  tier:'Early',  hit_rate:88.7, total_picks:71, hits:63, rb:14,wr:43,qb:1,te:6},
+  {round:2,  tier:'Early',  hit_rate:76.1, total_picks:71, hits:54, rb:33,wr:32,qb:2,te:4},
+  {round:3,  tier:'Early',  hit_rate:62.0, total_picks:71, hits:44, rb:21,wr:35,qb:5,te:10},
+  {round:4,  tier:'Middle', hit_rate:54.9, total_picks:71, hits:39, rb:18,wr:30,qb:14,te:9},
+  {round:5,  tier:'Middle', hit_rate:47.9, total_picks:71, hits:34, rb:16,wr:26,qb:18,te:11},
+  {round:6,  tier:'Middle', hit_rate:40.8, total_picks:71, hits:29, rb:14,wr:27,qb:18,te:12},
+  {round:7,  tier:'Middle', hit_rate:29.6, total_picks:71, hits:21, rb:18,wr:33,qb:7,te:13},
+  {round:8,  tier:'Late',   hit_rate:13.0, total_picks:69, hits:9,  rb:18,wr:26,qb:14,te:11},
+  {round:9,  tier:'Late',   hit_rate:32.4, total_picks:68, hits:22, rb:24,wr:23,qb:12,te:9},
+  {round:10, tier:'Late',   hit_rate:7.0,  total_picks:57, hits:4,  rb:16,wr:26,qb:10,te:5},
+  {round:11, tier:'Late',   hit_rate:17.4, total_picks:46, hits:8,  rb:14,wr:19,qb:8, te:5},
+  {round:12, tier:'Late',   hit_rate:17.8, total_picks:45, hits:8,  rb:10,wr:16,qb:12,te:7},
+  {round:13, tier:'Late',   hit_rate:7.3,  total_picks:41, hits:3,  rb:11,wr:14,qb:9, te:7},
+  {round:14, tier:'Late',   hit_rate:8.6,  total_picks:58, hits:5,  rb:12,wr:20,qb:16,te:10},
+  {round:15, tier:'Late',   hit_rate:3.6,  total_picks:55, hits:2,  rb:14,wr:18,qb:14,te:9},
+  {round:16, tier:'Late',   hit_rate:8.0,  total_picks:50, hits:4,  rb:9, wr:19,qb:15,te:7},
 ];
 
 var HR_BY_POS = {
   RB: [80.2, 51.5, 16.7],
-  WR: [68.6, 40.5, 13.0],
+  WR: [68.6, 40.5, 12.5],
   QB: [80.0, 43.9,  9.0],
-  TE: [100.0, 37.8, 11.5],
+  TE: [100.0,37.8, 11.5],
 };
 
-var TOP_STEALS = [
-  {rank:1,  player:'Deebo Samuel',    pos:'WR', round:9,  slot:3,  season:2021, ppg:20.74, above:11.44, games:19, manager:'Ben Castaldo'},
-  {rank:2,  player:'Curtis Samuel',   pos:'WR', round:9,  slot:10, season:2021, ppg:20.74, above:11.44, games:19, manager:'Aidan Quigley'},
-  {rank:3,  player:'Kyren Williams',  pos:'RB', round:14, slot:7,  season:2023, ppg:20.23, above:10.88, games:13, manager:'Charlie Gorman'},
-  {rank:4,  player:'Brock Bowers',    pos:'TE', round:8,  slot:7,  season:2024, ppg:15.45, above:8.77,  games:17, manager:'Cole Maney'},
-  {rank:5,  player:'Nico Collins',    pos:'WR', round:10, slot:10, season:2023, ppg:17.19, above:8.42,  games:17, manager:'Deniz Bileydi'},
-  {rank:6,  player:'Elijah Moore',    pos:'WR', round:8,  slot:4,  season:2023, ppg:16.97, above:8.20,  games:17, manager:'Quin Gegwich'},
-  {rank:7,  player:'Marquise Brown',  pos:'WR', round:12, slot:11, season:2021, ppg:17.30, above:8.00,  games:7,  manager:'Max Malich'},
-  {rank:8,  player:'Chase Claypool',  pos:'WR', round:9,  slot:4,  season:2023, ppg:16.42, above:7.65,  games:16, manager:'Quin Gegwich'},
-  {rank:9,  player:'Raheem Mostert',  pos:'RB', round:13, slot:6,  season:2023, ppg:16.98, above:7.63,  games:16, manager:'Ben Castaldo'},
-  {rank:10, player:'Allen Lazard',    pos:'WR', round:11, slot:3,  season:2020, ppg:17.65, above:7.61,  games:14, manager:'Charlie Gorman'},
-];
-
-var TIER_COLORS = {
-  Early:  {bg:'rgba(90,138,90,0.65)',  bd:'rgba(90,138,90,1)'},
-  Middle: {bg:'rgba(212,175,55,0.65)', bd:'rgba(212,175,55,1)'},
-  Late:   {bg:'rgba(168,90,90,0.65)',  bd:'rgba(168,90,90,1)'},
-};
-
-/* ── Chart 3: Hit Rate by Round ── */
+/* Chart: Hit Rate by Round with gradient coloring */
 (function() {
-  var labels   = HR_BY_ROUND.map(function(d){ return 'Rd '+d.round; });
-  var rates    = HR_BY_ROUND.map(function(d){ return d.hit_rate; });
-  var bgColors = HR_BY_ROUND.map(function(d){ return TIER_COLORS[d.tier].bg; });
-  var bdColors = HR_BY_ROUND.map(function(d){ return TIER_COLORS[d.tier].bd; });
+  var rates = HR_BY_ROUND.map(function(d){return d.hit_rate;});
+  var min = Math.min.apply(null, rates);
+  var max = Math.max.apply(null, rates);
   new Chart(document.getElementById('chart-hit-rate-round').getContext('2d'), {
     type:'bar',
-    data:{ labels:labels, datasets:[{ label:'Hit Rate', data:rates, backgroundColor:bgColors, borderColor:bdColors, borderWidth:1.5, borderRadius:3 }] },
+    data:{
+      labels:HR_BY_ROUND.map(function(d){return 'Rd '+d.round;}),
+      datasets:[{
+        label:'Hit Rate',
+        data:rates,
+        backgroundColor:rates.map(function(v){return gradientColor(v,min,max,0.72);}),
+        borderColor:rates.map(function(v){return gradientColor(v,min,max,1.0);}),
+        borderWidth:1.5, borderRadius:3
+      }]
+    },
     options:{
       responsive:true,
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{
-        title:function(i){ var d=HR_BY_ROUND[i[0].dataIndex]; return 'Round '+d.round+' ('+d.tier+')'; },
-        label:function(ctx){ var d=HR_BY_ROUND[ctx.dataIndex]; return ['Hit Rate: '+d.hit_rate+'%', d.hits+' hits from '+d.total_picks+' picks']; }
+      plugins:{legend:{display:false},tooltip:{callbacks:{
+        title:function(i){var d=HR_BY_ROUND[i[0].dataIndex];return 'Round '+d.round+' ('+d.tier+')';},
+        label:function(ctx){var d=HR_BY_ROUND[ctx.dataIndex];return ['Hit Rate: '+d.hit_rate+'%',d.hits+' hits from '+d.total_picks+' picks'];}
       }}},
       scales:{
-        x:{ grid:gridStyle(), ticks:tickStyle() },
-        y:{ grid:gridStyle(), ticks:Object.assign(tickStyle(),{callback:function(v){return v+'%';}}), title:{display:true,text:'Hit Rate',color:C_MUTED,font:{size:11}}, min:0, max:100 }
+        x:{grid:gridStyle(),ticks:tickStyle()},
+        y:{grid:gridStyle(),ticks:Object.assign(tickStyle(),{callback:function(v){return v+'%';}}),title:{display:true,text:'Hit Rate',color:C_MUTED,font:{size:11}},min:0,max:100}
       }
     },
-    plugins:[{ id:'tierDividers', afterDraw:function(chart){
-      var ctx2=chart.ctx, xAxis=chart.scales.x, yAxis=chart.scales.y;
+    plugins:[{id:'tierDividers',afterDraw:function(chart){
+      var c=chart.ctx,x=chart.scales.x,y=chart.scales.y;
       [2.5,6.5].forEach(function(idx){
-        var x=xAxis.getPixelForValue(idx);
-        ctx2.save(); ctx2.beginPath(); ctx2.strokeStyle='rgba(138,132,128,0.4)'; ctx2.lineWidth=1; ctx2.setLineDash([4,3]);
-        ctx2.moveTo(x,yAxis.top); ctx2.lineTo(x,yAxis.bottom); ctx2.stroke(); ctx2.restore();
+        var px=x.getPixelForValue(idx);
+        c.save();c.beginPath();c.strokeStyle='rgba(138,132,128,0.4)';c.lineWidth=1;c.setLineDash([4,3]);
+        c.moveTo(px,y.top);c.lineTo(px,y.bottom);c.stroke();c.restore();
       });
     }}]
   });
 })();
 
-/* ── Charts 4–6: Hit Rate by Position per Tier ── */
-function makePosChart(canvasId, tierIndex) {
-  var positions = ['RB','WR','QB','TE'];
-  var tiers     = ['Early','Middle','Late'];
-  var tier      = tiers[tierIndex];
-  var color     = TIER_COLORS[tier];
-  var data      = positions.map(function(p){ return HR_BY_POS[p][tierIndex]; });
-  new Chart(document.getElementById(canvasId).getContext('2d'), {
+/* Chart: Position concentration stacked bar */
+(function() {
+  var labels  = HR_BY_ROUND.map(function(d){return 'Rd '+d.round;});
+  var totals  = HR_BY_ROUND.map(function(d){return d.total_picks;});
+  var rbPct   = HR_BY_ROUND.map(function(d){return Math.round(d.rb/d.total_picks*100);});
+  var wrPct   = HR_BY_ROUND.map(function(d){return Math.round(d.wr/d.total_picks*100);});
+  var qbPct   = HR_BY_ROUND.map(function(d){return Math.round(d.qb/d.total_picks*100);});
+  var tePct   = HR_BY_ROUND.map(function(d){return Math.round(d.te/d.total_picks*100);});
+
+  new Chart(document.getElementById('chart-pos-concentration').getContext('2d'), {
     type:'bar',
-    data:{ labels:positions, datasets:[{ data:data, backgroundColor:color.bg, borderColor:color.bd, borderWidth:1.5, borderRadius:3 }] },
+    data:{
+      labels:labels,
+      datasets:[
+        {label:'RB', data:rbPct, backgroundColor:'rgba(90,138,90,0.75)',  borderColor:'rgba(90,138,90,1)',  borderWidth:1, borderRadius:0},
+        {label:'WR', data:wrPct, backgroundColor:'rgba(74,127,168,0.75)', borderColor:'rgba(74,127,168,1)', borderWidth:1, borderRadius:0},
+        {label:'QB', data:qbPct, backgroundColor:'rgba(168,90,90,0.75)',  borderColor:'rgba(168,90,90,1)',  borderWidth:1, borderRadius:0},
+        {label:'TE', data:tePct, backgroundColor:'rgba(212,175,55,0.75)', borderColor:'rgba(212,175,55,1)', borderWidth:1, borderRadius:0},
+      ]
+    },
     options:{
       responsive:true,
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:function(ctx){ return ctx.parsed.y+'% hit rate'; } }} },
+      plugins:{
+        legend:{display:true, position:'top', labels:{color:C_MUTED, boxWidth:12, font:{size:11}}},
+        tooltip:{callbacks:{
+          title:function(i){var d=HR_BY_ROUND[i[0].dataIndex];return 'Round '+d.round+' ('+d.tier+')';},
+          label:function(ctx){return ctx.dataset.label+': '+ctx.parsed.y+'% of picks';}
+        }}
+      },
       scales:{
-        x:{ grid:gridStyle(), ticks:tickStyle() },
-        y:{ grid:gridStyle(), ticks:Object.assign(tickStyle(),{callback:function(v){return v+'%';}}), min:0, max:105 }
+        x:{grid:gridStyle(),ticks:tickStyle(),stacked:true},
+        y:{grid:gridStyle(),ticks:Object.assign(tickStyle(),{callback:function(v){return v+'%';}}),stacked:true,min:0,max:100,title:{display:true,text:'% of Picks',color:C_MUTED,font:{size:11}}}
+      }
+    },
+    plugins:[{id:'tierDividers2',afterDraw:function(chart){
+      var c=chart.ctx,x=chart.scales.x,y=chart.scales.y;
+      [2.5,6.5].forEach(function(idx){
+        var px=x.getPixelForValue(idx);
+        c.save();c.beginPath();c.strokeStyle='rgba(138,132,128,0.4)';c.lineWidth=1;c.setLineDash([4,3]);
+        c.moveTo(px,y.top);c.lineTo(px,y.bottom);c.stroke();c.restore();
+      });
+    }}]
+  });
+})();
+
+/* Charts: Hit rate by position per tier - gradient colored */
+function makePosChart(canvasId, tierIndex) {
+  var positions = ['RB','WR','QB','TE'];
+  var data = positions.map(function(p){return HR_BY_POS[p][tierIndex];});
+  var min = Math.min.apply(null,data), max = Math.max.apply(null,data);
+  new Chart(document.getElementById(canvasId).getContext('2d'), {
+    type:'bar',
+    data:{labels:positions,datasets:[{
+      data:data,
+      backgroundColor:data.map(function(v){return gradientColor(v,min,max,0.72);}),
+      borderColor:data.map(function(v){return gradientColor(v,min,max,1.0);}),
+      borderWidth:1.5, borderRadius:3
+    }]},
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+'% hit rate';}}}},
+      scales:{
+        x:{grid:gridStyle(),ticks:tickStyle()},
+        y:{grid:gridStyle(),ticks:Object.assign(tickStyle(),{callback:function(v){return v+'%';}}),min:0,max:100}
       }
     }
   });
@@ -516,14 +546,92 @@ makePosChart('chart-hit-pos-early', 0);
 makePosChart('chart-hit-pos-mid',   1);
 makePosChart('chart-hit-pos-late',  2);
 
-/* ── Steals Table ── */
-(function() {
+/* ════════════════════════════════════════
+   SECTION 3 - Late Round Steals
+   ════════════════════════════════════════ */
+
+var ALL_TIME_STEALS = [
+  {rank:1,  player:'Deebo Samuel',    pos:'WR', round:9,  slot:3,  season:2021, ppg:20.74, above:11.44, games:19, manager:'Ben Castaldo'},
+  {rank:2,  player:'Curtis Samuel',   pos:'WR', round:9,  slot:10, season:2021, ppg:20.74, above:11.44, games:19, manager:'Aidan Quigley'},
+  {rank:3,  player:'Kyren Williams',  pos:'RB', round:14, slot:7,  season:2023, ppg:20.23, above:10.88, games:13, manager:'Charlie Gorman'},
+  {rank:4,  player:'Brock Bowers',    pos:'TE', round:8,  slot:7,  season:2024, ppg:15.45, above:8.77,  games:17, manager:'Cole Maney'},
+  {rank:5,  player:'Nico Collins',    pos:'WR', round:10, slot:10, season:2023, ppg:17.19, above:8.42,  games:17, manager:'Deniz Bileydi'},
+  {rank:6,  player:'Elijah Moore',    pos:'WR', round:8,  slot:4,  season:2023, ppg:16.97, above:8.20,  games:17, manager:'Quin Gegwich'},
+  {rank:7,  player:'Marquise Brown',  pos:'WR', round:12, slot:11, season:2021, ppg:17.30, above:8.00,  games:7,  manager:'Max Malich'},
+  {rank:8,  player:'Raheem Mostert',  pos:'RB', round:13, slot:6,  season:2023, ppg:16.98, above:7.63,  games:16, manager:'Ben Castaldo'},
+  {rank:9,  player:'Allen Lazard',    pos:'WR', round:11, slot:3,  season:2020, ppg:17.65, above:7.61,  games:14, manager:'Charlie Gorman'},
+  {rank:10, player:'Antonio Brown',   pos:'WR', round:16, slot:10, season:2020, ppg:17.59, above:7.55,  games:15, manager:'Ethan Radecki'},
+];
+
+var SEASON_STEALS = {
+  2020: [
+    {rank:1,  player:'Allen Lazard',       pos:'WR', round:11, slot:3,  season:2020, ppg:17.65, above:7.61,  games:14, manager:'Charlie Gorman'},
+    {rank:2,  player:'Antonio Brown',      pos:'WR', round:16, slot:10, season:2020, ppg:17.59, above:7.55,  games:15, manager:'Ethan Radecki'},
+    {rank:3,  player:'Justin Jefferson',   pos:'WR', round:9,  slot:2,  season:2020, ppg:16.34, above:6.85,  games:16, manager:'Deniz Bileydi'},
+    {rank:4,  player:'Brandon Aiyuk',      pos:'WR', round:12, slot:7,  season:2020, ppg:14.83, above:5.34,  games:12, manager:'Carmine Pittelli'},
+    {rank:5,  player:'Duke Johnson',       pos:'RB', round:9,  slot:8,  season:2020, ppg:14.69, above:5.19,  games:11, manager:'Max Malich'},
+    {rank:6,  player:'Antonio Gibson',     pos:'RB', round:9,  slot:15, season:2020, ppg:13.68, above:4.18,  games:14, manager:'William Serafin'},
+    {rank:7,  player:'Leonard Fournette',  pos:'RB', round:10, slot:7,  season:2020, ppg:13.25, above:3.75,  games:13, manager:'Ryan McQuaid'},
+    {rank:8,  player:'Mike Gesicki',       pos:'TE', round:11, slot:4,  season:2020, ppg:10.15, above:3.59,  games:13, manager:'Baylen Slansky'},
+  ],
+  2021: [
+    {rank:1,  player:'Deebo Samuel',       pos:'WR', round:9,  slot:3,  season:2021, ppg:20.74, above:11.44, games:19, manager:'Ben Castaldo'},
+    {rank:2,  player:'Curtis Samuel',      pos:'WR', round:9,  slot:10, season:2021, ppg:20.74, above:11.44, games:19, manager:'Aidan Quigley'},
+    {rank:3,  player:'Marquise Brown',     pos:'WR', round:12, slot:11, season:2021, ppg:17.30, above:8.00,  games:7,  manager:'Max Malich'},
+    {rank:4,  player:'Rob Gronkowski',     pos:'TE', round:15, slot:10, season:2021, ppg:13.50, above:7.25,  games:12, manager:'Aidan Quigley'},
+    {rank:5,  player:'James Conner',       pos:'RB', round:9,  slot:4,  season:2021, ppg:16.53, above:7.03,  games:15, manager:'Charlie Gorman'},
+    {rank:6,  player:'Ronald Jones II',    pos:'RB', round:9,  slot:14, season:2021, ppg:15.78, above:6.28,  games:14, manager:'Deniz Bileydi'},
+    {rank:7,  player:'Jaylen Waddle',      pos:'WR', round:9,  slot:8,  season:2021, ppg:15.49, above:6.19,  games:16, manager:'Ethan Radecki'},
+    {rank:8,  player:'Tyrell Williams',    pos:'WR', round:16, slot:10, season:2021, ppg:15.29, above:5.99,  games:11, manager:'Baylen Slansky'},
+    {rank:9,  player:'Mike Williams',      pos:'WR', round:9,  slot:11, season:2021, ppg:15.29, above:5.99,  games:16, manager:'Max Malich'},
+    {rank:10, player:'Hunter Renfrow',     pos:'WR', round:9,  slot:13, season:2021, ppg:15.27, above:5.97,  games:17, manager:'Quin Gegwich'},
+  ],
+  2022: [
+    {rank:1,  player:'Christian Kirk',     pos:'WR', round:8,  slot:1,  season:2022, ppg:14.82, above:6.01,  games:15, manager:'Andrew Root'},
+    {rank:2,  player:'Ronald Jones',       pos:'RB', round:13, slot:4,  season:2022, ppg:14.93, above:5.43,  games:11, manager:'Quin Gegwich'},
+    {rank:3,  player:'Rhamondre Stevenson',pos:'RB', round:9,  slot:5,  season:2022, ppg:14.84, above:5.34,  games:15, manager:'Ethan Radecki'},
+    {rank:4,  player:'James Cook',         pos:'RB', round:9,  slot:3,  season:2022, ppg:14.12, above:4.62,  games:14, manager:'Carmine Pittelli'},
+    {rank:5,  player:'Jameson Williams',   pos:'WR', round:11, slot:5,  season:2022, ppg:13.36, above:4.55,  games:13, manager:'Ethan Radecki'},
+    {rank:6,  player:'Kenneth Walker III', pos:'RB', round:9,  slot:4,  season:2022, ppg:13.70, above:4.20,  games:15, manager:'Quin Gegwich'},
+    {rank:7,  player:'Jakobi Meyers',      pos:'WR', round:8,  slot:9,  season:2022, ppg:12.94, above:4.13,  games:16, manager:'Carmine Pittelli'},
+    {rank:8,  player:'Damien Harris',      pos:'RB', round:8,  slot:6,  season:2022, ppg:13.45, above:3.95,  games:13, manager:'Ryan McQuaid'},
+    {rank:9,  player:'Darrel Williams',    pos:'RB', round:16, slot:8,  season:2022, ppg:13.36, above:3.86,  games:11, manager:'Anthony Kelly'},
+    {rank:10, player:'Jamaal Williams',    pos:'RB', round:9,  slot:10, season:2022, ppg:13.36, above:3.86,  games:15, manager:'Max Malich'},
+  ],
+  2023: [
+    {rank:1,  player:'Kyren Williams',     pos:'RB', round:14, slot:7,  season:2023, ppg:20.23, above:10.88, games:13, manager:'Charlie Gorman'},
+    {rank:2,  player:'Nico Collins',       pos:'WR', round:10, slot:10, season:2023, ppg:17.19, above:8.42,  games:17, manager:'Deniz Bileydi'},
+    {rank:3,  player:'Elijah Moore',       pos:'WR', round:8,  slot:4,  season:2023, ppg:16.97, above:8.20,  games:17, manager:'Quin Gegwich'},
+    {rank:4,  player:'Raheem Mostert',     pos:'RB', round:13, slot:6,  season:2023, ppg:16.98, above:7.63,  games:16, manager:'Ben Castaldo'},
+    {rank:5,  player:'Sam LaPorta',        pos:'TE', round:14, slot:3,  season:2023, ppg:13.63, above:7.15,  games:17, manager:'Brandon Hancock'},
+    {rank:6,  player:"De'Von Achane",      pos:'RB', round:12, slot:5,  season:2023, ppg:17.04, above:7.04,  games:10, manager:'Deniz Bileydi'},
+    {rank:7,  player:"D'Onta Foreman",     pos:'RB', round:12, slot:11, season:2023, ppg:17.04, above:7.04,  games:11, manager:'Quin Gegwich'},
+    {rank:8,  player:'Curtis Samuel',      pos:'WR', round:11, slot:9,  season:2023, ppg:15.16, above:6.39,  games:16, manager:'Max Malich'},
+    {rank:9,  player:'Cole Kmet',          pos:'TE', round:8,  slot:9,  season:2023, ppg:11.70, above:5.22,  games:17, manager:'Ben Castaldo'},
+    {rank:10, player:'Rashee Rice',        pos:'WR', round:11, slot:4,  season:2023, ppg:13.66, above:4.89,  games:11, manager:'Quin Gegwich'},
+  ],
+  2024: [
+    {rank:1,  player:'Brock Bowers',       pos:'TE', round:8,  slot:7,  season:2024, ppg:15.45, above:8.77,  games:17, manager:'Cole Maney'},
+    {rank:2,  player:'Chuba Hubbard',      pos:'RB', round:8,  slot:4,  season:2024, ppg:16.45, above:6.95,  games:16, manager:'Ethan Radecki'},
+    {rank:3,  player:'Chase Brown',        pos:'RB', round:9,  slot:1,  season:2024, ppg:16.02, above:6.52,  games:16, manager:'Andrew Root'},
+    {rank:4,  player:'Taysom Hill',        pos:'TE', round:14, slot:1,  season:2024, ppg:12.84, above:6.36,  games:13, manager:'Aidan Quigley'},
+    {rank:5,  player:'Michael Wilson',     pos:'WR', round:12, slot:2,  season:2024, ppg:14.56, above:5.79,  games:15, manager:'Brandon Hancock'},
+    {rank:6,  player:'Baker Mayfield',     pos:'QB', round:12, slot:1,  season:2024, ppg:21.08, above:5.42,  games:18, manager:'Andrew Root'},
+    {rank:7,  player:'Jayden Daniels',     pos:'QB', round:9,  slot:10, season:2024, ppg:21.01, above:5.35,  games:20, manager:'Charlie Gorman'},
+    {rank:8,  player:'Jakobi Meyers',      pos:'WR', round:9,  slot:12, season:2024, ppg:13.02, above:5.25,  games:16, manager:'Max Malich'},
+    {rank:9,  player:'Bucky Irving',       pos:'RB', round:12, slot:5,  season:2024, ppg:15.69, above:5.19,  games:15, manager:'Charlie Gorman'},
+    {rank:10, player:'Jameson Williams',   pos:'WR', round:9,  slot:7,  season:2024, ppg:12.70, above:4.93,  games:14, manager:'Aidan Quigley'},
+  ],
+};
+
+function renderStealsTable(data) {
   var tbody = document.getElementById('steals-tbody');
   if (!tbody) return;
   var html = '';
-  TOP_STEALS.forEach(function(s) {
+  data.forEach(function(s) {
     var posClass = 'pos-'+s.pos.toLowerCase();
-    var aboveStr = s.above >= 0 ? '+'+s.above.toFixed(2) : s.above.toFixed(2);
+    var aboveStr = '+'+s.above.toFixed(2);
+    var seasonCol = (typeof s.season !== 'undefined') ? '<td>'+s.season+'</td>' : '';
     html += '<tr>'
       + '<td class="steal-rank">'+s.rank+'</td>'
       + '<td style="font-weight:600;color:var(--text-light)">'+s.player+'</td>'
@@ -538,7 +646,19 @@ makePosChart('chart-hit-pos-late',  2);
       + '</tr>';
   });
   tbody.innerHTML = html;
-})();
+}
+
+function filterSteals(season, btn) {
+  document.querySelectorAll('.season-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  if (season === 'all') {
+    renderStealsTable(ALL_TIME_STEALS);
+  } else {
+    renderStealsTable(SEASON_STEALS[season] || []);
+  }
+}
+
+renderStealsTable(ALL_TIME_STEALS);
 </script>
 </body>
 </html>
