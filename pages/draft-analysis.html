@@ -73,6 +73,35 @@
   .hr-stat-row { grid-template-columns:1fr; }
 }
 @media(max-width:480px) { .slot-grid { grid-template-columns:1fr; } }
+
+/* Surplus value teaser */
+.surplus-mini-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
+.surplus-mini-table thead th {
+  text-align:left;padding:0.6rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
+}
+.surplus-mini-table tbody tr {
+  border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s;
+  cursor:pointer;
+}
+.surplus-mini-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.surplus-mini-table tbody td { padding:0.55rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
+.surplus-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
+.surplus-bar-bg {
+  background:rgba(var(--accent-rgb),0.1);border-radius:3px;height:6px;
+  width:120px;display:inline-block;vertical-align:middle;overflow:hidden;
+}
+.surplus-bar-fill { height:100%;border-radius:3px; }
+.explore-btn {
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.65rem 1.5rem;border-radius:var(--radius-sm);
+  background:var(--accent);color:var(--bg);
+  font-family:var(--font);font-size:0.85rem;font-weight:700;
+  text-decoration:none;transition:all 0.2s;margin-top:1.5rem;
+}
+.explore-btn:hover { opacity:0.85;transform:translateY(-1px); }
+.explore-btn svg { width:16px;height:16px; }
 </style>
 </head>
 <body>
@@ -89,6 +118,7 @@
       <a href="leaderboard.html">Leaderboard</a>
       <a href="managers.html">Managers</a>
       <a href="draft-analysis.html" class="active">Draft Analysis</a>
+      <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
       <a href="weekly-rankings.html">Weekly Rankings</a>
       <a href="champions.html">Champions</a>
       <a href="extra-analytics.html">Extra Analytics</a>
@@ -107,6 +137,7 @@
       <a href="leaderboard.html">Leaderboard</a>
       <a href="managers.html">Managers</a>
       <a href="draft-analysis.html" class="active">Draft Analysis</a>
+      <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
       <a href="weekly-rankings.html">Weekly Rankings</a>
       <a href="champions.html">Champions</a>
       <a href="extra-analytics.html">Extra Analytics</a>
@@ -257,6 +288,33 @@
       </thead>
       <tbody id="steals-tbody"></tbody>
     </table>
+  </div>
+
+
+  <!-- SECTION 4: SURPLUS VALUE TEASER -->
+
+  <div class="section-label" style="margin-top:1rem;">Surplus Value Index</div>
+  <div class="section-title">Who actually drafts best in this league?</div>
+
+  <div class="callout glass">
+    <div class="callout-label">What is Surplus Value?</div>
+    <p>Every pick has an <strong>expected value</strong> based on what players taken at that slot and position have historically produced. <strong>Surplus value</strong> is the difference between what you actually got and what you should have expected. A round 14 RB who puts up 20 PPG when round-14 RBs average 8 PPG is a +12 surplus. A round 1 RB who gets injured and scores 7 PPG when round-1 RBs average 18 PPG is an -11 surplus. Add it all up and you have a true draft grade that controls for slot quality. <strong>Baylen Slansky leads the league all-time</strong> at -0.05 per pick. <strong>Ryan McQuaid is last</strong> at -0.84, driven largely by Aaron Rodgers tearing his Achilles in week 1 of 2023, the single worst pick in league history at -16.4 surplus.</p>
+  </div>
+
+  <div class="table-wrap glass">
+    <p class="table-hint">Career rankings by average surplus per pick (2020-2024). Click any row to view full analysis.</p>
+    <table class="surplus-mini-table">
+      <thead>
+        <tr><th>#</th><th>Manager</th><th>Avg Surplus/Pick</th><th>Visual</th><th>Seasons</th></tr>
+      </thead>
+      <tbody id="surplus-preview-tbody"></tbody>
+    </table>
+    <a href="surplus-value.html" class="explore-btn">
+      Explore Full Surplus Value Analysis
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
+      </svg>
+    </a>
   </div>
 
   <footer>
@@ -626,6 +684,56 @@ function filterSteals(season, btn) {
 }
 
 renderStealsTable(ALL_TIME_STEALS);
+
+/* ════════════════════════════════════
+   SECTION 4 - Surplus Value Teaser
+   ════════════════════════════════════ */
+(function(){
+  var CAREER_PREVIEW = [
+    {rank:1,  manager:'Baylen Slansky',   avg:-0.046, seasons:5},
+    {rank:2,  manager:'Ethan Radecki',    avg:-0.082, seasons:5},
+    {rank:3,  manager:'Max Malich',       avg:-0.141, seasons:5},
+    {rank:4,  manager:'Carmine Pittelli', avg:-0.277, seasons:5},
+    {rank:5,  manager:'Anthony Kelly',    avg:-0.379, seasons:5},
+    {rank:6,  manager:'Quin Gegwich',     avg:-0.447, seasons:5},
+    {rank:7,  manager:'Andrew Root',      avg:-0.457, seasons:5},
+    {rank:8,  manager:'Deniz Bileydi',    avg:-0.463, seasons:5},
+    {rank:9,  manager:'Charlie Gorman',   avg:-0.509, seasons:5},
+    {rank:10, manager:'Brandon Hancock',  avg:-0.561, seasons:5},
+    {rank:11, manager:'Ben Castaldo',     avg:-0.639, seasons:5},
+    {rank:12, manager:'Aidan Quigley',    avg:-0.669, seasons:4},
+    {rank:13, manager:'Cole Maney',       avg:-0.752, seasons:5},
+    {rank:14, manager:'Ryan McQuaid',     avg:-0.844, seasons:5},
+  ];
+  var minVal=Math.min.apply(null,CAREER_PREVIEW.map(function(d){return d.avg;}));
+  var maxVal=Math.max.apply(null,CAREER_PREVIEW.map(function(d){return d.avg;}));
+  function surplusColor(val,alpha){
+    var p=maxVal!==minVal?(val-minVal)/(maxVal-minVal):0.5;
+    var r,g,b,t;
+    if(p<=0.5){t=p/0.5;r=Math.round(192+(245-192)*t);g=Math.round(58+(240-58)*t);b=Math.round(58+(232-58)*t);}
+    else{t=(p-0.5)/0.5;r=Math.round(245+(74-245)*t);g=Math.round(240+(168-240)*t);b=Math.round(232+(58-232)*t);}
+    return 'rgba('+r+','+g+','+b+','+(alpha||0.8)+')';
+  }
+  var tbody=document.getElementById('surplus-preview-tbody');
+  if(!tbody) return;
+  var html='';
+  CAREER_PREVIEW.forEach(function(d){
+    var sign=d.avg>=0?'+':'';
+    var valClass=d.avg>=0?'val-green':'val-red';
+    var pct=(d.avg-minVal)/(maxVal-minVal);
+    var barW=Math.round(pct*100);
+    var barColor=surplusColor(d.avg,0.85);
+    html+='<tr onclick="window.location='surplus-value.html'">'
+      +'<td class="surplus-rank">'+d.rank+'</td>'
+      +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
+      +'<td class="'+valClass+'">'+sign+d.avg.toFixed(3)+'</td>'
+      +'<td><div class="surplus-bar-bg"><div class="surplus-bar-fill" style="width:'+barW+'px;max-width:100%;background:'+barColor+'"></div></div></td>'
+      +'<td style="color:var(--muted)">'+d.seasons+'</td>'
+      +'</tr>';
+  });
+  tbody.innerHTML=html;
+})();
+
 </script>
 </body>
 </html>
