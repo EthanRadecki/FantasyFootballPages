@@ -723,7 +723,7 @@ renderStealsTable(ALL_TIME_STEALS);
     var pct=(d.avg-minVal)/(maxVal-minVal);
     var barW=Math.round(pct*100);
     var barColor=surplusColor(d.avg,0.85);
-    html+='<tr onclick="window.location='surplus-value.html'">'
+    html+='<tr style="cursor:pointer" onclick="window.location.href=\'surplus-value.html\'">'
       +'<td class="surplus-rank">'+d.rank+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
       +'<td class="'+valClass+'">'+sign+d.avg.toFixed(3)+'</td>'
