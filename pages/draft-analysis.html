@@ -288,7 +288,7 @@
 
   <div class="callout glass">
     <div class="callout-label">What is Surplus Value?</div>
-    <p>Every pick has an <strong>expected value</strong> based on what players taken at that slot and position have historically produced. <strong>Surplus value</strong> is the difference between what you actually got and what you should have expected. A round 14 RB who scores 20 PPG when round-14 RBs average 8 PPG is a +12 surplus. Picks where the player appeared in fewer than 8 games count as 0, not negative, since injuries are random. <strong>Carmine Pittelli leads the league all-time</strong> at +0.163 per pick. <strong>Ryan McQuaid is last</strong> at -0.305.</p>
+    <p>Every pick has an <strong>expected value</strong> based on what players taken at that slot and position have historically produced. <strong>Surplus value</strong> is the difference between what you actually got and what you should have expected. A round 14 RB who scores 20 PPG when round-14 RBs average 8 PPG is a +12 surplus. Picks where the player appeared in fewer than 8 games count as 0, not negative, since injuries are random. <strong>Carmine Pittelli leads the league all-time</strong> at +0.43 per pick (weighted avg). <strong>Ryan McQuaid is last</strong> at -0.37.</p>
   </div>
 
   <div class="table-wrap glass">
@@ -682,22 +682,7 @@ renderStealsTable(ALL_TIME_STEALS);
 
 /* SECTION 4 - Surplus Value Teaser */
 (function(){
-  var CAREER_PREVIEW = [
-    {rank:1,  manager:'Carmine Pittelli', avg:0.163,  seasons:6},
-    {rank:2,  manager:'Anthony Kelly',    avg:0.160,  seasons:6},
-    {rank:3,  manager:'Charlie Gorman',   avg:0.073,  seasons:6},
-    {rank:4,  manager:'Cole Maney',       avg:0.049,  seasons:6},
-    {rank:5,  manager:'Ethan Radecki',    avg:0.015,  seasons:6},
-    {rank:6,  manager:'Deniz Bileydi',    avg:0.008,  seasons:6},
-    {rank:7,  manager:'Baylen Slansky',   avg:-0.002, seasons:6},
-    {rank:8,  manager:'Andrew Root',      avg:-0.064, seasons:6},
-    {rank:9,  manager:'Max Malich',       avg:-0.078, seasons:6},
-    {rank:10, manager:'Ben Castaldo',     avg:-0.091, seasons:6},
-    {rank:11, manager:'Brandon Hancock',  avg:-0.162, seasons:6},
-    {rank:12, manager:'Aidan Quigley',    avg:-0.178, seasons:5},
-    {rank:13, manager:'Quin Gegwich',     avg:-0.229, seasons:6},
-    {rank:14, manager:'Ryan McQuaid',     avg:-0.305, seasons:6},
-  ];
+  var CAREER_PREVIEW = [{"manager": "Carmine Pittelli", "avg": 0.4281, "rank": 1}, {"manager": "Charlie Gorman", "avg": 0.4023, "rank": 2}, {"manager": "Aidan Quigley", "avg": 0.2589, "rank": 3}, {"manager": "Anthony Kelly", "avg": 0.12, "rank": 4}, {"manager": "Andrew Root", "avg": 0.0547, "rank": 5}, {"manager": "Max Malich", "avg": 0.0515, "rank": 6}, {"manager": "Cole Maney", "avg": 0.0144, "rank": 7}, {"manager": "Ben Castaldo", "avg": -0.0028, "rank": 8}, {"manager": "Baylen Slansky", "avg": -0.0322, "rank": 9}, {"manager": "Brandon Hancock", "avg": -0.0357, "rank": 10}, {"manager": "Ethan Radecki", "avg": -0.1116, "rank": 11}, {"manager": "Quin Gegwich", "avg": -0.3209, "rank": 12}, {"manager": "Deniz Bileydi", "avg": -0.3424, "rank": 13}, {"manager": "Ryan McQuaid", "avg": -0.3693, "rank": 14}];
   var minVal=Math.min.apply(null,CAREER_PREVIEW.map(function(d){return d.avg;}));
   var maxVal=Math.max.apply(null,CAREER_PREVIEW.map(function(d){return d.avg;}));
   function surplusColor(val,alpha){
