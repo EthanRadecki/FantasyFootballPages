@@ -10,14 +10,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 .back-link {
-  display:inline-flex;align-items:center;gap:0.4rem;
-  font-size:0.78rem;font-weight:600;color:var(--accent);
-  text-decoration:none;margin-bottom:1.5rem;
+  display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;font-weight:600;
+  color:var(--accent);text-decoration:none;margin-bottom:1.5rem;
   padding:0.35rem 0.75rem;border-radius:var(--radius-sm);
   border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
 }
 .back-link:hover { background:var(--accent-glow); }
-
 .career-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
 .career-table thead th {
   text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
@@ -28,7 +26,6 @@
 .career-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .career-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
 .manager-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
-
 .heatmap-wrap { overflow-x:auto;padding:1.5rem; }
 .heatmap-table { border-collapse:collapse;font-size:0.8rem;width:100%; }
 .heatmap-table th {
@@ -39,12 +36,23 @@
 .heatmap-table th.row-header { text-align:left; }
 .heatmap-table td {
   padding:0.55rem 0.75rem;text-align:center;font-size:0.78rem;font-weight:600;
-  border:1px solid rgba(var(--accent-rgb),0.08);transition:filter 0.15s;white-space:nowrap;
+  border:1px solid rgba(var(--accent-rgb),0.08);white-space:nowrap;
+  cursor:default;position:relative;
 }
-.heatmap-table td:first-child { text-align:left;font-weight:600;color:var(--palm);padding-left:0.75rem; }
-.heatmap-table td:hover { filter:brightness(0.92); }
+.heatmap-table td:first-child { text-align:left;font-weight:600;color:var(--palm);padding-left:0.75rem;cursor:default; }
 .heatmap-table tr:last-child td { border-bottom:none; }
-
+/* Tooltip on heatmap cells */
+.heatmap-table td[data-tip]:hover::after {
+  content: attr(data-tip);
+  position:absolute;left:50%;transform:translateX(-50%);
+  bottom:calc(100% + 6px);
+  background:rgba(44,42,40,0.95);color:#f5f0e8;
+  font-size:0.72rem;font-weight:400;line-height:1.5;
+  padding:0.5rem 0.75rem;border-radius:6px;
+  white-space:pre;z-index:100;pointer-events:none;
+  box-shadow:0 4px 16px rgba(0,0,0,0.25);
+  min-width:180px;text-align:left;
+}
 .pick-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
 .pick-table thead th {
   text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
@@ -55,13 +63,20 @@
 .pick-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .pick-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
 .pick-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
-
+.manager-bw-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
+.manager-bw-table thead th {
+  text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
+}
+.manager-bw-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
+.manager-bw-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.manager-bw-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
 .pos-badge { display:inline-block;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;letter-spacing:0.06em; }
 .pos-rb { background:rgba(90,138,90,0.18);color:#5a8a5a; }
 .pos-wr { background:rgba(74,127,168,0.18);color:#4a7fa8; }
 .pos-qb { background:rgba(168,90,90,0.18);color:#a85a5a; }
 .pos-te { background:rgba(212,175,55,0.18);color:#b8960a; }
-
 .season-filter-row { display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap; }
 .season-btn {
   padding:0.35rem 0.85rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
@@ -71,21 +86,17 @@
 .season-btn:hover { background:var(--accent-glow); }
 .season-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
 .season-filter-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent); }
-
 .chart-card-interactive { padding:1.5rem; }
 .chart-card-interactive .chart-card-label {
   font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
   color:var(--accent);font-weight:700;margin-bottom:1rem;
 }
 .chart-card-interactive canvas { display:block;width:100% !important; }
-
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
-
 @media(max-width:768px) { .chart-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
-
 <div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
 <div class="content">
 
@@ -128,73 +139,90 @@
 
   <div class="page-header glass">
     <h1>Surplus Value Index</h1>
-    <p>How much value did each manager extract from every pick, relative to what that slot should produce? (2020-2024)</p>
+    <p>How much value did each manager extract from every pick, relative to what that slot should produce? (2020-2025)</p>
   </div>
 
   <div class="callout glass">
     <div class="callout-label">How It Works</div>
-    <p>For each drafted player, we find all players taken within 3 picks of that spot at the same position across all seasons and compute their average PPR/game. That's the <strong>expected value</strong>. Subtract expected from actual and you get the <strong>surplus</strong>. Stack all surpluses for a manager and you get their <strong>draft grade</strong>. Picks where the player appeared in fewer than 8 games count as 0 surplus, not negative, since injuries are random and shouldn't tank a manager's career grade. Stats are sourced directly from ESPN fantasy scoring to match your exact league settings.</p>
+    <p>For each drafted player, we find all players taken within 3 picks of that spot at the same position across all seasons and compute their average PPR/game. That's the <strong>expected value</strong>. Subtract expected from actual and you get the <strong>surplus</strong>. Stack all surpluses for a manager and you get their <strong>draft grade</strong>. Picks where the player appeared in fewer than 8 games count as 0 surplus, not negative, since injuries are random and shouldn't tank a manager's career grade. Stats are sourced directly from ESPN fantasy scoring to match your exact league settings. Data covers all six seasons, 2020-2025.</p>
   </div>
 
   <!-- CAREER LEADERBOARD -->
-
   <div class="section-label">Career Draft Rankings</div>
   <div class="section-title">Who drafts best across all seasons?</div>
 
   <div class="chart-grid" style="grid-template-columns:1fr;">
     <div class="chart-card-interactive glass">
-      <div class="chart-card-label">Average Surplus Per Pick, Career (2020-2024)</div>
+      <div class="chart-card-label">Average Surplus Per Pick, Career (2020-2025)</div>
       <div style="position:relative;height:320px;max-height:320px;">
         <canvas id="chart-career"></canvas>
       </div>
-      <p class="metric-note">Positive = manager got more than expected from their picks. Negative = picks underperformed their draft slot on average. Managers ordered best to worst.</p>
+      <p class="metric-note">Positive = manager got more than expected from their picks on average. Negative = picks underperformed their draft slot. Managers ordered best to worst.</p>
     </div>
   </div>
 
   <div class="table-wrap glass">
     <table class="career-table">
       <thead>
-        <tr>
-          <th>#</th><th>Manager</th><th>Avg Surplus/Pick</th><th>Total Surplus</th>
-          <th>Picks Scored</th><th>Seasons</th>
-        </tr>
+        <tr><th>#</th><th>Manager</th><th>Avg Surplus/Pick</th><th>Total Surplus</th><th>Picks Scored</th><th>Seasons</th></tr>
       </thead>
       <tbody id="career-tbody"></tbody>
     </table>
-    <p class="metric-note">Picks scored = skill position picks with 8+ games played. Picks below 8 games count as 0 surplus and are included in totals but not in per-pick averages.</p>
+    <p class="metric-note">Picks scored = skill position picks with 8+ games played. Picks below that threshold count as 0 surplus.</p>
   </div>
 
   <!-- SEASON HEATMAP -->
-
   <div class="section-label">Season Draft Grades</div>
   <div class="section-title">How did each manager grade out year by year?</div>
 
   <div class="callout glass">
     <div class="callout-label">Reading the Heatmap</div>
-    <p>Each cell is a manager's total surplus for that season. Green means they got more than expected, red means injuries and busts cost them. Color scales within each season so you can see relative performance across the field. Aidan Quigley has no 2020 grade since he joined the league in 2021.</p>
+    <p>Each cell is a manager's total surplus for that season. Green means they got more than expected, red means busts and underperformers cost them. Color scales within each season so you can see relative performance across the field. Hover any cell to see that manager's best and worst pick for that year. Aidan Quigley has no 2020 grade since he joined in 2021.</p>
   </div>
 
   <div class="heatmap-wrap glass" id="heatmap-container"></div>
 
-  <!-- BEST AND WORST PICKS -->
+  <!-- MANAGER BEST AND WORST ALL TIME -->
+  <div class="section-label" style="margin-top:2rem;">Manager Highs and Lows</div>
+  <div class="section-title">Every manager's best and worst pick of all time.</div>
 
+  <div class="callout glass">
+    <div class="callout-label">Note</div>
+    <p>Best pick is the single highest surplus pick across all seasons. Worst pick is the single lowest surplus pick in rounds 1-7, where busts actually hurt. Both require minimum 8 games played.</p>
+  </div>
+
+  <div class="table-wrap glass">
+    <table class="manager-bw-table">
+      <thead>
+        <tr>
+          <th>Manager</th>
+          <th>Best Pick</th><th>Pos</th><th>Season</th><th>Rd</th><th>Surplus</th>
+          <th style="border-left:1px solid rgba(var(--accent-rgb),0.15)">Worst Pick</th><th>Pos</th><th>Season</th><th>Rd</th><th>Surplus</th>
+        </tr>
+      </thead>
+      <tbody id="manager-bw-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- BEST PICKS TABLE -->
   <div class="section-label" style="margin-top:2rem;">Best Individual Picks</div>
   <div class="section-title">The picks that most outperformed their draft slot.</div>
 
   <div class="callout glass">
     <div class="callout-label">Note on Best Picks</div>
-    <p>Surplus is calculated against players drafted within 3 spots at the same position across all seasons, so a round 14 RB is compared to other round 14 RBs, not to all RBs. This makes late-round steals look huge and early picks look modest, since expectations are already high early. Minimum 8 games played to qualify.</p>
+    <p>Surplus is calculated against players drafted within 3 spots at the same position, so a round 14 steal looks huge relative to round-14 expectations. Minimum 8 games played to qualify.</p>
   </div>
 
   <div class="table-wrap glass" style="padding:1.5rem;">
     <div class="season-filter-row">
       <span class="season-filter-label">Season:</span>
-      <button class="season-btn active" onclick="filterBest('all', this)">All Time</button>
-      <button class="season-btn" onclick="filterBest(2020, this)">2020</button>
-      <button class="season-btn" onclick="filterBest(2021, this)">2021</button>
-      <button class="season-btn" onclick="filterBest(2022, this)">2022</button>
-      <button class="season-btn" onclick="filterBest(2023, this)">2023</button>
-      <button class="season-btn" onclick="filterBest(2024, this)">2024</button>
+      <button class="season-btn active" onclick="filterBest('all',this)">All Time</button>
+      <button class="season-btn" onclick="filterBest(2020,this)">2020</button>
+      <button class="season-btn" onclick="filterBest(2021,this)">2021</button>
+      <button class="season-btn" onclick="filterBest(2022,this)">2022</button>
+      <button class="season-btn" onclick="filterBest(2023,this)">2023</button>
+      <button class="season-btn" onclick="filterBest(2024,this)">2024</button>
+      <button class="season-btn" onclick="filterBest(2025,this)">2025</button>
     </div>
     <table class="pick-table">
       <thead>
@@ -204,23 +232,25 @@
     </table>
   </div>
 
+  <!-- WORST PICKS TABLE -->
   <div class="section-label" style="margin-top:2rem;">Biggest Busts</div>
   <div class="section-title">Early picks that most underperformed their draft slot (Rounds 1-7).</div>
 
   <div class="callout glass">
     <div class="callout-label">Note on Busts</div>
-    <p>Busts are limited to rounds 1-7 since late-round misses are expected and don't tell you much. Picks with fewer than 8 games played count as 0 surplus, so injury-related busts like Aaron Rodgers 2023 (1 game played) don't appear here. These are the picks where a manager had a healthy player who just didn't perform.</p>
+    <p>Limited to rounds 1-7 since late-round misses are expected. Picks with fewer than 8 games played count as 0 surplus, so pure injury busts don't appear here. These are the picks where a healthy player just didn't perform.</p>
   </div>
 
   <div class="table-wrap glass" style="padding:1.5rem;">
     <div class="season-filter-row">
       <span class="season-filter-label">Season:</span>
-      <button class="season-btn active" onclick="filterWorst('all', this)">All Time</button>
-      <button class="season-btn" onclick="filterWorst(2020, this)">2020</button>
-      <button class="season-btn" onclick="filterWorst(2021, this)">2021</button>
-      <button class="season-btn" onclick="filterWorst(2022, this)">2022</button>
-      <button class="season-btn" onclick="filterWorst(2023, this)">2023</button>
-      <button class="season-btn" onclick="filterWorst(2024, this)">2024</button>
+      <button class="season-btn active" onclick="filterWorst('all',this)">All Time</button>
+      <button class="season-btn" onclick="filterWorst(2020,this)">2020</button>
+      <button class="season-btn" onclick="filterWorst(2021,this)">2021</button>
+      <button class="season-btn" onclick="filterWorst(2022,this)">2022</button>
+      <button class="season-btn" onclick="filterWorst(2023,this)">2023</button>
+      <button class="season-btn" onclick="filterWorst(2024,this)">2024</button>
+      <button class="season-btn" onclick="filterWorst(2025,this)">2025</button>
     </div>
     <table class="pick-table">
       <thead>
@@ -235,235 +265,289 @@
   </footer>
 
 </div>
-
 <script src="../shared.js"></script>
 <script>
 Chart.defaults.font.family = "'Outfit', sans-serif";
 Chart.defaults.font.size   = 12;
 Chart.defaults.color       = '#5a5550';
-
 var C_MUTED = '#8a8480';
-
 function gridStyle() { return { color:'rgba(156,148,156,0.15)', drawBorder:false }; }
 function tickStyle() { return { color:C_MUTED }; }
-
 function gradientColor(val, min, max, alpha) {
   alpha = alpha !== undefined ? alpha : 0.72;
   var p = max !== min ? (val - min) / (max - min) : 0.5;
   var r, g, b, t;
-  if (p <= 0.5) {
-    t=p/0.5; r=Math.round(192+(245-192)*t); g=Math.round(58+(240-58)*t); b=Math.round(58+(232-58)*t);
-  } else {
-    t=(p-0.5)/0.5; r=Math.round(245+(74-245)*t); g=Math.round(240+(168-240)*t); b=Math.round(232+(58-232)*t);
-  }
+  if (p <= 0.5) { t=p/0.5; r=Math.round(192+(245-192)*t); g=Math.round(58+(240-58)*t); b=Math.round(58+(232-58)*t); }
+  else { t=(p-0.5)/0.5; r=Math.round(245+(74-245)*t); g=Math.round(240+(168-240)*t); b=Math.round(232+(58-232)*t); }
   return 'rgba('+r+','+g+','+b+','+alpha+')';
 }
 
 /* DATA */
-
 var CAREER_GRADES = [
-  {rank:1,  manager:'Ethan Radecki',    avg_surplus:0.394,  total_surplus:27.60,  total_picks:70, seasons:5},
-  {rank:2,  manager:'Max Malich',       avg_surplus:0.143,  total_surplus:9.85,   total_picks:69, seasons:5},
-  {rank:3,  manager:'Charlie Gorman',   avg_surplus:0.102,  total_surplus:7.15,   total_picks:70, seasons:5},
-  {rank:4,  manager:'Baylen Slansky',   avg_surplus:0.098,  total_surplus:6.69,   total_picks:68, seasons:5},
-  {rank:5,  manager:'Carmine Pittelli', avg_surplus:0.091,  total_surplus:6.29,   total_picks:69, seasons:5},
-  {rank:6,  manager:'Anthony Kelly',    avg_surplus:0.047,  total_surplus:3.28,   total_picks:70, seasons:5},
-  {rank:7,  manager:'Aidan Quigley',    avg_surplus:-0.011, total_surplus:-0.62,  total_picks:56, seasons:4},
-  {rank:8,  manager:'Deniz Bileydi',    avg_surplus:-0.100, total_surplus:-6.98,  total_picks:70, seasons:5},
-  {rank:9,  manager:'Quin Gegwich',     avg_surplus:-0.156, total_surplus:-10.77, total_picks:69, seasons:5},
-  {rank:10, manager:'Ben Castaldo',     avg_surplus:-0.175, total_surplus:-11.74, total_picks:67, seasons:5},
-  {rank:11, manager:'Andrew Root',      avg_surplus:-0.235, total_surplus:-16.24, total_picks:69, seasons:5},
-  {rank:12, manager:'Brandon Hancock',  avg_surplus:-0.261, total_surplus:-18.30, total_picks:70, seasons:5},
-  {rank:13, manager:'Cole Maney',       avg_surplus:-0.367, total_surplus:-25.70, total_picks:70, seasons:5},
-  {rank:14, manager:'Ryan McQuaid',     avg_surplus:-0.421, total_surplus:-29.46, total_picks:70, seasons:5},
+  {rank:1,  manager:'Carmine Pittelli', avg_surplus:0.163,  total_surplus:13.55,  total_picks:83, seasons:6},
+  {rank:2,  manager:'Anthony Kelly',    avg_surplus:0.160,  total_surplus:13.43,  total_picks:84, seasons:6},
+  {rank:3,  manager:'Charlie Gorman',   avg_surplus:0.073,  total_surplus:6.10,   total_picks:84, seasons:6},
+  {rank:4,  manager:'Cole Maney',       avg_surplus:0.049,  total_surplus:4.12,   total_picks:84, seasons:6},
+  {rank:5,  manager:'Ethan Radecki',    avg_surplus:0.015,  total_surplus:1.22,   total_picks:84, seasons:6},
+  {rank:6,  manager:'Deniz Bileydi',    avg_surplus:0.008,  total_surplus:0.69,   total_picks:84, seasons:6},
+  {rank:7,  manager:'Baylen Slansky',   avg_surplus:-0.002, total_surplus:-0.14,  total_picks:82, seasons:6},
+  {rank:8,  manager:'Andrew Root',      avg_surplus:-0.064, total_surplus:-5.33,  total_picks:83, seasons:6},
+  {rank:9,  manager:'Max Malich',       avg_surplus:-0.078, total_surplus:-6.51,  total_picks:83, seasons:6},
+  {rank:10, manager:'Ben Castaldo',     avg_surplus:-0.091, total_surplus:-7.24,  total_picks:80, seasons:6},
+  {rank:11, manager:'Brandon Hancock',  avg_surplus:-0.162, total_surplus:-13.65, total_picks:84, seasons:6},
+  {rank:12, manager:'Aidan Quigley',    avg_surplus:-0.178, total_surplus:-12.08, total_picks:68, seasons:5},
+  {rank:13, manager:'Quin Gegwich',     avg_surplus:-0.229, total_surplus:-19.01, total_picks:83, seasons:6},
+  {rank:14, manager:'Ryan McQuaid',     avg_surplus:-0.305, total_surplus:-25.62, total_picks:84, seasons:6},
 ];
 
 var SEASON_GRADES = {
-  2020: {
-    'Carmine Pittelli':25.7, 'Baylen Slansky':21.8, 'Anthony Kelly':13.7,
-    'Andrew Root':10.3, 'Brandon Hancock':9.0, 'Ethan Radecki':8.6,
-    'Deniz Bileydi':3.9, 'Charlie Gorman':1.6, 'Max Malich':1.5,
-    'Cole Maney':1.1, 'Quin Gegwich':-2.2, 'Ben Castaldo':-6.6,
-    'Ryan McQuaid':-14.7,
-  },
-  2021: {
-    'Ben Castaldo':18.0, 'Carmine Pittelli':10.0, 'Anthony Kelly':7.3,
-    'Deniz Bileydi':7.3, 'Cole Maney':6.1, 'Aidan Quigley':2.5,
-    'Max Malich':1.4, 'Ethan Radecki':0.3, 'Ryan McQuaid':-0.2,
-    'Charlie Gorman':-3.0, 'Quin Gegwich':-4.6, 'Andrew Root':-13.9,
-    'Baylen Slansky':-10.7, 'Brandon Hancock':-21.2,
-  },
-  2022: {
-    'Max Malich':13.8, 'Ethan Radecki':11.2, 'Quin Gegwich':10.7,
-    'Anthony Kelly':5.5, 'Aidan Quigley':1.9, 'Andrew Root':-0.7,
-    'Baylen Slansky':-0.7, 'Ryan McQuaid':-7.8, 'Carmine Pittelli':-8.1,
-    'Ben Castaldo':-8.1, 'Brandon Hancock':-9.2, 'Charlie Gorman':-8.7,
-    'Cole Maney':-16.9, 'Deniz Bileydi':-17.9,
-  },
-  2023: {
-    'Ethan Radecki':14.9, 'Charlie Gorman':11.1, 'Carmine Pittelli':0.9,
-    'Deniz Bileydi':-0.1, 'Brandon Hancock':-2.2, 'Quin Gegwich':-12.6,
-    'Aidan Quigley':-9.3, 'Andrew Root':-14.9, 'Ryan McQuaid':-3.9,
-    'Ben Castaldo':-5.4, 'Cole Maney':-10.3, 'Max Malich':-15.5,
-    'Baylen Slansky':-15.6, 'Anthony Kelly':-21.7,
-  },
-  2024: {
-    'Baylen Slansky':12.0, 'Aidan Quigley':4.3, 'Andrew Root':3.0,
-    'Charlie Gorman':6.2, 'Brandon Hancock':5.3, 'Max Malich':8.6,
-    'Ethan Radecki':-7.5, 'Deniz Bileydi':-0.2, 'Quin Gegwich':-2.1,
-    'Anthony Kelly':-1.5, 'Cole Maney':-5.7, 'Ryan McQuaid':-2.9,
-    'Ben Castaldo':-9.6, 'Carmine Pittelli':-22.3,
-  },
+  2020:{'Carmine Pittelli':30.4,'Baylen Slansky':24.6,'Anthony Kelly':16.8,'Andrew Root':12.2,'Brandon Hancock':14.8,'Ethan Radecki':10.0,'Max Malich':4.2,'Cole Maney':3.6,'Deniz Bileydi':4.5,'Charlie Gorman':2.2,'Quin Gegwich':-0.2,'Ben Castaldo':-5.2,'Ryan McQuaid':-12.7},
+  2021:{'Ben Castaldo':17.3,'Carmine Pittelli':11.8,'Anthony Kelly':8.2,'Deniz Bileydi':7.4,'Cole Maney':5.7,'Max Malich':4.2,'Aidan Quigley':5.6,'Ethan Radecki':2.6,'Ryan McQuaid':-0.3,'Charlie Gorman':-2.8,'Quin Gegwich':-0.2,'Andrew Root':-13.3,'Baylen Slansky':-9.9,'Brandon Hancock':-18.4},
+  2022:{'Max Malich':13.9,'Quin Gegwich':14.2,'Ethan Radecki':11.3,'Anthony Kelly':7.5,'Andrew Root':2.5,'Aidan Quigley':1.8,'Baylen Slansky':-0.7,'Ryan McQuaid':-8.8,'Carmine Pittelli':-6.4,'Ben Castaldo':-6.9,'Brandon Hancock':-6.7,'Charlie Gorman':-9.2,'Cole Maney':-16.3,'Deniz Bileydi':-14.3},
+  2023:{'Ethan Radecki':14.4,'Charlie Gorman':10.7,'Carmine Pittelli':2.7,'Deniz Bileydi':2.5,'Brandon Hancock':-0.4,'Quin Gegwich':-12.6,'Aidan Quigley':-10.4,'Ryan McQuaid':-6.0,'Ben Castaldo':-3.3,'Cole Maney':-8.6,'Max Malich':-13.4,'Andrew Root':-12.8,'Baylen Slansky':-14.7,'Anthony Kelly':-21.4},
+  2024:{'Baylen Slansky':15.3,'Aidan Quigley':6.4,'Max Malich':9.1,'Charlie Gorman':5.8,'Brandon Hancock':7.4,'Andrew Root':1.9,'Deniz Bileydi':3.0,'Anthony Kelly':-0.2,'Ethan Radecki':-8.9,'Quin Gegwich':-3.3,'Cole Maney':-1.6,'Ryan McQuaid':-4.8,'Ben Castaldo':-9.0,'Carmine Pittelli':-17.4},
+  2025:{'Cole Maney':21.3,'Andrew Root':4.3,'Ryan McQuaid':6.9,'Anthony Kelly':2.5,'Ben Castaldo':-0.1,'Charlie Gorman':-0.6,'Deniz Bileydi':-2.3,'Carmine Pittelli':-7.5,'Aidan Quigley':-15.4,'Quin Gegwich':-17.0,'Baylen Slansky':-14.8,'Brandon Hancock':-10.4,'Max Malich':-24.5,'Ethan Radecki':-28.1},
 };
 
-var SEASONS = [2020, 2021, 2022, 2023, 2024];
+var SEASONS = [2020,2021,2022,2023,2024,2025];
 var MANAGERS_ORDERED = CAREER_GRADES.map(function(d){ return d.manager; });
 
+/* Heatmap tooltip data: season|manager -> {best, bestSurplus, worst, worstSurplus} */
+var HEATMAP_TIPS = {
+  '2020|Andrew Root':       {best:'Tee Higgins (+4.25)',    worst:'Cam Akers (-4.41)'},
+  '2020|Anthony Kelly':     {best:'Chase Claypool (+6.81)', worst:'Jerry Jeudy (-1.26)'},
+  '2020|Baylen Slansky':    {best:'Josh Allen (+6.71)',     worst:'Devin Singletary (-3.51)'},
+  '2020|Ben Castaldo':      {best:'Davante Adams (+9.10)',  worst:'Matt Breida (-5.37)'},
+  '2020|Brandon Hancock':   {best:'Cole Beasley (+7.70)',   worst:'Mark Ingram II (-6.55)'},
+  '2020|Carmine Pittelli':  {best:'Brandon Aiyuk (+8.59)',  worst:'Miles Sanders (-2.12)'},
+  '2020|Charlie Gorman':    {best:'Jamison Crowder (+2.87)',worst:'Ezekiel Elliott (-4.18)'},
+  '2020|Cole Maney':        {best:'David Montgomery (+6.75)',worst:'Zack Moss (-2.44)'},
+  '2020|Deniz Bileydi':     {best:'Justin Jefferson (+8.46)',worst:'Tevin Coleman (-7.31)'},
+  '2020|Ethan Radecki':     {best:'Antonio Brown (+9.50)', worst:'Kenyan Drake (-3.52)'},
+  '2020|Max Malich':        {best:'Stefon Diggs (+8.74)',   worst:"Ke'Shawn Vaughn (-6.32)"},
+  '2020|Quin Gegwich':      {best:'Ryan Tannehill (+4.89)', worst:'Matt Ryan (-3.20)'},
+  '2020|Ryan McQuaid':      {best:'Leonard Fournette (+3.97)',worst:"Le'Veon Bell (-5.46)"},
+  '2021|Aidan Quigley':     {best:'Rob Gronkowski (+6.78)', worst:"N'Keal Harry (-3.29)"},
+  '2021|Andrew Root':       {best:'Rashod Bateman (+1.38)', worst:'Miles Sanders (-4.30)'},
+  '2021|Anthony Kelly':     {best:'Amon-Ra St. Brown (+6.27)',worst:'Kenny Golladay (-4.22)'},
+  '2021|Baylen Slansky':    {best:'Kirk Cousins (+3.85)',   worst:'Terrace Marshall Jr. (-8.02)'},
+  '2021|Ben Castaldo':      {best:'Deebo Samuel (+11.72)',  worst:'Robby Anderson (-3.99)'},
+  '2021|Brandon Hancock':   {best:'AJ Dillon (+3.31)',      worst:'Julio Jones (-5.99)'},
+  '2021|Carmine Pittelli':  {best:'Cooper Kupp (+11.05)',   worst:'Phillip Lindsay (-4.76)'},
+  '2021|Charlie Gorman':    {best:'James Conner (+7.21)',   worst:'Joshua Kelley (-6.02)'},
+  '2021|Cole Maney':        {best:"Ja'Marr Chase (+5.15)", worst:'Salvon Ahmed (-3.89)'},
+  '2021|Deniz Bileydi':     {best:'Jalen Hurts (+3.86)',    worst:'Odell Beckham Jr. (-2.70)'},
+  '2021|Ethan Radecki':     {best:'Jaylen Waddle (+4.39)',  worst:'Saquon Barkley (-5.40)'},
+  '2021|Max Malich':        {best:'Marquise Brown (+5.69)', worst:'Brandon Aiyuk (-4.28)'},
+  '2021|Quin Gegwich':      {best:'Hunter Renfrow (+5.31)', worst:'Baker Mayfield (-4.62)'},
+  '2021|Ryan McQuaid':      {best:'Austin Ekeler (+4.27)',  worst:'Jonnu Smith (-5.20)'},
+  '2022|Aidan Quigley':     {best:'Patrick Mahomes (+5.32)',worst:'Jarvis Landry (-4.42)'},
+  '2022|Andrew Root':       {best:'Josh Jacobs (+5.35)',    worst:'Deebo Samuel (-4.67)'},
+  '2022|Anthony Kelly':     {best:'Jerick McKinnon (+3.46)',worst:'Alexander Mattison (-3.17)'},
+  '2022|Baylen Slansky':    {best:'DeAndre Hopkins (+4.40)',worst:'Skyy Moore (-6.18)'},
+  '2022|Ben Castaldo':      {best:'Josh Allen (+3.58)',     worst:'Chase Claypool (-3.17)'},
+  '2022|Brandon Hancock':   {best:'Tyreek Hill (+5.45)',    worst:'Najee Harris (-4.43)'},
+  '2022|Carmine Pittelli':  {best:'Rondale Moore (+5.38)',  worst:'Jalen Tolbert (-7.76)'},
+  '2022|Charlie Gorman':    {best:'Mecole Hardman (+4.25)', worst:'Kenny Golladay (-7.68)'},
+  '2022|Cole Maney':        {best:'Justin Jefferson (+3.40)',worst:'Matthew Stafford (-9.32)'},
+  '2022|Deniz Bileydi':     {best:'Curtis Samuel (+3.19)',  worst:'Robbie Anderson (-5.89)'},
+  '2022|Ethan Radecki':     {best:'Rhamondre Stevenson (+5.37)',worst:'Darrell Henderson Jr. (-2.42)'},
+  '2022|Max Malich':        {best:'Justin Fields (+6.47)',  worst:'Kyle Pitts (-4.21)'},
+  '2022|Quin Gegwich':      {best:'Tony Pollard (+6.70)',   worst:'Darren Waller (-5.31)'},
+  '2022|Ryan McQuaid':      {best:'Pat Freiermuth (+1.22)', worst:'Elijah Moore (-5.07)'},
+  '2023|Aidan Quigley':     {best:'Jakobi Meyers (+2.91)', worst:'Justyn Ross (-5.61)'},
+  '2023|Andrew Root':       {best:'Ezekiel Elliott (+2.24)',worst:'Treylon Burks (-5.85)'},
+  '2023|Anthony Kelly':     {best:'Romeo Doubs (+3.86)',    worst:'Joshua Kelley (-5.78)'},
+  '2023|Baylen Slansky':    {best:'Chuba Hubbard (+4.45)', worst:'Parris Campbell (-4.20)'},
+  '2023|Ben Castaldo':      {best:'Raheem Mostert (+7.71)', worst:'Jeff Wilson Jr. (-4.68)'},
+  '2023|Brandon Hancock':   {best:'Isiah Pacheco (+5.01)', worst:'Joe Burrow (-6.42)'},
+  '2023|Carmine Pittelli':  {best:'CeeDee Lamb (+6.36)',   worst:'John Metchie III (-5.17)'},
+  '2023|Charlie Gorman':    {best:'Kyren Williams (+13.50)',worst:'Donovan Peoples-Jones (-5.48)'},
+  '2023|Cole Maney':        {best:'Keenan Allen (+6.77)',   worst:'Darnell Mooney (-5.89)'},
+  '2023|Deniz Bileydi':     {best:'Nico Collins (+9.37)',   worst:'Jamaal Williams (-5.31)'},
+  '2023|Ethan Radecki':     {best:'Jayden Reed (+5.84)',    worst:'Dalvin Cook (-6.18)'},
+  '2023|Max Malich':        {best:'DJ Moore (+3.63)',       worst:'Skyy Moore (-7.63)'},
+  '2023|Quin Gegwich':      {best:'Rashee Rice (+4.78)',    worst:'Dameon Pierce (-7.34)'},
+  '2023|Ryan McQuaid':      {best:'Breece Hall (+3.02)',    worst:'Mecole Hardman (-4.90)'},
+  '2024|Aidan Quigley':     {best:'Jahmyr Gibbs (+4.89)',  worst:'Dak Prescott (-5.89)'},
+  '2024|Andrew Root':       {best:'Chase Brown (+5.40)',    worst:'Deebo Samuel (-5.29)'},
+  '2024|Anthony Kelly':     {best:'Bo Nix (+4.53)',         worst:'Jaylen Waddle (-4.93)'},
+  '2024|Baylen Slansky':    {best:'Josh Downs (+6.53)',     worst:'Khalil Herbert (-5.84)'},
+  '2024|Ben Castaldo':      {best:'Joe Burrow (+4.19)',     worst:'Zamir White (-8.58)'},
+  '2024|Brandon Hancock':   {best:'J.K. Dobbins (+6.38)',  worst:'Mike Williams (-5.76)'},
+  '2024|Carmine Pittelli':  {best:'George Kittle (+2.84)', worst:'Chris Olave (-6.45)'},
+  '2024|Charlie Gorman':    {best:'Bucky Irving (+5.38)',   worst:'Christian Kirk (-3.60)'},
+  '2024|Cole Maney':        {best:'Brock Bowers (+5.60)',   worst:"Ja'Lynn Polk (-6.60)"},
+  '2024|Deniz Bileydi':     {best:'Brian Thomas Jr. (+4.97)',worst:'C.J. Stroud (-5.39)'},
+  '2024|Ethan Radecki':     {best:'Chuba Hubbard (+5.34)', worst:'Diontae Johnson (-5.22)'},
+  '2024|Max Malich':        {best:'Saquon Barkley (+5.26)',  worst:'Raheem Mostert (-4.38)'},
+  '2024|Quin Gegwich':      {best:'Tony Pollard (+4.63)',   worst:'Will Levis (-5.47)'},
+  '2024|Ryan McQuaid':      {best:'Terry McLaurin (+4.30)', worst:'Travis Etienne Jr. (-7.49)'},
+  '2025|Aidan Quigley':     {best:'Jauan Jennings (+3.04)', worst:'Adam Thielen (-6.30)'},
+  '2025|Andrew Root':       {best:'Michael Wilson (+7.18)', worst:'J.J. McCarthy (-4.28)'},
+  '2025|Anthony Kelly':     {best:'Rico Dowdle (+3.53)',    worst:'Bryce Young (-2.60)'},
+  '2025|Baylen Slansky':    {best:'Cam Skattebo (+6.49)',   worst:'Elijah Arroyo (-4.90)'},
+  '2025|Ben Castaldo':      {best:'Jaxon Smith-Njigba (+6.27)',worst:'Isiah Pacheco (-5.42)'},
+  '2025|Brandon Hancock':   {best:'Colston Loveland (+0.81)',worst:'Justin Jefferson (-6.45)'},
+  '2025|Carmine Pittelli':  {best:'Chris Olave (+5.30)',    worst:'Will Shipley (-6.12)'},
+  '2025|Charlie Gorman':    {best:'George Pickens (+4.53)', worst:'Xavier Worthy (-6.83)'},
+  '2025|Cole Maney':        {best:'Christian McCaffrey (+8.18)',worst:'Aaron Jones Sr. (-2.04)'},
+  '2025|Deniz Bileydi':     {best:'Rashee Rice (+6.62)',    worst:'Alvin Kamara (-4.60)'},
+  '2025|Ethan Radecki':     {best:'Josh Allen (+1.26)',     worst:'Tank Bigsby (-5.65)'},
+  '2025|Max Malich':        {best:"Wan'Dale Robinson (+6.20)",worst:'Kaleb Johnson (-9.39)'},
+  '2025|Quin Gegwich':      {best:"De'Von Achane (+3.72)", worst:'Matthew Golden (-7.15)'},
+  '2025|Ryan McQuaid':      {best:'Travis Etienne Jr. (+4.40)',worst:'Lamar Jackson (-4.21)'},
+};
+
+var MANAGER_BW = [
+  {manager:'Carmine Pittelli', best:'Cooper Kupp',       bestPos:'WR',bestSeason:2021,bestRd:3, bestSurplus:11.05,  worst:'Chris Olave',          worstPos:'WR',worstSeason:2024,worstRd:2, worstSurplus:-6.45},
+  {manager:'Anthony Kelly',    best:'Chase Claypool',    bestPos:'WR',bestSeason:2020,bestRd:15,bestSurplus:6.81,   worst:'Jaylen Waddle',        worstPos:'WR',worstSeason:2024,worstRd:3, worstSurplus:-4.93},
+  {manager:'Charlie Gorman',   best:'Kyren Williams',    bestPos:'RB',bestSeason:2023,bestRd:14,bestSurplus:13.50,  worst:'Xavier Worthy',        worstPos:'WR',worstSeason:2025,worstRd:4, worstSurplus:-6.83},
+  {manager:'Cole Maney',       best:'Christian McCaffrey',bestPos:'RB',bestSeason:2025,bestRd:1,bestSurplus:8.18,  worst:'Matthew Stafford',     worstPos:'QB',worstSeason:2022,worstRd:7, worstSurplus:-9.32},
+  {manager:'Ethan Radecki',    best:'Antonio Brown',     bestPos:'WR',bestSeason:2020,bestRd:16,bestSurplus:9.50,   worst:'Dalvin Cook',          worstPos:'RB',worstSeason:2023,worstRd:7, worstSurplus:-6.18},
+  {manager:'Deniz Bileydi',    best:'Nico Collins',      bestPos:'WR',bestSeason:2023,bestRd:10,bestSurplus:9.37,   worst:'C.J. Stroud',          worstPos:'QB',worstSeason:2024,worstRd:4, worstSurplus:-5.39},
+  {manager:'Baylen Slansky',   best:'Josh Allen',        bestPos:'QB',bestSeason:2020,bestRd:7, bestSurplus:6.71,   worst:'Allen Robinson II',    worstPos:'WR',worstSeason:2021,worstRd:2, worstSurplus:-7.89},
+  {manager:'Andrew Root',      best:'Michael Wilson',    bestPos:'WR',bestSeason:2025,bestRd:15,bestSurplus:7.18,   worst:'Deebo Samuel',         worstPos:'WR',worstSeason:2024,worstRd:3, worstSurplus:-5.29},
+  {manager:'Max Malich',       best:'Stefon Diggs',      bestPos:'WR',bestSeason:2020,bestRd:5, bestSurplus:8.74,   worst:'Kaleb Johnson',        worstPos:'RB',worstSeason:2025,worstRd:5, worstSurplus:-9.39},
+  {manager:'Ben Castaldo',     best:'Deebo Samuel',      bestPos:'WR',bestSeason:2021,bestRd:9, bestSurplus:11.72,  worst:'Zamir White',          worstPos:'RB',worstSeason:2024,worstRd:5, worstSurplus:-8.58},
+  {manager:'Brandon Hancock',  best:'Cole Beasley',      bestPos:'WR',bestSeason:2020,bestRd:15,bestSurplus:7.70,   worst:'Mark Ingram II',       worstPos:'RB',worstSeason:2020,worstRd:5, worstSurplus:-6.55},
+  {manager:'Aidan Quigley',    best:'Rob Gronkowski',    bestPos:'TE',bestSeason:2021,bestRd:15,bestSurplus:6.78,   worst:'Dak Prescott',         worstPos:'QB',worstSeason:2024,worstRd:5, worstSurplus:-5.89},
+  {manager:'Quin Gegwich',     best:'Tony Pollard',      bestPos:'RB',bestSeason:2022,bestRd:7, bestSurplus:6.70,   worst:'Dameon Pierce',        worstPos:'RB',worstSeason:2023,worstRd:3, worstSurplus:-7.34},
+  {manager:'Ryan McQuaid',     best:'Travis Etienne Jr.',bestPos:'RB',bestSeason:2025,bestRd:9, bestSurplus:4.40,   worst:'Travis Etienne Jr.',   worstPos:'RB',worstSeason:2024,worstRd:2, worstSurplus:-7.49},
+];
+
 var ALL_BEST_PICKS = [
-  {rank:1,  player:'Kyren Williams',    pos:'RB',round:14,pick:190,season:2023,actual:21.25,expected:7.75, surplus:13.50,manager:'Charlie Gorman'},
-  {rank:2,  player:'Deebo Samuel',      pos:'WR',round:9, pick:115,season:2021,actual:21.19,expected:9.38, surplus:11.81,manager:'Ben Castaldo'},
-  {rank:3,  player:'Cooper Kupp',       pos:'WR',round:3, pick:37, season:2021,actual:25.85,expected:14.78,surplus:11.07,manager:'Carmine Pittelli'},
-  {rank:4,  player:'Antonio Brown',     pos:'WR',round:16,pick:231,season:2020,actual:14.64,expected:5.14, surplus:9.50, manager:'Ethan Radecki'},
-  {rank:5,  player:'Nico Collins',      pos:'WR',round:10,pick:131,season:2023,actual:17.36,expected:8.66, surplus:8.70, manager:'Deniz Bileydi'},
-  {rank:6,  player:'Davante Adams',     pos:'WR',round:2, pick:18, season:2020,actual:25.60,expected:17.12,surplus:8.48, manager:'Ben Castaldo'},
-  {rank:7,  player:'Stefon Diggs',      pos:'WR',round:5, pick:68, season:2020,actual:20.54,expected:12.26,surplus:8.28, manager:'Max Malich'},
-  {rank:8,  player:'Brandon Aiyuk',     pos:'WR',round:12,pick:172,season:2020,actual:15.38,expected:7.19, surplus:8.19, manager:'Carmine Pittelli'},
-  {rank:9,  player:'Raheem Mostert',    pos:'RB',round:13,pick:174,season:2023,actual:17.85,expected:9.67, surplus:8.18, manager:'Ben Castaldo'},
-  {rank:10, player:'Justin Jefferson',  pos:'WR',round:9, pick:132,season:2020,actual:17.14,expected:9.36, surplus:7.78, manager:'Deniz Bileydi'},
-  {rank:11, player:'Alvin Kamara',      pos:'RB',round:1, pick:5,  season:2020,actual:25.19,expected:18.00,surplus:7.19, manager:'Brandon Hancock'},
-  {rank:12, player:'Cole Beasley',      pos:'WR',round:15,pick:215,season:2020,actual:13.83,expected:6.78, surplus:7.05, manager:'Brandon Hancock'},
-  {rank:13, player:"De'Von Achane",     pos:'RB',round:12,pick:159,season:2023,actual:17.34,expected:10.30,surplus:7.04, manager:'Deniz Bileydi'},
-  {rank:14, player:'James Conner',      pos:'RB',round:9, pick:116,season:2021,actual:17.18,expected:10.23,surplus:6.95, manager:'Charlie Gorman'},
-  {rank:15, player:'Josh Allen',        pos:'QB',round:7, pick:94, season:2020,actual:24.75,expected:18.04,surplus:6.71, manager:'Baylen Slansky'},
+  {rank:1,  player:'Kyren Williams',      pos:'RB',round:14,pick:190,season:2023,actual:21.25,expected:7.75, surplus:13.50, manager:'Charlie Gorman'},
+  {rank:2,  player:'Deebo Samuel',        pos:'WR',round:9, pick:115,season:2021,actual:21.19,expected:9.47, surplus:11.72, manager:'Ben Castaldo'},
+  {rank:3,  player:'Cooper Kupp',         pos:'WR',round:3, pick:37, season:2021,actual:25.85,expected:14.80,surplus:11.05, manager:'Carmine Pittelli'},
+  {rank:4,  player:'Antonio Brown',       pos:'WR',round:16,pick:231,season:2020,actual:14.64,expected:5.14, surplus:9.50,  manager:'Ethan Radecki'},
+  {rank:5,  player:'Nico Collins',        pos:'WR',round:10,pick:131,season:2023,actual:17.36,expected:7.99, surplus:9.37,  manager:'Deniz Bileydi'},
+  {rank:6,  player:'Davante Adams',       pos:'WR',round:2, pick:18, season:2020,actual:25.60,expected:16.50,surplus:9.10,  manager:'Ben Castaldo'},
+  {rank:7,  player:'Stefon Diggs',        pos:'WR',round:5, pick:68, season:2020,actual:20.54,expected:11.80,surplus:8.74,  manager:'Max Malich'},
+  {rank:8,  player:'Brandon Aiyuk',       pos:'WR',round:12,pick:172,season:2020,actual:15.38,expected:6.79, surplus:8.59,  manager:'Carmine Pittelli'},
+  {rank:9,  player:'Justin Jefferson',    pos:'WR',round:9, pick:132,season:2020,actual:17.14,expected:8.68, surplus:8.46,  manager:'Deniz Bileydi'},
+  {rank:10, player:"De'Von Achane",       pos:'RB',round:12,pick:159,season:2023,actual:17.34,expected:9.00, surplus:8.34,  manager:'Deniz Bileydi'},
+  {rank:11, player:'Christian McCaffrey', pos:'RB',round:1, pick:10, season:2025,actual:24.51,expected:16.33,surplus:8.18,  manager:'Cole Maney'},
+  {rank:12, player:'Raheem Mostert',      pos:'RB',round:13,pick:174,season:2023,actual:17.85,expected:10.14,surplus:7.71,  manager:'Ben Castaldo'},
+  {rank:13, player:'Cole Beasley',        pos:'WR',round:15,pick:215,season:2020,actual:13.83,expected:6.13, surplus:7.70,  manager:'Brandon Hancock'},
+  {rank:14, player:'James Conner',        pos:'RB',round:9, pick:116,season:2021,actual:17.18,expected:9.97, surplus:7.21,  manager:'Charlie Gorman'},
+  {rank:15, player:'Alvin Kamara',        pos:'RB',round:1, pick:5,  season:2020,actual:25.19,expected:18.00,surplus:7.19,  manager:'Brandon Hancock'},
 ];
 
 var SEASON_BEST = {
   2020:[
-    {rank:1, player:'Davante Adams',    pos:'WR',round:2, pick:18, season:2020,actual:25.60,expected:17.12,surplus:8.48, manager:'Ben Castaldo'},
-    {rank:2, player:'Stefon Diggs',     pos:'WR',round:5, pick:68, season:2020,actual:20.54,expected:12.26,surplus:8.28, manager:'Max Malich'},
-    {rank:3, player:'Brandon Aiyuk',    pos:'WR',round:12,pick:172,season:2020,actual:15.38,expected:7.19, surplus:8.19, manager:'Carmine Pittelli'},
-    {rank:4, player:'Justin Jefferson', pos:'WR',round:9, pick:132,season:2020,actual:17.14,expected:9.36, surplus:7.78, manager:'Deniz Bileydi'},
-    {rank:5, player:'Alvin Kamara',     pos:'RB',round:1, pick:5,  season:2020,actual:25.19,expected:18.00,surplus:7.19, manager:'Brandon Hancock'},
-    {rank:6, player:'Cole Beasley',     pos:'WR',round:15,pick:215,season:2020,actual:13.83,expected:6.78, surplus:7.05, manager:'Brandon Hancock'},
-    {rank:7, player:'Antonio Brown',    pos:'WR',round:16,pick:231,season:2020,actual:14.64,expected:5.14, surplus:9.50, manager:'Ethan Radecki'},
-    {rank:8, player:'Josh Allen',       pos:'QB',round:7, pick:94, season:2020,actual:24.75,expected:18.04,surplus:6.71, manager:'Baylen Slansky'},
-    {rank:9, player:'Dak Prescott',     pos:'QB',round:4, pick:54, season:2020,actual:22.48,expected:17.10,surplus:5.38, manager:'Ryan McQuaid'},
-    {rank:10,player:'CeeDee Lamb',      pos:'WR',round:9, pick:123,season:2020,actual:13.57,expected:8.40, surplus:5.17, manager:'Andrew Root'},
+    {rank:1,player:'Davante Adams',    pos:'WR',round:2, pick:18, season:2020,actual:25.60,expected:16.50,surplus:9.10, manager:'Ben Castaldo'},
+    {rank:2,player:'Antonio Brown',    pos:'WR',round:16,pick:231,season:2020,actual:14.64,expected:5.14, surplus:9.50, manager:'Ethan Radecki'},
+    {rank:3,player:'Brandon Aiyuk',    pos:'WR',round:12,pick:172,season:2020,actual:15.38,expected:6.79, surplus:8.59, manager:'Carmine Pittelli'},
+    {rank:4,player:'Stefon Diggs',     pos:'WR',round:5, pick:68, season:2020,actual:20.54,expected:11.80,surplus:8.74, manager:'Max Malich'},
+    {rank:5,player:'Justin Jefferson', pos:'WR',round:9, pick:132,season:2020,actual:17.14,expected:8.68, surplus:8.46, manager:'Deniz Bileydi'},
   ],
   2021:[
-    {rank:1, player:'Cooper Kupp',      pos:'WR',round:3, pick:37, season:2021,actual:25.85,expected:14.78,surplus:11.07,manager:'Carmine Pittelli'},
-    {rank:2, player:'Deebo Samuel',     pos:'WR',round:9, pick:115,season:2021,actual:21.19,expected:9.38, surplus:11.81,manager:'Ben Castaldo'},
-    {rank:3, player:'James Conner',     pos:'RB',round:9, pick:116,season:2021,actual:17.18,expected:10.23,surplus:6.95, manager:'Charlie Gorman'},
-    {rank:4, player:'Rob Gronkowski',   pos:'TE',round:15,pick:208,season:2021,actual:13.98,expected:7.10, surplus:6.88, manager:'Aidan Quigley'},
-    {rank:5, player:'Mike Williams',    pos:'WR',round:9, pick:123,season:2021,actual:15.41,expected:9.38, surplus:6.03, manager:'Max Malich'},
-    {rank:6, player:'Jaylen Waddle',    pos:'WR',round:9, pick:113,season:2021,actual:15.36,expected:9.38, surplus:5.98, manager:'Ethan Radecki'},
-    {rank:7, player:'Hunter Renfrow',   pos:'WR',round:9, pick:125,season:2021,actual:15.24,expected:9.38, surplus:5.86, manager:'Quin Gegwich'},
-    {rank:8, player:'Amon-Ra St. Brown',pos:'WR',round:11,pick:152,season:2021,actual:14.21,expected:8.54, surplus:5.67, manager:'Anthony Kelly'},
-    {rank:9, player:'Marquise Brown',   pos:'WR',round:12,pick:158,season:2021,actual:14.14,expected:8.54, surplus:5.60, manager:'Max Malich'},
-    {rank:10,player:'Michael Pittman Jr.',pos:'WR',round:8,pick:106,season:2021,actual:14.04,expected:9.38,surplus:4.66, manager:'Anthony Kelly'},
+    {rank:1,player:'Cooper Kupp',      pos:'WR',round:3, pick:37, season:2021,actual:25.85,expected:14.80,surplus:11.05,manager:'Carmine Pittelli'},
+    {rank:2,player:'Deebo Samuel',     pos:'WR',round:9, pick:115,season:2021,actual:21.19,expected:9.47, surplus:11.72,manager:'Ben Castaldo'},
+    {rank:3,player:'James Conner',     pos:'RB',round:9, pick:116,season:2021,actual:17.18,expected:9.97, surplus:7.21, manager:'Charlie Gorman'},
+    {rank:4,player:'Rob Gronkowski',   pos:'TE',round:15,pick:206,season:2021,actual:14.27,expected:7.49, surplus:6.78, manager:'Aidan Quigley'},
+    {rank:5,player:'Mike Williams',    pos:'WR',round:9, pick:123,season:2021,actual:15.41,expected:9.47, surplus:5.94, manager:'Max Malich'},
   ],
   2022:[
-    {rank:1, player:'Rhamondre Stevenson',pos:'RB',round:9,pick:117,season:2022,actual:15.67,expected:7.90,surplus:7.77, manager:'Ethan Radecki'},
-    {rank:2, player:'Christian Kirk',   pos:'WR',round:8, pick:99, season:2022,actual:14.74,expected:7.77, surplus:6.97, manager:'Andrew Root'},
-    {rank:3, player:'Kenneth Walker III',pos:'RB',round:9,pick:115,season:2022,actual:14.52,expected:7.90, surplus:6.62, manager:'Quin Gegwich'},
-    {rank:4, player:'Jamaal Williams',  pos:'RB',round:9, pick:123,season:2022,actual:14.31,expected:7.90, surplus:6.41, manager:'Max Malich'},
-    {rank:5, player:'Evan Engram',      pos:'TE',round:13,pick:170,season:2022,actual:11.75,expected:5.72, surplus:6.03, manager:'Ryan McQuaid'},
-    {rank:6, player:'Dameon Pierce',    pos:'RB',round:10,pick:137,season:2022,actual:14.02,expected:8.10, surplus:5.92, manager:'Quin Gegwich'},
-    {rank:7, player:'David Njoku',      pos:'TE',round:12,pick:157,season:2022,actual:11.48,expected:5.72, surplus:5.76, manager:'Ethan Radecki'},
-    {rank:8, player:'Jakobi Meyers',    pos:'WR',round:8, pick:107,season:2022,actual:12.89,expected:7.27, surplus:5.62, manager:'Carmine Pittelli'},
-    {rank:9, player:'Pat Freiermuth',   pos:'TE',round:9, pick:113,season:2022,actual:11.20,expected:5.72, surplus:5.48, manager:'Ryan McQuaid'},
-    {rank:10,player:'Jerick McKinnon',  pos:'RB',round:14,pick:187,season:2022,actual:12.57,expected:7.90, surplus:4.67, manager:'Anthony Kelly'},
+    {rank:1,player:'Rhamondre Stevenson',pos:'RB',round:9,pick:117,season:2022,actual:15.67,expected:8.14,surplus:7.53,manager:'Ethan Radecki'},
+    {rank:2,player:'Christian Kirk',   pos:'WR',round:8, pick:99, season:2022,actual:14.74,expected:7.77,surplus:6.97, manager:'Andrew Root'},
+    {rank:3,player:'Kenneth Walker III',pos:'RB',round:9,pick:115,season:2022,actual:14.52,expected:8.14,surplus:6.38, manager:'Quin Gegwich'},
+    {rank:4,player:'Jamaal Williams',  pos:'RB',round:9, pick:123,season:2022,actual:14.31,expected:8.14,surplus:6.17, manager:'Max Malich'},
+    {rank:5,player:'Tony Pollard',     pos:'RB',round:7, pick:88, season:2022,actual:15.55,expected:8.85,surplus:6.70, manager:'Quin Gegwich'},
   ],
   2023:[
-    {rank:1, player:'Kyren Williams',   pos:'RB',round:14,pick:190,season:2023,actual:21.25,expected:7.75, surplus:13.50,manager:'Charlie Gorman'},
-    {rank:2, player:'Raheem Mostert',   pos:'RB',round:13,pick:174,season:2023,actual:17.85,expected:9.67, surplus:8.18, manager:'Ben Castaldo'},
-    {rank:3, player:'Nico Collins',     pos:'WR',round:10,pick:131,season:2023,actual:17.36,expected:8.66, surplus:8.70, manager:'Deniz Bileydi'},
-    {rank:4, player:"De'Von Achane",    pos:'RB',round:12,pick:159,season:2023,actual:17.34,expected:10.30,surplus:7.04, manager:'Deniz Bileydi'},
-    {rank:5, player:'Sam LaPorta',      pos:'TE',round:14,pick:192,season:2023,actual:14.08,expected:6.80, surplus:7.28, manager:'Brandon Hancock'},
-    {rank:6, player:'Jakobi Meyers',    pos:'WR',round:9, pick:117,season:2023,actual:13.85,expected:8.66, surplus:5.19, manager:'Aidan Quigley'},
-    {rank:7, player:'Adam Thielen',     pos:'WR',round:9, pick:124,season:2023,actual:13.78,expected:8.66, surplus:5.12, manager:'Brandon Hancock'},
-    {rank:8, player:'Jayden Reed',      pos:'WR',round:12,pick:157,season:2023,actual:13.77,expected:8.66, surplus:5.11, manager:'Ethan Radecki'},
-    {rank:9, player:'Cole Kmet',        pos:'TE',round:8, pick:107,season:2023,actual:12.05,expected:6.80, surplus:5.25, manager:'Ben Castaldo'},
-    {rank:10,player:'Rashee Rice',      pos:'WR',round:11,pick:144,season:2023,actual:13.47,expected:8.66, surplus:4.81, manager:'Quin Gegwich'},
+    {rank:1,player:'Kyren Williams',   pos:'RB',round:14,pick:190,season:2023,actual:21.25,expected:7.75, surplus:13.50,manager:'Charlie Gorman'},
+    {rank:2,player:'Nico Collins',     pos:'WR',round:10,pick:131,season:2023,actual:17.36,expected:7.99, surplus:9.37, manager:'Deniz Bileydi'},
+    {rank:3,player:"De'Von Achane",    pos:'RB',round:12,pick:159,season:2023,actual:17.34,expected:9.00, surplus:8.34, manager:'Deniz Bileydi'},
+    {rank:4,player:'Raheem Mostert',   pos:'RB',round:13,pick:174,season:2023,actual:17.85,expected:10.14,surplus:7.71, manager:'Ben Castaldo'},
+    {rank:5,player:'Sam LaPorta',      pos:'TE',round:14,pick:192,season:2023,actual:14.08,expected:6.80, surplus:7.28, manager:'Brandon Hancock'},
   ],
   2024:[
-    {rank:1, player:'Brock Bowers',     pos:'TE',round:8, pick:99, season:2024,actual:15.45,expected:6.68, surplus:8.77, manager:'Cole Maney'},
-    {rank:2, player:'Chuba Hubbard',    pos:'RB',round:8, pick:103,season:2024,actual:16.11,expected:7.42, surplus:8.69, manager:'Ethan Radecki'},
-    {rank:3, player:'Chase Brown',      pos:'RB',round:9, pick:113,season:2024,actual:15.81,expected:7.29, surplus:8.52, manager:'Andrew Root'},
-    {rank:4, player:'Taysom Hill',      pos:'TE',round:14,pick:183,season:2024,actual:12.91,expected:4.72, surplus:8.19, manager:'Aidan Quigley'},
-    {rank:5, player:'J.K. Dobbins',     pos:'RB',round:9, pick:108,season:2024,actual:14.62,expected:7.29, surplus:7.33, manager:'Brandon Hancock'},
-    {rank:6, player:'Jakobi Meyers',    pos:'WR',round:9, pick:112,season:2024,actual:13.88,expected:6.74, surplus:7.14, manager:'Max Malich'},
-    {rank:7, player:'Bucky Irving',     pos:'RB',round:12,pick:159,season:2024,actual:14.27,expected:7.31, surplus:6.96, manager:'Charlie Gorman'},
-    {rank:8, player:'Jerry Jeudy',      pos:'WR',round:9, pick:117,season:2024,actual:13.52,expected:6.74, surplus:6.78, manager:'Deniz Bileydi'},
-    {rank:9, player:'Jameson Williams', pos:'WR',round:9, pick:107,season:2024,actual:13.50,expected:6.74, surplus:6.76, manager:'Aidan Quigley'},
-    {rank:10,player:'Adam Thielen',     pos:'WR',round:11,pick:140,season:2024,actual:13.30,expected:6.74, surplus:6.56, manager:'Baylen Slansky'},
+    {rank:1,player:'Brock Bowers',     pos:'TE',round:8, pick:99, season:2024,actual:15.45,expected:6.68, surplus:8.77, manager:'Cole Maney'},
+    {rank:2,player:'Chuba Hubbard',    pos:'RB',round:8, pick:103,season:2024,actual:16.11,expected:7.42, surplus:8.69, manager:'Ethan Radecki'},
+    {rank:3,player:'Chase Brown',      pos:'RB',round:9, pick:113,season:2024,actual:15.81,expected:7.29, surplus:8.52, manager:'Andrew Root'},
+    {rank:4,player:'Taysom Hill',      pos:'TE',round:14,pick:183,season:2024,actual:12.91,expected:4.72, surplus:8.19, manager:'Aidan Quigley'},
+    {rank:5,player:'J.K. Dobbins',     pos:'RB',round:9, pick:108,season:2024,actual:14.62,expected:7.29, surplus:7.33, manager:'Brandon Hancock'},
+  ],
+  2025:[
+    {rank:1,player:'Christian McCaffrey',pos:'RB',round:1,pick:10, season:2025,actual:24.51,expected:16.33,surplus:8.18, manager:'Cole Maney'},
+    {rank:2,player:'Tucker Kraft',     pos:'TE',round:8, pick:106,season:2025,actual:14.65,expected:4.88, surplus:9.77, manager:'Cole Maney'},
+    {rank:3,player:'Cam Skattebo',     pos:'RB',round:8, pick:109,season:2025,actual:15.83,expected:7.28, surplus:8.55, manager:'Baylen Slansky'},
+    {rank:4,player:'Michael Wilson',   pos:'WR',round:15,pick:198,season:2025,actual:12.98,expected:5.80, surplus:7.18, manager:'Andrew Root'},
+    {rank:5,player:'Javonte Williams', pos:'RB',round:8, pick:114,season:2025,actual:15.05,expected:7.28, surplus:7.77, manager:'Deniz Bileydi'},
   ],
 };
 
 var ALL_WORST_PICKS = [
-  {rank:1,  player:'Zamir White',         pos:'RB',round:5, pick:59, season:2024,actual:3.66, expected:13.23,surplus:-9.57,manager:'Ben Castaldo'},
-  {rank:2,  player:'Matthew Stafford',    pos:'QB',round:7, pick:90, season:2022,actual:12.04,expected:21.36,surplus:-9.32,manager:'Cole Maney'},
-  {rank:3,  player:'Allen Robinson II',   pos:'WR',round:2, pick:24, season:2021,actual:7.25, expected:15.36,surplus:-8.11,manager:'Baylen Slansky'},
-  {rank:4,  player:'Dameon Pierce',       pos:'RB',round:3, pick:32, season:2023,actual:5.91, expected:13.71,surplus:-7.80,manager:'Quin Gegwich'},
-  {rank:5,  player:'Skyy Moore',          pos:'WR',round:7, pick:93, season:2023,actual:3.84, expected:11.56,surplus:-7.72,manager:'Max Malich'},
-  {rank:6,  player:'Mark Ingram II',      pos:'RB',round:5, pick:65, season:2020,actual:4.81, expected:12.31,surplus:-7.50,manager:'Brandon Hancock'},
-  {rank:7,  player:'Travis Etienne Jr.',  pos:'RB',round:2, pick:16, season:2024,actual:8.68, expected:15.82,surplus:-7.14,manager:'Ryan McQuaid'},
-  {rank:8,  player:'Chris Olave',         pos:'WR',round:2, pick:20, season:2024,actual:9.59, expected:16.52,surplus:-6.93,manager:'Carmine Pittelli'},
-  {rank:9,  player:'Joe Burrow',          pos:'QB',round:4, pick:45, season:2023,actual:14.72,expected:21.14,surplus:-6.42,manager:'Brandon Hancock'},
-  {rank:10, player:'Dalvin Cook',         pos:'RB',round:7, pick:86, season:2023,actual:2.68, expected:8.94, surplus:-6.26,manager:'Ethan Radecki'},
-  {rank:11, player:'Julio Jones',         pos:'WR',round:3, pick:40, season:2021,actual:8.04, expected:14.22,surplus:-6.18,manager:'Brandon Hancock'},
-  {rank:12, player:"Le'Veon Bell",        pos:'RB',round:3, pick:37, season:2020,actual:6.78, expected:12.74,surplus:-5.96,manager:'Ryan McQuaid'},
-  {rank:13, player:'Marvin Harrison Jr.', pos:'WR',round:1, pick:14, season:2024,actual:11.56,expected:17.48,surplus:-5.92,manager:'Aidan Quigley'},
-  {rank:14, player:'Dak Prescott',        pos:'QB',round:5, pick:70, season:2024,actual:14.57,expected:20.46,surplus:-5.89,manager:'Aidan Quigley'},
-  {rank:15, player:'Diontae Johnson',     pos:'WR',round:5, pick:67, season:2024,actual:7.42, expected:12.97,surplus:-5.55,manager:'Ethan Radecki'},
+  {rank:1,  player:'Kaleb Johnson',        pos:'RB',round:5,pick:68, season:2025,actual:0.88, expected:10.27,surplus:-9.39,manager:'Max Malich'},
+  {rank:2,  player:'Matthew Stafford',     pos:'QB',round:7,pick:90, season:2022,actual:12.04,expected:21.36,surplus:-9.32,manager:'Cole Maney'},
+  {rank:3,  player:'Zamir White',          pos:'RB',round:5,pick:59, season:2024,actual:3.66, expected:12.24,surplus:-8.58,manager:'Ben Castaldo'},
+  {rank:4,  player:'Allen Robinson II',    pos:'WR',round:2,pick:24, season:2021,actual:7.25, expected:15.14,surplus:-7.89,manager:'Baylen Slansky'},
+  {rank:5,  player:'Skyy Moore',           pos:'WR',round:7,pick:93, season:2023,actual:3.84, expected:11.47,surplus:-7.63,manager:'Max Malich'},
+  {rank:6,  player:'Travis Etienne Jr.',   pos:'RB',round:2,pick:16, season:2024,actual:8.68, expected:16.17,surplus:-7.49,manager:'Ryan McQuaid'},
+  {rank:7,  player:'Dameon Pierce',        pos:'RB',round:3,pick:32, season:2023,actual:5.91, expected:13.25,surplus:-7.34,manager:'Quin Gegwich'},
+  {rank:8,  player:'Matthew Golden',       pos:'WR',round:5,pick:70, season:2025,actual:5.00, expected:12.15,surplus:-7.15,manager:'Quin Gegwich'},
+  {rank:9,  player:'Xavier Worthy',        pos:'WR',round:4,pick:46, season:2025,actual:7.85, expected:14.68,surplus:-6.83,manager:'Charlie Gorman'},
+  {rank:10, player:'Mark Ingram II',       pos:'RB',round:5,pick:65, season:2020,actual:4.81, expected:11.36,surplus:-6.55,manager:'Brandon Hancock'},
+  {rank:11, player:'Brian Thomas Jr.',     pos:'WR',round:2,pick:17, season:2025,actual:9.91, expected:16.38,surplus:-6.47,manager:'Max Malich'},
+  {rank:12, player:'Justin Jefferson',     pos:'WR',round:1,pick:5,  season:2025,actual:11.85,expected:18.30,surplus:-6.45,manager:'Brandon Hancock'},
+  {rank:13, player:'Chris Olave',          pos:'WR',round:2,pick:20, season:2024,actual:9.59, expected:16.04,surplus:-6.45,manager:'Carmine Pittelli'},
+  {rank:14, player:'Joe Burrow',           pos:'QB',round:4,pick:45, season:2023,actual:14.72,expected:21.14,surplus:-6.42,manager:'Brandon Hancock'},
+  {rank:15, player:'Dalvin Cook',          pos:'RB',round:7,pick:86, season:2023,actual:2.68, expected:8.86, surplus:-6.18,manager:'Ethan Radecki'},
 ];
 
 var SEASON_WORST = {
   2020:[
-    {rank:1, player:'Mark Ingram II',    pos:'RB',round:5, pick:65, season:2020,actual:4.81, expected:12.31,surplus:-7.50,manager:'Brandon Hancock'},
-    {rank:2, player:"Le'Veon Bell",      pos:'RB',round:3, pick:37, season:2020,actual:6.78, expected:12.74,surplus:-5.96,manager:'Ryan McQuaid'},
-    {rank:3, player:'Michael Thomas',    pos:'WR',round:1, pick:6,  season:2020,actual:11.99,expected:18.70,surplus:-6.71,manager:'Cole Maney'},
-    {rank:4, player:'Odell Beckham Jr.', pos:'WR',round:5, pick:62, season:2020,actual:7.22, expected:12.26,surplus:-5.04,manager:'Deniz Bileydi'},
-    {rank:5, player:'Saquon Barkley',    pos:'RB',round:1, pick:2,  season:2020,actual:9.93, expected:18.20,surplus:-8.27,manager:'Andrew Root'},
+    {rank:1,player:'Saquon Barkley',   pos:'RB',round:1,pick:2, season:2020,actual:9.93, expected:18.20,surplus:-8.27,manager:'Andrew Root'},
+    {rank:2,player:'Michael Thomas',   pos:'WR',round:1,pick:6, season:2020,actual:11.99,expected:18.70,surplus:-6.71,manager:'Cole Maney'},
+    {rank:3,player:'Mark Ingram II',   pos:'RB',round:5,pick:65,season:2020,actual:4.81, expected:11.36,surplus:-6.55,manager:'Brandon Hancock'},
+    {rank:4,player:"Le'Veon Bell",     pos:'RB',round:3,pick:37,season:2020,actual:6.78, expected:12.74,surplus:-5.96,manager:'Ryan McQuaid'},
+    {rank:5,player:'Odell Beckham Jr.',pos:'WR',round:5,pick:62,season:2020,actual:7.22, expected:12.26,surplus:-5.04,manager:'Deniz Bileydi'},
   ],
   2021:[
-    {rank:1, player:'Allen Robinson II', pos:'WR',round:2, pick:24, season:2021,actual:7.25, expected:15.36,surplus:-8.11,manager:'Baylen Slansky'},
-    {rank:2, player:'Julio Jones',       pos:'WR',round:3, pick:40, season:2021,actual:8.04, expected:14.22,surplus:-6.18,manager:'Brandon Hancock'},
-    {rank:3, player:'Tyreek Hill',       pos:'WR',round:2, pick:27, season:2021,actual:9.48, expected:15.08,surplus:-5.60,manager:'Anthony Kelly'},
-    {rank:4, player:'Zack Moss',         pos:'RB',round:6, pick:74, season:2021,actual:7.02, expected:10.14,surplus:-3.12,manager:'Max Malich'},
-    {rank:5, player:'Michael Thomas',    pos:'WR',round:7, pick:90, season:2021,actual:5.50, expected:11.46,surplus:-5.96,manager:'Ryan McQuaid'},
+    {rank:1,player:'Allen Robinson II',pos:'WR',round:2,pick:24,season:2021,actual:7.25, expected:15.14,surplus:-7.89,manager:'Baylen Slansky'},
+    {rank:2,player:'Terrace Marshall Jr.',pos:'WR',round:4,pick:50,season:2021,actual:4.10,expected:12.25,surplus:-8.15,manager:'Baylen Slansky'},
+    {rank:3,player:'Julio Jones',      pos:'WR',round:3,pick:40,season:2021,actual:8.04, expected:14.22,surplus:-6.18,manager:'Brandon Hancock'},
+    {rank:4,player:'Michael Thomas',   pos:'WR',round:7,pick:90,season:2021,actual:5.50, expected:11.46,surplus:-5.96,manager:'Ryan McQuaid'},
+    {rank:5,player:'Tyreek Hill',      pos:'WR',round:2,pick:27,season:2021,actual:9.48, expected:15.14,surplus:-5.66,manager:'Anthony Kelly'},
   ],
   2022:[
-    {rank:1, player:'Matthew Stafford',  pos:'QB',round:7, pick:90, season:2022,actual:12.04,expected:21.36,surplus:-9.32,manager:'Cole Maney'},
-    {rank:2, player:'James Conner',      pos:'RB',round:2, pick:21, season:2022,actual:9.50, expected:14.97,surplus:-5.47,manager:'Anthony Kelly'},
-    {rank:3, player:'Cam Akers',         pos:'RB',round:3, pick:35, season:2022,actual:5.90, expected:12.34,surplus:-6.44,manager:'Brandon Hancock'},
-    {rank:4, player:'D.J. Moore',        pos:'WR',round:4, pick:50, season:2022,actual:9.44, expected:13.45,surplus:-4.01,manager:'Ethan Radecki'},
-    {rank:5, player:'Clyde Edwards-Helaire',pos:'RB',round:5,pick:64,season:2022,actual:7.60,expected:11.14,surplus:-3.54,manager:'Ryan McQuaid'},
+    {rank:1,player:'Matthew Stafford', pos:'QB',round:7,pick:90,season:2022,actual:12.04,expected:21.36,surplus:-9.32,manager:'Cole Maney'},
+    {rank:2,player:'Jalen Tolbert',    pos:'WR',round:7,pick:93,season:2022,actual:3.10, expected:10.86,surplus:-7.76,manager:'Carmine Pittelli'},
+    {rank:3,player:'Kenny Golladay',   pos:'WR',round:6,pick:78,season:2022,actual:1.40, expected:9.15, surplus:-7.75,manager:'Charlie Gorman'},
+    {rank:4,player:'Cam Akers',        pos:'RB',round:3,pick:35,season:2022,actual:5.90, expected:12.34,surplus:-6.44,manager:'Brandon Hancock'},
+    {rank:5,player:'Darren Waller',    pos:'TE',round:4,pick:52,season:2022,actual:5.80, expected:11.11,surplus:-5.31,manager:'Quin Gegwich'},
   ],
   2023:[
-    {rank:1, player:'Dameon Pierce',     pos:'RB',round:3, pick:32, season:2023,actual:5.91, expected:13.71,surplus:-7.80,manager:'Quin Gegwich'},
-    {rank:2, player:'Skyy Moore',        pos:'WR',round:7, pick:93, season:2023,actual:3.84, expected:11.56,surplus:-7.72,manager:'Max Malich'},
-    {rank:3, player:'Joe Burrow',        pos:'QB',round:4, pick:45, season:2023,actual:14.72,expected:21.14,surplus:-6.42,manager:'Brandon Hancock'},
-    {rank:4, player:'Dalvin Cook',       pos:'RB',round:7, pick:86, season:2023,actual:2.68, expected:8.94, surplus:-6.26,manager:'Ethan Radecki'},
-    {rank:5, player:'Deshaun Watson',    pos:'QB',round:7, pick:90, season:2023,actual:14.47,expected:21.14,surplus:-6.67,manager:'Ben Castaldo'},
+    {rank:1,player:'Dameon Pierce',    pos:'RB',round:3,pick:32,season:2023,actual:5.91, expected:13.25,surplus:-7.34,manager:'Quin Gegwich'},
+    {rank:2,player:'Skyy Moore',       pos:'WR',round:7,pick:93,season:2023,actual:3.84, expected:11.47,surplus:-7.63,manager:'Max Malich'},
+    {rank:3,player:'Joe Burrow',       pos:'QB',round:4,pick:45,season:2023,actual:14.72,expected:21.14,surplus:-6.42,manager:'Brandon Hancock'},
+    {rank:4,player:'Dalvin Cook',      pos:'RB',round:7,pick:86,season:2023,actual:2.68, expected:8.86, surplus:-6.18,manager:'Ethan Radecki'},
+    {rank:5,player:'Deshaun Watson',   pos:'QB',round:7,pick:90,season:2023,actual:14.47,expected:21.14,surplus:-6.67,manager:'Ben Castaldo'},
   ],
   2024:[
-    {rank:1, player:'Zamir White',       pos:'RB',round:5, pick:59, season:2024,actual:3.66, expected:13.23,surplus:-9.57,manager:'Ben Castaldo'},
-    {rank:2, player:'Travis Etienne Jr.',pos:'RB',round:2, pick:16, season:2024,actual:8.68, expected:15.82,surplus:-7.14,manager:'Ryan McQuaid'},
-    {rank:3, player:'Chris Olave',       pos:'WR',round:2, pick:20, season:2024,actual:9.59, expected:16.52,surplus:-6.93,manager:'Carmine Pittelli'},
-    {rank:4, player:'Marvin Harrison Jr.',pos:'WR',round:1,pick:14, season:2024,actual:11.56,expected:17.48,surplus:-5.92,manager:'Aidan Quigley'},
-    {rank:5, player:'Dak Prescott',      pos:'QB',round:5, pick:70, season:2024,actual:14.57,expected:20.46,surplus:-5.89,manager:'Aidan Quigley'},
+    {rank:1,player:'Zamir White',      pos:'RB',round:5,pick:59,season:2024,actual:3.66, expected:12.24,surplus:-8.58,manager:'Ben Castaldo'},
+    {rank:2,player:'Travis Etienne Jr.',pos:'RB',round:2,pick:16,season:2024,actual:8.68,expected:16.17,surplus:-7.49,manager:'Ryan McQuaid'},
+    {rank:3,player:'Chris Olave',      pos:'WR',round:2,pick:20,season:2024,actual:9.59, expected:16.04,surplus:-6.45,manager:'Carmine Pittelli'},
+    {rank:4,player:'Marvin Harrison Jr.',pos:'WR',round:1,pick:14,season:2024,actual:11.56,expected:17.48,surplus:-5.92,manager:'Aidan Quigley'},
+    {rank:5,player:'Dak Prescott',     pos:'QB',round:5,pick:70,season:2024,actual:14.57,expected:20.46,surplus:-5.89,manager:'Aidan Quigley'},
+  ],
+  2025:[
+    {rank:1,player:'Kaleb Johnson',    pos:'RB',round:5,pick:68,season:2025,actual:0.88, expected:10.27,surplus:-9.39,manager:'Max Malich'},
+    {rank:2,player:'Matthew Golden',   pos:'WR',round:5,pick:70,season:2025,actual:5.00, expected:12.15,surplus:-7.15,manager:'Quin Gegwich'},
+    {rank:3,player:'Xavier Worthy',    pos:'WR',round:4,pick:46,season:2025,actual:7.85, expected:14.68,surplus:-6.83,manager:'Charlie Gorman'},
+    {rank:4,player:'Brian Thomas Jr.', pos:'WR',round:2,pick:17,season:2025,actual:9.91, expected:16.38,surplus:-6.47,manager:'Max Malich'},
+    {rank:5,player:'Justin Jefferson', pos:'WR',round:1,pick:5, season:2025,actual:11.85,expected:18.30,surplus:-6.45,manager:'Brandon Hancock'},
   ],
 };
 
 /* CAREER CHART */
 (function(){
-  var data   = CAREER_GRADES.slice().reverse();
-  var labels = data.map(function(d){ return d.manager; });
-  var values = data.map(function(d){ return d.avg_surplus; });
-  var min    = Math.min.apply(null,values);
-  var max    = Math.max.apply(null,values);
-
+  var data=CAREER_GRADES.slice().reverse();
+  var labels=data.map(function(d){return d.manager;});
+  var values=data.map(function(d){return d.avg_surplus;});
+  var min=Math.min.apply(null,values), max=Math.max.apply(null,values);
   new Chart(document.getElementById('chart-career').getContext('2d'),{
     type:'bar',
     data:{labels:labels,datasets:[{
@@ -473,18 +557,12 @@ var SEASON_WORST = {
       borderWidth:1.5,borderRadius:3,barThickness:10,
     }]},
     options:{
-      indexAxis:'y',
-      responsive:true,
-      maintainAspectRatio:false,
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{
         label:function(ctx){
           var d=data[ctx.dataIndex];
-          var sign=d.avg_surplus>=0?'+':'';
-          return [
-            'Avg surplus: '+sign+d.avg_surplus.toFixed(3)+' per pick',
-            'Total surplus: '+(d.total_surplus>=0?'+':'')+d.total_surplus.toFixed(1),
-            d.total_picks+' picks over '+d.seasons+' seasons',
-          ];
+          var s=d.avg_surplus>=0?'+':'';
+          return ['Avg surplus: '+s+d.avg_surplus.toFixed(3)+' per pick','Total: '+(d.total_surplus>=0?'+':'')+d.total_surplus.toFixed(1),d.total_picks+' picks, '+d.seasons+' seasons'];
         }
       }}},
       scales:{
@@ -506,29 +584,25 @@ var SEASON_WORST = {
   if(!tbody) return;
   var html='';
   CAREER_GRADES.forEach(function(d){
-    var sign    = d.avg_surplus>=0?'+':'';
-    var totSign = d.total_surplus>=0?'+':'';
-    var cls     = d.avg_surplus>=0?'val-green':'val-red';
-    html+='<tr>'
-      +'<td class="manager-rank">'+d.rank+'</td>'
+    var s=d.avg_surplus>=0?'+':'', ts=d.total_surplus>=0?'+':'';
+    var cls=d.avg_surplus>=0?'val-green':'val-red';
+    html+='<tr><td class="manager-rank">'+d.rank+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
-      +'<td class="'+cls+'">'+sign+d.avg_surplus.toFixed(3)+'</td>'
-      +'<td class="'+cls+'">'+totSign+d.total_surplus.toFixed(1)+'</td>'
-      +'<td>'+d.total_picks+'</td>'
-      +'<td>'+d.seasons+'</td>'
-      +'</tr>';
+      +'<td class="'+cls+'">'+s+d.avg_surplus.toFixed(3)+'</td>'
+      +'<td class="'+cls+'">'+ts+d.total_surplus.toFixed(1)+'</td>'
+      +'<td>'+d.total_picks+'</td><td>'+d.seasons+'</td></tr>';
   });
   tbody.innerHTML=html;
 })();
 
-/* SEASON HEATMAP */
+/* HEATMAP */
 (function(){
   var container=document.getElementById('heatmap-container');
   if(!container) return;
-  var seasonMinMax={};
+  var smm={};
   SEASONS.forEach(function(yr){
-    var vals=MANAGERS_ORDERED.map(function(m){return SEASON_GRADES[yr][m]!==undefined?SEASON_GRADES[yr][m]:null;}).filter(function(v){return v!==null;});
-    seasonMinMax[yr]={min:Math.min.apply(null,vals),max:Math.max.apply(null,vals)};
+    var vals=MANAGERS_ORDERED.map(function(m){var v=SEASON_GRADES[yr]&&SEASON_GRADES[yr][m];return v!==undefined?v:null;}).filter(function(v){return v!==null;});
+    smm[yr]={min:Math.min.apply(null,vals),max:Math.max.apply(null,vals)};
   });
   var html='<table class="heatmap-table"><thead><tr><th class="row-header">Manager</th>';
   SEASONS.forEach(function(yr){html+='<th>'+yr+'</th>';});
@@ -536,19 +610,22 @@ var SEASON_WORST = {
   MANAGERS_ORDERED.forEach(function(manager){
     html+='<tr><td>'+manager+'</td>';
     SEASONS.forEach(function(yr){
-      var val=SEASON_GRADES[yr][manager];
+      var val=SEASON_GRADES[yr]&&SEASON_GRADES[yr][manager];
       if(val===undefined||val===null){
         html+='<td style="color:var(--muted);font-size:0.7rem;">N/A</td>';
       } else {
-        var mm=seasonMinMax[yr];
+        var mm=smm[yr];
         var bg=gradientColor(val,mm.min,mm.max,0.55);
         var tc=val>=0?'#2a4a2a':'#4a1a1a';
-        html+='<td style="background:'+bg+';color:'+tc+'">'+(val>=0?'+':'')+val.toFixed(1)+'</td>';
+        var sign=val>=0?'+':'';
+        var tip=HEATMAP_TIPS[yr+'|'+manager];
+        var tipStr=tip?'Best: '+tip.best+'\nWorst: '+tip.worst:'';
+        html+='<td style="background:'+bg+';color:'+tc+'" data-tip="'+tipStr+'">'+sign+val.toFixed(1)+'</td>';
       }
     });
     var career=CAREER_GRADES.find(function(d){return d.manager===manager;});
     if(career){
-      var cavg=career.avg_surplus, cs=cavg>=0?'+':'', cc=cavg>=0?'val-green':'val-red';
+      var cavg=career.avg_surplus,cs=cavg>=0?'+':'',cc=cavg>=0?'val-green':'val-red';
       html+='<td class="'+cc+'">'+cs+cavg.toFixed(3)+'</td>';
     } else { html+='<td></td>'; }
     html+='</tr>';
@@ -557,44 +634,62 @@ var SEASON_WORST = {
   container.innerHTML=html;
 })();
 
+/* MANAGER BEST/WORST TABLE */
+(function(){
+  var tbody=document.getElementById('manager-bw-tbody');
+  if(!tbody) return;
+  var html='';
+  MANAGER_BW.forEach(function(d){
+    var bpos='pos-'+d.bestPos.toLowerCase();
+    var wpos='pos-'+d.worstPos.toLowerCase();
+    html+='<tr>'
+      +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
+      +'<td style="color:var(--palm);font-weight:600">'+d.best+'</td>'
+      +'<td><span class="pos-badge '+bpos+'">'+d.bestPos+'</span></td>'
+      +'<td>'+d.bestSeason+'</td>'
+      +'<td>'+d.bestRd+'</td>'
+      +'<td class="val-green">+'+d.bestSurplus.toFixed(2)+'</td>'
+      +'<td style="border-left:1px solid rgba(var(--accent-rgb),0.15);color:var(--palm);font-weight:600">'+d.worst+'</td>'
+      +'<td><span class="pos-badge '+wpos+'">'+d.worstPos+'</span></td>'
+      +'<td>'+d.worstSeason+'</td>'
+      +'<td>'+d.worstRd+'</td>'
+      +'<td class="val-red">'+d.worstSurplus.toFixed(2)+'</td>'
+      +'</tr>';
+  });
+  tbody.innerHTML=html;
+})();
+
 /* PICK TABLES */
 function renderPickTable(tbodyId, data) {
   var tbody=document.getElementById(tbodyId);
   if(!tbody) return;
   var html='';
   data.forEach(function(d){
-    var posClass='pos-'+d.pos.toLowerCase();
+    var pc='pos-'+d.pos.toLowerCase();
     var cls=d.surplus>=0?'val-green':'val-red';
     var sign=d.surplus>=0?'+':'';
-    html+='<tr>'
-      +'<td class="pick-rank">'+d.rank+'</td>'
+    html+='<tr><td class="pick-rank">'+d.rank+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.player+'</td>'
-      +'<td><span class="pos-badge '+posClass+'">'+d.pos+'</span></td>'
-      +'<td>'+d.round+'</td>'
-      +'<td>'+d.pick+'</td>'
-      +'<td>'+d.season+'</td>'
+      +'<td><span class="pos-badge '+pc+'">'+d.pos+'</span></td>'
+      +'<td>'+d.round+'</td><td>'+d.pick+'</td><td>'+d.season+'</td>'
       +'<td style="color:var(--text-mid)">'+d.actual.toFixed(1)+'</td>'
       +'<td style="color:var(--muted)">'+d.expected.toFixed(1)+'</td>'
       +'<td class="'+cls+'">'+sign+d.surplus.toFixed(2)+'</td>'
-      +'<td>'+d.manager+'</td>'
-      +'</tr>';
+      +'<td>'+d.manager+'</td></tr>';
   });
   tbody.innerHTML=html;
 }
 
-function filterBest(season, btn){
-  document.querySelectorAll('#best-tbody').forEach(function(){});
-  document.querySelectorAll('.season-btn').forEach(function(b){
-    if(b.onclick.toString().indexOf('filterBest')>-1) b.classList.remove('active');
-  });
+var activeBestBtns  = document.querySelectorAll('[onclick*="filterBest"]');
+var activeWorstBtns = document.querySelectorAll('[onclick*="filterWorst"]');
+
+function filterBest(season, btn) {
+  document.querySelectorAll('[onclick*="filterBest"]').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   renderPickTable('best-tbody', season==='all'?ALL_BEST_PICKS:(SEASON_BEST[season]||[]));
 }
-
-function filterWorst(season, btn){
-  document.querySelectorAll('.season-btn').forEach(function(b){
-    if(b.onclick.toString().indexOf('filterWorst')>-1) b.classList.remove('active');
-  });
+function filterWorst(season, btn) {
+  document.querySelectorAll('[onclick*="filterWorst"]').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   renderPickTable('worst-tbody', season==='all'?ALL_WORST_PICKS:(SEASON_WORST[season]||[]));
 }

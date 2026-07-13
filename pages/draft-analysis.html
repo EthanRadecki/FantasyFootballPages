@@ -18,20 +18,17 @@
 .da-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
 .da-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .da-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
-
 .chart-card-interactive { padding:1.5rem; }
 .chart-card-interactive .chart-card-label {
   font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
   color:var(--accent);font-weight:700;margin-bottom:1rem;
 }
 .chart-card-interactive canvas { display:block;width:100% !important; }
-
 .slot-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:2rem; }
 .slot-card { padding:1rem 1.25rem;border-left:2px solid var(--accent); }
 .slot-num { font-family:var(--font-display);font-size:1.1rem;font-weight:900;color:var(--accent);margin-bottom:0.4rem; }
 .slot-managers { font-size:0.78rem;color:var(--muted);line-height:1.7; }
 .slot-managers span { color:var(--text-mid); }
-
 .hr-stat-row { display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem; }
 .hr-stat-card { padding:1.25rem 1.5rem;text-align:center; }
 .hr-stat-tier { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--accent);margin-bottom:0.5rem; }
@@ -40,7 +37,6 @@
 .hr-early  { color:#5a8a5a; }
 .hr-middle { color:#d4af37; }
 .hr-late   { color:#a85a5a; }
-
 .steals-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
 .steals-table thead th {
   text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
@@ -51,13 +47,11 @@
 .steals-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .steals-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
 .steal-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
-
 .pos-badge { display:inline-block;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;letter-spacing:0.06em; }
-.pos-rb  { background:rgba(90,138,90,0.18);color:#5a8a5a; }
-.pos-wr  { background:rgba(74,127,168,0.18);color:#4a7fa8; }
-.pos-qb  { background:rgba(168,90,90,0.18);color:#a85a5a; }
-.pos-te  { background:rgba(212,175,55,0.18);color:#b8960a; }
-
+.pos-rb { background:rgba(90,138,90,0.18);color:#5a8a5a; }
+.pos-wr { background:rgba(74,127,168,0.18);color:#4a7fa8; }
+.pos-qb { background:rgba(168,90,90,0.18);color:#a85a5a; }
+.pos-te { background:rgba(212,175,55,0.18);color:#b8960a; }
 .season-filter-row { display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap; }
 .season-btn {
   padding:0.35rem 0.85rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
@@ -67,16 +61,13 @@
 .season-btn:hover { background:var(--accent-glow); }
 .season-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
 .season-filter-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent); }
-
 .surplus-mini-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
 .surplus-mini-table thead th {
   text-align:left;padding:0.6rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
   letter-spacing:0.08em;font-weight:700;color:var(--accent);
   border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
 }
-.surplus-mini-table tbody tr {
-  border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s;cursor:pointer;
-}
+.surplus-mini-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s;cursor:pointer; }
 .surplus-mini-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .surplus-mini-table tbody td { padding:0.55rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
 .surplus-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
@@ -91,12 +82,7 @@
 }
 .explore-btn:hover { opacity:0.85;transform:translateY(-1px); }
 .explore-btn svg { width:16px;height:16px; }
-
-.metric-note {
-  font-size:0.75rem;color:var(--muted);font-style:italic;
-  margin-top:0.5rem;line-height:1.5;
-}
-
+.metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
 @media(max-width:768px) {
   .slot-grid { grid-template-columns:repeat(2,1fr); }
   .hr-stat-row { grid-template-columns:1fr; }
@@ -105,7 +91,6 @@
 </style>
 </head>
 <body>
-
 <div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
 <div class="content">
 
@@ -144,8 +129,6 @@
     </div>
   </div>
 
-  <!-- SECTION 1: DRAFT SLOT ANALYSIS -->
-
   <div class="page-header glass">
     <h1>Draft Analysis</h1>
     <p>Draft slot success, player hit rates, and the greatest steals in league history (2020-2025)</p>
@@ -153,7 +136,7 @@
 
   <div class="callout glass">
     <div class="callout-label">How It Works</div>
-    <p><strong>Dominance Score</strong> measures how much better or worse a team scored compared to the league average each week. Positive scores mean consistent outperformance. <strong>Manager-Adjusted Performance</strong> compares how a manager actually performed from each draft slot versus what we would expect based on their career average. A positive value means that slot tends to produce better results than the manager's baseline.</p>
+    <p><strong>Dominance Score</strong> measures how much better or worse a team scored compared to the league average each week. <strong>Manager-Adjusted Performance</strong> compares how a manager actually performed from each draft slot versus what we would expect based on their career average. A positive value means that slot tends to produce better results than the manager's baseline.</p>
   </div>
 
   <div class="section-label">Draft Slot Analysis</div>
@@ -202,31 +185,29 @@
   <div class="section-title">Who picked from each slot?</div>
   <div class="slot-grid" id="slot-grid"></div>
 
-  <!-- SECTION 2: HIT RATE BY ROUND -->
-
   <div class="section-label" style="margin-top:1rem;">Hit Rate by Round</div>
   <div class="section-title">How often does each draft tier produce a starter?</div>
 
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
-    <p>A pick is a <strong>hit</strong> if the player finished top 24 at WR or RB, or top 7 at QB or TE, in PPR points per game for that season. Thresholds are calibrated to the 14-team league size. Stats come directly from ESPN fantasy scoring, so they match your exact league settings. Data covers 2020-2024, with 2025 excluded pending season completion. Players who appeared in fewer than 8 games are excluded from hit rate calculations, since small samples aren't reliable.</p>
+    <p>A pick is a <strong>hit</strong> if the player finished top 24 at WR or RB, or top 7 at QB or TE, in PPR points per game for that season. Thresholds are calibrated to the 14-team league size. Stats are sourced directly from ESPN fantasy scoring to match your exact league settings. Data covers all six seasons, 2020-2025. Players with fewer than 8 games are excluded from hit rate calculations, since small samples are not reliable indicators of talent.</p>
   </div>
 
   <div class="hr-stat-row">
     <div class="hr-stat-card glass">
       <div class="hr-stat-tier">Early Rounds (1-3)</div>
-      <div class="hr-stat-pct hr-early">77.0%</div>
-      <div class="hr-stat-sub">164 hits from 213 picks</div>
+      <div class="hr-stat-pct hr-early">76.9%</div>
+      <div class="hr-stat-sub">196 hits from 255 picks</div>
     </div>
     <div class="hr-stat-card glass">
       <div class="hr-stat-tier">Middle Rounds (4-7)</div>
-      <div class="hr-stat-pct hr-middle">39.8%</div>
-      <div class="hr-stat-sub">113 hits from 284 picks</div>
+      <div class="hr-stat-pct hr-middle">38.8%</div>
+      <div class="hr-stat-sub">132 hits from 340 picks</div>
     </div>
     <div class="hr-stat-card glass">
       <div class="hr-stat-tier">Late Rounds (8+)</div>
-      <div class="hr-stat-pct hr-late">8.6%</div>
-      <div class="hr-stat-sub">42 hits from 489 picks</div>
+      <div class="hr-stat-pct hr-late">9.9%</div>
+      <div class="hr-stat-sub">58 hits from 584 picks</div>
     </div>
   </div>
 
@@ -241,12 +222,16 @@
     <div class="chart-card-interactive glass">
       <div class="chart-card-label">Position Concentration by Round</div>
       <canvas id="chart-pos-concentration" height="130"></canvas>
-      <p class="metric-note">Shows what percentage of picks in each round go to each position, including K and D/ST in late rounds.</p>
+      <p class="metric-note">Percentage of picks in each round going to each position. K and D/ST flood in from round 10 onward.</p>
     </div>
   </div>
 
   <div class="section-label" style="margin-top:2rem;">Position Breakdown</div>
   <div class="section-title">Which positions hit most reliably at each tier?</div>
+  <div class="callout glass">
+    <div class="callout-label">Reading the Gradient</div>
+    <p>Bar colors use an absolute scale where 0% is always red and 100% is always green, with bone at 50%. This means you can compare across all three charts. A medium-green early TE (100%) looks very different from a dark-red late WR (7.9%), even though both might look "good" or "bad" on a relative scale. The gradient reflects the actual hit rate, not just how each position compares within its tier.</p>
+  </div>
 
   <div class="chart-grid">
     <div class="chart-card-interactive glass">
@@ -265,14 +250,12 @@
     </div>
   </div>
 
-  <!-- SECTION 3: LATE ROUND STEALS -->
-
   <div class="section-label" style="margin-top:2rem;">Late-Round Legends</div>
   <div class="section-title">The best late-round picks in league history.</div>
 
   <div class="callout glass">
     <div class="callout-label">How Steals Are Ranked</div>
-    <p>Picks are ranked by <strong>points above position average</strong>, not raw PPR/game. This normalizes across positions so a WR who scores 8 points above the average WR beats out a QB who scores 5 points above the average QB, even if the QB's raw score is higher. Minimum 8 games played to qualify, so injured players and short-season fliers don't count. Rounds 8 and later only.</p>
+    <p>Picks are ranked by <strong>points above position average</strong>, not raw PPR/game, so positions are comparable. A WR who scores 8 points above the average WR beats a QB who scores 5 points above the average QB, even if the QB's raw number is higher. Minimum 8 games played to qualify. Rounds 8 and later only.</p>
   </div>
 
   <div class="table-wrap glass" style="padding:1.5rem;">
@@ -284,6 +267,7 @@
       <button class="season-btn" onclick="filterSteals(2022, this)">2022</button>
       <button class="season-btn" onclick="filterSteals(2023, this)">2023</button>
       <button class="season-btn" onclick="filterSteals(2024, this)">2024</button>
+      <button class="season-btn" onclick="filterSteals(2025, this)">2025</button>
     </div>
     <table class="steals-table">
       <thead>
@@ -294,21 +278,19 @@
       </thead>
       <tbody id="steals-tbody"></tbody>
     </table>
-    <p class="metric-note">Above Avg = PPR/game minus the average PPR/game for that position that season. Games = regular season games played.</p>
+    <p class="metric-note">Above Avg = PPR/game minus the position average for that season. Games = regular season games played.</p>
   </div>
-
-  <!-- SECTION 4: SURPLUS VALUE TEASER -->
 
   <div class="section-label" style="margin-top:1rem;">Surplus Value Index</div>
   <div class="section-title">Who actually drafts best in this league?</div>
 
   <div class="callout glass">
     <div class="callout-label">What is Surplus Value?</div>
-    <p>Every pick has an <strong>expected value</strong> based on what players taken at that slot and position have historically produced. <strong>Surplus value</strong> is the difference between what you actually got and what you should have expected. A round 14 RB who puts up 20 PPG when round-14 RBs average 8 PPG is a +12 surplus. Picks where a player appeared in fewer than 8 games count as neutral (0 surplus), not negative, since injuries are largely random and shouldn't crater a manager's grade. <strong>Ethan leads the league all-time</strong> at +0.394 per pick. <strong>Ryan McQuaid is last</strong> at -0.421.</p>
+    <p>Every pick has an <strong>expected value</strong> based on what players taken at that slot and position have historically produced. <strong>Surplus value</strong> is the difference between what you actually got and what you should have expected. A round 14 RB who scores 20 PPG when round-14 RBs average 8 PPG is a +12 surplus. Picks where the player appeared in fewer than 8 games count as 0, not negative, since injuries are random. <strong>Carmine Pittelli leads the league all-time</strong> at +0.163 per pick. <strong>Ryan McQuaid is last</strong> at -0.305.</p>
   </div>
 
   <div class="table-wrap glass">
-    <p class="table-hint">Career rankings by average surplus per pick (2020-2024). Click any row to view the full analysis.</p>
+    <p class="table-hint">Career rankings by average surplus per pick (2020-2025). Click any row to view the full analysis.</p>
     <table class="surplus-mini-table">
       <thead>
         <tr><th>#</th><th>Manager</th><th>Avg Surplus/Pick</th><th>Visual</th><th>Seasons</th></tr>
@@ -328,20 +310,37 @@
   </footer>
 
 </div>
-
 <script src="../shared.js"></script>
 <script src="../data-engine.js"></script>
 <script>
 Chart.defaults.font.family = "'Outfit', sans-serif";
 Chart.defaults.font.size   = 12;
 Chart.defaults.color       = '#5a5550';
-
-var C_MUTED  = '#8a8480';
-var C_ACCENT = '#9c949c';
+var C_MUTED = '#8a8480';
 
 function gridStyle() { return { color:'rgba(156,148,156,0.15)', drawBorder:false }; }
 function tickStyle() { return { color:C_MUTED }; }
 
+/* Absolute gradient: 0% = red, 50% = bone, 100% = green */
+function absoluteGradient(pct, alpha) {
+  alpha = alpha !== undefined ? alpha : 0.72;
+  var p = Math.max(0, Math.min(100, pct)) / 100;
+  var r, g, b, t;
+  if (p <= 0.5) {
+    t = p / 0.5;
+    r = Math.round(192 + (245 - 192) * t);
+    g = Math.round(58  + (240 - 58)  * t);
+    b = Math.round(58  + (232 - 58)  * t);
+  } else {
+    t = (p - 0.5) / 0.5;
+    r = Math.round(245 + (74  - 245) * t);
+    g = Math.round(240 + (168 - 240) * t);
+    b = Math.round(232 + (58  - 232) * t);
+  }
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
+/* Relative gradient for slot charts */
 function gradientColor(val, min, max, alpha) {
   alpha = alpha !== undefined ? alpha : 0.72;
   var p = max !== min ? (val - min) / (max - min) : 0.5;
@@ -366,26 +365,24 @@ function tierDividerPlugin(id) {
 }
 
 /* SECTION 1 - Draft Slot Analysis */
-
 var SLOTS         = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 var PLAYOFF_RATES = [83.3,66.7,66.7,33.3,66.7,50.0,83.3,83.3,50.0,50.0,83.3,66.7,83.3,50.0];
 var OVERPERFS     = [-0.250,0.263,-0.430,-0.068,-0.149,-0.655,0.112,-0.063,0.026,0.331,-0.155,0.219,0.371,0.448];
-
 var SLOT_DATA = {
-  1:  [['Anthony Kelly',2020],['Andrew Root',2021],['Charlie Gorman',2022],['Ryan McQuaid',2023],['Andrew Root',2024],['Ryan McQuaid',2025]],
-  2:  [['Andrew Root',2020],['Deniz Bileydi',2021],['Ryan McQuaid',2022],['Ethan Radecki',2023],['Quin Gegwich',2024],['Andrew Root',2025]],
-  3:  [['Charlie Gorman',2020],['Ben Castaldo',2021],['Carmine Pittelli',2022],['Baylen Slansky',2023],['Ben Castaldo',2024],['Deniz Bileydi',2025]],
-  4:  [['Baylen Slansky',2020],['Charlie Gorman',2021],['Quin Gegwich',2022],['Quin Gegwich',2023],['Anthony Kelly',2024],['Ben Castaldo',2025]],
-  5:  [['Brandon Hancock',2020],['Baylen Slansky',2021],['Ethan Radecki',2022],['Aidan Quigley',2023],['Deniz Bileydi',2024],['Brandon Hancock',2025]],
-  6:  [['Cole Maney',2020],['Ryan McQuaid',2021],['Cole Maney',2022],['Ben Castaldo',2023],['Baylen Slansky',2024],['Ethan Radecki',2025]],
-  7:  [['Ryan McQuaid',2020],['Cole Maney',2021],['Brandon Hancock',2022],['Charlie Gorman',2023],['Cole Maney',2024],['Aidan Quigley',2025]],
-  8:  [['Max Malich',2020],['Ethan Radecki',2021],['Anthony Kelly',2022],['Anthony Kelly',2023],['Brandon Hancock',2024],['Baylen Slansky',2025]],
-  9:  [['Carmine Pittelli',2020],['Carmine Pittelli',2021],['Aidan Quigley',2022],['Max Malich',2023],['Carmine Pittelli',2024],['Anthony Kelly',2025]],
-  10: [['Ethan Radecki',2020],['Aidan Quigley',2021],['Baylen Slansky',2022],['Deniz Bileydi',2023],['Charlie Gorman',2024],['Cole Maney',2025]],
-  11: [['Quin Gegwich',2020],['Max Malich',2021],['Max Malich',2022],['Cole Maney',2023],['Ethan Radecki',2024],['Charlie Gorman',2025]],
-  12: [['Deniz Bileydi',2020],['Brandon Hancock',2021],['Ben Castaldo',2022],['Brandon Hancock',2023],['Max Malich',2024],['Max Malich',2025]],
-  13: [['Ben Castaldo',2020],['Quin Gegwich',2021],['Deniz Bileydi',2022],['Carmine Pittelli',2023],['Ryan McQuaid',2024],['Carmine Pittelli',2025]],
-  14: [['Thomas Sullivan',2020],['Anthony Kelly',2021],['Andrew Root',2022],['Andrew Root',2023],['Aidan Quigley',2024],['Quin Gegwich',2025]],
+  1:[['Anthony Kelly',2020],['Andrew Root',2021],['Charlie Gorman',2022],['Ryan McQuaid',2023],['Andrew Root',2024],['Ryan McQuaid',2025]],
+  2:[['Andrew Root',2020],['Deniz Bileydi',2021],['Ryan McQuaid',2022],['Ethan Radecki',2023],['Quin Gegwich',2024],['Andrew Root',2025]],
+  3:[['Charlie Gorman',2020],['Ben Castaldo',2021],['Carmine Pittelli',2022],['Baylen Slansky',2023],['Ben Castaldo',2024],['Deniz Bileydi',2025]],
+  4:[['Baylen Slansky',2020],['Charlie Gorman',2021],['Quin Gegwich',2022],['Quin Gegwich',2023],['Anthony Kelly',2024],['Ben Castaldo',2025]],
+  5:[['Brandon Hancock',2020],['Baylen Slansky',2021],['Ethan Radecki',2022],['Aidan Quigley',2023],['Deniz Bileydi',2024],['Brandon Hancock',2025]],
+  6:[['Cole Maney',2020],['Ryan McQuaid',2021],['Cole Maney',2022],['Ben Castaldo',2023],['Baylen Slansky',2024],['Ethan Radecki',2025]],
+  7:[['Ryan McQuaid',2020],['Cole Maney',2021],['Brandon Hancock',2022],['Charlie Gorman',2023],['Cole Maney',2024],['Aidan Quigley',2025]],
+  8:[['Max Malich',2020],['Ethan Radecki',2021],['Anthony Kelly',2022],['Anthony Kelly',2023],['Brandon Hancock',2024],['Baylen Slansky',2025]],
+  9:[['Carmine Pittelli',2020],['Carmine Pittelli',2021],['Aidan Quigley',2022],['Max Malich',2023],['Carmine Pittelli',2024],['Anthony Kelly',2025]],
+  10:[['Ethan Radecki',2020],['Aidan Quigley',2021],['Baylen Slansky',2022],['Deniz Bileydi',2023],['Charlie Gorman',2024],['Cole Maney',2025]],
+  11:[['Quin Gegwich',2020],['Max Malich',2021],['Max Malich',2022],['Cole Maney',2023],['Ethan Radecki',2024],['Charlie Gorman',2025]],
+  12:[['Deniz Bileydi',2020],['Brandon Hancock',2021],['Ben Castaldo',2022],['Brandon Hancock',2023],['Max Malich',2024],['Max Malich',2025]],
+  13:[['Ben Castaldo',2020],['Quin Gegwich',2021],['Deniz Bileydi',2022],['Carmine Pittelli',2023],['Ryan McQuaid',2024],['Carmine Pittelli',2025]],
+  14:[['Thomas Sullivan',2020],['Anthony Kelly',2021],['Andrew Root',2022],['Andrew Root',2023],['Aidan Quigley',2024],['Quin Gegwich',2025]],
 };
 
 (function(){
@@ -453,32 +450,31 @@ var SLOT_DATA = {
   grid.innerHTML=html;
 })();
 
-/* SECTION 2 - Hit Rate by Round */
-
+/* SECTION 2 - Hit Rate */
 var HR_BY_ROUND = [
-  {round:1,  tier:'Early',  hit_rate:90.1, total_picks:71, hits:64, rb:45,wr:24,qb:0, te:2, k:0, dst:0},
-  {round:2,  tier:'Early',  hit_rate:80.3, total_picks:71, hits:57, rb:30,wr:33,qb:2, te:6, k:0, dst:0},
-  {round:3,  tier:'Early',  hit_rate:60.6, total_picks:71, hits:43, rb:21,wr:45,qb:3, te:2, k:0, dst:0},
-  {round:4,  tier:'Middle', hit_rate:53.5, total_picks:71, hits:38, rb:15,wr:30,qb:18,te:8, k:0, dst:0},
-  {round:5,  tier:'Middle', hit_rate:45.1, total_picks:71, hits:32, rb:22,wr:22,qb:15,te:12,k:0, dst:0},
-  {round:6,  tier:'Middle', hit_rate:32.4, total_picks:71, hits:23, rb:14,wr:34,qb:10,te:13,k:0, dst:0},
-  {round:7,  tier:'Middle', hit_rate:28.2, total_picks:71, hits:20, rb:15,wr:30,qb:14,te:12,k:0, dst:0},
-  {round:8,  tier:'Late',   hit_rate:7.2,  total_picks:69, hits:5,  rb:25,wr:28,qb:6, te:10,k:0, dst:2},
-  {round:9,  tier:'Late',   hit_rate:25.0, total_picks:68, hits:17, rb:32,wr:30,qb:4, te:2, k:0, dst:3},
-  {round:10, tier:'Late',   hit_rate:5.3,  total_picks:57, hits:3,  rb:15,wr:28,qb:10,te:4, k:2, dst:12},
-  {round:11, tier:'Late',   hit_rate:4.3,  total_picks:46, hits:2,  rb:10,wr:26,qb:4, te:6, k:8, dst:17},
-  {round:12, tier:'Late',   hit_rate:13.3, total_picks:45, hits:6,  rb:18,wr:16,qb:6, te:5, k:13,dst:13},
-  {round:13, tier:'Late',   hit_rate:4.9,  total_picks:41, hits:2,  rb:14,wr:17,qb:4, te:6, k:22,dst:8},
-  {round:14, tier:'Late',   hit_rate:6.9,  total_picks:58, hits:4,  rb:19,wr:16,qb:17,te:6, k:10,dst:3},
-  {round:15, tier:'Late',   hit_rate:1.8,  total_picks:55, hits:1,  rb:15,wr:22,qb:8, te:10,k:7, dst:9},
-  {round:16, tier:'Late',   hit_rate:4.0,  total_picks:50, hits:2,  rb:14,wr:25,qb:8, te:3, k:16,dst:5},
+  {round:1,  tier:'Early',  hit_rate:90.6, total_picks:85, hits:77, rb:45,wr:24,qb:0, te:2, k:0,dst:0},
+  {round:2,  tier:'Early',  hit_rate:80.0, total_picks:85, hits:68, rb:30,wr:33,qb:2, te:6, k:0,dst:0},
+  {round:3,  tier:'Early',  hit_rate:60.0, total_picks:85, hits:51, rb:21,wr:45,qb:3, te:2, k:0,dst:0},
+  {round:4,  tier:'Middle', hit_rate:54.1, total_picks:85, hits:46, rb:15,wr:30,qb:18,te:8, k:0,dst:0},
+  {round:5,  tier:'Middle', hit_rate:44.7, total_picks:85, hits:38, rb:22,wr:22,qb:15,te:12,k:0,dst:0},
+  {round:6,  tier:'Middle', hit_rate:30.6, total_picks:85, hits:26, rb:14,wr:34,qb:10,te:13,k:0,dst:0},
+  {round:7,  tier:'Middle', hit_rate:25.9, total_picks:85, hits:22, rb:15,wr:30,qb:14,te:12,k:0,dst:0},
+  {round:8,  tier:'Late',   hit_rate:13.3, total_picks:83, hits:11, rb:25,wr:28,qb:6, te:10,k:0,dst:2},
+  {round:9,  tier:'Late',   hit_rate:24.4, total_picks:82, hits:20, rb:32,wr:30,qb:4, te:2, k:0,dst:3},
+  {round:10, tier:'Late',   hit_rate:4.2,  total_picks:71, hits:3,  rb:15,wr:28,qb:10,te:4, k:2,dst:12},
+  {round:11, tier:'Late',   hit_rate:5.1,  total_picks:59, hits:3,  rb:10,wr:26,qb:4, te:6, k:8,dst:17},
+  {round:12, tier:'Late',   hit_rate:15.7, total_picks:51, hits:8,  rb:18,wr:16,qb:6, te:5, k:13,dst:13},
+  {round:13, tier:'Late',   hit_rate:7.8,  total_picks:51, hits:4,  rb:14,wr:17,qb:4, te:6, k:22,dst:8},
+  {round:14, tier:'Late',   hit_rate:6.2,  total_picks:65, hits:4,  rb:19,wr:16,qb:17,te:6, k:10,dst:3},
+  {round:15, tier:'Late',   hit_rate:3.1,  total_picks:65, hits:2,  rb:15,wr:22,qb:8, te:10,k:7, dst:9},
+  {round:16, tier:'Late',   hit_rate:5.3,  total_picks:57, hits:3,  rb:14,wr:25,qb:8, te:3, k:16,dst:5},
 ];
 
 var HR_BY_POS = {
-  RB: [80.2, 43.9,  9.3],
-  WR: [71.6, 35.3,  7.7],
-  QB: [80.0, 45.6,  7.5],
-  TE: [100.0,37.8, 11.5],
+  RB: [80.0, 41.2, 10.8],
+  WR: [72.0, 35.9,  7.9],
+  QB: [66.7, 44.4, 10.8],
+  TE: [100.0,36.5, 13.4],
 };
 
 (function(){
@@ -488,8 +484,8 @@ var HR_BY_POS = {
     type:'bar',
     data:{labels:HR_BY_ROUND.map(function(d){return 'Rd '+d.round;}),datasets:[{
       label:'Hit Rate',data:rates,
-      backgroundColor:rates.map(function(v){return gradientColor(v,min,max,0.72);}),
-      borderColor:rates.map(function(v){return gradientColor(v,min,max,1);}),
+      backgroundColor:rates.map(function(v){return absoluteGradient(v,0.72);}),
+      borderColor:rates.map(function(v){return absoluteGradient(v,1);}),
       borderWidth:1.5,borderRadius:3}]},
     options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{
       title:function(i){var d=HR_BY_ROUND[i[0].dataIndex];return 'Round '+d.round+' ('+d.tier+')';},
@@ -516,11 +512,11 @@ var HR_BY_POS = {
   new Chart(document.getElementById('chart-pos-concentration').getContext('2d'),{
     type:'bar',
     data:{labels:labels,datasets:[
-      {label:'RB', data:rbP, backgroundColor:'rgba(90,138,90,0.8)',  borderColor:'rgba(90,138,90,1)',  borderWidth:1},
-      {label:'WR', data:wrP, backgroundColor:'rgba(74,127,168,0.8)', borderColor:'rgba(74,127,168,1)', borderWidth:1},
-      {label:'QB', data:qbP, backgroundColor:'rgba(168,90,90,0.8)',  borderColor:'rgba(168,90,90,1)',  borderWidth:1},
-      {label:'TE', data:teP, backgroundColor:'rgba(212,175,55,0.8)', borderColor:'rgba(212,175,55,1)', borderWidth:1},
-      {label:'K',  data:kP,  backgroundColor:'rgba(156,148,156,0.7)',borderColor:'rgba(156,148,156,1)',borderWidth:1},
+      {label:'RB', data:rbP,  backgroundColor:'rgba(90,138,90,0.8)',  borderColor:'rgba(90,138,90,1)',  borderWidth:1},
+      {label:'WR', data:wrP,  backgroundColor:'rgba(74,127,168,0.8)', borderColor:'rgba(74,127,168,1)', borderWidth:1},
+      {label:'QB', data:qbP,  backgroundColor:'rgba(168,90,90,0.8)',  borderColor:'rgba(168,90,90,1)',  borderWidth:1},
+      {label:'TE', data:teP,  backgroundColor:'rgba(212,175,55,0.8)', borderColor:'rgba(212,175,55,1)', borderWidth:1},
+      {label:'K',  data:kP,   backgroundColor:'rgba(156,148,156,0.7)',borderColor:'rgba(156,148,156,1)',borderWidth:1},
       {label:'D/ST',data:dstP,backgroundColor:'rgba(100,90,80,0.7)', borderColor:'rgba(100,90,80,1)',  borderWidth:1},
     ]},
     options:{responsive:true,
@@ -547,12 +543,11 @@ var HR_BY_POS = {
 function makePosChart(canvasId, tierIndex) {
   var positions=['RB','WR','QB','TE'];
   var data=positions.map(function(p){return HR_BY_POS[p][tierIndex];});
-  var min=Math.min.apply(null,data), max=Math.max.apply(null,data);
   new Chart(document.getElementById(canvasId).getContext('2d'),{
     type:'bar',
     data:{labels:positions,datasets:[{data:data,
-      backgroundColor:data.map(function(v){return gradientColor(v,min,max,0.72);}),
-      borderColor:data.map(function(v){return gradientColor(v,min,max,1);}),
+      backgroundColor:data.map(function(v){return absoluteGradient(v,0.72);}),
+      borderColor:data.map(function(v){return absoluteGradient(v,1);}),
       borderWidth:1.5,borderRadius:3}]},
     options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+'% hit rate (min. 8 games played)';}}}},
     scales:{
@@ -561,38 +556,36 @@ function makePosChart(canvasId, tierIndex) {
     }}
   });
 }
-
-makePosChart('chart-hit-pos-early', 0);
-makePosChart('chart-hit-pos-mid',   1);
-makePosChart('chart-hit-pos-late',  2);
+makePosChart('chart-hit-pos-early',0);
+makePosChart('chart-hit-pos-mid',  1);
+makePosChart('chart-hit-pos-late', 2);
 
 /* SECTION 3 - Steals */
-
 var ALL_TIME_STEALS = [
-  {rank:1,  player:'Kyren Williams',    pos:'RB',round:14,slot:7, season:2023,ppg:21.25,above:14.03,games:12,manager:'Charlie Gorman'},
-  {rank:2,  player:'Deebo Samuel',      pos:'WR',round:9, slot:3, season:2021,ppg:21.19,above:13.05,games:16,manager:'Ben Castaldo'},
-  {rank:3,  player:'Brock Bowers',      pos:'TE',round:8, slot:7, season:2024,ppg:15.45,above:10.85,games:17,manager:'Cole Maney'},
-  {rank:4,  player:'Raheem Mostert',    pos:'RB',round:13,slot:6, season:2023,ppg:17.85,above:10.63,games:15,manager:'Ben Castaldo'},
-  {rank:5,  player:'Nico Collins',      pos:'WR',round:10,slot:10,season:2023,ppg:17.36,above:10.35,games:15,manager:'Deniz Bileydi'},
-  {rank:6,  player:"De'Von Achane",     pos:'RB',round:12,slot:10,season:2023,ppg:17.34,above:10.12,games:11,manager:'Deniz Bileydi'},
-  {rank:7,  player:'Sam LaPorta',       pos:'TE',round:14,slot:12,season:2023,ppg:14.08,above:9.76, games:17,manager:'Brandon Hancock'},
-  {rank:8,  player:'Justin Jefferson',  pos:'WR',round:9, slot:12,season:2020,ppg:17.14,above:9.29, games:16,manager:'Deniz Bileydi'},
-  {rank:9,  player:'Chuba Hubbard',     pos:'RB',round:8, slot:11,season:2024,ppg:16.11,above:8.69, games:15,manager:'Ethan Radecki'},
-  {rank:10, player:'James Conner',      pos:'RB',round:9, slot:4, season:2021,ppg:17.18,above:8.67, games:15,manager:'Charlie Gorman'},
+  {rank:1,  player:'Kyren Williams',   pos:'RB',round:14,slot:7, season:2023,ppg:21.25,above:14.03,games:12,manager:'Charlie Gorman'},
+  {rank:2,  player:'Deebo Samuel',     pos:'WR',round:9, slot:3, season:2021,ppg:21.19,above:13.05,games:16,manager:'Ben Castaldo'},
+  {rank:3,  player:'Brock Bowers',     pos:'TE',round:8, slot:7, season:2024,ppg:15.45,above:10.85,games:17,manager:'Cole Maney'},
+  {rank:4,  player:'Raheem Mostert',   pos:'RB',round:13,slot:6, season:2023,ppg:17.85,above:10.63,games:15,manager:'Ben Castaldo'},
+  {rank:5,  player:'Nico Collins',     pos:'WR',round:10,slot:10,season:2023,ppg:17.36,above:10.35,games:15,manager:'Deniz Bileydi'},
+  {rank:6,  player:"De'Von Achane",    pos:'RB',round:12,slot:10,season:2023,ppg:17.34,above:10.12,games:11,manager:'Deniz Bileydi'},
+  {rank:7,  player:'Tucker Kraft',     pos:'TE',round:8, slot:10,season:2025,ppg:14.65,above:9.77, games:8, manager:'Cole Maney'},
+  {rank:8,  player:'Sam LaPorta',      pos:'TE',round:14,slot:12,season:2023,ppg:14.08,above:9.76, games:17,manager:'Brandon Hancock'},
+  {rank:9,  player:'Justin Jefferson', pos:'WR',round:9, slot:12,season:2020,ppg:17.14,above:9.29, games:16,manager:'Deniz Bileydi'},
+  {rank:10, player:'Chuba Hubbard',    pos:'RB',round:8, slot:11,season:2024,ppg:16.11,above:8.69, games:15,manager:'Ethan Radecki'},
 ];
 
 var SEASON_STEALS = {
   2020:[
-    {rank:1,  player:'Justin Jefferson',  pos:'WR',round:9, slot:12,season:2020,ppg:17.14,above:9.29, games:16,manager:'Deniz Bileydi'},
-    {rank:2,  player:'Brandon Aiyuk',     pos:'WR',round:12,slot:7, season:2020,ppg:15.38,above:7.53, games:14,manager:'Carmine Pittelli'},
-    {rank:3,  player:'Antonio Gibson',    pos:'RB',round:9, slot:15,season:2020,ppg:16.03,above:7.31, games:14,manager:'William Serafin'},
-    {rank:4,  player:'Antonio Brown',     pos:'WR',round:16,slot:10,season:2020,ppg:14.64,above:6.79, games:8, manager:'Ethan Radecki'},
-    {rank:5,  player:'Curtis Samuel',     pos:'WR',round:8, slot:4, season:2020,ppg:14.97,above:6.29, games:14,manager:'Baylen Slansky'},
-    {rank:6,  player:'Robby Anderson',    pos:'WR',round:8, slot:1, season:2020,ppg:14.77,above:6.09, games:16,manager:'Anthony Kelly'},
-    {rank:7,  player:'Cole Beasley',      pos:'WR',round:15,slot:5, season:2020,ppg:13.83,above:5.98, games:15,manager:'Brandon Hancock'},
-    {rank:8,  player:'Corey Davis',       pos:'WR',round:15,slot:14,season:2020,ppg:13.65,above:5.82, games:14,manager:'Ethan Radecki'},
-    {rank:9,  player:"CeeDee Lamb",       pos:'WR',round:9, slot:2, season:2020,ppg:13.57,above:5.76, games:16,manager:'Andrew Root'},
-    {rank:10, player:'Chase Claypool',    pos:'WR',round:15,slot:12,season:2020,ppg:13.41,above:5.58, games:15,manager:'Anthony Kelly'},
+    {rank:1,  player:'Justin Jefferson',  pos:'WR',round:9, slot:12,season:2020,ppg:17.14,above:9.29,games:16,manager:'Deniz Bileydi'},
+    {rank:2,  player:'Brandon Aiyuk',     pos:'WR',round:12,slot:7, season:2020,ppg:15.38,above:7.53,games:14,manager:'Carmine Pittelli'},
+    {rank:3,  player:'Antonio Gibson',    pos:'RB',round:9, slot:15,season:2020,ppg:16.03,above:7.31,games:14,manager:'William Serafin'},
+    {rank:4,  player:'Antonio Brown',     pos:'WR',round:16,slot:10,season:2020,ppg:14.64,above:6.79,games:8, manager:'Ethan Radecki'},
+    {rank:5,  player:'Curtis Samuel',     pos:'WR',round:8, slot:4, season:2020,ppg:14.97,above:6.29,games:14,manager:'Baylen Slansky'},
+    {rank:6,  player:'Robby Anderson',    pos:'WR',round:8, slot:1, season:2020,ppg:14.77,above:6.09,games:16,manager:'Anthony Kelly'},
+    {rank:7,  player:'Cole Beasley',      pos:'WR',round:15,slot:5, season:2020,ppg:13.83,above:5.98,games:15,manager:'Brandon Hancock'},
+    {rank:8,  player:'Corey Davis',       pos:'WR',round:15,slot:14,season:2020,ppg:13.65,above:5.82,games:14,manager:'Ethan Radecki'},
+    {rank:9,  player:'CeeDee Lamb',       pos:'WR',round:9, slot:2, season:2020,ppg:13.57,above:5.76,games:16,manager:'Andrew Root'},
+    {rank:10, player:'Chase Claypool',    pos:'WR',round:15,slot:12,season:2020,ppg:13.41,above:5.58,games:15,manager:'Anthony Kelly'},
   ],
   2021:[
     {rank:1,  player:'Deebo Samuel',      pos:'WR',round:9, slot:3, season:2021,ppg:21.19,above:13.05,games:16,manager:'Ben Castaldo'},
@@ -607,16 +600,16 @@ var SEASON_STEALS = {
     {rank:10, player:'Darnell Mooney',    pos:'WR',round:8, slot:9, season:2021,ppg:12.92,above:4.78, games:16,manager:'Cole Maney'},
   ],
   2022:[
-    {rank:1,  player:'Rhamondre Stevenson',pos:'RB',round:9, slot:5, season:2022,ppg:15.67,above:7.77, games:16,manager:'Ethan Radecki'},
-    {rank:2,  player:'Christian Kirk',    pos:'WR',round:8, slot:1, season:2022,ppg:14.74,above:6.97, games:16,manager:'Andrew Root'},
-    {rank:3,  player:'Kenneth Walker III',pos:'RB',round:9, slot:4, season:2022,ppg:14.52,above:6.62, games:15,manager:'Quin Gegwich'},
-    {rank:4,  player:'Jamaal Williams',   pos:'RB',round:9, slot:10,season:2022,ppg:14.31,above:6.41, games:17,manager:'Max Malich'},
-    {rank:5,  player:'Evan Engram',       pos:'TE',round:13,slot:2, season:2022,ppg:11.75,above:6.03, games:17,manager:'Ryan McQuaid'},
-    {rank:6,  player:'Dameon Pierce',     pos:'RB',round:10,slot:11,season:2022,ppg:14.02,above:5.92, games:14,manager:'Quin Gegwich'},
-    {rank:7,  player:'David Njoku',       pos:'TE',round:12,slot:10,season:2022,ppg:11.48,above:5.76, games:15,manager:'Ethan Radecki'},
-    {rank:8,  player:'Jakobi Meyers',     pos:'WR',round:8, slot:9, season:2022,ppg:12.89,above:5.62, games:16,manager:'Carmine Pittelli'},
-    {rank:9,  player:'Pat Freiermuth',    pos:'TE',round:9, slot:2, season:2022,ppg:11.20,above:4.88, games:17,manager:'Ryan McQuaid'},
-    {rank:10, player:'Jerick McKinnon',   pos:'RB',round:14,slot:7, season:2022,ppg:12.57,above:4.67, games:14,manager:'Anthony Kelly'},
+    {rank:1,  player:'Rhamondre Stevenson',pos:'RB',round:9,slot:5, season:2022,ppg:15.67,above:7.77,games:16,manager:'Ethan Radecki'},
+    {rank:2,  player:'Christian Kirk',    pos:'WR',round:8, slot:1, season:2022,ppg:14.74,above:6.97,games:16,manager:'Andrew Root'},
+    {rank:3,  player:'Kenneth Walker III',pos:'RB',round:9, slot:4, season:2022,ppg:14.52,above:6.62,games:15,manager:'Quin Gegwich'},
+    {rank:4,  player:'Jamaal Williams',   pos:'RB',round:9, slot:10,season:2022,ppg:14.31,above:6.41,games:17,manager:'Max Malich'},
+    {rank:5,  player:'Evan Engram',       pos:'TE',round:13,slot:2, season:2022,ppg:11.75,above:6.03,games:17,manager:'Ryan McQuaid'},
+    {rank:6,  player:'Dameon Pierce',     pos:'RB',round:10,slot:11,season:2022,ppg:14.02,above:5.92,games:14,manager:'Quin Gegwich'},
+    {rank:7,  player:'David Njoku',       pos:'TE',round:12,slot:10,season:2022,ppg:11.48,above:5.76,games:15,manager:'Ethan Radecki'},
+    {rank:8,  player:'Jakobi Meyers',     pos:'WR',round:8, slot:9, season:2022,ppg:12.89,above:5.62,games:16,manager:'Carmine Pittelli'},
+    {rank:9,  player:'Pat Freiermuth',    pos:'TE',round:9, slot:2, season:2022,ppg:11.20,above:4.88,games:17,manager:'Ryan McQuaid'},
+    {rank:10, player:'Jerick McKinnon',   pos:'RB',round:14,slot:7, season:2022,ppg:12.57,above:4.67,games:14,manager:'Anthony Kelly'},
   ],
   2023:[
     {rank:1,  player:'Kyren Williams',    pos:'RB',round:14,slot:7, season:2023,ppg:21.25,above:14.03,games:12,manager:'Charlie Gorman'},
@@ -641,6 +634,18 @@ var SEASON_STEALS = {
     {rank:8,  player:'Jerry Jeudy',       pos:'WR',round:9, slot:5, season:2024,ppg:13.52,above:6.78, games:16,manager:'Deniz Bileydi'},
     {rank:9,  player:'Jameson Williams',  pos:'WR',round:9, slot:7, season:2024,ppg:13.50,above:6.76, games:14,manager:'Aidan Quigley'},
     {rank:10, player:'Adam Thielen',      pos:'WR',round:11,slot:8, season:2024,ppg:13.30,above:6.56, games:16,manager:'Baylen Slansky'},
+  ],
+  2025:[
+    {rank:1,  player:'Tucker Kraft',       pos:'TE',round:8, slot:10,season:2025,ppg:14.65,above:9.77,games:8, manager:'Cole Maney'},
+    {rank:2,  player:'Cam Skattebo',       pos:'RB',round:8, slot:9, season:2025,ppg:15.83,above:8.55,games:10,manager:'Baylen Slansky'},
+    {rank:3,  player:'Javonte Williams',   pos:'RB',round:8, slot:2, season:2025,ppg:15.05,above:7.77,games:12,manager:'Deniz Bileydi'},
+    {rank:4,  player:'Travis Etienne Jr.', pos:'RB',round:9, slot:4, season:2025,ppg:14.81,above:7.53,games:11,manager:'Ryan McQuaid'},
+    {rank:5,  player:'Kyle Pitts',         pos:'TE',round:9, slot:6, season:2025,ppg:12.40,above:7.52,games:9, manager:'Charlie Gorman'},
+    {rank:6,  player:'Dallas Goedert',     pos:'TE',round:13,slot:2, season:2025,ppg:12.34,above:7.46,games:10,manager:'Ryan McQuaid'},
+    {rank:7,  player:"Wan'Dale Robinson",  pos:'WR',round:11,slot:13,season:2025,ppg:13.58,above:7.21,games:10,manager:'Max Malich'},
+    {rank:8,  player:'Michael Wilson',     pos:'WR',round:15,slot:1, season:2025,ppg:13.35,above:6.57,games:9, manager:'Andrew Root'},
+    {rank:9,  player:'Jake Ferguson',      pos:'TE',round:9, slot:14,season:2025,ppg:11.06,above:6.18,games:11,manager:'Anthony Kelly'},
+    {rank:10, player:'Quentin Johnston',   pos:'WR',round:16,slot:8, season:2025,ppg:13.19,above:5.82,games:9, manager:'Andrew Root'},
   ],
 };
 
@@ -671,26 +676,25 @@ function filterSteals(season, btn) {
   btn.classList.add('active');
   renderStealsTable(season==='all' ? ALL_TIME_STEALS : (SEASON_STEALS[season]||[]));
 }
-
 renderStealsTable(ALL_TIME_STEALS);
 
 /* SECTION 4 - Surplus Value Teaser */
 (function(){
   var CAREER_PREVIEW = [
-    {rank:1,  manager:'Ethan Radecki',    avg:0.394,  seasons:5},
-    {rank:2,  manager:'Max Malich',       avg:0.143,  seasons:5},
-    {rank:3,  manager:'Charlie Gorman',   avg:0.102,  seasons:5},
-    {rank:4,  manager:'Baylen Slansky',   avg:0.098,  seasons:5},
-    {rank:5,  manager:'Carmine Pittelli', avg:0.091,  seasons:5},
-    {rank:6,  manager:'Anthony Kelly',    avg:0.047,  seasons:5},
-    {rank:7,  manager:'Aidan Quigley',    avg:-0.011, seasons:4},
-    {rank:8,  manager:'Deniz Bileydi',    avg:-0.100, seasons:5},
-    {rank:9,  manager:'Quin Gegwich',     avg:-0.156, seasons:5},
-    {rank:10, manager:'Ben Castaldo',     avg:-0.175, seasons:5},
-    {rank:11, manager:'Andrew Root',      avg:-0.235, seasons:5},
-    {rank:12, manager:'Brandon Hancock',  avg:-0.261, seasons:5},
-    {rank:13, manager:'Cole Maney',       avg:-0.367, seasons:5},
-    {rank:14, manager:'Ryan McQuaid',     avg:-0.421, seasons:5},
+    {rank:1,  manager:'Carmine Pittelli', avg:0.163,  seasons:6},
+    {rank:2,  manager:'Anthony Kelly',    avg:0.160,  seasons:6},
+    {rank:3,  manager:'Charlie Gorman',   avg:0.073,  seasons:6},
+    {rank:4,  manager:'Cole Maney',       avg:0.049,  seasons:6},
+    {rank:5,  manager:'Ethan Radecki',    avg:0.015,  seasons:6},
+    {rank:6,  manager:'Deniz Bileydi',    avg:0.008,  seasons:6},
+    {rank:7,  manager:'Baylen Slansky',   avg:-0.002, seasons:6},
+    {rank:8,  manager:'Andrew Root',      avg:-0.064, seasons:6},
+    {rank:9,  manager:'Max Malich',       avg:-0.078, seasons:6},
+    {rank:10, manager:'Ben Castaldo',     avg:-0.091, seasons:6},
+    {rank:11, manager:'Brandon Hancock',  avg:-0.162, seasons:6},
+    {rank:12, manager:'Aidan Quigley',    avg:-0.178, seasons:5},
+    {rank:13, manager:'Quin Gegwich',     avg:-0.229, seasons:6},
+    {rank:14, manager:'Ryan McQuaid',     avg:-0.305, seasons:6},
   ];
   var minVal=Math.min.apply(null,CAREER_PREVIEW.map(function(d){return d.avg;}));
   var maxVal=Math.max.apply(null,CAREER_PREVIEW.map(function(d){return d.avg;}));
