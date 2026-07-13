@@ -1691,7 +1691,7 @@ function showHmTooltip(e, cellData, rd, sl) {
     var col  = p.surplus >= 0 ? '#5a8a5a' : '#c0623a';
     html += '<div class="hm-tooltip-row">'
       +'<span style="color:'+( POS_COLORS[p.pos]||'#888')+';font-weight:700">'+p.pos+'</span> '
-      +p.player+' ''+String(p.season).slice(2)
+      +p.player+' \''+String(p.season).slice(2)
       +' <span style="color:'+col+';font-weight:700">'+sign+p.surplus.toFixed(2)+'</span>'
       +'</div>';
   });
