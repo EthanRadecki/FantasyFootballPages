@@ -185,6 +185,25 @@
 @media(max-width:480px) {
   .mgr-grid { grid-template-columns:repeat(2,1fr); }
 }
+
+/* ── DRAFT FINGERPRINT RADAR ── */
+.fingerprint-filter-row {
+  display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:1rem;
+}
+.fp-btn {
+  padding:0.25rem 0.7rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.75rem;
+  font-weight:500;cursor:pointer;transition:all 0.15s;
+}
+.fp-btn:hover { background:var(--accent-glow); }
+.fp-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
+.fp-filter-label { font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent); }
+.fp-link {
+  display:inline-flex;align-items:center;gap:0.3rem;
+  font-size:0.72rem;font-weight:600;color:var(--accent);text-decoration:none;margin-left:auto;
+  padding:0.25rem 0.6rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
+}
+.fp-link:hover { background:var(--accent-glow); }
 </style>
 </head>
 <body>
@@ -204,6 +223,7 @@
       <a href="draft-analysis.html">Draft Analysis</a>
       <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
       <a href="draft-history.html" class="nav-sub">&#8627; Draft History</a>
+      <a href="draft-fingerprints.html" class="nav-sub">&#8627; Draft Fingerprints</a>
       <a href="weekly-rankings.html">Weekly Rankings</a>
       <a href="champions.html">Champions</a>
       <a href="extra-analytics.html">Extra Analytics</a>
@@ -222,6 +242,7 @@
       <a href="draft-analysis.html">Draft Analysis</a>
       <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
       <a href="draft-history.html" class="nav-sub">&#8627; Draft History</a>
+      <a href="draft-fingerprints.html" class="nav-sub">&#8627; Draft Fingerprints</a>
       <a href="weekly-rankings.html">Weekly Rankings</a>
       <a href="champions.html">Champions</a>
       <a href="extra-analytics.html">Extra Analytics</a>
@@ -450,6 +471,30 @@
       </div>
     </div>
 
+
+    <!-- DRAFT FINGERPRINT -->
+    <div class="chart-section">
+      <div class="chart-section-label">Draft Fingerprint</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <div class="fingerprint-filter-row">
+          <span class="fp-filter-label">Season:</span>
+          <button class="fp-btn active" onclick="setFpSeason('career',this)">Career</button>
+          <button class="fp-btn" onclick="setFpSeason(2020,this)">2020</button>
+          <button class="fp-btn" onclick="setFpSeason(2021,this)">2021</button>
+          <button class="fp-btn" onclick="setFpSeason(2022,this)">2022</button>
+          <button class="fp-btn" onclick="setFpSeason(2023,this)">2023</button>
+          <button class="fp-btn" onclick="setFpSeason(2024,this)">2024</button>
+          <button class="fp-btn" onclick="setFpSeason(2025,this)">2025</button>
+          <a href="draft-fingerprints.html" class="fp-link">Full Comparison &#8594;</a>
+        </div>
+        <div style="position:relative;height:300px;">
+          <canvas id="chart-fingerprint"></canvas>
+        </div>
+        <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.75rem;text-align:center;">
+          Outer edge = league high for that trait. Hover each point for raw values. Career average shown by default.
+        </p>
+      </div>
+    </div>
   </div><!-- end #manager-profile -->
 
   <footer>
@@ -1337,6 +1382,97 @@ function renderRankChart(profile) {
   });
 }
 
+
+// ── Draft Fingerprint ─────────────────────────────────────────────────────────
+var FINGERPRINTS = {"Aidan Quigley": {"career": {"raw": {"early_rb": 46.7, "early_wr": 40.0, "qb_timing": 5.0, "te_timing": 5.8, "diversity": 92.0, "kdst_patience": -0.61, "surplus": -0.178}, "normalized": {"early_rb": 46.7, "early_wr": 40.0, "qb_timing": 66.7, "te_timing": 56.4, "diversity": 66.4, "kdst_patience": 45.0, "surplus": 43.8}}}, "Andrew Root": {"career": {"raw": {"early_rb": 61.1, "early_wr": 38.9, "qb_timing": 4.67, "te_timing": 6.0, "diversity": 87.5, "kdst_patience": -0.15, "surplus": -0.064}, "normalized": {"early_rb": 61.1, "early_wr": 38.9, "qb_timing": 70.3, "te_timing": 54.5, "diversity": 45.6, "kdst_patience": 52.7, "surplus": 46.6}}}, "Anthony Kelly": {"career": {"raw": {"early_rb": 33.3, "early_wr": 55.6, "qb_timing": 6.83, "te_timing": 6.33, "diversity": 87.2, "kdst_patience": 1.6, "surplus": 0.16}, "normalized": {"early_rb": 33.3, "early_wr": 55.6, "qb_timing": 46.3, "te_timing": 51.5, "diversity": 44.2, "kdst_patience": 81.8, "surplus": 51.9}}}, "Baylen Slansky": {"career": {"raw": {"early_rb": 50.0, "early_wr": 44.4, "qb_timing": 5.0, "te_timing": 6.33, "diversity": 90.4, "kdst_patience": 0.35, "surplus": -0.002}, "normalized": {"early_rb": 50.0, "early_wr": 44.4, "qb_timing": 66.7, "te_timing": 51.5, "diversity": 59.0, "kdst_patience": 61.0, "surplus": 48.0}}}, "Ben Castaldo": {"career": {"raw": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 5.33, "te_timing": 6.83, "diversity": 94.0, "kdst_patience": -1.4, "surplus": -0.09}, "normalized": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 63.0, "te_timing": 47.0, "diversity": 75.6, "kdst_patience": 31.8, "surplus": 45.9}}}, "Brandon Hancock": {"career": {"raw": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 4.5, "te_timing": 7.33, "diversity": 90.9, "kdst_patience": -1.06, "surplus": -0.162}, "normalized": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 72.2, "te_timing": 42.5, "diversity": 61.3, "kdst_patience": 37.5, "surplus": 44.2}}}, "Carmine Pittelli": {"career": {"raw": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 6.0, "te_timing": 3.83, "diversity": 87.7, "kdst_patience": -0.56, "surplus": 0.163}, "normalized": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 55.6, "te_timing": 74.3, "diversity": 46.5, "kdst_patience": 45.8, "surplus": 52.0}}}, "Charlie Gorman": {"career": {"raw": {"early_rb": 55.6, "early_wr": 33.3, "qb_timing": 5.83, "te_timing": 5.5, "diversity": 93.0, "kdst_patience": -0.48, "surplus": 0.073}, "normalized": {"early_rb": 55.6, "early_wr": 33.3, "qb_timing": 57.4, "te_timing": 59.1, "diversity": 71.0, "kdst_patience": 47.2, "surplus": 49.8}}}, "Cole Maney": {"career": {"raw": {"early_rb": 27.8, "early_wr": 66.7, "qb_timing": 6.0, "te_timing": 6.83, "diversity": 86.0, "kdst_patience": -0.48, "surplus": 0.049}, "normalized": {"early_rb": 27.8, "early_wr": 66.7, "qb_timing": 55.6, "te_timing": 47.0, "diversity": 38.7, "kdst_patience": 47.2, "surplus": 49.3}}}, "Deniz Bileydi": {"career": {"raw": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 5.33, "te_timing": 5.17, "diversity": 88.5, "kdst_patience": -0.65, "surplus": 0.008}, "normalized": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 63.0, "te_timing": 62.1, "diversity": 50.2, "kdst_patience": 44.3, "surplus": 48.3}}}, "Ethan Radecki": {"career": {"raw": {"early_rb": 27.8, "early_wr": 50.0, "qb_timing": 6.0, "te_timing": 4.83, "diversity": 89.0, "kdst_patience": 0.77, "surplus": 0.015}, "normalized": {"early_rb": 27.8, "early_wr": 50.0, "qb_timing": 55.6, "te_timing": 65.2, "diversity": 52.5, "kdst_patience": 68.0, "surplus": 48.4}}}, "Max Malich": {"career": {"raw": {"early_rb": 44.4, "early_wr": 44.4, "qb_timing": 5.83, "te_timing": 4.17, "diversity": 92.4, "kdst_patience": 0.1, "surplus": -0.078}, "normalized": {"early_rb": 44.4, "early_wr": 44.4, "qb_timing": 57.4, "te_timing": 71.2, "diversity": 68.2, "kdst_patience": 56.8, "surplus": 46.2}}}, "Quin Gegwich": {"career": {"raw": {"early_rb": 61.1, "early_wr": 33.3, "qb_timing": 6.67, "te_timing": 5.5, "diversity": 87.9, "kdst_patience": 0.35, "surplus": -0.229}, "normalized": {"early_rb": 61.1, "early_wr": 33.3, "qb_timing": 48.1, "te_timing": 59.1, "diversity": 47.5, "kdst_patience": 61.0, "surplus": 42.6}}}, "Ryan McQuaid": {"career": {"raw": {"early_rb": 72.2, "early_wr": 22.2, "qb_timing": 6.17, "te_timing": 8.0, "diversity": 95.0, "kdst_patience": 2.1, "surplus": -0.305}, "normalized": {"early_rb": 72.2, "early_wr": 22.2, "qb_timing": 53.7, "te_timing": 36.4, "diversity": 80.2, "kdst_patience": 90.2, "surplus": 40.8}}}};
+
+var FP_LABELS = ['Early RB%','Early WR%','QB Timing','TE Timing','Skill Diversity','K/DST Patience','Surplus'];
+var FP_DIMS   = ['early_rb','early_wr','qb_timing','te_timing','diversity','kdst_patience','surplus'];
+var FP_RAW_LABELS = [
+  function(v){ return v !== null ? v.toFixed(1) + '% of early picks' : 'N/A'; },
+  function(v){ return v !== null ? v.toFixed(1) + '% of early picks' : 'N/A'; },
+  function(v){ return v !== null ? 'Avg round ' + v.toFixed(1) : 'N/A'; },
+  function(v){ return v !== null ? 'Avg round ' + v.toFixed(1) : 'N/A'; },
+  function(v){ return v !== null ? v.toFixed(1) + ' diversity score' : 'N/A'; },
+  function(v){ return v !== null ? (v >= 0 ? '+' : '') + v.toFixed(2) + ' rounds vs league avg' : 'N/A'; },
+  function(v){ return v !== null ? (v >= 0 ? '+' : '') + v.toFixed(3) + ' surplus/pick' : 'N/A'; },
+];
+
+var currentFpSeason  = 'career';
+var currentFpManager = null;
+
+function setFpSeason(season, btn) {
+  document.querySelectorAll('.fp-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  currentFpSeason = season;
+  if (currentFpManager) renderFingerprintChart(currentFpManager);
+}
+
+function getFpPeriod(manager, season) {
+  var entry = FINGERPRINTS[manager] || FINGERPRINTS[manager + '.'];
+  if (!entry) return null;
+  var key = season === 'career' ? 'career' : season;
+  return entry[key] || entry['career'] || null;
+}
+
+function renderFingerprintChart(manager) {
+  currentFpManager = manager;
+  destroyChart('fingerprint');
+
+  var period = getFpPeriod(manager, currentFpSeason);
+  if (!period) return;
+
+  var norm = period.normalized;
+  var raw  = period.raw;
+  var data = FP_DIMS.map(function(d){ return norm[d] !== undefined ? norm[d] : 50; });
+  var rawVals = FP_DIMS.map(function(d){ return raw[d] !== undefined ? raw[d] : null; });
+
+  var ctx = document.getElementById('chart-fingerprint').getContext('2d');
+  charts['fingerprint'] = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: FP_LABELS,
+      datasets: [{
+        label: manager,
+        data: data,
+        backgroundColor: 'rgba(156,148,156,0.18)',
+        borderColor: 'rgba(156,148,156,0.9)',
+        borderWidth: 2,
+        pointBackgroundColor: 'rgba(156,148,156,1)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 1.5,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items){ return FP_LABELS[items[0].dataIndex]; },
+            label: function(ctx){ return FP_RAW_LABELS[ctx.dataIndex](rawVals[ctx.dataIndex]); }
+          }
+        }
+      },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          ticks: { stepSize: 25, display: false },
+          grid: { color: 'rgba(156,148,156,0.18)' },
+          angleLines: { color: 'rgba(156,148,156,0.18)' },
+          pointLabels: {
+            color: '#6b5f50',
+            font: { size: 11, family: "'Outfit', sans-serif", weight: '600' }
+          }
+        }
+      }
+    }
+  });
+}
+
 function renderAllCharts(profile) {
   renderPerfChart(profile);
   renderLuckChart(profile);
@@ -1344,6 +1480,7 @@ function renderAllCharts(profile) {
   renderDistChart(profile);
   renderTrendsChart(profile);
   renderRankChart(profile);
+  renderFingerprintChart(profile.name);
 }
 
 // ── Manager selection ────────────────────────────────────────────────────────

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draft Fingerprints | Preach Fantasy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+.back-link {
+  display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;font-weight:600;
+  color:var(--accent);text-decoration:none;margin-bottom:1.5rem;
+  padding:0.35rem 0.75rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
+}
+.back-link:hover { background:var(--accent-glow); }
+
+.filter-row {
+  display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.25rem;
+}
+.filter-label {
+  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);
+  margin-right:0.25rem;
+}
+.filter-btn {
+  padding:0.3rem 0.8rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.78rem;
+  font-weight:500;cursor:pointer;transition:all 0.15s;
+}
+.filter-btn:hover { background:var(--accent-glow); }
+.filter-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
+
+/* Manager toggle chips */
+.mgr-toggle-grid {
+  display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;
+}
+.mgr-chip {
+  display:flex;align-items:center;gap:0.4rem;
+  padding:0.3rem 0.7rem 0.3rem 0.4rem;
+  border-radius:20px;border:2px solid transparent;
+  cursor:pointer;transition:all 0.15s;font-size:0.75rem;font-weight:600;
+  color:var(--text-mid);background:rgba(var(--accent-rgb),0.06);
+  user-select:none;
+}
+.mgr-chip:hover { transform:translateY(-1px); }
+.mgr-chip.active { color:var(--bg); }
+.mgr-chip img {
+  width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.3);
+}
+.chip-dot {
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+
+/* Radar container */
+.radar-wrap {
+  position:relative;height:480px;max-height:480px;
+}
+
+/* Dim table */
+.dim-table { width:100%;border-collapse:collapse;font-size:0.8rem; }
+.dim-table thead th {
+  text-align:left;padding:0.6rem 0.75rem;font-size:0.64rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
+}
+.dim-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
+.dim-table tbody tr:hover { background:rgba(var(--accent-rgb),0.05); }
+.dim-table tbody td { padding:0.55rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
+.dim-table tbody td:first-child { font-weight:600;color:var(--palm); }
+
+.metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass">
+    <a href="../index.html" class="nav-brand">
+      <img src="../preach_logo.png" alt="Preach Fantasy"><span>Preach Fantasy</span>
+    </a>
+    <div class="nav-links">
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html">Draft Analysis</a>
+      <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
+      <a href="draft-history.html" class="nav-sub">&#8627; Draft History</a>
+      <a href="draft-fingerprints.html" class="active nav-sub">&#8627; Draft Fingerprints</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+    </div>
+    <button class="nav-hamburger" onclick="openMobileMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu" onclick="if(event.target===this)closeMobileMenu()">
+    <div class="mobile-menu-inner">
+      <button class="mobile-menu-close" onclick="closeMobileMenu()">&#10005;</button>
+      <a href="../index.html">Home</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html">Draft Analysis</a>
+      <a href="surplus-value.html">Surplus Value</a>
+      <a href="draft-history.html">Draft History</a>
+      <a href="draft-fingerprints.html" class="active">Draft Fingerprints</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+    </div>
+  </div>
+
+  <a href="draft-analysis.html" class="back-link">&#8592; Back to Draft Analysis</a>
+
+  <div class="page-header glass">
+    <h1>Draft Fingerprints</h1>
+    <p>Every manager has a drafting style. Seven dimensions, one shape.</p>
+  </div>
+
+  <div class="callout glass">
+    <div class="callout-label">How to Read This</div>
+    <p>Each axis represents a draft tendency normalized across all managers. The outer edge is the league high for that trait. Toggle managers on and off to compare styles directly. Hover any point for the raw value behind the score. All data covers 2020-2025.</p>
+  </div>
+
+  <!-- RADAR SECTION -->
+  <div class="section-label">Style Comparison</div>
+  <div class="section-title">Select managers to overlay their draft profiles.</div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <!-- Season filter -->
+    <div class="filter-row">
+      <span class="filter-label">Season:</span>
+      <button class="filter-btn active" onclick="setSeason('career',this)">Career</button>
+      <button class="filter-btn" onclick="setSeason(2020,this)">2020</button>
+      <button class="filter-btn" onclick="setSeason(2021,this)">2021</button>
+      <button class="filter-btn" onclick="setSeason(2022,this)">2022</button>
+      <button class="filter-btn" onclick="setSeason(2023,this)">2023</button>
+      <button class="filter-btn" onclick="setSeason(2024,this)">2024</button>
+      <button class="filter-btn" onclick="setSeason(2025,this)">2025</button>
+    </div>
+    <!-- Manager chips -->
+    <div class="mgr-toggle-grid" id="mgr-chips"></div>
+    <!-- Radar -->
+    <div class="radar-wrap">
+      <canvas id="chart-radar"></canvas>
+    </div>
+    <p class="metric-note">Outer edge = league max for that trait. All values normalized 0-100 across all manager-seasons.</p>
+  </div>
+
+  <!-- DIMENSION TABLE -->
+  <div class="section-label" style="margin-top:2rem;">Raw Dimension Values</div>
+  <div class="section-title">Career averages for every manager across all seven dimensions.</div>
+
+  <div class="callout glass">
+    <div class="callout-label">Dimension Guide</div>
+    <p><strong>Early RB% / WR%</strong> -- share of rounds 1-3 picks going to that position. <strong>QB/TE Timing</strong> -- average round of first QB or TE pick (lower = earlier). <strong>Skill Diversity</strong> -- how evenly spread picks are across RB/WR/QB/TE (higher = more balanced). <strong>K/DST Patience</strong> -- how many rounds later than league average a manager waits to draft their first kicker and defense (positive = more patient, negative = reaches early). <strong>Surplus</strong> -- average surplus value per pick, measuring how much better or worse drafted players performed relative to their slot expectations.</p>
+  </div>
+
+  <div class="table-wrap glass">
+    <table class="dim-table" id="dim-table">
+      <thead>
+        <tr>
+          <th>Manager</th>
+          <th>Early RB%</th>
+          <th>Early WR%</th>
+          <th>QB Round</th>
+          <th>TE Round</th>
+          <th>Diversity</th>
+          <th>K/DST Patience</th>
+          <th>Surplus/Pick</th>
+        </tr>
+      </thead>
+      <tbody id="dim-tbody"></tbody>
+    </table>
+    <p class="metric-note">Sorted by surplus value. QB/TE Round = average round of first pick at that position per season.</p>
+  </div>
+
+  <footer>
+    <p>Preach Fantasy &middot; Est. 2020 &middot; Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
+  </footer>
+
+</div>
+<script src="../shared.js"></script>
+<script>
+Chart.defaults.font.family = "'Outfit', sans-serif";
+Chart.defaults.font.size   = 12;
+Chart.defaults.color       = '#5a5550';
+
+
+var FINGERPRINTS = {"Aidan Quigley": {"career": {"raw": {"early_rb": 46.7, "early_wr": 40.0, "qb_timing": 5.0, "te_timing": 5.8, "diversity": 92.0, "kdst_patience": -0.61, "surplus": -0.178}, "normalized": {"early_rb": 46.7, "early_wr": 40.0, "qb_timing": 66.7, "te_timing": 56.4, "diversity": 66.4, "kdst_patience": 45.0, "surplus": 43.8}}}, "Andrew Root": {"career": {"raw": {"early_rb": 61.1, "early_wr": 38.9, "qb_timing": 4.67, "te_timing": 6.0, "diversity": 87.5, "kdst_patience": -0.15, "surplus": -0.064}, "normalized": {"early_rb": 61.1, "early_wr": 38.9, "qb_timing": 70.3, "te_timing": 54.5, "diversity": 45.6, "kdst_patience": 52.7, "surplus": 46.6}}}, "Anthony Kelly": {"career": {"raw": {"early_rb": 33.3, "early_wr": 55.6, "qb_timing": 6.83, "te_timing": 6.33, "diversity": 87.2, "kdst_patience": 1.6, "surplus": 0.16}, "normalized": {"early_rb": 33.3, "early_wr": 55.6, "qb_timing": 46.3, "te_timing": 51.5, "diversity": 44.2, "kdst_patience": 81.8, "surplus": 51.9}}}, "Baylen Slansky": {"career": {"raw": {"early_rb": 50.0, "early_wr": 44.4, "qb_timing": 5.0, "te_timing": 6.33, "diversity": 90.4, "kdst_patience": 0.35, "surplus": -0.002}, "normalized": {"early_rb": 50.0, "early_wr": 44.4, "qb_timing": 66.7, "te_timing": 51.5, "diversity": 59.0, "kdst_patience": 61.0, "surplus": 48.0}}}, "Ben Castaldo": {"career": {"raw": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 5.33, "te_timing": 6.83, "diversity": 94.0, "kdst_patience": -1.4, "surplus": -0.09}, "normalized": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 63.0, "te_timing": 47.0, "diversity": 75.6, "kdst_patience": 31.8, "surplus": 45.9}}}, "Brandon Hancock": {"career": {"raw": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 4.5, "te_timing": 7.33, "diversity": 90.9, "kdst_patience": -1.06, "surplus": -0.162}, "normalized": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 72.2, "te_timing": 42.5, "diversity": 61.3, "kdst_patience": 37.5, "surplus": 44.2}}}, "Carmine Pittelli": {"career": {"raw": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 6.0, "te_timing": 3.83, "diversity": 87.7, "kdst_patience": -0.56, "surplus": 0.163}, "normalized": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 55.6, "te_timing": 74.3, "diversity": 46.5, "kdst_patience": 45.8, "surplus": 52.0}}}, "Charlie Gorman": {"career": {"raw": {"early_rb": 55.6, "early_wr": 33.3, "qb_timing": 5.83, "te_timing": 5.5, "diversity": 93.0, "kdst_patience": -0.48, "surplus": 0.073}, "normalized": {"early_rb": 55.6, "early_wr": 33.3, "qb_timing": 57.4, "te_timing": 59.1, "diversity": 71.0, "kdst_patience": 47.2, "surplus": 49.8}}}, "Cole Maney": {"career": {"raw": {"early_rb": 27.8, "early_wr": 66.7, "qb_timing": 6.0, "te_timing": 6.83, "diversity": 86.0, "kdst_patience": -0.48, "surplus": 0.049}, "normalized": {"early_rb": 27.8, "early_wr": 66.7, "qb_timing": 55.6, "te_timing": 47.0, "diversity": 38.7, "kdst_patience": 47.2, "surplus": 49.3}}}, "Deniz Bileydi": {"career": {"raw": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 5.33, "te_timing": 5.17, "diversity": 88.5, "kdst_patience": -0.65, "surplus": 0.008}, "normalized": {"early_rb": 38.9, "early_wr": 50.0, "qb_timing": 63.0, "te_timing": 62.1, "diversity": 50.2, "kdst_patience": 44.3, "surplus": 48.3}}}, "Ethan Radecki": {"career": {"raw": {"early_rb": 27.8, "early_wr": 50.0, "qb_timing": 6.0, "te_timing": 4.83, "diversity": 89.0, "kdst_patience": 0.77, "surplus": 0.015}, "normalized": {"early_rb": 27.8, "early_wr": 50.0, "qb_timing": 55.6, "te_timing": 65.2, "diversity": 52.5, "kdst_patience": 68.0, "surplus": 48.4}}}, "Max Malich": {"career": {"raw": {"early_rb": 44.4, "early_wr": 44.4, "qb_timing": 5.83, "te_timing": 4.17, "diversity": 92.4, "kdst_patience": 0.1, "surplus": -0.078}, "normalized": {"early_rb": 44.4, "early_wr": 44.4, "qb_timing": 57.4, "te_timing": 71.2, "diversity": 68.2, "kdst_patience": 56.8, "surplus": 46.2}}}, "Quin Gegwich": {"career": {"raw": {"early_rb": 61.1, "early_wr": 33.3, "qb_timing": 6.67, "te_timing": 5.5, "diversity": 87.9, "kdst_patience": 0.35, "surplus": -0.229}, "normalized": {"early_rb": 61.1, "early_wr": 33.3, "qb_timing": 48.1, "te_timing": 59.1, "diversity": 47.5, "kdst_patience": 61.0, "surplus": 42.6}}}, "Ryan McQuaid": {"career": {"raw": {"early_rb": 72.2, "early_wr": 22.2, "qb_timing": 6.17, "te_timing": 8.0, "diversity": 95.0, "kdst_patience": 2.1, "surplus": -0.305}, "normalized": {"early_rb": 72.2, "early_wr": 22.2, "qb_timing": 53.7, "te_timing": 36.4, "diversity": 80.2, "kdst_patience": 90.2, "surplus": 40.8}}}};
+
+var FP_LABELS = ['Early RB%','Early WR%','QB Timing','TE Timing','Skill Diversity','K/DST Patience','Surplus'];
+var FP_DIMS   = ['early_rb','early_wr','qb_timing','te_timing','diversity','kdst_patience','surplus'];
+
+var MGR_COLORS = [
+  '#9c6b9c','#4a7fa8','#c0623a','#5a8a5a','#d4af37',
+  '#7a6fa8','#a85a5a','#6baaa8','#c08a3a','#8aaa6b',
+  '#a86b6b','#6b8aa8','#aa8a6b','#6baa8a'
+];
+
+var MANAGERS_ORDERED = [
+  {name:'Carmine Pittelli', logo:'Pittelli'},
+  {name:'Anthony Kelly',    logo:'Kelly'},
+  {name:'Charlie Gorman',   logo:'Gorman'},
+  {name:'Cole Maney',       logo:'Maney'},
+  {name:'Ethan Radecki',    logo:'Radecki'},
+  {name:'Deniz Bileydi',    logo:'Bileydi'},
+  {name:'Baylen Slansky',   logo:'Slansky'},
+  {name:'Andrew Root',      logo:'Root'},
+  {name:'Max Malich',       logo:'Malich'},
+  {name:'Ben Castaldo',     logo:'Castaldo'},
+  {name:'Brandon Hancock',  logo:'Hancock'},
+  {name:'Aidan Quigley',    logo:'Quigley'},
+  {name:'Quin Gegwich',     logo:'Gegwich'},
+  {name:'Ryan McQuaid',     logo:'McQuaid'},
+];
+
+var RAW_FNS = [
+  function(v){ return v!==null ? v.toFixed(1)+'% of early picks' : 'N/A'; },
+  function(v){ return v!==null ? v.toFixed(1)+'% of early picks' : 'N/A'; },
+  function(v){ return v!==null ? 'Avg round '+v.toFixed(1) : 'N/A'; },
+  function(v){ return v!==null ? 'Avg round '+v.toFixed(1) : 'N/A'; },
+  function(v){ return v!==null ? v.toFixed(1)+' diversity score' : 'N/A'; },
+  function(v){ return v!==null ? (v>=0?'+':'')+v.toFixed(2)+' rounds vs avg' : 'N/A'; },
+  function(v){ return v!==null ? (v>=0?'+':'')+v.toFixed(3)+' surplus/pick' : 'N/A'; },
+];
+
+var currentSeason  = 'career';
+var activeManagers = {};
+var radarChart     = null;
+
+function getColor(i){ return MGR_COLORS[i % MGR_COLORS.length]; }
+
+function getPeriod(mgr){
+  var e = FINGERPRINTS[mgr]; if(!e) return null;
+  var k = currentSeason==='career'?'career':currentSeason;
+  return e[k] || e['career'] || null;
+}
+
+function buildChips(){
+  var g = document.getElementById('mgr-chips'); g.innerHTML='';
+  MANAGERS_ORDERED.forEach(function(m,i){
+    var c=getColor(i), chip=document.createElement('div');
+    chip.className='mgr-chip'; chip.dataset.manager=m.name; chip.dataset.color=c;
+    chip.style.borderColor=c;
+    chip.innerHTML='<img src="../images/logos/'+m.logo+'.png" onerror="this.style.display='none'">'
+      +'<span class="chip-dot" style="background:'+c+'"></span>'+m.name.split(' ').pop();
+    chip.onclick=function(){ toggleManager(m.name,chip,c); };
+    g.appendChild(chip);
+  });
+}
+
+function toggleManager(name,chip,color){
+  if(activeManagers[name]){ delete activeManagers[name]; chip.classList.remove('active');
+    chip.style.background='rgba(var(--accent-rgb),0.06)'; chip.style.color='';
+  } else {
+    activeManagers[name]=color; chip.classList.add('active');
+    chip.style.background=color; chip.style.color='#fff';
+  }
+  renderRadar();
+}
+
+function setSeason(season,btn){
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active'); currentSeason=season; renderRadar();
+}
+
+function renderRadar(){
+  if(radarChart){ radarChart.destroy(); radarChart=null; }
+  var ctx=document.getElementById('chart-radar').getContext('2d');
+  var datasets=[];
+
+  Object.keys(activeManagers).forEach(function(name){
+    var color=activeManagers[name], period=getPeriod(name); if(!period) return;
+    var norm=period.normalized, raw=period.raw;
+    var data=FP_DIMS.map(function(d){ return norm[d]!==undefined?norm[d]:50; });
+    var rawVals=FP_DIMS.map(function(d){ return raw[d]!==undefined?raw[d]:null; });
+    var rgba=color+'28';
+    datasets.push({label:name,data:data,
+      backgroundColor:rgba,borderColor:color,borderWidth:2.5,
+      pointBackgroundColor:color,pointBorderColor:'#fff',pointBorderWidth:1.5,
+      pointRadius:5,pointHoverRadius:8,_rawVals:rawVals});
+  });
+
+  if(datasets.length===0){
+    MANAGERS_ORDERED.forEach(function(m){
+      var period=getPeriod(m.name); if(!period) return;
+      var data=FP_DIMS.map(function(d){ return period.normalized[d]!==undefined?period.normalized[d]:50; });
+      datasets.push({label:m.name,data:data,
+        backgroundColor:'rgba(156,148,156,0.03)',borderColor:'rgba(156,148,156,0.22)',
+        borderWidth:1,pointRadius:0,
+        _rawVals:FP_DIMS.map(function(d){ return period.raw[d]!==undefined?period.raw[d]:null; })});
+    });
+  }
+
+  radarChart=new Chart(ctx,{
+    type:'radar',
+    data:{labels:FP_LABELS,datasets:datasets},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{
+          display:datasets.length>0&&datasets.length<=8,position:'bottom',
+          labels:{color:'#5a5550',boxWidth:12,padding:14,font:{size:11}}
+        },
+        tooltip:{callbacks:{
+          title:function(items){ return FP_LABELS[items[0].dataIndex]; },
+          label:function(ctx){
+            var rv=ctx.dataset._rawVals; if(!rv) return ctx.dataset.label;
+            return ctx.dataset.label+': '+RAW_FNS[ctx.dataIndex](rv[ctx.dataIndex]);
+          }
+        }}
+      },
+      scales:{r:{
+        min:0,max:100,ticks:{stepSize:25,display:false},
+        grid:{color:'rgba(156,148,156,0.18)'},
+        angleLines:{color:'rgba(156,148,156,0.18)'},
+        pointLabels:{color:'#6b5f50',font:{size:12,family:"'Outfit', sans-serif",weight:'600'}}
+      }}
+    }
+  });
+}
+
+function buildTable(){
+  var tbody=document.getElementById('dim-tbody');
+  var rows=Object.keys(FINGERPRINTS).map(function(n){ return {name:n,r:FINGERPRINTS[n].career.raw}; });
+  rows.sort(function(a,b){ return b.r.surplus-a.r.surplus; });
+  var html='';
+  rows.forEach(function(row){
+    var r=row.r;
+    var sc=r.surplus>=0?'val-green':'val-red';
+    var kc=r.kdst_patience>=0?'val-green':'val-red';
+    var ss=r.surplus>=0?'+':'', ks=r.kdst_patience>=0?'+':'';
+    html+='<tr><td>'+row.name+'</td>'
+      +'<td>'+r.early_rb.toFixed(1)+'%</td>'
+      +'<td>'+r.early_wr.toFixed(1)+'%</td>'
+      +'<td>'+(r.qb_timing!==null?r.qb_timing.toFixed(1):'N/A')+'</td>'
+      +'<td>'+(r.te_timing!==null?r.te_timing.toFixed(1):'N/A')+'</td>'
+      +'<td>'+r.diversity.toFixed(1)+'</td>'
+      +'<td class="'+kc+'">'+ks+r.kdst_patience.toFixed(2)+'</td>'
+      +'<td class="'+sc+'">'+ss+r.surplus.toFixed(3)+'</td>'
+      +'</tr>';
+  });
+  tbody.innerHTML=html;
+}
+
+buildChips();
+renderRadar();
+buildTable();
+</script>
+</body>
+</html>
