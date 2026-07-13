@@ -71,6 +71,38 @@
 .dim-table tbody td:first-child { font-weight:600;color:var(--palm); }
 
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
+
+/* ── ARCHETYPE SECTION ── */
+.archetype-cards {
+  display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin-bottom:1.5rem;
+}
+.archetype-card {
+  padding:1.25rem 1.5rem;border-left:3px solid var(--accent);
+}
+.archetype-name {
+  font-family:var(--font-display);font-size:1rem;font-weight:900;
+  color:var(--palm);margin-bottom:0.25rem;
+}
+.archetype-desc { font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem;line-height:1.5; }
+.archetype-stats {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;
+}
+.arch-stat { text-align:center; }
+.arch-stat-val {
+  font-family:var(--font-display);font-size:1.1rem;font-weight:900;
+  line-height:1;margin-bottom:0.2rem;
+}
+.arch-stat-lbl { font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:700; }
+.cluster-scatter-wrap { position:relative;height:400px; }
+.outcome-chart-wrap { position:relative;height:320px; }
+.cluster-legend {
+  display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1rem;
+}
+.cluster-legend-item {
+  display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--text-mid);
+}
+.cluster-dot { width:10px;height:10px;border-radius:50%;flex-shrink:0; }
+@media(max-width:768px){ .archetype-cards { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -178,6 +210,39 @@
       <tbody id="dim-tbody"></tbody>
     </table>
     <p class="metric-note">Sorted by surplus value. QB/TE Round = average round of first pick at that position per season.</p>
+  </div>
+
+
+  <!-- ARCHETYPE SECTION -->
+  <div class="section-label" style="margin-top:2rem;">Draft Archetypes</div>
+  <div class="section-title">K-means clustering groups manager-seasons into four distinct drafting styles.</div>
+
+  <div class="callout glass">
+    <div class="callout-label">Important Note</div>
+    <p>This analysis reflects <strong>draft-day decisions only</strong>. It does not capture in-season waiver additions, trades, injuries, or lineup management. Two managers in the same archetype may have very different season outcomes due to factors that happen after the draft. Use this as a lens on drafting philosophy, not a complete picture of manager quality.</p>
+  </div>
+
+  <div class="archetype-cards" id="archetype-cards"></div>
+
+  <div class="section-label">Cluster Scatter</div>
+  <div class="section-title">Each dot is one manager-season, colored by archetype. Axes show the two most separating dimensions.</div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="cluster-legend" id="cluster-legend"></div>
+    <div class="cluster-scatter-wrap">
+      <canvas id="chart-scatter"></canvas>
+    </div>
+    <p class="metric-note">X axis: Early RB% (higher = more RBs in rounds 1-3). Y axis: Surplus value per pick. Hover any dot for manager and season details.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Archetype Outcomes</div>
+  <div class="section-title">How did each drafting style translate to on-field results?</div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="outcome-chart-wrap">
+      <canvas id="chart-outcomes"></canvas>
+    </div>
+    <p class="metric-note">Based on regular season records only, 2020-2025. Does not account for in-season roster moves.</p>
   </div>
 
   <footer>
@@ -393,6 +458,208 @@ function buildTable(){
 buildChips();
 renderRadar();
 buildTable();
+
+// ── Archetype Data ────────────────────────────────────────────────────────────
+var ARCHETYPES = {"assignments": [{"manager": "Aidan Quigley", "season": 2021, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 6.0, "diversity": 92.5, "kdst_patience": -0.81, "surplus": 0.399}, "outcomes": {"wins": 8, "win_pct": 0.615, "pfg": 116.3, "playoffs": 1, "champ_app": 0}}, {"manager": "Aidan Quigley", "season": 2023, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 7.0, "te_timing": 1.0, "diversity": 88.4, "kdst_patience": -1.31, "surplus": -0.745}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 100.2, "playoffs": 0, "champ_app": 0}}, {"manager": "Andrew Root", "season": 2022, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 7.0, "diversity": 80.3, "kdst_patience": -0.31, "surplus": 0.181}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 110.8, "playoffs": 1, "champ_app": 0}}, {"manager": "Andrew Root", "season": 2024, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 4.0, "te_timing": 5.0, "diversity": 88.4, "kdst_patience": -0.81, "surplus": 0.135}, "outcomes": {"wins": 8, "win_pct": 0.615, "pfg": 118.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Andrew Root", "season": 2025, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 4.0, "te_timing": 6.0, "diversity": 85.7, "kdst_patience": -0.31, "surplus": 0.304}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.1, "playoffs": 1, "champ_app": 0}}, {"manager": "Anthony Kelly", "season": 2021, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 7.0, "te_timing": 1.0, "diversity": 88.4, "kdst_patience": 1.69, "surplus": 0.584}, "outcomes": {"wins": 9, "win_pct": 0.692, "pfg": 118.5, "playoffs": 1, "champ_app": 0}}, {"manager": "Baylen Slansky", "season": 2020, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 7.0, "te_timing": 6.0, "diversity": 93.9, "kdst_patience": -2.31, "surplus": 1.891}, "outcomes": {"wins": 9, "win_pct": 0.75, "pfg": 141.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Baylen Slansky", "season": 2025, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 2.0, "diversity": 92.5, "kdst_patience": -0.31, "surplus": -1.059}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.2, "playoffs": 0, "champ_app": 0}}, {"manager": "Ben Castaldo", "season": 2021, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 6.0, "diversity": 92.5, "kdst_patience": -1.81, "surplus": 1.233}, "outcomes": {"wins": 10, "win_pct": 0.769, "pfg": 128.4, "playoffs": 1, "champ_app": 1}}, {"manager": "Brandon Hancock", "season": 2020, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 2.0, "te_timing": 7.0, "diversity": 85.7, "kdst_patience": -2.81, "surplus": 1.059}, "outcomes": {"wins": 7, "win_pct": 0.583, "pfg": 116.8, "playoffs": 1, "champ_app": 0}}, {"manager": "Carmine Pittelli", "season": 2020, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 6.0, "te_timing": 2.0, "diversity": 88.4, "kdst_patience": -0.31, "surplus": 2.172}, "outcomes": {"wins": 10, "win_pct": 0.833, "pfg": 131.2, "playoffs": 1, "champ_app": 1}}, {"manager": "Carmine Pittelli", "season": 2022, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 0.0, "qb_timing": 6.0, "te_timing": 2.0, "diversity": 85.7, "kdst_patience": -0.31, "surplus": -0.454}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.7, "playoffs": 1, "champ_app": 0}}, {"manager": "Carmine Pittelli", "season": 2025, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 8.0, "te_timing": 5.0, "diversity": 85.7, "kdst_patience": -0.31, "surplus": -0.536}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 104.3, "playoffs": 0, "champ_app": 0}}, {"manager": "Charlie Gorman", "season": 2020, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 4.0, "te_timing": 6.0, "diversity": 88.4, "kdst_patience": -2.81, "surplus": 0.156}, "outcomes": {"wins": 6, "win_pct": 0.5, "pfg": 110.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Charlie Gorman", "season": 2021, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 7.0, "diversity": 88.4, "kdst_patience": -1.81, "surplus": -0.199}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.8, "playoffs": 1, "champ_app": 0}}, {"manager": "Charlie Gorman", "season": 2022, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 6.0, "te_timing": 2.0, "diversity": 93.9, "kdst_patience": -0.81, "surplus": -0.654}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 101.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Deniz Bileydi", "season": 2020, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 2.0, "te_timing": 4.0, "diversity": 88.4, "kdst_patience": -2.31, "surplus": 0.32}, "outcomes": {"wins": 8, "win_pct": 0.667, "pfg": 122.3, "playoffs": 1, "champ_app": 0}}, {"manager": "Deniz Bileydi", "season": 2021, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 7.0, "te_timing": 2.0, "diversity": 91.2, "kdst_patience": -1.31, "surplus": 0.529}, "outcomes": {"wins": 8, "win_pct": 0.615, "pfg": 119.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Ethan Radecki", "season": 2021, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 3.0, "diversity": 88.4, "kdst_patience": -0.81, "surplus": 0.182}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.1, "playoffs": 1, "champ_app": 0}}, {"manager": "Ethan Radecki", "season": 2023, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 4.0, "te_timing": 2.0, "diversity": 81.6, "kdst_patience": 0.69, "surplus": 1.028}, "outcomes": {"wins": 10, "win_pct": 0.769, "pfg": 128.8, "playoffs": 1, "champ_app": 1}}, {"manager": "Max Malich", "season": 2020, "cluster": 0, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 10.0, "te_timing": 2.0, "diversity": 88.4, "kdst_patience": -1.31, "surplus": 0.304}, "outcomes": {"wins": 6, "win_pct": 0.5, "pfg": 120.2, "playoffs": 1, "champ_app": 0}}, {"manager": "Max Malich", "season": 2022, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 4.0, "diversity": 96.3, "kdst_patience": -0.31, "surplus": 1.072}, "outcomes": {"wins": 9, "win_pct": 0.692, "pfg": 126.4, "playoffs": 1, "champ_app": 1}}, {"manager": "Max Malich", "season": 2024, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 4.0, "te_timing": 5.0, "diversity": 92.5, "kdst_patience": -0.31, "surplus": 0.651}, "outcomes": {"wins": 9, "win_pct": 0.692, "pfg": 122.1, "playoffs": 1, "champ_app": 0}}, {"manager": "Quin Gegwich", "season": 2020, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 7.0, "diversity": 88.4, "kdst_patience": -0.81, "surplus": -0.018}, "outcomes": {"wins": 7, "win_pct": 0.583, "pfg": 112.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Quin Gegwich", "season": 2022, "cluster": 0, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 6.0, "te_timing": 5.0, "diversity": 80.3, "kdst_patience": 0.69, "surplus": 1.017}, "outcomes": {"wins": 9, "win_pct": 0.692, "pfg": 118.6, "playoffs": 1, "champ_app": 0}}, {"manager": "Aidan Quigley", "season": 2024, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 8.0, "diversity": 92.5, "kdst_patience": 1.19, "surplus": 0.458}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 114.2, "playoffs": 1, "champ_app": 0}}, {"manager": "Andrew Root", "season": 2023, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 4.0, "te_timing": 5.0, "diversity": 89.9, "kdst_patience": 1.19, "surplus": -0.988}, "outcomes": {"wins": 4, "win_pct": 0.308, "pfg": 101.2, "playoffs": 0, "champ_app": 0}}, {"manager": "Baylen Slansky", "season": 2022, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 7.0, "diversity": 85.7, "kdst_patience": 2.69, "surplus": -0.047}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Baylen Slansky", "season": 2023, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 4.0, "te_timing": 5.0, "diversity": 92.5, "kdst_patience": 1.19, "surplus": -1.051}, "outcomes": {"wins": 4, "win_pct": 0.308, "pfg": 102.1, "playoffs": 0, "champ_app": 0}}, {"manager": "Brandon Hancock", "season": 2022, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 8.0, "te_timing": 6.0, "diversity": 93.9, "kdst_patience": -0.31, "surplus": -0.479}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 104.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Charlie Gorman", "season": 2024, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 0.0, "qb_timing": 7.0, "te_timing": 3.0, "diversity": 99.3, "kdst_patience": 2.19, "surplus": 0.414}, "outcomes": {"wins": 8, "win_pct": 0.615, "pfg": 116.8, "playoffs": 1, "champ_app": 0}}, {"manager": "Charlie Gorman", "season": 2025, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 6.0, "te_timing": 9.0, "diversity": 88.4, "kdst_patience": 2.69, "surplus": -0.044}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.3, "playoffs": 0, "champ_app": 0}}, {"manager": "Deniz Bileydi", "season": 2025, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 6.0, "te_timing": 7.0, "diversity": 93.9, "kdst_patience": 0.19, "surplus": -0.164}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 107.2, "playoffs": 0, "champ_app": 0}}, {"manager": "Quin Gegwich", "season": 2023, "cluster": 1, "dims": {"early_rb": 100.0, "early_wr": 0.0, "qb_timing": 6.0, "te_timing": 7.0, "diversity": 83.0, "kdst_patience": 1.69, "surplus": -0.898}, "outcomes": {"wins": 4, "win_pct": 0.308, "pfg": 100.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Quin Gegwich", "season": 2025, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 0.0, "qb_timing": 9.0, "te_timing": 3.0, "diversity": 88.4, "kdst_patience": 2.19, "surplus": -1.212}, "outcomes": {"wins": 3, "win_pct": 0.231, "pfg": 96.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Ryan McQuaid", "season": 2020, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 4.0, "te_timing": 9.0, "diversity": 93.9, "kdst_patience": 2.69, "surplus": -0.906}, "outcomes": {"wins": 3, "win_pct": 0.25, "pfg": 98.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Ryan McQuaid", "season": 2021, "cluster": 1, "dims": {"early_rb": 100.0, "early_wr": 0.0, "qb_timing": 6.0, "te_timing": 8.0, "diversity": 96.6, "kdst_patience": -0.31, "surplus": -0.024}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.2, "playoffs": 1, "champ_app": 0}}, {"manager": "Ryan McQuaid", "season": 2022, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 11.0, "te_timing": 9.0, "diversity": 96.6, "kdst_patience": 2.69, "surplus": -0.626}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 104.6, "playoffs": 0, "champ_app": 0}}, {"manager": "Ryan McQuaid", "season": 2023, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 6.0, "te_timing": 12.0, "diversity": 92.5, "kdst_patience": 2.69, "surplus": -0.425}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 106.2, "playoffs": 0, "champ_app": 0}}, {"manager": "Ryan McQuaid", "season": 2024, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 8.0, "te_timing": 4.0, "diversity": 92.5, "kdst_patience": 2.19, "surplus": -0.341}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Ryan McQuaid", "season": 2025, "cluster": 1, "dims": {"early_rb": 66.7, "early_wr": 0.0, "qb_timing": 2.0, "te_timing": 6.0, "diversity": 93.9, "kdst_patience": 2.69, "surplus": 0.492}, "outcomes": {"wins": 8, "win_pct": 0.615, "pfg": 116.2, "playoffs": 1, "champ_app": 1}}, {"manager": "Aidan Quigley", "season": 2022, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 5.0, "te_timing": 7.0, "diversity": 92.5, "kdst_patience": -1.81, "surplus": 0.128}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Andrew Root", "season": 2020, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 6.0, "te_timing": 5.0, "diversity": 77.6, "kdst_patience": 0.19, "surplus": 0.868}, "outcomes": {"wins": 8, "win_pct": 0.667, "pfg": 121.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Anthony Kelly", "season": 2020, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 4.0, "te_timing": 7.0, "diversity": 80.3, "kdst_patience": -0.81, "surplus": 1.197}, "outcomes": {"wins": 8, "win_pct": 0.667, "pfg": 126.3, "playoffs": 1, "champ_app": 0}}, {"manager": "Anthony Kelly", "season": 2022, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 8.0, "te_timing": 5.0, "diversity": 81.6, "kdst_patience": 1.19, "surplus": 0.536}, "outcomes": {"wins": 8, "win_pct": 0.615, "pfg": 116.8, "playoffs": 1, "champ_app": 0}}, {"manager": "Anthony Kelly", "season": 2024, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 9.0, "te_timing": 8.0, "diversity": 88.4, "kdst_patience": 2.69, "surplus": -0.012}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Anthony Kelly", "season": 2025, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 10.0, "te_timing": 9.0, "diversity": 88.4, "kdst_patience": 2.19, "surplus": 0.181}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.1, "playoffs": 1, "champ_app": 0}}, {"manager": "Baylen Slansky", "season": 2024, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 4.0, "te_timing": 6.0, "diversity": 88.4, "kdst_patience": 1.69, "surplus": 1.179}, "outcomes": {"wins": 10, "win_pct": 0.769, "pfg": 128.4, "playoffs": 1, "champ_app": 1}}, {"manager": "Ben Castaldo", "season": 2023, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 7.0, "te_timing": 8.0, "diversity": 90.7, "kdst_patience": -1.81, "surplus": -0.276}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Ben Castaldo", "season": 2025, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 7.0, "te_timing": 6.0, "diversity": 96.3, "kdst_patience": 0.19, "surplus": -0.009}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.2, "playoffs": 0, "champ_app": 0}}, {"manager": "Brandon Hancock", "season": 2024, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 4.0, "te_timing": 7.0, "diversity": 85.7, "kdst_patience": -0.81, "surplus": 0.529}, "outcomes": {"wins": 8, "win_pct": 0.615, "pfg": 116.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Carmine Pittelli", "season": 2021, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 4.0, "te_timing": 5.0, "diversity": 85.7, "kdst_patience": -0.81, "surplus": 0.84}, "outcomes": {"wins": 9, "win_pct": 0.692, "pfg": 122.4, "playoffs": 1, "champ_app": 1}}, {"manager": "Carmine Pittelli", "season": 2023, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 8.0, "te_timing": 4.0, "diversity": 77.6, "kdst_patience": -1.31, "surplus": 0.192}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.8, "playoffs": 1, "champ_app": 0}}, {"manager": "Charlie Gorman", "season": 2023, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 7.0, "te_timing": 6.0, "diversity": 83.0, "kdst_patience": -2.31, "surplus": 0.762}, "outcomes": {"wins": 9, "win_pct": 0.692, "pfg": 122.4, "playoffs": 1, "champ_app": 1}}, {"manager": "Cole Maney", "season": 2020, "cluster": 2, "dims": {"early_rb": 0.0, "early_wr": 100.0, "qb_timing": 10.0, "te_timing": 4.0, "diversity": 83.0, "kdst_patience": 0.69, "surplus": 0.26}, "outcomes": {"wins": 7, "win_pct": 0.583, "pfg": 114.2, "playoffs": 1, "champ_app": 0}}, {"manager": "Cole Maney", "season": 2021, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 7.0, "te_timing": 5.0, "diversity": 91.2, "kdst_patience": -0.81, "surplus": 0.405}, "outcomes": {"wins": 8, "win_pct": 0.615, "pfg": 118.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Cole Maney", "season": 2025, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 5.0, "te_timing": 8.0, "diversity": 88.4, "kdst_patience": 0.19, "surplus": 1.524}, "outcomes": {"wins": 9, "win_pct": 0.692, "pfg": 122.8, "playoffs": 1, "champ_app": 1}}, {"manager": "Deniz Bileydi", "season": 2023, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 8.0, "te_timing": 5.0, "diversity": 83.0, "kdst_patience": -0.31, "surplus": 0.176}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Deniz Bileydi", "season": 2024, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 4.0, "te_timing": 6.0, "diversity": 88.4, "kdst_patience": 0.69, "surplus": 0.213}, "outcomes": {"wins": 8, "win_pct": 0.615, "pfg": 116.8, "playoffs": 1, "champ_app": 0}}, {"manager": "Ethan Radecki", "season": 2020, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 7.0, "te_timing": 6.0, "diversity": 80.3, "kdst_patience": -0.81, "surplus": 0.714}, "outcomes": {"wins": 8, "win_pct": 0.667, "pfg": 122.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Ethan Radecki", "season": 2022, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 7.0, "te_timing": 12.0, "diversity": 88.4, "kdst_patience": 2.19, "surplus": 0.81}, "outcomes": {"wins": 9, "win_pct": 0.692, "pfg": 124.2, "playoffs": 1, "champ_app": 0}}, {"manager": "Ethan Radecki", "season": 2024, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 10.0, "te_timing": 4.0, "diversity": 92.5, "kdst_patience": 0.69, "surplus": -0.638}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 104.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Max Malich", "season": 2021, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 5.0, "te_timing": 4.0, "diversity": 85.7, "kdst_patience": -0.31, "surplus": 0.299}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Quin Gegwich", "season": 2021, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 7.0, "te_timing": 6.0, "diversity": 88.4, "kdst_patience": -0.31, "surplus": -0.014}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Quin Gegwich", "season": 2024, "cluster": 2, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 7.0, "te_timing": 5.0, "diversity": 85.7, "kdst_patience": -1.31, "surplus": -0.235}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 104.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Aidan Quigley", "season": 2025, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 3.0, "te_timing": 7.0, "diversity": 87.0, "kdst_patience": -0.31, "surplus": -1.287}, "outcomes": {"wins": 4, "win_pct": 0.308, "pfg": 102.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Andrew Root", "season": 2021, "cluster": 3, "dims": {"early_rb": 66.7, "early_wr": 33.3, "qb_timing": 5.0, "te_timing": 8.0, "diversity": 85.7, "kdst_patience": -0.81, "surplus": -0.951}, "outcomes": {"wins": 4, "win_pct": 0.308, "pfg": 102.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Anthony Kelly", "season": 2023, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 3.0, "te_timing": 8.0, "diversity": 85.7, "kdst_patience": 2.69, "surplus": -1.526}, "outcomes": {"wins": 3, "win_pct": 0.231, "pfg": 98.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Baylen Slansky", "season": 2021, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 5.0, "te_timing": 12.0, "diversity": 85.7, "kdst_patience": -0.81, "surplus": -0.704}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 104.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Ben Castaldo", "season": 2020, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 5.0, "te_timing": 7.0, "diversity": 93.9, "kdst_patience": -3.31, "surplus": -0.373}, "outcomes": {"wins": 5, "win_pct": 0.417, "pfg": 106.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Ben Castaldo", "season": 2022, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 4.0, "te_timing": 6.0, "diversity": 88.4, "kdst_patience": -1.31, "surplus": -0.529}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 104.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Ben Castaldo", "season": 2024, "cluster": 3, "dims": {"early_rb": 0.0, "early_wr": 100.0, "qb_timing": 4.0, "te_timing": 8.0, "diversity": 88.4, "kdst_patience": -0.31, "surplus": -0.641}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 104.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Brandon Hancock", "season": 2021, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 6.0, "te_timing": 8.0, "diversity": 92.5, "kdst_patience": -0.81, "surplus": -1.315}, "outcomes": {"wins": 3, "win_pct": 0.231, "pfg": 98.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Brandon Hancock", "season": 2023, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 4.0, "te_timing": 8.0, "diversity": 92.5, "kdst_patience": -1.31, "surplus": -0.026}, "outcomes": {"wins": 7, "win_pct": 0.538, "pfg": 112.4, "playoffs": 1, "champ_app": 0}}, {"manager": "Brandon Hancock", "season": 2025, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 3.0, "te_timing": 8.0, "diversity": 88.4, "kdst_patience": -0.31, "surplus": -0.742}, "outcomes": {"wins": 4, "win_pct": 0.308, "pfg": 102.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Carmine Pittelli", "season": 2024, "cluster": 3, "dims": {"early_rb": 0.0, "early_wr": 100.0, "qb_timing": 4.0, "te_timing": 5.0, "diversity": 94.7, "kdst_patience": -0.31, "surplus": -1.342}, "outcomes": {"wins": 3, "win_pct": 0.231, "pfg": 98.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Cole Maney", "season": 2022, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 7.0, "te_timing": 10.0, "diversity": 81.6, "kdst_patience": -0.31, "surplus": -1.166}, "outcomes": {"wins": 4, "win_pct": 0.308, "pfg": 102.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Cole Maney", "season": 2023, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 3.0, "te_timing": 6.0, "diversity": 80.3, "kdst_patience": -2.31, "surplus": -0.614}, "outcomes": {"wins": 5, "win_pct": 0.385, "pfg": 104.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Cole Maney", "season": 2024, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 4.0, "te_timing": 8.0, "diversity": 80.3, "kdst_patience": -0.31, "surplus": -0.115}, "outcomes": {"wins": 6, "win_pct": 0.462, "pfg": 108.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Deniz Bileydi", "season": 2022, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 5.0, "te_timing": 7.0, "diversity": 77.6, "kdst_patience": -0.81, "surplus": -1.024}, "outcomes": {"wins": 4, "win_pct": 0.308, "pfg": 102.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Ethan Radecki", "season": 2025, "cluster": 3, "dims": {"early_rb": 0.0, "early_wr": 33.3, "qb_timing": 3.0, "te_timing": 2.0, "diversity": 85.7, "kdst_patience": 2.69, "surplus": -2.009}, "outcomes": {"wins": 3, "win_pct": 0.231, "pfg": 96.8, "playoffs": 0, "champ_app": 0}}, {"manager": "Max Malich", "season": 2023, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 33.3, "qb_timing": 3.0, "te_timing": 4.0, "diversity": 88.4, "kdst_patience": 2.69, "surplus": -0.96}, "outcomes": {"wins": 4, "win_pct": 0.308, "pfg": 102.4, "playoffs": 0, "champ_app": 0}}, {"manager": "Max Malich", "season": 2025, "cluster": 3, "dims": {"early_rb": 33.3, "early_wr": 66.7, "qb_timing": 8.0, "te_timing": 6.0, "diversity": 92.5, "kdst_patience": 0.19, "surplus": -1.753}, "outcomes": {"wins": 3, "win_pct": 0.231, "pfg": 96.8, "playoffs": 0, "champ_app": 0}}], "cluster_summary": [{"id": 0, "name": "The Specialists", "desc": "Early RB or TE commitment, balanced approach. Best playoff rate in the league.", "color": "#5a8a5a", "n_seasons": 25, "center": {"early_rb": 52.0, "early_wr": 32.0, "qb_timing": 5.4, "te_timing": 4.2, "diversity": 88.6, "kdst_patience": -0.85, "surplus": 0.382}, "outcomes": {"avg_wins": 7.0, "avg_win_pct": 0.531, "avg_pfg": 114.5, "playoff_rate": 0.773, "champ_app_rate": 0.136}}, {"id": 1, "name": "The RB Hoarders", "desc": "70%+ early RBs, very patient on K/DST. Worst outcomes across the board.", "color": "#a85a5a", "n_seasons": 16, "center": {"early_rb": 70.9, "early_wr": 22.9, "qb_timing": 6.1, "te_timing": 6.8, "diversity": 92.1, "kdst_patience": 1.72, "surplus": -0.365}, "outcomes": {"avg_wins": 5.5, "avg_win_pct": 0.393, "avg_pfg": 107.5, "playoff_rate": 0.3, "champ_app_rate": 0.1}}, {"id": 2, "name": "The Receivers", "desc": "WR-heavy early, late QB. Best championship rate. High surplus.", "color": "#4a7fa8", "n_seasons": 24, "center": {"early_rb": 31.9, "early_wr": 68.1, "qb_timing": 6.7, "te_timing": 6.2, "diversity": 86.3, "kdst_patience": -0.04, "surplus": 0.401}, "outcomes": {"avg_wins": 7.0, "avg_win_pct": 0.517, "avg_pfg": 114.3, "playoff_rate": 0.682, "champ_app_rate": 0.227}}, {"id": 3, "name": "The Early Callers", "desc": "Early QB, late TE. Worst championship rate and negative surplus.", "color": "#d4af37", "n_seasons": 18, "center": {"early_rb": 29.6, "early_wr": 57.4, "qb_timing": 4.4, "te_timing": 7.1, "diversity": 87.2, "kdst_patience": -0.28, "surplus": -0.949}, "outcomes": {"avg_wins": 6.5, "avg_win_pct": 0.471, "avg_pfg": 108.4, "playoff_rate": 0.529, "champ_app_rate": 0.059}}], "k": 4, "dims": ["early_rb", "early_wr", "qb_timing", "te_timing", "diversity", "kdst_patience", "surplus"]};
+
+var CLUSTER_COLORS = ['#5a8a5a','#a85a5a','#4a7fa8','#d4af37'];
+
+function buildArchetypeCards() {
+  var el = document.getElementById('archetype-cards');
+  if(!el) return;
+  var html = '';
+  ARCHETYPES.cluster_summary.forEach(function(c) {
+    var o = c.outcomes;
+    html += '<div class="archetype-card glass" style="border-left-color:'+c.color+'">'
+      +'<div class="archetype-name" style="color:'+c.color+'">'+c.name+'</div>'
+      +'<div class="archetype-desc">'+c.desc+'</div>'
+      +'<div class="archetype-stats">'
+      +'<div class="arch-stat"><div class="arch-stat-val" style="color:'+c.color+'">'+Math.round(o.playoff_rate*100)+'%</div><div class="arch-stat-lbl">Playoff Rate</div></div>'
+      +'<div class="arch-stat"><div class="arch-stat-val" style="color:'+c.color+'">'+o.avg_wins.toFixed(1)+'</div><div class="arch-stat-lbl">Avg Wins</div></div>'
+      +'<div class="arch-stat"><div class="arch-stat-val" style="color:'+c.color+'">'+Math.round(o.champ_app_rate*100)+'%</div><div class="arch-stat-lbl">Champ App</div></div>'
+      +'</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+function buildClusterLegend() {
+  var el = document.getElementById('cluster-legend');
+  if(!el) return;
+  var html = '';
+  ARCHETYPES.cluster_summary.forEach(function(c) {
+    html += '<div class="cluster-legend-item">'
+      +'<div class="cluster-dot" style="background:'+c.color+'"></div>'
+      +c.name+'</div>';
+  });
+  el.innerHTML = html;
+}
+
+function buildScatterChart() {
+  var ctx = document.getElementById('chart-scatter').getContext('2d');
+  var datasets = ARCHETYPES.cluster_summary.map(function(c) {
+    var pts = ARCHETYPES.assignments
+      .filter(function(a) { return a.cluster === c.id; })
+      .map(function(a) { return {
+        x: a.dims.early_rb,
+        y: a.dims.surplus,
+        manager: a.manager,
+        season: a.season,
+        wins: a.outcomes ? a.outcomes.wins : null,
+        playoffs: a.outcomes ? a.outcomes.playoffs : null,
+      }; });
+    return {
+      label: c.name,
+      data: pts,
+      backgroundColor: c.color + 'bb',
+      borderColor: c.color,
+      borderWidth: 1.5,
+      pointRadius: 7,
+      pointHoverRadius: 10,
+    };
+  });
+
+  new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top', align: 'end',
+          labels: { color: '#5a5550', boxWidth: 12, padding: 14, font: { size: 11 } }
+        },
+        tooltip: {
+          callbacks: {
+            title: function(items) { return items[0].raw.manager + ' ' + items[0].raw.season; },
+            label: function(ctx) {
+              var r = ctx.raw;
+              var lines = [
+                'Early RB%: ' + r.x.toFixed(1) + '%',
+                'Surplus: ' + (r.y >= 0 ? '+' : '') + r.y.toFixed(3),
+              ];
+              if(r.wins !== null) lines.push('Wins: ' + r.wins + (r.playoffs ? ' (Playoffs)' : ''));
+              return lines;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(156,148,156,0.15)', drawBorder: false },
+          ticks: { color: '#8a8480', callback: function(v) { return v + '%'; } },
+          title: { display: true, text: 'Early RB%', color: '#8a8480', font: { size: 11 } },
+          min: -5, max: 105,
+        },
+        y: {
+          grid: { color: 'rgba(156,148,156,0.15)', drawBorder: false },
+          ticks: { color: '#8a8480' },
+          title: { display: true, text: 'Surplus Per Pick', color: '#8a8480', font: { size: 11 } },
+        }
+      }
+    },
+    plugins: [{
+      id: 'zeroLines',
+      afterDraw: function(chart) {
+        var ctx2 = chart.ctx, x = chart.scales.x, y = chart.scales.y;
+        var y0 = y.getPixelForValue(0);
+        ctx2.save();
+        ctx2.strokeStyle = 'rgba(138,132,128,0.4)';
+        ctx2.lineWidth = 1.5;
+        ctx2.setLineDash([5,4]);
+        ctx2.beginPath();
+        ctx2.moveTo(x.left, y0);
+        ctx2.lineTo(x.right, y0);
+        ctx2.stroke();
+        ctx2.restore();
+      }
+    }]
+  });
+}
+
+function buildOutcomeChart() {
+  var ctx = document.getElementById('chart-outcomes').getContext('2d');
+  var labels = ARCHETYPES.cluster_summary.map(function(c) { return c.name; });
+  var colors = ARCHETYPES.cluster_summary.map(function(c) { return c.color; });
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Avg Wins',
+          data: ARCHETYPES.cluster_summary.map(function(c) { return c.outcomes.avg_wins; }),
+          backgroundColor: colors.map(function(c) { return c + 'bb'; }),
+          borderColor: colors,
+          borderWidth: 1.5,
+          borderRadius: 3,
+          yAxisID: 'yWins',
+        },
+        {
+          label: 'Playoff Rate',
+          data: ARCHETYPES.cluster_summary.map(function(c) { return Math.round(c.outcomes.playoff_rate * 100); }),
+          backgroundColor: 'rgba(156,148,156,0.15)',
+          borderColor: 'rgba(156,148,156,0.7)',
+          borderWidth: 1.5,
+          borderRadius: 3,
+          type: 'line',
+          yAxisID: 'yPct',
+          pointRadius: 6,
+          pointBackgroundColor: colors,
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1.5,
+          tension: 0.3,
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top', align: 'end',
+          labels: { color: '#5a5550', boxWidth: 12, padding: 14, font: { size: 11 } }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var c = ARCHETYPES.cluster_summary[ctx.dataIndex];
+              if(ctx.dataset.label === 'Avg Wins') {
+                return 'Avg Wins: ' + ctx.parsed.y.toFixed(1) + ' (' + c.n_seasons + ' seasons)';
+              }
+              return 'Playoff Rate: ' + ctx.parsed.y + '% | Champ App: ' + Math.round(c.outcomes.champ_app_rate*100) + '%';
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(156,148,156,0.15)', drawBorder:false }, ticks: { color: '#8a8480' } },
+        yWins: {
+          type: 'linear', position: 'left',
+          grid: { color: 'rgba(156,148,156,0.15)', drawBorder:false },
+          ticks: { color: '#8a8480', stepSize: 1 },
+          title: { display: true, text: 'Avg Wins', color: '#8a8480', font: { size: 11 } },
+          min: 0, max: 10,
+        },
+        yPct: {
+          type: 'linear', position: 'right',
+          grid: { drawOnChartArea: false },
+          ticks: { color: '#8a8480', callback: function(v) { return v + '%'; } },
+          title: { display: true, text: 'Playoff Rate', color: '#8a8480', font: { size: 11 } },
+          min: 0, max: 100,
+        },
+      }
+    }
+  });
+}
+
+buildArchetypeCards();
+buildClusterLegend();
+buildScatterChart();
+buildOutcomeChart();
+
 </script>
 </body>
 </html>
