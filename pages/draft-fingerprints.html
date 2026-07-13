@@ -340,24 +340,51 @@ function renderRadar(){
   });
 }
 
+function cellGradient(val, min, max, invert) {
+  if(min===max) return '';
+  var p = (val-min)/(max-min);
+  if(invert) p = 1-p;
+  var r,g,b,t;
+  if(p<=0.5){ t=p/0.5; r=Math.round(192+(245-192)*t); g=Math.round(58+(240-58)*t); b=Math.round(58+(232-58)*t); }
+  else{ t=(p-0.5)/0.5; r=Math.round(245+(74-245)*t); g=Math.round(240+(168-240)*t); b=Math.round(232+(58-232)*t); }
+  var textColor = p>0.65 ? '#1a3a1a' : p<0.35 ? '#3a1a1a' : '#3d3a38';
+  return 'background:rgba('+r+','+g+','+b+',0.45);color:'+textColor+';font-weight:600;';
+}
+
 function buildTable(){
   var tbody=document.getElementById('dim-tbody');
   var rows=Object.keys(FINGERPRINTS).map(function(n){ return {name:n,r:FINGERPRINTS[n].career.raw}; });
   rows.sort(function(a,b){ return b.r.surplus-a.r.surplus; });
+
+  // Compute min/max per dimension across all managers
+  var dims_cfg = [
+    {key:'early_rb',      invert:false},
+    {key:'early_wr',      invert:false},
+    {key:'qb_timing',     invert:true},   // lower round = earlier = greener
+    {key:'te_timing',     invert:true},   // lower round = earlier = greener
+    {key:'diversity',     invert:false},
+    {key:'kdst_patience', invert:false},
+    {key:'surplus',       invert:false},
+  ];
+  dims_cfg.forEach(function(d){
+    var vals=rows.map(function(r){ return r.r[d.key]; }).filter(function(v){ return v!==null; });
+    d.min=Math.min.apply(null,vals);
+    d.max=Math.max.apply(null,vals);
+  });
+
   var html='';
   rows.forEach(function(row){
     var r=row.r;
-    var sc=r.surplus>=0?'val-green':'val-red';
-    var kc=r.kdst_patience>=0?'val-green':'val-red';
     var ss=r.surplus>=0?'+':'', ks=r.kdst_patience>=0?'+':'';
-    html+='<tr><td>'+row.name+'</td>'
-      +'<td>'+r.early_rb.toFixed(1)+'%</td>'
-      +'<td>'+r.early_wr.toFixed(1)+'%</td>'
-      +'<td>'+(r.qb_timing!==null?r.qb_timing.toFixed(1):'N/A')+'</td>'
-      +'<td>'+(r.te_timing!==null?r.te_timing.toFixed(1):'N/A')+'</td>'
-      +'<td>'+r.diversity.toFixed(1)+'</td>'
-      +'<td class="'+kc+'">'+ks+r.kdst_patience.toFixed(2)+'</td>'
-      +'<td class="'+sc+'">'+ss+r.surplus.toFixed(3)+'</td>'
+    html+='<tr>'
+      +'<td style="font-weight:600;color:var(--palm)">'+row.name+'</td>'
+      +'<td style="'+cellGradient(r.early_rb,dims_cfg[0].min,dims_cfg[0].max,false)+'">'+r.early_rb.toFixed(1)+'%</td>'
+      +'<td style="'+cellGradient(r.early_wr,dims_cfg[1].min,dims_cfg[1].max,false)+'">'+r.early_wr.toFixed(1)+'%</td>'
+      +'<td style="'+cellGradient(r.qb_timing,dims_cfg[2].min,dims_cfg[2].max,true)+'">'+(r.qb_timing!==null?r.qb_timing.toFixed(1):'N/A')+'</td>'
+      +'<td style="'+cellGradient(r.te_timing,dims_cfg[3].min,dims_cfg[3].max,true)+'">'+(r.te_timing!==null?r.te_timing.toFixed(1):'N/A')+'</td>'
+      +'<td style="'+cellGradient(r.diversity,dims_cfg[4].min,dims_cfg[4].max,false)+'">'+r.diversity.toFixed(1)+'</td>'
+      +'<td style="'+cellGradient(r.kdst_patience,dims_cfg[5].min,dims_cfg[5].max,false)+'">'+ks+r.kdst_patience.toFixed(2)+'</td>'
+      +'<td style="'+cellGradient(r.surplus,dims_cfg[6].min,dims_cfg[6].max,false)+'">'+ss+r.surplus.toFixed(3)+'</td>'
       +'</tr>';
   });
   tbody.innerHTML=html;
