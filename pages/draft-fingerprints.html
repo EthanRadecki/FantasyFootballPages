@@ -212,11 +212,7 @@ var FINGERPRINTS = {
 var FP_LABELS = ['Early RB%','Early WR%','QB Timing','TE Timing','Skill Diversity','K/DST Patience','Surplus'];
 var FP_DIMS   = ['early_rb','early_wr','qb_timing','te_timing','diversity','kdst_patience','surplus'];
 
-var MGR_COLORS = [
-  '#9c6b9c','#4a7fa8','#c0623a','#5a8a5a','#d4af37',
-  '#7a6fa8','#a85a5a','#6baaa8','#c08a3a','#8aaa6b',
-  '#a86b6b','#6b8aa8','#aa8a6b','#6baa8a'
-];
+var MGR_COLORS = ['#541821','#cdbca6','#9f8bc2','#f7cdb9','#ea9a2e','#8d9b51','#776aad','#4c82af','#888888','#404c5b','#4875b9','#eb644c','#ad1f15','#dfc983'];
 
 var MANAGERS_ORDERED = [
   {name:'Carmine Pittelli', logo:'Pittelli'},
@@ -303,12 +299,15 @@ function renderRadar(){
   });
 
   if(datasets.length===0){
-    MANAGERS_ORDERED.forEach(function(m){
+    MANAGERS_ORDERED.forEach(function(m,i){
       var period=getPeriod(m.name); if(!period) return;
+      var color=getColor(i);
       var data=FP_DIMS.map(function(d){ return period.normalized[d]!==undefined?period.normalized[d]:50; });
+      var rgba=color+'28';
       datasets.push({label:m.name,data:data,
-        backgroundColor:'rgba(156,148,156,0.03)',borderColor:'rgba(156,148,156,0.22)',
-        borderWidth:1,pointRadius:0,
+        backgroundColor:rgba,borderColor:color,
+        borderWidth:1.5,pointRadius:3,pointBackgroundColor:color,
+        pointBorderColor:'#fff',pointBorderWidth:1,
         _rawVals:FP_DIMS.map(function(d){ return period.raw[d]!==undefined?period.raw[d]:null; })});
     });
   }
