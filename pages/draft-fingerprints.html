@@ -263,7 +263,7 @@ function buildChips(){
     var c=getColor(i), chip=document.createElement('div');
     chip.className='mgr-chip'; chip.dataset.manager=m.name; chip.dataset.color=c;
     chip.style.borderColor=c;
-    chip.innerHTML='<img src="../images/logos/'+m.logo+'.png" onerror="this.style.display='none'">'
+    chip.innerHTML='<img src="../images/logos/'+m.logo+'.png" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" onerror="this.remove()">'  
       +'<span class="chip-dot" style="background:'+c+'"></span>'+m.name.split(' ').pop();
     chip.onclick=function(){ toggleManager(m.name,chip,c); };
     g.appendChild(chip);
