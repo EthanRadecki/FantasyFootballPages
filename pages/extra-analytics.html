@@ -23,6 +23,19 @@
 .conf-dem { background:rgba(74,127,168,0.18);color:#4a7fa8; }
 .conf-rep { background:rgba(192,98,58,0.18);color:#c0623a; }
 .conf-stat-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:1.5rem; }
+.conf-teams-grid { display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem; }
+.conf-teams-col { padding:1.1rem 1.25rem; }
+.conf-teams-header {
+  font-size:0.68rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:800;
+  margin-bottom:0.9rem;padding-bottom:0.55rem;border-bottom:1px solid rgba(var(--accent-rgb),0.15);
+}
+.conf-teams-list { display:flex;flex-direction:column;gap:0.65rem; }
+.conf-team-chip { display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;font-weight:600;color:var(--text-mid); }
+.conf-team-chip img {
+  width:30px;height:30px;border-radius:50%;object-fit:cover;
+  border:1px solid rgba(var(--accent-rgb),0.2);flex-shrink:0;
+}
+@media(max-width:700px) { .conf-teams-grid { grid-template-columns:1fr; } }
 .conf-stat-card { padding:1.1rem 1rem;text-align:center; }
 .conf-stat-label { font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);margin-bottom:0.75rem; }
 .conf-stat-vals { display:flex;justify-content:center;gap:1.4rem; }
@@ -44,6 +57,20 @@
 .rivalry-table tbody td, .closest-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
 .margin-val { font-family:var(--font-display);font-weight:900;color:var(--accent); }
 .closest-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
+.po-badge {
+  display:inline-block;padding:0.08rem 0.4rem;border-radius:3px;margin-right:0.4rem;
+  font-size:0.6rem;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;
+  background:rgba(212,175,55,0.18);color:#b8960a;
+}
+.season-filter-row { display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap; }
+.season-btn {
+  padding:0.35rem 0.85rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.8rem;
+  font-weight:500;cursor:pointer;transition:all 0.15s;
+}
+.season-btn:hover { background:var(--accent-glow); }
+.season-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
+.season-filter-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent); }
 
 /* ── H2H MATRIX ── */
 .h2h-scroll { overflow-x:auto; padding:1.5rem; }
@@ -312,6 +339,33 @@
       <p>Every manager has been locked into a conference, DEM or REP, since 2020. It's <strong>never reshuffled</strong> season to season. The question is whether it predicts anything about performance, or if it's just a fun label.</p>
     </div>
 
+    <div class="conf-teams-grid">
+      <div class="conf-teams-col glass">
+        <div class="conf-teams-header conf-dem-text">DEM</div>
+        <div class="conf-teams-list">
+          <div class="conf-team-chip"><img src="../images/logos/Quigley.png" alt="" onerror="this.remove()"><span>Aidan Quigley</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Root.png" alt="" onerror="this.remove()"><span>Andrew Root</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Slansky.png" alt="" onerror="this.remove()"><span>Baylen Slansky</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Maney.png" alt="" onerror="this.remove()"><span>Cole Maney</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Bileydi.png" alt="" onerror="this.remove()"><span>Deniz Bileydi</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Radecki.png" alt="" onerror="this.remove()"><span>Ethan Radecki</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Malich.png" alt="" onerror="this.remove()"><span>Max Malich</span></div>
+        </div>
+      </div>
+      <div class="conf-teams-col glass">
+        <div class="conf-teams-header conf-rep-text">REP</div>
+        <div class="conf-teams-list">
+          <div class="conf-team-chip"><img src="../images/logos/Kelly.png" alt="" onerror="this.remove()"><span>Anthony Kelly</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Castaldo.png" alt="" onerror="this.remove()"><span>Ben Castaldo</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Hancock.png" alt="" onerror="this.remove()"><span>Brandon Hancock</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Pittelli.png" alt="" onerror="this.remove()"><span>Carmine Pittelli Jr.</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Gorman.png" alt="" onerror="this.remove()"><span>Charlie Gorman</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/Gegwich.png" alt="" onerror="this.remove()"><span>Quin Gegwich</span></div>
+          <div class="conf-team-chip"><img src="../images/logos/McQuaid.png" alt="" onerror="this.remove()"><span>Ryan P McQuaid</span></div>
+        </div>
+      </div>
+    </div>
+
     <div class="conf-stat-grid">
       <div class="conf-stat-card glass">
         <div class="conf-stat-label">Championships</div>
@@ -376,24 +430,31 @@
       <div class="callout-label">What Counts</div>
       <p>Every regular season game, plus every playoff game that <strong>actually counted</strong> toward a bracket or a championship. Playoff-week games that didn't count for anything are left out.</p>
     </div>
+
+    <div class="season-filter-row">
+      <span class="season-filter-label">Show:</span>
+      <button class="season-btn active" onclick="filterClosest('all', this)">All Games</button>
+      <button class="season-btn" onclick="filterClosest('regular', this)">Regular Season</button>
+      <button class="season-btn" onclick="filterClosest('playoff', this)">Playoffs</button>
+    </div>
+
     <div class="table-wrap glass">
-      <table class="closest-table">
+      <table class="closest-table" id="closest-table">
         <thead><tr><th>#</th><th>Winner</th><th>Score</th><th>Loser</th><th>Score</th><th>Margin</th><th>When</th></tr></thead>
         <tbody>
-          <tr><td class="closest-rank">1</td><td>Ryan P McQuaid</td><td>125.38</td><td>Charlie Gorman</td><td>125.28</td><td class="margin-val">0.10</td><td>Week 3, 2023</td></tr>
-          <tr><td class="closest-rank">2</td><td>Quin Gegwich</td><td>96.74</td><td>Brandon Hancock</td><td>96.60</td><td class="margin-val">0.14</td><td>Week 5, 2020</td></tr>
-          <tr><td class="closest-rank">3</td><td>Carmine Pittelli Jr.</td><td>137.86</td><td>Aidan Quigley</td><td>137.68</td><td class="margin-val">0.18</td><td>Week 5, 2021</td></tr>
-          <tr><td class="closest-rank">4</td><td>Ethan Radecki</td><td>110.04</td><td>Quin Gegwich</td><td>109.86</td><td class="margin-val">0.18</td><td>Week 5, 2024</td></tr>
-          <tr><td class="closest-rank">5</td><td>Charlie Gorman</td><td>113.74</td><td>Ben Castaldo</td><td>113.54</td><td class="margin-val">0.20</td><td>Week 6, 2023</td></tr>
-          <tr><td class="closest-rank">6</td><td>Anthony Kelly</td><td>153.38</td><td>Ethan Radecki</td><td>153.10</td><td class="margin-val">0.28</td><td>Playoff Rd 1, 2022</td></tr>
-          <tr><td class="closest-rank">7</td><td>Ryan P McQuaid</td><td>106.82</td><td>Carmine Pittelli Jr.</td><td>106.50</td><td class="margin-val">0.32</td><td>Week 10, 2024</td></tr>
-          <tr><td class="closest-rank">8</td><td>Anthony Kelly</td><td>120.22</td><td>Deniz Bileydi</td><td>119.74</td><td class="margin-val">0.48</td><td>Week 4, 2025</td></tr>
-          <tr><td class="closest-rank">9</td><td>Ethan Radecki</td><td>113.62</td><td>Ryan P McQuaid</td><td>113.02</td><td class="margin-val">0.60</td><td>Week 4, 2021</td></tr>
-          <tr><td class="closest-rank">10</td><td>Quin Gegwich</td><td>176.12</td><td>Ethan Radecki</td><td>175.50</td><td class="margin-val">0.62</td><td>Playoff Rd 1, 2024</td></tr>
+          <tr data-type="regular"><td class="closest-rank">1</td><td>Ryan P McQuaid</td><td>125.38</td><td>Charlie Gorman</td><td>125.28</td><td class="margin-val">0.10</td><td>Week 3, 2023</td></tr>
+          <tr data-type="regular"><td class="closest-rank">2</td><td>Quin Gegwich</td><td>96.74</td><td>Brandon Hancock</td><td>96.60</td><td class="margin-val">0.14</td><td>Week 5, 2020</td></tr>
+          <tr data-type="regular"><td class="closest-rank">3</td><td>Carmine Pittelli Jr.</td><td>137.86</td><td>Aidan Quigley</td><td>137.68</td><td class="margin-val">0.18</td><td>Week 5, 2021</td></tr>
+          <tr data-type="regular"><td class="closest-rank">4</td><td>Ethan Radecki</td><td>110.04</td><td>Quin Gegwich</td><td>109.86</td><td class="margin-val">0.18</td><td>Week 5, 2024</td></tr>
+          <tr data-type="regular"><td class="closest-rank">5</td><td>Charlie Gorman</td><td>113.74</td><td>Ben Castaldo</td><td>113.54</td><td class="margin-val">0.20</td><td>Week 6, 2023</td></tr>
+          <tr data-type="playoff"><td class="closest-rank">6</td><td>Anthony Kelly</td><td>153.38</td><td>Ethan Radecki</td><td>153.10</td><td class="margin-val">0.28</td><td><span class="po-badge">PO</span>Round 1, 2022</td></tr>
+          <tr data-type="regular"><td class="closest-rank">7</td><td>Ryan P McQuaid</td><td>106.82</td><td>Carmine Pittelli Jr.</td><td>106.50</td><td class="margin-val">0.32</td><td>Week 10, 2024</td></tr>
+          <tr data-type="regular"><td class="closest-rank">8</td><td>Anthony Kelly</td><td>120.22</td><td>Deniz Bileydi</td><td>119.74</td><td class="margin-val">0.48</td><td>Week 4, 2025</td></tr>
+          <tr data-type="regular"><td class="closest-rank">9</td><td>Ethan Radecki</td><td>113.62</td><td>Ryan P McQuaid</td><td>113.02</td><td class="margin-val">0.60</td><td>Week 4, 2021</td></tr>
+          <tr data-type="playoff"><td class="closest-rank">10</td><td>Quin Gegwich</td><td>176.12</td><td>Ethan Radecki</td><td>175.50</td><td class="margin-val">0.62</td><td><span class="po-badge">PO</span>Round 1, 2024</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:0.8rem;color:var(--muted);margin-top:0.85rem;font-style:italic;">Honorable mention: Ryan P McQuaid and Quin Gegwich tied <strong>11.00-11.00</strong> in a 2020 playoff-week game, an exact dead heat. It's left off the list above because the game was outside the real bracket and didn't count.</p>
   </div>
 
   <hr class="section-divider">
@@ -867,6 +928,18 @@ function shortName(n) {
     grid.appendChild(card);
   });
 })();
+
+/* ── CLOSEST GAMES FILTER ─────────────────────────────────────────────────── */
+function filterClosest(type, btn) {
+  document.querySelectorAll('#closest-table').forEach(function(){});
+  document.querySelectorAll('.season-btn').forEach(function(b){
+    if (b.closest('.season-filter-row') === btn.closest('.season-filter-row')) b.classList.remove('active');
+  });
+  btn.classList.add('active');
+  document.querySelectorAll('#closest-table tbody tr').forEach(function(row){
+    row.style.display = (type === 'all' || row.getAttribute('data-type') === type) ? '' : 'none';
+  });
+}
 </script>
 </body>
 </html>
