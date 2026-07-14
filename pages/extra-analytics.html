@@ -18,6 +18,33 @@
 .chart-area-pad { padding:1.5rem; }
 .chart-area-pad canvas { display:block;width:100% !important; }
 
+/* ── CONFERENCE ANALYSIS ── */
+.conf-badge { display:inline-block;padding:0.15rem 0.55rem;border-radius:20px;font-size:0.65rem;font-weight:700;letter-spacing:0.03em; }
+.conf-dem { background:rgba(74,127,168,0.18);color:#4a7fa8; }
+.conf-rep { background:rgba(192,98,58,0.18);color:#c0623a; }
+.conf-stat-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:1.5rem; }
+.conf-stat-card { padding:1.1rem 1rem;text-align:center; }
+.conf-stat-label { font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);margin-bottom:0.75rem; }
+.conf-stat-vals { display:flex;justify-content:center;gap:1.4rem; }
+.conf-stat-val { display:flex;flex-direction:column;align-items:center;gap:0.3rem; }
+.conf-stat-num { font-family:var(--font-display);font-size:1.5rem;font-weight:900;line-height:1; }
+.conf-stat-tag { font-size:0.58rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700; }
+.conf-dem-text { color:#4a7fa8; }
+.conf-rep-text { color:#c0623a; }
+
+/* ── REUSABLE STAT TABLES ── */
+.rivalry-table, .closest-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
+.rivalry-table thead th, .closest-table thead th {
+  text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
+}
+.rivalry-table tbody tr, .closest-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
+.rivalry-table tbody tr:hover, .closest-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.rivalry-table tbody td, .closest-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
+.margin-val { font-family:var(--font-display);font-weight:900;color:var(--accent); }
+.closest-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
+
 /* ── H2H MATRIX ── */
 .h2h-scroll { overflow-x:auto; padding:1.5rem; }
 .h2h-table {
@@ -51,82 +78,6 @@
   text-align:left;font-weight:600;color:var(--palm);
   padding-left:0.6rem;font-size:0.72rem;
 }
-
-/* ── SIMILARITY CARDS ── */
-.sim-grid {
-  display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;
-}
-.sim-card { padding:1.1rem 1.1rem 0.9rem; }
-.sim-card-header {
-  display:flex;align-items:baseline;gap:0.5rem;
-  margin-bottom:0.6rem;padding-bottom:0.6rem;
-  border-bottom:1px solid rgba(var(--accent-rgb),0.12);
-}
-.sim-seed {
-  font-size:0.6rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:0.1em;color:var(--accent);flex-shrink:0;
-}
-.sim-manager {
-  font-family:var(--font-display);font-size:0.88rem;font-weight:900;
-  color:var(--palm);line-height:1.1;
-}
-.sim-team-name {
-  font-size:0.68rem;color:var(--muted);margin-bottom:0.55rem;font-style:italic;
-}
-.sim-current-stats {
-  display:flex;gap:0.6rem;margin-bottom:0.75rem;flex-wrap:wrap;
-}
-.sim-stat-pill {
-  font-size:0.62rem;padding:0.15rem 0.45rem;border-radius:20px;
-  background:rgba(var(--accent-rgb),0.1);color:var(--text-mid);font-weight:600;
-}
-.sim-matches { display:flex;flex-direction:column;gap:0.45rem; }
-.sim-match {
-  padding:0.55rem 0.6rem;border-radius:8px;
-  background:rgba(var(--accent-rgb),0.05);
-  border-left:2px solid transparent;
-}
-.sim-match.rank-1 { border-left-color:var(--accent); }
-.sim-match.rank-2 { border-left-color:rgba(var(--accent-rgb),0.55); }
-.sim-match.rank-3 { border-left-color:rgba(var(--accent-rgb),0.28); }
-.sim-match-top {
-  display:flex;justify-content:space-between;align-items:baseline;
-  margin-bottom:0.2rem;
-}
-.sim-match-name {
-  font-size:0.73rem;font-weight:700;color:var(--palm);line-height:1.2;
-}
-.sim-match-score {
-  font-family:var(--font-display);font-size:0.85rem;font-weight:900;
-  flex-shrink:0;margin-left:0.4rem;
-}
-.sim-match-meta { font-size:0.62rem;color:var(--muted);margin-bottom:0.25rem; }
-.sim-match-stats { font-size:0.61rem;color:var(--text-mid);margin-bottom:0.2rem;font-variant-numeric:tabular-nums; }
-.sim-match-result { font-size:0.65rem;font-weight:700; }
-.result-champ  { color:var(--gold); }
-.result-runner { color:var(--muted); }
-.result-win    { color:var(--green); }
-.result-loss   { color:var(--red); }
-.result-miss   { color:var(--muted); }
-
-/* Weight table */
-.weight-table { width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:1rem; }
-.weight-table th {
-  text-align:left;padding:0.6rem 0.75rem;font-size:0.66rem;
-  text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--accent);
-  border-bottom:2px solid rgba(var(--accent-rgb),0.25);
-}
-.weight-table td {
-  padding:0.5rem 0.75rem;color:var(--text-mid);
-  border-bottom:1px solid rgba(var(--accent-rgb),0.08);
-}
-.weight-table tr:last-child td { border-bottom:none; }
-.weight-val { font-weight:700;color:var(--palm); }
-.weight-bar-wrap { width:100px;height:6px;border-radius:3px;background:rgba(var(--accent-rgb),0.12); }
-.weight-bar-fill { height:100%;border-radius:3px;background:var(--accent); }
-
-@media(max-width:1024px) { .sim-grid { grid-template-columns:repeat(2,1fr); } }
-@media(max-width:600px)  { .sim-grid { grid-template-columns:1fr; } }
 
 /* ── CHAMPIONSHIP GAUNTLET ── */
 .gauntlet-legend {
@@ -351,32 +302,98 @@
   <hr class="section-divider">
 
   <!-- ══════════════════════════════════════════
-       HISTORICAL SIMILARITY
+       CONFERENCE ANALYSIS
        ══════════════════════════════════════════ -->
   <div class="analysis-section">
-    <div class="section-label">Historical Similarity</div>
-    <div class="section-title">2025 playoff teams matched to league history.</div>
+    <div class="section-label">Conference Analysis</div>
+    <div class="section-title">Does DEM or REP actually mean anything?</div>
     <div class="callout glass">
-      <div class="callout-label">About This Analysis</div>
-      <p>For each 2025 playoff team, a <strong>weighted Euclidean distance algorithm</strong> identified the three most statistically similar teams from 2020-2024 across seven performance features. Features are normalized via StandardScaler, with custom weights reflecting each metric's relative importance to playoff performance.</p>
+      <div class="callout-label">Background</div>
+      <p>Every manager has been locked into a conference, DEM or REP, since 2020. It's <strong>never reshuffled</strong> season to season. The question is whether it predicts anything about performance, or if it's just a fun label.</p>
     </div>
+
+    <div class="conf-stat-grid">
+      <div class="conf-stat-card glass">
+        <div class="conf-stat-label">Championships</div>
+        <div class="conf-stat-vals">
+          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">2</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">4</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
+        </div>
+      </div>
+      <div class="conf-stat-card glass">
+        <div class="conf-stat-label">Playoff Trips</div>
+        <div class="conf-stat-vals">
+          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">27</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">27</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
+        </div>
+      </div>
+      <div class="conf-stat-card glass">
+        <div class="conf-stat-label">Avg PF/Game</div>
+        <div class="conf-stat-vals">
+          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">112.7</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">111.1</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
+        </div>
+      </div>
+      <div class="conf-stat-card glass">
+        <div class="conf-stat-label">Avg Win%</div>
+        <div class="conf-stat-vals">
+          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">49.9%</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">49.9%</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:1.5rem;">Across six seasons the two conferences are <strong>basically identical</strong>. Same average scoring, same average win rate, same number of playoff trips. REP has four titles to DEM's two, but that's <strong>a coin flip landing one way six times</strong>, not a real edge. The schedule doesn't even favor same-conference matchups: only <strong>46% of all-time games</strong> have come within a conference, barely different from the 50% you'd get by chance. DEM and REP are a fun label, not a competitive divide.</p>
+
     <div class="table-wrap glass">
-      <table class="weight-table">
-        <thead>
-          <tr><th>Feature</th><th>Weight</th><th>Reasoning</th><th>Importance</th></tr>
-        </thead>
+      <p class="table-hint">Longest-running rivalries by total meetings, regular season and playoffs combined.</p>
+      <table class="rivalry-table">
+        <thead><tr><th>Rivalry</th><th>Record</th><th>Games</th><th>Conference</th></tr></thead>
         <tbody>
-          <tr><td>Late Season PF/G (Wks 10-13)</td><td class="weight-val">2.0</td><td>Best predictor of playoff form</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:100%"></div></div></td></tr>
-          <tr><td>Season PF/G</td><td class="weight-val">1.7</td><td>Overall scoring ability</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:85%"></div></div></td></tr>
-          <tr><td>Win Percentage</td><td class="weight-val">1.4</td><td>Season-level consistency</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:70%"></div></div></td></tr>
-          <tr><td>Luck Score (LR Z-Score)</td><td class="weight-val">1.1</td><td>Schedule context</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:55%"></div></div></td></tr>
-          <tr><td>Dominance Score</td><td class="weight-val">0.9</td><td>Relative scoring dominance</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:45%"></div></div></td></tr>
-          <tr><td>Draft Slot</td><td class="weight-val">0.6</td><td>Roster construction context</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:30%"></div></div></td></tr>
-          <tr><td>Point Differential</td><td class="weight-val">0.4</td><td>Secondary performance signal</td><td><div class="weight-bar-wrap"><div class="weight-bar-fill" style="width:20%"></div></div></td></tr>
+          <tr><td>Max Malich vs Deniz Bileydi</td><td>9-4 Malich</td><td>13</td><td><span class="conf-badge conf-dem">DEM</span> <span class="conf-badge conf-dem">DEM</span></td></tr>
+          <tr><td>Ethan Radecki vs Ryan P McQuaid</td><td>10-2 Radecki</td><td>12</td><td><span class="conf-badge conf-dem">DEM</span> <span class="conf-badge conf-rep">REP</span></td></tr>
+          <tr><td>Brandon Hancock vs Carmine Pittelli Jr.</td><td>5-5 Tied</td><td>10</td><td><span class="conf-badge conf-rep">REP</span> <span class="conf-badge conf-rep">REP</span></td></tr>
+          <tr><td>Baylen Slansky vs Brandon Hancock</td><td>7-3 Slansky</td><td>10</td><td><span class="conf-badge conf-dem">DEM</span> <span class="conf-badge conf-rep">REP</span></td></tr>
+          <tr><td>Ben Castaldo vs Deniz Bileydi</td><td>5-5 Tied</td><td>10</td><td><span class="conf-badge conf-rep">REP</span> <span class="conf-badge conf-dem">DEM</span></td></tr>
+          <tr><td>Anthony Kelly vs Max Malich</td><td>6-4 Kelly</td><td>10</td><td><span class="conf-badge conf-rep">REP</span> <span class="conf-badge conf-dem">DEM</span></td></tr>
+          <tr><td>Andrew Root vs Quin Gegwich</td><td>7-3 Root</td><td>10</td><td><span class="conf-badge conf-dem">DEM</span> <span class="conf-badge conf-rep">REP</span></td></tr>
+          <tr><td>Ben Castaldo vs Carmine Pittelli Jr.</td><td>4-6 Pittelli</td><td>10</td><td><span class="conf-badge conf-rep">REP</span> <span class="conf-badge conf-rep">REP</span></td></tr>
         </tbody>
       </table>
     </div>
-    <div class="sim-grid" id="sim-grid" style="margin-top:1rem;"></div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;">The longest feud in league history is <strong>Malich vs Bileydi at 13 meetings</strong>, both DEM. The most one-sided long rivalry crosses party lines: <strong>Ethan owns Ryan 10-2</strong> across every format the league has run.</p>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       CLOSEST GAMES EVER
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section">
+    <div class="section-label">Closest Games Ever</div>
+    <div class="section-title">The top 10 nail-biters in league history.</div>
+    <div class="callout glass">
+      <div class="callout-label">What Counts</div>
+      <p>Every regular season game, plus every playoff game that <strong>actually counted</strong> toward a bracket or a championship. Playoff-week games that didn't count for anything are left out.</p>
+    </div>
+    <div class="table-wrap glass">
+      <table class="closest-table">
+        <thead><tr><th>#</th><th>Winner</th><th>Score</th><th>Loser</th><th>Score</th><th>Margin</th><th>When</th></tr></thead>
+        <tbody>
+          <tr><td class="closest-rank">1</td><td>Ryan P McQuaid</td><td>125.38</td><td>Charlie Gorman</td><td>125.28</td><td class="margin-val">0.10</td><td>Week 3, 2023</td></tr>
+          <tr><td class="closest-rank">2</td><td>Quin Gegwich</td><td>96.74</td><td>Brandon Hancock</td><td>96.60</td><td class="margin-val">0.14</td><td>Week 5, 2020</td></tr>
+          <tr><td class="closest-rank">3</td><td>Carmine Pittelli Jr.</td><td>137.86</td><td>Aidan Quigley</td><td>137.68</td><td class="margin-val">0.18</td><td>Week 5, 2021</td></tr>
+          <tr><td class="closest-rank">4</td><td>Ethan Radecki</td><td>110.04</td><td>Quin Gegwich</td><td>109.86</td><td class="margin-val">0.18</td><td>Week 5, 2024</td></tr>
+          <tr><td class="closest-rank">5</td><td>Charlie Gorman</td><td>113.74</td><td>Ben Castaldo</td><td>113.54</td><td class="margin-val">0.20</td><td>Week 6, 2023</td></tr>
+          <tr><td class="closest-rank">6</td><td>Anthony Kelly</td><td>153.38</td><td>Ethan Radecki</td><td>153.10</td><td class="margin-val">0.28</td><td>Playoff Rd 1, 2022</td></tr>
+          <tr><td class="closest-rank">7</td><td>Ryan P McQuaid</td><td>106.82</td><td>Carmine Pittelli Jr.</td><td>106.50</td><td class="margin-val">0.32</td><td>Week 10, 2024</td></tr>
+          <tr><td class="closest-rank">8</td><td>Anthony Kelly</td><td>120.22</td><td>Deniz Bileydi</td><td>119.74</td><td class="margin-val">0.48</td><td>Week 4, 2025</td></tr>
+          <tr><td class="closest-rank">9</td><td>Ethan Radecki</td><td>113.62</td><td>Ryan P McQuaid</td><td>113.02</td><td class="margin-val">0.60</td><td>Week 4, 2021</td></tr>
+          <tr><td class="closest-rank">10</td><td>Quin Gegwich</td><td>176.12</td><td>Ethan Radecki</td><td>175.50</td><td class="margin-val">0.62</td><td>Playoff Rd 1, 2024</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.8rem;color:var(--muted);margin-top:0.85rem;font-style:italic;">Honorable mention: Ryan P McQuaid and Quin Gegwich tied <strong>11.00-11.00</strong> in a 2020 playoff-week game, an exact dead heat. It's left off the list above because the game was outside the real bracket and didn't count.</p>
   </div>
 
   <hr class="section-divider">
@@ -723,61 +740,6 @@ function shortName(n) {
   table.appendChild(tbody);
 })();
 
-/* ── 4. SIMILARITY CARDS ──────────────────────────────────────────────────── */
-(function() {
-  var simData = [{"seed":1,"manager":"Ben Castaldo","team":"A$AP Monke","winPct":0.786,"pfg":114.9,"late":112.2,"matches":[{"team":"I shoot b n s","manager":"Ben Castaldo","year":2021,"winPct":0.69,"pfg":120.1,"late":120.0,"score":82.3,"champW":1,"champApp":1,"playoffs":1,"elimRound":null},{"team":"The Minutemen","manager":"Brandon Hancock","year":2022,"winPct":0.64,"pfg":118.9,"late":115.3,"score":78.8,"champW":0,"champApp":0,"playoffs":1,"elimRound":2},{"team":"Oh He Likes Cooking!","manager":"Ethan Radecki","year":2024,"winPct":0.79,"pfg":117.0,"late":127.6,"score":72.6,"champW":0,"champApp":0,"playoffs":1,"elimRound":1}]},{"seed":2,"manager":"Cole Maney","team":"Shakir to death","winPct":0.643,"pfg":129.6,"late":123.5,"matches":[{"team":"The Minutemen","manager":"Brandon Hancock","year":2024,"winPct":0.64,"pfg":127.3,"late":118.7,"score":88.8,"champW":0,"champApp":1,"playoffs":1,"elimRound":3},{"team":"Dent.","manager":"Max Malich","year":2024,"winPct":0.64,"pfg":128.7,"late":124.2,"score":87.2,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"Team Kelly","manager":"Anthony Kelly","year":2020,"winPct":0.667,"pfg":126.3,"late":116.7,"score":79.9,"champW":0,"champApp":0,"playoffs":1,"elimRound":2}]},{"seed":3,"manager":"Ryan P McQuaid","team":"Make Fantasy Great Again","winPct":0.714,"pfg":110.1,"late":92.5,"matches":[{"team":"San Giacomos FF","manager":"Charlie Gorman","year":2020,"winPct":0.5,"pfg":109.5,"late":96.3,"score":76.3,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"Mike White","manager":"Ryan P McQuaid","year":2022,"winPct":0.57,"pfg":110.2,"late":96.3,"score":76.0,"champW":0,"champApp":1,"playoffs":1,"elimRound":3},{"team":"Fresh Prince Of Helaire","manager":"Carmine Pittelli Jr.","year":2021,"winPct":0.69,"pfg":116.3,"late":91.8,"score":70.9,"champW":0,"champApp":0,"playoffs":1,"elimRound":2}]},{"seed":4,"manager":"Baylen Slansky","team":"STATION GRITS","winPct":0.643,"pfg":117.2,"late":112.2,"matches":[{"team":"NKD MAGA","manager":"Carmine Pittelli Jr.","year":2020,"winPct":0.667,"pfg":119.8,"late":115.1,"score":90.9,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"The Minutemen","manager":"Brandon Hancock","year":2021,"winPct":0.69,"pfg":120.0,"late":117.2,"score":86.4,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"JOSH JACOBS FAN CLUB","manager":"Quin Gegwich","year":2024,"winPct":0.57,"pfg":119.2,"late":112.8,"score":83.8,"champW":0,"champApp":0,"playoffs":1,"elimRound":2}]},{"seed":5,"manager":"Carmine Pittelli Jr.","team":"LaPorta Potty","winPct":0.643,"pfg":113.4,"late":106.1,"matches":[{"team":"Chi Town MS?","manager":"Deniz Bileydi","year":2022,"winPct":0.5,"pfg":113.8,"late":109.2,"score":78.8,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"Rolls With butter","manager":"Anthony Kelly","year":2022,"winPct":0.5,"pfg":111.3,"late":110.9,"score":74.6,"champW":1,"champApp":1,"playoffs":1,"elimRound":null},{"team":"The Less Fourtunette","manager":"Ben Castaldo","year":2022,"winPct":0.5,"pfg":106.7,"late":108.4,"score":73.3,"champW":0,"champApp":0,"playoffs":0,"elimRound":null}]},{"seed":6,"manager":"Ethan Radecki","team":"Oh He Likes Cooking!","winPct":0.5,"pfg":116.1,"late":126.2,"matches":[{"team":"AND I...AM ...IRON MAN","manager":"Baylen Slansky","year":2021,"winPct":0.54,"pfg":118.0,"late":132.0,"score":88.5,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":". Can you Digg it","manager":"Max Malich","year":2020,"winPct":0.5,"pfg":120.2,"late":131.3,"score":85.6,"champW":0,"champApp":0,"playoffs":1,"elimRound":3},{"team":"N.Y. Routensss","manager":"Andrew Root","year":2020,"winPct":0.583,"pfg":110.1,"late":119.3,"score":80.4,"champW":0,"champApp":0,"playoffs":1,"elimRound":2}]},{"seed":7,"manager":"Anthony Kelly","team":"Rolls With Butter","winPct":0.5,"pfg":115.3,"late":113.9,"matches":[{"team":"Rolls With butter","manager":"Anthony Kelly","year":2022,"winPct":0.5,"pfg":111.3,"late":110.9,"score":88.1,"champW":1,"champApp":1,"playoffs":1,"elimRound":null},{"team":"Chi Town MS?","manager":"Deniz Bileydi","year":2022,"winPct":0.5,"pfg":113.8,"late":109.2,"score":87.1,"champW":0,"champApp":0,"playoffs":1,"elimRound":1},{"team":"Tony Fkn Romo","manager":"Aidan Quigley","year":2021,"winPct":0.54,"pfg":121.1,"late":116.6,"score":82.7,"champW":0,"champApp":0,"playoffs":1,"elimRound":1}]},{"seed":8,"manager":"Charlie Gorman","team":"Worthy of a Warren(t)","winPct":0.5,"pfg":109.0,"late":103.0,"matches":[{"team":"Jungle Le Monke","manager":"Ben Castaldo","year":2020,"winPct":0.462,"pfg":108.4,"late":103.4,"score":91.7,"champW":0,"champApp":0,"playoffs":1,"elimRound":2},{"team":".Hocken","manager":"Max Malich","year":2021,"winPct":0.38,"pfg":108.6,"late":104.3,"score":86.9,"champW":0,"champApp":0,"playoffs":0,"elimRound":null},{"team":"The Less Fourtunette","manager":"Ben Castaldo","year":2022,"winPct":0.5,"pfg":106.7,"late":108.4,"score":84.8,"champW":0,"champApp":0,"playoffs":0,"elimRound":null}]}];
-
-  // Score color: high = accent, mid = muted
-  function scoreColor(s) {
-    if (s >= 88) return '#9c949c';
-    if (s >= 80) return '#b0a8b0';
-    return '#c8c0c8';
-  }
-
-  function resultHtml(m) {
-    if (m.champW)    return '<span class="sim-match-result result-champ">&#9733; Champion</span>';
-    if (m.champApp)  return '<span class="sim-match-result result-runner">&#9670; Runner-Up</span>';
-    if (!m.playoffs) return '<span class="sim-match-result result-miss">Missed Playoffs</span>';
-    // Made playoffs -- determine how far
-    var round_names_std  = {1:'Quarterfinals', 2:'Semifinals', 3:'Finals'};
-    if (m.elimRound) {
-      return '<span class="sim-match-result result-loss">Lost in ' + (round_names_std[m.elimRound] || 'Round ' + m.elimRound) + '</span>';
-    }
-    return '<span class="sim-match-result result-win">Made Playoffs</span>';
-  }
-
-  var grid = document.getElementById('sim-grid');
-  simData.forEach(function(d) {
-    var card = document.createElement('div');
-    card.className = 'sim-card glass';
-
-    var matchesHtml = d.matches.map(function(m, i) {
-      return '<div class="sim-match rank-' + (i+1) + '">'
-        + '<div class="sim-match-top">'
-        + '<div class="sim-match-name">' + m.team + '</div>'
-        + '<div class="sim-match-score" style="color:' + scoreColor(m.score) + '">' + m.score.toFixed(0) + '%</div>'
-        + '</div>'
-        + '<div class="sim-match-meta">' + m.manager.replace(' Jr.','') + ' &middot; ' + m.year + '</div>'
-        + '<div class="sim-match-stats">W% ' + m.winPct.toFixed(3) + ' &nbsp; PF/G ' + m.pfg.toFixed(1) + ' &nbsp; Late ' + m.late.toFixed(1) + '</div>'
-        + resultHtml(m)
-        + '</div>';
-    }).join('');
-
-    card.innerHTML = '<div class="sim-card-header">'
-      + '<div class="sim-seed">Seed ' + d.seed + '</div>'
-      + '<div class="sim-manager">' + d.manager.replace(' Jr.','').replace('Ryan P ','Ryan ') + '</div>'
-      + '</div>'
-      + '<div class="sim-team-name">' + d.team + '</div>'
-      + '<div class="sim-current-stats">'
-      + '<span class="sim-stat-pill">W% ' + d.winPct.toFixed(3) + '</span>'
-      + '<span class="sim-stat-pill">PF/G ' + d.pfg.toFixed(1) + '</span>'
-      + '<span class="sim-stat-pill">Late ' + d.late.toFixed(1) + '</span>'
-      + '</div>'
-      + '<div class="sim-matches">' + matchesHtml + '</div>';
-
-    grid.appendChild(card);
-  });
-})();
 /* ── 5. CHAMPIONSHIP GAUNTLET ─────────────────────────────────────────────── */
 (function() {
   var CHAMPIONS = [
