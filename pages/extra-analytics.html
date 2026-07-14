@@ -25,6 +25,8 @@
 .conf-stat-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:1.5rem; }
 .conf-teams-grid { display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem; }
 .conf-teams-col { padding:1.1rem 1.25rem; }
+.conf-teams-col.conf-col-dem { background:rgba(74,127,168,0.05); }
+.conf-teams-col.conf-col-rep { background:rgba(192,98,58,0.05); }
 .conf-teams-header {
   font-size:0.68rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:800;
   margin-bottom:0.9rem;padding-bottom:0.55rem;border-bottom:1px solid rgba(var(--accent-rgb),0.15);
@@ -340,7 +342,7 @@
     </div>
 
     <div class="conf-teams-grid">
-      <div class="conf-teams-col glass">
+      <div class="conf-teams-col conf-col-dem glass">
         <div class="conf-teams-header conf-dem-text">DEM</div>
         <div class="conf-teams-list">
           <div class="conf-team-chip"><img src="../images/logos/Quigley.png" alt="" onerror="this.remove()"><span>Aidan Quigley</span></div>
@@ -352,7 +354,7 @@
           <div class="conf-team-chip"><img src="../images/logos/Malich.png" alt="" onerror="this.remove()"><span>Max Malich</span></div>
         </div>
       </div>
-      <div class="conf-teams-col glass">
+      <div class="conf-teams-col conf-col-rep glass">
         <div class="conf-teams-header conf-rep-text">REP</div>
         <div class="conf-teams-list">
           <div class="conf-team-chip"><img src="../images/logos/Kelly.png" alt="" onerror="this.remove()"><span>Anthony Kelly</span></div>
@@ -441,18 +443,7 @@
     <div class="table-wrap glass">
       <table class="closest-table" id="closest-table">
         <thead><tr><th>#</th><th>Winner</th><th>Score</th><th>Loser</th><th>Score</th><th>Margin</th><th>When</th></tr></thead>
-        <tbody>
-          <tr data-type="regular"><td class="closest-rank">1</td><td>Ryan P McQuaid</td><td>125.38</td><td>Charlie Gorman</td><td>125.28</td><td class="margin-val">0.10</td><td>Week 3, 2023</td></tr>
-          <tr data-type="regular"><td class="closest-rank">2</td><td>Quin Gegwich</td><td>96.74</td><td>Brandon Hancock</td><td>96.60</td><td class="margin-val">0.14</td><td>Week 5, 2020</td></tr>
-          <tr data-type="regular"><td class="closest-rank">3</td><td>Carmine Pittelli Jr.</td><td>137.86</td><td>Aidan Quigley</td><td>137.68</td><td class="margin-val">0.18</td><td>Week 5, 2021</td></tr>
-          <tr data-type="regular"><td class="closest-rank">4</td><td>Ethan Radecki</td><td>110.04</td><td>Quin Gegwich</td><td>109.86</td><td class="margin-val">0.18</td><td>Week 5, 2024</td></tr>
-          <tr data-type="regular"><td class="closest-rank">5</td><td>Charlie Gorman</td><td>113.74</td><td>Ben Castaldo</td><td>113.54</td><td class="margin-val">0.20</td><td>Week 6, 2023</td></tr>
-          <tr data-type="playoff"><td class="closest-rank">6</td><td>Anthony Kelly</td><td>153.38</td><td>Ethan Radecki</td><td>153.10</td><td class="margin-val">0.28</td><td><span class="po-badge">PO</span>Round 1, 2022</td></tr>
-          <tr data-type="regular"><td class="closest-rank">7</td><td>Ryan P McQuaid</td><td>106.82</td><td>Carmine Pittelli Jr.</td><td>106.50</td><td class="margin-val">0.32</td><td>Week 10, 2024</td></tr>
-          <tr data-type="regular"><td class="closest-rank">8</td><td>Anthony Kelly</td><td>120.22</td><td>Deniz Bileydi</td><td>119.74</td><td class="margin-val">0.48</td><td>Week 4, 2025</td></tr>
-          <tr data-type="regular"><td class="closest-rank">9</td><td>Ethan Radecki</td><td>113.62</td><td>Ryan P McQuaid</td><td>113.02</td><td class="margin-val">0.60</td><td>Week 4, 2021</td></tr>
-          <tr data-type="playoff"><td class="closest-rank">10</td><td>Quin Gegwich</td><td>176.12</td><td>Ethan Radecki</td><td>175.50</td><td class="margin-val">0.62</td><td><span class="po-badge">PO</span>Round 1, 2024</td></tr>
-        </tbody>
+        <tbody id="closest-tbody"></tbody>
       </table>
     </div>
   </div>
@@ -929,17 +920,67 @@ function shortName(n) {
   });
 })();
 
-/* ── CLOSEST GAMES FILTER ─────────────────────────────────────────────────── */
-function filterClosest(type, btn) {
-  document.querySelectorAll('#closest-table').forEach(function(){});
-  document.querySelectorAll('.season-btn').forEach(function(b){
-    if (b.closest('.season-filter-row') === btn.closest('.season-filter-row')) b.classList.remove('active');
-  });
-  btn.classList.add('active');
-  document.querySelectorAll('#closest-table tbody tr').forEach(function(row){
-    row.style.display = (type === 'all' || row.getAttribute('data-type') === type) ? '' : 'none';
-  });
-}
+/* ── CLOSEST GAMES EVER ───────────────────────────────────────────────────── */
+(function() {
+  var CLOSEST = {
+    all: [
+      {w:'Ryan P McQuaid', ws:125.38, l:'Charlie Gorman',       ls:125.28, m:0.10, po:false, when:'Week 3, 2023'},
+      {w:'Quin Gegwich',   ws:96.74,  l:'Brandon Hancock',       ls:96.60,  m:0.14, po:false, when:'Week 5, 2020'},
+      {w:'Carmine Pittelli Jr.', ws:137.86, l:'Aidan Quigley',   ls:137.68, m:0.18, po:false, when:'Week 5, 2021'},
+      {w:'Ethan Radecki',  ws:110.04, l:'Quin Gegwich',          ls:109.86, m:0.18, po:false, when:'Week 5, 2024'},
+      {w:'Charlie Gorman', ws:113.74, l:'Ben Castaldo',          ls:113.54, m:0.20, po:false, when:'Week 6, 2023'},
+      {w:'Anthony Kelly',  ws:153.38, l:'Ethan Radecki',         ls:153.10, m:0.28, po:true,  when:'Round 1, 2022'},
+      {w:'Ryan P McQuaid', ws:106.82, l:'Carmine Pittelli Jr.',  ls:106.50, m:0.32, po:false, when:'Week 10, 2024'},
+      {w:'Anthony Kelly',  ws:120.22, l:'Deniz Bileydi',         ls:119.74, m:0.48, po:false, when:'Week 4, 2025'},
+      {w:'Ethan Radecki',  ws:113.62, l:'Ryan P McQuaid',        ls:113.02, m:0.60, po:false, when:'Week 4, 2021'},
+      {w:'Quin Gegwich',   ws:176.12, l:'Ethan Radecki',         ls:175.50, m:0.62, po:true,  when:'Round 1, 2024'}
+    ],
+    regular: [
+      {w:'Ryan P McQuaid', ws:125.38, l:'Charlie Gorman',       ls:125.28, m:0.10, po:false, when:'Week 3, 2023'},
+      {w:'Quin Gegwich',   ws:96.74,  l:'Brandon Hancock',       ls:96.60,  m:0.14, po:false, when:'Week 5, 2020'},
+      {w:'Ethan Radecki',  ws:110.04, l:'Quin Gegwich',          ls:109.86, m:0.18, po:false, when:'Week 5, 2024'},
+      {w:'Ryan P McQuaid', ws:106.82, l:'Carmine Pittelli Jr.',  ls:106.50, m:0.32, po:false, when:'Week 10, 2024'},
+      {w:'Anthony Kelly',  ws:120.22, l:'Deniz Bileydi',         ls:119.74, m:0.48, po:false, when:'Week 4, 2025'},
+      {w:'Ethan Radecki',  ws:113.62, l:'Ryan P McQuaid',        ls:113.02, m:0.60, po:false, when:'Week 4, 2021'},
+      {w:'Andrew Root',    ws:119.18, l:'Carmine Pittelli Jr.',  ls:118.52, m:0.66, po:false, when:'Week 14, 2022'},
+      {w:'Quin Gegwich',   ws:105.42, l:'Deniz Bileydi',         ls:104.66, m:0.76, po:false, when:'Week 10, 2023'},
+      {w:'Anthony Kelly',  ws:105.70, l:'Baylen Slansky',        ls:104.36, m:1.34, po:false, when:'Week 10, 2020'},
+      {w:'Anthony Kelly',  ws:111.06, l:'Aidan Quigley',         ls:109.72, m:1.34, po:false, when:'Week 2, 2024'}
+    ],
+    playoff: [
+      {w:'Anthony Kelly',  ws:153.38, l:'Ethan Radecki',         ls:153.10, m:0.28,  po:true, when:'Round 1, 2022'},
+      {w:'Quin Gegwich',   ws:176.12, l:'Ethan Radecki',         ls:175.50, m:0.62,  po:true, when:'Round 1, 2024'},
+      {w:'Brandon Hancock',ws:132.16, l:'Ben Castaldo',          ls:131.30, m:0.86,  po:true, when:'Round 2, 2020'},
+      {w:'Cole Maney',     ws:116.72, l:'Ethan Radecki',         ls:114.90, m:1.82,  po:true, when:'Round 2, 2023'},
+      {w:'Baylen Slansky', ws:119.30, l:'Max Malich',            ls:116.58, m:2.72,  po:true, when:'Round 1, 2024'},
+      {w:'Brandon Hancock',ws:140.12, l:'Max Malich',            ls:135.22, m:4.90,  po:true, when:'Round 3, 2020'},
+      {w:'Anthony Kelly',  ws:121.00, l:'Cole Maney',            ls:109.86, m:11.14, po:true, when:'Round 1, 2025'},
+      {w:'Carmine Pittelli Jr.', ws:119.88, l:'Brandon Hancock', ls:108.56, m:11.32, po:true, when:'Round 2, 2021'},
+      {w:'Deniz Bileydi',  ws:142.12, l:'Baylen Slansky',        ls:130.16, m:11.96, po:true, when:'Round 2, 2020'},
+      {w:'Baylen Slansky', ws:151.40, l:'Carmine Pittelli Jr.',  ls:139.40, m:12.00, po:true, when:'Round 1, 2025'}
+    ]
+  };
+
+  function renderClosest(list) {
+    var tbody = document.getElementById('closest-tbody');
+    tbody.innerHTML = list.map(function(g, i) {
+      var whenHtml = (g.po ? '<span class="po-badge">PO</span>' : '') + g.when;
+      return '<tr><td class="closest-rank">' + (i+1) + '</td><td>' + g.w + '</td><td>' + g.ws.toFixed(2)
+        + '</td><td>' + g.l + '</td><td>' + g.ls.toFixed(2) + '</td><td class="margin-val">' + g.m.toFixed(2)
+        + '</td><td>' + whenHtml + '</td></tr>';
+    }).join('');
+  }
+
+  window.filterClosest = function(type, btn) {
+    document.querySelectorAll('.season-btn').forEach(function(b){
+      if (b.closest('.season-filter-row') === btn.closest('.season-filter-row')) b.classList.remove('active');
+    });
+    btn.classList.add('active');
+    renderClosest(CLOSEST[type]);
+  };
+
+  renderClosest(CLOSEST.all);
+})();
 </script>
 </body>
 </html>
