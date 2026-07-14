@@ -39,19 +39,40 @@
   display:flex;align-items:center;gap:1.5rem;
   padding:1.5rem 2rem;margin-bottom:2rem;
   text-decoration:none;color:var(--text);transition:transform 0.2s;
-  border-left:3px solid var(--gold);
+  border-left:3px solid var(--gold);position:relative;overflow:hidden;
+}
+.champ-banner::before {
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg, transparent 30%, rgba(212,175,55,0.16) 45%, rgba(212,175,55,0.28) 50%, rgba(212,175,55,0.16) 55%, transparent 70%);
+  background-size:250% 100%;background-position:100% 0;
+  animation:champShimmer 5s ease-in-out infinite;
+}
+@keyframes champShimmer {
+  0%, 20% { background-position:130% 0; }
+  60%, 100% { background-position:-30% 0; }
 }
 .champ-banner:hover { transform:translateY(-1px); }
-.champ-trophy { font-size:2.2rem; }
-.champ-info { flex:1; }
+.champ-trophy-badge {
+  width:64px;height:64px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  background:radial-gradient(circle, rgba(212,175,55,0.22), rgba(212,175,55,0.05) 70%);
+  border:2px solid rgba(212,175,55,0.4);
+}
+.champ-trophy { font-size:2rem;position:relative;z-index:1; }
+.champ-info { flex:1;position:relative;z-index:1; }
 .champ-eyebrow {
   font-size:0.63rem;text-transform:uppercase;letter-spacing:0.14em;
   color:var(--gold);font-weight:700;margin-bottom:0.2rem;
+  display:flex;align-items:center;gap:0.4rem;
 }
+.champ-eyebrow::before { content:'\2726';font-size:0.75rem; }
 .champ-info h3 { font-family:var(--font-display);font-size:1.2rem;font-weight:800;color:var(--palm); }
 .champ-info p { font-size:0.82rem;color:var(--muted); }
-.champ-arrow { font-size:0.82rem;font-weight:600;color:var(--accent);transition:transform 0.2s; }
+.champ-arrow { font-size:0.82rem;font-weight:600;color:var(--accent);transition:transform 0.2s;position:relative;z-index:1; }
 .champ-banner:hover .champ-arrow { transform:translateX(3px); }
+@media(prefers-reduced-motion:reduce) {
+  .champ-banner::before { animation:none; }
+}
 
 .nav-grid {
   display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;
@@ -83,26 +104,6 @@
   opacity:0;transition:opacity 0.3s;z-index:0;
 }
 .nav-card:hover::before { opacity:1; }
-
-/* ── LEADERBOARD -- slate blue, rank lines ── */
-.card-leaderboard {
-  border-left-color:#4a7fa8;
-  --card-accent:#4a7fa8;
-}
-.card-leaderboard::after {
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:repeating-linear-gradient(
-    180deg,
-    transparent,
-    transparent 18px,
-    rgba(74,127,168,0.055) 18px,
-    rgba(74,127,168,0.055) 19px
-  );
-}
-.card-leaderboard::before {
-  background:radial-gradient(ellipse 80% 60% at 90% 110%, rgba(74,127,168,0.1), transparent 65%);
-}
-.card-leaderboard .card-arrow { color:#4a7fa8; }
 
 /* ── MANAGERS -- terra, arc watermark ── */
 .card-managers {
@@ -202,6 +203,73 @@
   .champ-arrow { display:none; }
 }
 @media(max-width:480px) { .nav-grid { grid-template-columns:1fr; } }
+
+/* ── DRAFT ANALYSIS SUB-PAGE CHIPS ── */
+.card-subpages {
+  display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.7rem;position:relative;z-index:1;
+}
+.card-subpage-pill {
+  font-size:0.66rem;font-weight:600;padding:0.2rem 0.55rem;border-radius:99px;
+  background:rgba(90,138,106,0.12);color:#5a8a6a;
+}
+
+/* ── HOMEPAGE LEADERBOARD SECTION ── */
+.home-leaderboard { margin-bottom:2.5rem;scroll-margin-top:90px; }
+.home-leaderboard .section-heading {
+  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  margin-bottom:1rem;flex-wrap:wrap;
+}
+.home-leaderboard .section-heading h2 {
+  font-family:var(--font-display);font-size:1.5rem;font-weight:800;
+  color:var(--palm);letter-spacing:-0.01em;
+}
+.home-leaderboard .section-heading p {
+  font-size:0.82rem;color:var(--muted);
+}
+.lb-table {
+  width:100%;border-collapse:collapse;font-size:0.84rem;
+}
+.lb-table thead th {
+  text-align:left;padding:0.75rem 0.8rem;
+  font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;
+  font-weight:700;color:#4a7fa8;
+  border-bottom:2px solid rgba(74,127,168,0.25);
+  cursor:pointer;user-select:none;white-space:nowrap;transition:color 0.15s;
+}
+.lb-table thead th:hover { color:var(--palm); }
+.lb-table thead th .sort-arrow { font-size:0.6rem;margin-left:0.3rem;opacity:0.4; }
+.lb-table thead th.sorted .sort-arrow { opacity:1;color:var(--palm); }
+.lb-table tbody tr {
+  border-bottom:1px solid rgba(74,127,168,0.08);transition:background 0.15s;
+}
+.lb-table tbody tr:hover { background:rgba(74,127,168,0.06); }
+.lb-table tbody td { padding:0.7rem 0.8rem;color:var(--text-mid);white-space:nowrap; }
+.lb-table-wrap { overflow-x:auto; }
+@media(max-width:768px) {
+  .lb-table { font-size:0.78rem; }
+  .lb-table thead th { padding:0.6rem 0.5rem;font-size:0.62rem; }
+  .lb-table tbody td { padding:0.55rem 0.5rem; }
+}
+
+/* ── ENTRANCE MOTION ── */
+@keyframes fadeSlideUp {
+  from { opacity:0;transform:translateY(14px); }
+  to   { opacity:1;transform:translateY(0); }
+}
+.hero, .champ-banner, .home-leaderboard, .nav-card {
+  animation:fadeSlideUp 0.55s cubic-bezier(0.16,1,0.3,1) both;
+}
+.hero { animation-delay:0.02s; }
+.champ-banner { animation-delay:0.1s; }
+.home-leaderboard { animation-delay:0.18s; }
+.nav-grid .nav-card:nth-child(1) { animation-delay:0.24s; }
+.nav-grid .nav-card:nth-child(2) { animation-delay:0.29s; }
+.nav-grid .nav-card:nth-child(3) { animation-delay:0.34s; }
+.nav-grid .nav-card:nth-child(4) { animation-delay:0.39s; }
+.nav-grid .nav-card:nth-child(5) { animation-delay:0.44s; }
+@media(prefers-reduced-motion:reduce) {
+  .hero, .champ-banner, .home-leaderboard, .nav-card { animation:none; }
+}
 </style>
 </head>
 <body>
@@ -216,7 +284,6 @@
       <span>Preach Fantasy</span>
     </a>
     <div class="nav-links">
-      <a href="pages/leaderboard.html">Leaderboard</a>
       <a href="pages/managers.html">Managers</a>
       <a href="pages/draft-analysis.html">Draft Analysis</a>
       <a href="pages/surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
@@ -234,7 +301,6 @@
   <div class="mobile-menu" id="mobile-menu" onclick="if(event.target===this)closeMobileMenu()">
     <div class="mobile-menu-inner">
       <button class="mobile-menu-close" onclick="closeMobileMenu()">&#10005;</button>
-      <a href="pages/leaderboard.html">Leaderboard</a>
       <a href="pages/managers.html">Managers</a>
       <a href="pages/draft-analysis.html">Draft Analysis</a>
       <a href="pages/surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
@@ -253,7 +319,7 @@
   </div>
 
   <a href="pages/champions.html" class="champ-banner glass">
-    <div class="champ-trophy">&#127942;</div>
+    <div class="champ-trophy-badge"><div class="champ-trophy">&#127942;</div></div>
     <div class="champ-info">
       <div class="champ-eyebrow">2025 Champion</div>
       <h3>Anthony Kelly</h3>
@@ -262,12 +328,35 @@
     <span class="champ-arrow">&#8594;</span>
   </a>
 
+  <div class="home-leaderboard" id="leaderboard">
+    <div class="section-heading">
+      <h2>All-Time Leaderboard</h2>
+      <p>Click any column to sort &bull; six seasons, 2020-2025</p>
+    </div>
+    <div class="table-wrap glass lb-table-wrap">
+      <table class="lb-table" id="leaderboardTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable(0)" data-col="0">Manager <span class="sort-arrow">&#8645;</span></th>
+            <th onclick="sortTable(1)" data-col="1">W <span class="sort-arrow">&#8645;</span></th>
+            <th onclick="sortTable(2)" data-col="2">L <span class="sort-arrow">&#8645;</span></th>
+            <th onclick="sortTable(3)" data-col="3" class="sorted">Win % <span class="sort-arrow">&#9660;</span></th>
+            <th onclick="sortTable(4)" data-col="4">Playoffs <span class="sort-arrow">&#8645;</span></th>
+            <th onclick="sortTable(5)" data-col="5">Champs <span class="sort-arrow">&#8645;</span></th>
+            <th onclick="sortTable(6)" data-col="6">PF/G <span class="sort-arrow">&#8645;</span></th>
+            <th onclick="sortTable(7)" data-col="7">Avg Luck <span class="sort-arrow">&#8645;</span></th>
+            <th onclick="sortTable(8)" data-col="8">Best <span class="sort-arrow">&#8645;</span></th>
+            <th onclick="sortTable(9)" data-col="9">Worst <span class="sort-arrow">&#8645;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Populated dynamically from CSV -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <div class="nav-grid">
-    <a href="pages/leaderboard.html" class="nav-card card-leaderboard glass">
-      <h3><span class="icon">&#128202;</span> Leaderboard</h3>
-      <p>All-time career stats, win percentage, and rankings across six seasons.</p>
-      <span class="card-arrow">View leaderboard &#8594;</span>
-    </a>
     <a href="pages/managers.html" class="nav-card card-managers glass">
       <h3><span class="icon">&#128100;</span> Manager Profiles</h3>
       <p>Individual dashboards with season history, scoring trends, rivalry breakdowns, draft fingerprint radars, and personal draft board heatmaps.</p>
@@ -275,7 +364,12 @@
     </a>
     <a href="pages/draft-analysis.html" class="nav-card card-draft glass">
       <h3><span class="icon">&#128200;</span> Draft Analysis</h3>
-      <p>Hit rates by round and position, late-round steals, surplus value rankings, draft fingerprints, and archetype clustering across all six seasons.</p>
+      <p>Hit rates by round and position, late-round steals, and archetype clustering across all six seasons.</p>
+      <div class="card-subpages">
+        <span class="card-subpage-pill">Surplus Value</span>
+        <span class="card-subpage-pill">Draft History</span>
+        <span class="card-subpage-pill">Fingerprints</span>
+      </div>
       <span class="card-arrow">View analysis &#8594;</span>
     </a>
     <a href="pages/weekly-rankings.html" class="nav-card card-rankings glass">
@@ -302,5 +396,44 @@
 </div>
 
 <script src="shared.js"></script>
+<script src="data-engine.js"></script>
+<script>
+var currentSort = { col: 3, asc: false };
+function sortTable(colIndex) {
+  var table = document.getElementById('leaderboardTable');
+  var tbody = table.querySelector('tbody');
+  var rows = Array.from(tbody.querySelectorAll('tr'));
+  var headers = table.querySelectorAll('thead th');
+  if (currentSort.col === colIndex) { currentSort.asc = !currentSort.asc; }
+  else { currentSort.col = colIndex; currentSort.asc = (colIndex === 0); }
+  headers.forEach(function(th, i) {
+    var arrow = th.querySelector('.sort-arrow');
+    th.classList.remove('sorted');
+    if (i === colIndex) { th.classList.add('sorted'); arrow.textContent = currentSort.asc ? '\u25B2' : '\u25BC'; }
+    else { arrow.textContent = '\u21C5'; }
+  });
+  rows.sort(function(a, b) {
+    var aVal = a.cells[colIndex].textContent.trim();
+    var bVal = b.cells[colIndex].textContent.trim();
+    if (colIndex === 8 || colIndex === 9) {
+      var parseRec = function(s) { var m = s.match(/(\d+)-(\d+)/); return m ? parseInt(m[1])/(parseInt(m[1])+parseInt(m[2])) : 0; };
+      return currentSort.asc ? parseRec(aVal)-parseRec(bVal) : parseRec(bVal)-parseRec(aVal);
+    } else if (colIndex === 0) {
+      return currentSort.asc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+    } else {
+      aVal = parseFloat(aVal.replace(/[^\d.\-]/g,''))||0; bVal = parseFloat(bVal.replace(/[^\d.\-]/g,''))||0;
+      return currentSort.asc ? aVal-bVal : bVal-aVal;
+    }
+  });
+  rows.forEach(function(r) { tbody.appendChild(r); });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadCSV('data/preach_manager_stats.csv').then(function(statsData) {
+    var list = buildLeaderboard(statsData);
+    renderLeaderboard(list);
+  });
+});
+</script>
 </body>
 </html>
