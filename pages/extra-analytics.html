@@ -119,12 +119,7 @@
 
 /* ── GAUNTLET SPECTRUM ── */
 .gspectrum-wrap {
-  padding:3.2rem 2rem 4.6rem;margin-bottom:2.25rem;position:relative;
-}
-.gspectrum-caption {
-  position:absolute;left:1rem;right:1rem;bottom:0.9rem;
-  font-size:0.68rem;color:var(--muted);text-align:center;
-  letter-spacing:0.02em;
+  padding:2.6rem 1.5rem 1.8rem;margin-bottom:1.25rem;position:relative;
 }
 .gspectrum-axis { position:relative;height:2px; }
 .gspectrum-band {
@@ -141,8 +136,8 @@
   transform:translateX(-1px);
 }
 .gspectrum-center-lbl {
-  position:absolute;top:-32px;left:50%;transform:translateX(-50%);
-  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;
+  position:absolute;top:-28px;left:50%;transform:translateX(-50%);
+  font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;
   color:var(--muted);font-weight:700;white-space:nowrap;
 }
 .gspectrum-tick {
@@ -151,35 +146,37 @@
 }
 .gspectrum-tick-lbl {
   position:absolute;top:8px;transform:translateX(-50%);
-  font-size:0.62rem;color:var(--muted);font-variant-numeric:tabular-nums;
+  font-size:0.6rem;color:var(--muted);font-variant-numeric:tabular-nums;
 }
 .gspectrum-pin {
   position:absolute;top:0;transform:translate(-50%,-50%);
   cursor:pointer;z-index:2;
 }
 .gspectrum-pin-dot {
-  width:15px;height:15px;border-radius:50%;border:2.5px solid var(--paper,#f5f0e8);
+  width:16px;height:16px;border-radius:50%;border:2.5px solid var(--paper,#f5f0e8);
   box-shadow:0 2px 8px rgba(0,0,0,0.22);transition:transform 0.15s;
 }
-.gspectrum-pin:hover .gspectrum-pin-dot { transform:scale(1.25); }
-.gspectrum-pin-label {
-  position:absolute;left:50%;transform:translateX(-50%);
-  white-space:nowrap;text-align:center;line-height:1.25;
+.gspectrum-pin:hover .gspectrum-pin-dot,.gspectrum-pin.active .gspectrum-pin-dot { transform:scale(1.3); }
+
+/* Legend list -- never collides, wraps naturally at any width */
+.gspectrum-legend {
+  display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem 0.4rem;
+  padding:1.1rem 0.5rem 0;border-top:1px solid rgba(var(--accent-rgb),0.12);
 }
-.gspectrum-pin-label .gpl-name {
-  font-size:0.68rem;font-weight:700;color:var(--text);
+.gspectrum-legend-item {
+  display:flex;align-items:center;gap:0.4rem;padding:0.3rem 0.65rem;
+  border-radius:99px;background:rgba(255,255,255,0.4);cursor:pointer;
+  transition:background 0.15s;
 }
-.gspectrum-pin-label .gpl-year {
-  font-size:0.6rem;color:var(--muted);
+.gspectrum-legend-item:hover,.gspectrum-legend-item.active { background:rgba(255,255,255,0.75); }
+.gspectrum-legend-dot { width:9px;height:9px;border-radius:50%;flex-shrink:0; }
+.gspectrum-legend-name { font-size:0.72rem;font-weight:700;color:var(--text);white-space:nowrap; }
+.gspectrum-legend-year { font-size:0.68rem;color:var(--muted);white-space:nowrap; }
+.gspectrum-legend-score { font-size:0.68rem;color:var(--muted);font-weight:600;white-space:nowrap; }
+.gspectrum-caption {
+  font-size:0.68rem;color:var(--muted);text-align:center;
+  letter-spacing:0.02em;margin-top:0.9rem;
 }
-.gspectrum-pin.above .gspectrum-pin-label { bottom:22px; }
-.gspectrum-pin.below .gspectrum-pin-label { top:22px; }
-.gspectrum-pin.above::after,.gspectrum-pin.below::after {
-  content:'';position:absolute;left:50%;width:1px;
-  background:rgba(var(--accent-rgb),0.25);transform:translateX(-0.5px);
-}
-.gspectrum-pin.above::after { bottom:8px;height:14px; }
-.gspectrum-pin.below::after { top:8px;height:14px; }
 
 /* ── PER-CARD DIVERGING BARS ── */
 .gauntlet-bar-section {
@@ -199,9 +196,12 @@
 }
 .gdiv-fill { position:absolute;top:0;height:100%;border-radius:99px;opacity:0.85; }
 .gauntlet-bval { font-size:0.7rem;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums; }
-@media(max-width:700px) {
-  .gspectrum-pin-label { display:none; }
-  .gspectrum-wrap { padding:1.5rem 0.5rem 1.5rem; }
+@media(max-width:600px) {
+  .gspectrum-wrap { padding:2.2rem 0.75rem 1.5rem; }
+  .gspectrum-legend { gap:0.4rem 0.3rem; }
+  .gspectrum-legend-item { padding:0.28rem 0.55rem; }
+  .gauntlet-brow { grid-template-columns:100px 1fr 42px;gap:0.4rem; }
+  .gauntlet-brow-label { font-size:0.68rem; }
 }
 .gauntlet-grid { display:flex;flex-direction:column;gap:1.1rem; }
 .gauntlet-card {
@@ -532,6 +532,7 @@
 
     <div class="gspectrum-wrap glass">
       <div class="gspectrum-axis" id="gauntletSpectrum"></div>
+      <div class="gspectrum-legend" id="gauntletSpectrumLegend"></div>
     </div>
 
     <div class="gauntlet-grid" id="gauntletGrid"></div>
@@ -928,25 +929,47 @@ function shortName(n) {
   });
 
   var byPos = CHAMPIONS.map(function(c,i){ return {c:c, origIndex:i}; }).sort(function(a,b){ return a.c.gs - b.c.gs; });
-  byPos.forEach(function(item, sortIdx) {
+  var pinEls = {}, legendEls = {};
+  byPos.forEach(function(item) {
     var c = item.c, i = item.origIndex;
     var pin = document.createElement('div');
-    pin.className = 'gspectrum-pin ' + (sortIdx % 2 === 0 ? 'above' : 'below');
+    pin.className = 'gspectrum-pin';
     pin.style.left = specPct(c.gs) + '%';
-    pin.innerHTML = '<div class="gspectrum-pin-label"><div class="gpl-name">' + c.champion.split(' ')[0] + '</div><div class="gpl-year">' + c.year + '</div></div>'
-      + '<div class="gspectrum-pin-dot" style="background:' + COLORS[i] + '"></div>';
+    pin.innerHTML = '<div class="gspectrum-pin-dot" style="background:' + COLORS[i] + '"></div>';
     pin.title = c.champion + ' (' + c.year + ') -- Gauntlet Score ' + c.gs;
     pin.addEventListener('click', function() {
       var card = document.getElementById('gc' + i);
       if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
+    pin.addEventListener('mouseenter', function() { if (legendEls[i]) legendEls[i].classList.add('active'); });
+    pin.addEventListener('mouseleave', function() { if (legendEls[i]) legendEls[i].classList.remove('active'); });
     spectrum.appendChild(pin);
+    pinEls[i] = pin;
+  });
+
+  var legend = document.getElementById('gauntletSpectrumLegend');
+  byPos.forEach(function(item) {
+    var c = item.c, i = item.origIndex;
+    var entry = document.createElement('div');
+    entry.className = 'gspectrum-legend-item';
+    entry.innerHTML = '<div class="gspectrum-legend-dot" style="background:' + COLORS[i] + '"></div>'
+      + '<span class="gspectrum-legend-name">' + c.champion.split(' ')[0] + '</span>'
+      + '<span class="gspectrum-legend-year">' + c.year + '</span>'
+      + '<span class="gspectrum-legend-score">' + c.gs + '</span>';
+    entry.addEventListener('click', function() {
+      var card = document.getElementById('gc' + i);
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    entry.addEventListener('mouseenter', function() { pinEls[i].classList.add('active'); });
+    entry.addEventListener('mouseleave', function() { pinEls[i].classList.remove('active'); });
+    legend.appendChild(entry);
+    legendEls[i] = entry;
   });
 
   var caption = document.createElement('div');
   caption.className = 'gspectrum-caption';
   caption.textContent = 'Every title run compared on the same fixed scale. Most cluster near the league average -- no run in six seasons has been a true statistical outlier.';
-  spectrum.parentElement.appendChild(caption);
+  legend.parentElement.appendChild(caption);
 
   // Cards
   var grid = document.getElementById('gauntletGrid');
