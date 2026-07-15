@@ -16,6 +16,18 @@
   border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
 }
 .back-link:hover { background:var(--accent-glow); }
+.draft-subnav { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem; }
+.draft-subnav-pill {
+  display:inline-flex;align-items:center;gap:0.35rem;font-size:0.76rem;font-weight:600;
+  color:var(--accent);text-decoration:none;
+  padding:0.35rem 0.75rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
+}
+.draft-subnav-pill:hover { background:var(--accent-glow); }
+.draft-subnav-pill.current {
+  background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
+  pointer-events:none;
+}
 .career-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
 .career-table thead th {
   text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
@@ -106,7 +118,6 @@
       <span>Preach Fantasy</span>
     </a>
     <div class="nav-links">
-      <a href="leaderboard.html">Leaderboard</a>
       <a href="managers.html">Managers</a>
       <a href="draft-analysis.html">Draft Analysis</a>
       <a href="surplus-value.html" class="active nav-sub">&#8627; Surplus Value</a>
@@ -127,7 +138,6 @@
     <div class="mobile-menu-inner">
       <button class="mobile-menu-close" onclick="closeMobileMenu()">&#10005;</button>
       <a href="../index.html">Home</a>
-      <a href="leaderboard.html">Leaderboard</a>
       <a href="managers.html">Managers</a>
       <a href="draft-analysis.html">Draft Analysis</a>
       <a href="surplus-value.html" class="active">Surplus Value</a>
@@ -139,7 +149,12 @@
     </div>
   </div>
 
-  <a href="draft-analysis.html" class="back-link">&#8592; Back to Draft Analysis</a>
+  <div class="draft-subnav">
+    <a href="draft-analysis.html" class="draft-subnav-pill">Draft Analysis</a>
+    <a href="surplus-value.html" class="draft-subnav-pill current">Surplus Value</a>
+    <a href="draft-history.html" class="draft-subnav-pill">Draft History</a>
+    <a href="draft-fingerprints.html" class="draft-subnav-pill">Draft Fingerprints</a>
+  </div>
 
   <div class="page-header glass">
     <h1>Surplus Value Index</h1>
