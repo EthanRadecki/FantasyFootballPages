@@ -1709,6 +1709,18 @@ function positionHmTooltip(e) {
   tt.style.top  = y+'px';
 }
 
+// ── Name normalization ───────────────────────────────────────────────────────
+// FINGERPRINTS / HEATMAP_DATA are keyed with short display names, but profile.name
+// (sourced from preach_manager_stats.csv) uses the full CSV name for these two managers.
+var FP_NAME_ALIASES = {
+  "Carmine Pittelli Jr": "Carmine Pittelli",
+  "Carmine Pittelli Jr.": "Carmine Pittelli",
+  "Ryan P McQuaid": "Ryan McQuaid"
+};
+function normalizeFpName(name) {
+  return FP_NAME_ALIASES[name] || name;
+}
+
 function renderAllCharts(profile) {
   renderPerfChart(profile);
   renderLuckChart(profile);
@@ -1716,8 +1728,8 @@ function renderAllCharts(profile) {
   renderDistChart(profile);
   renderTrendsChart(profile);
   renderRankChart(profile);
-  renderFingerprintChart(profile.name);
-  renderHeatmap(profile.name);
+  renderFingerprintChart(normalizeFpName(profile.name));
+  renderHeatmap(normalizeFpName(profile.name));
 }
 
 // ── Manager selection ────────────────────────────────────────────────────────
