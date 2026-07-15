@@ -213,8 +213,17 @@ function buildManagerProfiles(statsData, matchupData) {
   lossSort.forEach(function(item, i) { item.totalL_rank = i + 1; });
 
   // H2H from matchup data
+  // Bracket-only: excludes non-elimination consolation games that occur during
+  // playoff weeks (same convention as Closest Games / Championship Gauntlet).
+  // A row counts if it's a regular-season week, OR it's a playoff week AND
+  // Is_Playoff flags it as a real bracket game.
+  function isRealGame(r) {
+    var isPlayoffWeek = r.Week && r.Week.indexOf('Playoff') === 0;
+    return !isPlayoffWeek || r.Is_Playoff === 'Yes';
+  }
+
   allManagers.forEach(function(p) {
-    var myMatchups = matchups.filter(function(r) { return r.Team_Name === p.name; });
+    var myMatchups = matchups.filter(function(r) { return r.Team_Name === p.name && isRealGame(r); });
     var h2h = {};
     myMatchups.forEach(function(r) {
       var opp = r.Opponent_Name;
