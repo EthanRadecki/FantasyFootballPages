@@ -49,7 +49,6 @@
 }
 .heatmap-season-pill:hover { background:var(--accent-glow); }
 .heatmap-season-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
-.wv-toggle { display:flex;gap:0.4rem;margin-bottom:0.75rem; }
 @media(max-width:768px) {
   .wv-table { font-size:0.74rem; }
 }
@@ -115,21 +114,17 @@
 
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
-    <p>The league used <strong>FAAB bidding</strong> only in 2025. From 2020-2024 it ran on <strong>reverse-order waiver priority</strong>, where a successful claim sends you to the back of the line. Since "cost" isn't comparable across those two systems, this page measures pure output instead: <strong>points scored per week rostered</strong>, for every pickup, across all six seasons equally. A stint ends at the next drop or trade-away, whichever comes first. Thomas Sullivan and William Serafin (2020 only) are excluded, same as the rest of the site.</p>
+    <p>The league used <strong>FAAB bidding</strong> only in 2025. From 2020-2024 it ran on <strong>reverse-order waiver priority</strong>, where a successful claim sends you to the back of the line. Since "cost" isn't comparable across those two systems, this page measures pure output instead: <strong>total points scored by every pickup, divided by total weeks rostered</strong>. A stint ends at the next drop or trade-away, whichever comes first. Thomas Sullivan and William Serafin (2020 only) are excluded, same as the rest of the site.</p>
   </div>
 
   <div class="section-label">Career Leaderboard</div>
   <div class="section-title">Points produced per week rostered, by manager.</div>
   <div class="chart-card-interactive glass">
-    <div class="wv-toggle">
-      <button class="heatmap-season-pill active" id="btn-pooled" onclick="setMode('pooled', this)">Pooled</button>
-      <button class="heatmap-season-pill" id="btn-avg" onclick="setMode('avg', this)">Averaged</button>
-    </div>
     <div class="heatmap-controls" id="waiver-pills"></div>
     <div style="position:relative;height:520px;">
       <canvas id="chart-waiver-value"></canvas>
     </div>
-    <p class="metric-note"><strong>Pooled</strong> = total points from every pickup &divide; total weeks rostered (every week weighted equally). <strong>Averaged</strong> = the mean of each pickup's own rate (a great 2-week rental counts the same as a full-season role player). Career and season views both use the same color scale.</p>
+    <p class="metric-note">Total points from every pickup, divided by total weeks rostered. Every week counts equally, so a manager who finds and holds a great player for months ranks above one who churns through a lot of one-week tries.</p>
   </div>
 
   <div class="section-label" style="margin-top:2rem;">Contested vs. Uncontested</div>
@@ -176,9 +171,8 @@ function gradientColor(value, min, max, invert) {
 // Career + per-season data, both pooled and averaged. Fixed global scale (3.43-10.83)
 // so colors mean the same thing across every filter and both modes.
 var WAIVER_BY_FILTER = {"career":[{m:"Brandon Hancock",pooled:8.39,avg:7.6,n:139},{m:"Anthony Kelly",pooled:7.99,avg:7.35,n:195},{m:"Deniz Bileydi",pooled:7.9,avg:7.34,n:115},{m:"Carmine Pittelli Jr.",pooled:7.81,avg:7.24,n:71},{m:"Baylen Slansky",pooled:7.78,avg:5.87,n:180},{m:"Andrew Root",pooled:7.7,avg:7.48,n:121},{m:"Ethan Radecki",pooled:7.62,avg:7.15,n:207},{m:"Cole Maney",pooled:7.49,avg:6.46,n:69},{m:"Ben Castaldo",pooled:7.29,avg:6.54,n:87},{m:"Max Malich",pooled:7.28,avg:6.23,n:170},{m:"Aidan Quigley",pooled:7.22,avg:6.67,n:42},{m:"Quin Gegwich",pooled:7.22,avg:6.79,n:139},{m:"Ryan P McQuaid",pooled:6.94,avg:6.34,n:207},{m:"Charlie Gorman",pooled:5.8,avg:5.25,n:82}],"2020":[{m:"Deniz Bileydi",pooled:9.41,avg:8.8,n:21},{m:"Ethan Radecki",pooled:9.02,avg:7.23,n:41},{m:"Cole Maney",pooled:8.36,avg:6.39,n:23},{m:"Brandon Hancock",pooled:8.19,avg:7.75,n:40},{m:"Andrew Root",pooled:7.86,avg:8.51,n:27},{m:"Baylen Slansky",pooled:7.68,avg:5.82,n:31},{m:"Max Malich",pooled:7.63,avg:5.88,n:27},{m:"Quin Gegwich",pooled:7.43,avg:6.03,n:29},{m:"Anthony Kelly",pooled:7.34,avg:6.69,n:37},{m:"Carmine Pittelli Jr.",pooled:7.3,avg:6.77,n:7},{m:"Ryan P McQuaid",pooled:6.29,avg:5.37,n:45},{m:"Charlie Gorman",pooled:6.22,avg:5.0,n:30},{m:"Ben Castaldo",pooled:5.84,avg:5.43,n:29}],"2021":[{m:"Brandon Hancock",pooled:10.08,avg:8.36,n:17},{m:"Anthony Kelly",pooled:9.99,avg:10.83,n:38},{m:"Cole Maney",pooled:8.42,avg:7.47,n:5},{m:"Ben Castaldo",pooled:8.11,avg:8.43,n:8},{m:"Ethan Radecki",pooled:8.1,avg:7.87,n:32},{m:"Ryan P McQuaid",pooled:7.77,avg:6.65,n:34},{m:"Carmine Pittelli Jr.",pooled:7.62,avg:7.46,n:15},{m:"Aidan Quigley",pooled:7.32,avg:6.62,n:8},{m:"Deniz Bileydi",pooled:7.11,avg:5.97,n:12},{m:"Baylen Slansky",pooled:6.87,avg:5.21,n:21},{m:"Quin Gegwich",pooled:6.78,avg:6.64,n:31},{m:"Andrew Root",pooled:6.63,avg:6.52,n:30},{m:"Max Malich",pooled:6.47,avg:5.2,n:19},{m:"Charlie Gorman",pooled:6.23,avg:5.66,n:10}],"2022":[{m:"Aidan Quigley",pooled:9.97,avg:8.45,n:8},{m:"Brandon Hancock",pooled:9.22,avg:7.56,n:22},{m:"Anthony Kelly",pooled:8.5,avg:6.48,n:34},{m:"Deniz Bileydi",pooled:8.4,avg:7.76,n:27},{m:"Cole Maney",pooled:8.08,avg:8.47,n:15},{m:"Carmine Pittelli Jr.",pooled:8.07,avg:7.11,n:23},{m:"Ryan P McQuaid",pooled:8.04,avg:7.71,n:35},{m:"Quin Gegwich",pooled:7.75,avg:7.62,n:17},{m:"Baylen Slansky",pooled:7.21,avg:5.25,n:40},{m:"Max Malich",pooled:6.37,avg:5.59,n:32},{m:"Ben Castaldo",pooled:6.18,avg:5.7,n:13},{m:"Andrew Root",pooled:6.1,avg:6.62,n:19},{m:"Ethan Radecki",pooled:6.05,avg:6.77,n:37},{m:"Charlie Gorman",pooled:3.43,avg:4.61,n:10}],"2023":[{m:"Aidan Quigley",pooled:9.39,avg:9.02,n:6},{m:"Andrew Root",pooled:8.99,avg:7.69,n:19},{m:"Ben Castaldo",pooled:8.73,avg:7.49,n:15},{m:"Quin Gegwich",pooled:8.37,avg:8.11,n:20},{m:"Charlie Gorman",pooled:8.28,avg:7.18,n:9},{m:"Carmine Pittelli Jr.",pooled:7.93,avg:8.41,n:10},{m:"Baylen Slansky",pooled:7.92,avg:6.03,n:29},{m:"Brandon Hancock",pooled:7.02,avg:7.39,n:20},{m:"Ryan P McQuaid",pooled:7.02,avg:6.75,n:44},{m:"Deniz Bileydi",pooled:6.95,avg:7.41,n:21},{m:"Max Malich",pooled:6.82,avg:7.56,n:26},{m:"Ethan Radecki",pooled:6.54,avg:5.8,n:28},{m:"Anthony Kelly",pooled:6.24,avg:5.67,n:28},{m:"Cole Maney",pooled:5.73,avg:4.98,n:10}],"2024":[{m:"Andrew Root",pooled:9.16,avg:8.38,n:19},{m:"Baylen Slansky",pooled:8.81,avg:7.56,n:31},{m:"Anthony Kelly",pooled:8.3,avg:6.92,n:21},{m:"Carmine Pittelli Jr.",pooled:8.27,avg:8.36,n:7},{m:"Ben Castaldo",pooled:7.97,avg:6.98,n:10},{m:"Max Malich",pooled:7.94,avg:5.86,n:26},{m:"Deniz Bileydi",pooled:7.8,avg:6.79,n:15},{m:"Ethan Radecki",pooled:7.48,avg:7.19,n:30},{m:"Brandon Hancock",pooled:7.45,avg:7.58,n:22},{m:"Aidan Quigley",pooled:7.34,avg:6.6,n:9},{m:"Quin Gegwich",pooled:6.72,avg:6.34,n:23},{m:"Ryan P McQuaid",pooled:5.97,avg:5.81,n:35},{m:"Charlie Gorman",pooled:5.38,avg:5.64,n:11},{m:"Cole Maney",pooled:5.3,avg:4.52,n:9}],"2025":[{m:"Brandon Hancock",pooled:8.63,avg:6.86,n:18},{m:"Ethan Radecki",pooled:8.4,avg:7.75,n:39},{m:"Max Malich",pooled:8.11,avg:6.86,n:40},{m:"Cole Maney",pooled:7.73,avg:6.22,n:7},{m:"Baylen Slansky",pooled:7.73,avg:5.27,n:28},{m:"Carmine Pittelli Jr.",pooled:7.67,avg:5.39,n:9},{m:"Anthony Kelly",pooled:7.43,avg:6.75,n:37},{m:"Deniz Bileydi",pooled:7.13,avg:6.32,n:19},{m:"Andrew Root",pooled:6.9,avg:6.89,n:7},{m:"Ben Castaldo",pooled:6.89,avg:7.32,n:12},{m:"Quin Gegwich",pooled:6.56,avg:6.64,n:19},{m:"Ryan P McQuaid",pooled:6.43,avg:5.28,n:14},{m:"Charlie Gorman",pooled:4.81,avg:4.28,n:12},{m:"Aidan Quigley",pooled:4.28,avg:4.2,n:11}]};
-var WAIVER_GLOBAL_MIN = 3.43, WAIVER_GLOBAL_MAX = 10.83;
+var WAIVER_GLOBAL_MIN = 3.43, WAIVER_GLOBAL_MAX = 10.08;
 
-var currentMode = 'pooled';
 var currentFilter = 'career';
 var waiverChart = null;
 
@@ -193,13 +187,6 @@ function renderWaiverPills() {
   el.innerHTML = html;
 }
 
-function setMode(mode, btn) {
-  currentMode = mode;
-  document.getElementById('btn-pooled').classList.toggle('active', mode==='pooled');
-  document.getElementById('btn-avg').classList.toggle('active', mode==='avg');
-  renderWaiverChart();
-}
-
 function setFilter(filterKey, btn) {
   currentFilter = filterKey;
   btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
@@ -208,8 +195,8 @@ function setFilter(filterKey, btn) {
 }
 
 function renderWaiverChart() {
-  var rows = WAIVER_BY_FILTER[currentFilter].slice().sort(function(a,b){ return b[currentMode]-a[currentMode]; });
-  var colors = rows.map(function(d){ return gradientColor(d[currentMode], WAIVER_GLOBAL_MIN, WAIVER_GLOBAL_MAX, true); });
+  var rows = WAIVER_BY_FILTER[currentFilter].slice().sort(function(a,b){ return b.pooled-a.pooled; });
+  var colors = rows.map(function(d){ return gradientColor(d.pooled, WAIVER_GLOBAL_MIN, WAIVER_GLOBAL_MAX, true); });
 
   if (waiverChart) { waiverChart.destroy(); }
   var ctx = document.getElementById('chart-waiver-value').getContext('2d');
@@ -218,7 +205,7 @@ function renderWaiverChart() {
     data: {
       labels: rows.map(function(d){return d.m;}),
       datasets: [{
-        data: rows.map(function(d){return d[currentMode];}),
+        data: rows.map(function(d){return d.pooled;}),
         backgroundColor: colors,
         borderRadius: 4,
         barPercentage: 0.7,
