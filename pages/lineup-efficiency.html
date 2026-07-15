@@ -116,14 +116,14 @@
       <a href="../index.html">Home</a>
       <a href="managers.html">Managers</a>
       <a href="draft-analysis.html">Draft Analysis</a>
-      <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
-      <a href="draft-history.html" class="nav-sub">&#8627; Draft History</a>
-      <a href="draft-fingerprints.html" class="nav-sub">&#8627; Draft Fingerprints</a>
+      <a href="surplus-value.html">Surplus Value</a>
+      <a href="draft-history.html">Draft History</a>
+      <a href="draft-fingerprints.html">Draft Fingerprints</a>
       <a href="weekly-rankings.html">Weekly Rankings</a>
       <a href="champions.html">Champions</a>
       <a href="extra-analytics.html">Extra Analytics</a>
       <a href="transaction-analysis.html">Transaction Analysis</a>
-      <a href="lineup-efficiency.html" class="nav-sub active">&#8627; Lineup Efficiency</a>
+      <a href="lineup-efficiency.html" class="active">Lineup Efficiency</a>
     </div>
   </div>
 
@@ -147,6 +147,7 @@
   <div class="chart-grid" style="grid-template-columns:1fr;">
     <div class="chart-card-interactive glass">
       <div class="chart-card-label">Avg Efficiency Gap by Manager</div>
+      <div class="heatmap-controls" id="efficiency-pills" style="margin-bottom:1rem;"></div>
       <div style="position:relative;height:520px;">
         <canvas id="chart-efficiency-gap"></canvas>
       </div>
@@ -197,22 +198,12 @@
 </div>
 <script src="shared.js"></script>
 <script>
-var CAREER_GAP = [
-  {manager:"Andrew Root",           gap:16.71, weeks:88},
-  {manager:"Anthony Kelly",         gap:16.14, weeks:92},
-  {manager:"Brandon Hancock",       gap:15.33, weeks:93},
-  {manager:"Max Malich",            gap:15.11, weeks:86},
-  {manager:"Deniz Bileydi",         gap:14.84, weeks:85},
-  {manager:"Ryan P McQuaid",        gap:14.78, weeks:88},
-  {manager:"Ben Castaldo",          gap:14.10, weeks:87},
-  {manager:"Carmine Pittelli Jr.",  gap:13.74, weeks:89},
-  {manager:"Ethan Radecki",         gap:13.51, weeks:93},
-  {manager:"Quin Gegwich",          gap:13.36, weeks:84},
-  {manager:"Baylen Slansky",        gap:13.10, weeks:89},
-  {manager:"Charlie Gorman",        gap:12.39, weeks:87},
-  {manager:"Aidan Quigley",         gap:11.86, weeks:71},
-  {manager:"Cole Maney",            gap:11.38, weeks:89},
-];
+// Efficiency gap by manager, filterable: "career" plus each individual season.
+// Fixed global min/max (7.55-22.07) used for coloring across every filter, so
+// a given shade of red/green means the same thing whether viewing Career or a
+// single season.
+var EFFICIENCY_BY_FILTER = {"career":[{m:"Andrew Root",g:16.71,w:88},{m:"Anthony Kelly",g:16.14,w:92},{m:"Brandon Hancock",g:15.33,w:93},{m:"Max Malich",g:15.11,w:86},{m:"Deniz Bileydi",g:14.84,w:85},{m:"Ryan P McQuaid",g:14.78,w:88},{m:"Ben Castaldo",g:14.1,w:87},{m:"Carmine Pittelli Jr.",g:13.74,w:89},{m:"Ethan Radecki",g:13.51,w:93},{m:"Quin Gegwich",g:13.36,w:84},{m:"Baylen Slansky",g:13.1,w:89},{m:"Charlie Gorman",g:12.39,w:87},{m:"Aidan Quigley",g:11.86,w:71},{m:"Cole Maney",g:11.38,w:89}],"2020":[{m:"Max Malich",g:22.07,w:15},{m:"Charlie Gorman",g:17.77,w:13},{m:"Carmine Pittelli Jr.",g:17.61,w:13},{m:"Quin Gegwich",g:17.35,w:13},{m:"Deniz Bileydi",g:17.08,w:15},{m:"Andrew Root",g:16.77,w:14},{m:"Brandon Hancock",g:15.85,w:17},{m:"Anthony Kelly",g:15.27,w:14},{m:"Ethan Radecki",g:14.84,w:16},{m:"Ryan P McQuaid",g:12.39,w:13},{m:"Ben Castaldo",g:10.51,w:15},{m:"Cole Maney",g:9.65,w:13},{m:"Baylen Slansky",g:9.3,w:13}],"2021":[{m:"Anthony Kelly",g:17.85,w:16},{m:"Max Malich",g:16.93,w:13},{m:"Aidan Quigley",g:16.36,w:14},{m:"Ethan Radecki",g:16.06,w:15},{m:"Ryan P McQuaid",g:15.34,w:13},{m:"Brandon Hancock",g:14.92,w:14},{m:"Ben Castaldo",g:14.52,w:16},{m:"Andrew Root",g:14.51,w:15},{m:"Charlie Gorman",g:13.45,w:13},{m:"Baylen Slansky",g:13.31,w:14},{m:"Cole Maney",g:13.22,w:14},{m:"Carmine Pittelli Jr.",g:12.41,w:15},{m:"Deniz Bileydi",g:11.35,w:13},{m:"Quin Gegwich",g:8.49,w:13}],"2022":[{m:"Carmine Pittelli Jr.",g:18.65,w:15},{m:"Andrew Root",g:17.3,w:16},{m:"Ryan P McQuaid",g:16.24,w:17},{m:"Brandon Hancock",g:15.9,w:16},{m:"Ben Castaldo",g:15.33,w:14},{m:"Anthony Kelly",g:13.86,w:17},{m:"Max Malich",g:13.64,w:15},{m:"Ethan Radecki",g:13.45,w:15},{m:"Quin Gegwich",g:12.8,w:14},{m:"Deniz Bileydi",g:11.67,w:15},{m:"Cole Maney",g:11.36,w:14},{m:"Charlie Gorman",g:11.26,w:14},{m:"Baylen Slansky",g:10.98,w:14},{m:"Aidan Quigley",g:7.55,w:14}],"2023":[{m:"Deniz Bileydi",g:19.34,w:14},{m:"Anthony Kelly",g:18.79,w:14},{m:"Brandon Hancock",g:18.51,w:15},{m:"Baylen Slansky",g:18.05,w:15},{m:"Quin Gegwich",g:16.41,w:14},{m:"Ethan Radecki",g:15.07,w:16},{m:"Ryan P McQuaid",g:14.48,w:15},{m:"Ben Castaldo",g:13.75,w:14},{m:"Andrew Root",g:11.67,w:14},{m:"Aidan Quigley",g:10.89,w:15},{m:"Carmine Pittelli Jr.",g:10.67,w:17},{m:"Max Malich",g:9.56,w:14},{m:"Charlie Gorman",g:9.27,w:16},{m:"Cole Maney",g:7.59,w:17}],"2024":[{m:"Andrew Root",g:21.92,w:15},{m:"Ryan P McQuaid",g:16.9,w:15},{m:"Baylen Slansky",g:16.11,w:17},{m:"Charlie Gorman",g:15.48,w:14},{m:"Deniz Bileydi",g:14.78,w:14},{m:"Anthony Kelly",g:13.38,w:14},{m:"Ben Castaldo",g:12.03,w:13},{m:"Aidan Quigley",g:12.0,w:14},{m:"Quin Gegwich",g:11.45,w:16},{m:"Brandon Hancock",g:11.24,w:17},{m:"Cole Maney",g:11.08,w:16},{m:"Carmine Pittelli Jr.",g:10.73,w:14},{m:"Max Malich",g:10.57,w:15},{m:"Ethan Radecki",g:9.03,w:15}],"2025":[{m:"Ben Castaldo",g:18.21,w:15},{m:"Max Malich",g:17.97,w:14},{m:"Andrew Root",g:17.77,w:14},{m:"Anthony Kelly",g:17.63,w:17},{m:"Brandon Hancock",g:15.98,w:14},{m:"Cole Maney",g:15.82,w:15},{m:"Deniz Bileydi",g:14.63,w:14},{m:"Quin Gegwich",g:13.85,w:14},{m:"Carmine Pittelli Jr.",g:13.12,w:15},{m:"Ryan P McQuaid",g:12.92,w:15},{m:"Aidan Quigley",g:12.59,w:14},{m:"Ethan Radecki",g:12.5,w:16},{m:"Baylen Slansky",g:10.01,w:16},{m:"Charlie Gorman",g:8.78,w:17}]};
+var EFFICIENCY_GLOBAL_MIN = 7.55, EFFICIENCY_GLOBAL_MAX = 22.07;
 
 var MISSED_WINS = [
   {manager:"Max Malich",            weeks:86, n:21, rate:24.4, reg:19, po:2},
@@ -259,18 +250,36 @@ function gradientColor(value, min, max, invert) {
   return 'rgba('+r+','+g+','+b+',0.85)';
 }
 
-/* ── Career efficiency gap bar chart ── */
-(function(){
+/* ── Career/season-filterable efficiency gap bar chart ── */
+var efficiencyChart = null;
+
+function renderEfficiencyPills() {
+  var el = document.getElementById('efficiency-pills');
+  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var html = '';
+  keys.forEach(function(k) {
+    var label = k === 'career' ? 'Career' : k;
+    html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+'" onclick="renderEfficiencyChart(\''+k+'\', this)">'+label+'</button>';
+  });
+  el.innerHTML = html;
+}
+
+function renderEfficiencyChart(filterKey, btn) {
+  if (btn) {
+    btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+  var rows = EFFICIENCY_BY_FILTER[filterKey];
+  var colors = rows.map(function(d){ return gradientColor(d.g, EFFICIENCY_GLOBAL_MIN, EFFICIENCY_GLOBAL_MAX); });
+
+  if (efficiencyChart) { efficiencyChart.destroy(); }
   var ctx = document.getElementById('chart-efficiency-gap').getContext('2d');
-  var minG = Math.min.apply(null, CAREER_GAP.map(function(d){return d.gap;}));
-  var maxG = Math.max.apply(null, CAREER_GAP.map(function(d){return d.gap;}));
-  var colors = CAREER_GAP.map(function(d){ return gradientColor(d.gap, minG, maxG); });
-  new Chart(ctx, {
+  efficiencyChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: CAREER_GAP.map(function(d){return d.manager;}),
+      labels: rows.map(function(d){return d.m;}),
       datasets: [{
-        data: CAREER_GAP.map(function(d){return d.gap;}),
+        data: rows.map(function(d){return d.g;}),
         backgroundColor: colors,
         borderRadius: 4,
         barPercentage: 0.7,
@@ -283,12 +292,15 @@ function gradientColor(value, min, max, invert) {
       maintainAspectRatio: false,
       plugins: { legend: { display:false } },
       scales: {
-        x: { title:{display:true,text:'Avg points left on bench per week'} },
+        x: { min:0, max:25, title:{display:true,text:'Avg points left on bench per week'} },
         y: { ticks:{ autoSkip:false, font:{size:12} } }
       }
     }
   });
-})();
+}
+
+renderEfficiencyPills();
+renderEfficiencyChart('career');
 
 function renderMissedWins() {
   var tbody = document.querySelector('#missed-wins-table tbody');
