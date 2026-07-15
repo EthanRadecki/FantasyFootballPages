@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Analysis | Preach Fantasy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<style>
+.draft-subnav { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem; }
+.draft-subnav-pill {
+  display:inline-flex;align-items:center;gap:0.35rem;font-size:0.76rem;font-weight:600;
+  color:var(--accent);text-decoration:none;
+  padding:0.35rem 0.75rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
+}
+.draft-subnav-pill:hover { background:var(--accent-glow); }
+.draft-subnav-pill.current {
+  background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
+  pointer-events:none;
+}
+.txn-stat-row { display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem; }
+.txn-stat-card { padding:1.25rem 1.5rem;text-align:center; }
+.txn-stat-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--accent);margin-bottom:0.5rem; }
+.txn-stat-num { font-family:var(--font-display);font-size:2.2rem;font-weight:900;line-height:1;margin-bottom:0.25rem;color:var(--palm); }
+.txn-stat-sub { font-size:0.75rem;color:var(--muted); }
+.subpage-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:1rem; }
+.subpage-card {
+  text-decoration:none;color:var(--text);
+  padding:1.5rem;border-left:3px solid var(--accent);transition:all 0.25s;
+}
+.subpage-card:hover { transform:translateY(-2px); }
+.subpage-card h3 { font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--palm);margin-bottom:0.3rem; }
+.subpage-card p { font-size:0.78rem;color:var(--muted);line-height:1.5; }
+.subpage-card.coming-soon { opacity:0.55;pointer-events:none; }
+.subpage-card .card-arrow { display:inline-block;margin-top:0.6rem;font-size:0.75rem;font-weight:600;color:var(--accent); }
+@media(max-width:768px) {
+  .txn-stat-row { grid-template-columns:repeat(2,1fr); }
+  .subpage-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass">
+    <a href="../index.html" class="nav-brand">
+      <img src="../preach_logo.png" alt="Preach Fantasy">
+      <span>Preach Fantasy</span>
+    </a>
+    <div class="nav-links">
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html">Draft Analysis</a>
+      <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
+      <a href="draft-history.html" class="nav-sub">&#8627; Draft History</a>
+      <a href="draft-fingerprints.html" class="nav-sub">&#8627; Draft Fingerprints</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+      <a href="transaction-analysis.html" class="active">Transaction Analysis</a>
+      <a href="lineup-efficiency.html" class="nav-sub">&#8627; Lineup Efficiency</a>
+    </div>
+    <button class="nav-hamburger" onclick="openMobileMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu" onclick="if(event.target===this)closeMobileMenu()">
+    <div class="mobile-menu-inner">
+      <button class="mobile-menu-close" onclick="closeMobileMenu()">&#10005;</button>
+      <a href="../index.html">Home</a>
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html">Draft Analysis</a>
+      <a href="surplus-value.html">Surplus Value</a>
+      <a href="draft-history.html">Draft History</a>
+      <a href="draft-fingerprints.html">Draft Fingerprints</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+      <a href="transaction-analysis.html" class="active">Transaction Analysis</a>
+      <a href="lineup-efficiency.html">Lineup Efficiency</a>
+    </div>
+  </div>
+
+  <div class="draft-subnav">
+    <a href="transaction-analysis.html" class="draft-subnav-pill current">Transaction Analysis</a>
+    <a href="lineup-efficiency.html" class="draft-subnav-pill">Lineup Efficiency</a>
+  </div>
+
+  <div class="page-header glass">
+    <h1>Transaction Analysis</h1>
+    <p>Every draft pick, waiver claim, drop, and trade across six seasons (2020-2025), sourced directly from ESPN's transaction log.</p>
+  </div>
+
+  <div class="callout glass">
+    <div class="callout-label">About This Data</div>
+    <p>This section covers everything that happens to a roster <strong>after</strong> the draft: waiver adds, drops, trades, and how each manager sets their lineup week to week. Two managers (Thomas Sullivan and William Serafin, 2020 only) are excluded from all analysis here, consistent with the rest of the site. Playoff weeks are counted only when they were real bracket games &mdash; consolation/loser-bracket weeks are excluded, matching the convention used everywhere else on this site.</p>
+  </div>
+
+  <div class="section-label">League-Wide Activity</div>
+  <div class="section-title">Total transaction volume, all six seasons combined.</div>
+  <div class="txn-stat-row">
+    <div class="txn-stat-card glass">
+      <div class="txn-stat-label">Draft Picks</div>
+      <div class="txn-stat-num">1,360</div>
+      <div class="txn-stat-sub">across 6 drafts</div>
+    </div>
+    <div class="txn-stat-card glass">
+      <div class="txn-stat-label">Waiver / FA Adds</div>
+      <div class="txn-stat-num">2,162</div>
+      <div class="txn-stat-sub">in-season pickups</div>
+    </div>
+    <div class="txn-stat-card glass">
+      <div class="txn-stat-label">Drops</div>
+      <div class="txn-stat-num">2,165</div>
+      <div class="txn-stat-sub">players cut loose</div>
+    </div>
+    <div class="txn-stat-card glass">
+      <div class="txn-stat-label">Trade Line-Items</div>
+      <div class="txn-stat-num">871</div>
+      <div class="txn-stat-sub">players moved via trade</div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem;">Explore The Data</div>
+  <div class="section-title">Pick a sub-analysis below.</div>
+  <div class="subpage-grid">
+    <a href="lineup-efficiency.html" class="subpage-card glass">
+      <h3>Lineup Efficiency</h3>
+      <p>Actual points started vs. the best possible lineup every roster could have set, week by week.</p>
+      <span class="card-arrow">View analysis &#8594;</span>
+    </a>
+    <div class="subpage-card glass coming-soon">
+      <h3>Waiver Wire Value</h3>
+      <p>FAAB efficiency &mdash; points produced per dollar spent on the wire. Coming soon.</p>
+    </div>
+    <div class="subpage-card glass coming-soon">
+      <h3>Trade Value</h3>
+      <p>Who wins the trade market. Coming soon.</p>
+    </div>
+  </div>
+
+</div>
+<script src="shared.js"></script>
+</body>
+</html>

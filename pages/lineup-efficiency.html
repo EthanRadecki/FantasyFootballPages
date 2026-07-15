@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lineup Efficiency | Preach Fantasy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+.draft-subnav { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem; }
+.draft-subnav-pill {
+  display:inline-flex;align-items:center;gap:0.35rem;font-size:0.76rem;font-weight:600;
+  color:var(--accent);text-decoration:none;
+  padding:0.35rem 0.75rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
+}
+.draft-subnav-pill:hover { background:var(--accent-glow); }
+.draft-subnav-pill.current {
+  background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
+  pointer-events:none;
+}
+.le-stat-row { display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem; }
+.le-stat-card { padding:1.25rem 1.5rem;text-align:center; }
+.le-stat-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--accent);margin-bottom:0.5rem; }
+.le-stat-num { font-family:var(--font-display);font-size:2.1rem;font-weight:900;line-height:1;margin-bottom:0.25rem;color:var(--palm); }
+.le-stat-sub { font-size:0.75rem;color:var(--muted); }
+.chart-card-interactive { padding:1.5rem; }
+.chart-card-interactive .chart-card-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--accent);font-weight:700;margin-bottom:1rem;
+}
+.chart-card-interactive canvas { display:block;width:100% !important; }
+.le-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
+.le-table thead th {
+  text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
+}
+.le-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
+.le-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.le-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
+.le-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
+.outcome-badge { display:inline-block;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;letter-spacing:0.04em; }
+.outcome-win { background:rgba(74,127,168,0.18);color:#4a7fa8; }
+.outcome-loss { background:rgba(192,98,58,0.18);color:#c0623a; }
+.missed-badge { color:#c0623a;font-weight:700;font-size:0.72rem; }
+.metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
+@media(max-width:768px) {
+  .le-stat-row { grid-template-columns:repeat(2,1fr); }
+  .le-table { font-size:0.74rem; }
+}
+</style>
+</head>
+<body>
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass">
+    <a href="../index.html" class="nav-brand">
+      <img src="../preach_logo.png" alt="Preach Fantasy">
+      <span>Preach Fantasy</span>
+    </a>
+    <div class="nav-links">
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html">Draft Analysis</a>
+      <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
+      <a href="draft-history.html" class="nav-sub">&#8627; Draft History</a>
+      <a href="draft-fingerprints.html" class="nav-sub">&#8627; Draft Fingerprints</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+      <a href="transaction-analysis.html">Transaction Analysis</a>
+      <a href="lineup-efficiency.html" class="nav-sub active">&#8627; Lineup Efficiency</a>
+    </div>
+    <button class="nav-hamburger" onclick="openMobileMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu" onclick="if(event.target===this)closeMobileMenu()">
+    <div class="mobile-menu-inner">
+      <button class="mobile-menu-close" onclick="closeMobileMenu()">&#10005;</button>
+      <a href="../index.html">Home</a>
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html">Draft Analysis</a>
+      <a href="surplus-value.html">Surplus Value</a>
+      <a href="draft-history.html">Draft History</a>
+      <a href="draft-fingerprints.html">Draft Fingerprints</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+      <a href="transaction-analysis.html">Transaction Analysis</a>
+      <a href="lineup-efficiency.html" class="active">Lineup Efficiency</a>
+    </div>
+  </div>
+
+  <div class="draft-subnav">
+    <a href="transaction-analysis.html" class="draft-subnav-pill">Transaction Analysis</a>
+    <a href="lineup-efficiency.html" class="draft-subnav-pill current">Lineup Efficiency</a>
+  </div>
+
+  <div class="page-header glass">
+    <h1>Lineup Efficiency</h1>
+    <p>Actual points started vs. the best possible lineup each roster could have set, week by week (2020-2025).</p>
+  </div>
+
+  <div class="callout glass">
+    <div class="callout-label">Methodology</div>
+    <p>The <strong>optimal lineup</strong> is the highest-scoring combination available from a manager's full roster that week, honoring real slot rules: 1 QB, 2 RB, 2 WR, 1 TE, 1 FLEX (RB/WR/TE), 1 D/ST, 1 K. Players in the <strong>IR slot are excluded</strong> from the optimal calculation, since they were flagged unplayable that week. Bye weeks (relevant in 2020's 15-team format) and consolation/loser-bracket playoff weeks are excluded entirely by joining against real matchup results &mdash; only weeks with a genuine regular-season or bracket-playoff game count. One historical exception is flagged separately: a manager who did not set a lineup after already being eliminated (a since-banned scenario) is excluded from the efficiency-gap average but still counted toward missed wins, since he genuinely would have won with any real lineup.</p>
+  </div>
+
+  <div class="section-label">League Summary</div>
+  <div class="section-title">1,222 manager-weeks analyzed across six seasons.</div>
+  <div class="le-stat-row">
+    <div class="le-stat-card glass">
+      <div class="le-stat-label">Manager-Weeks</div>
+      <div class="le-stat-num">1,222</div>
+      <div class="le-stat-sub">real, bracket-eligible games</div>
+    </div>
+    <div class="le-stat-card glass">
+      <div class="le-stat-label">Avg Points Left on Bench</div>
+      <div class="le-stat-num">14.06</div>
+      <div class="le-stat-sub">per manager-week</div>
+    </div>
+    <div class="le-stat-card glass">
+      <div class="le-stat-label">Missed Wins</div>
+      <div class="le-stat-num">190</div>
+      <div class="le-stat-sub">losses that were winnable</div>
+    </div>
+    <div class="le-stat-card glass">
+      <div class="le-stat-label">Missed Win Rate</div>
+      <div class="le-stat-num">15.5%</div>
+      <div class="le-stat-sub">of all manager-weeks</div>
+    </div>
+  </div>
+
+  <div class="section-label">Career Leaderboard</div>
+  <div class="section-title">Average points left on the bench per week &mdash; lower is better.</div>
+  <div class="chart-grid" style="grid-template-columns:1fr;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Avg Efficiency Gap by Manager</div>
+      <canvas id="chart-efficiency-gap" height="140"></canvas>
+      <p class="metric-note">Excludes the one flagged forfeit week (see methodology above).</p>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Missed Wins</div>
+  <div class="section-title">Losses that would have been wins with an optimal lineup.</div>
+  <div class="table-wrap glass">
+    <table class="le-table" id="missed-wins-table">
+      <thead>
+        <tr><th>Rank</th><th>Manager</th><th>Missed Wins</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Biggest Lineup Blunders</div>
+  <div class="section-title">The 10 largest single-week efficiency gaps in league history.</div>
+  <div class="callout glass">
+    <p style="margin:0;">Not every blunder cost a win &mdash; a few managers left huge points on the bench and still won comfortably enough to survive it.</p>
+  </div>
+  <div class="table-wrap glass">
+    <table class="le-table" id="blunders-table">
+      <thead>
+        <tr><th>Rank</th><th>Season</th><th>Week</th><th>Manager</th><th>Actual</th><th>Optimal</th><th>Gap</th><th>Result</th><th>Missed Win?</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+</div>
+<script src="shared.js"></script>
+<script>
+var CAREER_GAP = [
+  {manager:"Andrew Root",           gap:16.71, weeks:88},
+  {manager:"Anthony Kelly",         gap:16.14, weeks:92},
+  {manager:"Brandon Hancock",       gap:15.33, weeks:93},
+  {manager:"Max Malich",            gap:15.11, weeks:86},
+  {manager:"Deniz Bileydi",         gap:14.84, weeks:85},
+  {manager:"Ryan P McQuaid",        gap:14.78, weeks:88},
+  {manager:"Ben Castaldo",          gap:14.10, weeks:87},
+  {manager:"Carmine Pittelli Jr.",  gap:13.74, weeks:89},
+  {manager:"Ethan Radecki",         gap:13.51, weeks:93},
+  {manager:"Quin Gegwich",          gap:13.36, weeks:84},
+  {manager:"Baylen Slansky",        gap:13.10, weeks:89},
+  {manager:"Charlie Gorman",        gap:12.39, weeks:87},
+  {manager:"Aidan Quigley",         gap:11.86, weeks:71},
+  {manager:"Cole Maney",            gap:11.38, weeks:89},
+];
+
+var MISSED_WINS = [
+  {manager:"Max Malich",            n:21},
+  {manager:"Deniz Bileydi",         n:17},
+  {manager:"Aidan Quigley",         n:16},
+  {manager:"Brandon Hancock",       n:15},
+  {manager:"Ben Castaldo",          n:14},
+  {manager:"Anthony Kelly",         n:14},
+  {manager:"Ryan P McQuaid",        n:14},
+  {manager:"Baylen Slansky",        n:13},
+  {manager:"Quin Gegwich",          n:13},
+  {manager:"Charlie Gorman",        n:13},
+  {manager:"Andrew Root",           n:12},
+  {manager:"Cole Maney",            n:11},
+  {manager:"Carmine Pittelli Jr.",  n:10},
+  {manager:"Ethan Radecki",         n:7},
+];
+
+var BLUNDERS = [
+  {season:2024, week:11, manager:"Andrew Root",          actual:110.98, optimal:182.40, gap:71.42, outcome:"Win",  missed:false},
+  {season:2023, week:4,  manager:"Deniz Bileydi",        actual:91.88,  optimal:156.18, gap:64.30, outcome:"Loss", missed:true},
+  {season:2025, week:1,  manager:"Andrew Root",          actual:74.92,  optimal:136.02, gap:61.10, outcome:"Loss", missed:true},
+  {season:2024, week:15, manager:"Ryan P McQuaid",       actual:89.58,  optimal:144.66, gap:55.08, outcome:"Loss", missed:true},
+  {season:2025, week:7,  manager:"Max Malich",           actual:71.38,  optimal:126.32, gap:54.94, outcome:"Loss", missed:true},
+  {season:2023, week:5,  manager:"Anthony Kelly",        actual:65.22,  optimal:119.96, gap:54.74, outcome:"Loss", missed:false},
+  {season:2023, week:1,  manager:"Anthony Kelly",        actual:76.14,  optimal:130.72, gap:54.58, outcome:"Loss", missed:true},
+  {season:2020, week:15, manager:"Anthony Kelly",        actual:88.54,  optimal:142.92, gap:54.38, outcome:"Loss", missed:true},
+  {season:2022, week:2,  manager:"Carmine Pittelli Jr.", actual:125.86, optimal:180.06, gap:54.20, outcome:"Win",  missed:false},
+  {season:2022, week:5,  manager:"Carmine Pittelli Jr.", actual:85.56,  optimal:138.46, gap:52.90, outcome:"Loss", missed:false},
+];
+
+/* ── Gap-colored bar chart: worse (higher gap) = terracotta, better (lower gap) = slate blue ── */
+(function(){
+  var ctx = document.getElementById('chart-efficiency-gap').getContext('2d');
+  var minG = Math.min.apply(null, CAREER_GAP.map(function(d){return d.gap;}));
+  var maxG = Math.max.apply(null, CAREER_GAP.map(function(d){return d.gap;}));
+  var colors = CAREER_GAP.map(function(d){
+    var p = (d.gap - minG) / (maxG - minG);
+    var r = Math.round(74 + (192-74)*p);
+    var g = Math.round(127 + (98-127)*p);
+    var b = Math.round(168 + (58-168)*p);
+    return 'rgba('+r+','+g+','+b+',0.85)';
+  });
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: CAREER_GAP.map(function(d){return d.manager;}),
+      datasets: [{
+        data: CAREER_GAP.map(function(d){return d.gap;}),
+        backgroundColor: colors,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      plugins: { legend: { display:false } },
+      scales: {
+        x: { title:{display:true,text:'Avg points left on bench per week'} },
+        y: { ticks:{ autoSkip:false } }
+      }
+    }
+  });
+})();
+
+function renderMissedWins() {
+  var tbody = document.querySelector('#missed-wins-table tbody');
+  var html = '';
+  MISSED_WINS.forEach(function(d, i){
+    html += '<tr><td class="le-rank">'+(i+1)+'</td><td style="font-weight:600;color:var(--palm)">'+d.manager+'</td><td class="val-bold">'+d.n+'</td></tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+function renderBlunders() {
+  var tbody = document.querySelector('#blunders-table tbody');
+  var html = '';
+  BLUNDERS.forEach(function(d, i){
+    var badgeClass = d.outcome === 'Win' ? 'outcome-win' : 'outcome-loss';
+    var missedStr = d.missed ? '<span class="missed-badge">YES</span>' : '&mdash;';
+    html += '<tr>'
+      +'<td class="le-rank">'+(i+1)+'</td>'
+      +'<td>'+d.season+'</td>'
+      +'<td>'+d.week+'</td>'
+      +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
+      +'<td>'+d.actual.toFixed(2)+'</td>'
+      +'<td>'+d.optimal.toFixed(2)+'</td>'
+      +'<td style="font-weight:600;color:#c0623a">+'+d.gap.toFixed(2)+'</td>'
+      +'<td><span class="outcome-badge '+badgeClass+'">'+d.outcome+'</span></td>'
+      +'<td>'+missedStr+'</td>'
+      +'</tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+renderMissedWins();
+renderBlunders();
+</script>
+</body>
+</html>
