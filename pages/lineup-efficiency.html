@@ -21,11 +21,6 @@
   background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
   pointer-events:none;
 }
-.le-stat-row { display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem; }
-.le-stat-card { padding:1.25rem 1.5rem;text-align:center; }
-.le-stat-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--accent);margin-bottom:0.5rem; }
-.le-stat-num { font-family:var(--font-display);font-size:2.1rem;font-weight:900;line-height:1;margin-bottom:0.25rem;color:var(--palm); }
-.le-stat-sub { font-size:0.75rem;color:var(--muted); }
 .chart-card-interactive { padding:1.5rem; }
 .chart-card-interactive .chart-card-label {
   font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
@@ -48,7 +43,6 @@
 .missed-badge { color:#c0623a;font-weight:700;font-size:0.72rem; }
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
 @media(max-width:768px) {
-  .le-stat-row { grid-template-columns:repeat(2,1fr); }
   .le-table { font-size:0.74rem; }
 }
 </style>
@@ -110,40 +104,17 @@
 
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
-    <p>The <strong>optimal lineup</strong> is the highest-scoring combination available from a manager's full roster that week, honoring real slot rules: 1 QB, 2 RB, 2 WR, 1 TE, 1 FLEX (RB/WR/TE), 1 D/ST, 1 K. Players in the <strong>IR slot are excluded</strong> from the optimal calculation, since they were flagged unplayable that week. Bye weeks (relevant in 2020's 15-team format) and consolation/loser-bracket playoff weeks are excluded entirely by joining against real matchup results &mdash; only weeks with a genuine regular-season or bracket-playoff game count. One historical exception is flagged separately: a manager who did not set a lineup after already being eliminated (a since-banned scenario) is excluded from the efficiency-gap average but still counted toward missed wins, since he genuinely would have won with any real lineup.</p>
-  </div>
-
-  <div class="section-label">League Summary</div>
-  <div class="section-title">1,222 manager-weeks analyzed across six seasons.</div>
-  <div class="le-stat-row">
-    <div class="le-stat-card glass">
-      <div class="le-stat-label">Manager-Weeks</div>
-      <div class="le-stat-num">1,222</div>
-      <div class="le-stat-sub">real, bracket-eligible games</div>
-    </div>
-    <div class="le-stat-card glass">
-      <div class="le-stat-label">Avg Points Left on Bench</div>
-      <div class="le-stat-num">14.06</div>
-      <div class="le-stat-sub">per manager-week</div>
-    </div>
-    <div class="le-stat-card glass">
-      <div class="le-stat-label">Missed Wins</div>
-      <div class="le-stat-num">190</div>
-      <div class="le-stat-sub">losses that were winnable</div>
-    </div>
-    <div class="le-stat-card glass">
-      <div class="le-stat-label">Missed Win Rate</div>
-      <div class="le-stat-num">15.5%</div>
-      <div class="le-stat-sub">of all manager-weeks</div>
-    </div>
+    <p>The <strong>optimal lineup</strong> is the best possible score from a manager's full roster that week. It follows real slot rules: 1 QB, 2 RB, 2 WR, 1 TE, 1 FLEX, 1 D/ST, 1 K. <strong>IR players are excluded.</strong> Bye weeks and consolation weeks are excluded too. One exception: a manager who skipped setting a lineup after elimination (since banned) is excluded from the efficiency average but still counts as a missed win, since he'd have won with any real lineup.</p>
   </div>
 
   <div class="section-label">Career Leaderboard</div>
-  <div class="section-title">Average points left on the bench per week &mdash; lower is better.</div>
+  <div class="section-title">Average points left on the bench per week. Lower is better.</div>
   <div class="chart-grid" style="grid-template-columns:1fr;">
     <div class="chart-card-interactive glass">
       <div class="chart-card-label">Avg Efficiency Gap by Manager</div>
-      <canvas id="chart-efficiency-gap" height="140"></canvas>
+      <div style="position:relative;height:520px;">
+        <canvas id="chart-efficiency-gap"></canvas>
+      </div>
       <p class="metric-note">Excludes the one flagged forfeit week (see methodology above).</p>
     </div>
   </div>
@@ -153,16 +124,17 @@
   <div class="table-wrap glass">
     <table class="le-table" id="missed-wins-table">
       <thead>
-        <tr><th>Rank</th><th>Manager</th><th>Missed Wins</th></tr>
+        <tr><th>Rank</th><th>Manager</th><th>Weeks</th><th>Missed Wins</th><th>Missed %</th><th>Reg Season</th><th>Playoffs</th></tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
+  <p class="metric-note">Playoff sample sizes are small (2-12 games per manager), so a single missed win can swing that column a lot.</p>
 
   <div class="section-label" style="margin-top:2rem;">Biggest Lineup Blunders</div>
   <div class="section-title">The 10 largest single-week efficiency gaps in league history.</div>
   <div class="callout glass">
-    <p style="margin:0;">Not every blunder cost a win &mdash; a few managers left huge points on the bench and still won comfortably enough to survive it.</p>
+    <p style="margin:0;"><strong>Not every blunder cost a win.</strong> Some managers left huge points on the bench and still won easily.</p>
   </div>
   <div class="table-wrap glass">
     <table class="le-table" id="blunders-table">
@@ -194,20 +166,20 @@ var CAREER_GAP = [
 ];
 
 var MISSED_WINS = [
-  {manager:"Max Malich",            n:21},
-  {manager:"Deniz Bileydi",         n:17},
-  {manager:"Aidan Quigley",         n:16},
-  {manager:"Brandon Hancock",       n:15},
-  {manager:"Ben Castaldo",          n:14},
-  {manager:"Anthony Kelly",         n:14},
-  {manager:"Ryan P McQuaid",        n:14},
-  {manager:"Baylen Slansky",        n:13},
-  {manager:"Quin Gegwich",          n:13},
-  {manager:"Charlie Gorman",        n:13},
-  {manager:"Andrew Root",           n:12},
-  {manager:"Cole Maney",            n:11},
-  {manager:"Carmine Pittelli Jr.",  n:10},
-  {manager:"Ethan Radecki",         n:7},
+  {manager:"Max Malich",            weeks:86, n:21, rate:24.4, reg:19, po:2},
+  {manager:"Deniz Bileydi",         weeks:85, n:17, rate:20.0, reg:16, po:1},
+  {manager:"Aidan Quigley",         weeks:71, n:16, rate:22.5, reg:14, po:2},
+  {manager:"Brandon Hancock",       weeks:93, n:15, rate:16.1, reg:12, po:3},
+  {manager:"Ben Castaldo",          weeks:88, n:14, rate:15.9, reg:12, po:2},
+  {manager:"Anthony Kelly",         weeks:92, n:14, rate:15.2, reg:12, po:2},
+  {manager:"Ryan P McQuaid",        weeks:88, n:14, rate:15.9, reg:12, po:2},
+  {manager:"Baylen Slansky",        weeks:89, n:13, rate:14.6, reg:12, po:1},
+  {manager:"Quin Gegwich",          weeks:84, n:13, rate:15.5, reg:13, po:0},
+  {manager:"Charlie Gorman",        weeks:87, n:13, rate:14.9, reg:12, po:1},
+  {manager:"Andrew Root",           weeks:88, n:12, rate:13.6, reg:10, po:2},
+  {manager:"Cole Maney",            weeks:89, n:11, rate:12.4, reg:11, po:0},
+  {manager:"Carmine Pittelli Jr.",  weeks:89, n:10, rate:11.2, reg:9,  po:1},
+  {manager:"Ethan Radecki",         weeks:93, n:7,  rate:7.5,  reg:5,  po:2},
 ];
 
 var BLUNDERS = [
@@ -223,18 +195,27 @@ var BLUNDERS = [
   {season:2022, week:5,  manager:"Carmine Pittelli Jr.", actual:85.56,  optimal:138.46, gap:52.90, outcome:"Loss", missed:false},
 ];
 
-/* ── Gap-colored bar chart: worse (higher gap) = terracotta, better (lower gap) = slate blue ── */
+/* ── Shared red/gold/green gradient helper ── */
+var GOOD = [90,138,90];   // green = good
+var MID  = [212,175,55];  // gold = mid
+var BAD  = [168,90,90];   // red = bad
+function lerp(a,b,t){ return Math.round(a+(b-a)*t); }
+function gradientColor(value, min, max, invert) {
+  var p = max===min ? 0.5 : (value - min) / (max - min);
+  if (invert) p = 1 - p;
+  var c0 = p<=0.5 ? GOOD : MID;
+  var c1 = p<=0.5 ? MID : BAD;
+  var t = p<=0.5 ? p/0.5 : (p-0.5)/0.5;
+  var r = lerp(c0[0],c1[0],t), g = lerp(c0[1],c1[1],t), b = lerp(c0[2],c1[2],t);
+  return 'rgba('+r+','+g+','+b+',0.85)';
+}
+
+/* ── Career efficiency gap bar chart ── */
 (function(){
   var ctx = document.getElementById('chart-efficiency-gap').getContext('2d');
   var minG = Math.min.apply(null, CAREER_GAP.map(function(d){return d.gap;}));
   var maxG = Math.max.apply(null, CAREER_GAP.map(function(d){return d.gap;}));
-  var colors = CAREER_GAP.map(function(d){
-    var p = (d.gap - minG) / (maxG - minG);
-    var r = Math.round(74 + (192-74)*p);
-    var g = Math.round(127 + (98-127)*p);
-    var b = Math.round(168 + (58-168)*p);
-    return 'rgba('+r+','+g+','+b+',0.85)';
-  });
+  var colors = CAREER_GAP.map(function(d){ return gradientColor(d.gap, minG, maxG); });
   new Chart(ctx, {
     type: 'bar',
     data: {
@@ -243,14 +224,18 @@ var BLUNDERS = [
         data: CAREER_GAP.map(function(d){return d.gap;}),
         backgroundColor: colors,
         borderRadius: 4,
+        barPercentage: 0.7,
+        categoryPercentage: 0.8,
       }]
     },
     options: {
       indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: { legend: { display:false } },
       scales: {
         x: { title:{display:true,text:'Avg points left on bench per week'} },
-        y: { ticks:{ autoSkip:false } }
+        y: { ticks:{ autoSkip:false, font:{size:12} } }
       }
     }
   });
@@ -258,27 +243,54 @@ var BLUNDERS = [
 
 function renderMissedWins() {
   var tbody = document.querySelector('#missed-wins-table tbody');
+  var minR = Math.min.apply(null, MISSED_WINS.map(function(d){return d.rate;}));
+  var maxR = Math.max.apply(null, MISSED_WINS.map(function(d){return d.rate;}));
+  var minReg = Math.min.apply(null, MISSED_WINS.map(function(d){return d.reg;}));
+  var maxReg = Math.max.apply(null, MISSED_WINS.map(function(d){return d.reg;}));
+  var minPo = Math.min.apply(null, MISSED_WINS.map(function(d){return d.po;}));
+  var maxPo = Math.max.apply(null, MISSED_WINS.map(function(d){return d.po;}));
   var html = '';
   MISSED_WINS.forEach(function(d, i){
-    html += '<tr><td class="le-rank">'+(i+1)+'</td><td style="font-weight:600;color:var(--palm)">'+d.manager+'</td><td class="val-bold">'+d.n+'</td></tr>';
+    var bg = gradientColor(d.rate, minR, maxR);
+    var regBg = gradientColor(d.reg, minReg, maxReg);
+    var poBg = gradientColor(d.po, minPo, maxPo);
+    html += '<tr>'
+      +'<td class="le-rank">'+(i+1)+'</td>'
+      +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
+      +'<td>'+d.weeks+'</td>'
+      +'<td class="val-bold">'+d.n+'</td>'
+      +'<td><span style="background:'+bg+';color:#fff;padding:0.2rem 0.55rem;border-radius:4px;font-weight:700;">'+d.rate.toFixed(1)+'%</span></td>'
+      +'<td><span style="background:'+regBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:600;">'+d.reg+'</span></td>'
+      +'<td><span style="background:'+poBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:600;">'+d.po+'</span></td>'
+      +'</tr>';
   });
   tbody.innerHTML = html;
 }
 
 function renderBlunders() {
   var tbody = document.querySelector('#blunders-table tbody');
+  var minA = Math.min.apply(null, BLUNDERS.map(function(d){return d.actual;}));
+  var maxA = Math.max.apply(null, BLUNDERS.map(function(d){return d.actual;}));
+  var minG = Math.min.apply(null, BLUNDERS.map(function(d){return d.gap;}));
+  var maxG = Math.max.apply(null, BLUNDERS.map(function(d){return d.gap;}));
   var html = '';
   BLUNDERS.forEach(function(d, i){
     var badgeClass = d.outcome === 'Win' ? 'outcome-win' : 'outcome-loss';
-    var missedStr = d.missed ? '<span class="missed-badge">YES</span>' : '&mdash;';
+    var missedStr = d.missed ? '<span class="missed-badge">Yes</span>' : '<span style="color:var(--muted);">No</span>';
+    // More points scored = better = green. Fewer = worse = red.
+    var actualBg = gradientColor(d.actual, minA, maxA, true);
+    // Gap severity: gold (mildest, in this top-10) straight to red (worst). No white/light fade.
+    var t = (d.gap - minG) / (maxG - minG);
+    var gr = lerp(212,168,t), gg = lerp(175,90,t), gb = lerp(55,90,t);
+    var gapBg = 'rgba('+gr+','+gg+','+gb+',0.85)';
     html += '<tr>'
       +'<td class="le-rank">'+(i+1)+'</td>'
       +'<td>'+d.season+'</td>'
       +'<td>'+d.week+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
-      +'<td>'+d.actual.toFixed(2)+'</td>'
-      +'<td>'+d.optimal.toFixed(2)+'</td>'
-      +'<td style="font-weight:600;color:#c0623a">+'+d.gap.toFixed(2)+'</td>'
+      +'<td><span style="background:'+actualBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:600;">'+d.actual.toFixed(1)+'</span></td>'
+      +'<td>'+d.optimal.toFixed(1)+'</td>'
+      +'<td><span style="background:'+gapBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;">+'+d.gap.toFixed(1)+'</span></td>'
       +'<td><span class="outcome-badge '+badgeClass+'">'+d.outcome+'</span></td>'
       +'<td>'+missedStr+'</td>'
       +'</tr>';
