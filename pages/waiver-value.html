@@ -132,7 +132,7 @@
     <div style="position:relative;height:520px;">
       <canvas id="chart-waiver-value"></canvas>
     </div>
-    <p class="metric-note">Bars show <strong>points per week rostered (PPW)</strong>, the intuitive number. Managers are <strong>ranked by position-adjusted value</strong> (z-score vs. other rostered players at that position), so bar order and bar length won't always match, that's the point. The axis and color scale rescale to fit each position (QB and K don't share a range), but stay fixed across seasons so year-to-year comparisons at the same position are fair. Hover a bar for the full breakdown, including that manager's best pickup in this view.</p>
+    <p class="metric-note">The bright bar shows <strong>points per week rostered (PPW)</strong> (bottom axis), the intuitive number. The faint background bar shows <strong>number of pickups</strong> (top axis), scaled to this view, so a leaderboard built on 2 pickups looks visibly thinner than one built on 40. Managers are <strong>ranked by position-adjusted value</strong> (z-score vs. other rostered players at that position), so bar order and bar length won't always match, that's the point. The axis and color scale rescale to fit each position (QB and K don't share a range), but stay fixed across seasons so year-to-year comparisons at the same position are fair. Hover a row for the full breakdown, including that manager's best pickup in this view.</p>
   </div>
 
   <div class="section-label" style="margin-top:2rem;">Contested vs. Uncontested</div>
@@ -250,34 +250,62 @@ function renderWaiverChart() {
   var colors = rows.map(function(d){ return gradientColor(d.z, scale.zMin, scale.zMax, true); });
   var bestLookup = (BEST_BY_MANAGER[currentFilter] && BEST_BY_MANAGER[currentFilter][currentPosition]) || {};
 
+  // Sample-size axis dynamically fits THIS view's own max n, not a fixed
+  // global max, so a thin slice (a handful of pickups) still fills the row
+  // visibly instead of looking like a sliver.
+  var maxN = Math.max.apply(null, rows.map(function(d){return d.n;}));
+  var nAxisMax = Math.ceil(maxN * 1.15) || 1;
+
   if (waiverChart) { waiverChart.destroy(); }
   var ctx = document.getElementById('chart-waiver-value').getContext('2d');
   waiverChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: rows.map(function(d){return d.m;}),
-      datasets: [{
-        data: rows.map(function(d){return d.ppw;}),
-        backgroundColor: colors,
-        borderRadius: 4,
-        barPercentage: 0.7,
-        categoryPercentage: 0.8,
-      }]
+      datasets: [
+        {
+          label: 'Pickups',
+          data: rows.map(function(d){return d.n;}),
+          backgroundColor: 'rgba(150,140,120,0.22)',
+          borderRadius: 4,
+          barPercentage: 0.9,
+          categoryPercentage: 0.8,
+          xAxisID: 'xN',
+          order: 2,
+        },
+        {
+          label: 'PPW',
+          data: rows.map(function(d){return d.ppw;}),
+          backgroundColor: colors,
+          borderRadius: 4,
+          barPercentage: 0.4,
+          categoryPercentage: 0.8,
+          xAxisID: 'x',
+          order: 1,
+        }
+      ]
     },
     options: {
       indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
+      interaction: { mode: 'index', axis: 'y', intersect: false },
       plugins: {
         legend: { display:false },
         tooltip: {
+          mode: 'index',
+          axis: 'y',
+          intersect: false,
+          filter: function(item) { return item.datasetIndex === 1; },
           callbacks: {
+            title: function(items) { return items[0].label; },
             label: function(ctx) {
               var d = rows[ctx.dataIndex];
               var lines = ['PPW: '+d.ppw.toFixed(2), 'Position-adjusted value: '+d.z.toFixed(3), 'Pickups: '+d.n];
               var best = bestLookup[d.m];
               if (best) {
-                lines.push('Best pickup: '+best.p+' (+'+best.tz.toFixed(2)+' over '+best.wk+' wk'+(best.wk===1?'':'s')+')');
+                var tzSign = best.tz >= 0 ? '+' : '';
+                lines.push('Best pickup: '+best.p+' ('+tzSign+best.tz.toFixed(2)+' over '+best.wk+' wk'+(best.wk===1?'':'s')+')');
               }
               return lines;
             }
@@ -285,7 +313,13 @@ function renderWaiverChart() {
         }
       },
       scales: {
-        x: { min:scale.ppwMin, max:scale.ppwMax, title:{display:true,text:'Points per week rostered (PPW)'} },
+        x: { min:scale.ppwMin, max:scale.ppwMax, position:'bottom', title:{display:true,text:'Points per week rostered (PPW)'} },
+        xN: {
+          min:0, max:nAxisMax, position:'top', display:true,
+          grid: { display:false },
+          title: { display:true, text:'Number of pickups (sample size)', color:'#9a9078', font:{size:11} },
+          ticks: { color:'#9a9078' }
+        },
         y: { ticks:{ autoSkip:false, font:{size:12} } }
       }
     }
