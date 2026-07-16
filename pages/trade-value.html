@@ -52,8 +52,8 @@
 .heatmap-season-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
 .multi-badge {
-  display:inline-block;font-size:0.62rem;font-weight:700;color:var(--accent);
-  border:1px solid rgba(var(--accent-rgb),0.35);border-radius:4px;
+  display:inline-block;font-size:0.62rem;font-weight:700;color:#4a7fa8;
+  border:1px solid rgba(74,127,168,0.4);border-radius:4px;background:rgba(74,127,168,0.12);
   padding:0.03rem 0.35rem;margin-left:0.35rem;letter-spacing:0.02em;
 }
 .got-txt { color:#4a7fa8; }
@@ -245,7 +245,7 @@ function renderQuadChart() {
   var pool = LEADERBOARD[currentQuadFilter] || {};
   var rows = Object.keys(pool).map(function(m){ return {m:m, quad:pool[m].quad, n:pool[m].n}; });
   rows.sort(function(a,b){ return b.quad - a.quad; });
-  var colors = rows.map(function(d){ return gradientColor(d.quad, QUAD_SCALE.min, QUAD_SCALE.max); });
+  var colors = rows.map(function(d){ return gradientColor(d.quad, QUAD_SCALE.min, QUAD_SCALE.max, true); });
   var bwLookup = (BEST_WORST[currentQuadFilter] || {});
 
   var maxN = Math.max.apply(null, rows.map(function(d){return d.n;}));
@@ -349,7 +349,11 @@ function renderTradesTable() {
 
   var html = '';
   rows.forEach(function(d, i){
-    var quadBg = gradientColor(d.quad, QUAD_SCALE.min, QUAD_SCALE.max);
+    var quadBg = gradientColor(d.quad, QUAD_SCALE.min, QUAD_SCALE.max, true);
+    var tgBg = gradientColor(d.tg, TG_SCALE.min, TG_SCALE.max, true);
+    var rgBg = gradientColor(d.rg, RG_SCALE.min, RG_SCALE.max, true);
+    var fitBg = gradientColor(d.fit, FIT_SCALE.min, FIT_SCALE.max, true);
+    var necBg = d.nec === null ? null : gradientColor(d.nec, NEC_SCALE.min, NEC_SCALE.max, true);
     var necDisplay = d.nec === null ? '&mdash;' : d.nec.toFixed(1);
     html += '<tr>'
       +'<td class="tv-rank">'+(i+1)+'</td>'
@@ -357,10 +361,10 @@ function renderTradesTable() {
       +'<td style="font-weight:600;color:var(--palm)">'+d.m+'</td>'
       +'<td class="got-txt">'+d.got.join(', ')+'</td>'
       +'<td class="gave-txt">'+d.gave.join(', ')+'</td>'
-      +'<td>'+d.tg.toFixed(1)+'</td>'
-      +'<td>'+d.rg.toFixed(1)+'</td>'
-      +'<td>'+d.fit.toFixed(2)+'</td>'
-      +'<td>'+necDisplay+'</td>'
+      +'<td><span style="background:'+tgBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;">'+d.tg.toFixed(1)+'</span></td>'
+      +'<td><span style="background:'+rgBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;">'+d.rg.toFixed(1)+'</span></td>'
+      +'<td><span style="background:'+fitBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;">'+d.fit.toFixed(2)+'</span></td>'
+      +'<td>'+(necBg ? '<span style="background:'+necBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;">'+necDisplay+'</span>' : necDisplay)+'</td>'
       +'<td><span style="background:'+quadBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;">'+d.quad.toFixed(2)+'</span></td>'
       +'</tr>';
   });
