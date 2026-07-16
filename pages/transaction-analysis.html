@@ -20,11 +20,6 @@
   background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
   pointer-events:none;
 }
-.txn-stat-row { display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem; }
-.txn-stat-card { padding:1.25rem 1.5rem;text-align:center; }
-.txn-stat-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--accent);margin-bottom:0.5rem; }
-.txn-stat-num { font-family:var(--font-display);font-size:2.2rem;font-weight:900;line-height:1;margin-bottom:0.25rem;color:var(--palm); }
-.txn-stat-sub { font-size:0.75rem;color:var(--muted); }
 .subpage-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:1rem; }
 .subpage-card {
   text-decoration:none;color:var(--text);
@@ -36,7 +31,6 @@
 .subpage-card.coming-soon { opacity:0.55;pointer-events:none; }
 .subpage-card .card-arrow { display:inline-block;margin-top:0.6rem;font-size:0.75rem;font-weight:600;color:var(--accent); }
 @media(max-width:768px) {
-  .txn-stat-row { grid-template-columns:repeat(2,1fr); }
   .subpage-grid { grid-template-columns:1fr; }
 }
 </style>
@@ -62,6 +56,7 @@
       <a href="transaction-analysis.html" class="active">Transaction Analysis</a>
       <a href="lineup-efficiency.html" class="nav-sub">&#8627; Lineup Efficiency</a>
       <a href="waiver-value.html" class="nav-sub">&#8627; Waiver Value</a>
+      <a href="trade-value.html" class="nav-sub">&#8627; Trade Value</a>
     </div>
     <button class="nav-hamburger" onclick="openMobileMenu()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -85,6 +80,7 @@
       <a href="transaction-analysis.html" class="active">Transaction Analysis</a>
       <a href="lineup-efficiency.html" class="nav-sub">&#8627; Lineup Efficiency</a>
       <a href="waiver-value.html" class="nav-sub">&#8627; Waiver Value</a>
+      <a href="trade-value.html" class="nav-sub">&#8627; Trade Value</a>
     </div>
   </div>
 
@@ -92,6 +88,7 @@
     <a href="transaction-analysis.html" class="draft-subnav-pill current">Transaction Analysis</a>
     <a href="lineup-efficiency.html" class="draft-subnav-pill">Lineup Efficiency</a>
     <a href="waiver-value.html" class="draft-subnav-pill">Waiver Value</a>
+    <a href="trade-value.html" class="draft-subnav-pill">Trade Value</a>
   </div>
 
   <div class="page-header glass">
@@ -101,32 +98,7 @@
 
   <div class="callout glass">
     <div class="callout-label">About This Data</div>
-    <p>This covers everything after the draft: <strong>adds</strong>, <strong>drops</strong>, <strong>trades</strong>, and weekly lineup decisions. Thomas Sullivan and William Serafin (2020 only) are excluded, same as the rest of the site. Playoff weeks only count real bracket games. Consolation weeks are excluded.</p>
-  </div>
-
-  <div class="section-label">League-Wide Activity</div>
-  <div class="section-title">Total transaction volume, all six seasons combined.</div>
-  <div class="txn-stat-row">
-    <div class="txn-stat-card glass">
-      <div class="txn-stat-label">Draft Picks</div>
-      <div class="txn-stat-num">1,360</div>
-      <div class="txn-stat-sub">across 6 drafts</div>
-    </div>
-    <div class="txn-stat-card glass">
-      <div class="txn-stat-label">Waiver / FA Adds</div>
-      <div class="txn-stat-num">2,162</div>
-      <div class="txn-stat-sub">in-season pickups</div>
-    </div>
-    <div class="txn-stat-card glass">
-      <div class="txn-stat-label">Drops</div>
-      <div class="txn-stat-num">2,165</div>
-      <div class="txn-stat-sub">players cut loose</div>
-    </div>
-    <div class="txn-stat-card glass">
-      <div class="txn-stat-label">Trade Line-Items</div>
-      <div class="txn-stat-num">871</div>
-      <div class="txn-stat-sub">players moved via trade</div>
-    </div>
+    <p>This covers everything after the draft: <strong>adds</strong>, <strong>drops</strong>, <strong>trades</strong>, and weekly lineup decisions. Six seasons (2020-2025) add up to <strong>1,360 draft picks</strong>, <strong>2,162 waiver/free agent adds</strong>, <strong>2,165 drops</strong>, and <strong>871 trade line-items</strong> across <strong>150 real trades</strong>. Thomas Sullivan and William Serafin (2020 only) are excluded, same as the rest of the site. Playoff weeks only count real bracket games. Consolation weeks are excluded.</p>
   </div>
 
   <div class="section-label" style="margin-top:1rem;">Explore The Data</div>
@@ -142,10 +114,11 @@
       <p><strong>Points per week rostered</strong> for every pickup, 2020-2025.</p>
       <span class="card-arrow">View analysis &#8594;</span>
     </a>
-    <div class="subpage-card glass coming-soon">
+    <a href="trade-value.html" class="subpage-card glass">
       <h3>Trade Value</h3>
-      <p>Who wins the trade market. Coming soon.</p>
-    </div>
+      <p>Every real trade, graded on <strong>Trade Grade</strong>, <strong>Realized Gains</strong>, <strong>Fit</strong>, and <strong>Necessity</strong>, combined into one QUAD score.</p>
+      <span class="card-arrow">View analysis &#8594;</span>
+    </a>
   </div>
 
 </div>

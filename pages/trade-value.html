@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade Value | Preach Fantasy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+.draft-subnav { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem; }
+.draft-subnav-pill {
+  display:inline-flex;align-items:center;gap:0.35rem;font-size:0.76rem;font-weight:600;
+  color:var(--accent);text-decoration:none;
+  padding:0.35rem 0.75rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
+}
+.draft-subnav-pill:hover { background:var(--accent-glow); }
+.draft-subnav-pill.current {
+  background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
+  pointer-events:none;
+}
+.chart-card-interactive { padding:1.5rem; }
+.chart-card-interactive .chart-card-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--accent);font-weight:700;margin-bottom:1rem;
+}
+.chart-card-interactive canvas { display:block;width:100% !important; }
+.tv-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
+.tv-table thead th {
+  text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
+}
+.tv-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
+.tv-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.tv-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid); }
+.tv-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
+.tv-table th.sortable { cursor:pointer;user-select:none;transition:color 0.15s; }
+.tv-table th.sortable:hover { color:var(--palm); }
+.tv-table th.sortable::after { content:'\2195'; opacity:0.35;margin-left:0.3rem;font-size:0.7rem; }
+.tv-table th.sortable.sorted-asc::after { content:'\2191'; opacity:1; }
+.tv-table th.sortable.sorted-desc::after { content:'\2193'; opacity:1; }
+.heatmap-controls { display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem; }
+.heatmap-season-pill {
+  font-size:0.75rem;font-weight:700;padding:0.35rem 0.85rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.25);color:var(--accent);background:transparent;
+  cursor:pointer;transition:all 0.15s;
+}
+.heatmap-season-pill:hover { background:var(--accent-glow); }
+.heatmap-season-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
+.metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
+.multi-badge {
+  display:inline-block;font-size:0.62rem;font-weight:700;color:var(--accent);
+  border:1px solid rgba(var(--accent-rgb),0.35);border-radius:4px;
+  padding:0.03rem 0.35rem;margin-left:0.35rem;letter-spacing:0.02em;
+}
+.got-txt { color:#4a7fa8; }
+.gave-txt { color:#a8664a; }
+@media(max-width:768px) {
+  .tv-table { font-size:0.74rem; }
+}
+</style>
+</head>
+<body>
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass">
+    <a href="../index.html" class="nav-brand">
+      <img src="../preach_logo.png" alt="Preach Fantasy">
+      <span>Preach Fantasy</span>
+    </a>
+    <div class="nav-links">
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html">Draft Analysis</a>
+      <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
+      <a href="draft-history.html" class="nav-sub">&#8627; Draft History</a>
+      <a href="draft-fingerprints.html" class="nav-sub">&#8627; Draft Fingerprints</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+      <a href="transaction-analysis.html">Transaction Analysis</a>
+      <a href="lineup-efficiency.html" class="nav-sub">&#8627; Lineup Efficiency</a>
+      <a href="waiver-value.html" class="nav-sub">&#8627; Waiver Value</a>
+      <a href="trade-value.html" class="nav-sub active">&#8627; Trade Value</a>
+    </div>
+    <button class="nav-hamburger" onclick="openMobileMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu" onclick="if(event.target===this)closeMobileMenu()">
+    <div class="mobile-menu-inner">
+      <button class="mobile-menu-close" onclick="closeMobileMenu()">&#10005;</button>
+      <a href="../index.html">Home</a>
+      <a href="managers.html">Managers</a>
+      <a href="draft-analysis.html">Draft Analysis</a>
+      <a href="surplus-value.html" class="nav-sub">&#8627; Surplus Value</a>
+      <a href="draft-history.html" class="nav-sub">&#8627; Draft History</a>
+      <a href="draft-fingerprints.html" class="nav-sub">&#8627; Draft Fingerprints</a>
+      <a href="weekly-rankings.html">Weekly Rankings</a>
+      <a href="champions.html">Champions</a>
+      <a href="extra-analytics.html">Extra Analytics</a>
+      <a href="transaction-analysis.html">Transaction Analysis</a>
+      <a href="lineup-efficiency.html" class="nav-sub">&#8627; Lineup Efficiency</a>
+      <a href="waiver-value.html" class="nav-sub">&#8627; Waiver Value</a>
+      <a href="trade-value.html" class="nav-sub active">&#8627; Trade Value</a>
+    </div>
+  </div>
+
+  <div class="draft-subnav">
+    <a href="transaction-analysis.html" class="draft-subnav-pill">Transaction Analysis</a>
+    <a href="lineup-efficiency.html" class="draft-subnav-pill">Lineup Efficiency</a>
+    <a href="waiver-value.html" class="draft-subnav-pill">Waiver Value</a>
+    <a href="trade-value.html" class="draft-subnav-pill current">Trade Value</a>
+  </div>
+
+  <div class="page-header glass">
+    <h1>Trade Value</h1>
+    <p>Every real trade in league history (2020-2025), graded on four metrics and combined into one composite score.</p>
+  </div>
+
+  <div class="callout glass">
+    <div class="callout-label">Methodology</div>
+    <p>Value is based on <strong>actual production after the trade</strong>, using the same position-adjusted z-score approach as Waiver Value, not preseason rankings. <strong>Trade Grade</strong> is the raw value swing, what you got minus what you gave. <strong>Realized Gains</strong> is the same thing but only counts weeks the player was actually started, so a great acquisition that sat on your bench doesn't get full credit. <strong>Fit Score</strong> checks whether the trade actually upgraded a real roster weakness. <strong>Necessity Score</strong> compares the acquired player against the best alternative that was already sitting on your bench, unstarted, that same week, so a "need" only counts if there genuinely wasn't a better in-house option.</p>
+    <p>These four combine into <strong>QUAD</strong>, Quad-metric Unified Assessment of Deal, weighted 35/30/20/15 toward Realized Gains, Trade Grade, Fit, and Necessity respectively, then z-scored across every real trade. Positive QUAD means an above-average trade for this league; negative means below-average.</p>
+    <p>Trades that were made and then fully reversed (the ones done in anger or as a joke, then undone by league consensus) are excluded entirely. Multi-team trades get linked together and graded on each manager's true net position, not each 2-team leg in isolation, so a manager who briefly held a player only to flip him seconds later doesn't get penalized for value they never intended to keep. Thomas Sullivan and William Serafin (2020 only) are excluded, same as the rest of the site.</p>
+  </div>
+
+  <div class="section-label">Manager Leaderboard</div>
+  <div class="section-title">Average QUAD per trade, career or by season.</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="quad-pills"></div>
+    <div style="position:relative;height:480px;">
+      <canvas id="chart-quad"></canvas>
+    </div>
+    <p class="metric-note">The bright bar shows <strong>average QUAD per trade</strong> (bottom axis). The faint background bar shows <strong>number of trades made</strong> (top axis), scaled to this view, so a manager with 3 trades doesn't look as thick as one with 25. Hover a row for that manager's best and worst trade in this view.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">All Trades</div>
+  <div class="section-title">Every real trade, one row per manager's side. Click a column to sort.</div>
+  <div class="heatmap-controls" id="trades-season-pills"></div>
+  <div class="table-wrap glass">
+    <table class="tv-table" id="trades-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th class="sortable" data-key="s">Season</th>
+          <th class="sortable" data-key="m" data-type="text">Manager</th>
+          <th data-key="got">Got</th>
+          <th data-key="gave">Gave</th>
+          <th class="sortable" data-key="tg">Trade Grade</th>
+          <th class="sortable" data-key="rg">Realized Gains</th>
+          <th class="sortable" data-key="fit">Fit</th>
+          <th class="sortable" data-key="nec">Necessity/wk</th>
+          <th class="sortable sorted-desc" data-key="quad">QUAD</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="metric-note">Trades tagged <span class="multi-badge">MULTI</span> involved 3 or more managers, linked and graded on true net position.</p>
+
+</div>
+<script src="../data/page_data.js"></script>
+<script src="../shared.js"></script>
+<script>
+/* ── Shared red/gold/green gradient helper ── */
+var GOOD = [90,138,90];
+var MID  = [212,175,55];
+var BAD  = [168,90,90];
+function lerp(a,b,t){ return Math.round(a+(b-a)*t); }
+function gradientColor(value, min, max, invert) {
+  var p = max===min ? 0.5 : (value - min) / (max - min);
+  if (invert) p = 1 - p;
+  var c0 = p<=0.5 ? GOOD : MID;
+  var c1 = p<=0.5 ? MID : BAD;
+  var t = p<=0.5 ? p/0.5 : (p-0.5)/0.5;
+  var r = lerp(c0[0],c1[0],t), g = lerp(c0[1],c1[1],t), b = lerp(c0[2],c1[2],t);
+  return 'rgba('+r+','+g+','+b+',0.85)';
+}
+
+/* ── Generic column sort helper ── */
+function sortRows(rows, key, type, dir) {
+  var sorted = rows.slice().sort(function(a,b){
+    var av = a[key], bv = b[key];
+    if (av === null || av === undefined) av = type === 'text' ? '' : -999;
+    if (bv === null || bv === undefined) bv = type === 'text' ? '' : -999;
+    if (type === 'text') { av = (av||'').toLowerCase(); bv = (bv||'').toLowerCase(); }
+    if (av < bv) return dir === 'asc' ? -1 : 1;
+    if (av > bv) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  return sorted;
+}
+
+function wireSortableHeaders(tableId, renderFn, state) {
+  document.querySelectorAll('#'+tableId+' th.sortable').forEach(function(th){
+    th.addEventListener('click', function(){
+      var key = th.getAttribute('data-key');
+      var type = th.getAttribute('data-type') || 'number';
+      if (state.key === key) {
+        state.dir = state.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        state.key = key;
+        state.type = type;
+        state.dir = 'desc';
+      }
+      document.querySelectorAll('#'+tableId+' th.sortable').forEach(function(h){
+        h.classList.remove('sorted-asc','sorted-desc');
+      });
+      th.classList.add(state.dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+      renderFn();
+    });
+  });
+}
+
+/* ── QUAD leaderboard chart ── */
+var currentQuadFilter = 'career';
+var quadChart = null;
+
+function renderQuadPills() {
+  var el = document.getElementById('quad-pills');
+  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var html = '';
+  keys.forEach(function(k) {
+    var label = k === 'career' ? 'Career' : k;
+    html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+'" onclick="setQuadFilter(\''+k+'\', this)">'+label+'</button>';
+  });
+  el.innerHTML = html;
+}
+
+function setQuadFilter(filterKey, btn) {
+  currentQuadFilter = filterKey;
+  btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  renderQuadChart();
+}
+
+function renderQuadChart() {
+  var pool = LEADERBOARD[currentQuadFilter] || {};
+  var rows = Object.keys(pool).map(function(m){ return {m:m, quad:pool[m].quad, n:pool[m].n}; });
+  rows.sort(function(a,b){ return b.quad - a.quad; });
+  var colors = rows.map(function(d){ return gradientColor(d.quad, QUAD_SCALE.min, QUAD_SCALE.max); });
+  var bwLookup = (BEST_WORST[currentQuadFilter] || {});
+
+  var maxN = Math.max.apply(null, rows.map(function(d){return d.n;}));
+  var nAxisMax = Math.ceil(maxN * 1.15) || 1;
+
+  if (quadChart) { quadChart.destroy(); }
+  var ctx = document.getElementById('chart-quad').getContext('2d');
+  quadChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: rows.map(function(d){return d.m;}),
+      datasets: [
+        {
+          label: 'Trades',
+          data: rows.map(function(d){return d.n;}),
+          backgroundColor: 'rgba(150,140,120,0.22)',
+          borderRadius: 4,
+          barPercentage: 0.9,
+          categoryPercentage: 0.8,
+          xAxisID: 'xN',
+          order: 2,
+        },
+        {
+          label: 'QUAD',
+          data: rows.map(function(d){return d.quad;}),
+          backgroundColor: colors,
+          borderRadius: 4,
+          barPercentage: 0.4,
+          categoryPercentage: 0.8,
+          xAxisID: 'x',
+          order: 1,
+        }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', axis: 'y', intersect: false },
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          mode: 'index',
+          axis: 'y',
+          intersect: false,
+          filter: function(item) { return item.datasetIndex === 1; },
+          callbacks: {
+            title: function(items) { return items[0].label; },
+            label: function(ctx) {
+              var d = rows[ctx.dataIndex];
+              var lines = ['Avg QUAD: '+d.quad.toFixed(3), 'Trades: '+d.n];
+              var bw = bwLookup[d.m];
+              if (bw) {
+                lines.push('Best: '+bw.best.got.join('/')+' for '+bw.best.gave.join('/')+' ('+(bw.best.quad>=0?'+':'')+bw.best.quad.toFixed(2)+')');
+                lines.push('Worst: '+bw.worst.got.join('/')+' for '+bw.worst.gave.join('/')+' ('+(bw.worst.quad>=0?'+':'')+bw.worst.quad.toFixed(2)+')');
+              }
+              return lines;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { min:QUAD_SCALE.min, max:QUAD_SCALE.max, position:'bottom', title:{display:true,text:'Average QUAD'} },
+        xN: {
+          min:0, max:nAxisMax, position:'top', display:true,
+          grid: { display:false },
+          title: { display:true, text:'Number of trades (sample size)', color:'#9a9078', font:{size:11} },
+          ticks: { color:'#9a9078' }
+        },
+        y: { ticks:{ autoSkip:false, font:{size:12} } }
+      }
+    }
+  });
+}
+
+/* ── All trades sortable table ── */
+var tradesSortState = { key: 'quad', type: 'number', dir: 'desc' };
+var tradesSeasonFilter = 'all';
+
+function renderTradesSeasonPills() {
+  var el = document.getElementById('trades-season-pills');
+  var seasons = [...new Set(TRADES.map(function(t){return t.s;}))].sort();
+  var html = '<button class="heatmap-season-pill active" onclick="setTradesSeasonFilter(\'all\', this)">All Seasons</button>';
+  seasons.forEach(function(s) {
+    html += '<button class="heatmap-season-pill" onclick="setTradesSeasonFilter('+s+', this)">'+s+'</button>';
+  });
+  el.innerHTML = html;
+}
+
+function setTradesSeasonFilter(season, btn) {
+  tradesSeasonFilter = season;
+  btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  renderTradesTable();
+}
+
+function renderTradesTable() {
+  var tbody = document.querySelector('#trades-table tbody');
+  var data = tradesSeasonFilter === 'all' ? TRADES : TRADES.filter(function(t){ return t.s === tradesSeasonFilter; });
+  var rows = sortRows(data, tradesSortState.key, tradesSortState.type, tradesSortState.dir);
+
+  var html = '';
+  rows.forEach(function(d, i){
+    var quadBg = gradientColor(d.quad, QUAD_SCALE.min, QUAD_SCALE.max);
+    var necDisplay = d.nec === null ? '&mdash;' : d.nec.toFixed(1);
+    html += '<tr>'
+      +'<td class="tv-rank">'+(i+1)+'</td>'
+      +'<td>'+d.s+(d.multi ? '<span class="multi-badge">MULTI</span>' : '')+'</td>'
+      +'<td style="font-weight:600;color:var(--palm)">'+d.m+'</td>'
+      +'<td class="got-txt">'+d.got.join(', ')+'</td>'
+      +'<td class="gave-txt">'+d.gave.join(', ')+'</td>'
+      +'<td>'+d.tg.toFixed(1)+'</td>'
+      +'<td>'+d.rg.toFixed(1)+'</td>'
+      +'<td>'+d.fit.toFixed(2)+'</td>'
+      +'<td>'+necDisplay+'</td>'
+      +'<td><span style="background:'+quadBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;">'+d.quad.toFixed(2)+'</span></td>'
+      +'</tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+renderQuadPills();
+renderQuadChart();
+renderTradesSeasonPills();
+renderTradesTable();
+wireSortableHeaders('trades-table', renderTradesTable, tradesSortState);
+</script>
+</body>
+</html>
