@@ -238,7 +238,7 @@ function setQuadFilter(filterKey, btn) {
   currentQuadFilter = filterKey;
   btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
   btn.classList.add('active');
-  renderQuadChart();
+  try { renderQuadChart(); } catch (e) { console.error('QUAD chart failed to render:', e); }
 }
 
 function renderQuadChart() {
@@ -372,7 +372,15 @@ function renderTradesTable() {
 }
 
 renderQuadPills();
-renderQuadChart();
+try {
+  renderQuadChart();
+} catch (e) {
+  console.error('QUAD chart failed to render:', e);
+  var chartCard = document.getElementById('chart-quad');
+  if (chartCard && chartCard.parentElement) {
+    chartCard.parentElement.innerHTML = '<p class="metric-note">Chart failed to load. Table data below is unaffected.</p>';
+  }
+}
 renderTradesSeasonPills();
 renderTradesTable();
 wireSortableHeaders('trades-table', renderTradesTable, tradesSortState);
