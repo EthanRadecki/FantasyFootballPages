@@ -354,22 +354,80 @@ function renderQuadChart() {
   });
 }
 
-/* ── Trade Quality vs Win% bubble chart ── */
-var winpctChart = null;
+var LOGO_LASTNAMES = {
+  'Aidan Quigley':'Quigley', 'Andrew Root':'Root', 'Anthony Kelly':'Kelly', 'Baylen Slansky':'Slansky',
+  'Ben Castaldo':'Castaldo', 'Brandon Hancock':'Hancock', 'Carmine Pittelli Jr.':'Pittelli',
+  'Charlie Gorman':'Gorman', 'Cole Maney':'Maney', 'Deniz Bileydi':'Bileydi', 'Ethan Radecki':'Radecki',
+  'Max Malich':'Malich', 'Quin Gegwich':'Gegwich', 'Ryan P McQuaid':'McQuaid'
+};
+var logoImages = {};
+function preloadLogos(managers) {
+  return Promise.all(managers.map(function(m) {
+    return new Promise(function(resolve) {
+      var lastname = LOGO_LASTNAMES[m] || m.split(' ').pop();
+      var img = new Image();
+      img.onload = function(){ logoImages[m] = img; resolve(); };
+      img.onerror = function(){ logoImages[m] = null; resolve(); };
+      img.src = '../logos/' + lastname + '.png';
+    });
+  }));
+}
+
+var winPctQuadMin = -1, winPctQuadMax = 1;
+var logoPointsPlugin = {
+  id: 'logoPoints',
+  afterDatasetsDraw: function(chart) {
+    var meta = chart.getDatasetMeta(1);
+    if (!meta || !meta.data) return;
+    var ctx = chart.ctx;
+    meta.data.forEach(function(point, index) {
+      var d = WINPCT_DATA[index];
+      if (!d) return;
+      var x = point.x, y = point.y;
+      var r = (point.options && point.options.radius) || 14;
+      var ringColor = gradientColor(d.avgQuad, winPctQuadMin, winPctQuadMax, true);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI*2);
+      ctx.fillStyle = '#f5f0e8';
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = ringColor;
+      ctx.stroke();
+      var img = logoImages[d.m];
+      if (img) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(r-3,1), 0, Math.PI*2);
+        ctx.clip();
+        ctx.drawImage(img, x-(r-3), y-(r-3), (r-3)*2, (r-3)*2);
+        ctx.restore();
+      } else {
+        ctx.fillStyle = ringColor;
+        ctx.font = 'bold '+Math.max(9,r*0.55)+'px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        var initials = d.m.split(' ').filter(function(w){return w[0]===w[0].toUpperCase();}).map(function(w){return w[0];}).join('').slice(0,2);
+        ctx.fillText(initials, x, y);
+      }
+      ctx.restore();
+    });
+  }
+};
 
 function renderWinPctLegend() {
   var el = document.getElementById('winpct-legend');
   var stops = [];
   for (var i = 0; i <= 8; i++) {
-    var v = -1 + (i/8)*2; // -1 to 1 sample range for a representative gradient strip
+    var v = -1 + (i/8)*2;
     stops.push(gradientColor(v, -1, 1, true));
   }
   var gradCss = 'linear-gradient(to right, ' + stops.join(',') + ')';
   el.innerHTML =
-    '<span>Poor trades</span>' +
+    '<span>Ring: poor trades</span>' +
     '<div style="width:140px;height:10px;border-radius:5px;background:'+gradCss+';"></div>' +
-    '<span>Great trades</span>' +
-    '<span style="margin-left:1.2rem;">Bubble size = trades made</span>';
+    '<span>Ring: great trades</span>' +
+    '<span style="margin-left:1.2rem;">Logo size = trades made</span>';
 }
 
 function linearRegression(points) {
@@ -385,12 +443,13 @@ function renderWinPct() {
   renderWinPctLegend();
 
   var quads = WINPCT_DATA.map(function(d){return d.avgQuad;});
-  var quadMin = Math.min.apply(null, quads), quadMax = Math.max.apply(null, quads);
-  var xPad = (quadMax - quadMin) * 0.12;
+  winPctQuadMin = Math.min.apply(null, quads);
+  winPctQuadMax = Math.max.apply(null, quads);
+  var xPad = (winPctQuadMax - winPctQuadMin) * 0.12;
 
   var points = WINPCT_DATA.map(function(d){ return {x: d.avgQuad, y: d.winPct}; });
   var fit = linearRegression(points);
-  var xLo = quadMin - xPad, xHi = quadMax + xPad;
+  var xLo = winPctQuadMin - xPad, xHi = winPctQuadMax + xPad;
   var trendLine = [
     {x: xLo, y: fit.slope*xLo + fit.intercept},
     {x: xHi, y: fit.slope*xHi + fit.intercept}
@@ -398,58 +457,67 @@ function renderWinPct() {
 
   if (winpctChart) { winpctChart.destroy(); }
   var ctx = document.getElementById('chart-winpct').getContext('2d');
-  winpctChart = new Chart(ctx, {
-    type: 'bubble',
-    data: {
-      datasets: [
-        {
-          label: 'Best fit',
-          data: trendLine,
-          type: 'line',
-          borderColor: 'rgba(90,90,90,0.55)',
-          borderWidth: 2,
-          borderDash: [6,4],
-          pointRadius: 0,
-          fill: false,
-          order: 2,
-        },
-        {
-          label: 'Managers',
-          data: WINPCT_DATA.map(function(d){
-            return { x: d.avgQuad, y: d.winPct, r: 8 + (d.trades/42)*16 };
-          }),
-          backgroundColor: WINPCT_DATA.map(function(d){ return gradientColor(d.avgQuad, quadMin, quadMax, true); }),
-          borderColor: 'rgba(255,255,255,0.6)',
-          borderWidth: 1.5,
-          order: 1,
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display:false },
-        tooltip: {
-          filter: function(item){ return item.datasetIndex === 1; },
-          callbacks: {
-            label: function(ctx){
-              var d = WINPCT_DATA[ctx.dataIndex];
-              return [
-                d.m,
-                'Win%: ' + d.winPct + '% (' + d.games + ' games)',
-                'Avg trade QUAD: ' + (d.avgQuad>=0?'+':'') + d.avgQuad.toFixed(2),
-                'Trades made: ' + d.trades
-              ];
+
+  preloadLogos(WINPCT_DATA.map(function(d){return d.m;})).then(function(){
+    try {
+      winpctChart = new Chart(ctx, {
+      type: 'bubble',
+      data: {
+        datasets: [
+          {
+            label: 'Best fit',
+            data: trendLine,
+            type: 'line',
+            borderColor: 'rgba(90,90,90,0.55)',
+            borderWidth: 2,
+            borderDash: [6,4],
+            pointRadius: 0,
+            fill: false,
+            order: 2,
+          },
+          {
+            label: 'Managers',
+            data: WINPCT_DATA.map(function(d){
+              return { x: d.avgQuad, y: d.winPct, r: 12 + (d.trades/42)*18 };
+            }),
+            backgroundColor: 'transparent',
+            borderColor: 'transparent',
+            order: 1,
+          }
+        ]
+      },
+      plugins: [logoPointsPlugin],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display:false },
+          tooltip: {
+            filter: function(item){ return item.datasetIndex === 1; },
+            callbacks: {
+              label: function(ctx){
+                var d = WINPCT_DATA[ctx.dataIndex];
+                return [
+                  d.m,
+                  'Win%: ' + d.winPct + '% (' + d.games + ' games)',
+                  'Avg trade QUAD: ' + (d.avgQuad>=0?'+':'') + d.avgQuad.toFixed(2),
+                  'Trades made: ' + d.trades
+                ];
+              }
             }
           }
+        },
+        scales: {
+          x: { title: {display:true, text:'Average QUAD per trade (career)'}, min:xLo, max:xHi },
+          y: { title: {display:true, text:'Win percentage'}, min:0, max:100 }
         }
-      },
-      scales: {
-        x: { title: {display:true, text:'Average QUAD per trade (career)'}, min:xLo, max:xHi },
-        y: { title: {display:true, text:'Win percentage'}, min:0, max:100 }
       }
+    });
+    } catch (e) {
+      console.error('Win% chart failed to render after logo load:', e);
     }
+  }).catch(function(e){
+    console.error('Logo preload failed:', e);
   });
 }
 
