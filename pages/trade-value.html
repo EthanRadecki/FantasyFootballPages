@@ -142,13 +142,14 @@
     <p class="metric-note">The bright bar shows <strong>average QUAD per trade</strong> (bottom axis). The faint background bar shows <strong>number of trades made</strong> (top axis), scaled to this view, so a manager with 3 trades doesn't look as thick as one with 25. Hover a row for that manager's best and worst trade in this view.</p>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;">Trade Volume vs. Win Percentage</div>
-  <div class="section-title">Does trading more actually correlate with winning? Bubble color shows whether a manager's trades tend to help or hurt.</div>
+  <div class="section-label" style="margin-top:2rem;">Trade Quality vs. Win Percentage</div>
+  <div class="section-title">Does making good trades actually correlate with winning more than making a lot of them?</div>
   <div class="chart-card-interactive glass">
+    <div id="winpct-legend" style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;font-size:0.72rem;color:var(--muted);"></div>
     <div style="position:relative;height:480px;">
       <canvas id="chart-winpct"></canvas>
     </div>
-    <p class="metric-note">Each bubble is one manager, positioned by <strong>trades made</strong> (x-axis) and <strong>career win percentage</strong> (y-axis, bracket-only games, consolation weeks excluded). Green bubbles have historically made good trades on average (positive QUAD); red bubbles haven't. Across this league the relationship is weak, trading a lot doesn't reliably predict winning more, some of the most active traders sit below .500 and some of the least active sit above it.</p>
+    <p class="metric-note">Each bubble is one manager, positioned by <strong>average QUAD per trade</strong> (x-axis, trade quality) and <strong>career win percentage</strong> (y-axis, bracket-only games, consolation weeks excluded). Bubble size is <strong>trades made</strong>, so volume is still visible even though it's not an axis. The dashed line is the best fit across all 14 managers. Trade quality correlates with winning more strongly than trade volume does, though it's still far from the whole story, a lot of winning comes down to the draft, waiver wire, and week-to-week lineup decisions covered elsewhere on this site.</p>
   </div>
 
   <div class="section-label" style="margin-top:2rem;">Trade Network</div>
@@ -353,26 +354,76 @@ function renderQuadChart() {
   });
 }
 
-/* ── Trade Volume vs Win% bubble chart ── */
+/* ── Trade Quality vs Win% bubble chart ── */
 var winpctChart = null;
+
+function renderWinPctLegend() {
+  var el = document.getElementById('winpct-legend');
+  var stops = [];
+  for (var i = 0; i <= 8; i++) {
+    var v = -1 + (i/8)*2; // -1 to 1 sample range for a representative gradient strip
+    stops.push(gradientColor(v, -1, 1, true));
+  }
+  var gradCss = 'linear-gradient(to right, ' + stops.join(',') + ')';
+  el.innerHTML =
+    '<span>Poor trades</span>' +
+    '<div style="width:140px;height:10px;border-radius:5px;background:'+gradCss+';"></div>' +
+    '<span>Great trades</span>' +
+    '<span style="margin-left:1.2rem;">Bubble size = trades made</span>';
+}
+
+function linearRegression(points) {
+  var n = points.length;
+  var sumX=0, sumY=0, sumXY=0, sumXX=0;
+  points.forEach(function(p){ sumX+=p.x; sumY+=p.y; sumXY+=p.x*p.y; sumXX+=p.x*p.x; });
+  var slope = (n*sumXY - sumX*sumY) / (n*sumXX - sumX*sumX);
+  var intercept = (sumY - slope*sumX) / n;
+  return { slope: slope, intercept: intercept };
+}
+
 function renderWinPct() {
+  renderWinPctLegend();
+
   var quads = WINPCT_DATA.map(function(d){return d.avgQuad;});
   var quadMin = Math.min.apply(null, quads), quadMax = Math.max.apply(null, quads);
+  var xPad = (quadMax - quadMin) * 0.12;
+
+  var points = WINPCT_DATA.map(function(d){ return {x: d.avgQuad, y: d.winPct}; });
+  var fit = linearRegression(points);
+  var xLo = quadMin - xPad, xHi = quadMax + xPad;
+  var trendLine = [
+    {x: xLo, y: fit.slope*xLo + fit.intercept},
+    {x: xHi, y: fit.slope*xHi + fit.intercept}
+  ];
 
   if (winpctChart) { winpctChart.destroy(); }
   var ctx = document.getElementById('chart-winpct').getContext('2d');
   winpctChart = new Chart(ctx, {
     type: 'bubble',
     data: {
-      datasets: [{
-        label: 'Managers',
-        data: WINPCT_DATA.map(function(d){
-          return { x: d.trades, y: d.winPct, r: 10 + (d.games/93)*8 };
-        }),
-        backgroundColor: WINPCT_DATA.map(function(d){ return gradientColor(d.avgQuad, quadMin, quadMax, true); }),
-        borderColor: 'rgba(255,255,255,0.6)',
-        borderWidth: 1.5,
-      }]
+      datasets: [
+        {
+          label: 'Best fit',
+          data: trendLine,
+          type: 'line',
+          borderColor: 'rgba(90,90,90,0.55)',
+          borderWidth: 2,
+          borderDash: [6,4],
+          pointRadius: 0,
+          fill: false,
+          order: 2,
+        },
+        {
+          label: 'Managers',
+          data: WINPCT_DATA.map(function(d){
+            return { x: d.avgQuad, y: d.winPct, r: 8 + (d.trades/42)*16 };
+          }),
+          backgroundColor: WINPCT_DATA.map(function(d){ return gradientColor(d.avgQuad, quadMin, quadMax, true); }),
+          borderColor: 'rgba(255,255,255,0.6)',
+          borderWidth: 1.5,
+          order: 1,
+        }
+      ]
     },
     options: {
       responsive: true,
@@ -380,21 +431,22 @@ function renderWinPct() {
       plugins: {
         legend: { display:false },
         tooltip: {
+          filter: function(item){ return item.datasetIndex === 1; },
           callbacks: {
             label: function(ctx){
               var d = WINPCT_DATA[ctx.dataIndex];
               return [
                 d.m,
                 'Win%: ' + d.winPct + '% (' + d.games + ' games)',
-                'Trades made: ' + d.trades,
-                'Avg trade QUAD: ' + (d.avgQuad>=0?'+':'') + d.avgQuad.toFixed(2)
+                'Avg trade QUAD: ' + (d.avgQuad>=0?'+':'') + d.avgQuad.toFixed(2),
+                'Trades made: ' + d.trades
               ];
             }
           }
         }
       },
       scales: {
-        x: { title: {display:true, text:'Trades made (career)'}, beginAtZero:true },
+        x: { title: {display:true, text:'Average QUAD per trade (career)'}, min:xLo, max:xHi },
         y: { title: {display:true, text:'Win percentage'}, min:0, max:100 }
       }
     }
