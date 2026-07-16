@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
 .draft-subnav { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem; }
 .draft-subnav-pill {
@@ -141,6 +142,34 @@
     <p class="metric-note">The bright bar shows <strong>average QUAD per trade</strong> (bottom axis). The faint background bar shows <strong>number of trades made</strong> (top axis), scaled to this view, so a manager with 3 trades doesn't look as thick as one with 25. Hover a row for that manager's best and worst trade in this view.</p>
   </div>
 
+  <div class="section-label" style="margin-top:2rem;">Trade Volume vs. Win Percentage</div>
+  <div class="section-title">Does trading more actually correlate with winning? Bubble color shows whether a manager's trades tend to help or hurt.</div>
+  <div class="chart-card-interactive glass">
+    <div style="position:relative;height:480px;">
+      <canvas id="chart-winpct"></canvas>
+    </div>
+    <p class="metric-note">Each bubble is one manager, positioned by <strong>trades made</strong> (x-axis) and <strong>career win percentage</strong> (y-axis, bracket-only games, consolation weeks excluded). Green bubbles have historically made good trades on average (positive QUAD); red bubbles haven't. Across this league the relationship is weak, trading a lot doesn't reliably predict winning more, some of the most active traders sit below .500 and some of the least active sit above it.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Trade Network</div>
+  <div class="section-title">Who trades with who. Node size is total trades made; drag any manager to explore.</div>
+  <div class="chart-card-interactive glass">
+    <div style="position:relative;height:560px;" id="network-container">
+      <svg id="network-svg" style="width:100%;height:100%;"></svg>
+      <div id="network-tooltip" style="position:absolute;pointer-events:none;opacity:0;background:rgba(30,26,20,0.92);color:#f5f0e8;padding:0.55rem 0.75rem;border-radius:6px;font-size:0.78rem;max-width:260px;line-height:1.5;transition:opacity 0.1s;z-index:10;"></div>
+    </div>
+    <p class="metric-note">Line thickness is how many times two managers have traded. Hover a manager to see their most-traded partners, positions exchanged, and who tends to come out ahead. Hover a line for the exact breakdown between those two.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Most Traded Players</div>
+  <div class="section-title">Players who changed hands the most, across every real trade in league history.</div>
+  <div class="chart-card-interactive glass">
+    <div style="position:relative;height:520px;">
+      <canvas id="chart-most-traded"></canvas>
+    </div>
+    <p class="metric-note">Hover a bar for the full trade history: which managers acquired that player, and in what seasons.</p>
+  </div>
+
   <div class="section-label" style="margin-top:2rem;">All Trades</div>
   <div class="section-title">Every real trade, one row per manager's side. Click a column to sort.</div>
   <div class="heatmap-controls" id="trades-season-pills"></div>
@@ -167,6 +196,9 @@
 
 </div>
 <script src="../data/page_data.js"></script>
+<script src="../data/network_data.js"></script>
+<script src="../data/most_traded_data.js"></script>
+<script src="../data/winpct_data.js"></script>
 <script src="../shared.js"></script>
 <script>
 /* ── Shared red/gold/green gradient helper ── */
@@ -321,7 +353,217 @@ function renderQuadChart() {
   });
 }
 
-/* ── All trades sortable table ── */
+/* ── Trade Volume vs Win% bubble chart ── */
+var winpctChart = null;
+function renderWinPct() {
+  var quads = WINPCT_DATA.map(function(d){return d.avgQuad;});
+  var quadMin = Math.min.apply(null, quads), quadMax = Math.max.apply(null, quads);
+
+  if (winpctChart) { winpctChart.destroy(); }
+  var ctx = document.getElementById('chart-winpct').getContext('2d');
+  winpctChart = new Chart(ctx, {
+    type: 'bubble',
+    data: {
+      datasets: [{
+        label: 'Managers',
+        data: WINPCT_DATA.map(function(d){
+          return { x: d.trades, y: d.winPct, r: 10 + (d.games/93)*8 };
+        }),
+        backgroundColor: WINPCT_DATA.map(function(d){ return gradientColor(d.avgQuad, quadMin, quadMax, true); }),
+        borderColor: 'rgba(255,255,255,0.6)',
+        borderWidth: 1.5,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx){
+              var d = WINPCT_DATA[ctx.dataIndex];
+              return [
+                d.m,
+                'Win%: ' + d.winPct + '% (' + d.games + ' games)',
+                'Trades made: ' + d.trades,
+                'Avg trade QUAD: ' + (d.avgQuad>=0?'+':'') + d.avgQuad.toFixed(2)
+              ];
+            }
+          }
+        }
+      },
+      scales: {
+        x: { title: {display:true, text:'Trades made (career)'}, beginAtZero:true },
+        y: { title: {display:true, text:'Win percentage'}, min:0, max:100 }
+      }
+    }
+  });
+}
+
+
+var MANAGER_COLORS = ['#8a5a4a','#5a7a8a','#8a7a4a','#6a5a8a','#4a8a6a','#8a4a6a','#4a6a8a',
+                      '#8a6a4a','#5a8a7a','#7a5a8a','#8a5a7a','#5a6a8a','#6a8a5a','#8a7a5a'];
+
+function renderNetwork() {
+  var container = document.getElementById('network-container');
+  var svg = d3.select('#network-svg');
+  var tooltip = d3.select('#network-tooltip');
+  var width = container.clientWidth, height = container.clientHeight;
+  svg.attr('viewBox', [0,0,width,height]);
+  svg.selectAll('*').remove();
+
+  var colorScale = d3.scaleOrdinal().domain(NETWORK_DATA.nodes.map(function(n){return n.id;})).range(MANAGER_COLORS);
+  var radiusScale = d3.scaleSqrt().domain([0, d3.max(NETWORK_DATA.nodes, function(d){return d.trades;})]).range([10, 34]);
+  var widthScale = d3.scaleSqrt().domain([1, d3.max(NETWORK_DATA.edges, function(d){return d.n;})]).range([1, 9]);
+
+  var nodesById = {};
+  NETWORK_DATA.nodes.forEach(function(n){ nodesById[n.id] = n; });
+
+  var links = NETWORK_DATA.edges.map(function(e){ return {source: e.a, target: e.b, data: e}; });
+  var nodes = NETWORK_DATA.nodes.map(function(n){ return Object.assign({}, n); });
+
+  var simulation = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(function(d){return d.id;}).distance(function(d){ return 90 + (10 - Math.min(d.data.n,10))*8; }))
+    .force('charge', d3.forceManyBody().strength(-420))
+    .force('center', d3.forceCenter(width/2, height/2))
+    .force('collide', d3.forceCollide().radius(function(d){ return radiusScale(d.trades) + 14; }));
+
+  var linkSel = svg.append('g').selectAll('line')
+    .data(links).enter().append('line')
+    .attr('stroke', '#9a8a70')
+    .attr('stroke-opacity', 0.35)
+    .attr('stroke-width', function(d){ return widthScale(d.data.n); })
+    .style('cursor', 'pointer')
+    .on('mouseover', function(event, d){
+      d3.select(this).attr('stroke-opacity', 0.85).attr('stroke', '#5a7a8a');
+      var posEntries = Object.entries(d.data.positions).sort(function(a,b){return b[1]-a[1];});
+      var posStr = posEntries.map(function(p){return p[0]+': '+p[1];}).join(', ');
+      var leader = d.data.netDiff > 0.05 ? d.data.a : (d.data.netDiff < -0.05 ? d.data.b : null);
+      var edgeText = '<strong>'+d.data.a+' &harr; '+d.data.b+'</strong><br>'
+        + d.data.n + ' trade'+(d.data.n===1?'':'s')+' together (' + d.data.seasons.join(', ') + ')<br>'
+        + 'Positions exchanged: ' + posStr
+        + (leader ? '<br><strong>'+leader+'</strong> has generally come out ahead' : '<br>Roughly even on average');
+      tooltip.style('opacity', 1).html(edgeText)
+        .style('left', (event.offsetX+14)+'px').style('top', (event.offsetY+14)+'px');
+    })
+    .on('mousemove', function(event){
+      tooltip.style('left', (event.offsetX+14)+'px').style('top', (event.offsetY+14)+'px');
+    })
+    .on('mouseout', function(){
+      d3.select(this).attr('stroke-opacity', 0.35).attr('stroke', '#9a8a70');
+      tooltip.style('opacity', 0);
+    });
+
+  var nodeGroup = svg.append('g').selectAll('g')
+    .data(nodes).enter().append('g')
+    .style('cursor', 'grab')
+    .call(d3.drag()
+      .on('start', function(event,d){ if(!event.active) simulation.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+      .on('drag', function(event,d){ d.fx=event.x; d.fy=event.y; })
+      .on('end', function(event,d){ if(!event.active) simulation.alphaTarget(0); d.fx=null; d.fy=null; }));
+
+  nodeGroup.append('circle')
+    .attr('r', function(d){ return radiusScale(d.trades); })
+    .attr('fill', function(d){ return colorScale(d.id); })
+    .attr('fill-opacity', 0.88)
+    .attr('stroke', '#f5f0e8')
+    .attr('stroke-width', 2)
+    .on('mouseover', function(event, d){
+      var partners = NETWORK_DATA.edges.filter(function(e){ return e.a===d.id || e.b===d.id; })
+        .sort(function(a,b){ return b.n-a.n; }).slice(0,4);
+      var partnerLines = partners.map(function(e){
+        var other = e.a===d.id ? e.b : e.a;
+        return other + ' (' + e.n + 'x)';
+      }).join('<br>');
+      var nodeText = '<strong>'+d.id+'</strong><br>'+d.trades+' total trades<br>Top partners:<br>'+partnerLines;
+      tooltip.style('opacity', 1).html(nodeText)
+        .style('left', (event.offsetX+14)+'px').style('top', (event.offsetY+14)+'px');
+      linkSel.attr('stroke-opacity', function(l){ return (l.source.id===d.id || l.target.id===d.id) ? 0.85 : 0.08; });
+    })
+    .on('mousemove', function(event){
+      tooltip.style('left', (event.offsetX+14)+'px').style('top', (event.offsetY+14)+'px');
+    })
+    .on('mouseout', function(){
+      tooltip.style('opacity', 0);
+      linkSel.attr('stroke-opacity', 0.35);
+    });
+
+  nodeGroup.append('text')
+    .text(function(d){ return d.id.split(' ').map(function(w){return w[0];}).join(''); })
+    .attr('text-anchor', 'middle')
+    .attr('dy', '0.35em')
+    .attr('font-size', '11px')
+    .attr('font-weight', '700')
+    .attr('fill', '#fff')
+    .style('pointer-events', 'none');
+
+  nodeGroup.append('title').text(function(d){ return d.id; });
+
+  simulation.on('tick', function(){
+    linkSel
+      .attr('x1', function(d){return d.source.x;}).attr('y1', function(d){return d.source.y;})
+      .attr('x2', function(d){return d.target.x;}).attr('y2', function(d){return d.target.y;});
+    nodeGroup.attr('transform', function(d){ return 'translate('+d.x+','+d.y+')'; });
+  });
+}
+
+/* ── Most Traded Players chart ── */
+var mostTradedChart = null;
+function renderMostTraded() {
+  var top = MOST_TRADED.slice(0, 20);
+  var maxCount = d3.max ? d3.max(top, function(d){return d.count;}) : Math.max.apply(null, top.map(function(d){return d.count;}));
+
+  function greenScale(value, min, max) {
+    var p = max===min ? 1 : (value-min)/(max-min);
+    var LIGHT=[190,180,90], DEEP=[70,120,70];
+    var r=lerp(LIGHT[0],DEEP[0],p), g=lerp(LIGHT[1],DEEP[1],p), b=lerp(LIGHT[2],DEEP[2],p);
+    return 'rgba('+r+','+g+','+b+',0.9)';
+  }
+
+  var colors = top.map(function(d){ return greenScale(d.count, Math.min.apply(null, top.map(function(t){return t.count;})), maxCount); });
+
+  if (mostTradedChart) { mostTradedChart.destroy(); }
+  var ctx = document.getElementById('chart-most-traded').getContext('2d');
+  mostTradedChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: top.map(function(d){return d.player;}),
+      datasets: [{
+        label: 'Times Traded',
+        data: top.map(function(d){return d.count;}),
+        backgroundColor: colors,
+        borderRadius: 4,
+        barPercentage: 0.75,
+        categoryPercentage: 0.8,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx){
+              var d = top[ctx.dataIndex];
+              var lines = ['Traded '+d.count+' times', 'Seasons: '+d.seasons.join(', ')];
+              lines.push('To: ' + d.managers.join(' \u2192 '));
+              return lines;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { title: {display:true, text:'Times traded (2+ only)'} },
+        y: { ticks: { autoSkip:false, font:{size:11} } }
+      }
+    }
+  });
+}
+
+
 var tradesSortState = { key: 'quad', type: 'number', dir: 'desc' };
 var tradesSeasonFilter = 'all';
 
@@ -380,6 +622,23 @@ try {
   if (chartCard && chartCard.parentElement) {
     chartCard.parentElement.innerHTML = '<p class="metric-note">Chart failed to load. Table data below is unaffected.</p>';
   }
+}
+try {
+  renderWinPct();
+} catch (e) {
+  console.error('Win% chart failed to render:', e);
+}
+try {
+  renderNetwork();
+} catch (e) {
+  console.error('Trade network failed to render:', e);
+  var netContainer = document.getElementById('network-container');
+  if (netContainer) netContainer.innerHTML = '<p class="metric-note">Network graph failed to load.</p>';
+}
+try {
+  renderMostTraded();
+} catch (e) {
+  console.error('Most traded chart failed to render:', e);
 }
 renderTradesSeasonPills();
 renderTradesTable();
