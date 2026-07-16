@@ -369,7 +369,7 @@ function preloadLogos(managers) {
       var img = new Image();
       img.onload = function(){ logoImages[m] = img; resolve(); };
       img.onerror = function(){ logoImages[m] = null; resolve(); };
-      img.src = '../logos/' + lastname + '.png';
+      img.src = '../images/logos/' + lastname + '.png';
     });
   }));
 }
