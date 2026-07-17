@@ -127,9 +127,15 @@
 
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
-    <p>Value is based on <strong>actual production after the trade</strong>, using the same position-adjusted z-score approach as Waiver Value, not preseason rankings. <strong>Trade Grade</strong> is the raw value swing, what you got minus what you gave. <strong>Realized Gains</strong> is the same thing but only counts weeks the player was actually started, so a great acquisition that sat on your bench doesn't get full credit. <strong>Fit Score</strong> checks whether the trade actually upgraded a real roster weakness. <strong>Necessity Score</strong> compares the acquired player against the best alternative that was already sitting on your bench, unstarted, that same week, so a "need" only counts if there genuinely wasn't a better in-house option.</p>
-    <p>These four combine into <strong>QUAD</strong>, Quad-metric Unified Assessment of Deal, weighted 35/30/20/15 toward Realized Gains, Trade Grade, Fit, and Necessity respectively, then z-scored across every real trade. Positive QUAD means an above-average trade for this league; negative means below-average.</p>
-    <p>Trades that were made and then fully reversed (the ones done in anger or as a joke, then undone by league consensus) are excluded entirely. Multi-team trades get linked together and graded on each manager's true net position, not each 2-team leg in isolation, so a manager who briefly held a player only to flip him seconds later doesn't get penalized for value they never intended to keep. Thomas Sullivan and William Serafin (2020 only) are excluded, same as the rest of the site.</p>
+    <ul style="margin:0 0 0.75rem;padding-left:1.2rem;line-height:1.6;">
+      <li><strong>Trade Grade</strong> <span style="color:var(--muted);">(z-score)</span> &mdash; value swing: what you got minus what you gave, position-adjusted.</li>
+      <li><strong>Realized Gains</strong> <span style="color:var(--muted);">(z-score)</span> &mdash; same swing, counting only weeks the player was started.</li>
+      <li><strong>Fit Score</strong> <span style="color:var(--muted);">(z-score shift)</span> &mdash; team's positional output, before the trade vs. after.</li>
+      <li><strong>Necessity Score</strong> <span style="color:var(--muted);">(points/week, shrunk for small samples)</span> &mdash; acquired player vs. best unstarted bench option that week.</li>
+      <li><strong>Playoff Weighting</strong> <span style="color:var(--muted);">(1.0x&ndash;2.0x multiplier)</span> &mdash; production counts more the later it happens: Regular 1.0x, First Round 1.15x, Quarterfinal 1.3x, Semifinal 1.6x, Championship 2.0x.</li>
+      <li><strong>QUAD</strong> <span style="color:var(--muted);">(z-score)</span> &mdash; the four metrics combined, weighted 35/30/20/15 (Realized Gains/Trade Grade/Fit/Necessity).</li>
+    </ul>
+    <p style="margin:0;font-size:0.8rem;color:var(--muted);"><em>Note: reversed trades are excluded entirely, multi-team trades are linked and graded on each manager's true net position, and Thomas Sullivan / William Serafin (2020 only) are excluded, same as the rest of the site.</em></p>
   </div>
 
   <div class="section-label">Manager Leaderboard</div>
