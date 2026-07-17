@@ -168,6 +168,31 @@
     <p class="metric-note">Line thickness is how many times two managers have traded. Hover a manager to see their most-traded partners, positions exchanged, and who tends to come out ahead. Hover a line for the exact breakdown between those two.</p>
   </div>
 
+  <div class="section-label" style="margin-top:2rem;">Trade Explorer</div>
+  <div class="section-title">Filter down to any slice of trade history and tap a trade to see the full breakdown.</div>
+  <div class="chart-card-interactive glass">
+    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Season</div>
+    <div class="heatmap-controls" id="explorer-season-pills"></div>
+
+    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Trade Type</div>
+    <div class="heatmap-controls" id="explorer-type-pills"></div>
+
+    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Manager A</div>
+    <div class="heatmap-controls" id="explorer-manager-a-pills"></div>
+
+    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Manager B <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);">(optional &mdash; pick a second manager to see only trades between the two)</span></div>
+    <div class="heatmap-controls" id="explorer-manager-b-pills" style="margin-bottom:1rem;"></div>
+
+    <div style="position:relative;height:480px;" id="explorer-container">
+      <svg id="explorer-svg" style="width:100%;height:100%;"></svg>
+      <div id="explorer-tooltip" style="position:absolute;pointer-events:none;opacity:0;background:rgba(30,26,20,0.92);color:#f5f0e8;padding:0.5rem 0.7rem;border-radius:6px;font-size:0.75rem;max-width:240px;line-height:1.5;transition:opacity 0.1s;z-index:10;"></div>
+      <div id="explorer-empty" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:0.95rem;color:var(--muted);font-weight:600;">No Trades Were Found</div>
+    </div>
+    <p class="metric-note">Diamonds are trades, logos are managers. Tap a diamond for the full breakdown below. Bigger diamonds involved more managers.</p>
+
+    <div id="explorer-detail" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(var(--accent-rgb),0.2);"></div>
+  </div>
+
   <div class="section-label" style="margin-top:2rem;">Most Traded Players</div>
   <div class="section-title">Players who changed hands the most, across every real trade in league history.</div>
   <div class="chart-card-interactive glass">
@@ -206,6 +231,7 @@
 <script src="../data/network_data.js"></script>
 <script src="../data/most_traded_data.js"></script>
 <script src="../data/winpct_data.js"></script>
+<script src="../data/trade_explorer_data.js"></script>
 <script src="../shared.js"></script>
 <script>
 /* ── Shared red/gold/green gradient helper ── */
@@ -719,6 +745,194 @@ function renderMostTraded() {
 }
 
 
+/* ── Trade Explorer (bipartite manager<->trade graph) ── */
+var explorerState = { season: 'all', type: 'all', managerA: 'any', managerB: 'any' };
+var explorerSimulation = null;
+
+function explorerPill(container, label, value, isActive, onClick) {
+  var btn = document.createElement('div');
+  btn.className = 'heatmap-season-pill' + (isActive ? ' active' : '');
+  btn.textContent = label;
+  btn.addEventListener('click', onClick);
+  container.appendChild(btn);
+}
+
+function renderExplorerFilters() {
+  var seasons = [...new Set(TRADE_NODES.map(function(n){return n.season;}))].sort();
+  var managers = [...new Set(TRADE_NODES.flatMap(function(n){ return n.managers.map(function(m){return m.m;}); }))].sort();
+
+  var seasonEl = document.getElementById('explorer-season-pills');
+  seasonEl.innerHTML = '';
+  explorerPill(seasonEl, 'All Seasons', 'all', explorerState.season==='all', function(){ explorerState.season='all'; renderExplorerFilters(); renderExplorer(); });
+  seasons.forEach(function(s){
+    explorerPill(seasonEl, s, s, explorerState.season===s, function(){ explorerState.season=s; renderExplorerFilters(); renderExplorer(); });
+  });
+
+  var typeEl = document.getElementById('explorer-type-pills');
+  typeEl.innerHTML = '';
+  [['all','All'],['2team','2-Team Only'],['multi','Multi-Team Only']].forEach(function(t){
+    explorerPill(typeEl, t[1], t[0], explorerState.type===t[0], function(){ explorerState.type=t[0]; renderExplorerFilters(); renderExplorer(); });
+  });
+
+  var aEl = document.getElementById('explorer-manager-a-pills');
+  aEl.innerHTML = '';
+  explorerPill(aEl, 'Any', 'any', explorerState.managerA==='any', function(){ explorerState.managerA='any'; explorerState.managerB='any'; renderExplorerFilters(); renderExplorer(); });
+  managers.forEach(function(m){
+    explorerPill(aEl, m, m, explorerState.managerA===m, function(){ explorerState.managerA = (explorerState.managerA===m ? 'any' : m); renderExplorerFilters(); renderExplorer(); });
+  });
+
+  var bEl = document.getElementById('explorer-manager-b-pills');
+  bEl.innerHTML = '';
+  if (explorerState.managerA === 'any') {
+    bEl.innerHTML = '<span style="font-size:0.78rem;color:var(--muted);">Pick Manager A first</span>';
+  } else {
+    explorerPill(bEl, 'Any', 'any', explorerState.managerB==='any', function(){ explorerState.managerB='any'; renderExplorerFilters(); renderExplorer(); });
+    managers.filter(function(m){return m!==explorerState.managerA;}).forEach(function(m){
+      explorerPill(bEl, m, m, explorerState.managerB===m, function(){ explorerState.managerB = (explorerState.managerB===m ? 'any' : m); renderExplorerFilters(); renderExplorer(); });
+    });
+  }
+}
+
+function getFilteredTradeNodes() {
+  return TRADE_NODES.filter(function(n){
+    if (explorerState.season !== 'all' && n.season !== explorerState.season) return false;
+    if (explorerState.type === '2team' && n.multi) return false;
+    if (explorerState.type === 'multi' && !n.multi) return false;
+    var names = n.managers.map(function(m){return m.m;});
+    if (explorerState.managerA !== 'any' && names.indexOf(explorerState.managerA) === -1) return false;
+    if (explorerState.managerB !== 'any' && names.indexOf(explorerState.managerB) === -1) return false;
+    return true;
+  });
+}
+
+function renderTradeDetail(node) {
+  var panel = document.getElementById('explorer-detail');
+  var rows = node.managers.map(function(m){
+    var quadBg = gradientColor(m.quad, QUAD_SCALE.min, QUAD_SCALE.max, true);
+    var necDisplay = m.nec === null ? '&mdash;' : m.nec.toFixed(1);
+    return '<tr>'
+      + '<td style="font-weight:600;color:var(--palm);">'+m.m+'</td>'
+      + '<td class="got-txt">'+m.got.join(', ')+'</td>'
+      + '<td class="gave-txt">'+m.gave.join(', ')+'</td>'
+      + '<td>'+m.tg.toFixed(1)+'</td>'
+      + '<td>'+m.rg.toFixed(1)+'</td>'
+      + '<td>'+m.fit.toFixed(2)+'</td>'
+      + '<td>'+necDisplay+'</td>'
+      + '<td><span style="background:'+quadBg+';color:#fff;padding:0.12rem 0.45rem;border-radius:4px;font-weight:700;">'+m.quad.toFixed(2)+'</span></td>'
+      + '</tr>';
+  }).join('');
+
+  panel.innerHTML =
+    '<div style="font-family:var(--font-display);font-weight:800;font-size:1rem;color:var(--palm);margin-bottom:0.25rem;">'
+      + node.season + (node.multi ? '<span class="multi-badge">'+node.managers.length+'-TEAM</span>' : '') + '</div>'
+    + '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem;">Positions involved: ' + (node.positions.join(', ') || '&mdash;') + '</div>'
+    + '<div class="table-wrap" style="overflow-x:auto;">'
+    + '<table class="tv-table"><thead><tr><th>Manager</th><th>Got</th><th>Gave</th><th>Trade Grade</th><th>Realized Gains</th><th>Fit</th><th>Necessity/wk</th><th>QUAD</th></tr></thead>'
+    + '<tbody>'+rows+'</tbody></table></div>';
+  panel.style.display = 'block';
+}
+
+function renderExplorer() {
+  var filtered = getFilteredTradeNodes();
+  var container = document.getElementById('explorer-container');
+  var svg = d3.select('#explorer-svg');
+  var emptyMsg = document.getElementById('explorer-empty');
+  var tooltip = d3.select('#explorer-tooltip');
+  document.getElementById('explorer-detail').style.display = 'none';
+
+  svg.selectAll('*').remove();
+  if (explorerSimulation) { explorerSimulation.stop(); }
+
+  if (filtered.length === 0) {
+    emptyMsg.style.display = 'flex';
+    return;
+  }
+  emptyMsg.style.display = 'none';
+
+  var width = container.clientWidth, height = container.clientHeight;
+  svg.attr('viewBox', [0,0,width,height]);
+
+  var managerNames = [...new Set(filtered.flatMap(function(n){ return n.managers.map(function(m){return m.m;}); }))];
+
+  var graphNodes = [];
+  managerNames.forEach(function(m){ graphNodes.push({ type:'manager', id:'mgr:'+m, name:m }); });
+  filtered.forEach(function(n){ graphNodes.push({ type:'trade', id:'trade:'+n.gid, data:n }); });
+
+  var links = [];
+  filtered.forEach(function(n){
+    n.managers.forEach(function(m){
+      links.push({ source:'mgr:'+m.m, target:'trade:'+n.gid });
+    });
+  });
+
+  var sim = d3.forceSimulation(graphNodes)
+    .force('link', d3.forceLink(links).id(function(d){return d.id;}).distance(70))
+    .force('charge', d3.forceManyBody().strength(-260))
+    .force('center', d3.forceCenter(width/2, height/2))
+    .force('collide', d3.forceCollide().radius(function(d){ return d.type==='manager' ? 26 : (d.data.managers.length>=3 ? 20 : 14); }));
+  explorerSimulation = sim;
+
+  var linkSel = svg.append('g').selectAll('line')
+    .data(links).enter().append('line')
+    .attr('stroke', '#9a8a70').attr('stroke-opacity', 0.4).attr('stroke-width', 1.5);
+
+  var nodeGroup = svg.append('g').selectAll('g')
+    .data(graphNodes).enter().append('g')
+    .style('cursor', function(d){ return d.type==='trade' ? 'pointer' : 'grab'; })
+    .call(d3.drag()
+      .on('start', function(event,d){ if(!event.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+      .on('drag', function(event,d){ d.fx=event.x; d.fy=event.y; })
+      .on('end', function(event,d){ if(!event.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }));
+
+  nodeGroup.each(function(d, i){
+    var g = d3.select(this);
+    if (d.type === 'manager') {
+      var r = 22;
+      g.append('clipPath').attr('id','exp-clip-'+i).append('circle').attr('r', r-2);
+      g.append('circle').attr('r', r).attr('fill', '#f5f0e8').attr('stroke', '#9a8a70').attr('stroke-width', 2);
+      var lastname = LOGO_LASTNAMES[d.name] || d.name.split(' ').pop();
+      g.append('image')
+        .attr('href', '../images/logos/' + lastname + '.png')
+        .attr('x', -(r-2)).attr('y', -(r-2)).attr('width', (r-2)*2).attr('height', (r-2)*2)
+        .attr('clip-path', 'url(#exp-clip-'+i+')')
+        .style('pointer-events','none')
+        .on('error', function(){
+          d3.select(this).remove();
+          g.append('text').text(d.name.split(' ').filter(function(w){return w[0]===w[0].toUpperCase();}).map(function(w){return w[0];}).join('').slice(0,2))
+            .attr('text-anchor','middle').attr('dy','0.35em').attr('font-size','11px').attr('font-weight','700')
+            .attr('fill','#6b5f50').style('pointer-events','none');
+        });
+      g.append('title').text(d.name);
+    } else {
+      var n = d.data;
+      var maxQuad = Math.max.apply(null, n.managers.map(function(m){return m.quad;}));
+      var color = gradientColor(maxQuad, QUAD_SCALE.min, QUAD_SCALE.max, true);
+      var size = n.managers.length >= 3 ? 15 : 10;
+      g.append('path')
+        .attr('d', d3.symbol().type(d3.symbolDiamond).size(size*size*2.2))
+        .attr('fill', color).attr('fill-opacity', 0.85).attr('stroke', '#f5f0e8').attr('stroke-width', 1.5)
+        .on('mouseover', function(event){
+          var names = n.managers.map(function(m){return m.m;}).join(', ');
+          tooltip.style('opacity',1).html('<strong>'+n.season+'</strong> &mdash; '+names+(n.multi?' (multi-team)':''))
+            .style('left',(event.offsetX+12)+'px').style('top',(event.offsetY+12)+'px');
+        })
+        .on('mousemove', function(event){
+          tooltip.style('left',(event.offsetX+12)+'px').style('top',(event.offsetY+12)+'px');
+        })
+        .on('mouseout', function(){ tooltip.style('opacity',0); })
+        .on('click', function(){ renderTradeDetail(n); });
+    }
+  });
+
+  sim.on('tick', function(){
+    linkSel
+      .attr('x1', function(d){return d.source.x;}).attr('y1', function(d){return d.source.y;})
+      .attr('x2', function(d){return d.target.x;}).attr('y2', function(d){return d.target.y;});
+    nodeGroup.attr('transform', function(d){ return 'translate('+d.x+','+d.y+')'; });
+  });
+}
+
+
 var tradesSortState = { key: 'quad', type: 'number', dir: 'desc' };
 var tradesSeasonFilter = 'all';
 
@@ -794,6 +1008,14 @@ try {
   renderMostTraded();
 } catch (e) {
   console.error('Most traded chart failed to render:', e);
+}
+try {
+  renderExplorerFilters();
+  renderExplorer();
+} catch (e) {
+  console.error('Trade Explorer failed to render:', e);
+  var expContainer = document.getElementById('explorer-container');
+  if (expContainer) expContainer.innerHTML = '<p class="metric-note">Trade Explorer failed to load.</p>';
 }
 renderTradesSeasonPills();
 renderTradesTable();
