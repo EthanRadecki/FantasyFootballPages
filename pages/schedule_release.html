@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>Preach Fantasy: Schedule Release</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -21,13 +21,13 @@
     --purple:#6b5a6c;
     --purple-soft:#9c949c;
     --line:rgba(30,26,20,0.14);
-    --win:#4a7fa8;
-    --loss:#c0623a;
+    --win:#4c8a5e;
+    --loss:#b8402f;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;padding:0;}
+  html,body{margin:0;padding:0; overscroll-behavior:none;}
   body{
-    background:var(--bone);
+    background:var(--ink);
     color:var(--ink);
     font-family:'Inter',sans-serif;
     min-height:100vh;
@@ -36,49 +36,52 @@
   }
   .app{
     width:100%;
-    max-width:440px;
-    min-height:100vh;
+    max-width:460px;
+    height:100vh;
     background:var(--bone);
     position:relative;
-    padding-bottom:30px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
   }
 
   /* HEADER */
   .topbar{
-    position:sticky; top:0; z-index:50;
+    flex:0 0 auto;
+    z-index:50;
     background:var(--bone);
-    padding:18px 18px 0 18px;
+    padding:16px 18px 0 18px;
     border-bottom:1px solid var(--line);
   }
   .brand-title{
     font-family:'Anton', sans-serif;
-    font-size:26px;
+    font-size:23px;
     letter-spacing:0.5px;
     line-height:1;
   }
   .brand-sub{
     font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
+    font-size:10.5px;
     color:var(--ink-soft);
     letter-spacing:1px;
     text-transform:uppercase;
     margin-top:3px;
-    margin-bottom:14px;
+    margin-bottom:12px;
   }
   .manager-row{
     display:flex; gap:8px; overflow-x:auto;
-    padding-bottom:14px;
+    padding-bottom:12px;
     scrollbar-width:none;
   }
   .manager-row::-webkit-scrollbar{display:none;}
   .chip{
     flex:0 0 auto;
     display:flex; align-items:center; gap:6px;
-    padding:6px 12px 6px 6px;
+    padding:5px 12px 5px 5px;
     border-radius:999px;
     border:1.5px solid var(--line);
     background:var(--bone-dim);
-    font-size:13px;
+    font-size:12.5px;
     font-weight:600;
     color:var(--ink-soft);
     cursor:pointer;
@@ -86,7 +89,7 @@
     transition:all 0.15s ease;
     font-family:'Inter',sans-serif;
   }
-  .chip img{ width:22px; height:22px; border-radius:50%; object-fit:cover; background:#fff; }
+  .chip img{ width:20px; height:20px; border-radius:50%; object-fit:cover; background:#fff; }
   .chip.active{
     background:var(--ink);
     color:var(--bone);
@@ -132,134 +135,173 @@
 
   /* SEASON SUMMARY STRIP */
   .season-strip{
-    margin:16px 18px 4px 18px;
+    flex:0 0 auto;
+    padding:12px 18px 0 18px;
     display:flex; justify-content:space-between; align-items:center;
+    background:var(--bone);
   }
-  .season-name-row{ display:flex; align-items:center; gap:10px; }
-  .season-name-row .logo{ width:34px; height:34px; }
+  .season-name-row{ display:flex; align-items:center; gap:9px; }
+  .season-name-row .logo{ width:30px; height:30px; }
   .season-name{
     font-family:'Anton',sans-serif;
-    font-size:21px;
+    font-size:18px;
   }
   .swipe-hint{
-    margin:2px 18px 8px 18px;
+    flex:0 0 auto;
+    padding:4px 18px 8px 18px;
     font-family:'IBM Plex Mono',monospace;
-    font-size:10px;
+    font-size:9.5px;
     color:var(--ink-soft);
     text-transform:uppercase;
     letter-spacing:0.6px;
+    background:var(--bone);
   }
 
-  /* CAROUSEL */
+  /* CAROUSEL: one full card per view, no peeking */
+  .carousel-wrap{ flex:1; min-height:0; display:flex; flex-direction:column; }
   .carousel{
+    flex:1;
+    min-height:0;
     display:flex;
     overflow-x:auto;
     scroll-snap-type:x mandatory;
-    gap:14px;
-    padding:10px 26px 4px 26px;
-    scrollbar-width:none;
+    scroll-behavior:smooth;
   }
   .carousel::-webkit-scrollbar{display:none;}
 
+  .ticket-slide{
+    flex:0 0 100%;
+    width:100%;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    padding:10px 16px 10px 16px;
+    display:flex;
+  }
+
   .ticket{
-    flex:0 0 84%;
-    scroll-snap-align:center;
+    flex:1;
+    min-width:0;
     position:relative;
-    border-radius:16px;
+    border-radius:20px;
     overflow:hidden;
-    box-shadow:0 3px 14px rgba(30,26,20,0.10);
+    box-shadow:0 6px 22px rgba(30,26,20,0.14);
     background:#fff;
-    border:1px solid var(--line);
+    border:1.5px solid var(--line);
     display:flex;
     flex-direction:column;
+    opacity:0.45;
+    transform:scale(0.90);
+    transition:opacity 0.4s ease, transform 0.4s ease;
   }
+  .ticket.active-card{ opacity:1; transform:scale(1); }
 
   .ticket-banner{
-    display:flex; align-items:center; gap:7px;
-    padding:9px 14px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    padding:13px 14px;
+    font-family:'Anton',sans-serif;
+    font-size:16px; letter-spacing:0.5px; text-transform:uppercase;
     color:#fff;
+    text-align:center;
   }
-  .banner-rivalry{ background:linear-gradient(100deg, var(--rep-dark), var(--rep)); }
-  .banner-biggame{ background:linear-gradient(100deg, var(--gold-dark), var(--gold)); }
-  .banner-inter{ background:linear-gradient(100deg, var(--rep-dark) 0%, var(--rep) 45%, var(--dem) 55%, var(--dem-dark) 100%); }
+  .banner-rivalry{ background:linear-gradient(100deg, var(--rep-dark), var(--rep) 60%, var(--rep-dark)); }
+  .banner-biggame{ background:linear-gradient(100deg, var(--gold-dark), var(--gold) 60%, var(--gold-dark)); }
+  .banner-inter{ background:linear-gradient(100deg, var(--rep-dark) 0%, var(--rep) 42%, var(--dem) 58%, var(--dem-dark) 100%); }
+  .banner-standard{ background:linear-gradient(100deg, var(--purple), #7d6d7e); }
 
-  .ticket-body{ padding:14px 16px 16px 16px; flex:1; }
+  .ticket-body{
+    padding:16px 18px 18px 18px;
+    flex:1;
+    display:flex; flex-direction:column;
+    overflow-y:auto;
+  }
 
   .week-tag{
     font-family:'IBM Plex Mono',monospace;
-    font-size:10px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;
+    font-size:11px; color:var(--ink-soft); letter-spacing:0.8px; text-transform:uppercase;
     margin-bottom:10px;
-  }
-  .type-pill{
-    display:inline-block;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:9.5px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase;
-    padding:3px 8px; border-radius:5px;
-    background:var(--bone-dim); color:var(--ink-soft);
-    margin-bottom:8px;
+    font-weight:600;
   }
   .inter-note{
-    font-size:11px; color:var(--ink-soft); font-style:italic;
-    margin:-4px 0 10px 0;
+    font-size:12px; color:var(--ink-soft); font-style:italic;
+    margin:-4px 0 12px 0;
+    text-align:center;
   }
 
   .matchup-row{
-    display:flex; align-items:center; justify-content:center; gap:14px;
+    display:flex; align-items:center; justify-content:center; gap:18px;
     margin-bottom:12px;
   }
-  .matchup-row .logo, .matchup-row .logo-fallback{ width:52px; height:52px; font-size:18px; }
-  .matchup-vs{ font-family:'Anton',sans-serif; font-size:14px; color:var(--ink-soft); }
+  .matchup-row .logo, .matchup-row .logo-fallback{ width:72px; height:72px; font-size:24px; }
+  .matchup-vs{ font-family:'Anton',sans-serif; font-size:16px; color:var(--ink-soft); }
   .matchup-names{
-    display:flex; justify-content:space-between; margin-bottom:14px;
+    display:flex; justify-content:space-between; margin-bottom:16px; gap:8px;
   }
   .matchup-name{
     font-family:'Anton',sans-serif;
-    font-size:15px;
+    font-size:18px;
     text-align:center;
     flex:1;
-    line-height:1.15;
+    line-height:1.1;
+  }
+
+  .rematch-tag{
+    text-align:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase;
+    color:var(--gold-dark);
+    margin:-6px 0 14px 0;
   }
 
   .stat-line{
     display:flex; align-items:baseline; gap:6px;
-    font-size:12.5px;
+    font-size:13px;
     color:var(--ink);
-    margin-bottom:5px;
+    margin-bottom:6px;
     line-height:1.4;
   }
   .stat-label{
     font-family:'IBM Plex Mono',monospace;
-    font-size:9.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.6px;
+    font-size:10px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.6px;
     flex:0 0 auto; padding-top:1px;
   }
   .stat-value{ font-weight:600; }
 
-  .record-track{
-    display:flex; gap:3px; margin:8px 0 10px 0; flex-wrap:wrap;
+  .dot-legend{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px; color:var(--ink-soft);
+    display:flex; align-items:center; gap:10px;
+    margin:6px 0 6px 0;
   }
-  .rdot{ width:9px; height:9px; border-radius:2px; }
+  .dot-legend span{ display:inline-flex; align-items:center; gap:4px; }
+  .legend-swatch{ width:8px; height:8px; border-radius:2px; display:inline-block; }
+
+  .record-track{
+    display:flex; gap:3px; margin:2px 0 12px 0; flex-wrap:wrap;
+  }
+  .rdot{ width:10px; height:10px; border-radius:2px; }
   .rdot.win{ background:var(--win); }
   .rdot.loss{ background:var(--loss); }
 
   .caption{
-    margin-top:10px;
-    padding-top:10px;
+    margin-top:auto;
+    padding-top:12px;
     border-top:1px dashed var(--line);
-    font-size:12.5px;
+    font-size:13px;
     font-style:italic;
     color:var(--ink-soft);
     line-height:1.45;
   }
 
-  .ticket.rivalry{ border-color:rgba(124,47,52,0.4); }
-  .ticket.biggame{ border-color:rgba(184,137,47,0.55); box-shadow:0 4px 18px rgba(184,137,47,0.28); }
+  .ticket.rivalry{ border-color:rgba(124,47,52,0.45); }
+  .ticket.biggame{ border-color:rgba(184,137,47,0.6); box-shadow:0 6px 26px rgba(184,137,47,0.32); }
+  .ticket.inter{ border-color:rgba(63,101,131,0.4); }
 
   /* progress dots */
   .progress{
+    flex:0 0 auto;
     display:flex; justify-content:center; gap:5px;
-    padding:14px 0 4px 0;
+    padding:10px 0 12px 0;
+    background:var(--bone);
   }
   .pdot{ width:6px; height:6px; border-radius:50%; background:var(--line); transition:all 0.2s ease; }
   .pdot.active{ background:var(--ink); width:16px; border-radius:3px; }
@@ -269,11 +311,11 @@
 <div class="app">
   <div class="topbar">
     <div class="brand-title">SCHEDULE RELEASE</div>
-    <div class="brand-sub">Preach Fantasy · Season 2026</div>
+    <div class="brand-sub">Preach Fantasy &middot; Season 2026</div>
     <div class="manager-row" id="managerRow"></div>
   </div>
 
-  <div id="content"></div>
+  <div id="content" class="carousel-wrap"></div>
 </div>
 
 <script>
@@ -360,18 +402,22 @@ function generateCaption(entry, meName){
 
   let extra = '';
   if(closest && closest.margin < 4){
-    extra = ` Their closest game ever came down to ${closest.margin} points (${seasonLabel(closest)}).`;
+    extra = ` Their closest game ever came down to ${closest.margin} points, ${closest.winner} won it, in ${seasonLabel(closest)}.`;
   } else if(blowout && blowout.margin > 70){
     extra = ` Also home to the ugliest blowout between them: ${blowout.margin} points (${seasonLabel(blowout)}).`;
   }
   return base + extra;
 }
 
-function bannerFor(weekType){
-  if(weekType==='Rivalry Week') return `<div class="ticket-banner banner-rivalry">⚔ Rivalry Week</div>`;
-  if(weekType==='Big Game Week') return `<div class="ticket-banner banner-biggame">🏆 Historic Rematch</div>`;
-  if(weekType==='Interconference Week') return `<div class="ticket-banner banner-inter">Interconference Week</div>`;
-  return '';
+function bannerFor(entry){
+  const wt = entry.week_type;
+  if(wt==='Rivalry Week') return {html:`<div class="ticket-banner banner-rivalry">Rivalry Week</div>`};
+  if(wt==='Big Game Week'){
+    const label = entry.rematch ? `${entry.rematch.season} ${entry.rematch.round} Rematch` : 'Big Game Week';
+    return {html:`<div class="ticket-banner banner-biggame">${label}</div>`};
+  }
+  if(wt==='Interconference Week') return {html:`<div class="ticket-banner banner-inter">Interconference Week</div>`};
+  return {html:`<div class="ticket-banner banner-standard">Week ${entry.week}</div>`};
 }
 
 function renderManagerChips(selected){
@@ -380,7 +426,7 @@ function renderManagerChips(selected){
   MANAGERS.forEach(m=>{
     const chip = document.createElement('div');
     chip.className = 'chip' + (m===selected ? ' active' : '');
-    chip.innerHTML = logoImg(m, 22) + '<span>' + m.split(' ')[0] + '</span>';
+    chip.innerHTML = logoImg(m, 20) + '<span>' + m.split(' ')[0] + '</span>';
     chip.onclick = ()=> selectManager(m);
     row.appendChild(chip);
   });
@@ -389,7 +435,6 @@ function renderManagerChips(selected){
 function renderTicket(entry, meName){
   const tClass = entry.week_type==='Rivalry Week' ? 'rivalry' : entry.week_type==='Big Game Week' ? 'biggame' : entry.week_type==='Interconference Week' ? 'inter' : '';
   const oppConf = CONF[entry.opponent];
-  const meConf = CONF[meName];
 
   const dots = entry.game_log.map(r => `<div class="rdot ${r==='win'?'win':'loss'}"></div>`).join('');
 
@@ -398,39 +443,50 @@ function renderTicket(entry, meName){
     : `${entry.my_wins}-${entry.opp_wins} <span style="color:var(--ink-soft); font-weight:500;">all-time</span>`;
 
   const mostRecentHtml = entry.most_recent
-    ? `<b>${fmtScore(entry.most_recent.score_a)}</b> – ${fmtScore(entry.most_recent.score_b)} <span style="color:var(--ink-soft)">(${seasonLabel(entry.most_recent)})</span>`
+    ? `<b>${fmtScore(entry.most_recent.score_a)}</b> - ${fmtScore(entry.most_recent.score_b)} <span style="color:var(--ink-soft)">(${seasonLabel(entry.most_recent)})</span>`
     : null;
   const closestHtml = entry.closest
-    ? `${entry.closest.margin} pt margin <span style="color:var(--ink-soft)">(${seasonLabel(entry.closest)})</span>`
+    ? `${entry.closest.winner} won by ${entry.closest.margin} pts <span style="color:var(--ink-soft)">(${seasonLabel(entry.closest)})</span>`
     : null;
 
   const caption = generateCaption(entry, meName);
   const interNote = entry.week_type==='Interconference Week'
     ? `<div class="inter-note">Every matchup across the league this week is REP vs. DEM.</div>` : '';
-  const pill = entry.week_type==='Standard' ? `<span class="type-pill">Week ${entry.week}</span>` : '';
+  const rematchTag = (entry.week_type==='Big Game Week' && entry.rematch)
+    ? `<div class="rematch-tag">Real playoff history, not just a name</div>` : '';
+
+  const banner = bannerFor(entry);
 
   return `
-  <div class="ticket ${tClass}">
-    ${bannerFor(entry.week_type)}
-    <div class="ticket-body">
-      <div class="week-tag">Week ${entry.week}</div>
-      ${pill}
-      ${interNote}
-      <div class="matchup-row">
-        ${logoImg(meName, 52)}
-        <div class="matchup-vs">VS</div>
-        ${logoImg(entry.opponent, 52)}
+  <div class="ticket-slide">
+    <div class="ticket ${tClass}">
+      ${banner.html}
+      <div class="ticket-body">
+        <div class="week-tag">Week ${entry.week}</div>
+        ${interNote}
+        ${rematchTag}
+        <div class="matchup-row">
+          ${logoImg(meName, 72)}
+          <div class="matchup-vs">VS</div>
+          ${logoImg(entry.opponent, 72)}
+        </div>
+        <div class="matchup-names">
+          <div class="matchup-name">${meName}</div>
+          <div class="matchup-name">${entry.opponent}</div>
+        </div>
+        <div class="stat-line"><span class="stat-label">Series</span><span class="stat-value">${record}</span>
+          <span class="conf-badge conf-${oppConf}" style="margin-left:auto">${oppConf}</span></div>
+        ${entry.total_games>0 ? `
+          <div class="dot-legend">
+            <span><span class="legend-swatch" style="background:var(--win)"></span>Win</span>
+            <span><span class="legend-swatch" style="background:var(--loss)"></span>Loss</span>
+            <span>oldest &rarr; newest</span>
+          </div>
+          <div class="record-track">${dots}</div>` : ''}
+        ${mostRecentHtml ? `<div class="stat-line"><span class="stat-label">Last time</span><span class="stat-value">${mostRecentHtml}</span></div>` : ''}
+        ${closestHtml ? `<div class="stat-line"><span class="stat-label">Closest</span><span class="stat-value">${closestHtml}</span></div>` : ''}
+        <div class="caption">${caption}</div>
       </div>
-      <div class="matchup-names">
-        <div class="matchup-name">${meName}</div>
-        <div class="matchup-name">${entry.opponent}</div>
-      </div>
-      <div class="stat-line"><span class="stat-label">Series</span><span class="stat-value">${record}</span>
-        <span class="conf-badge conf-${oppConf}" style="margin-left:auto">${oppConf}</span></div>
-      ${entry.total_games>0 ? `<div class="record-track">${dots}</div>` : ''}
-      ${mostRecentHtml ? `<div class="stat-line"><span class="stat-label">Last time</span><span class="stat-value">${mostRecentHtml}</span></div>` : ''}
-      ${closestHtml ? `<div class="stat-line"><span class="stat-label">Closest</span><span class="stat-value">${closestHtml}</span></div>` : ''}
-      <div class="caption">${caption}</div>
     </div>
   </div>`;
 }
@@ -443,12 +499,12 @@ function selectManager(name){
   let html = `
     <div class="season-strip">
       <div class="season-name-row">
-        ${logoImg(name, 34)}
+        ${logoImg(name, 30)}
         <div class="season-name">${name}</div>
       </div>
       <span class="conf-badge conf-${CONF[name]}">${CONF[name]}</span>
     </div>
-    <div class="swipe-hint">Swipe to move through the season →</div>
+    <div class="swipe-hint">Swipe to move through the season &rarr;</div>
     <div class="carousel" id="carousel">`;
 
   schedule.forEach(entry=>{ html += renderTicket(entry, name); });
@@ -463,22 +519,27 @@ function selectManager(name){
   });
 
   const carousel = document.getElementById('carousel');
+  const slides = carousel.querySelectorAll('.ticket-slide');
   const tickets = carousel.querySelectorAll('.ticket');
   const dots = progress.querySelectorAll('.pdot');
   const observer = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
+      const idx = Array.from(slides).indexOf(e.target);
+      const ticketEl = tickets[idx];
       if(e.isIntersecting && e.intersectionRatio > 0.6){
-        const idx = Array.from(tickets).indexOf(e.target);
+        ticketEl.classList.add('active-card');
         dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+      } else {
+        ticketEl.classList.remove('active-card');
       }
     });
   }, {root: carousel, threshold:[0.6]});
-  tickets.forEach(t=>observer.observe(t));
+  slides.forEach(s=>observer.observe(s));
 }
 
 fetch(DATA_URL).then(r=>r.json()).then(data=>{
   MANAGERS_DATA = data;
-  MANAGERS = Object.keys(data);
+  MANAGERS = Object.keys(data).sort((a,b)=> a.split(' ')[0].localeCompare(b.split(' ')[0]));
   renderManagerChips(null);
   document.getElementById('content').innerHTML = `
     <div class="placeholder">
