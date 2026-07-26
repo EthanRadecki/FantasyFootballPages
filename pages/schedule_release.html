@@ -189,11 +189,34 @@
     border:1.5px solid var(--line);
     display:flex;
     flex-direction:column;
-    opacity:0.45;
-    transform:scale(0.90);
-    transition:opacity 0.4s ease, transform 0.4s ease;
+    opacity:0.4;
+    transform:scale(0.86) rotate(-1deg);
+    transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1), transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
   }
-  .ticket.active-card{ opacity:1; transform:scale(1); }
+  .ticket.active-card{ opacity:1; transform:scale(1) rotate(0deg); }
+
+  .ticket.rivalry .ticket-body{ background:linear-gradient(180deg, rgba(168,67,74,0.10), rgba(255,255,255,0) 45%); }
+  .ticket.biggame .ticket-body{ background:linear-gradient(180deg, rgba(184,137,47,0.14), rgba(255,255,255,0) 45%); }
+  .ticket.inter .ticket-body{ background:linear-gradient(180deg, rgba(63,101,131,0.10), rgba(255,255,255,0) 45%); }
+  .ticket-body{ background:linear-gradient(180deg, rgba(107,90,108,0.08), rgba(255,255,255,0) 45%); }
+
+  .banner-biggame{
+    background-size:200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  @keyframes shimmer{
+    0%{ background-position:0% 0%; }
+    50%{ background-position:100% 0%; }
+    100%{ background-position:0% 0%; }
+  }
+
+  .logo-halo{
+    padding:4px;
+    border-radius:50%;
+    display:flex;
+  }
+  .halo-REP{ background:radial-gradient(circle, rgba(168,67,74,0.22), rgba(168,67,74,0) 72%); }
+  .halo-DEM{ background:radial-gradient(circle, rgba(63,101,131,0.22), rgba(63,101,131,0) 72%); }
 
   .ticket-banner{
     display:flex; align-items:center; justify-content:center; gap:8px;
@@ -232,7 +255,7 @@
     margin-bottom:12px;
   }
   .matchup-row .logo, .matchup-row .logo-fallback{ width:72px; height:72px; font-size:24px; }
-  .matchup-vs{ font-family:'Anton',sans-serif; font-size:16px; color:var(--ink-soft); }
+  .matchup-vs{ font-family:'Anton',sans-serif; font-size:20px; color:var(--purple); letter-spacing:1px; }
   .matchup-names{
     display:flex; justify-content:space-between; margin-bottom:16px; gap:8px;
   }
@@ -242,14 +265,6 @@
     text-align:center;
     flex:1;
     line-height:1.1;
-  }
-
-  .rematch-tag{
-    text-align:center;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase;
-    color:var(--gold-dark);
-    margin:-6px 0 14px 0;
   }
 
   .stat-line{
@@ -411,12 +426,12 @@ function generateCaption(entry, meName){
 
 function bannerFor(entry){
   const wt = entry.week_type;
-  if(wt==='Rivalry Week') return {html:`<div class="ticket-banner banner-rivalry">Rivalry Week</div>`};
+  if(wt==='Rivalry Week') return {html:`<div class="ticket-banner banner-rivalry">&#9876;&#65039; Rivalry Week</div>`};
   if(wt==='Big Game Week'){
     const label = entry.rematch ? `${entry.rematch.season} ${entry.rematch.round} Rematch` : 'Big Game Week';
-    return {html:`<div class="ticket-banner banner-biggame">${label}</div>`};
+    return {html:`<div class="ticket-banner banner-biggame">&#127942; ${label}</div>`};
   }
-  if(wt==='Interconference Week') return {html:`<div class="ticket-banner banner-inter">Interconference Week</div>`};
+  if(wt==='Interconference Week') return {html:`<div class="ticket-banner banner-inter">&#127775; Interconference Week</div>`};
   return {html:`<div class="ticket-banner banner-standard">Week ${entry.week}</div>`};
 }
 
@@ -440,7 +455,7 @@ function renderTicket(entry, meName){
 
   const record = entry.total_games===0
     ? 'First meeting'
-    : `${entry.my_wins}-${entry.opp_wins} <span style="color:var(--ink-soft); font-weight:500;">all-time</span>`;
+    : `<span style="color:var(--win)">${entry.my_wins}</span>-<span style="color:var(--loss)">${entry.opp_wins}</span> <span style="color:var(--ink-soft); font-weight:500;">all-time</span>`;
 
   const mostRecentHtml = entry.most_recent
     ? `<b>${fmtScore(entry.most_recent.score_a)}</b> - ${fmtScore(entry.most_recent.score_b)} <span style="color:var(--ink-soft)">(${seasonLabel(entry.most_recent)})</span>`
@@ -452,9 +467,6 @@ function renderTicket(entry, meName){
   const caption = generateCaption(entry, meName);
   const interNote = entry.week_type==='Interconference Week'
     ? `<div class="inter-note">Every matchup across the league this week is REP vs. DEM.</div>` : '';
-  const rematchTag = (entry.week_type==='Big Game Week' && entry.rematch)
-    ? `<div class="rematch-tag">Real playoff history, not just a name</div>` : '';
-
   const banner = bannerFor(entry);
 
   return `
@@ -464,11 +476,10 @@ function renderTicket(entry, meName){
       <div class="ticket-body">
         <div class="week-tag">Week ${entry.week}</div>
         ${interNote}
-        ${rematchTag}
         <div class="matchup-row">
-          ${logoImg(meName, 72)}
+          <div class="logo-halo halo-${CONF[meName]}">${logoImg(meName, 72)}</div>
           <div class="matchup-vs">VS</div>
-          ${logoImg(entry.opponent, 72)}
+          <div class="logo-halo halo-${oppConf}">${logoImg(entry.opponent, 72)}</div>
         </div>
         <div class="matchup-names">
           <div class="matchup-name">${meName}</div>
