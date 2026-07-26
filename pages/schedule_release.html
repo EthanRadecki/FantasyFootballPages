@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Preach Fantasy: Schedule Release</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bone:#f5f0e8;
+    --bone-dim:#ece5d8;
+    --ink:#1e1a14;
+    --ink-soft:#6b5f50;
+    --rep:#a8434a;
+    --rep-dark:#7c2f34;
+    --dem:#3f6583;
+    --dem-dark:#2c495f;
+    --gold:#b8892f;
+    --gold-dark:#8f6a1f;
+    --purple:#6b5a6c;
+    --purple-soft:#9c949c;
+    --line:rgba(30,26,20,0.14);
+    --win:#4a7fa8;
+    --loss:#c0623a;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bone);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+  }
+  .app{
+    width:100%;
+    max-width:440px;
+    min-height:100vh;
+    background:var(--bone);
+    position:relative;
+    padding-bottom:30px;
+  }
+
+  /* HEADER */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:var(--bone);
+    padding:18px 18px 0 18px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand-title{
+    font-family:'Anton', sans-serif;
+    font-size:26px;
+    letter-spacing:0.5px;
+    line-height:1;
+  }
+  .brand-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-top:3px;
+    margin-bottom:14px;
+  }
+  .manager-row{
+    display:flex; gap:8px; overflow-x:auto;
+    padding-bottom:14px;
+    scrollbar-width:none;
+  }
+  .manager-row::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:0 0 auto;
+    display:flex; align-items:center; gap:6px;
+    padding:6px 12px 6px 6px;
+    border-radius:999px;
+    border:1.5px solid var(--line);
+    background:var(--bone-dim);
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all 0.15s ease;
+    font-family:'Inter',sans-serif;
+  }
+  .chip img{ width:22px; height:22px; border-radius:50%; object-fit:cover; background:#fff; }
+  .chip.active{
+    background:var(--ink);
+    color:var(--bone);
+    border-color:var(--ink);
+  }
+  .chip:active{ transform:scale(0.96); }
+
+  /* LOGO fallback */
+  .logo{
+    border-radius:50%;
+    object-fit:cover;
+    background:var(--bone-dim);
+    border:1px solid var(--line);
+    flex:0 0 auto;
+  }
+  .logo-fallback{
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Anton',sans-serif;
+    color:var(--ink-soft);
+    background:var(--bone-dim);
+    border-radius:50%;
+    flex:0 0 auto;
+  }
+
+  /* PLACEHOLDER */
+  .placeholder{
+    padding:80px 30px;
+    text-align:center;
+    color:var(--ink-soft);
+  }
+  .placeholder-emoji{ font-family:'Anton',sans-serif; font-size:52px; color:var(--purple-soft); margin-bottom:10px;}
+  .placeholder-text{ font-size:15px; line-height:1.5; }
+
+  /* CONFERENCE BADGE */
+  .conf-badge{
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px; font-weight:700; letter-spacing:0.5px;
+    padding:3px 8px; border-radius:5px;
+  }
+  .conf-REP{ background:rgba(168,67,74,0.14); color:var(--rep-dark); }
+  .conf-DEM{ background:rgba(63,101,131,0.14); color:var(--dem-dark); }
+
+  /* SEASON SUMMARY STRIP */
+  .season-strip{
+    margin:16px 18px 4px 18px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .season-name-row{ display:flex; align-items:center; gap:10px; }
+  .season-name-row .logo{ width:34px; height:34px; }
+  .season-name{
+    font-family:'Anton',sans-serif;
+    font-size:21px;
+  }
+  .swipe-hint{
+    margin:2px 18px 8px 18px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+  }
+
+  /* CAROUSEL */
+  .carousel{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    gap:14px;
+    padding:10px 26px 4px 26px;
+    scrollbar-width:none;
+  }
+  .carousel::-webkit-scrollbar{display:none;}
+
+  .ticket{
+    flex:0 0 84%;
+    scroll-snap-align:center;
+    position:relative;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 3px 14px rgba(30,26,20,0.10);
+    background:#fff;
+    border:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+  }
+
+  .ticket-banner{
+    display:flex; align-items:center; gap:7px;
+    padding:9px 14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+    color:#fff;
+  }
+  .banner-rivalry{ background:linear-gradient(100deg, var(--rep-dark), var(--rep)); }
+  .banner-biggame{ background:linear-gradient(100deg, var(--gold-dark), var(--gold)); }
+  .banner-inter{ background:linear-gradient(100deg, var(--rep-dark) 0%, var(--rep) 45%, var(--dem) 55%, var(--dem-dark) 100%); }
+
+  .ticket-body{ padding:14px 16px 16px 16px; flex:1; }
+
+  .week-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px; color:var(--ink-soft); letter-spacing:0.6px; text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .type-pill{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase;
+    padding:3px 8px; border-radius:5px;
+    background:var(--bone-dim); color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .inter-note{
+    font-size:11px; color:var(--ink-soft); font-style:italic;
+    margin:-4px 0 10px 0;
+  }
+
+  .matchup-row{
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    margin-bottom:12px;
+  }
+  .matchup-row .logo, .matchup-row .logo-fallback{ width:52px; height:52px; font-size:18px; }
+  .matchup-vs{ font-family:'Anton',sans-serif; font-size:14px; color:var(--ink-soft); }
+  .matchup-names{
+    display:flex; justify-content:space-between; margin-bottom:14px;
+  }
+  .matchup-name{
+    font-family:'Anton',sans-serif;
+    font-size:15px;
+    text-align:center;
+    flex:1;
+    line-height:1.15;
+  }
+
+  .stat-line{
+    display:flex; align-items:baseline; gap:6px;
+    font-size:12.5px;
+    color:var(--ink);
+    margin-bottom:5px;
+    line-height:1.4;
+  }
+  .stat-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.6px;
+    flex:0 0 auto; padding-top:1px;
+  }
+  .stat-value{ font-weight:600; }
+
+  .record-track{
+    display:flex; gap:3px; margin:8px 0 10px 0; flex-wrap:wrap;
+  }
+  .rdot{ width:9px; height:9px; border-radius:2px; }
+  .rdot.win{ background:var(--win); }
+  .rdot.loss{ background:var(--loss); }
+
+  .caption{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--line);
+    font-size:12.5px;
+    font-style:italic;
+    color:var(--ink-soft);
+    line-height:1.45;
+  }
+
+  .ticket.rivalry{ border-color:rgba(124,47,52,0.4); }
+  .ticket.biggame{ border-color:rgba(184,137,47,0.55); box-shadow:0 4px 18px rgba(184,137,47,0.28); }
+
+  /* progress dots */
+  .progress{
+    display:flex; justify-content:center; gap:5px;
+    padding:14px 0 4px 0;
+  }
+  .pdot{ width:6px; height:6px; border-radius:50%; background:var(--line); transition:all 0.2s ease; }
+  .pdot.active{ background:var(--ink); width:16px; border-radius:3px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand-title">SCHEDULE RELEASE</div>
+    <div class="brand-sub">Preach Fantasy · Season 2026</div>
+    <div class="manager-row" id="managerRow"></div>
+  </div>
+
+  <div id="content"></div>
+</div>
+
+<script>
+const DATA_URL = '../data/manager_schedule.json';
+const LOGO_PATH = (name) => '../images/logos/' + name.trim().split(' ').slice(-1)[0] + '.png';
+
+const CONF = {
+  'Ethan Radecki':'REP','Andrew Root':'REP','Max Malich':'REP','Deniz Bileydi':'REP',
+  'Baylen Slansky':'REP','Cole Maney':'REP','Aidan Quigley':'REP',
+  'Anthony Kelly':'DEM','Ben Castaldo':'DEM','Brandon Hancock':'DEM','Carmine Pittelli':'DEM',
+  'Charlie Gorman':'DEM','Quin Gegwich':'DEM','Ryan McQuaid':'DEM'
+};
+
+let MANAGERS_DATA = {};
+let MANAGERS = [];
+
+function initials(name){ return name.split(' ').map(p=>p[0]).join(''); }
+
+function logoImg(name, size){
+  return `<img class="logo" src="${LOGO_PATH(name)}" style="width:${size}px;height:${size}px"
+    onerror="this.outerHTML='<div class=&quot;logo-fallback&quot; style=&quot;width:${size}px;height:${size}px&quot;>${initials(name)}</div>'">`;
+}
+
+function hashStr(s){
+  let h=0;
+  for(let i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) % 1000; }
+  return h;
+}
+
+function seasonLabel(g){
+  if(g.week.startsWith('Playoff')) return g.season+' playoffs';
+  return "'"+g.season.slice(2)+' '+g.week.replace('Week ','Wk ');
+}
+function fmtScore(n){ return n.toFixed(1); }
+
+function generateCaption(entry, meName){
+  const {my_wins, opp_wins, total_games, closest, blowout} = entry;
+  const opp = entry.opponent;
+  const h = hashStr(meName+opp+entry.week);
+
+  if(total_games===0){
+    const opts = [
+      "No history here. First-ever meeting, clean slate.",
+      "Uncharted territory. These two have never lined up before.",
+      "Brand new beef. Nothing on the scoreboard yet."
+    ];
+    return opts[h%opts.length];
+  }
+
+  const diff = my_wins - opp_wins;
+  let base;
+  if(Math.abs(diff) <= 1 && total_games>=4){
+    const opts = [
+      `Dead even at ${my_wins}-${opp_wins}. About as balanced as this league gets.`,
+      `Razor-thin all-time, ${my_wins}-${opp_wins}. Anyone's series.`,
+      `${my_wins}-${opp_wins} all-time, a genuine coin flip.`
+    ];
+    base = opts[h%opts.length];
+  } else if(diff >= 4 || (total_games>=5 && my_wins/total_games>=0.72)){
+    const opts = [
+      `You've owned this one, ${my_wins}-${opp_wins} all-time.`,
+      `Total domination so far: ${my_wins}-${opp_wins} in your favor.`,
+      `${my_wins}-${opp_wins}. This series isn't close.`
+    ];
+    base = opts[h%opts.length];
+  } else if(diff <= -4 || (total_games>=5 && opp_wins/total_games>=0.72)){
+    const opts = [
+      `They've had your number: ${opp_wins}-${my_wins} all-time.`,
+      `Not your series, ${opp} leads ${opp_wins}-${my_wins}.`,
+      `${opp_wins}-${my_wins} in their favor. Time for a correction?`
+    ];
+    base = opts[h%opts.length];
+  } else {
+    const leaderMe = diff>0;
+    const opts = leaderMe ? [
+      `You're up ${my_wins}-${opp_wins}, but it's not settled.`,
+      `Slight edge for you, ${my_wins}-${opp_wins} all-time.`
+    ] : [
+      `${opp} holds a ${opp_wins}-${my_wins} edge, for now.`,
+      `They're up ${opp_wins}-${my_wins} all-time. Room to close the gap.`
+    ];
+    base = opts[h%opts.length];
+  }
+
+  let extra = '';
+  if(closest && closest.margin < 4){
+    extra = ` Their closest game ever came down to ${closest.margin} points (${seasonLabel(closest)}).`;
+  } else if(blowout && blowout.margin > 70){
+    extra = ` Also home to the ugliest blowout between them: ${blowout.margin} points (${seasonLabel(blowout)}).`;
+  }
+  return base + extra;
+}
+
+function bannerFor(weekType){
+  if(weekType==='Rivalry Week') return `<div class="ticket-banner banner-rivalry">⚔ Rivalry Week</div>`;
+  if(weekType==='Big Game Week') return `<div class="ticket-banner banner-biggame">🏆 Historic Rematch</div>`;
+  if(weekType==='Interconference Week') return `<div class="ticket-banner banner-inter">Interconference Week</div>`;
+  return '';
+}
+
+function renderManagerChips(selected){
+  const row = document.getElementById('managerRow');
+  row.innerHTML = '';
+  MANAGERS.forEach(m=>{
+    const chip = document.createElement('div');
+    chip.className = 'chip' + (m===selected ? ' active' : '');
+    chip.innerHTML = logoImg(m, 22) + '<span>' + m.split(' ')[0] + '</span>';
+    chip.onclick = ()=> selectManager(m);
+    row.appendChild(chip);
+  });
+}
+
+function renderTicket(entry, meName){
+  const tClass = entry.week_type==='Rivalry Week' ? 'rivalry' : entry.week_type==='Big Game Week' ? 'biggame' : entry.week_type==='Interconference Week' ? 'inter' : '';
+  const oppConf = CONF[entry.opponent];
+  const meConf = CONF[meName];
+
+  const dots = entry.game_log.map(r => `<div class="rdot ${r==='win'?'win':'loss'}"></div>`).join('');
+
+  const record = entry.total_games===0
+    ? 'First meeting'
+    : `${entry.my_wins}-${entry.opp_wins} <span style="color:var(--ink-soft); font-weight:500;">all-time</span>`;
+
+  const mostRecentHtml = entry.most_recent
+    ? `<b>${fmtScore(entry.most_recent.score_a)}</b> – ${fmtScore(entry.most_recent.score_b)} <span style="color:var(--ink-soft)">(${seasonLabel(entry.most_recent)})</span>`
+    : null;
+  const closestHtml = entry.closest
+    ? `${entry.closest.margin} pt margin <span style="color:var(--ink-soft)">(${seasonLabel(entry.closest)})</span>`
+    : null;
+
+  const caption = generateCaption(entry, meName);
+  const interNote = entry.week_type==='Interconference Week'
+    ? `<div class="inter-note">Every matchup across the league this week is REP vs. DEM.</div>` : '';
+  const pill = entry.week_type==='Standard' ? `<span class="type-pill">Week ${entry.week}</span>` : '';
+
+  return `
+  <div class="ticket ${tClass}">
+    ${bannerFor(entry.week_type)}
+    <div class="ticket-body">
+      <div class="week-tag">Week ${entry.week}</div>
+      ${pill}
+      ${interNote}
+      <div class="matchup-row">
+        ${logoImg(meName, 52)}
+        <div class="matchup-vs">VS</div>
+        ${logoImg(entry.opponent, 52)}
+      </div>
+      <div class="matchup-names">
+        <div class="matchup-name">${meName}</div>
+        <div class="matchup-name">${entry.opponent}</div>
+      </div>
+      <div class="stat-line"><span class="stat-label">Series</span><span class="stat-value">${record}</span>
+        <span class="conf-badge conf-${oppConf}" style="margin-left:auto">${oppConf}</span></div>
+      ${entry.total_games>0 ? `<div class="record-track">${dots}</div>` : ''}
+      ${mostRecentHtml ? `<div class="stat-line"><span class="stat-label">Last time</span><span class="stat-value">${mostRecentHtml}</span></div>` : ''}
+      ${closestHtml ? `<div class="stat-line"><span class="stat-label">Closest</span><span class="stat-value">${closestHtml}</span></div>` : ''}
+      <div class="caption">${caption}</div>
+    </div>
+  </div>`;
+}
+
+function selectManager(name){
+  renderManagerChips(name);
+  const content = document.getElementById('content');
+  const schedule = MANAGERS_DATA[name];
+
+  let html = `
+    <div class="season-strip">
+      <div class="season-name-row">
+        ${logoImg(name, 34)}
+        <div class="season-name">${name}</div>
+      </div>
+      <span class="conf-badge conf-${CONF[name]}">${CONF[name]}</span>
+    </div>
+    <div class="swipe-hint">Swipe to move through the season →</div>
+    <div class="carousel" id="carousel">`;
+
+  schedule.forEach(entry=>{ html += renderTicket(entry, name); });
+  html += `</div><div class="progress" id="progress"></div>`;
+  content.innerHTML = html;
+
+  const progress = document.getElementById('progress');
+  schedule.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'pdot' + (i===0 ? ' active' : '');
+    progress.appendChild(d);
+  });
+
+  const carousel = document.getElementById('carousel');
+  const tickets = carousel.querySelectorAll('.ticket');
+  const dots = progress.querySelectorAll('.pdot');
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting && e.intersectionRatio > 0.6){
+        const idx = Array.from(tickets).indexOf(e.target);
+        dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+      }
+    });
+  }, {root: carousel, threshold:[0.6]});
+  tickets.forEach(t=>observer.observe(t));
+}
+
+fetch(DATA_URL).then(r=>r.json()).then(data=>{
+  MANAGERS_DATA = data;
+  MANAGERS = Object.keys(data);
+  renderManagerChips(null);
+  document.getElementById('content').innerHTML = `
+    <div class="placeholder">
+      <div class="placeholder-emoji">2026</div>
+      <div class="placeholder-text">Tap your name up top to pull up your full schedule, rivalry history, and the games with real history behind them.</div>
+    </div>`;
+}).catch(err=>{
+  document.getElementById('content').innerHTML = `<div class="placeholder"><div class="placeholder-text">Couldn't load schedule data from ${DATA_URL}. Check the data folder path.</div></div>`;
+});
+</script>
+</body>
+</html>
