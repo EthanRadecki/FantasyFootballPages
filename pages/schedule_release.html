@@ -364,7 +364,14 @@
     border:1.5px solid var(--line);
     background:#fff;
     box-shadow:0 3px 12px rgba(30,26,20,0.08);
+    flex-shrink:0;
   }
+  .league-week-card.rivalry{ background:linear-gradient(160deg, rgba(168,67,74,0.10), #fff 55%); border-color:rgba(124,47,52,0.35); }
+  .league-week-card.biggame{ background:linear-gradient(160deg, rgba(184,137,47,0.13), #fff 55%); border-color:rgba(184,137,47,0.5); }
+  .league-week-card.inter{ background:linear-gradient(160deg, rgba(63,101,131,0.10), #fff 55%); border-color:rgba(63,101,131,0.35); }
+  .league-week-card.closest{ background:linear-gradient(160deg, rgba(63,107,94,0.10), #fff 55%); border-color:rgba(63,107,94,0.4); }
+  .league-week-card.lopsided{ background:linear-gradient(160deg, rgba(161,87,44,0.12), #fff 55%); border-color:rgba(161,87,44,0.45); }
+  .league-week-card.standard{ background:linear-gradient(160deg, rgba(107,90,108,0.07), #fff 55%); }
   .league-week-banner{
     display:flex; align-items:center; justify-content:center; gap:7px;
     padding:9px 12px;
@@ -379,6 +386,7 @@
   .league-matchup-row{
     display:flex; align-items:center; gap:8px;
     font-size:12.5px;
+    flex-shrink:0;
   }
   .league-matchup-row .logo, .league-matchup-row .logo-fallback{ width:22px; height:22px; font-size:9px; }
   .league-matchup-name{ flex:1; font-weight:600; }
@@ -560,9 +568,10 @@ function renderLeagueSchedule(){
   let html = `<div class="league-schedule">`;
   LEAGUE_SCHEDULE.forEach(wk=>{
     const bannerClass = THEME_BANNER_CLASS[wk.week_type] || 'banner-standard';
+    const themeClass = THEME_CLASS[wk.week_type] || 'standard';
     const icon = THEME_ICON[wk.week_type] || '';
     const label = wk.week_type==='Standard' ? `Week ${wk.week}` : `${icon} ${wk.week_type}`;
-    html += `<div class="league-week-card">
+    html += `<div class="league-week-card ${themeClass}">
       <div class="league-week-banner ${bannerClass}">${label}${wk.week_type!=='Standard' ? ' &middot; Week '+wk.week : ''}</div>
       <div class="league-matchup-list">`;
     wk.matchups.forEach(m=>{
