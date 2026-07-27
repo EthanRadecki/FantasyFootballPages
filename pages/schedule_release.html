@@ -74,6 +74,30 @@
     scrollbar-width:none;
   }
   .manager-row::-webkit-scrollbar{display:none;}
+
+  .view-toggle{
+    display:flex; gap:6px;
+    padding-bottom:12px;
+  }
+  .toggle-btn{
+    flex:1;
+    text-align:center;
+    padding:8px 6px;
+    border-radius:10px;
+    font-size:12.5px;
+    font-weight:700;
+    font-family:'Inter',sans-serif;
+    color:var(--ink-soft);
+    background:var(--bone-dim);
+    border:1.5px solid var(--line);
+    cursor:pointer;
+    transition:all 0.15s ease;
+  }
+  .toggle-btn.active{
+    background:var(--ink);
+    color:var(--bone);
+    border-color:var(--ink);
+  }
   .chip{
     flex:0 0 auto;
     display:flex; align-items:center; gap:6px;
@@ -327,6 +351,46 @@
   }
   .pdot{ width:6px; height:6px; border-radius:50%; background:var(--line); transition:all 0.2s ease; }
   .pdot.active{ background:var(--ink); width:16px; border-radius:3px; }
+
+  /* LEAGUE-WIDE SCHEDULE VIEW */
+  .league-schedule{
+    flex:1; min-height:0; overflow-y:auto;
+    padding:12px 18px 24px 18px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .league-week-card{
+    border-radius:16px;
+    overflow:hidden;
+    border:1.5px solid var(--line);
+    background:#fff;
+    box-shadow:0 3px 12px rgba(30,26,20,0.08);
+  }
+  .league-week-banner{
+    display:flex; align-items:center; justify-content:center; gap:7px;
+    padding:9px 12px;
+    font-family:'Anton',sans-serif;
+    font-size:13px; letter-spacing:0.4px; text-transform:uppercase;
+    color:#fff; text-align:center;
+  }
+  .league-matchup-list{
+    padding:10px 14px 12px 14px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .league-matchup-row{
+    display:flex; align-items:center; gap:8px;
+    font-size:12.5px;
+  }
+  .league-matchup-row .logo, .league-matchup-row .logo-fallback{ width:22px; height:22px; font-size:9px; }
+  .league-matchup-name{ flex:1; font-weight:600; }
+  .league-vs{
+    color:var(--ink-soft); font-size:9.5px;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .league-cross-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:8px; font-weight:700; color:var(--ink-soft);
+    background:var(--bone-dim); padding:2px 5px; border-radius:4px;
+  }
 </style>
 </head>
 <body>
@@ -335,6 +399,10 @@
     <div class="brand-title">SCHEDULE RELEASE</div>
     <div class="brand-sub">Preach Fantasy &middot; Season 2026</div>
     <div class="manager-row" id="managerRow"></div>
+    <div class="view-toggle" id="viewToggle">
+      <div class="toggle-btn active" data-view="my">My Schedule</div>
+      <div class="toggle-btn" data-view="league">Full League Schedule</div>
+    </div>
   </div>
 
   <div id="content" class="carousel-wrap"></div>
@@ -342,6 +410,7 @@
 
 <script>
 const DATA_URL = '../data/manager_schedule.json';
+const LEAGUE_DATA_URL = '../data/schedule_by_week.json';
 const LOGO_PATH = (name) => '../images/logos/' + name.trim().split(' ').slice(-1)[0] + '.png';
 
 const CONF = {
@@ -353,6 +422,22 @@ const CONF = {
 
 let MANAGERS_DATA = {};
 let MANAGERS = [];
+let LEAGUE_SCHEDULE = [];
+let CURRENT_VIEW = 'my';
+let CURRENT_MANAGER = null;
+
+const THEME_CLASS = {
+  'Rivalry Week':'rivalry','Big Game Week':'biggame','Interconference Week':'inter',
+  'Closest Rivalries Week':'closest','Lopsided History Week':'lopsided'
+};
+const THEME_BANNER_CLASS = {
+  'Rivalry Week':'banner-rivalry','Big Game Week':'banner-biggame','Interconference Week':'banner-inter',
+  'Closest Rivalries Week':'banner-closest','Lopsided History Week':'banner-lopsided'
+};
+const THEME_ICON = {
+  'Rivalry Week':'&#9876;&#65039;','Big Game Week':'&#127942;','Interconference Week':'&#127775;',
+  'Closest Rivalries Week':'&#9878;&#65039;','Lopsided History Week':'&#128293;'
+};
 
 function hexToRgb(hex){
   const h = hex.replace('#','');
@@ -469,6 +554,57 @@ function bannerFor(entry){
   return {html:`<div class="ticket-banner banner-standard">Week ${entry.week}</div>`};
 }
 
+function renderLeagueSchedule(){
+  const content = document.getElementById('content');
+  content.className = '';
+  let html = `<div class="league-schedule">`;
+  LEAGUE_SCHEDULE.forEach(wk=>{
+    const bannerClass = THEME_BANNER_CLASS[wk.week_type] || 'banner-standard';
+    const icon = THEME_ICON[wk.week_type] || '';
+    const label = wk.week_type==='Standard' ? `Week ${wk.week}` : `${icon} ${wk.week_type}`;
+    html += `<div class="league-week-card">
+      <div class="league-week-banner ${bannerClass}">${label}${wk.week_type!=='Standard' ? ' &middot; Week '+wk.week : ''}</div>
+      <div class="league-matchup-list">`;
+    wk.matchups.forEach(m=>{
+      html += `<div class="league-matchup-row">
+        ${logoImg(m.team_a, 22)}
+        <span class="league-matchup-name">${m.team_a}</span>
+        <span class="league-vs">VS</span>
+        <span class="league-matchup-name" style="text-align:right">${m.team_b}</span>
+        ${logoImg(m.team_b, 22)}
+        ${m.interconference ? `<span class="league-cross-tag">X-CONF</span>` : ''}
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div>`;
+  content.innerHTML = html;
+}
+
+function setView(view){
+  CURRENT_VIEW = view;
+  document.querySelectorAll('.toggle-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.view===view);
+  });
+  const managerRow = document.getElementById('managerRow');
+  if(view==='league'){
+    managerRow.style.display = 'none';
+    renderLeagueSchedule();
+  } else {
+    managerRow.style.display = 'flex';
+    if(CURRENT_MANAGER){
+      selectManager(CURRENT_MANAGER);
+    } else {
+      document.getElementById('content').className = 'carousel-wrap';
+      document.getElementById('content').innerHTML = `
+        <div class="placeholder">
+          <div class="placeholder-emoji">2026</div>
+          <div class="placeholder-text">Tap your name up top to pull up your full schedule, rivalry history, and the games with real history behind them.</div>
+        </div>`;
+    }
+  }
+}
+
 function renderManagerChips(selected){
   const row = document.getElementById('managerRow');
   row.innerHTML = '';
@@ -553,8 +689,10 @@ function renderTicket(entry, meName){
 }
 
 function selectManager(name){
+  CURRENT_MANAGER = name;
   renderManagerChips(name);
   const content = document.getElementById('content');
+  content.className = 'carousel-wrap';
   const schedule = MANAGERS_DATA[name];
 
   let html = `
@@ -598,17 +736,24 @@ function selectManager(name){
   slides.forEach(s=>observer.observe(s));
 }
 
-fetch(DATA_URL).then(r=>r.json()).then(data=>{
-  MANAGERS_DATA = data;
-  MANAGERS = Object.keys(data).sort((a,b)=> a.split(' ')[0].localeCompare(b.split(' ')[0]));
+Promise.all([
+  fetch(DATA_URL).then(r=>r.json()),
+  fetch(LEAGUE_DATA_URL).then(r=>r.json())
+]).then(([managerData, leagueData])=>{
+  MANAGERS_DATA = managerData;
+  LEAGUE_SCHEDULE = leagueData;
+  MANAGERS = Object.keys(managerData).sort((a,b)=> a.split(' ')[0].localeCompare(b.split(' ')[0]));
   renderManagerChips(null);
   document.getElementById('content').innerHTML = `
     <div class="placeholder">
       <div class="placeholder-emoji">2026</div>
       <div class="placeholder-text">Tap your name up top to pull up your full schedule, rivalry history, and the games with real history behind them.</div>
     </div>`;
+  document.querySelectorAll('.toggle-btn').forEach(btn=>{
+    btn.onclick = ()=> setView(btn.dataset.view);
+  });
 }).catch(err=>{
-  document.getElementById('content').innerHTML = `<div class="placeholder"><div class="placeholder-text">Couldn't load schedule data from ${DATA_URL}. Check the data folder path.</div></div>`;
+  document.getElementById('content').innerHTML = `<div class="placeholder"><div class="placeholder-text">Couldn't load schedule data. Check the data folder path.</div></div>`;
 });
 </script>
 </body>
