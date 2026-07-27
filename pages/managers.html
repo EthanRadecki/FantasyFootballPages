@@ -224,6 +224,18 @@
 .fl-empty-row td {
   text-align:center;color:var(--muted);padding:1.5rem;font-style:italic;
 }
+.fl-pagination {
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  margin-top:0.9rem;
+}
+.fl-page-btn {
+  padding:0.35rem 0.8rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.75rem;
+  font-weight:600;cursor:pointer;transition:all 0.15s;
+}
+.fl-page-btn:hover:not(:disabled) { background:var(--accent-glow);color:var(--mgr-accent,var(--accent)); }
+.fl-page-btn:disabled { opacity:0.3;cursor:default; }
+.fl-page-info { font-size:0.72rem;color:var(--muted);font-weight:600;white-space:nowrap; }
 
 /* ── DRAFT BOARD HEATMAP ── */
 .heatmap-wrap {
@@ -549,6 +561,11 @@
             </thead>
             <tbody></tbody>
           </table>
+        </div>
+        <div class="fl-pagination" id="fl-pagination">
+          <button class="fl-page-btn" id="fl-prev-btn" onclick="flPrevPage()">&#8592; Prev</button>
+          <span class="fl-page-info" id="fl-page-info"></span>
+          <button class="fl-page-btn" id="fl-next-btn" onclick="flNextPage()">Next &#8594;</button>
         </div>
         <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.75rem;">
           Total points and PPG only count weeks a player was in the starting lineup. Weeks rostered counts every week on the roster, bench and IR included.
@@ -1814,9 +1831,12 @@ var flCurrentPosition     = 'ALL';
 var flCurrentYear         = 'career';
 var flSortKey             = 'total_points';
 var flSortDir             = 'desc';
+var flCurrentPage         = 1;
+var FL_PAGE_SIZE          = 20;
 
 function setFlPosition(pos, btn) {
   flCurrentPosition = pos;
+  flCurrentPage = 1;
   document.querySelectorAll('.fl-pos-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   renderFranchiseLeadersTable();
@@ -1824,6 +1844,7 @@ function setFlPosition(pos, btn) {
 
 function setFlYear(year, btn) {
   flCurrentYear = year;
+  flCurrentPage = 1;
   document.querySelectorAll('.fl-year-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   renderFranchiseLeadersTable();
@@ -1836,6 +1857,7 @@ function setFlSort(key) {
     flSortKey = key;
     flSortDir = 'desc';
   }
+  flCurrentPage = 1;
   document.querySelectorAll('.fl-sortable').forEach(function(th){
     th.classList.remove('sort-asc','sort-desc');
     if (th.getAttribute('data-sort-key') === flSortKey) {
@@ -1845,7 +1867,18 @@ function setFlSort(key) {
   renderFranchiseLeadersTable();
 }
 
+function flNextPage() {
+  flCurrentPage++;
+  renderFranchiseLeadersTable();
+}
+
+function flPrevPage() {
+  flCurrentPage--;
+  renderFranchiseLeadersTable();
+}
+
 function renderFranchiseLeadersTable(manager) {
+  if (manager && manager !== flCurrentManager) flCurrentPage = 1;
   if (manager) flCurrentManager = manager;
   var tbody = document.querySelector('#franchise-leaders-table tbody');
   if (!tbody) return;
@@ -1886,15 +1919,25 @@ function renderFranchiseLeadersTable(manager) {
     return flSortDir === 'desc' ? (bv - av) : (av - bv);
   });
 
+  var pagination = document.getElementById('fl-pagination');
+
   if (list.length === 0) {
     tbody.innerHTML = '<tr class="fl-empty-row"><td colspan="7">No players match this filter.</td></tr>';
+    if (pagination) pagination.style.display = 'none';
     return;
   }
 
+  var totalPages = Math.max(1, Math.ceil(list.length / FL_PAGE_SIZE));
+  if (flCurrentPage > totalPages) flCurrentPage = totalPages;
+  if (flCurrentPage < 1) flCurrentPage = 1;
+
+  var start = (flCurrentPage - 1) * FL_PAGE_SIZE;
+  var pageItems = list.slice(start, start + FL_PAGE_SIZE);
+
   var html = '';
-  list.forEach(function(p, i) {
+  pageItems.forEach(function(p, i) {
     html += '<tr>'
-      + '<td>' + (i+1) + '</td>'
+      + '<td>' + (start + i + 1) + '</td>'
       + '<td style="font-weight:700;color:var(--palm);">' + p.player + '</td>'
       + '<td>' + p.position + '</td>'
       + '<td>' + p.total_points.toFixed(1) + '</td>'
@@ -1904,6 +1947,16 @@ function renderFranchiseLeadersTable(manager) {
       + '</tr>';
   });
   tbody.innerHTML = html;
+
+  if (pagination) {
+    pagination.style.display = 'flex';
+    var info = document.getElementById('fl-page-info');
+    var prevBtn = document.getElementById('fl-prev-btn');
+    var nextBtn = document.getElementById('fl-next-btn');
+    if (info) info.textContent = 'Page ' + flCurrentPage + ' of ' + totalPages + ' (' + list.length + ' players)';
+    if (prevBtn) prevBtn.disabled = flCurrentPage <= 1;
+    if (nextBtn) nextBtn.disabled = flCurrentPage >= totalPages;
+  }
 }
 
 // ── Manager selection ────────────────────────────────────────────────────────
