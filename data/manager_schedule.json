@@ -48,41 +48,41 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Charlie Gorman",
-      "interconference": true,
-      "my_wins": 2,
-      "opp_wins": 3,
+      "opponent": "Aidan Quigley",
+      "interconference": false,
+      "my_wins": 4,
+      "opp_wins": 1,
       "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 12",
-        "score_a": 92.32,
-        "score_b": 136.62,
-        "winner": "Charlie Gorman",
-        "margin": 44.3
+        "week": "Week 3",
+        "score_a": 118.52,
+        "score_b": 108.44,
+        "winner": "Ethan Radecki",
+        "margin": 10.08
       },
       "closest": {
-        "season": "2021",
-        "week": "Week 9",
-        "score_a": 123.52,
-        "score_b": 135.94,
-        "winner": "Charlie Gorman",
-        "margin": 12.42
+        "season": "2022",
+        "week": "Week 1",
+        "score_a": 126.22,
+        "score_b": 119.0,
+        "winner": "Ethan Radecki",
+        "margin": 7.22
       },
       "blowout": {
-        "season": "2023",
-        "week": "Week 4",
-        "score_a": 190.88,
-        "score_b": 90.66,
+        "season": "2024",
+        "week": "Week 6",
+        "score_a": 117.66,
+        "score_b": 71.62,
         "winner": "Ethan Radecki",
-        "margin": 100.22
+        "margin": 46.04
       },
       "game_log": [
         "loss",
-        "loss",
         "win",
         "win",
-        "loss"
+        "win",
+        "win"
       ],
       "rematch": null
     },
@@ -130,94 +130,48 @@
     },
     {
       "week": 4,
-      "week_type": "Standard",
-      "opponent": "Aidan Quigley",
-      "interconference": false,
-      "my_wins": 4,
-      "opp_wins": 1,
-      "total_games": 5,
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Ben Castaldo",
+      "interconference": true,
+      "my_wins": 3,
+      "opp_wins": 3,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 3",
-        "score_a": 118.52,
-        "score_b": 108.44,
-        "winner": "Ethan Radecki",
-        "margin": 10.08
+        "week": "Week 6",
+        "score_a": 100.6,
+        "score_b": 116.24,
+        "winner": "Ben Castaldo",
+        "margin": 15.64
       },
       "closest": {
         "season": "2022",
-        "week": "Week 1",
-        "score_a": 126.22,
-        "score_b": 119.0,
+        "week": "Week 10",
+        "score_a": 128.44,
+        "score_b": 120.2,
         "winner": "Ethan Radecki",
-        "margin": 7.22
+        "margin": 8.24
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 6",
-        "score_a": 117.66,
-        "score_b": 71.62,
-        "winner": "Ethan Radecki",
-        "margin": 46.04
+        "season": "2021",
+        "week": "Week 10",
+        "score_a": 102.42,
+        "score_b": 131.14,
+        "winner": "Ben Castaldo",
+        "margin": 28.72
       },
       "game_log": [
+        "loss",
         "loss",
         "win",
         "win",
         "win",
-        "win"
+        "loss"
       ],
       "rematch": null
     },
     {
       "week": 5,
-      "week_type": "Interconference Week",
-      "opponent": "Ryan McQuaid",
-      "interconference": true,
-      "my_wins": 10,
-      "opp_wins": 1,
-      "total_games": 11,
-      "most_recent": {
-        "season": "2025",
-        "week": "Playoff Round 1",
-        "score_a": 169.02,
-        "score_b": 119.3,
-        "winner": "Ethan Radecki",
-        "margin": 49.72
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 4",
-        "score_a": 113.62,
-        "score_b": 113.02,
-        "winner": "Ethan Radecki",
-        "margin": 0.6
-      },
-      "blowout": {
-        "season": "2020",
-        "week": "Week 13",
-        "score_a": 154.28,
-        "score_b": 90.98,
-        "winner": "Ethan Radecki",
-        "margin": 63.3
-      },
-      "game_log": [
-        "win",
-        "win",
-        "win",
-        "win",
-        "win",
-        "win",
-        "win",
-        "win",
-        "win",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 6,
       "week_type": "Interconference Week",
       "opponent": "Quin Gegwich",
       "interconference": true,
@@ -256,6 +210,47 @@
         "win",
         "loss",
         "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 6,
+      "week_type": "Interconference Week",
+      "opponent": "Charlie Gorman",
+      "interconference": true,
+      "my_wins": 2,
+      "opp_wins": 3,
+      "total_games": 5,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 12",
+        "score_a": 92.32,
+        "score_b": 136.62,
+        "winner": "Charlie Gorman",
+        "margin": 44.3
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 9",
+        "score_a": 123.52,
+        "score_b": 135.94,
+        "winner": "Charlie Gorman",
+        "margin": 12.42
+      },
+      "blowout": {
+        "season": "2023",
+        "week": "Week 4",
+        "score_a": 190.88,
+        "score_b": 90.66,
+        "winner": "Ethan Radecki",
+        "margin": 100.22
+      },
+      "game_log": [
+        "loss",
+        "loss",
+        "win",
+        "win",
+        "loss"
       ],
       "rematch": null
     },
@@ -306,48 +301,6 @@
     {
       "week": 8,
       "week_type": "Standard",
-      "opponent": "Ben Castaldo",
-      "interconference": true,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 6",
-        "score_a": 100.6,
-        "score_b": 116.24,
-        "winner": "Ben Castaldo",
-        "margin": 15.64
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 10",
-        "score_a": 128.44,
-        "score_b": 120.2,
-        "winner": "Ethan Radecki",
-        "margin": 8.24
-      },
-      "blowout": {
-        "season": "2021",
-        "week": "Week 10",
-        "score_a": 102.42,
-        "score_b": 131.14,
-        "winner": "Ben Castaldo",
-        "margin": 28.72
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "win",
-        "win",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 9,
-      "week_type": "Standard",
       "opponent": "Cole Maney",
       "interconference": false,
       "my_wins": 5,
@@ -386,6 +339,53 @@
         "loss",
         "win",
         "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 9,
+      "week_type": "Lopsided History Week",
+      "opponent": "Ryan McQuaid",
+      "interconference": true,
+      "my_wins": 10,
+      "opp_wins": 1,
+      "total_games": 11,
+      "most_recent": {
+        "season": "2025",
+        "week": "Playoff Round 1",
+        "score_a": 169.02,
+        "score_b": 119.3,
+        "winner": "Ethan Radecki",
+        "margin": 49.72
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 4",
+        "score_a": 113.62,
+        "score_b": 113.02,
+        "winner": "Ethan Radecki",
+        "margin": 0.6
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Week 13",
+        "score_a": 154.28,
+        "score_b": 90.98,
+        "winner": "Ethan Radecki",
+        "margin": 63.3
+      },
+      "game_log": [
+        "win",
+        "win",
+        "win",
+        "win",
+        "win",
+        "win",
+        "win",
+        "win",
+        "win",
+        "loss",
+        "win"
       ],
       "rematch": null
     },
@@ -437,6 +437,48 @@
     {
       "week": 11,
       "week_type": "Standard",
+      "opponent": "Max Malich",
+      "interconference": false,
+      "my_wins": 6,
+      "opp_wins": 0,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 2",
+        "score_a": 123.92,
+        "score_b": 89.8,
+        "winner": "Ethan Radecki",
+        "margin": 34.12
+      },
+      "closest": {
+        "season": "2024",
+        "week": "Week 8",
+        "score_a": 145.04,
+        "score_b": 126.72,
+        "winner": "Ethan Radecki",
+        "margin": 18.32
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 6",
+        "score_a": 157.1,
+        "score_b": 91.6,
+        "winner": "Ethan Radecki",
+        "margin": 65.5
+      },
+      "game_log": [
+        "win",
+        "win",
+        "win",
+        "win",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 12,
+      "week_type": "Standard",
       "opponent": "Baylen Slansky",
       "interconference": false,
       "my_wins": 5,
@@ -477,7 +519,7 @@
       "rematch": null
     },
     {
-      "week": 12,
+      "week": 13,
       "week_type": "Standard",
       "opponent": "Deniz Bileydi",
       "interconference": false,
@@ -517,48 +559,6 @@
         "win",
         "loss",
         "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 13,
-      "week_type": "Standard",
-      "opponent": "Max Malich",
-      "interconference": false,
-      "my_wins": 6,
-      "opp_wins": 0,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 2",
-        "score_a": 123.92,
-        "score_b": 89.8,
-        "winner": "Ethan Radecki",
-        "margin": 34.12
-      },
-      "closest": {
-        "season": "2024",
-        "week": "Week 8",
-        "score_a": 145.04,
-        "score_b": 126.72,
-        "winner": "Ethan Radecki",
-        "margin": 18.32
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 6",
-        "score_a": 157.1,
-        "score_b": 91.6,
-        "winner": "Ethan Radecki",
-        "margin": 65.5
-      },
-      "game_log": [
-        "win",
-        "win",
-        "win",
-        "win",
-        "win",
-        "win"
       ],
       "rematch": null
     },
@@ -657,46 +657,91 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Carmine Pittelli",
+      "opponent": "Brandon Hancock",
       "interconference": true,
-      "my_wins": 4,
-      "opp_wins": 0,
-      "total_games": 4,
+      "my_wins": 1,
+      "opp_wins": 6,
+      "total_games": 7,
       "most_recent": {
         "season": "2025",
-        "week": "Week 6",
-        "score_a": 98.06,
-        "score_b": 94.2,
-        "winner": "Andrew Root",
-        "margin": 3.86
+        "week": "Week 12",
+        "score_a": 107.96,
+        "score_b": 130.94,
+        "winner": "Brandon Hancock",
+        "margin": 22.98
       },
       "closest": {
-        "season": "2022",
-        "week": "Week 14",
-        "score_a": 119.18,
-        "score_b": 118.52,
-        "winner": "Andrew Root",
-        "margin": 0.66
+        "season": "2024",
+        "week": "Week 12",
+        "score_a": 94.9,
+        "score_b": 96.08,
+        "winner": "Brandon Hancock",
+        "margin": 1.18
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 2",
-        "score_a": 140.94,
-        "score_b": 122.62,
+        "season": "2022",
+        "week": "Week 11",
+        "score_a": 100.3,
+        "score_b": 73.68,
         "winner": "Andrew Root",
-        "margin": 18.32
+        "margin": 26.62
       },
       "game_log": [
+        "loss",
         "win",
-        "win",
-        "win",
-        "win"
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "loss"
       ],
       "rematch": null
     },
     {
       "week": 3,
       "week_type": "Standard",
+      "opponent": "Aidan Quigley",
+      "interconference": false,
+      "my_wins": 5,
+      "opp_wins": 1,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 2",
+        "score_a": 142.48,
+        "score_b": 122.14,
+        "winner": "Andrew Root",
+        "margin": 20.34
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 2",
+        "score_a": 106.82,
+        "score_b": 96.82,
+        "winner": "Andrew Root",
+        "margin": 10.0
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 2",
+        "score_a": 144.02,
+        "score_b": 111.6,
+        "winner": "Andrew Root",
+        "margin": 32.42
+      },
+      "game_log": [
+        "win",
+        "win",
+        "win",
+        "loss",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 4,
+      "week_type": "Closest Rivalries Week",
       "opponent": "Charlie Gorman",
       "interconference": true,
       "my_wins": 4,
@@ -739,41 +784,41 @@
       "rematch": null
     },
     {
-      "week": 4,
-      "week_type": "Standard",
-      "opponent": "Brandon Hancock",
+      "week": 5,
+      "week_type": "Interconference Week",
+      "opponent": "Ryan McQuaid",
       "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 6,
+      "my_wins": 2,
+      "opp_wins": 5,
       "total_games": 7,
       "most_recent": {
         "season": "2025",
-        "week": "Week 12",
-        "score_a": 107.96,
-        "score_b": 130.94,
-        "winner": "Brandon Hancock",
-        "margin": 22.98
+        "week": "Week 4",
+        "score_a": 108.82,
+        "score_b": 132.28,
+        "winner": "Ryan McQuaid",
+        "margin": 23.46
       },
       "closest": {
-        "season": "2024",
-        "week": "Week 12",
-        "score_a": 94.9,
-        "score_b": 96.08,
-        "winner": "Brandon Hancock",
-        "margin": 1.18
+        "season": "2025",
+        "week": "Week 4",
+        "score_a": 108.82,
+        "score_b": 132.28,
+        "winner": "Ryan McQuaid",
+        "margin": 23.46
       },
       "blowout": {
-        "season": "2022",
-        "week": "Week 11",
-        "score_a": 100.3,
-        "score_b": 73.68,
-        "winner": "Andrew Root",
-        "margin": 26.62
+        "season": "2021",
+        "week": "Week 12",
+        "score_a": 54.38,
+        "score_b": 98.9,
+        "winner": "Ryan McQuaid",
+        "margin": 44.52
       },
       "game_log": [
-        "loss",
         "win",
         "loss",
+        "win",
         "loss",
         "loss",
         "loss",
@@ -782,7 +827,7 @@
       "rematch": null
     },
     {
-      "week": 5,
+      "week": 6,
       "week_type": "Interconference Week",
       "opponent": "Quin Gegwich",
       "interconference": true,
@@ -826,86 +871,41 @@
       "rematch": null
     },
     {
-      "week": 6,
-      "week_type": "Interconference Week",
-      "opponent": "Ryan McQuaid",
-      "interconference": true,
-      "my_wins": 2,
-      "opp_wins": 5,
-      "total_games": 7,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 108.82,
-        "score_b": 132.28,
-        "winner": "Ryan McQuaid",
-        "margin": 23.46
-      },
-      "closest": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 108.82,
-        "score_b": 132.28,
-        "winner": "Ryan McQuaid",
-        "margin": 23.46
-      },
-      "blowout": {
-        "season": "2021",
-        "week": "Week 12",
-        "score_a": 54.38,
-        "score_b": 98.9,
-        "winner": "Ryan McQuaid",
-        "margin": 44.52
-      },
-      "game_log": [
-        "win",
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "loss",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
       "week": 7,
       "week_type": "Standard",
-      "opponent": "Deniz Bileydi",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
+      "opponent": "Carmine Pittelli",
+      "interconference": true,
+      "my_wins": 4,
+      "opp_wins": 0,
+      "total_games": 4,
       "most_recent": {
         "season": "2025",
-        "week": "Week 7",
-        "score_a": 133.4,
-        "score_b": 120.26,
+        "week": "Week 6",
+        "score_a": 98.06,
+        "score_b": 94.2,
         "winner": "Andrew Root",
-        "margin": 13.14
+        "margin": 3.86
       },
       "closest": {
-        "season": "2023",
-        "week": "Week 2",
-        "score_a": 77.58,
-        "score_b": 71.06,
+        "season": "2022",
+        "week": "Week 14",
+        "score_a": 119.18,
+        "score_b": 118.52,
         "winner": "Andrew Root",
-        "margin": 6.52
+        "margin": 0.66
       },
       "blowout": {
-        "season": "2020",
-        "week": "Week 6",
-        "score_a": 60.7,
-        "score_b": 112.84,
-        "winner": "Deniz Bileydi",
-        "margin": 52.14
+        "season": "2024",
+        "week": "Week 2",
+        "score_a": 140.94,
+        "score_b": 122.62,
+        "winner": "Andrew Root",
+        "margin": 18.32
       },
       "game_log": [
-        "loss",
-        "loss",
         "win",
         "win",
-        "loss",
+        "win",
         "win"
       ],
       "rematch": null
@@ -913,6 +913,48 @@
     {
       "week": 8,
       "week_type": "Standard",
+      "opponent": "Baylen Slansky",
+      "interconference": false,
+      "my_wins": 2,
+      "opp_wins": 4,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 3",
+        "score_a": 100.0,
+        "score_b": 128.82,
+        "winner": "Baylen Slansky",
+        "margin": 28.82
+      },
+      "closest": {
+        "season": "2022",
+        "week": "Week 4",
+        "score_a": 116.96,
+        "score_b": 108.8,
+        "winner": "Andrew Root",
+        "margin": 8.16
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 8",
+        "score_a": 109.18,
+        "score_b": 185.96,
+        "winner": "Baylen Slansky",
+        "margin": 76.78
+      },
+      "game_log": [
+        "loss",
+        "win",
+        "win",
+        "loss",
+        "loss",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 9,
+      "week_type": "Lopsided History Week",
       "opponent": "Max Malich",
       "interconference": false,
       "my_wins": 6,
@@ -948,48 +990,6 @@
         "win",
         "win",
         "win",
-        "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 9,
-      "week_type": "Standard",
-      "opponent": "Aidan Quigley",
-      "interconference": false,
-      "my_wins": 5,
-      "opp_wins": 1,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 2",
-        "score_a": 142.48,
-        "score_b": 122.14,
-        "winner": "Andrew Root",
-        "margin": 20.34
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 2",
-        "score_a": 106.82,
-        "score_b": 96.82,
-        "winner": "Andrew Root",
-        "margin": 10.0
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 2",
-        "score_a": 144.02,
-        "score_b": 111.6,
-        "winner": "Andrew Root",
-        "margin": 32.42
-      },
-      "game_log": [
-        "win",
-        "win",
-        "win",
-        "loss",
         "win",
         "win"
       ],
@@ -1043,48 +1043,6 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Anthony Kelly",
-      "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 5,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 11",
-        "score_a": 98.44,
-        "score_b": 90.56,
-        "winner": "Andrew Root",
-        "margin": 7.88
-      },
-      "closest": {
-        "season": "2025",
-        "week": "Week 11",
-        "score_a": 98.44,
-        "score_b": 90.56,
-        "winner": "Andrew Root",
-        "margin": 7.88
-      },
-      "blowout": {
-        "season": "2021",
-        "week": "Week 9",
-        "score_a": 64.74,
-        "score_b": 130.58,
-        "winner": "Anthony Kelly",
-        "margin": 65.84
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 12,
-      "week_type": "Standard",
       "opponent": "Cole Maney",
       "interconference": false,
       "my_wins": 2,
@@ -1125,44 +1083,86 @@
       "rematch": null
     },
     {
-      "week": 13,
+      "week": 12,
       "week_type": "Standard",
-      "opponent": "Baylen Slansky",
+      "opponent": "Deniz Bileydi",
       "interconference": false,
-      "my_wins": 2,
-      "opp_wins": 4,
+      "my_wins": 3,
+      "opp_wins": 3,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 3",
-        "score_a": 100.0,
-        "score_b": 128.82,
-        "winner": "Baylen Slansky",
-        "margin": 28.82
+        "week": "Week 7",
+        "score_a": 133.4,
+        "score_b": 120.26,
+        "winner": "Andrew Root",
+        "margin": 13.14
       },
       "closest": {
-        "season": "2022",
-        "week": "Week 4",
-        "score_a": 116.96,
-        "score_b": 108.8,
+        "season": "2023",
+        "week": "Week 2",
+        "score_a": 77.58,
+        "score_b": 71.06,
         "winner": "Andrew Root",
-        "margin": 8.16
+        "margin": 6.52
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 8",
-        "score_a": 109.18,
-        "score_b": 185.96,
-        "winner": "Baylen Slansky",
-        "margin": 76.78
+        "season": "2020",
+        "week": "Week 6",
+        "score_a": 60.7,
+        "score_b": 112.84,
+        "winner": "Deniz Bileydi",
+        "margin": 52.14
       },
       "game_log": [
         "loss",
+        "loss",
         "win",
         "win",
         "loss",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 13,
+      "week_type": "Standard",
+      "opponent": "Anthony Kelly",
+      "interconference": true,
+      "my_wins": 1,
+      "opp_wins": 5,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 11",
+        "score_a": 98.44,
+        "score_b": 90.56,
+        "winner": "Andrew Root",
+        "margin": 7.88
+      },
+      "closest": {
+        "season": "2025",
+        "week": "Week 11",
+        "score_a": 98.44,
+        "score_b": 90.56,
+        "winner": "Andrew Root",
+        "margin": 7.88
+      },
+      "blowout": {
+        "season": "2021",
+        "week": "Week 9",
+        "score_a": 64.74,
+        "score_b": 130.58,
+        "winner": "Anthony Kelly",
+        "margin": 65.84
+      },
+      "game_log": [
         "loss",
-        "loss"
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "win"
       ],
       "rematch": null
     },
@@ -1261,42 +1261,40 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Baylen Slansky",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 4,
-      "total_games": 7,
+      "opponent": "Ben Castaldo",
+      "interconference": true,
+      "my_wins": 2,
+      "opp_wins": 3,
+      "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 10",
-        "score_a": 112.48,
-        "score_b": 120.32,
-        "winner": "Baylen Slansky",
-        "margin": 7.84
+        "week": "Week 4",
+        "score_a": 93.48,
+        "score_b": 95.76,
+        "winner": "Ben Castaldo",
+        "margin": 2.28
       },
       "closest": {
-        "season": "2024",
-        "week": "Playoff Round 1",
-        "score_a": 116.58,
-        "score_b": 119.3,
-        "winner": "Baylen Slansky",
-        "margin": 2.72
+        "season": "2022",
+        "week": "Week 12",
+        "score_a": 79.06,
+        "score_b": 80.42,
+        "winner": "Ben Castaldo",
+        "margin": 1.36
       },
       "blowout": {
-        "season": "2020",
+        "season": "2023",
         "week": "Week 7",
-        "score_a": 139.68,
-        "score_b": 79.18,
+        "score_a": 120.56,
+        "score_b": 59.6,
         "winner": "Max Malich",
-        "margin": 60.5
+        "margin": 60.96
       },
       "game_log": [
-        "win",
-        "win",
-        "win",
         "loss",
         "loss",
-        "loss",
+        "win",
+        "win",
         "loss"
       ],
       "rematch": null
@@ -1304,6 +1302,50 @@
     {
       "week": 3,
       "week_type": "Standard",
+      "opponent": "Brandon Hancock",
+      "interconference": true,
+      "my_wins": 3,
+      "opp_wins": 5,
+      "total_games": 8,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 6",
+        "score_a": 103.38,
+        "score_b": 111.24,
+        "winner": "Brandon Hancock",
+        "margin": 7.86
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 9",
+        "score_a": 98.12,
+        "score_b": 103.0,
+        "winner": "Brandon Hancock",
+        "margin": 4.88
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Week 10",
+        "score_a": 128.08,
+        "score_b": 99.68,
+        "winner": "Max Malich",
+        "margin": 28.4
+      },
+      "game_log": [
+        "win",
+        "win",
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 4,
+      "week_type": "Closest Rivalries Week",
       "opponent": "Ryan McQuaid",
       "interconference": true,
       "my_wins": 3,
@@ -1339,48 +1381,6 @@
         "loss",
         "loss",
         "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 4,
-      "week_type": "Standard",
-      "opponent": "Cole Maney",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 3",
-        "score_a": 123.42,
-        "score_b": 119.56,
-        "winner": "Max Malich",
-        "margin": 3.86
-      },
-      "closest": {
-        "season": "2024",
-        "week": "Week 10",
-        "score_a": 125.1,
-        "score_b": 127.34,
-        "winner": "Cole Maney",
-        "margin": 2.24
-      },
-      "blowout": {
-        "season": "2023",
-        "week": "Week 6",
-        "score_a": 79.64,
-        "score_b": 134.2,
-        "winner": "Cole Maney",
-        "margin": 54.56
-      },
-      "game_log": [
-        "loss",
-        "win",
-        "win",
-        "loss",
-        "loss",
         "win"
       ],
       "rematch": null
@@ -1472,34 +1472,75 @@
     {
       "week": 7,
       "week_type": "Standard",
-      "opponent": "Brandon Hancock",
-      "interconference": true,
-      "my_wins": 3,
-      "opp_wins": 5,
-      "total_games": 8,
+      "opponent": "Aidan Quigley",
+      "interconference": false,
+      "my_wins": 5,
+      "opp_wins": 0,
+      "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 6",
-        "score_a": 103.38,
-        "score_b": 111.24,
-        "winner": "Brandon Hancock",
-        "margin": 7.86
+        "week": "Week 9",
+        "score_a": 96.54,
+        "score_b": 90.12,
+        "winner": "Max Malich",
+        "margin": 6.42
+      },
+      "closest": {
+        "season": "2024",
+        "week": "Week 7",
+        "score_a": 115.62,
+        "score_b": 113.08,
+        "winner": "Max Malich",
+        "margin": 2.54
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 3",
+        "score_a": 154.12,
+        "score_b": 116.08,
+        "winner": "Max Malich",
+        "margin": 38.04
+      },
+      "game_log": [
+        "win",
+        "win",
+        "win",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 8,
+      "week_type": "Standard",
+      "opponent": "Anthony Kelly",
+      "interconference": true,
+      "my_wins": 4,
+      "opp_wins": 5,
+      "total_games": 9,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 5",
+        "score_a": 93.78,
+        "score_b": 159.12,
+        "winner": "Anthony Kelly",
+        "margin": 65.34
       },
       "closest": {
         "season": "2021",
-        "week": "Week 9",
-        "score_a": 98.12,
-        "score_b": 103.0,
-        "winner": "Brandon Hancock",
-        "margin": 4.88
+        "week": "Week 13",
+        "score_a": 115.34,
+        "score_b": 121.02,
+        "winner": "Anthony Kelly",
+        "margin": 5.68
       },
       "blowout": {
-        "season": "2020",
-        "week": "Week 10",
-        "score_a": 128.08,
-        "score_b": 99.68,
+        "season": "2024",
+        "week": "Week 3",
+        "score_a": 183.42,
+        "score_b": 76.04,
         "winner": "Max Malich",
-        "margin": 28.4
+        "margin": 107.38
       },
       "game_log": [
         "win",
@@ -1509,13 +1550,14 @@
         "loss",
         "loss",
         "win",
+        "win",
         "loss"
       ],
       "rematch": null
     },
     {
-      "week": 8,
-      "week_type": "Standard",
+      "week": 9,
+      "week_type": "Lopsided History Week",
       "opponent": "Andrew Root",
       "interconference": false,
       "my_wins": 1,
@@ -1552,47 +1594,6 @@
         "loss",
         "loss",
         "loss",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 9,
-      "week_type": "Standard",
-      "opponent": "Ben Castaldo",
-      "interconference": true,
-      "my_wins": 2,
-      "opp_wins": 3,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 93.48,
-        "score_b": 95.76,
-        "winner": "Ben Castaldo",
-        "margin": 2.28
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 12",
-        "score_a": 79.06,
-        "score_b": 80.42,
-        "winner": "Ben Castaldo",
-        "margin": 1.36
-      },
-      "blowout": {
-        "season": "2023",
-        "week": "Week 7",
-        "score_a": 120.56,
-        "score_b": 59.6,
-        "winner": "Max Malich",
-        "margin": 60.96
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "win",
-        "win",
         "loss"
       ],
       "rematch": null
@@ -1640,92 +1641,6 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Aidan Quigley",
-      "interconference": false,
-      "my_wins": 5,
-      "opp_wins": 0,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 9",
-        "score_a": 96.54,
-        "score_b": 90.12,
-        "winner": "Max Malich",
-        "margin": 6.42
-      },
-      "closest": {
-        "season": "2024",
-        "week": "Week 7",
-        "score_a": 115.62,
-        "score_b": 113.08,
-        "winner": "Max Malich",
-        "margin": 2.54
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 3",
-        "score_a": 154.12,
-        "score_b": 116.08,
-        "winner": "Max Malich",
-        "margin": 38.04
-      },
-      "game_log": [
-        "win",
-        "win",
-        "win",
-        "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 12,
-      "week_type": "Standard",
-      "opponent": "Anthony Kelly",
-      "interconference": true,
-      "my_wins": 4,
-      "opp_wins": 5,
-      "total_games": 9,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 5",
-        "score_a": 93.78,
-        "score_b": 159.12,
-        "winner": "Anthony Kelly",
-        "margin": 65.34
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 13",
-        "score_a": 115.34,
-        "score_b": 121.02,
-        "winner": "Anthony Kelly",
-        "margin": 5.68
-      },
-      "blowout": {
-        "season": "2024",
-        "week": "Week 3",
-        "score_a": 183.42,
-        "score_b": 76.04,
-        "winner": "Max Malich",
-        "margin": 107.38
-      },
-      "game_log": [
-        "win",
-        "win",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "win",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 13,
-      "week_type": "Standard",
       "opponent": "Ethan Radecki",
       "interconference": false,
       "my_wins": 0,
@@ -1758,6 +1673,91 @@
       "game_log": [
         "loss",
         "loss",
+        "loss",
+        "loss",
+        "loss",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 12,
+      "week_type": "Standard",
+      "opponent": "Cole Maney",
+      "interconference": false,
+      "my_wins": 3,
+      "opp_wins": 3,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 3",
+        "score_a": 123.42,
+        "score_b": 119.56,
+        "winner": "Max Malich",
+        "margin": 3.86
+      },
+      "closest": {
+        "season": "2024",
+        "week": "Week 10",
+        "score_a": 125.1,
+        "score_b": 127.34,
+        "winner": "Cole Maney",
+        "margin": 2.24
+      },
+      "blowout": {
+        "season": "2023",
+        "week": "Week 6",
+        "score_a": 79.64,
+        "score_b": 134.2,
+        "winner": "Cole Maney",
+        "margin": 54.56
+      },
+      "game_log": [
+        "loss",
+        "win",
+        "win",
+        "loss",
+        "loss",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 13,
+      "week_type": "Standard",
+      "opponent": "Baylen Slansky",
+      "interconference": false,
+      "my_wins": 3,
+      "opp_wins": 4,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 10",
+        "score_a": 112.48,
+        "score_b": 120.32,
+        "winner": "Baylen Slansky",
+        "margin": 7.84
+      },
+      "closest": {
+        "season": "2024",
+        "week": "Playoff Round 1",
+        "score_a": 116.58,
+        "score_b": 119.3,
+        "winner": "Baylen Slansky",
+        "margin": 2.72
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Week 7",
+        "score_a": 139.68,
+        "score_b": 79.18,
+        "winner": "Max Malich",
+        "margin": 60.5
+      },
+      "game_log": [
+        "win",
+        "win",
+        "win",
         "loss",
         "loss",
         "loss",
@@ -1902,6 +1902,89 @@
     {
       "week": 3,
       "week_type": "Standard",
+      "opponent": "Charlie Gorman",
+      "interconference": true,
+      "my_wins": 1,
+      "opp_wins": 4,
+      "total_games": 5,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 6",
+        "score_a": 70.86,
+        "score_b": 110.64,
+        "winner": "Charlie Gorman",
+        "margin": 39.78
+      },
+      "closest": {
+        "season": "2020",
+        "week": "Week 13",
+        "score_a": 118.98,
+        "score_b": 127.82,
+        "winner": "Charlie Gorman",
+        "margin": 8.84
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Playoff Round 1",
+        "score_a": 153.32,
+        "score_b": 66.44,
+        "winner": "Deniz Bileydi",
+        "margin": 86.88
+      },
+      "game_log": [
+        "loss",
+        "win",
+        "loss",
+        "loss",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 4,
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Cole Maney",
+      "interconference": false,
+      "my_wins": 3,
+      "opp_wins": 3,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 2",
+        "score_a": 129.54,
+        "score_b": 146.38,
+        "winner": "Cole Maney",
+        "margin": 16.84
+      },
+      "closest": {
+        "season": "2022",
+        "week": "Week 12",
+        "score_a": 119.94,
+        "score_b": 108.82,
+        "winner": "Deniz Bileydi",
+        "margin": 11.12
+      },
+      "blowout": {
+        "season": "2021",
+        "week": "Week 5",
+        "score_a": 82.92,
+        "score_b": 159.8,
+        "winner": "Cole Maney",
+        "margin": 76.88
+      },
+      "game_log": [
+        "win",
+        "loss",
+        "win",
+        "win",
+        "loss",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 5,
+      "week_type": "Interconference Week",
       "opponent": "Brandon Hancock",
       "interconference": true,
       "my_wins": 0,
@@ -1941,8 +2024,8 @@
       "rematch": null
     },
     {
-      "week": 4,
-      "week_type": "Standard",
+      "week": 6,
+      "week_type": "Interconference Week",
       "opponent": "Ben Castaldo",
       "interconference": true,
       "my_wins": 4,
@@ -1985,174 +2068,7 @@
       "rematch": null
     },
     {
-      "week": 5,
-      "week_type": "Interconference Week",
-      "opponent": "Carmine Pittelli",
-      "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 5,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 12",
-        "score_a": 67.74,
-        "score_b": 106.32,
-        "winner": "Carmine Pittelli",
-        "margin": 38.58
-      },
-      "closest": {
-        "season": "2024",
-        "week": "Week 5",
-        "score_a": 154.14,
-        "score_b": 146.14,
-        "winner": "Deniz Bileydi",
-        "margin": 8.0
-      },
-      "blowout": {
-        "season": "2023",
-        "week": "Week 4",
-        "score_a": 91.88,
-        "score_b": 131.3,
-        "winner": "Carmine Pittelli",
-        "margin": 39.42
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 6,
-      "week_type": "Interconference Week",
-      "opponent": "Charlie Gorman",
-      "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 4,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 6",
-        "score_a": 70.86,
-        "score_b": 110.64,
-        "winner": "Charlie Gorman",
-        "margin": 39.78
-      },
-      "closest": {
-        "season": "2020",
-        "week": "Week 13",
-        "score_a": 118.98,
-        "score_b": 127.82,
-        "winner": "Charlie Gorman",
-        "margin": 8.84
-      },
-      "blowout": {
-        "season": "2020",
-        "week": "Playoff Round 1",
-        "score_a": 153.32,
-        "score_b": 66.44,
-        "winner": "Deniz Bileydi",
-        "margin": 86.88
-      },
-      "game_log": [
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
       "week": 7,
-      "week_type": "Standard",
-      "opponent": "Andrew Root",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 7",
-        "score_a": 120.26,
-        "score_b": 133.4,
-        "winner": "Andrew Root",
-        "margin": 13.14
-      },
-      "closest": {
-        "season": "2023",
-        "week": "Week 2",
-        "score_a": 71.06,
-        "score_b": 77.58,
-        "winner": "Andrew Root",
-        "margin": 6.52
-      },
-      "blowout": {
-        "season": "2020",
-        "week": "Week 6",
-        "score_a": 112.84,
-        "score_b": 60.7,
-        "winner": "Deniz Bileydi",
-        "margin": 52.14
-      },
-      "game_log": [
-        "win",
-        "win",
-        "loss",
-        "loss",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 8,
-      "week_type": "Standard",
-      "opponent": "Anthony Kelly",
-      "interconference": true,
-      "my_wins": 2,
-      "opp_wins": 4,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 119.74,
-        "score_b": 120.22,
-        "winner": "Anthony Kelly",
-        "margin": 0.48
-      },
-      "closest": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 119.74,
-        "score_b": 120.22,
-        "winner": "Anthony Kelly",
-        "margin": 0.48
-      },
-      "blowout": {
-        "season": "2021",
-        "week": "Week 8",
-        "score_a": 100.52,
-        "score_b": 140.96,
-        "winner": "Anthony Kelly",
-        "margin": 40.44
-      },
-      "game_log": [
-        "loss",
-        "win",
-        "win",
-        "loss",
-        "loss",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 9,
       "week_type": "Standard",
       "opponent": "Baylen Slansky",
       "interconference": false,
@@ -2190,6 +2106,88 @@
         "loss",
         "win",
         "loss",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 8,
+      "week_type": "Standard",
+      "opponent": "Aidan Quigley",
+      "interconference": false,
+      "my_wins": 2,
+      "opp_wins": 2,
+      "total_games": 4,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 8",
+        "score_a": 133.78,
+        "score_b": 111.56,
+        "winner": "Deniz Bileydi",
+        "margin": 22.22
+      },
+      "closest": {
+        "season": "2023",
+        "week": "Week 6",
+        "score_a": 112.18,
+        "score_b": 128.28,
+        "winner": "Aidan Quigley",
+        "margin": 16.1
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 13",
+        "score_a": 116.28,
+        "score_b": 91.1,
+        "winner": "Deniz Bileydi",
+        "margin": 25.18
+      },
+      "game_log": [
+        "loss",
+        "loss",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 9,
+      "week_type": "Lopsided History Week",
+      "opponent": "Carmine Pittelli",
+      "interconference": true,
+      "my_wins": 1,
+      "opp_wins": 5,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 12",
+        "score_a": 67.74,
+        "score_b": 106.32,
+        "winner": "Carmine Pittelli",
+        "margin": 38.58
+      },
+      "closest": {
+        "season": "2024",
+        "week": "Week 5",
+        "score_a": 154.14,
+        "score_b": 146.14,
+        "winner": "Deniz Bileydi",
+        "margin": 8.0
+      },
+      "blowout": {
+        "season": "2023",
+        "week": "Week 4",
+        "score_a": 91.88,
+        "score_b": 131.3,
+        "winner": "Carmine Pittelli",
+        "margin": 39.42
+      },
+      "game_log": [
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "win",
         "loss"
       ],
       "rematch": null
@@ -2243,40 +2241,40 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Cole Maney",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 3,
+      "opponent": "Anthony Kelly",
+      "interconference": true,
+      "my_wins": 2,
+      "opp_wins": 4,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 2",
-        "score_a": 129.54,
-        "score_b": 146.38,
-        "winner": "Cole Maney",
-        "margin": 16.84
+        "week": "Week 4",
+        "score_a": 119.74,
+        "score_b": 120.22,
+        "winner": "Anthony Kelly",
+        "margin": 0.48
       },
       "closest": {
-        "season": "2022",
-        "week": "Week 12",
-        "score_a": 119.94,
-        "score_b": 108.82,
-        "winner": "Deniz Bileydi",
-        "margin": 11.12
+        "season": "2025",
+        "week": "Week 4",
+        "score_a": 119.74,
+        "score_b": 120.22,
+        "winner": "Anthony Kelly",
+        "margin": 0.48
       },
       "blowout": {
         "season": "2021",
-        "week": "Week 5",
-        "score_a": 82.92,
-        "score_b": 159.8,
-        "winner": "Cole Maney",
-        "margin": 76.88
+        "week": "Week 8",
+        "score_a": 100.52,
+        "score_b": 140.96,
+        "winner": "Anthony Kelly",
+        "margin": 40.44
       },
       "game_log": [
-        "win",
         "loss",
         "win",
         "win",
+        "loss",
         "loss",
         "loss"
       ],
@@ -2284,6 +2282,48 @@
     },
     {
       "week": 12,
+      "week_type": "Standard",
+      "opponent": "Andrew Root",
+      "interconference": false,
+      "my_wins": 3,
+      "opp_wins": 3,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 7",
+        "score_a": 120.26,
+        "score_b": 133.4,
+        "winner": "Andrew Root",
+        "margin": 13.14
+      },
+      "closest": {
+        "season": "2023",
+        "week": "Week 2",
+        "score_a": 71.06,
+        "score_b": 77.58,
+        "winner": "Andrew Root",
+        "margin": 6.52
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Week 6",
+        "score_a": 112.84,
+        "score_b": 60.7,
+        "winner": "Deniz Bileydi",
+        "margin": 52.14
+      },
+      "game_log": [
+        "win",
+        "win",
+        "loss",
+        "loss",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 13,
       "week_type": "Standard",
       "opponent": "Ethan Radecki",
       "interconference": false,
@@ -2320,46 +2360,6 @@
         "win",
         "win",
         "win",
-        "loss",
-        "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 13,
-      "week_type": "Standard",
-      "opponent": "Aidan Quigley",
-      "interconference": false,
-      "my_wins": 2,
-      "opp_wins": 2,
-      "total_games": 4,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 8",
-        "score_a": 133.78,
-        "score_b": 111.56,
-        "winner": "Deniz Bileydi",
-        "margin": 22.22
-      },
-      "closest": {
-        "season": "2023",
-        "week": "Week 6",
-        "score_a": 112.18,
-        "score_b": 128.28,
-        "winner": "Aidan Quigley",
-        "margin": 16.1
-      },
-      "blowout": {
-        "season": "2024",
-        "week": "Week 13",
-        "score_a": 116.28,
-        "score_b": 91.1,
-        "winner": "Deniz Bileydi",
-        "margin": 25.18
-      },
-      "game_log": [
-        "loss",
         "loss",
         "win",
         "win"
@@ -2460,43 +2460,41 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Max Malich",
-      "interconference": false,
-      "my_wins": 4,
-      "opp_wins": 3,
-      "total_games": 7,
+      "opponent": "Ryan McQuaid",
+      "interconference": true,
+      "my_wins": 1,
+      "opp_wins": 4,
+      "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 10",
-        "score_a": 120.32,
-        "score_b": 112.48,
-        "winner": "Baylen Slansky",
-        "margin": 7.84
+        "week": "Week 6",
+        "score_a": 110.64,
+        "score_b": 123.0,
+        "winner": "Ryan McQuaid",
+        "margin": 12.36
       },
       "closest": {
-        "season": "2024",
-        "week": "Playoff Round 1",
-        "score_a": 119.3,
-        "score_b": 116.58,
-        "winner": "Baylen Slansky",
-        "margin": 2.72
+        "season": "2023",
+        "week": "Week 11",
+        "score_a": 71.94,
+        "score_b": 82.68,
+        "winner": "Ryan McQuaid",
+        "margin": 10.74
       },
       "blowout": {
-        "season": "2020",
-        "week": "Week 7",
-        "score_a": 79.18,
-        "score_b": 139.68,
-        "winner": "Max Malich",
-        "margin": 60.5
+        "season": "2024",
+        "week": "Week 3",
+        "score_a": 79.28,
+        "score_b": 142.38,
+        "winner": "Ryan McQuaid",
+        "margin": 63.1
       },
       "game_log": [
+        "win",
         "loss",
         "loss",
         "loss",
-        "win",
-        "win",
-        "win",
-        "win"
+        "loss"
       ],
       "rematch": null
     },
@@ -2546,86 +2544,85 @@
     },
     {
       "week": 4,
-      "week_type": "Standard",
-      "opponent": "Ryan McQuaid",
-      "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 4,
-      "total_games": 5,
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Aidan Quigley",
+      "interconference": false,
+      "my_wins": 3,
+      "opp_wins": 3,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 6",
-        "score_a": 110.64,
-        "score_b": 123.0,
-        "winner": "Ryan McQuaid",
-        "margin": 12.36
+        "week": "Week 4",
+        "score_a": 136.46,
+        "score_b": 86.2,
+        "winner": "Baylen Slansky",
+        "margin": 50.26
       },
       "closest": {
-        "season": "2023",
-        "week": "Week 11",
-        "score_a": 71.94,
-        "score_b": 82.68,
-        "winner": "Ryan McQuaid",
-        "margin": 10.74
+        "season": "2022",
+        "week": "Week 6",
+        "score_a": 86.72,
+        "score_b": 88.92,
+        "winner": "Aidan Quigley",
+        "margin": 2.2
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 3",
-        "score_a": 79.28,
-        "score_b": 142.38,
-        "winner": "Ryan McQuaid",
-        "margin": 63.1
+        "season": "2023",
+        "week": "Week 13",
+        "score_a": 157.18,
+        "score_b": 98.56,
+        "winner": "Baylen Slansky",
+        "margin": 58.62
       },
       "game_log": [
         "win",
         "loss",
         "loss",
+        "win",
         "loss",
-        "loss"
+        "win"
       ],
       "rematch": null
     },
     {
       "week": 5,
       "week_type": "Interconference Week",
-      "opponent": "Ben Castaldo",
+      "opponent": "Carmine Pittelli",
       "interconference": true,
-      "my_wins": 5,
-      "opp_wins": 3,
-      "total_games": 8,
+      "my_wins": 2,
+      "opp_wins": 4,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 12",
-        "score_a": 104.78,
-        "score_b": 144.52,
-        "winner": "Ben Castaldo",
-        "margin": 39.74
+        "week": "Playoff Round 1",
+        "score_a": 151.4,
+        "score_b": 139.4,
+        "winner": "Baylen Slansky",
+        "margin": 12.0
       },
       "closest": {
-        "season": "2023",
-        "week": "Week 14",
-        "score_a": 87.02,
-        "score_b": 84.3,
-        "winner": "Baylen Slansky",
-        "margin": 2.72
+        "season": "2022",
+        "week": "Week 10",
+        "score_a": 110.64,
+        "score_b": 112.1,
+        "winner": "Carmine Pittelli",
+        "margin": 1.46
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 14",
-        "score_a": 128.52,
-        "score_b": 0.0,
-        "winner": "Baylen Slansky",
-        "margin": 128.52
+        "season": "2025",
+        "week": "Week 8",
+        "score_a": 64.38,
+        "score_b": 143.32,
+        "winner": "Carmine Pittelli",
+        "margin": 78.94
       },
       "game_log": [
         "win",
-        "win",
         "loss",
         "loss",
-        "win",
-        "win",
-        "win",
-        "loss"
+        "loss",
+        "loss",
+        "win"
       ],
       "rematch": null
     },
@@ -2673,6 +2670,91 @@
     {
       "week": 7,
       "week_type": "Standard",
+      "opponent": "Deniz Bileydi",
+      "interconference": false,
+      "my_wins": 4,
+      "opp_wins": 3,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 9",
+        "score_a": 128.9,
+        "score_b": 87.42,
+        "winner": "Baylen Slansky",
+        "margin": 41.48
+      },
+      "closest": {
+        "season": "2020",
+        "week": "Playoff Round 2",
+        "score_a": 130.16,
+        "score_b": 142.12,
+        "winner": "Deniz Bileydi",
+        "margin": 11.96
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 11",
+        "score_a": 156.58,
+        "score_b": 70.78,
+        "winner": "Baylen Slansky",
+        "margin": 85.8
+      },
+      "game_log": [
+        "win",
+        "loss",
+        "loss",
+        "win",
+        "loss",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 8,
+      "week_type": "Standard",
+      "opponent": "Andrew Root",
+      "interconference": false,
+      "my_wins": 4,
+      "opp_wins": 2,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 3",
+        "score_a": 128.82,
+        "score_b": 100.0,
+        "winner": "Baylen Slansky",
+        "margin": 28.82
+      },
+      "closest": {
+        "season": "2022",
+        "week": "Week 4",
+        "score_a": 108.8,
+        "score_b": 116.96,
+        "winner": "Andrew Root",
+        "margin": 8.16
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 8",
+        "score_a": 185.96,
+        "score_b": 109.18,
+        "winner": "Baylen Slansky",
+        "margin": 76.78
+      },
+      "game_log": [
+        "win",
+        "loss",
+        "loss",
+        "win",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 9,
+      "week_type": "Lopsided History Week",
       "opponent": "Charlie Gorman",
       "interconference": true,
       "my_wins": 5,
@@ -2711,91 +2793,6 @@
         "win",
         "win",
         "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 8,
-      "week_type": "Standard",
-      "opponent": "Carmine Pittelli",
-      "interconference": true,
-      "my_wins": 2,
-      "opp_wins": 4,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Playoff Round 1",
-        "score_a": 151.4,
-        "score_b": 139.4,
-        "winner": "Baylen Slansky",
-        "margin": 12.0
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 10",
-        "score_a": 110.64,
-        "score_b": 112.1,
-        "winner": "Carmine Pittelli",
-        "margin": 1.46
-      },
-      "blowout": {
-        "season": "2025",
-        "week": "Week 8",
-        "score_a": 64.38,
-        "score_b": 143.32,
-        "winner": "Carmine Pittelli",
-        "margin": 78.94
-      },
-      "game_log": [
-        "win",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 9,
-      "week_type": "Standard",
-      "opponent": "Deniz Bileydi",
-      "interconference": false,
-      "my_wins": 4,
-      "opp_wins": 3,
-      "total_games": 7,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 9",
-        "score_a": 128.9,
-        "score_b": 87.42,
-        "winner": "Baylen Slansky",
-        "margin": 41.48
-      },
-      "closest": {
-        "season": "2020",
-        "week": "Playoff Round 2",
-        "score_a": 130.16,
-        "score_b": 142.12,
-        "winner": "Deniz Bileydi",
-        "margin": 11.96
-      },
-      "blowout": {
-        "season": "2024",
-        "week": "Week 11",
-        "score_a": 156.58,
-        "score_b": 70.78,
-        "winner": "Baylen Slansky",
-        "margin": 85.8
-      },
-      "game_log": [
-        "win",
-        "loss",
-        "loss",
-        "win",
-        "loss",
-        "win",
-        "win"
       ],
       "rematch": null
     },
@@ -2848,6 +2845,50 @@
     {
       "week": 11,
       "week_type": "Standard",
+      "opponent": "Ben Castaldo",
+      "interconference": true,
+      "my_wins": 5,
+      "opp_wins": 3,
+      "total_games": 8,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 12",
+        "score_a": 104.78,
+        "score_b": 144.52,
+        "winner": "Ben Castaldo",
+        "margin": 39.74
+      },
+      "closest": {
+        "season": "2023",
+        "week": "Week 14",
+        "score_a": 87.02,
+        "score_b": 84.3,
+        "winner": "Baylen Slansky",
+        "margin": 2.72
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 14",
+        "score_a": 128.52,
+        "score_b": 0.0,
+        "winner": "Baylen Slansky",
+        "margin": 128.52
+      },
+      "game_log": [
+        "win",
+        "win",
+        "loss",
+        "loss",
+        "win",
+        "win",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 12,
+      "week_type": "Standard",
       "opponent": "Ethan Radecki",
       "interconference": false,
       "my_wins": 1,
@@ -2888,83 +2929,42 @@
       "rematch": null
     },
     {
-      "week": 12,
-      "week_type": "Standard",
-      "opponent": "Aidan Quigley",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 136.46,
-        "score_b": 86.2,
-        "winner": "Baylen Slansky",
-        "margin": 50.26
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 6",
-        "score_a": 86.72,
-        "score_b": 88.92,
-        "winner": "Aidan Quigley",
-        "margin": 2.2
-      },
-      "blowout": {
-        "season": "2023",
-        "week": "Week 13",
-        "score_a": 157.18,
-        "score_b": 98.56,
-        "winner": "Baylen Slansky",
-        "margin": 58.62
-      },
-      "game_log": [
-        "win",
-        "loss",
-        "loss",
-        "win",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
       "week": 13,
       "week_type": "Standard",
-      "opponent": "Andrew Root",
+      "opponent": "Max Malich",
       "interconference": false,
       "my_wins": 4,
-      "opp_wins": 2,
-      "total_games": 6,
+      "opp_wins": 3,
+      "total_games": 7,
       "most_recent": {
         "season": "2025",
-        "week": "Week 3",
-        "score_a": 128.82,
-        "score_b": 100.0,
+        "week": "Week 10",
+        "score_a": 120.32,
+        "score_b": 112.48,
         "winner": "Baylen Slansky",
-        "margin": 28.82
+        "margin": 7.84
       },
       "closest": {
-        "season": "2022",
-        "week": "Week 4",
-        "score_a": 108.8,
-        "score_b": 116.96,
-        "winner": "Andrew Root",
-        "margin": 8.16
+        "season": "2024",
+        "week": "Playoff Round 1",
+        "score_a": 119.3,
+        "score_b": 116.58,
+        "winner": "Baylen Slansky",
+        "margin": 2.72
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 8",
-        "score_a": 185.96,
-        "score_b": 109.18,
-        "winner": "Baylen Slansky",
-        "margin": 76.78
+        "season": "2020",
+        "week": "Week 7",
+        "score_a": 79.18,
+        "score_b": 139.68,
+        "winner": "Max Malich",
+        "margin": 60.5
       },
       "game_log": [
+        "loss",
+        "loss",
+        "loss",
         "win",
-        "loss",
-        "loss",
         "win",
         "win",
         "win"
@@ -3064,6 +3064,49 @@
     {
       "week": 2,
       "week_type": "Standard",
+      "opponent": "Charlie Gorman",
+      "interconference": true,
+      "my_wins": 4,
+      "opp_wins": 3,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 8",
+        "score_a": 133.06,
+        "score_b": 115.66,
+        "winner": "Cole Maney",
+        "margin": 17.4
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 10",
+        "score_a": 77.32,
+        "score_b": 68.72,
+        "winner": "Cole Maney",
+        "margin": 8.6
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 10",
+        "score_a": 124.2,
+        "score_b": 55.18,
+        "winner": "Cole Maney",
+        "margin": 69.02
+      },
+      "game_log": [
+        "win",
+        "win",
+        "loss",
+        "win",
+        "loss",
+        "loss",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 3,
+      "week_type": "Standard",
       "opponent": "Ryan McQuaid",
       "interconference": true,
       "my_wins": 6,
@@ -3105,82 +3148,84 @@
       "rematch": null
     },
     {
-      "week": 3,
-      "week_type": "Standard",
-      "opponent": "Aidan Quigley",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 2,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 10",
-        "score_a": 81.36,
-        "score_b": 108.62,
-        "winner": "Aidan Quigley",
-        "margin": 27.26
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 4",
-        "score_a": 122.3,
-        "score_b": 120.36,
-        "winner": "Cole Maney",
-        "margin": 1.94
-      },
-      "blowout": {
-        "season": "2024",
-        "week": "Week 9",
-        "score_a": 129.12,
-        "score_b": 101.48,
-        "winner": "Cole Maney",
-        "margin": 27.64
-      },
-      "game_log": [
-        "loss",
-        "win",
-        "win",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
       "week": 4,
-      "week_type": "Standard",
-      "opponent": "Max Malich",
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Deniz Bileydi",
       "interconference": false,
       "my_wins": 3,
       "opp_wins": 3,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 3",
-        "score_a": 119.56,
-        "score_b": 123.42,
-        "winner": "Max Malich",
-        "margin": 3.86
+        "week": "Week 2",
+        "score_a": 146.38,
+        "score_b": 129.54,
+        "winner": "Cole Maney",
+        "margin": 16.84
       },
       "closest": {
-        "season": "2024",
-        "week": "Week 10",
-        "score_a": 127.34,
-        "score_b": 125.1,
-        "winner": "Cole Maney",
-        "margin": 2.24
+        "season": "2022",
+        "week": "Week 12",
+        "score_a": 108.82,
+        "score_b": 119.94,
+        "winner": "Deniz Bileydi",
+        "margin": 11.12
       },
       "blowout": {
-        "season": "2023",
-        "week": "Week 6",
-        "score_a": 134.2,
-        "score_b": 79.64,
+        "season": "2021",
+        "week": "Week 5",
+        "score_a": 159.8,
+        "score_b": 82.92,
         "winner": "Cole Maney",
-        "margin": 54.56
+        "margin": 76.88
       },
       "game_log": [
+        "loss",
         "win",
         "loss",
         "loss",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 5,
+      "week_type": "Interconference Week",
+      "opponent": "Anthony Kelly",
+      "interconference": true,
+      "my_wins": 3,
+      "opp_wins": 4,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Playoff Round 1",
+        "score_a": 109.86,
+        "score_b": 121.0,
+        "winner": "Anthony Kelly",
+        "margin": 11.14
+      },
+      "closest": {
+        "season": "2025",
+        "week": "Week 6",
+        "score_a": 146.78,
+        "score_b": 141.02,
+        "winner": "Cole Maney",
+        "margin": 5.76
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Week 9",
+        "score_a": 88.94,
+        "score_b": 174.32,
+        "winner": "Anthony Kelly",
+        "margin": 85.38
+      },
+      "game_log": [
+        "loss",
+        "loss",
+        "loss",
+        "win",
         "win",
         "win",
         "loss"
@@ -3188,7 +3233,7 @@
       "rematch": null
     },
     {
-      "week": 5,
+      "week": 6,
       "week_type": "Interconference Week",
       "opponent": "Brandon Hancock",
       "interconference": true,
@@ -3228,48 +3273,6 @@
         "win",
         "win",
         "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 6,
-      "week_type": "Interconference Week",
-      "opponent": "Ben Castaldo",
-      "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 5,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 5",
-        "score_a": 120.12,
-        "score_b": 147.68,
-        "winner": "Ben Castaldo",
-        "margin": 27.56
-      },
-      "closest": {
-        "season": "2020",
-        "week": "Week 13",
-        "score_a": 103.24,
-        "score_b": 109.18,
-        "winner": "Ben Castaldo",
-        "margin": 5.94
-      },
-      "blowout": {
-        "season": "2021",
-        "week": "Week 11",
-        "score_a": 82.68,
-        "score_b": 112.86,
-        "winner": "Ben Castaldo",
-        "margin": 30.18
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "win",
-        "loss"
       ],
       "rematch": null
     },
@@ -3318,49 +3321,6 @@
     {
       "week": 8,
       "week_type": "Standard",
-      "opponent": "Charlie Gorman",
-      "interconference": true,
-      "my_wins": 4,
-      "opp_wins": 3,
-      "total_games": 7,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 8",
-        "score_a": 133.06,
-        "score_b": 115.66,
-        "winner": "Cole Maney",
-        "margin": 17.4
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 10",
-        "score_a": 77.32,
-        "score_b": 68.72,
-        "winner": "Cole Maney",
-        "margin": 8.6
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 10",
-        "score_a": 124.2,
-        "score_b": 55.18,
-        "winner": "Cole Maney",
-        "margin": 69.02
-      },
-      "game_log": [
-        "win",
-        "win",
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 9,
-      "week_type": "Standard",
       "opponent": "Ethan Radecki",
       "interconference": false,
       "my_wins": 3,
@@ -3399,6 +3359,48 @@
         "win",
         "loss",
         "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 9,
+      "week_type": "Lopsided History Week",
+      "opponent": "Ben Castaldo",
+      "interconference": true,
+      "my_wins": 1,
+      "opp_wins": 5,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 5",
+        "score_a": 120.12,
+        "score_b": 147.68,
+        "winner": "Ben Castaldo",
+        "margin": 27.56
+      },
+      "closest": {
+        "season": "2020",
+        "week": "Week 13",
+        "score_a": 103.24,
+        "score_b": 109.18,
+        "winner": "Ben Castaldo",
+        "margin": 5.94
+      },
+      "blowout": {
+        "season": "2021",
+        "week": "Week 11",
+        "score_a": 82.68,
+        "score_b": 112.86,
+        "winner": "Ben Castaldo",
+        "margin": 30.18
+      },
+      "game_log": [
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "win",
+        "loss"
       ],
       "rematch": null
     },
@@ -3451,48 +3453,6 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Deniz Bileydi",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 2",
-        "score_a": 146.38,
-        "score_b": 129.54,
-        "winner": "Cole Maney",
-        "margin": 16.84
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 12",
-        "score_a": 108.82,
-        "score_b": 119.94,
-        "winner": "Deniz Bileydi",
-        "margin": 11.12
-      },
-      "blowout": {
-        "season": "2021",
-        "week": "Week 5",
-        "score_a": 159.8,
-        "score_b": 82.92,
-        "winner": "Cole Maney",
-        "margin": 76.88
-      },
-      "game_log": [
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 12,
-      "week_type": "Standard",
       "opponent": "Andrew Root",
       "interconference": false,
       "my_wins": 4,
@@ -3533,40 +3493,80 @@
       "rematch": null
     },
     {
-      "week": 13,
+      "week": 12,
       "week_type": "Standard",
-      "opponent": "Anthony Kelly",
-      "interconference": true,
+      "opponent": "Max Malich",
+      "interconference": false,
       "my_wins": 3,
-      "opp_wins": 4,
-      "total_games": 7,
+      "opp_wins": 3,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Playoff Round 1",
-        "score_a": 109.86,
-        "score_b": 121.0,
-        "winner": "Anthony Kelly",
-        "margin": 11.14
+        "week": "Week 3",
+        "score_a": 119.56,
+        "score_b": 123.42,
+        "winner": "Max Malich",
+        "margin": 3.86
       },
       "closest": {
-        "season": "2025",
-        "week": "Week 6",
-        "score_a": 146.78,
-        "score_b": 141.02,
+        "season": "2024",
+        "week": "Week 10",
+        "score_a": 127.34,
+        "score_b": 125.1,
         "winner": "Cole Maney",
-        "margin": 5.76
+        "margin": 2.24
       },
       "blowout": {
-        "season": "2020",
-        "week": "Week 9",
-        "score_a": 88.94,
-        "score_b": 174.32,
-        "winner": "Anthony Kelly",
-        "margin": 85.38
+        "season": "2023",
+        "week": "Week 6",
+        "score_a": 134.2,
+        "score_b": 79.64,
+        "winner": "Cole Maney",
+        "margin": 54.56
       },
       "game_log": [
+        "win",
         "loss",
         "loss",
+        "win",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 13,
+      "week_type": "Standard",
+      "opponent": "Aidan Quigley",
+      "interconference": false,
+      "my_wins": 3,
+      "opp_wins": 2,
+      "total_games": 5,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 10",
+        "score_a": 81.36,
+        "score_b": 108.62,
+        "winner": "Aidan Quigley",
+        "margin": 27.26
+      },
+      "closest": {
+        "season": "2022",
+        "week": "Week 4",
+        "score_a": 122.3,
+        "score_b": 120.36,
+        "winner": "Cole Maney",
+        "margin": 1.94
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 9",
+        "score_a": 129.12,
+        "score_b": 101.48,
+        "winner": "Cole Maney",
+        "margin": 27.64
+      },
+      "game_log": [
         "loss",
         "win",
         "win",
@@ -3667,88 +3667,6 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Ben Castaldo",
-      "interconference": true,
-      "my_wins": 4,
-      "opp_wins": 1,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 11",
-        "score_a": 68.3,
-        "score_b": 102.8,
-        "winner": "Ben Castaldo",
-        "margin": 34.5
-      },
-      "closest": {
-        "season": "2023",
-        "week": "Week 11",
-        "score_a": 117.26,
-        "score_b": 96.74,
-        "winner": "Aidan Quigley",
-        "margin": 20.52
-      },
-      "blowout": {
-        "season": "2024",
-        "week": "Week 3",
-        "score_a": 137.38,
-        "score_b": 101.26,
-        "winner": "Aidan Quigley",
-        "margin": 36.12
-      },
-      "game_log": [
-        "win",
-        "win",
-        "win",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 3,
-      "week_type": "Standard",
-      "opponent": "Cole Maney",
-      "interconference": false,
-      "my_wins": 2,
-      "opp_wins": 3,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 10",
-        "score_a": 108.62,
-        "score_b": 81.36,
-        "winner": "Aidan Quigley",
-        "margin": 27.26
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 4",
-        "score_a": 120.36,
-        "score_b": 122.3,
-        "winner": "Cole Maney",
-        "margin": 1.94
-      },
-      "blowout": {
-        "season": "2024",
-        "week": "Week 9",
-        "score_a": 101.48,
-        "score_b": 129.12,
-        "winner": "Cole Maney",
-        "margin": 27.64
-      },
-      "game_log": [
-        "win",
-        "loss",
-        "loss",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 4,
-      "week_type": "Standard",
       "opponent": "Ethan Radecki",
       "interconference": false,
       "my_wins": 1,
@@ -3788,43 +3706,126 @@
       "rematch": null
     },
     {
-      "week": 5,
-      "week_type": "Interconference Week",
-      "opponent": "Anthony Kelly",
-      "interconference": true,
+      "week": 3,
+      "week_type": "Standard",
+      "opponent": "Andrew Root",
+      "interconference": false,
       "my_wins": 1,
       "opp_wins": 5,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 12",
-        "score_a": 103.96,
-        "score_b": 109.36,
-        "winner": "Anthony Kelly",
-        "margin": 5.4
+        "week": "Week 2",
+        "score_a": 122.14,
+        "score_b": 142.48,
+        "winner": "Andrew Root",
+        "margin": 20.34
       },
       "closest": {
-        "season": "2024",
+        "season": "2021",
         "week": "Week 2",
-        "score_a": 109.72,
-        "score_b": 111.06,
-        "winner": "Anthony Kelly",
-        "margin": 1.34
+        "score_a": 96.82,
+        "score_b": 106.82,
+        "winner": "Andrew Root",
+        "margin": 10.0
       },
       "blowout": {
         "season": "2022",
-        "week": "Week 7",
-        "score_a": 96.62,
-        "score_b": 141.16,
-        "winner": "Anthony Kelly",
-        "margin": 44.54
+        "week": "Week 2",
+        "score_a": 111.6,
+        "score_b": 144.02,
+        "winner": "Andrew Root",
+        "margin": 32.42
       },
       "game_log": [
         "loss",
         "loss",
+        "loss",
         "win",
         "loss",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 4,
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Baylen Slansky",
+      "interconference": false,
+      "my_wins": 3,
+      "opp_wins": 3,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 4",
+        "score_a": 86.2,
+        "score_b": 136.46,
+        "winner": "Baylen Slansky",
+        "margin": 50.26
+      },
+      "closest": {
+        "season": "2022",
+        "week": "Week 6",
+        "score_a": 88.92,
+        "score_b": 86.72,
+        "winner": "Aidan Quigley",
+        "margin": 2.2
+      },
+      "blowout": {
+        "season": "2023",
+        "week": "Week 13",
+        "score_a": 98.56,
+        "score_b": 157.18,
+        "winner": "Baylen Slansky",
+        "margin": 58.62
+      },
+      "game_log": [
         "loss",
+        "win",
+        "win",
+        "loss",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 5,
+      "week_type": "Interconference Week",
+      "opponent": "Ben Castaldo",
+      "interconference": true,
+      "my_wins": 4,
+      "opp_wins": 1,
+      "total_games": 5,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 11",
+        "score_a": 68.3,
+        "score_b": 102.8,
+        "winner": "Ben Castaldo",
+        "margin": 34.5
+      },
+      "closest": {
+        "season": "2023",
+        "week": "Week 11",
+        "score_a": 117.26,
+        "score_b": 96.74,
+        "winner": "Aidan Quigley",
+        "margin": 20.52
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 3",
+        "score_a": 137.38,
+        "score_b": 101.26,
+        "winner": "Aidan Quigley",
+        "margin": 36.12
+      },
+      "game_log": [
+        "win",
+        "win",
+        "win",
+        "win",
         "loss"
       ],
       "rematch": null
@@ -3832,47 +3833,6 @@
     {
       "week": 6,
       "week_type": "Interconference Week",
-      "opponent": "Brandon Hancock",
-      "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 4,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 13",
-        "score_a": 75.4,
-        "score_b": 114.94,
-        "winner": "Brandon Hancock",
-        "margin": 39.54
-      },
-      "closest": {
-        "season": "2023",
-        "week": "Week 10",
-        "score_a": 133.46,
-        "score_b": 141.24,
-        "winner": "Brandon Hancock",
-        "margin": 7.78
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 5",
-        "score_a": 144.28,
-        "score_b": 84.12,
-        "winner": "Aidan Quigley",
-        "margin": 60.16
-      },
-      "game_log": [
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 7,
-      "week_type": "Standard",
       "opponent": "Ryan McQuaid",
       "interconference": true,
       "my_wins": 2,
@@ -3911,40 +3871,79 @@
       "rematch": null
     },
     {
-      "week": 8,
+      "week": 7,
       "week_type": "Standard",
-      "opponent": "Quin Gegwich",
-      "interconference": true,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
+      "opponent": "Max Malich",
+      "interconference": false,
+      "my_wins": 0,
+      "opp_wins": 5,
+      "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 6",
-        "score_a": 95.04,
-        "score_b": 102.94,
-        "winner": "Quin Gegwich",
-        "margin": 7.9
+        "week": "Week 9",
+        "score_a": 90.12,
+        "score_b": 96.54,
+        "winner": "Max Malich",
+        "margin": 6.42
       },
       "closest": {
-        "season": "2022",
-        "week": "Week 14",
-        "score_a": 105.88,
-        "score_b": 103.8,
-        "winner": "Aidan Quigley",
-        "margin": 2.08
+        "season": "2024",
+        "week": "Week 7",
+        "score_a": 113.08,
+        "score_b": 115.62,
+        "winner": "Max Malich",
+        "margin": 2.54
       },
       "blowout": {
         "season": "2022",
-        "week": "Week 11",
-        "score_a": 105.26,
-        "score_b": 150.54,
-        "winner": "Quin Gegwich",
-        "margin": 45.28
+        "week": "Week 3",
+        "score_a": 116.08,
+        "score_b": 154.12,
+        "winner": "Max Malich",
+        "margin": 38.04
       },
       "game_log": [
-        "win",
         "loss",
+        "loss",
+        "loss",
+        "loss",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 8,
+      "week_type": "Standard",
+      "opponent": "Deniz Bileydi",
+      "interconference": false,
+      "my_wins": 2,
+      "opp_wins": 2,
+      "total_games": 4,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 8",
+        "score_a": 111.56,
+        "score_b": 133.78,
+        "winner": "Deniz Bileydi",
+        "margin": 22.22
+      },
+      "closest": {
+        "season": "2023",
+        "week": "Week 6",
+        "score_a": 128.28,
+        "score_b": 112.18,
+        "winner": "Aidan Quigley",
+        "margin": 16.1
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 13",
+        "score_a": 91.1,
+        "score_b": 116.28,
+        "winner": "Deniz Bileydi",
+        "margin": 25.18
+      },
+      "game_log": [
         "win",
         "win",
         "loss",
@@ -3954,41 +3953,41 @@
     },
     {
       "week": 9,
-      "week_type": "Standard",
-      "opponent": "Andrew Root",
-      "interconference": false,
+      "week_type": "Lopsided History Week",
+      "opponent": "Anthony Kelly",
+      "interconference": true,
       "my_wins": 1,
       "opp_wins": 5,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 2",
-        "score_a": 122.14,
-        "score_b": 142.48,
-        "winner": "Andrew Root",
-        "margin": 20.34
+        "week": "Week 12",
+        "score_a": 103.96,
+        "score_b": 109.36,
+        "winner": "Anthony Kelly",
+        "margin": 5.4
       },
       "closest": {
-        "season": "2021",
+        "season": "2024",
         "week": "Week 2",
-        "score_a": 96.82,
-        "score_b": 106.82,
-        "winner": "Andrew Root",
-        "margin": 10.0
+        "score_a": 109.72,
+        "score_b": 111.06,
+        "winner": "Anthony Kelly",
+        "margin": 1.34
       },
       "blowout": {
         "season": "2022",
-        "week": "Week 2",
-        "score_a": 111.6,
-        "score_b": 144.02,
-        "winner": "Andrew Root",
-        "margin": 32.42
+        "week": "Week 7",
+        "score_a": 96.62,
+        "score_b": 141.16,
+        "winner": "Anthony Kelly",
+        "margin": 44.54
       },
       "game_log": [
         "loss",
         "loss",
-        "loss",
         "win",
+        "loss",
         "loss",
         "loss"
       ],
@@ -4043,38 +4042,38 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Max Malich",
-      "interconference": false,
-      "my_wins": 0,
-      "opp_wins": 5,
+      "opponent": "Brandon Hancock",
+      "interconference": true,
+      "my_wins": 1,
+      "opp_wins": 4,
       "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 9",
-        "score_a": 90.12,
-        "score_b": 96.54,
-        "winner": "Max Malich",
-        "margin": 6.42
+        "week": "Week 13",
+        "score_a": 75.4,
+        "score_b": 114.94,
+        "winner": "Brandon Hancock",
+        "margin": 39.54
       },
       "closest": {
-        "season": "2024",
-        "week": "Week 7",
-        "score_a": 113.08,
-        "score_b": 115.62,
-        "winner": "Max Malich",
-        "margin": 2.54
+        "season": "2023",
+        "week": "Week 10",
+        "score_a": 133.46,
+        "score_b": 141.24,
+        "winner": "Brandon Hancock",
+        "margin": 7.78
       },
       "blowout": {
         "season": "2022",
-        "week": "Week 3",
-        "score_a": 116.08,
-        "score_b": 154.12,
-        "winner": "Max Malich",
-        "margin": 38.04
+        "week": "Week 5",
+        "score_a": 144.28,
+        "score_b": 84.12,
+        "winner": "Aidan Quigley",
+        "margin": 60.16
       },
       "game_log": [
         "loss",
-        "loss",
+        "win",
         "loss",
         "loss",
         "loss"
@@ -4084,41 +4083,41 @@
     {
       "week": 12,
       "week_type": "Standard",
-      "opponent": "Baylen Slansky",
-      "interconference": false,
+      "opponent": "Quin Gegwich",
+      "interconference": true,
       "my_wins": 3,
       "opp_wins": 3,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 4",
-        "score_a": 86.2,
-        "score_b": 136.46,
-        "winner": "Baylen Slansky",
-        "margin": 50.26
+        "week": "Week 6",
+        "score_a": 95.04,
+        "score_b": 102.94,
+        "winner": "Quin Gegwich",
+        "margin": 7.9
       },
       "closest": {
         "season": "2022",
-        "week": "Week 6",
-        "score_a": 88.92,
-        "score_b": 86.72,
+        "week": "Week 14",
+        "score_a": 105.88,
+        "score_b": 103.8,
         "winner": "Aidan Quigley",
-        "margin": 2.2
+        "margin": 2.08
       },
       "blowout": {
-        "season": "2023",
-        "week": "Week 13",
-        "score_a": 98.56,
-        "score_b": 157.18,
-        "winner": "Baylen Slansky",
-        "margin": 58.62
+        "season": "2022",
+        "week": "Week 11",
+        "score_a": 105.26,
+        "score_b": 150.54,
+        "winner": "Quin Gegwich",
+        "margin": 45.28
       },
       "game_log": [
-        "loss",
-        "win",
         "win",
         "loss",
         "win",
+        "win",
+        "loss",
         "loss"
       ],
       "rematch": null
@@ -4126,40 +4125,41 @@
     {
       "week": 13,
       "week_type": "Standard",
-      "opponent": "Deniz Bileydi",
+      "opponent": "Cole Maney",
       "interconference": false,
       "my_wins": 2,
-      "opp_wins": 2,
-      "total_games": 4,
+      "opp_wins": 3,
+      "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 8",
-        "score_a": 111.56,
-        "score_b": 133.78,
-        "winner": "Deniz Bileydi",
-        "margin": 22.22
+        "week": "Week 10",
+        "score_a": 108.62,
+        "score_b": 81.36,
+        "winner": "Aidan Quigley",
+        "margin": 27.26
       },
       "closest": {
-        "season": "2023",
-        "week": "Week 6",
-        "score_a": 128.28,
-        "score_b": 112.18,
-        "winner": "Aidan Quigley",
-        "margin": 16.1
+        "season": "2022",
+        "week": "Week 4",
+        "score_a": 120.36,
+        "score_b": 122.3,
+        "winner": "Cole Maney",
+        "margin": 1.94
       },
       "blowout": {
         "season": "2024",
-        "week": "Week 13",
-        "score_a": 91.1,
-        "score_b": 116.28,
-        "winner": "Deniz Bileydi",
-        "margin": 25.18
+        "week": "Week 9",
+        "score_a": 101.48,
+        "score_b": 129.12,
+        "winner": "Cole Maney",
+        "margin": 27.64
       },
       "game_log": [
         "win",
-        "win",
         "loss",
-        "loss"
+        "loss",
+        "loss",
+        "win"
       ],
       "rematch": null
     },
@@ -4256,43 +4256,43 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Brandon Hancock",
+      "opponent": "Carmine Pittelli",
       "interconference": false,
-      "my_wins": 5,
-      "opp_wins": 2,
+      "my_wins": 3,
+      "opp_wins": 4,
       "total_games": 7,
       "most_recent": {
         "season": "2025",
-        "week": "Week 9",
-        "score_a": 142.06,
-        "score_b": 96.98,
-        "winner": "Anthony Kelly",
-        "margin": 45.08
+        "week": "Week 3",
+        "score_a": 99.18,
+        "score_b": 135.66,
+        "winner": "Carmine Pittelli",
+        "margin": 36.48
       },
       "closest": {
-        "season": "2021",
-        "week": "Week 2",
-        "score_a": 107.38,
-        "score_b": 104.64,
-        "winner": "Anthony Kelly",
-        "margin": 2.74
+        "season": "2024",
+        "week": "Week 7",
+        "score_a": 110.36,
+        "score_b": 116.06,
+        "winner": "Carmine Pittelli",
+        "margin": 5.7
       },
       "blowout": {
-        "season": "2022",
-        "week": "Week 2",
-        "score_a": 92.86,
-        "score_b": 146.78,
-        "winner": "Brandon Hancock",
-        "margin": 53.92
+        "season": "2023",
+        "week": "Week 12",
+        "score_a": 96.26,
+        "score_b": 149.76,
+        "winner": "Carmine Pittelli",
+        "margin": 53.5
       },
       "game_log": [
         "win",
-        "win",
         "loss",
         "win",
         "win",
         "loss",
-        "win"
+        "loss",
+        "loss"
       ],
       "rematch": null
     },
@@ -4341,42 +4341,41 @@
     },
     {
       "week": 4,
-      "week_type": "Standard",
-      "opponent": "Carmine Pittelli",
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Quin Gegwich",
       "interconference": false,
       "my_wins": 3,
-      "opp_wins": 4,
-      "total_games": 7,
+      "opp_wins": 3,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 3",
-        "score_a": 99.18,
-        "score_b": 135.66,
-        "winner": "Carmine Pittelli",
-        "margin": 36.48
+        "week": "Week 2",
+        "score_a": 95.74,
+        "score_b": 116.28,
+        "winner": "Quin Gegwich",
+        "margin": 20.54
       },
       "closest": {
-        "season": "2024",
-        "week": "Week 7",
-        "score_a": 110.36,
-        "score_b": 116.06,
-        "winner": "Carmine Pittelli",
-        "margin": 5.7
+        "season": "2023",
+        "week": "Week 9",
+        "score_a": 134.62,
+        "score_b": 121.4,
+        "winner": "Anthony Kelly",
+        "margin": 13.22
       },
       "blowout": {
-        "season": "2023",
-        "week": "Week 12",
-        "score_a": 96.26,
-        "score_b": 149.76,
-        "winner": "Carmine Pittelli",
-        "margin": 53.5
+        "season": "2020",
+        "week": "Week 6",
+        "score_a": 146.82,
+        "score_b": 90.04,
+        "winner": "Anthony Kelly",
+        "margin": 56.78
       },
       "game_log": [
         "win",
-        "loss",
-        "win",
         "win",
         "loss",
+        "win",
         "loss",
         "loss"
       ],
@@ -4385,41 +4384,42 @@
     {
       "week": 5,
       "week_type": "Interconference Week",
-      "opponent": "Aidan Quigley",
+      "opponent": "Cole Maney",
       "interconference": true,
-      "my_wins": 5,
-      "opp_wins": 1,
-      "total_games": 6,
+      "my_wins": 4,
+      "opp_wins": 3,
+      "total_games": 7,
       "most_recent": {
         "season": "2025",
-        "week": "Week 12",
-        "score_a": 109.36,
-        "score_b": 103.96,
+        "week": "Playoff Round 1",
+        "score_a": 121.0,
+        "score_b": 109.86,
         "winner": "Anthony Kelly",
-        "margin": 5.4
+        "margin": 11.14
       },
       "closest": {
-        "season": "2024",
-        "week": "Week 2",
-        "score_a": 111.06,
-        "score_b": 109.72,
-        "winner": "Anthony Kelly",
-        "margin": 1.34
+        "season": "2025",
+        "week": "Week 6",
+        "score_a": 141.02,
+        "score_b": 146.78,
+        "winner": "Cole Maney",
+        "margin": 5.76
       },
       "blowout": {
-        "season": "2022",
-        "week": "Week 7",
-        "score_a": 141.16,
-        "score_b": 96.62,
+        "season": "2020",
+        "week": "Week 9",
+        "score_a": 174.32,
+        "score_b": 88.94,
         "winner": "Anthony Kelly",
-        "margin": 44.54
+        "margin": 85.38
       },
       "game_log": [
         "win",
         "win",
+        "win",
         "loss",
-        "win",
-        "win",
+        "loss",
+        "loss",
         "win"
       ],
       "rematch": null
@@ -4512,84 +4512,87 @@
     {
       "week": 8,
       "week_type": "Standard",
-      "opponent": "Deniz Bileydi",
+      "opponent": "Max Malich",
       "interconference": true,
-      "my_wins": 4,
-      "opp_wins": 2,
-      "total_games": 6,
+      "my_wins": 5,
+      "opp_wins": 4,
+      "total_games": 9,
       "most_recent": {
         "season": "2025",
-        "week": "Week 4",
-        "score_a": 120.22,
-        "score_b": 119.74,
+        "week": "Week 5",
+        "score_a": 159.12,
+        "score_b": 93.78,
         "winner": "Anthony Kelly",
-        "margin": 0.48
+        "margin": 65.34
       },
       "closest": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 120.22,
-        "score_b": 119.74,
+        "season": "2021",
+        "week": "Week 13",
+        "score_a": 121.02,
+        "score_b": 115.34,
         "winner": "Anthony Kelly",
-        "margin": 0.48
+        "margin": 5.68
       },
       "blowout": {
-        "season": "2021",
-        "week": "Week 8",
-        "score_a": 140.96,
-        "score_b": 100.52,
-        "winner": "Anthony Kelly",
-        "margin": 40.44
+        "season": "2024",
+        "week": "Week 3",
+        "score_a": 76.04,
+        "score_b": 183.42,
+        "winner": "Max Malich",
+        "margin": 107.38
       },
       "game_log": [
-        "win",
         "loss",
         "loss",
         "win",
         "win",
+        "win",
+        "win",
+        "loss",
+        "loss",
         "win"
       ],
       "rematch": null
     },
     {
       "week": 9,
-      "week_type": "Standard",
-      "opponent": "Quin Gegwich",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 3,
+      "week_type": "Lopsided History Week",
+      "opponent": "Aidan Quigley",
+      "interconference": true,
+      "my_wins": 5,
+      "opp_wins": 1,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 2",
-        "score_a": 95.74,
-        "score_b": 116.28,
-        "winner": "Quin Gegwich",
-        "margin": 20.54
+        "week": "Week 12",
+        "score_a": 109.36,
+        "score_b": 103.96,
+        "winner": "Anthony Kelly",
+        "margin": 5.4
       },
       "closest": {
-        "season": "2023",
-        "week": "Week 9",
-        "score_a": 134.62,
-        "score_b": 121.4,
+        "season": "2024",
+        "week": "Week 2",
+        "score_a": 111.06,
+        "score_b": 109.72,
         "winner": "Anthony Kelly",
-        "margin": 13.22
+        "margin": 1.34
       },
       "blowout": {
-        "season": "2020",
-        "week": "Week 6",
-        "score_a": 146.82,
-        "score_b": 90.04,
+        "season": "2022",
+        "week": "Week 7",
+        "score_a": 141.16,
+        "score_b": 96.62,
         "winner": "Anthony Kelly",
-        "margin": 56.78
+        "margin": 44.54
       },
       "game_log": [
         "win",
         "win",
         "loss",
         "win",
-        "loss",
-        "loss"
+        "win",
+        "win"
       ],
       "rematch": null
     },
@@ -4642,6 +4645,91 @@
     {
       "week": 11,
       "week_type": "Standard",
+      "opponent": "Deniz Bileydi",
+      "interconference": true,
+      "my_wins": 4,
+      "opp_wins": 2,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 4",
+        "score_a": 120.22,
+        "score_b": 119.74,
+        "winner": "Anthony Kelly",
+        "margin": 0.48
+      },
+      "closest": {
+        "season": "2025",
+        "week": "Week 4",
+        "score_a": 120.22,
+        "score_b": 119.74,
+        "winner": "Anthony Kelly",
+        "margin": 0.48
+      },
+      "blowout": {
+        "season": "2021",
+        "week": "Week 8",
+        "score_a": 140.96,
+        "score_b": 100.52,
+        "winner": "Anthony Kelly",
+        "margin": 40.44
+      },
+      "game_log": [
+        "win",
+        "loss",
+        "loss",
+        "win",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 12,
+      "week_type": "Standard",
+      "opponent": "Brandon Hancock",
+      "interconference": false,
+      "my_wins": 5,
+      "opp_wins": 2,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 9",
+        "score_a": 142.06,
+        "score_b": 96.98,
+        "winner": "Anthony Kelly",
+        "margin": 45.08
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 2",
+        "score_a": 107.38,
+        "score_b": 104.64,
+        "winner": "Anthony Kelly",
+        "margin": 2.74
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 2",
+        "score_a": 92.86,
+        "score_b": 146.78,
+        "winner": "Brandon Hancock",
+        "margin": 53.92
+      },
+      "game_log": [
+        "win",
+        "win",
+        "loss",
+        "win",
+        "win",
+        "loss",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 13,
+      "week_type": "Standard",
       "opponent": "Andrew Root",
       "interconference": true,
       "my_wins": 5,
@@ -4678,94 +4766,6 @@
         "win",
         "win",
         "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 12,
-      "week_type": "Standard",
-      "opponent": "Max Malich",
-      "interconference": true,
-      "my_wins": 5,
-      "opp_wins": 4,
-      "total_games": 9,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 5",
-        "score_a": 159.12,
-        "score_b": 93.78,
-        "winner": "Anthony Kelly",
-        "margin": 65.34
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 13",
-        "score_a": 121.02,
-        "score_b": 115.34,
-        "winner": "Anthony Kelly",
-        "margin": 5.68
-      },
-      "blowout": {
-        "season": "2024",
-        "week": "Week 3",
-        "score_a": 76.04,
-        "score_b": 183.42,
-        "winner": "Max Malich",
-        "margin": 107.38
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "win",
-        "win",
-        "win",
-        "win",
-        "loss",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 13,
-      "week_type": "Standard",
-      "opponent": "Cole Maney",
-      "interconference": true,
-      "my_wins": 4,
-      "opp_wins": 3,
-      "total_games": 7,
-      "most_recent": {
-        "season": "2025",
-        "week": "Playoff Round 1",
-        "score_a": 121.0,
-        "score_b": 109.86,
-        "winner": "Anthony Kelly",
-        "margin": 11.14
-      },
-      "closest": {
-        "season": "2025",
-        "week": "Week 6",
-        "score_a": 141.02,
-        "score_b": 146.78,
-        "winner": "Cole Maney",
-        "margin": 5.76
-      },
-      "blowout": {
-        "season": "2020",
-        "week": "Week 9",
-        "score_a": 174.32,
-        "score_b": 88.94,
-        "winner": "Anthony Kelly",
-        "margin": 85.38
-      },
-      "game_log": [
-        "win",
-        "win",
-        "win",
-        "loss",
-        "loss",
-        "loss",
-        "win"
       ],
       "rematch": null
     },
@@ -4862,38 +4862,38 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Aidan Quigley",
+      "opponent": "Max Malich",
       "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 4,
+      "my_wins": 3,
+      "opp_wins": 2,
       "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 11",
-        "score_a": 102.8,
-        "score_b": 68.3,
+        "week": "Week 4",
+        "score_a": 95.76,
+        "score_b": 93.48,
         "winner": "Ben Castaldo",
-        "margin": 34.5
+        "margin": 2.28
       },
       "closest": {
-        "season": "2023",
-        "week": "Week 11",
-        "score_a": 96.74,
-        "score_b": 117.26,
-        "winner": "Aidan Quigley",
-        "margin": 20.52
+        "season": "2022",
+        "week": "Week 12",
+        "score_a": 80.42,
+        "score_b": 79.06,
+        "winner": "Ben Castaldo",
+        "margin": 1.36
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 3",
-        "score_a": 101.26,
-        "score_b": 137.38,
-        "winner": "Aidan Quigley",
-        "margin": 36.12
+        "season": "2023",
+        "week": "Week 7",
+        "score_a": 59.6,
+        "score_b": 120.56,
+        "winner": "Max Malich",
+        "margin": 60.96
       },
       "game_log": [
-        "loss",
-        "loss",
+        "win",
+        "win",
         "loss",
         "loss",
         "win"
@@ -4945,7 +4945,90 @@
     },
     {
       "week": 4,
-      "week_type": "Standard",
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Ethan Radecki",
+      "interconference": true,
+      "my_wins": 3,
+      "opp_wins": 3,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 6",
+        "score_a": 116.24,
+        "score_b": 100.6,
+        "winner": "Ben Castaldo",
+        "margin": 15.64
+      },
+      "closest": {
+        "season": "2022",
+        "week": "Week 10",
+        "score_a": 120.2,
+        "score_b": 128.44,
+        "winner": "Ethan Radecki",
+        "margin": 8.24
+      },
+      "blowout": {
+        "season": "2021",
+        "week": "Week 10",
+        "score_a": 131.14,
+        "score_b": 102.42,
+        "winner": "Ben Castaldo",
+        "margin": 28.72
+      },
+      "game_log": [
+        "win",
+        "win",
+        "loss",
+        "loss",
+        "loss",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 5,
+      "week_type": "Interconference Week",
+      "opponent": "Aidan Quigley",
+      "interconference": true,
+      "my_wins": 1,
+      "opp_wins": 4,
+      "total_games": 5,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 11",
+        "score_a": 102.8,
+        "score_b": 68.3,
+        "winner": "Ben Castaldo",
+        "margin": 34.5
+      },
+      "closest": {
+        "season": "2023",
+        "week": "Week 11",
+        "score_a": 96.74,
+        "score_b": 117.26,
+        "winner": "Aidan Quigley",
+        "margin": 20.52
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 3",
+        "score_a": 101.26,
+        "score_b": 137.38,
+        "winner": "Aidan Quigley",
+        "margin": 36.12
+      },
+      "game_log": [
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 6,
+      "week_type": "Interconference Week",
       "opponent": "Deniz Bileydi",
       "interconference": true,
       "my_wins": 4,
@@ -4988,52 +5071,93 @@
       "rematch": null
     },
     {
-      "week": 5,
-      "week_type": "Interconference Week",
-      "opponent": "Baylen Slansky",
-      "interconference": true,
-      "my_wins": 3,
+      "week": 7,
+      "week_type": "Standard",
+      "opponent": "Ryan McQuaid",
+      "interconference": false,
+      "my_wins": 1,
       "opp_wins": 5,
-      "total_games": 8,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 12",
-        "score_a": 144.52,
-        "score_b": 104.78,
-        "winner": "Ben Castaldo",
-        "margin": 39.74
+        "week": "Week 13",
+        "score_a": 67.3,
+        "score_b": 104.24,
+        "winner": "Ryan McQuaid",
+        "margin": 36.94
       },
       "closest": {
-        "season": "2023",
-        "week": "Week 14",
-        "score_a": 84.3,
-        "score_b": 87.02,
-        "winner": "Baylen Slansky",
-        "margin": 2.72
+        "season": "2020",
+        "week": "Week 3",
+        "score_a": 83.08,
+        "score_b": 84.08,
+        "winner": "Ryan McQuaid",
+        "margin": 1.0
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 14",
-        "score_a": 0.0,
-        "score_b": 128.52,
-        "winner": "Baylen Slansky",
-        "margin": 128.52
+        "season": "2022",
+        "week": "Week 2",
+        "score_a": 85.98,
+        "score_b": 131.58,
+        "winner": "Ryan McQuaid",
+        "margin": 45.6
       },
       "game_log": [
         "loss",
         "loss",
+        "loss",
         "win",
-        "win",
         "loss",
-        "loss",
-        "loss",
-        "win"
+        "loss"
       ],
       "rematch": null
     },
     {
-      "week": 6,
-      "week_type": "Interconference Week",
+      "week": 8,
+      "week_type": "Standard",
+      "opponent": "Charlie Gorman",
+      "interconference": false,
+      "my_wins": 2,
+      "opp_wins": 5,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Playoff Round 1",
+        "score_a": 101.96,
+        "score_b": 112.92,
+        "winner": "Charlie Gorman",
+        "margin": 10.96
+      },
+      "closest": {
+        "season": "2023",
+        "week": "Week 6",
+        "score_a": 113.54,
+        "score_b": 113.74,
+        "winner": "Charlie Gorman",
+        "margin": 0.2
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 3",
+        "score_a": 96.0,
+        "score_b": 143.6,
+        "winner": "Charlie Gorman",
+        "margin": 47.6
+      },
+      "game_log": [
+        "loss",
+        "win",
+        "loss",
+        "loss",
+        "win",
+        "loss",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 9,
+      "week_type": "Lopsided History Week",
       "opponent": "Cole Maney",
       "interconference": true,
       "my_wins": 5,
@@ -5068,132 +5192,6 @@
         "win",
         "win",
         "win",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 7,
-      "week_type": "Standard",
-      "opponent": "Carmine Pittelli",
-      "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 4,
-      "total_games": 7,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 2",
-        "score_a": 133.44,
-        "score_b": 84.58,
-        "winner": "Ben Castaldo",
-        "margin": 48.86
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 6",
-        "score_a": 94.02,
-        "score_b": 120.46,
-        "winner": "Carmine Pittelli",
-        "margin": 26.44
-      },
-      "blowout": {
-        "season": "2020",
-        "week": "Week 7",
-        "score_a": 157.56,
-        "score_b": 78.72,
-        "winner": "Ben Castaldo",
-        "margin": 78.84
-      },
-      "game_log": [
-        "win",
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 8,
-      "week_type": "Standard",
-      "opponent": "Ethan Radecki",
-      "interconference": true,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 6",
-        "score_a": 116.24,
-        "score_b": 100.6,
-        "winner": "Ben Castaldo",
-        "margin": 15.64
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 10",
-        "score_a": 120.2,
-        "score_b": 128.44,
-        "winner": "Ethan Radecki",
-        "margin": 8.24
-      },
-      "blowout": {
-        "season": "2021",
-        "week": "Week 10",
-        "score_a": 131.14,
-        "score_b": 102.42,
-        "winner": "Ben Castaldo",
-        "margin": 28.72
-      },
-      "game_log": [
-        "win",
-        "win",
-        "loss",
-        "loss",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 9,
-      "week_type": "Standard",
-      "opponent": "Max Malich",
-      "interconference": true,
-      "my_wins": 3,
-      "opp_wins": 2,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 95.76,
-        "score_b": 93.48,
-        "winner": "Ben Castaldo",
-        "margin": 2.28
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 12",
-        "score_a": 80.42,
-        "score_b": 79.06,
-        "winner": "Ben Castaldo",
-        "margin": 1.36
-      },
-      "blowout": {
-        "season": "2023",
-        "week": "Week 7",
-        "score_a": 59.6,
-        "score_b": 120.56,
-        "winner": "Max Malich",
-        "margin": 60.96
-      },
-      "game_log": [
-        "win",
-        "win",
-        "loss",
         "loss",
         "win"
       ],
@@ -5247,47 +5245,92 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Ryan McQuaid",
-      "interconference": false,
-      "my_wins": 1,
+      "opponent": "Baylen Slansky",
+      "interconference": true,
+      "my_wins": 3,
       "opp_wins": 5,
-      "total_games": 6,
+      "total_games": 8,
       "most_recent": {
         "season": "2025",
-        "week": "Week 13",
-        "score_a": 67.3,
-        "score_b": 104.24,
-        "winner": "Ryan McQuaid",
-        "margin": 36.94
+        "week": "Week 12",
+        "score_a": 144.52,
+        "score_b": 104.78,
+        "winner": "Ben Castaldo",
+        "margin": 39.74
       },
       "closest": {
-        "season": "2020",
-        "week": "Week 3",
-        "score_a": 83.08,
-        "score_b": 84.08,
-        "winner": "Ryan McQuaid",
-        "margin": 1.0
+        "season": "2023",
+        "week": "Week 14",
+        "score_a": 84.3,
+        "score_b": 87.02,
+        "winner": "Baylen Slansky",
+        "margin": 2.72
       },
       "blowout": {
-        "season": "2022",
-        "week": "Week 2",
-        "score_a": 85.98,
-        "score_b": 131.58,
-        "winner": "Ryan McQuaid",
-        "margin": 45.6
+        "season": "2024",
+        "week": "Week 14",
+        "score_a": 0.0,
+        "score_b": 128.52,
+        "winner": "Baylen Slansky",
+        "margin": 128.52
       },
       "game_log": [
         "loss",
         "loss",
-        "loss",
+        "win",
         "win",
         "loss",
-        "loss"
+        "loss",
+        "loss",
+        "win"
       ],
       "rematch": null
     },
     {
       "week": 12,
+      "week_type": "Standard",
+      "opponent": "Carmine Pittelli",
+      "interconference": false,
+      "my_wins": 3,
+      "opp_wins": 4,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 2",
+        "score_a": 133.44,
+        "score_b": 84.58,
+        "winner": "Ben Castaldo",
+        "margin": 48.86
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 6",
+        "score_a": 94.02,
+        "score_b": 120.46,
+        "winner": "Carmine Pittelli",
+        "margin": 26.44
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Week 7",
+        "score_a": 157.56,
+        "score_b": 78.72,
+        "winner": "Ben Castaldo",
+        "margin": 78.84
+      },
+      "game_log": [
+        "win",
+        "loss",
+        "win",
+        "loss",
+        "loss",
+        "loss",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 13,
       "week_type": "Standard",
       "opponent": "Brandon Hancock",
       "interconference": false,
@@ -5326,49 +5369,6 @@
         "loss",
         "loss",
         "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 13,
-      "week_type": "Standard",
-      "opponent": "Charlie Gorman",
-      "interconference": false,
-      "my_wins": 2,
-      "opp_wins": 5,
-      "total_games": 7,
-      "most_recent": {
-        "season": "2025",
-        "week": "Playoff Round 1",
-        "score_a": 101.96,
-        "score_b": 112.92,
-        "winner": "Charlie Gorman",
-        "margin": 10.96
-      },
-      "closest": {
-        "season": "2023",
-        "week": "Week 6",
-        "score_a": 113.54,
-        "score_b": 113.74,
-        "winner": "Charlie Gorman",
-        "margin": 0.2
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 3",
-        "score_a": 96.0,
-        "score_b": 143.6,
-        "winner": "Charlie Gorman",
-        "margin": 47.6
-      },
-      "game_log": [
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "win",
-        "loss",
-        "loss"
       ],
       "rematch": null
     },
@@ -5464,90 +5464,6 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Anthony Kelly",
-      "interconference": false,
-      "my_wins": 2,
-      "opp_wins": 5,
-      "total_games": 7,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 9",
-        "score_a": 96.98,
-        "score_b": 142.06,
-        "winner": "Anthony Kelly",
-        "margin": 45.08
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 2",
-        "score_a": 104.64,
-        "score_b": 107.38,
-        "winner": "Anthony Kelly",
-        "margin": 2.74
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 2",
-        "score_a": 146.78,
-        "score_b": 92.86,
-        "winner": "Brandon Hancock",
-        "margin": 53.92
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 3,
-      "week_type": "Standard",
-      "opponent": "Deniz Bileydi",
-      "interconference": true,
-      "my_wins": 5,
-      "opp_wins": 0,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 5",
-        "score_a": 139.56,
-        "score_b": 93.78,
-        "winner": "Brandon Hancock",
-        "margin": 45.78
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 10",
-        "score_a": 105.9,
-        "score_b": 102.42,
-        "winner": "Brandon Hancock",
-        "margin": 3.48
-      },
-      "blowout": {
-        "season": "2025",
-        "week": "Week 5",
-        "score_a": 139.56,
-        "score_b": 93.78,
-        "winner": "Brandon Hancock",
-        "margin": 45.78
-      },
-      "game_log": [
-        "win",
-        "win",
-        "win",
-        "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 4,
-      "week_type": "Standard",
       "opponent": "Andrew Root",
       "interconference": true,
       "my_wins": 6,
@@ -5589,7 +5505,138 @@
       "rematch": null
     },
     {
+      "week": 3,
+      "week_type": "Standard",
+      "opponent": "Max Malich",
+      "interconference": true,
+      "my_wins": 5,
+      "opp_wins": 3,
+      "total_games": 8,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 6",
+        "score_a": 111.24,
+        "score_b": 103.38,
+        "winner": "Brandon Hancock",
+        "margin": 7.86
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 9",
+        "score_a": 103.0,
+        "score_b": 98.12,
+        "winner": "Brandon Hancock",
+        "margin": 4.88
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Week 10",
+        "score_a": 99.68,
+        "score_b": 128.08,
+        "winner": "Max Malich",
+        "margin": 28.4
+      },
+      "game_log": [
+        "loss",
+        "loss",
+        "win",
+        "win",
+        "win",
+        "win",
+        "loss",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 4,
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Carmine Pittelli",
+      "interconference": false,
+      "my_wins": 5,
+      "opp_wins": 5,
+      "total_games": 10,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 4",
+        "score_a": 98.58,
+        "score_b": 122.14,
+        "winner": "Carmine Pittelli",
+        "margin": 23.56
+      },
+      "closest": {
+        "season": "2022",
+        "week": "Playoff Round 1",
+        "score_a": 100.12,
+        "score_b": 91.32,
+        "winner": "Brandon Hancock",
+        "margin": 8.8
+      },
+      "blowout": {
+        "season": "2023",
+        "week": "Week 2",
+        "score_a": 109.88,
+        "score_b": 175.46,
+        "winner": "Carmine Pittelli",
+        "margin": 65.58
+      },
+      "game_log": [
+        "loss",
+        "win",
+        "loss",
+        "loss",
+        "win",
+        "win",
+        "win",
+        "loss",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
       "week": 5,
+      "week_type": "Interconference Week",
+      "opponent": "Deniz Bileydi",
+      "interconference": true,
+      "my_wins": 5,
+      "opp_wins": 0,
+      "total_games": 5,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 5",
+        "score_a": 139.56,
+        "score_b": 93.78,
+        "winner": "Brandon Hancock",
+        "margin": 45.78
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 10",
+        "score_a": 105.9,
+        "score_b": 102.42,
+        "winner": "Brandon Hancock",
+        "margin": 3.48
+      },
+      "blowout": {
+        "season": "2025",
+        "week": "Week 5",
+        "score_a": 139.56,
+        "score_b": 93.78,
+        "winner": "Brandon Hancock",
+        "margin": 45.78
+      },
+      "game_log": [
+        "win",
+        "win",
+        "win",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 6,
       "week_type": "Interconference Week",
       "opponent": "Cole Maney",
       "interconference": true,
@@ -5633,85 +5680,42 @@
       "rematch": null
     },
     {
-      "week": 6,
-      "week_type": "Interconference Week",
-      "opponent": "Aidan Quigley",
-      "interconference": true,
-      "my_wins": 4,
-      "opp_wins": 1,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 13",
-        "score_a": 114.94,
-        "score_b": 75.4,
-        "winner": "Brandon Hancock",
-        "margin": 39.54
-      },
-      "closest": {
-        "season": "2023",
-        "week": "Week 10",
-        "score_a": 141.24,
-        "score_b": 133.46,
-        "winner": "Brandon Hancock",
-        "margin": 7.78
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 5",
-        "score_a": 84.12,
-        "score_b": 144.28,
-        "winner": "Aidan Quigley",
-        "margin": 60.16
-      },
-      "game_log": [
-        "win",
-        "loss",
-        "win",
-        "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
       "week": 7,
       "week_type": "Standard",
-      "opponent": "Max Malich",
-      "interconference": true,
-      "my_wins": 5,
-      "opp_wins": 3,
-      "total_games": 8,
+      "opponent": "Charlie Gorman",
+      "interconference": false,
+      "my_wins": 2,
+      "opp_wins": 4,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 6",
-        "score_a": 111.24,
-        "score_b": 103.38,
+        "week": "Week 11",
+        "score_a": 107.54,
+        "score_b": 94.9,
         "winner": "Brandon Hancock",
-        "margin": 7.86
+        "margin": 12.64
       },
       "closest": {
-        "season": "2021",
-        "week": "Week 9",
-        "score_a": 103.0,
-        "score_b": 98.12,
-        "winner": "Brandon Hancock",
-        "margin": 4.88
+        "season": "2022",
+        "week": "Week 1",
+        "score_a": 104.1,
+        "score_b": 112.56,
+        "winner": "Charlie Gorman",
+        "margin": 8.46
       },
       "blowout": {
-        "season": "2020",
-        "week": "Week 10",
-        "score_a": 99.68,
-        "score_b": 128.08,
-        "winner": "Max Malich",
-        "margin": 28.4
+        "season": "2021",
+        "week": "Week 1",
+        "score_a": 142.56,
+        "score_b": 88.0,
+        "winner": "Brandon Hancock",
+        "margin": 54.56
       },
       "game_log": [
         "loss",
+        "win",
         "loss",
-        "win",
-        "win",
-        "win",
-        "win",
+        "loss",
         "loss",
         "win"
       ],
@@ -5761,42 +5765,44 @@
     },
     {
       "week": 9,
-      "week_type": "Standard",
-      "opponent": "Charlie Gorman",
+      "week_type": "Lopsided History Week",
+      "opponent": "Quin Gegwich",
       "interconference": false,
-      "my_wins": 2,
-      "opp_wins": 4,
-      "total_games": 6,
+      "my_wins": 7,
+      "opp_wins": 1,
+      "total_games": 8,
       "most_recent": {
         "season": "2025",
-        "week": "Week 11",
-        "score_a": 107.54,
-        "score_b": 94.9,
+        "week": "Week 3",
+        "score_a": 164.3,
+        "score_b": 98.62,
         "winner": "Brandon Hancock",
-        "margin": 12.64
+        "margin": 65.68
       },
       "closest": {
-        "season": "2022",
-        "week": "Week 1",
-        "score_a": 104.1,
-        "score_b": 112.56,
-        "winner": "Charlie Gorman",
-        "margin": 8.46
+        "season": "2020",
+        "week": "Week 5",
+        "score_a": 96.6,
+        "score_b": 96.74,
+        "winner": "Quin Gegwich",
+        "margin": 0.14
       },
       "blowout": {
-        "season": "2021",
-        "week": "Week 1",
-        "score_a": 142.56,
-        "score_b": 88.0,
+        "season": "2025",
+        "week": "Week 3",
+        "score_a": 164.3,
+        "score_b": 98.62,
         "winner": "Brandon Hancock",
-        "margin": 54.56
+        "margin": 65.68
       },
       "game_log": [
         "loss",
         "win",
-        "loss",
-        "loss",
-        "loss",
+        "win",
+        "win",
+        "win",
+        "win",
+        "win",
         "win"
       ],
       "rematch": null
@@ -5849,41 +5855,38 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Quin Gegwich",
-      "interconference": false,
-      "my_wins": 7,
+      "opponent": "Aidan Quigley",
+      "interconference": true,
+      "my_wins": 4,
       "opp_wins": 1,
-      "total_games": 8,
+      "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 3",
-        "score_a": 164.3,
-        "score_b": 98.62,
+        "week": "Week 13",
+        "score_a": 114.94,
+        "score_b": 75.4,
         "winner": "Brandon Hancock",
-        "margin": 65.68
+        "margin": 39.54
       },
       "closest": {
-        "season": "2020",
-        "week": "Week 5",
-        "score_a": 96.6,
-        "score_b": 96.74,
-        "winner": "Quin Gegwich",
-        "margin": 0.14
+        "season": "2023",
+        "week": "Week 10",
+        "score_a": 141.24,
+        "score_b": 133.46,
+        "winner": "Brandon Hancock",
+        "margin": 7.78
       },
       "blowout": {
-        "season": "2025",
-        "week": "Week 3",
-        "score_a": 164.3,
-        "score_b": 98.62,
-        "winner": "Brandon Hancock",
-        "margin": 65.68
+        "season": "2022",
+        "week": "Week 5",
+        "score_a": 84.12,
+        "score_b": 144.28,
+        "winner": "Aidan Quigley",
+        "margin": 60.16
       },
       "game_log": [
+        "win",
         "loss",
-        "win",
-        "win",
-        "win",
-        "win",
         "win",
         "win",
         "win"
@@ -5892,6 +5895,49 @@
     },
     {
       "week": 12,
+      "week_type": "Standard",
+      "opponent": "Anthony Kelly",
+      "interconference": false,
+      "my_wins": 2,
+      "opp_wins": 5,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 9",
+        "score_a": 96.98,
+        "score_b": 142.06,
+        "winner": "Anthony Kelly",
+        "margin": 45.08
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 2",
+        "score_a": 104.64,
+        "score_b": 107.38,
+        "winner": "Anthony Kelly",
+        "margin": 2.74
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 2",
+        "score_a": 146.78,
+        "score_b": 92.86,
+        "winner": "Brandon Hancock",
+        "margin": 53.92
+      },
+      "game_log": [
+        "loss",
+        "loss",
+        "win",
+        "loss",
+        "loss",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 13,
       "week_type": "Standard",
       "opponent": "Ben Castaldo",
       "interconference": false,
@@ -5928,52 +5974,6 @@
         "loss",
         "win",
         "win",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 13,
-      "week_type": "Standard",
-      "opponent": "Carmine Pittelli",
-      "interconference": false,
-      "my_wins": 5,
-      "opp_wins": 5,
-      "total_games": 10,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 98.58,
-        "score_b": 122.14,
-        "winner": "Carmine Pittelli",
-        "margin": 23.56
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Playoff Round 1",
-        "score_a": 100.12,
-        "score_b": 91.32,
-        "winner": "Brandon Hancock",
-        "margin": 8.8
-      },
-      "blowout": {
-        "season": "2023",
-        "week": "Week 2",
-        "score_a": 109.88,
-        "score_b": 175.46,
-        "winner": "Carmine Pittelli",
-        "margin": 65.58
-      },
-      "game_log": [
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "win",
-        "win",
-        "win",
-        "loss",
         "win",
         "loss"
       ],
@@ -6072,40 +6072,43 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Andrew Root",
-      "interconference": true,
-      "my_wins": 0,
-      "opp_wins": 4,
-      "total_games": 4,
+      "opponent": "Anthony Kelly",
+      "interconference": false,
+      "my_wins": 4,
+      "opp_wins": 3,
+      "total_games": 7,
       "most_recent": {
         "season": "2025",
-        "week": "Week 6",
-        "score_a": 94.2,
-        "score_b": 98.06,
-        "winner": "Andrew Root",
-        "margin": 3.86
+        "week": "Week 3",
+        "score_a": 135.66,
+        "score_b": 99.18,
+        "winner": "Carmine Pittelli",
+        "margin": 36.48
       },
       "closest": {
-        "season": "2022",
-        "week": "Week 14",
-        "score_a": 118.52,
-        "score_b": 119.18,
-        "winner": "Andrew Root",
-        "margin": 0.66
+        "season": "2024",
+        "week": "Week 7",
+        "score_a": 116.06,
+        "score_b": 110.36,
+        "winner": "Carmine Pittelli",
+        "margin": 5.7
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 2",
-        "score_a": 122.62,
-        "score_b": 140.94,
-        "winner": "Andrew Root",
-        "margin": 18.32
+        "season": "2023",
+        "week": "Week 12",
+        "score_a": 149.76,
+        "score_b": 96.26,
+        "winner": "Carmine Pittelli",
+        "margin": 53.5
       },
       "game_log": [
         "loss",
+        "win",
         "loss",
         "loss",
-        "loss"
+        "win",
+        "win",
+        "win"
       ],
       "rematch": null
     },
@@ -6153,43 +6156,46 @@
     },
     {
       "week": 4,
-      "week_type": "Standard",
-      "opponent": "Anthony Kelly",
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Brandon Hancock",
       "interconference": false,
-      "my_wins": 4,
-      "opp_wins": 3,
-      "total_games": 7,
+      "my_wins": 5,
+      "opp_wins": 5,
+      "total_games": 10,
       "most_recent": {
         "season": "2025",
-        "week": "Week 3",
-        "score_a": 135.66,
-        "score_b": 99.18,
+        "week": "Week 4",
+        "score_a": 122.14,
+        "score_b": 98.58,
         "winner": "Carmine Pittelli",
-        "margin": 36.48
+        "margin": 23.56
       },
       "closest": {
-        "season": "2024",
-        "week": "Week 7",
-        "score_a": 116.06,
-        "score_b": 110.36,
-        "winner": "Carmine Pittelli",
-        "margin": 5.7
+        "season": "2022",
+        "week": "Playoff Round 1",
+        "score_a": 91.32,
+        "score_b": 100.12,
+        "winner": "Brandon Hancock",
+        "margin": 8.8
       },
       "blowout": {
         "season": "2023",
-        "week": "Week 12",
-        "score_a": 149.76,
-        "score_b": 96.26,
+        "week": "Week 2",
+        "score_a": 175.46,
+        "score_b": 109.88,
         "winner": "Carmine Pittelli",
-        "margin": 53.5
+        "margin": 65.58
       },
       "game_log": [
-        "loss",
         "win",
-        "loss",
         "loss",
         "win",
         "win",
+        "loss",
+        "loss",
+        "loss",
+        "win",
+        "loss",
         "win"
       ],
       "rematch": null
@@ -6197,42 +6203,42 @@
     {
       "week": 5,
       "week_type": "Interconference Week",
-      "opponent": "Deniz Bileydi",
+      "opponent": "Baylen Slansky",
       "interconference": true,
-      "my_wins": 5,
-      "opp_wins": 1,
+      "my_wins": 4,
+      "opp_wins": 2,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 12",
-        "score_a": 106.32,
-        "score_b": 67.74,
-        "winner": "Carmine Pittelli",
-        "margin": 38.58
+        "week": "Playoff Round 1",
+        "score_a": 139.4,
+        "score_b": 151.4,
+        "winner": "Baylen Slansky",
+        "margin": 12.0
       },
       "closest": {
-        "season": "2024",
-        "week": "Week 5",
-        "score_a": 146.14,
-        "score_b": 154.14,
-        "winner": "Deniz Bileydi",
-        "margin": 8.0
+        "season": "2022",
+        "week": "Week 10",
+        "score_a": 112.1,
+        "score_b": 110.64,
+        "winner": "Carmine Pittelli",
+        "margin": 1.46
       },
       "blowout": {
-        "season": "2023",
-        "week": "Week 4",
-        "score_a": 131.3,
-        "score_b": 91.88,
+        "season": "2025",
+        "week": "Week 8",
+        "score_a": 143.32,
+        "score_b": 64.38,
         "winner": "Carmine Pittelli",
-        "margin": 39.42
+        "margin": 78.94
       },
       "game_log": [
-        "win",
-        "win",
-        "win",
-        "win",
         "loss",
-        "win"
+        "win",
+        "win",
+        "win",
+        "win",
+        "loss"
       ],
       "rematch": null
     },
@@ -6281,42 +6287,39 @@
     {
       "week": 7,
       "week_type": "Standard",
-      "opponent": "Ben Castaldo",
-      "interconference": false,
-      "my_wins": 4,
-      "opp_wins": 3,
-      "total_games": 7,
+      "opponent": "Andrew Root",
+      "interconference": true,
+      "my_wins": 0,
+      "opp_wins": 4,
+      "total_games": 4,
       "most_recent": {
         "season": "2025",
-        "week": "Week 2",
-        "score_a": 84.58,
-        "score_b": 133.44,
-        "winner": "Ben Castaldo",
-        "margin": 48.86
+        "week": "Week 6",
+        "score_a": 94.2,
+        "score_b": 98.06,
+        "winner": "Andrew Root",
+        "margin": 3.86
       },
       "closest": {
-        "season": "2021",
-        "week": "Week 6",
-        "score_a": 120.46,
-        "score_b": 94.02,
-        "winner": "Carmine Pittelli",
-        "margin": 26.44
+        "season": "2022",
+        "week": "Week 14",
+        "score_a": 118.52,
+        "score_b": 119.18,
+        "winner": "Andrew Root",
+        "margin": 0.66
       },
       "blowout": {
-        "season": "2020",
-        "week": "Week 7",
-        "score_a": 78.72,
-        "score_b": 157.56,
-        "winner": "Ben Castaldo",
-        "margin": 78.84
+        "season": "2024",
+        "week": "Week 2",
+        "score_a": 122.62,
+        "score_b": 140.94,
+        "winner": "Andrew Root",
+        "margin": 18.32
       },
       "game_log": [
         "loss",
-        "win",
         "loss",
-        "win",
-        "win",
-        "win",
+        "loss",
         "loss"
       ],
       "rematch": null
@@ -6324,84 +6327,83 @@
     {
       "week": 8,
       "week_type": "Standard",
-      "opponent": "Baylen Slansky",
-      "interconference": true,
+      "opponent": "Quin Gegwich",
+      "interconference": false,
       "my_wins": 4,
-      "opp_wins": 2,
-      "total_games": 6,
+      "opp_wins": 1,
+      "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Playoff Round 1",
-        "score_a": 139.4,
-        "score_b": 151.4,
-        "winner": "Baylen Slansky",
-        "margin": 12.0
+        "week": "Week 10",
+        "score_a": 131.06,
+        "score_b": 124.6,
+        "winner": "Carmine Pittelli",
+        "margin": 6.46
       },
       "closest": {
-        "season": "2022",
+        "season": "2025",
         "week": "Week 10",
-        "score_a": 112.1,
-        "score_b": 110.64,
+        "score_a": 131.06,
+        "score_b": 124.6,
         "winner": "Carmine Pittelli",
-        "margin": 1.46
+        "margin": 6.46
       },
       "blowout": {
-        "season": "2025",
-        "week": "Week 8",
-        "score_a": 143.32,
-        "score_b": 64.38,
+        "season": "2020",
+        "week": "Week 3",
+        "score_a": 152.2,
+        "score_b": 64.92,
         "winner": "Carmine Pittelli",
-        "margin": 78.94
+        "margin": 87.28
       },
       "game_log": [
+        "win",
+        "win",
+        "win",
         "loss",
-        "win",
-        "win",
-        "win",
-        "win",
-        "loss"
+        "win"
       ],
       "rematch": null
     },
     {
       "week": 9,
-      "week_type": "Standard",
-      "opponent": "Ryan McQuaid",
-      "interconference": false,
-      "my_wins": 2,
-      "opp_wins": 4,
+      "week_type": "Lopsided History Week",
+      "opponent": "Deniz Bileydi",
+      "interconference": true,
+      "my_wins": 5,
+      "opp_wins": 1,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 9",
-        "score_a": 93.26,
-        "score_b": 105.06,
-        "winner": "Ryan McQuaid",
-        "margin": 11.8
+        "week": "Week 12",
+        "score_a": 106.32,
+        "score_b": 67.74,
+        "winner": "Carmine Pittelli",
+        "margin": 38.58
       },
       "closest": {
         "season": "2024",
-        "week": "Week 10",
-        "score_a": 106.5,
-        "score_b": 106.82,
-        "winner": "Ryan McQuaid",
-        "margin": 0.32
+        "week": "Week 5",
+        "score_a": 146.14,
+        "score_b": 154.14,
+        "winner": "Deniz Bileydi",
+        "margin": 8.0
       },
       "blowout": {
-        "season": "2021",
-        "week": "Week 1",
-        "score_a": 122.56,
-        "score_b": 137.18,
-        "winner": "Ryan McQuaid",
-        "margin": 14.62
+        "season": "2023",
+        "week": "Week 4",
+        "score_a": 131.3,
+        "score_b": 91.88,
+        "winner": "Carmine Pittelli",
+        "margin": 39.42
       },
       "game_log": [
         "win",
-        "loss",
-        "loss",
+        "win",
+        "win",
         "win",
         "loss",
-        "loss"
+        "win"
       ],
       "rematch": null
     },
@@ -6454,6 +6456,91 @@
     {
       "week": 11,
       "week_type": "Standard",
+      "opponent": "Ryan McQuaid",
+      "interconference": false,
+      "my_wins": 2,
+      "opp_wins": 4,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 9",
+        "score_a": 93.26,
+        "score_b": 105.06,
+        "winner": "Ryan McQuaid",
+        "margin": 11.8
+      },
+      "closest": {
+        "season": "2024",
+        "week": "Week 10",
+        "score_a": 106.5,
+        "score_b": 106.82,
+        "winner": "Ryan McQuaid",
+        "margin": 0.32
+      },
+      "blowout": {
+        "season": "2021",
+        "week": "Week 1",
+        "score_a": 122.56,
+        "score_b": 137.18,
+        "winner": "Ryan McQuaid",
+        "margin": 14.62
+      },
+      "game_log": [
+        "win",
+        "loss",
+        "loss",
+        "win",
+        "loss",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 12,
+      "week_type": "Standard",
+      "opponent": "Ben Castaldo",
+      "interconference": false,
+      "my_wins": 4,
+      "opp_wins": 3,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 2",
+        "score_a": 84.58,
+        "score_b": 133.44,
+        "winner": "Ben Castaldo",
+        "margin": 48.86
+      },
+      "closest": {
+        "season": "2021",
+        "week": "Week 6",
+        "score_a": 120.46,
+        "score_b": 94.02,
+        "winner": "Carmine Pittelli",
+        "margin": 26.44
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Week 7",
+        "score_a": 78.72,
+        "score_b": 157.56,
+        "winner": "Ben Castaldo",
+        "margin": 78.84
+      },
+      "game_log": [
+        "loss",
+        "win",
+        "loss",
+        "win",
+        "win",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 13,
+      "week_type": "Standard",
       "opponent": "Charlie Gorman",
       "interconference": false,
       "my_wins": 6,
@@ -6491,93 +6578,6 @@
         "loss",
         "win",
         "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 12,
-      "week_type": "Standard",
-      "opponent": "Quin Gegwich",
-      "interconference": false,
-      "my_wins": 4,
-      "opp_wins": 1,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 10",
-        "score_a": 131.06,
-        "score_b": 124.6,
-        "winner": "Carmine Pittelli",
-        "margin": 6.46
-      },
-      "closest": {
-        "season": "2025",
-        "week": "Week 10",
-        "score_a": 131.06,
-        "score_b": 124.6,
-        "winner": "Carmine Pittelli",
-        "margin": 6.46
-      },
-      "blowout": {
-        "season": "2020",
-        "week": "Week 3",
-        "score_a": 152.2,
-        "score_b": 64.92,
-        "winner": "Carmine Pittelli",
-        "margin": 87.28
-      },
-      "game_log": [
-        "win",
-        "win",
-        "win",
-        "loss",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 13,
-      "week_type": "Standard",
-      "opponent": "Brandon Hancock",
-      "interconference": false,
-      "my_wins": 5,
-      "opp_wins": 5,
-      "total_games": 10,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 122.14,
-        "score_b": 98.58,
-        "winner": "Carmine Pittelli",
-        "margin": 23.56
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Playoff Round 1",
-        "score_a": 91.32,
-        "score_b": 100.12,
-        "winner": "Brandon Hancock",
-        "margin": 8.8
-      },
-      "blowout": {
-        "season": "2023",
-        "week": "Week 2",
-        "score_a": 175.46,
-        "score_b": 109.88,
-        "winner": "Carmine Pittelli",
-        "margin": 65.58
-      },
-      "game_log": [
-        "win",
-        "loss",
-        "win",
-        "win",
-        "loss",
-        "loss",
-        "loss",
-        "win",
-        "loss",
         "win"
       ],
       "rematch": null
@@ -6674,47 +6674,90 @@
     {
       "week": 2,
       "week_type": "Standard",
-      "opponent": "Ethan Radecki",
+      "opponent": "Cole Maney",
       "interconference": true,
       "my_wins": 3,
-      "opp_wins": 2,
-      "total_games": 5,
+      "opp_wins": 4,
+      "total_games": 7,
       "most_recent": {
         "season": "2025",
-        "week": "Week 12",
-        "score_a": 136.62,
-        "score_b": 92.32,
-        "winner": "Charlie Gorman",
-        "margin": 44.3
+        "week": "Week 8",
+        "score_a": 115.66,
+        "score_b": 133.06,
+        "winner": "Cole Maney",
+        "margin": 17.4
       },
       "closest": {
         "season": "2021",
-        "week": "Week 9",
-        "score_a": 135.94,
-        "score_b": 123.52,
-        "winner": "Charlie Gorman",
-        "margin": 12.42
+        "week": "Week 10",
+        "score_a": 68.72,
+        "score_b": 77.32,
+        "winner": "Cole Maney",
+        "margin": 8.6
       },
       "blowout": {
-        "season": "2023",
-        "week": "Week 4",
-        "score_a": 90.66,
-        "score_b": 190.88,
-        "winner": "Ethan Radecki",
-        "margin": 100.22
+        "season": "2022",
+        "week": "Week 10",
+        "score_a": 55.18,
+        "score_b": 124.2,
+        "winner": "Cole Maney",
+        "margin": 69.02
       },
       "game_log": [
-        "win",
-        "win",
         "loss",
         "loss",
-        "win"
+        "win",
+        "loss",
+        "win",
+        "win",
+        "loss"
       ],
       "rematch": null
     },
     {
       "week": 3,
       "week_type": "Standard",
+      "opponent": "Deniz Bileydi",
+      "interconference": true,
+      "my_wins": 4,
+      "opp_wins": 1,
+      "total_games": 5,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 6",
+        "score_a": 110.64,
+        "score_b": 70.86,
+        "winner": "Charlie Gorman",
+        "margin": 39.78
+      },
+      "closest": {
+        "season": "2020",
+        "week": "Week 13",
+        "score_a": 127.82,
+        "score_b": 118.98,
+        "winner": "Charlie Gorman",
+        "margin": 8.84
+      },
+      "blowout": {
+        "season": "2020",
+        "week": "Playoff Round 1",
+        "score_a": 66.44,
+        "score_b": 153.32,
+        "winner": "Deniz Bileydi",
+        "margin": 86.88
+      },
+      "game_log": [
+        "win",
+        "loss",
+        "win",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 4,
+      "week_type": "Closest Rivalries Week",
       "opponent": "Andrew Root",
       "interconference": true,
       "my_wins": 4,
@@ -6752,48 +6795,6 @@
         "loss",
         "win",
         "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 4,
-      "week_type": "Standard",
-      "opponent": "Quin Gegwich",
-      "interconference": false,
-      "my_wins": 4,
-      "opp_wins": 2,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 144.1,
-        "score_b": 135.52,
-        "winner": "Charlie Gorman",
-        "margin": 8.58
-      },
-      "closest": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 144.1,
-        "score_b": 135.52,
-        "winner": "Charlie Gorman",
-        "margin": 8.58
-      },
-      "blowout": {
-        "season": "2024",
-        "week": "Week 7",
-        "score_a": 71.94,
-        "score_b": 135.6,
-        "winner": "Quin Gegwich",
-        "margin": 63.66
-      },
-      "game_log": [
-        "win",
-        "win",
-        "loss",
-        "win",
-        "loss",
         "win"
       ],
       "rematch": null
@@ -6843,40 +6844,40 @@
     {
       "week": 6,
       "week_type": "Interconference Week",
-      "opponent": "Deniz Bileydi",
+      "opponent": "Ethan Radecki",
       "interconference": true,
-      "my_wins": 4,
-      "opp_wins": 1,
+      "my_wins": 3,
+      "opp_wins": 2,
       "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 6",
-        "score_a": 110.64,
-        "score_b": 70.86,
+        "week": "Week 12",
+        "score_a": 136.62,
+        "score_b": 92.32,
         "winner": "Charlie Gorman",
-        "margin": 39.78
+        "margin": 44.3
       },
       "closest": {
-        "season": "2020",
-        "week": "Week 13",
-        "score_a": 127.82,
-        "score_b": 118.98,
+        "season": "2021",
+        "week": "Week 9",
+        "score_a": 135.94,
+        "score_b": 123.52,
         "winner": "Charlie Gorman",
-        "margin": 8.84
+        "margin": 12.42
       },
       "blowout": {
-        "season": "2020",
-        "week": "Playoff Round 1",
-        "score_a": 66.44,
-        "score_b": 153.32,
-        "winner": "Deniz Bileydi",
-        "margin": 86.88
+        "season": "2023",
+        "week": "Week 4",
+        "score_a": 90.66,
+        "score_b": 190.88,
+        "winner": "Ethan Radecki",
+        "margin": 100.22
       },
       "game_log": [
         "win",
+        "win",
         "loss",
-        "win",
-        "win",
+        "loss",
         "win"
       ],
       "rematch": null
@@ -6884,6 +6885,91 @@
     {
       "week": 7,
       "week_type": "Standard",
+      "opponent": "Brandon Hancock",
+      "interconference": false,
+      "my_wins": 4,
+      "opp_wins": 2,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 11",
+        "score_a": 94.9,
+        "score_b": 107.54,
+        "winner": "Brandon Hancock",
+        "margin": 12.64
+      },
+      "closest": {
+        "season": "2022",
+        "week": "Week 1",
+        "score_a": 112.56,
+        "score_b": 104.1,
+        "winner": "Charlie Gorman",
+        "margin": 8.46
+      },
+      "blowout": {
+        "season": "2021",
+        "week": "Week 1",
+        "score_a": 88.0,
+        "score_b": 142.56,
+        "winner": "Brandon Hancock",
+        "margin": 54.56
+      },
+      "game_log": [
+        "win",
+        "loss",
+        "win",
+        "win",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 8,
+      "week_type": "Standard",
+      "opponent": "Ben Castaldo",
+      "interconference": false,
+      "my_wins": 5,
+      "opp_wins": 2,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Playoff Round 1",
+        "score_a": 112.92,
+        "score_b": 101.96,
+        "winner": "Charlie Gorman",
+        "margin": 10.96
+      },
+      "closest": {
+        "season": "2023",
+        "week": "Week 6",
+        "score_a": 113.74,
+        "score_b": 113.54,
+        "winner": "Charlie Gorman",
+        "margin": 0.2
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 3",
+        "score_a": 143.6,
+        "score_b": 96.0,
+        "winner": "Charlie Gorman",
+        "margin": 47.6
+      },
+      "game_log": [
+        "win",
+        "loss",
+        "win",
+        "win",
+        "loss",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 9,
+      "week_type": "Lopsided History Week",
       "opponent": "Baylen Slansky",
       "interconference": true,
       "my_wins": 3,
@@ -6922,91 +7008,6 @@
         "loss",
         "loss",
         "win"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 8,
-      "week_type": "Standard",
-      "opponent": "Cole Maney",
-      "interconference": true,
-      "my_wins": 3,
-      "opp_wins": 4,
-      "total_games": 7,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 8",
-        "score_a": 115.66,
-        "score_b": 133.06,
-        "winner": "Cole Maney",
-        "margin": 17.4
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 10",
-        "score_a": 68.72,
-        "score_b": 77.32,
-        "winner": "Cole Maney",
-        "margin": 8.6
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 10",
-        "score_a": 55.18,
-        "score_b": 124.2,
-        "winner": "Cole Maney",
-        "margin": 69.02
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "win",
-        "loss",
-        "win",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 9,
-      "week_type": "Standard",
-      "opponent": "Brandon Hancock",
-      "interconference": false,
-      "my_wins": 4,
-      "opp_wins": 2,
-      "total_games": 6,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 11",
-        "score_a": 94.9,
-        "score_b": 107.54,
-        "winner": "Brandon Hancock",
-        "margin": 12.64
-      },
-      "closest": {
-        "season": "2022",
-        "week": "Week 1",
-        "score_a": 112.56,
-        "score_b": 104.1,
-        "winner": "Charlie Gorman",
-        "margin": 8.46
-      },
-      "blowout": {
-        "season": "2021",
-        "week": "Week 1",
-        "score_a": 88.0,
-        "score_b": 142.56,
-        "winner": "Brandon Hancock",
-        "margin": 54.56
-      },
-      "game_log": [
-        "win",
-        "loss",
-        "win",
-        "win",
-        "win",
-        "loss"
       ],
       "rematch": null
     },
@@ -7059,44 +7060,42 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Carmine Pittelli",
+      "opponent": "Quin Gegwich",
       "interconference": false,
-      "my_wins": 2,
-      "opp_wins": 6,
-      "total_games": 8,
+      "my_wins": 4,
+      "opp_wins": 2,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 5",
-        "score_a": 86.6,
-        "score_b": 150.42,
-        "winner": "Carmine Pittelli",
-        "margin": 63.82
+        "week": "Week 4",
+        "score_a": 144.1,
+        "score_b": 135.52,
+        "winner": "Charlie Gorman",
+        "margin": 8.58
       },
       "closest": {
-        "season": "2020",
-        "week": "Week 5",
-        "score_a": 138.98,
-        "score_b": 150.0,
-        "winner": "Carmine Pittelli",
-        "margin": 11.02
+        "season": "2025",
+        "week": "Week 4",
+        "score_a": 144.1,
+        "score_b": 135.52,
+        "winner": "Charlie Gorman",
+        "margin": 8.58
       },
       "blowout": {
-        "season": "2025",
-        "week": "Week 5",
-        "score_a": 86.6,
-        "score_b": 150.42,
-        "winner": "Carmine Pittelli",
-        "margin": 63.82
+        "season": "2024",
+        "week": "Week 7",
+        "score_a": 71.94,
+        "score_b": 135.6,
+        "winner": "Quin Gegwich",
+        "margin": 63.66
       },
       "game_log": [
+        "win",
+        "win",
         "loss",
         "win",
         "loss",
-        "loss",
-        "win",
-        "loss",
-        "loss",
-        "loss"
+        "win"
       ],
       "rematch": null
     },
@@ -7145,43 +7144,44 @@
     {
       "week": 13,
       "week_type": "Standard",
-      "opponent": "Ben Castaldo",
+      "opponent": "Carmine Pittelli",
       "interconference": false,
-      "my_wins": 5,
-      "opp_wins": 2,
-      "total_games": 7,
+      "my_wins": 2,
+      "opp_wins": 6,
+      "total_games": 8,
       "most_recent": {
         "season": "2025",
-        "week": "Playoff Round 1",
-        "score_a": 112.92,
-        "score_b": 101.96,
-        "winner": "Charlie Gorman",
-        "margin": 10.96
+        "week": "Week 5",
+        "score_a": 86.6,
+        "score_b": 150.42,
+        "winner": "Carmine Pittelli",
+        "margin": 63.82
       },
       "closest": {
-        "season": "2023",
-        "week": "Week 6",
-        "score_a": 113.74,
-        "score_b": 113.54,
-        "winner": "Charlie Gorman",
-        "margin": 0.2
+        "season": "2020",
+        "week": "Week 5",
+        "score_a": 138.98,
+        "score_b": 150.0,
+        "winner": "Carmine Pittelli",
+        "margin": 11.02
       },
       "blowout": {
-        "season": "2022",
-        "week": "Week 3",
-        "score_a": 143.6,
-        "score_b": 96.0,
-        "winner": "Charlie Gorman",
-        "margin": 47.6
+        "season": "2025",
+        "week": "Week 5",
+        "score_a": 86.6,
+        "score_b": 150.42,
+        "winner": "Carmine Pittelli",
+        "margin": 63.82
       },
       "game_log": [
-        "win",
         "loss",
         "win",
-        "win",
+        "loss",
         "loss",
         "win",
-        "win"
+        "loss",
+        "loss",
+        "loss"
       ],
       "rematch": null
     },
@@ -7361,35 +7361,35 @@
     },
     {
       "week": 4,
-      "week_type": "Standard",
-      "opponent": "Charlie Gorman",
+      "week_type": "Closest Rivalries Week",
+      "opponent": "Anthony Kelly",
       "interconference": false,
-      "my_wins": 2,
-      "opp_wins": 4,
+      "my_wins": 3,
+      "opp_wins": 3,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 4",
-        "score_a": 135.52,
-        "score_b": 144.1,
-        "winner": "Charlie Gorman",
-        "margin": 8.58
+        "week": "Week 2",
+        "score_a": 116.28,
+        "score_b": 95.74,
+        "winner": "Quin Gegwich",
+        "margin": 20.54
       },
       "closest": {
-        "season": "2025",
-        "week": "Week 4",
-        "score_a": 135.52,
-        "score_b": 144.1,
-        "winner": "Charlie Gorman",
-        "margin": 8.58
+        "season": "2023",
+        "week": "Week 9",
+        "score_a": 121.4,
+        "score_b": 134.62,
+        "winner": "Anthony Kelly",
+        "margin": 13.22
       },
       "blowout": {
-        "season": "2024",
-        "week": "Week 7",
-        "score_a": 135.6,
-        "score_b": 71.94,
-        "winner": "Quin Gegwich",
-        "margin": 63.66
+        "season": "2020",
+        "week": "Week 6",
+        "score_a": 90.04,
+        "score_b": 146.82,
+        "winner": "Anthony Kelly",
+        "margin": 56.78
       },
       "game_log": [
         "loss",
@@ -7397,12 +7397,55 @@
         "win",
         "loss",
         "win",
-        "loss"
+        "win"
       ],
       "rematch": null
     },
     {
       "week": 5,
+      "week_type": "Interconference Week",
+      "opponent": "Ethan Radecki",
+      "interconference": true,
+      "my_wins": 1,
+      "opp_wins": 6,
+      "total_games": 7,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 9",
+        "score_a": 115.96,
+        "score_b": 143.12,
+        "winner": "Ethan Radecki",
+        "margin": 27.16
+      },
+      "closest": {
+        "season": "2024",
+        "week": "Week 5",
+        "score_a": 109.86,
+        "score_b": 110.04,
+        "winner": "Ethan Radecki",
+        "margin": 0.18
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 5",
+        "score_a": 79.64,
+        "score_b": 126.28,
+        "winner": "Ethan Radecki",
+        "margin": 46.64
+      },
+      "game_log": [
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "win",
+        "loss"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 6,
       "week_type": "Interconference Week",
       "opponent": "Andrew Root",
       "interconference": true,
@@ -7441,49 +7484,6 @@
         "loss",
         "loss",
         "loss",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 6,
-      "week_type": "Interconference Week",
-      "opponent": "Ethan Radecki",
-      "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 6,
-      "total_games": 7,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 9",
-        "score_a": 115.96,
-        "score_b": 143.12,
-        "winner": "Ethan Radecki",
-        "margin": 27.16
-      },
-      "closest": {
-        "season": "2024",
-        "week": "Week 5",
-        "score_a": 109.86,
-        "score_b": 110.04,
-        "winner": "Ethan Radecki",
-        "margin": 0.18
-      },
-      "blowout": {
-        "season": "2022",
-        "week": "Week 5",
-        "score_a": 79.64,
-        "score_b": 126.28,
-        "winner": "Ethan Radecki",
-        "margin": 46.64
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "win",
         "loss"
       ],
       "rematch": null
@@ -7533,84 +7533,85 @@
     {
       "week": 8,
       "week_type": "Standard",
-      "opponent": "Aidan Quigley",
-      "interconference": true,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
+      "opponent": "Carmine Pittelli",
+      "interconference": false,
+      "my_wins": 1,
+      "opp_wins": 4,
+      "total_games": 5,
       "most_recent": {
         "season": "2025",
-        "week": "Week 6",
-        "score_a": 102.94,
-        "score_b": 95.04,
-        "winner": "Quin Gegwich",
-        "margin": 7.9
+        "week": "Week 10",
+        "score_a": 124.6,
+        "score_b": 131.06,
+        "winner": "Carmine Pittelli",
+        "margin": 6.46
       },
       "closest": {
-        "season": "2022",
-        "week": "Week 14",
-        "score_a": 103.8,
-        "score_b": 105.88,
-        "winner": "Aidan Quigley",
-        "margin": 2.08
+        "season": "2025",
+        "week": "Week 10",
+        "score_a": 124.6,
+        "score_b": 131.06,
+        "winner": "Carmine Pittelli",
+        "margin": 6.46
       },
       "blowout": {
-        "season": "2022",
-        "week": "Week 11",
-        "score_a": 150.54,
-        "score_b": 105.26,
-        "winner": "Quin Gegwich",
-        "margin": 45.28
+        "season": "2020",
+        "week": "Week 3",
+        "score_a": 64.92,
+        "score_b": 152.2,
+        "winner": "Carmine Pittelli",
+        "margin": 87.28
       },
       "game_log": [
         "loss",
-        "win",
         "loss",
         "loss",
         "win",
-        "win"
+        "loss"
       ],
       "rematch": null
     },
     {
       "week": 9,
-      "week_type": "Standard",
-      "opponent": "Anthony Kelly",
+      "week_type": "Lopsided History Week",
+      "opponent": "Brandon Hancock",
       "interconference": false,
-      "my_wins": 3,
-      "opp_wins": 3,
-      "total_games": 6,
+      "my_wins": 1,
+      "opp_wins": 7,
+      "total_games": 8,
       "most_recent": {
         "season": "2025",
-        "week": "Week 2",
-        "score_a": 116.28,
-        "score_b": 95.74,
-        "winner": "Quin Gegwich",
-        "margin": 20.54
+        "week": "Week 3",
+        "score_a": 98.62,
+        "score_b": 164.3,
+        "winner": "Brandon Hancock",
+        "margin": 65.68
       },
       "closest": {
-        "season": "2023",
-        "week": "Week 9",
-        "score_a": 121.4,
-        "score_b": 134.62,
-        "winner": "Anthony Kelly",
-        "margin": 13.22
+        "season": "2020",
+        "week": "Week 5",
+        "score_a": 96.74,
+        "score_b": 96.6,
+        "winner": "Quin Gegwich",
+        "margin": 0.14
       },
       "blowout": {
-        "season": "2020",
-        "week": "Week 6",
-        "score_a": 90.04,
-        "score_b": 146.82,
-        "winner": "Anthony Kelly",
-        "margin": 56.78
+        "season": "2025",
+        "week": "Week 3",
+        "score_a": 98.62,
+        "score_b": 164.3,
+        "winner": "Brandon Hancock",
+        "margin": 65.68
       },
       "game_log": [
-        "loss",
-        "loss",
         "win",
         "loss",
-        "win",
-        "win"
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "loss"
       ],
       "rematch": null
     },
@@ -7657,43 +7658,41 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Brandon Hancock",
+      "opponent": "Charlie Gorman",
       "interconference": false,
-      "my_wins": 1,
-      "opp_wins": 7,
-      "total_games": 8,
+      "my_wins": 2,
+      "opp_wins": 4,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 3",
-        "score_a": 98.62,
-        "score_b": 164.3,
-        "winner": "Brandon Hancock",
-        "margin": 65.68
+        "week": "Week 4",
+        "score_a": 135.52,
+        "score_b": 144.1,
+        "winner": "Charlie Gorman",
+        "margin": 8.58
       },
       "closest": {
-        "season": "2020",
-        "week": "Week 5",
-        "score_a": 96.74,
-        "score_b": 96.6,
-        "winner": "Quin Gegwich",
-        "margin": 0.14
+        "season": "2025",
+        "week": "Week 4",
+        "score_a": 135.52,
+        "score_b": 144.1,
+        "winner": "Charlie Gorman",
+        "margin": 8.58
       },
       "blowout": {
-        "season": "2025",
-        "week": "Week 3",
-        "score_a": 98.62,
-        "score_b": 164.3,
-        "winner": "Brandon Hancock",
-        "margin": 65.68
+        "season": "2024",
+        "week": "Week 7",
+        "score_a": 135.6,
+        "score_b": 71.94,
+        "winner": "Quin Gegwich",
+        "margin": 63.66
       },
       "game_log": [
+        "loss",
+        "loss",
         "win",
         "loss",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
+        "win",
         "loss"
       ],
       "rematch": null
@@ -7701,41 +7700,42 @@
     {
       "week": 12,
       "week_type": "Standard",
-      "opponent": "Carmine Pittelli",
-      "interconference": false,
-      "my_wins": 1,
-      "opp_wins": 4,
-      "total_games": 5,
+      "opponent": "Aidan Quigley",
+      "interconference": true,
+      "my_wins": 3,
+      "opp_wins": 3,
+      "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 10",
-        "score_a": 124.6,
-        "score_b": 131.06,
-        "winner": "Carmine Pittelli",
-        "margin": 6.46
+        "week": "Week 6",
+        "score_a": 102.94,
+        "score_b": 95.04,
+        "winner": "Quin Gegwich",
+        "margin": 7.9
       },
       "closest": {
-        "season": "2025",
-        "week": "Week 10",
-        "score_a": 124.6,
-        "score_b": 131.06,
-        "winner": "Carmine Pittelli",
-        "margin": 6.46
+        "season": "2022",
+        "week": "Week 14",
+        "score_a": 103.8,
+        "score_b": 105.88,
+        "winner": "Aidan Quigley",
+        "margin": 2.08
       },
       "blowout": {
-        "season": "2020",
-        "week": "Week 3",
-        "score_a": 64.92,
-        "score_b": 152.2,
-        "winner": "Carmine Pittelli",
-        "margin": 87.28
+        "season": "2022",
+        "week": "Week 11",
+        "score_a": 150.54,
+        "score_b": 105.26,
+        "winner": "Quin Gegwich",
+        "margin": 45.28
       },
       "game_log": [
         "loss",
+        "win",
         "loss",
         "loss",
         "win",
-        "loss"
+        "win"
       ],
       "rematch": null
     },
@@ -7874,6 +7874,47 @@
     {
       "week": 2,
       "week_type": "Standard",
+      "opponent": "Baylen Slansky",
+      "interconference": true,
+      "my_wins": 4,
+      "opp_wins": 1,
+      "total_games": 5,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 6",
+        "score_a": 123.0,
+        "score_b": 110.64,
+        "winner": "Ryan McQuaid",
+        "margin": 12.36
+      },
+      "closest": {
+        "season": "2023",
+        "week": "Week 11",
+        "score_a": 82.68,
+        "score_b": 71.94,
+        "winner": "Ryan McQuaid",
+        "margin": 10.74
+      },
+      "blowout": {
+        "season": "2024",
+        "week": "Week 3",
+        "score_a": 142.38,
+        "score_b": 79.28,
+        "winner": "Ryan McQuaid",
+        "margin": 63.1
+      },
+      "game_log": [
+        "loss",
+        "win",
+        "win",
+        "win",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 3,
+      "week_type": "Standard",
       "opponent": "Cole Maney",
       "interconference": true,
       "my_wins": 1,
@@ -7915,8 +7956,8 @@
       "rematch": null
     },
     {
-      "week": 3,
-      "week_type": "Standard",
+      "week": 4,
+      "week_type": "Closest Rivalries Week",
       "opponent": "Max Malich",
       "interconference": true,
       "my_wins": 3,
@@ -7957,95 +7998,7 @@
       "rematch": null
     },
     {
-      "week": 4,
-      "week_type": "Standard",
-      "opponent": "Baylen Slansky",
-      "interconference": true,
-      "my_wins": 4,
-      "opp_wins": 1,
-      "total_games": 5,
-      "most_recent": {
-        "season": "2025",
-        "week": "Week 6",
-        "score_a": 123.0,
-        "score_b": 110.64,
-        "winner": "Ryan McQuaid",
-        "margin": 12.36
-      },
-      "closest": {
-        "season": "2023",
-        "week": "Week 11",
-        "score_a": 82.68,
-        "score_b": 71.94,
-        "winner": "Ryan McQuaid",
-        "margin": 10.74
-      },
-      "blowout": {
-        "season": "2024",
-        "week": "Week 3",
-        "score_a": 142.38,
-        "score_b": 79.28,
-        "winner": "Ryan McQuaid",
-        "margin": 63.1
-      },
-      "game_log": [
-        "loss",
-        "win",
-        "win",
-        "win",
-        "win"
-      ],
-      "rematch": null
-    },
-    {
       "week": 5,
-      "week_type": "Interconference Week",
-      "opponent": "Ethan Radecki",
-      "interconference": true,
-      "my_wins": 1,
-      "opp_wins": 10,
-      "total_games": 11,
-      "most_recent": {
-        "season": "2025",
-        "week": "Playoff Round 1",
-        "score_a": 119.3,
-        "score_b": 169.02,
-        "winner": "Ethan Radecki",
-        "margin": 49.72
-      },
-      "closest": {
-        "season": "2021",
-        "week": "Week 4",
-        "score_a": 113.02,
-        "score_b": 113.62,
-        "winner": "Ethan Radecki",
-        "margin": 0.6
-      },
-      "blowout": {
-        "season": "2020",
-        "week": "Week 13",
-        "score_a": 90.98,
-        "score_b": 154.28,
-        "winner": "Ethan Radecki",
-        "margin": 63.3
-      },
-      "game_log": [
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "loss",
-        "win",
-        "loss"
-      ],
-      "rematch": null
-    },
-    {
-      "week": 6,
       "week_type": "Interconference Week",
       "opponent": "Andrew Root",
       "interconference": true,
@@ -8088,8 +8041,8 @@
       "rematch": null
     },
     {
-      "week": 7,
-      "week_type": "Standard",
+      "week": 6,
+      "week_type": "Interconference Week",
       "opponent": "Aidan Quigley",
       "interconference": true,
       "my_wins": 2,
@@ -8123,6 +8076,48 @@
         "win",
         "loss",
         "loss",
+        "win"
+      ],
+      "rematch": null
+    },
+    {
+      "week": 7,
+      "week_type": "Standard",
+      "opponent": "Ben Castaldo",
+      "interconference": false,
+      "my_wins": 5,
+      "opp_wins": 1,
+      "total_games": 6,
+      "most_recent": {
+        "season": "2025",
+        "week": "Week 13",
+        "score_a": 104.24,
+        "score_b": 67.3,
+        "winner": "Ryan McQuaid",
+        "margin": 36.94
+      },
+      "closest": {
+        "season": "2020",
+        "week": "Week 3",
+        "score_a": 84.08,
+        "score_b": 83.08,
+        "winner": "Ryan McQuaid",
+        "margin": 1.0
+      },
+      "blowout": {
+        "season": "2022",
+        "week": "Week 2",
+        "score_a": 131.58,
+        "score_b": 85.98,
+        "winner": "Ryan McQuaid",
+        "margin": 45.6
+      },
+      "game_log": [
+        "win",
+        "win",
+        "win",
+        "loss",
+        "win",
         "win"
       ],
       "rematch": null
@@ -8171,43 +8166,48 @@
     },
     {
       "week": 9,
-      "week_type": "Standard",
-      "opponent": "Carmine Pittelli",
-      "interconference": false,
-      "my_wins": 4,
-      "opp_wins": 2,
-      "total_games": 6,
+      "week_type": "Lopsided History Week",
+      "opponent": "Ethan Radecki",
+      "interconference": true,
+      "my_wins": 1,
+      "opp_wins": 10,
+      "total_games": 11,
       "most_recent": {
         "season": "2025",
-        "week": "Week 9",
-        "score_a": 105.06,
-        "score_b": 93.26,
-        "winner": "Ryan McQuaid",
-        "margin": 11.8
+        "week": "Playoff Round 1",
+        "score_a": 119.3,
+        "score_b": 169.02,
+        "winner": "Ethan Radecki",
+        "margin": 49.72
       },
       "closest": {
-        "season": "2024",
-        "week": "Week 10",
-        "score_a": 106.82,
-        "score_b": 106.5,
-        "winner": "Ryan McQuaid",
-        "margin": 0.32
+        "season": "2021",
+        "week": "Week 4",
+        "score_a": 113.02,
+        "score_b": 113.62,
+        "winner": "Ethan Radecki",
+        "margin": 0.6
       },
       "blowout": {
-        "season": "2021",
-        "week": "Week 1",
-        "score_a": 137.18,
-        "score_b": 122.56,
-        "winner": "Ryan McQuaid",
-        "margin": 14.62
+        "season": "2020",
+        "week": "Week 13",
+        "score_a": 90.98,
+        "score_b": 154.28,
+        "winner": "Ethan Radecki",
+        "margin": 63.3
       },
       "game_log": [
         "loss",
-        "win",
-        "win",
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "loss",
+        "loss",
         "loss",
         "win",
-        "win"
+        "loss"
       ],
       "rematch": null
     },
@@ -8260,37 +8260,37 @@
     {
       "week": 11,
       "week_type": "Standard",
-      "opponent": "Ben Castaldo",
+      "opponent": "Carmine Pittelli",
       "interconference": false,
-      "my_wins": 5,
-      "opp_wins": 1,
+      "my_wins": 4,
+      "opp_wins": 2,
       "total_games": 6,
       "most_recent": {
         "season": "2025",
-        "week": "Week 13",
-        "score_a": 104.24,
-        "score_b": 67.3,
+        "week": "Week 9",
+        "score_a": 105.06,
+        "score_b": 93.26,
         "winner": "Ryan McQuaid",
-        "margin": 36.94
+        "margin": 11.8
       },
       "closest": {
-        "season": "2020",
-        "week": "Week 3",
-        "score_a": 84.08,
-        "score_b": 83.08,
+        "season": "2024",
+        "week": "Week 10",
+        "score_a": 106.82,
+        "score_b": 106.5,
         "winner": "Ryan McQuaid",
-        "margin": 1.0
+        "margin": 0.32
       },
       "blowout": {
-        "season": "2022",
-        "week": "Week 2",
-        "score_a": 131.58,
-        "score_b": 85.98,
+        "season": "2021",
+        "week": "Week 1",
+        "score_a": 137.18,
+        "score_b": 122.56,
         "winner": "Ryan McQuaid",
-        "margin": 45.6
+        "margin": 14.62
       },
       "game_log": [
-        "win",
+        "loss",
         "win",
         "win",
         "loss",
