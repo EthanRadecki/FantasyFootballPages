@@ -235,6 +235,7 @@
     padding:16px 18px 18px 18px;
     flex:1;
     display:flex; flex-direction:column;
+    justify-content:center;
     overflow-y:auto;
   }
 
@@ -298,7 +299,7 @@
   .rdot.loss{ background:var(--loss); }
 
   .caption{
-    margin-top:auto;
+    margin-top:14px;
     padding-top:12px;
     border-top:1px dashed var(--line);
     font-size:13px;
@@ -346,39 +347,31 @@ const CONF = {
 
 let MANAGERS_DATA = {};
 let MANAGERS = [];
-const MANAGER_COLOR = {};
 
-function extractColor(name){
-  return new Promise((resolve)=>{
-    const img = new Image();
-    img.onload = ()=>{
-      try{
-        const canvas = document.createElement('canvas');
-        canvas.width = 24; canvas.height = 24;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, 24, 24);
-        const data = ctx.getImageData(0,0,24,24).data;
-        let r=0,g=0,b=0,count=0;
-        for(let i=0;i<data.length;i+=4){
-          const alpha = data[i+3];
-          if(alpha < 100) continue;
-          const rr=data[i], gg=data[i+1], bb=data[i+2];
-          if(rr>238 && gg>238 && bb>238) continue;
-          if(rr<12 && gg<12 && bb<12) continue;
-          r+=rr; g+=gg; b+=bb; count++;
-        }
-        if(count===0){ resolve(null); return; }
-        resolve(`${Math.round(r/count)},${Math.round(g/count)},${Math.round(b/count)}`);
-      } catch(e){ resolve(null); }
-    };
-    img.onerror = ()=> resolve(null);
-    img.src = LOGO_PATH(name);
-  });
+function hexToRgb(hex){
+  const h = hex.replace('#','');
+  const r = parseInt(h.substring(0,2),16);
+  const g = parseInt(h.substring(2,4),16);
+  const b = parseInt(h.substring(4,6),16);
+  return `${r},${g},${b}`;
 }
 
-function fallbackColor(name){
-  return CONF[name]==='REP' ? '168,67,74' : '63,101,131';
-}
+const MANAGER_COLOR = {
+  'Carmine Pittelli': hexToRgb('#541821'),
+  'Anthony Kelly': hexToRgb('#cdbca6'),
+  'Charlie Gorman': hexToRgb('#9f8bc2'),
+  'Cole Maney': hexToRgb('#f7cdb9'),
+  'Ethan Radecki': hexToRgb('#ea9a2e'),
+  'Deniz Bileydi': hexToRgb('#8d9b51'),
+  'Baylen Slansky': hexToRgb('#776aad'),
+  'Andrew Root': hexToRgb('#4c82af'),
+  'Max Malich': hexToRgb('#888888'),
+  'Ben Castaldo': hexToRgb('#404c5b'),
+  'Brandon Hancock': hexToRgb('#4875b9'),
+  'Aidan Quigley': hexToRgb('#eb644c'),
+  'Quin Gegwich': hexToRgb('#ad1f15'),
+  'Ryan McQuaid': hexToRgb('#dfc983')
+};
 
 function initials(name){ return name.split(' ').map(p=>p[0]).join(''); }
 
@@ -503,9 +496,9 @@ function renderTicket(entry, meName){
   const bigGameNote = entry.week_type==='Big Game Week'
     ? `<div class="inter-note">This week across the league is Big Game Week: championship and playoff rematches from throughout league history.</div>` : '';
   const banner = bannerFor(entry);
-  const colorA = MANAGER_COLOR[meName] || fallbackColor(meName);
-  const colorB = MANAGER_COLOR[entry.opponent] || fallbackColor(entry.opponent);
-  const ticketBg = `background:linear-gradient(150deg, rgba(${colorA},0.16), rgba(${colorB},0.16) 60%, #fff 100%);`;
+  const colorA = MANAGER_COLOR[meName] || '107,90,108';
+  const colorB = MANAGER_COLOR[entry.opponent] || '107,90,108';
+  const ticketBg = `background:linear-gradient(150deg, rgba(${colorA},0.22), rgba(${colorB},0.22) 60%, #fff 100%);`;
 
   return `
   <div class="ticket-slide">
@@ -587,13 +580,9 @@ function selectManager(name){
   slides.forEach(s=>observer.observe(s));
 }
 
-fetch(DATA_URL).then(r=>r.json()).then(async data=>{
+fetch(DATA_URL).then(r=>r.json()).then(data=>{
   MANAGERS_DATA = data;
   MANAGERS = Object.keys(data).sort((a,b)=> a.split(' ')[0].localeCompare(b.split(' ')[0]));
-  await Promise.all(MANAGERS.map(async m=>{
-    const c = await extractColor(m);
-    MANAGER_COLOR[m] = c;
-  }));
   renderManagerChips(null);
   document.getElementById('content').innerHTML = `
     <div class="placeholder">
