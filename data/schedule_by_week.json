@@ -1,0 +1,576 @@
+[
+  {
+    "week": 1,
+    "week_type": "Rivalry Week",
+    "matchups": [
+      {
+        "team_a": "Ethan Radecki",
+        "team_b": "Andrew Root",
+        "interconference": false
+      },
+      {
+        "team_a": "Max Malich",
+        "team_b": "Deniz Bileydi",
+        "interconference": false
+      },
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Anthony Kelly",
+        "interconference": false
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Brandon Hancock",
+        "interconference": true
+      },
+      {
+        "team_a": "Cole Maney",
+        "team_b": "Carmine Pittelli",
+        "interconference": true
+      },
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Ben Castaldo",
+        "interconference": false
+      },
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Aidan Quigley",
+        "interconference": true
+      }
+    ]
+  },
+  {
+    "week": 2,
+    "week_type": "Standard",
+    "matchups": [
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Cole Maney",
+        "interconference": true
+      },
+      {
+        "team_a": "Brandon Hancock",
+        "team_b": "Andrew Root",
+        "interconference": true
+      },
+      {
+        "team_a": "Carmine Pittelli",
+        "team_b": "Anthony Kelly",
+        "interconference": false
+      },
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Baylen Slansky",
+        "interconference": true
+      },
+      {
+        "team_a": "Ben Castaldo",
+        "team_b": "Max Malich",
+        "interconference": true
+      },
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Deniz Bileydi",
+        "interconference": true
+      },
+      {
+        "team_a": "Ethan Radecki",
+        "team_b": "Aidan Quigley",
+        "interconference": false
+      }
+    ]
+  },
+  {
+    "week": 3,
+    "week_type": "Standard",
+    "matchups": [
+      {
+        "team_a": "Carmine Pittelli",
+        "team_b": "Ethan Radecki",
+        "interconference": true
+      },
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Deniz Bileydi",
+        "interconference": true
+      },
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Baylen Slansky",
+        "interconference": true
+      },
+      {
+        "team_a": "Aidan Quigley",
+        "team_b": "Andrew Root",
+        "interconference": false
+      },
+      {
+        "team_a": "Ben Castaldo",
+        "team_b": "Anthony Kelly",
+        "interconference": false
+      },
+      {
+        "team_a": "Brandon Hancock",
+        "team_b": "Max Malich",
+        "interconference": true
+      },
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Cole Maney",
+        "interconference": true
+      }
+    ]
+  },
+  {
+    "week": 4,
+    "week_type": "Closest Rivalries Week",
+    "matchups": [
+      {
+        "team_a": "Max Malich",
+        "team_b": "Ryan McQuaid",
+        "interconference": true
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Aidan Quigley",
+        "interconference": false
+      },
+      {
+        "team_a": "Anthony Kelly",
+        "team_b": "Quin Gegwich",
+        "interconference": false
+      },
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Andrew Root",
+        "interconference": true
+      },
+      {
+        "team_a": "Brandon Hancock",
+        "team_b": "Carmine Pittelli",
+        "interconference": false
+      },
+      {
+        "team_a": "Ben Castaldo",
+        "team_b": "Ethan Radecki",
+        "interconference": true
+      },
+      {
+        "team_a": "Deniz Bileydi",
+        "team_b": "Cole Maney",
+        "interconference": false
+      }
+    ]
+  },
+  {
+    "week": 5,
+    "week_type": "Interconference Week",
+    "matchups": [
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Andrew Root",
+        "interconference": true
+      },
+      {
+        "team_a": "Ben Castaldo",
+        "team_b": "Aidan Quigley",
+        "interconference": true
+      },
+      {
+        "team_a": "Anthony Kelly",
+        "team_b": "Cole Maney",
+        "interconference": true
+      },
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Ethan Radecki",
+        "interconference": true
+      },
+      {
+        "team_a": "Carmine Pittelli",
+        "team_b": "Baylen Slansky",
+        "interconference": true
+      },
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Max Malich",
+        "interconference": true
+      },
+      {
+        "team_a": "Brandon Hancock",
+        "team_b": "Deniz Bileydi",
+        "interconference": true
+      }
+    ]
+  },
+  {
+    "week": 6,
+    "week_type": "Interconference Week",
+    "matchups": [
+      {
+        "team_a": "Ben Castaldo",
+        "team_b": "Deniz Bileydi",
+        "interconference": true
+      },
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Andrew Root",
+        "interconference": true
+      },
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Ethan Radecki",
+        "interconference": true
+      },
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Aidan Quigley",
+        "interconference": true
+      },
+      {
+        "team_a": "Carmine Pittelli",
+        "team_b": "Max Malich",
+        "interconference": true
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Anthony Kelly",
+        "interconference": true
+      },
+      {
+        "team_a": "Brandon Hancock",
+        "team_b": "Cole Maney",
+        "interconference": true
+      }
+    ]
+  },
+  {
+    "week": 7,
+    "week_type": "Standard",
+    "matchups": [
+      {
+        "team_a": "Carmine Pittelli",
+        "team_b": "Andrew Root",
+        "interconference": true
+      },
+      {
+        "team_a": "Anthony Kelly",
+        "team_b": "Ethan Radecki",
+        "interconference": true
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Deniz Bileydi",
+        "interconference": false
+      },
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Ben Castaldo",
+        "interconference": false
+      },
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Brandon Hancock",
+        "interconference": false
+      },
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Cole Maney",
+        "interconference": true
+      },
+      {
+        "team_a": "Aidan Quigley",
+        "team_b": "Max Malich",
+        "interconference": false
+      }
+    ]
+  },
+  {
+    "week": 8,
+    "week_type": "Standard",
+    "matchups": [
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Brandon Hancock",
+        "interconference": false
+      },
+      {
+        "team_a": "Aidan Quigley",
+        "team_b": "Deniz Bileydi",
+        "interconference": false
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Andrew Root",
+        "interconference": false
+      },
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Ben Castaldo",
+        "interconference": false
+      },
+      {
+        "team_a": "Anthony Kelly",
+        "team_b": "Max Malich",
+        "interconference": true
+      },
+      {
+        "team_a": "Cole Maney",
+        "team_b": "Ethan Radecki",
+        "interconference": false
+      },
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Carmine Pittelli",
+        "interconference": false
+      }
+    ]
+  },
+  {
+    "week": 9,
+    "week_type": "Lopsided History Week",
+    "matchups": [
+      {
+        "team_a": "Ethan Radecki",
+        "team_b": "Ryan McQuaid",
+        "interconference": true
+      },
+      {
+        "team_a": "Brandon Hancock",
+        "team_b": "Quin Gegwich",
+        "interconference": false
+      },
+      {
+        "team_a": "Andrew Root",
+        "team_b": "Max Malich",
+        "interconference": false
+      },
+      {
+        "team_a": "Carmine Pittelli",
+        "team_b": "Deniz Bileydi",
+        "interconference": true
+      },
+      {
+        "team_a": "Anthony Kelly",
+        "team_b": "Aidan Quigley",
+        "interconference": true
+      },
+      {
+        "team_a": "Ben Castaldo",
+        "team_b": "Cole Maney",
+        "interconference": true
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Charlie Gorman",
+        "interconference": true
+      }
+    ]
+  },
+  {
+    "week": 10,
+    "week_type": "Big Game Week",
+    "matchups": [
+      {
+        "team_a": "Ethan Radecki",
+        "team_b": "Brandon Hancock",
+        "interconference": true
+      },
+      {
+        "team_a": "Anthony Kelly",
+        "team_b": "Charlie Gorman",
+        "interconference": false
+      },
+      {
+        "team_a": "Andrew Root",
+        "team_b": "Ben Castaldo",
+        "interconference": true
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Cole Maney",
+        "interconference": false
+      },
+      {
+        "team_a": "Deniz Bileydi",
+        "team_b": "Ryan McQuaid",
+        "interconference": true
+      },
+      {
+        "team_a": "Carmine Pittelli",
+        "team_b": "Aidan Quigley",
+        "interconference": true
+      },
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Max Malich",
+        "interconference": true
+      }
+    ]
+  },
+  {
+    "week": 11,
+    "week_type": "Standard",
+    "matchups": [
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Charlie Gorman",
+        "interconference": false
+      },
+      {
+        "team_a": "Cole Maney",
+        "team_b": "Andrew Root",
+        "interconference": false
+      },
+      {
+        "team_a": "Ethan Radecki",
+        "team_b": "Max Malich",
+        "interconference": false
+      },
+      {
+        "team_a": "Anthony Kelly",
+        "team_b": "Deniz Bileydi",
+        "interconference": true
+      },
+      {
+        "team_a": "Ben Castaldo",
+        "team_b": "Baylen Slansky",
+        "interconference": true
+      },
+      {
+        "team_a": "Aidan Quigley",
+        "team_b": "Brandon Hancock",
+        "interconference": true
+      },
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Carmine Pittelli",
+        "interconference": false
+      }
+    ]
+  },
+  {
+    "week": 12,
+    "week_type": "Standard",
+    "matchups": [
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Aidan Quigley",
+        "interconference": true
+      },
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Charlie Gorman",
+        "interconference": false
+      },
+      {
+        "team_a": "Deniz Bileydi",
+        "team_b": "Andrew Root",
+        "interconference": false
+      },
+      {
+        "team_a": "Brandon Hancock",
+        "team_b": "Anthony Kelly",
+        "interconference": false
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Ethan Radecki",
+        "interconference": false
+      },
+      {
+        "team_a": "Cole Maney",
+        "team_b": "Max Malich",
+        "interconference": false
+      },
+      {
+        "team_a": "Carmine Pittelli",
+        "team_b": "Ben Castaldo",
+        "interconference": false
+      }
+    ]
+  },
+  {
+    "week": 13,
+    "week_type": "Standard",
+    "matchups": [
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Quin Gegwich",
+        "interconference": false
+      },
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Carmine Pittelli",
+        "interconference": false
+      },
+      {
+        "team_a": "Aidan Quigley",
+        "team_b": "Cole Maney",
+        "interconference": false
+      },
+      {
+        "team_a": "Anthony Kelly",
+        "team_b": "Andrew Root",
+        "interconference": true
+      },
+      {
+        "team_a": "Brandon Hancock",
+        "team_b": "Ben Castaldo",
+        "interconference": false
+      },
+      {
+        "team_a": "Deniz Bileydi",
+        "team_b": "Ethan Radecki",
+        "interconference": false
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Max Malich",
+        "interconference": false
+      }
+    ]
+  },
+  {
+    "week": 14,
+    "week_type": "Rivalry Week",
+    "matchups": [
+      {
+        "team_a": "Ethan Radecki",
+        "team_b": "Andrew Root",
+        "interconference": false
+      },
+      {
+        "team_a": "Max Malich",
+        "team_b": "Deniz Bileydi",
+        "interconference": false
+      },
+      {
+        "team_a": "Ryan McQuaid",
+        "team_b": "Anthony Kelly",
+        "interconference": false
+      },
+      {
+        "team_a": "Baylen Slansky",
+        "team_b": "Brandon Hancock",
+        "interconference": true
+      },
+      {
+        "team_a": "Cole Maney",
+        "team_b": "Carmine Pittelli",
+        "interconference": true
+      },
+      {
+        "team_a": "Quin Gegwich",
+        "team_b": "Ben Castaldo",
+        "interconference": false
+      },
+      {
+        "team_a": "Charlie Gorman",
+        "team_b": "Aidan Quigley",
+        "interconference": true
+      }
+    ]
+  }
+]
