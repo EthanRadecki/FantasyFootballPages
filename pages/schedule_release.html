@@ -195,10 +195,10 @@
   }
   .ticket.active-card{ opacity:1; transform:scale(1) rotate(0deg); }
 
-  .ticket.rivalry .ticket-body{ background:linear-gradient(180deg, rgba(168,67,74,0.10), rgba(255,255,255,0) 45%); }
-  .ticket.biggame .ticket-body{ background:linear-gradient(180deg, rgba(184,137,47,0.14), rgba(255,255,255,0) 45%); }
-  .ticket.inter .ticket-body{ background:linear-gradient(180deg, rgba(63,101,131,0.10), rgba(255,255,255,0) 45%); }
-  .ticket-body{ background:linear-gradient(180deg, rgba(107,90,108,0.08), rgba(255,255,255,0) 45%); }
+  .ticket.rivalry .ticket-body{ background:linear-gradient(180deg, rgba(168,67,74,0.06), rgba(255,255,255,0) 40%); }
+  .ticket.biggame .ticket-body{ background:linear-gradient(180deg, rgba(184,137,47,0.08), rgba(255,255,255,0) 40%); }
+  .ticket.inter .ticket-body{ background:linear-gradient(180deg, rgba(63,101,131,0.06), rgba(255,255,255,0) 40%); }
+  .ticket-body{ background:linear-gradient(180deg, rgba(107,90,108,0.05), rgba(255,255,255,0) 40%); }
 
   .banner-biggame{
     background-size:200% 100%;
@@ -346,6 +346,39 @@ const CONF = {
 
 let MANAGERS_DATA = {};
 let MANAGERS = [];
+const MANAGER_COLOR = {};
+
+function extractColor(name){
+  return new Promise((resolve)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      try{
+        const canvas = document.createElement('canvas');
+        canvas.width = 24; canvas.height = 24;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 24, 24);
+        const data = ctx.getImageData(0,0,24,24).data;
+        let r=0,g=0,b=0,count=0;
+        for(let i=0;i<data.length;i+=4){
+          const alpha = data[i+3];
+          if(alpha < 100) continue;
+          const rr=data[i], gg=data[i+1], bb=data[i+2];
+          if(rr>238 && gg>238 && bb>238) continue;
+          if(rr<12 && gg<12 && bb<12) continue;
+          r+=rr; g+=gg; b+=bb; count++;
+        }
+        if(count===0){ resolve(null); return; }
+        resolve(`${Math.round(r/count)},${Math.round(g/count)},${Math.round(b/count)}`);
+      } catch(e){ resolve(null); }
+    };
+    img.onerror = ()=> resolve(null);
+    img.src = LOGO_PATH(name);
+  });
+}
+
+function fallbackColor(name){
+  return CONF[name]==='REP' ? '168,67,74' : '63,101,131';
+}
 
 function initials(name){ return name.split(' ').map(p=>p[0]).join(''); }
 
@@ -467,15 +500,21 @@ function renderTicket(entry, meName){
   const caption = generateCaption(entry, meName);
   const interNote = entry.week_type==='Interconference Week'
     ? `<div class="inter-note">Every matchup across the league this week is REP vs. DEM.</div>` : '';
+  const bigGameNote = entry.week_type==='Big Game Week'
+    ? `<div class="inter-note">This week across the league is Big Game Week: championship and playoff rematches from throughout league history.</div>` : '';
   const banner = bannerFor(entry);
+  const colorA = MANAGER_COLOR[meName] || fallbackColor(meName);
+  const colorB = MANAGER_COLOR[entry.opponent] || fallbackColor(entry.opponent);
+  const ticketBg = `background:linear-gradient(150deg, rgba(${colorA},0.16), rgba(${colorB},0.16) 60%, #fff 100%);`;
 
   return `
   <div class="ticket-slide">
-    <div class="ticket ${tClass}">
+    <div class="ticket ${tClass}" style="${ticketBg}">
       ${banner.html}
       <div class="ticket-body">
         <div class="week-tag">Week ${entry.week}</div>
         ${interNote}
+        ${bigGameNote}
         <div class="matchup-row">
           <div class="logo-halo halo-${CONF[meName]}">${logoImg(meName, 72)}</div>
           <div class="matchup-vs">VS</div>
@@ -548,9 +587,13 @@ function selectManager(name){
   slides.forEach(s=>observer.observe(s));
 }
 
-fetch(DATA_URL).then(r=>r.json()).then(data=>{
+fetch(DATA_URL).then(r=>r.json()).then(async data=>{
   MANAGERS_DATA = data;
   MANAGERS = Object.keys(data).sort((a,b)=> a.split(' ')[0].localeCompare(b.split(' ')[0]));
+  await Promise.all(MANAGERS.map(async m=>{
+    const c = await extractColor(m);
+    MANAGER_COLOR[m] = c;
+  }));
   renderManagerChips(null);
   document.getElementById('content').innerHTML = `
     <div class="placeholder">
