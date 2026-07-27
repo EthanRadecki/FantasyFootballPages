@@ -198,6 +198,8 @@
   .ticket.rivalry .ticket-body{ background:linear-gradient(180deg, rgba(168,67,74,0.06), rgba(255,255,255,0) 40%); }
   .ticket.biggame .ticket-body{ background:linear-gradient(180deg, rgba(184,137,47,0.08), rgba(255,255,255,0) 40%); }
   .ticket.inter .ticket-body{ background:linear-gradient(180deg, rgba(63,101,131,0.06), rgba(255,255,255,0) 40%); }
+  .ticket.closest .ticket-body{ background:linear-gradient(180deg, rgba(63,107,94,0.07), rgba(255,255,255,0) 40%); }
+  .ticket.lopsided .ticket-body{ background:linear-gradient(180deg, rgba(161,87,44,0.08), rgba(255,255,255,0) 40%); }
   .ticket-body{ background:linear-gradient(180deg, rgba(107,90,108,0.05), rgba(255,255,255,0) 40%); }
 
   .banner-biggame{
@@ -230,6 +232,8 @@
   .banner-biggame{ background:linear-gradient(100deg, var(--gold-dark), var(--gold) 60%, var(--gold-dark)); }
   .banner-inter{ background:linear-gradient(100deg, var(--rep-dark) 0%, var(--rep) 42%, var(--dem) 58%, var(--dem-dark) 100%); }
   .banner-standard{ background:linear-gradient(100deg, var(--purple), #7d6d7e); }
+  .banner-closest{ background:linear-gradient(100deg, #3f6b5e, #5c9382 60%, #3f6b5e); }
+  .banner-lopsided{ background:linear-gradient(100deg, #6b3a1f, #a1572c 60%, #6b3a1f); }
 
   .ticket-body{
     padding:16px 18px 18px 18px;
@@ -311,6 +315,8 @@
   .ticket.rivalry{ border-color:rgba(124,47,52,0.45); }
   .ticket.biggame{ border-color:rgba(184,137,47,0.6); box-shadow:0 6px 26px rgba(184,137,47,0.32); }
   .ticket.inter{ border-color:rgba(63,101,131,0.4); }
+  .ticket.closest{ border-color:rgba(63,107,94,0.45); }
+  .ticket.lopsided{ border-color:rgba(161,87,44,0.5); }
 
   /* progress dots */
   .progress{
@@ -458,6 +464,8 @@ function bannerFor(entry){
     return {html:`<div class="ticket-banner banner-biggame">&#127942; ${label}</div>`};
   }
   if(wt==='Interconference Week') return {html:`<div class="ticket-banner banner-inter">&#127775; Interconference Week</div>`};
+  if(wt==='Closest Rivalries Week') return {html:`<div class="ticket-banner banner-closest">&#9878;&#65039; Closest Rivalries Week</div>`};
+  if(wt==='Lopsided History Week') return {html:`<div class="ticket-banner banner-lopsided">&#128293; Lopsided History Week</div>`};
   return {html:`<div class="ticket-banner banner-standard">Week ${entry.week}</div>`};
 }
 
@@ -474,7 +482,11 @@ function renderManagerChips(selected){
 }
 
 function renderTicket(entry, meName){
-  const tClass = entry.week_type==='Rivalry Week' ? 'rivalry' : entry.week_type==='Big Game Week' ? 'biggame' : entry.week_type==='Interconference Week' ? 'inter' : '';
+  const themeClassMap = {
+    'Rivalry Week':'rivalry','Big Game Week':'biggame','Interconference Week':'inter',
+    'Closest Rivalries Week':'closest','Lopsided History Week':'lopsided'
+  };
+  const tClass = themeClassMap[entry.week_type] || '';
   const oppConf = CONF[entry.opponent];
 
   const dots = entry.game_log.map(r => `<div class="rdot ${r==='win'?'win':'loss'}"></div>`).join('');
@@ -495,6 +507,10 @@ function renderTicket(entry, meName){
     ? `<div class="inter-note">Every matchup across the league this week is REP vs. DEM.</div>` : '';
   const bigGameNote = entry.week_type==='Big Game Week'
     ? `<div class="inter-note">This week across the league is Big Game Week: championship and playoff rematches from throughout league history.</div>` : '';
+  const closestNote = entry.week_type==='Closest Rivalries Week'
+    ? `<div class="inter-note">Every matchup across the league this week is a dead-even, all-time series.</div>` : '';
+  const lopsidedNote = entry.week_type==='Lopsided History Week'
+    ? `<div class="inter-note">Every matchup across the league this week is the most one-sided series either manager has.</div>` : '';
   const banner = bannerFor(entry);
   const colorA = MANAGER_COLOR[meName] || '107,90,108';
   const colorB = MANAGER_COLOR[entry.opponent] || '107,90,108';
@@ -508,6 +524,8 @@ function renderTicket(entry, meName){
         <div class="week-tag">Week ${entry.week}</div>
         ${interNote}
         ${bigGameNote}
+        ${closestNote}
+        ${lopsidedNote}
         <div class="matchup-row">
           <div class="logo-halo halo-${CONF[meName]}">${logoImg(meName, 72)}</div>
           <div class="matchup-vs">VS</div>
