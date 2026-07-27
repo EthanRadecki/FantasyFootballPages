@@ -205,6 +205,26 @@
 }
 .fp-link:hover { background:var(--accent-glow); }
 
+/* ── FRANCHISE LEADERS ── */
+.fl-table th.fl-sortable {
+  cursor:pointer;user-select:none;transition:color 0.15s;
+}
+.fl-table th.fl-sortable:hover { color:var(--mgr-accent,var(--accent)); }
+.fl-table th.fl-sortable::after {
+  content:'';display:inline-block;margin-left:0.35rem;
+  border:4px solid transparent;opacity:0.25;vertical-align:middle;
+}
+.fl-table th.fl-sortable.sort-desc::after {
+  border-top-color:var(--mgr-accent,var(--accent));opacity:1;
+}
+.fl-table th.fl-sortable.sort-asc::after {
+  border-bottom-color:var(--mgr-accent,var(--accent));margin-bottom:4px;opacity:1;
+}
+.fl-table tbody td:first-child { color:var(--muted);font-weight:600; }
+.fl-empty-row td {
+  text-align:center;color:var(--muted);padding:1.5rem;font-style:italic;
+}
+
 /* ── DRAFT BOARD HEATMAP ── */
 .heatmap-wrap {
   overflow-x:auto;padding-bottom:0.5rem;
@@ -487,6 +507,52 @@
           </thead>
           <tbody></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- FRANCHISE LEADERS -->
+    <div class="chart-section">
+      <div class="chart-section-label">Franchise Leaders</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <div class="fingerprint-filter-row">
+          <span class="fp-filter-label">Position:</span>
+          <button class="fp-btn fl-pos-btn active" onclick="setFlPosition('ALL',this)">All</button>
+          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('QB',this)">QB</button>
+          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('RB',this)">RB</button>
+          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('WR',this)">WR</button>
+          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('TE',this)">TE</button>
+          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('K',this)">K</button>
+          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('D/ST',this)">D/ST</button>
+        </div>
+        <div class="fingerprint-filter-row">
+          <span class="fp-filter-label">Season:</span>
+          <button class="fp-btn fl-year-btn active" onclick="setFlYear('career',this)">Career</button>
+          <button class="fp-btn fl-year-btn" onclick="setFlYear(2020,this)">2020</button>
+          <button class="fp-btn fl-year-btn" onclick="setFlYear(2021,this)">2021</button>
+          <button class="fp-btn fl-year-btn" onclick="setFlYear(2022,this)">2022</button>
+          <button class="fp-btn fl-year-btn" onclick="setFlYear(2023,this)">2023</button>
+          <button class="fp-btn fl-year-btn" onclick="setFlYear(2024,this)">2024</button>
+          <button class="fp-btn fl-year-btn" onclick="setFlYear(2025,this)">2025</button>
+        </div>
+        <div class="table-wrap">
+          <table class="season-table fl-table" id="franchise-leaders-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Player</th>
+                <th>Pos</th>
+                <th class="fl-sortable sort-desc" data-sort-key="total_points" onclick="setFlSort('total_points')">Total Pts</th>
+                <th class="fl-sortable" data-sort-key="ppg" onclick="setFlSort('ppg')">PPG</th>
+                <th>Games</th>
+                <th>Weeks Rostered</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.75rem;">
+          Total points and PPG only count weeks a player was in the starting lineup. Weeks rostered counts every week on the roster, bench and IR included.
+        </p>
       </div>
     </div>
 
@@ -1738,6 +1804,106 @@ function renderAllCharts(profile) {
   renderRankChart(profile);
   renderFingerprintChart(normalizeFpName(profile.name));
   renderHeatmap(normalizeFpName(profile.name));
+  renderFranchiseLeadersTable(profile.name);
+}
+
+// ── FRANCHISE LEADERS ────────────────────────────────────────────────────────
+var franchiseLeadersData = null;
+var flCurrentManager      = null;
+var flCurrentPosition     = 'ALL';
+var flCurrentYear         = 'career';
+var flSortKey             = 'total_points';
+var flSortDir             = 'desc';
+
+function setFlPosition(pos, btn) {
+  flCurrentPosition = pos;
+  document.querySelectorAll('.fl-pos-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderFranchiseLeadersTable();
+}
+
+function setFlYear(year, btn) {
+  flCurrentYear = year;
+  document.querySelectorAll('.fl-year-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderFranchiseLeadersTable();
+}
+
+function setFlSort(key) {
+  if (flSortKey === key) {
+    flSortDir = flSortDir === 'desc' ? 'asc' : 'desc';
+  } else {
+    flSortKey = key;
+    flSortDir = 'desc';
+  }
+  document.querySelectorAll('.fl-sortable').forEach(function(th){
+    th.classList.remove('sort-asc','sort-desc');
+    if (th.getAttribute('data-sort-key') === flSortKey) {
+      th.classList.add(flSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    }
+  });
+  renderFranchiseLeadersTable();
+}
+
+function renderFranchiseLeadersTable(manager) {
+  if (manager) flCurrentManager = manager;
+  var tbody = document.querySelector('#franchise-leaders-table tbody');
+  if (!tbody) return;
+  if (!flCurrentManager || !franchiseLeadersData) return;
+
+  var rows = franchiseLeadersData[flCurrentManager]
+    || franchiseLeadersData[normalizeFpName(flCurrentManager)]
+    || [];
+
+  var filtered = rows.filter(function(r) {
+    if (flCurrentYear !== 'career' && r.season !== flCurrentYear) return false;
+    if (flCurrentPosition !== 'ALL' && r.position !== flCurrentPosition) return false;
+    return true;
+  });
+
+  var byPlayer = {};
+  filtered.forEach(function(r) {
+    if (!byPlayer[r.player]) {
+      byPlayer[r.player] = {
+        player: r.player, position: r.position,
+        weeks_rostered: 0, games_played: 0, total_points: 0
+      };
+    }
+    var p = byPlayer[r.player];
+    p.weeks_rostered += r.weeks_rostered;
+    p.games_played   += r.games_played;
+    p.total_points   += r.total_points;
+  });
+
+  var list = Object.keys(byPlayer).map(function(k){
+    var p = byPlayer[k];
+    p.ppg = p.games_played > 0 ? p.total_points / p.games_played : 0;
+    return p;
+  });
+
+  list.sort(function(a,b) {
+    var av = a[flSortKey], bv = b[flSortKey];
+    return flSortDir === 'desc' ? (bv - av) : (av - bv);
+  });
+
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr class="fl-empty-row"><td colspan="7">No players match this filter.</td></tr>';
+    return;
+  }
+
+  var html = '';
+  list.forEach(function(p, i) {
+    html += '<tr>'
+      + '<td>' + (i+1) + '</td>'
+      + '<td style="font-weight:700;color:var(--palm);">' + p.player + '</td>'
+      + '<td>' + p.position + '</td>'
+      + '<td>' + p.total_points.toFixed(1) + '</td>'
+      + '<td>' + p.ppg.toFixed(1) + '</td>'
+      + '<td>' + p.games_played + '</td>'
+      + '<td>' + p.weeks_rostered + '</td>'
+      + '</tr>';
+  });
+  tbody.innerHTML = html;
 }
 
 // ── Manager selection ────────────────────────────────────────────────────────
@@ -1811,6 +1977,18 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch(function() {
       // Rankings not available -- chart will silently not render
       allRankingData = {};
+    });
+
+  // Load franchise leaders (player-season aggregates per manager)
+  var flPromise = fetch('../data/franchise_leaders.json')
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      franchiseLeadersData = data;
+      if (flCurrentManager) renderFranchiseLeadersTable();
+    })
+    .catch(function() {
+      // Franchise leaders not available -- table will silently stay empty
+      franchiseLeadersData = {};
     });
 });
 </script>
