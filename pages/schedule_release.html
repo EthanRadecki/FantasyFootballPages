@@ -399,6 +399,61 @@
     font-size:8px; font-weight:700; color:var(--ink-soft);
     background:var(--bone-dim); padding:2px 5px; border-radius:4px;
   }
+
+  /* GRID / CALENDAR VIEW */
+  .grid-wrap{
+    flex:1; min-height:0;
+    overflow:auto;
+    padding:10px 0 16px 0;
+  }
+  .schedule-grid{
+    border-collapse:separate;
+    border-spacing:0;
+    font-family:'Inter',sans-serif;
+  }
+  .grid-corner{
+    position:sticky; top:0; left:0; z-index:5;
+    background:var(--bone);
+    min-width:88px;
+  }
+  .grid-week-header{
+    position:sticky; top:0; z-index:3;
+    min-width:46px;
+    max-width:46px;
+    padding:6px 3px;
+    text-align:center;
+    color:#fff;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .grid-week-num{ font-size:12px; font-weight:700; }
+  .grid-week-theme{ font-size:8px; line-height:1.2; margin-top:2px; opacity:0.9; }
+  .grid-team-header{
+    position:sticky; left:0; z-index:2;
+    background:var(--bone);
+    padding:6px 10px;
+    text-align:left;
+    white-space:nowrap;
+    border-bottom:1px solid var(--line);
+  }
+  .grid-team-header-inner{ display:flex; align-items:center; gap:6px; }
+  .grid-team-header .logo, .grid-team-header .logo-fallback{ width:20px; height:20px; font-size:8px; }
+  .grid-team-name{ font-size:11px; font-weight:700; }
+  .grid-cell{
+    text-align:center;
+    padding:4px;
+    border-bottom:1px solid rgba(30,26,20,0.06);
+    border-right:1px solid rgba(30,26,20,0.06);
+  }
+  .grid-cell .logo, .grid-cell .logo-fallback{ width:26px; height:26px; font-size:9px; margin:0 auto; }
+  .grid-cell.conf-cell-REP{ background:rgba(168,67,74,0.16); }
+  .grid-cell.conf-cell-DEM{ background:rgba(63,101,131,0.16); }
+
+  .theme-header-rivalry{ background:linear-gradient(180deg, var(--rep-dark), var(--rep)); }
+  .theme-header-biggame{ background:linear-gradient(180deg, var(--gold-dark), var(--gold)); }
+  .theme-header-inter{ background:linear-gradient(180deg, var(--rep), var(--dem)); }
+  .theme-header-closest{ background:linear-gradient(180deg, #3f6b5e, #5c9382); }
+  .theme-header-lopsided{ background:linear-gradient(180deg, #6b3a1f, #a1572c); }
+  .theme-header-standard{ background:linear-gradient(180deg, var(--purple), #7d6d7e); }
 </style>
 </head>
 <body>
@@ -409,7 +464,8 @@
     <div class="manager-row" id="managerRow"></div>
     <div class="view-toggle" id="viewToggle">
       <div class="toggle-btn active" data-view="my">My Schedule</div>
-      <div class="toggle-btn" data-view="league">Full League Schedule</div>
+      <div class="toggle-btn" data-view="league">Full Schedule</div>
+      <div class="toggle-btn" data-view="grid">Grid</div>
     </div>
   </div>
 
@@ -562,6 +618,56 @@ function bannerFor(entry){
   return {html:`<div class="ticket-banner banner-standard">Week ${entry.week}</div>`};
 }
 
+const THEME_HEADER_CLASS = {
+  'Rivalry Week':'theme-header-rivalry','Big Game Week':'theme-header-biggame','Interconference Week':'theme-header-inter',
+  'Closest Rivalries Week':'theme-header-closest','Lopsided History Week':'theme-header-lopsided'
+};
+const THEME_SHORT_LABEL = {
+  'Rivalry Week':'RIVAL','Big Game Week':'BIG GAME','Interconference Week':'X-CONF',
+  'Closest Rivalries Week':'CLOSEST','Lopsided History Week':'LOPSIDED'
+};
+
+function renderGridSchedule(){
+  const content = document.getElementById('content');
+  content.className = 'carousel-wrap';
+
+  const oppByTeamWeek = {};
+  MANAGERS.forEach(m=> oppByTeamWeek[m] = {});
+  LEAGUE_SCHEDULE.forEach(wk=>{
+    wk.matchups.forEach(m=>{
+      oppByTeamWeek[m.team_a][wk.week] = m.team_b;
+      oppByTeamWeek[m.team_b][wk.week] = m.team_a;
+    });
+  });
+
+  let html = `<div class="grid-wrap"><table class="schedule-grid"><thead><tr>
+    <th class="grid-corner"></th>`;
+  LEAGUE_SCHEDULE.forEach(wk=>{
+    const headerClass = THEME_HEADER_CLASS[wk.week_type] || 'theme-header-standard';
+    const shortLabel = THEME_SHORT_LABEL[wk.week_type] || '';
+    html += `<th class="grid-week-header ${headerClass}">
+      <div class="grid-week-num">W${wk.week}</div>
+      ${shortLabel ? `<div class="grid-week-theme">${shortLabel}</div>` : ''}
+    </th>`;
+  });
+  html += `</tr></thead><tbody>`;
+
+  MANAGERS.forEach(team=>{
+    html += `<tr>
+      <td class="grid-team-header">
+        <div class="grid-team-header-inner">${logoImg(team, 20)}<span class="grid-team-name">${team.split(' ')[0]} ${team.split(' ')[1][0]}.</span></div>
+      </td>`;
+    LEAGUE_SCHEDULE.forEach(wk=>{
+      const opp = oppByTeamWeek[team][wk.week];
+      const oppConf = CONF[opp];
+      html += `<td class="grid-cell conf-cell-${oppConf}">${logoImg(opp, 26)}</td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table></div>`;
+  content.innerHTML = html;
+}
+
 function renderLeagueSchedule(){
   const content = document.getElementById('content');
   content.className = 'carousel-wrap';
@@ -599,6 +705,9 @@ function setView(view){
   if(view==='league'){
     managerRow.style.display = 'none';
     renderLeagueSchedule();
+  } else if(view==='grid'){
+    managerRow.style.display = 'none';
+    renderGridSchedule();
   } else {
     managerRow.style.display = 'flex';
     if(CURRENT_MANAGER){
