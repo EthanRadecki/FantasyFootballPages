@@ -556,7 +556,7 @@ function bannerFor(entry){
 
 function renderLeagueSchedule(){
   const content = document.getElementById('content');
-  content.className = '';
+  content.className = 'carousel-wrap';
   let html = `<div class="league-schedule">`;
   LEAGUE_SCHEDULE.forEach(wk=>{
     const bannerClass = THEME_BANNER_CLASS[wk.week_type] || 'banner-standard';
