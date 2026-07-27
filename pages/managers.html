@@ -224,6 +224,14 @@
 .fl-empty-row td {
   text-align:center;color:var(--muted);padding:1.5rem;font-style:italic;
 }
+.pos-badge { display:inline-block;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.6rem;font-weight:700;letter-spacing:0.05em; }
+.pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
+.pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
+.pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
+.pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
+.pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
+.pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
+.fl-table td.fl-grad-cell { font-weight:700;border-radius:4px; }
 .fl-pagination {
   display:flex;align-items:center;justify-content:center;gap:1rem;
   margin-top:0.9rem;
@@ -1877,6 +1885,35 @@ function flPrevPage() {
   renderFranchiseLeadersTable();
 }
 
+var FL_POS_CLASS_MAP = {RB:'rb', WR:'wr', QB:'qb', TE:'te', K:'k', 'D/ST':'dst'};
+function flPosBadge(pos) {
+  var cls = FL_POS_CLASS_MAP[pos] || 'k';
+  return '<span class="pos-badge pos-' + cls + '">' + pos + '</span>';
+}
+
+// Red (bad) -> bone (mid) -> green (good), scaled to the min/max of the
+// currently filtered population, same red/bone/green convention as the
+// draft board heatmap above.
+function flColorGradient(value, min, max) {
+  if (max === min) return 'transparent';
+  var mid = (min + max) / 2;
+  var r, g, b, t;
+  if (value <= mid) {
+    t = (mid - value) / ((mid - min) || 1);
+    t = Math.max(0, Math.min(1, t));
+    r = Math.round(245 + (192 - 245) * t);
+    g = Math.round(240 + (98  - 240) * t);
+    b = Math.round(232 + (58  - 232) * t);
+  } else {
+    t = (value - mid) / ((max - mid) || 1);
+    t = Math.max(0, Math.min(1, t));
+    r = Math.round(245 + (90  - 245) * t);
+    g = Math.round(240 + (138 - 240) * t);
+    b = Math.round(232 + (90  - 232) * t);
+  }
+  return 'rgba(' + r + ',' + g + ',' + b + ',0.32)';
+}
+
 function renderFranchiseLeadersTable(manager) {
   if (manager && manager !== flCurrentManager) flCurrentPage = 1;
   if (manager) flCurrentManager = manager;
@@ -1934,14 +1971,23 @@ function renderFranchiseLeadersTable(manager) {
   var start = (flCurrentPage - 1) * FL_PAGE_SIZE;
   var pageItems = list.slice(start, start + FL_PAGE_SIZE);
 
+  // Gradient scaling uses the min/max of the FULL filtered population,
+  // not just the current page, so colors stay stable while paging.
+  var totalVals = list.map(function(p){ return p.total_points; });
+  var ppgVals    = list.map(function(p){ return p.ppg; });
+  var minTotal = Math.min.apply(null, totalVals), maxTotal = Math.max.apply(null, totalVals);
+  var minPpg   = Math.min.apply(null, ppgVals),   maxPpg   = Math.max.apply(null, ppgVals);
+
   var html = '';
   pageItems.forEach(function(p, i) {
+    var totalBg = flColorGradient(p.total_points, minTotal, maxTotal);
+    var ppgBg   = flColorGradient(p.ppg, minPpg, maxPpg);
     html += '<tr>'
       + '<td>' + (start + i + 1) + '</td>'
       + '<td style="font-weight:700;color:var(--palm);">' + p.player + '</td>'
-      + '<td>' + p.position + '</td>'
-      + '<td>' + p.total_points.toFixed(1) + '</td>'
-      + '<td>' + p.ppg.toFixed(1) + '</td>'
+      + '<td>' + flPosBadge(p.position) + '</td>'
+      + '<td class="fl-grad-cell" style="background:' + totalBg + ';">' + p.total_points.toFixed(1) + '</td>'
+      + '<td class="fl-grad-cell" style="background:' + ppgBg + ';">' + p.ppg.toFixed(1) + '</td>'
       + '<td>' + p.games_played + '</td>'
       + '<td>' + p.weeks_rostered + '</td>'
       + '</tr>';
