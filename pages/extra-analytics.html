@@ -35,8 +35,24 @@ html { scroll-behavior:smooth; }
 .jump-nav-pill.active {
   background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
 }
+.jump-nav-edge { display:none; }
 @media(max-width:768px) {
-  .jump-nav { position:static; }
+  /* Multi-row wrapping doesn't work pinned to the top on a short viewport,
+     so collapse to a single-row horizontally scrollable strip instead —
+     stays sticky, only ever takes up one compact row. */
+  .jump-nav {
+    flex-wrap:nowrap;overflow-x:auto;top:0;border-radius:0;
+    -webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;
+    scrollbar-width:none;
+  }
+  .jump-nav::-webkit-scrollbar { display:none; }
+  .jump-nav-pill { flex:0 0 auto;white-space:nowrap;scroll-snap-align:start; }
+  .jump-nav-edge {
+    display:block;position:sticky;z-index:6;pointer-events:none;
+    width:1.25rem;flex:0 0 1.25rem;align-self:stretch;
+  }
+  .jump-nav-edge.left { left:-0.6rem;background:linear-gradient(90deg,var(--glass-bg,rgba(245,240,232,0.95)) 40%,transparent); }
+  .jump-nav-edge.right { right:-0.6rem;background:linear-gradient(270deg,var(--glass-bg,rgba(245,240,232,0.95)) 40%,transparent); }
 }
 .chart-area-pad { padding:1.5rem; }
 .chart-area-pad canvas { display:block;width:100% !important; }
@@ -392,6 +408,7 @@ html { scroll-behavior:smooth; }
   </div>
 
   <div class="jump-nav" id="jump-nav">
+    <div class="jump-nav-edge left"></div>
     <a href="#head-to-head" class="jump-nav-pill" data-target="head-to-head">Head-to-Head</a>
     <a href="#closest-games" class="jump-nav-pill" data-target="closest-games">Closest Games Ever</a>
     <a href="#championship-gauntlet" class="jump-nav-pill" data-target="championship-gauntlet">Championship Gauntlet</a>
@@ -400,6 +417,7 @@ html { scroll-behavior:smooth; }
     <a href="#seasonal-analysis" class="jump-nav-pill" data-target="seasonal-analysis">Seasonal Analysis</a>
     <a href="#positional-production" class="jump-nav-pill" data-target="positional-production">Positional Production</a>
     <a href="#win-attribution" class="jump-nav-pill" data-target="win-attribution">Win% Attribution</a>
+    <div class="jump-nav-edge right"></div>
   </div>
 
   <!-- ══════════════════════════════════════════
@@ -1709,6 +1727,9 @@ function shortName(n) {
       if (entry.isIntersecting) {
         pills.forEach(function(p) { p.classList.remove('active'); });
         pill.classList.add('active');
+        if (window.matchMedia('(max-width:768px)').matches) {
+          pill.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+        }
       }
     });
   }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
