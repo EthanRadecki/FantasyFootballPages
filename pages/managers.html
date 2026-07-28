@@ -232,26 +232,40 @@
 .pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
 .pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
 .fl-table td.fl-grad-cell { font-weight:700;border-radius:4px; }
+.fl-scatter-wrap { position:relative;height:420px; }
+@media(max-width:768px) {
+  .fl-scatter-wrap { height:320px; }
+}
 
 /* ── ROSTER TIMELINE ── */
+.fl-tl-scroll {
+  overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:0.5rem;
+}
 .fl-tl-header {
   display:grid;font-size:0.65rem;color:var(--muted);margin-bottom:0.4rem;font-weight:600;
 }
 .fl-tl-row {
-  display:grid;align-items:center;margin-bottom:0.55rem;
+  display:grid;align-items:center;padding:0.2rem 0;border-radius:4px;
 }
+.fl-tl-row.fl-tl-alt { background:rgba(156,148,156,0.08); }
 .fl-tl-label {
   font-size:0.75rem;color:var(--palm);display:flex;align-items:center;gap:0.4rem;
-  padding-right:0.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  padding-right:0.6rem;padding-left:0.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  position:sticky;left:0;z-index:2;background:var(--bg);
+  border-right:0.5px solid rgba(156,148,156,0.25);
 }
 .fl-tl-track {
-  position:relative;height:18px;
+  position:relative;height:22px;
 }
 .fl-tl-seasoncell {
   position:absolute;top:0;bottom:0;border-left:0.5px solid rgba(156,148,156,0.2);
 }
 .fl-tl-bar {
-  position:absolute;top:2px;height:14px;border-radius:3px;
+  position:absolute;top:3px;height:16px;border-radius:3px;
+}
+@media(max-width:768px) {
+  .fl-tl-label { font-size:0.68rem; }
+  .fl-tl-label .pos-badge { font-size:0.55rem;padding:0.05rem 0.25rem; }
 }
 .fl-pagination {
   display:flex;align-items:center;justify-content:center;gap:1rem;
@@ -555,25 +569,25 @@
     <div class="chart-section">
       <div class="chart-section-label">Franchise Leaders</div>
       <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
-        <div class="fingerprint-filter-row">
+        <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Position:</span>
-          <button class="fp-btn fl-pos-btn active" onclick="setFlPosition('ALL',this)">All</button>
-          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('QB',this)">QB</button>
-          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('RB',this)">RB</button>
-          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('WR',this)">WR</button>
-          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('TE',this)">TE</button>
-          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('K',this)">K</button>
-          <button class="fp-btn fl-pos-btn" onclick="setFlPosition('D/ST',this)">D/ST</button>
+          <button class="fp-btn fl-pos-btn active" data-pos="ALL" onclick="setFlPosition('ALL')">All</button>
+          <button class="fp-btn fl-pos-btn" data-pos="QB" onclick="setFlPosition('QB')">QB</button>
+          <button class="fp-btn fl-pos-btn" data-pos="RB" onclick="setFlPosition('RB')">RB</button>
+          <button class="fp-btn fl-pos-btn" data-pos="WR" onclick="setFlPosition('WR')">WR</button>
+          <button class="fp-btn fl-pos-btn" data-pos="TE" onclick="setFlPosition('TE')">TE</button>
+          <button class="fp-btn fl-pos-btn" data-pos="K" onclick="setFlPosition('K')">K</button>
+          <button class="fp-btn fl-pos-btn" data-pos="D/ST" onclick="setFlPosition('D/ST')">D/ST</button>
         </div>
-        <div class="fingerprint-filter-row">
+        <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Season:</span>
-          <button class="fp-btn fl-year-btn active" onclick="setFlYear('career',this)">Career</button>
-          <button class="fp-btn fl-year-btn" onclick="setFlYear(2020,this)">2020</button>
-          <button class="fp-btn fl-year-btn" onclick="setFlYear(2021,this)">2021</button>
-          <button class="fp-btn fl-year-btn" onclick="setFlYear(2022,this)">2022</button>
-          <button class="fp-btn fl-year-btn" onclick="setFlYear(2023,this)">2023</button>
-          <button class="fp-btn fl-year-btn" onclick="setFlYear(2024,this)">2024</button>
-          <button class="fp-btn fl-year-btn" onclick="setFlYear(2025,this)">2025</button>
+          <button class="fp-btn fl-year-btn active" data-year="career" onclick="setFlYear('career')">Career</button>
+          <button class="fp-btn fl-year-btn" data-year="2020" onclick="setFlYear(2020)">2020</button>
+          <button class="fp-btn fl-year-btn" data-year="2021" onclick="setFlYear(2021)">2021</button>
+          <button class="fp-btn fl-year-btn" data-year="2022" onclick="setFlYear(2022)">2022</button>
+          <button class="fp-btn fl-year-btn" data-year="2023" onclick="setFlYear(2023)">2023</button>
+          <button class="fp-btn fl-year-btn" data-year="2024" onclick="setFlYear(2024)">2024</button>
+          <button class="fp-btn fl-year-btn" data-year="2025" onclick="setFlYear(2025)">2025</button>
         </div>
         <div class="table-wrap">
           <table class="season-table fl-table" id="franchise-leaders-table">
@@ -606,8 +620,28 @@
     <div class="chart-section">
       <div class="chart-section-label">Workhorse vs. Rental</div>
       <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
-        <p style="font-size:0.75rem;color:var(--muted);margin:0 0 0.75rem;">
-          Top 50 players by total points, filtered by the Position and Season selections above. Bubble size is total points, color is position.
+        <div class="fingerprint-filter-row fl-filter-row">
+          <span class="fp-filter-label">Position:</span>
+          <button class="fp-btn fl-pos-btn active" data-pos="ALL" onclick="setFlPosition('ALL')">All</button>
+          <button class="fp-btn fl-pos-btn" data-pos="QB" onclick="setFlPosition('QB')">QB</button>
+          <button class="fp-btn fl-pos-btn" data-pos="RB" onclick="setFlPosition('RB')">RB</button>
+          <button class="fp-btn fl-pos-btn" data-pos="WR" onclick="setFlPosition('WR')">WR</button>
+          <button class="fp-btn fl-pos-btn" data-pos="TE" onclick="setFlPosition('TE')">TE</button>
+          <button class="fp-btn fl-pos-btn" data-pos="K" onclick="setFlPosition('K')">K</button>
+          <button class="fp-btn fl-pos-btn" data-pos="D/ST" onclick="setFlPosition('D/ST')">D/ST</button>
+        </div>
+        <div class="fingerprint-filter-row fl-filter-row">
+          <span class="fp-filter-label">Season:</span>
+          <button class="fp-btn fl-year-btn active" data-year="career" onclick="setFlYear('career')">Career</button>
+          <button class="fp-btn fl-year-btn" data-year="2020" onclick="setFlYear(2020)">2020</button>
+          <button class="fp-btn fl-year-btn" data-year="2021" onclick="setFlYear(2021)">2021</button>
+          <button class="fp-btn fl-year-btn" data-year="2022" onclick="setFlYear(2022)">2022</button>
+          <button class="fp-btn fl-year-btn" data-year="2023" onclick="setFlYear(2023)">2023</button>
+          <button class="fp-btn fl-year-btn" data-year="2024" onclick="setFlYear(2024)">2024</button>
+          <button class="fp-btn fl-year-btn" data-year="2025" onclick="setFlYear(2025)">2025</button>
+        </div>
+        <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0;">
+          Top 50 players by total points. Bubble size is total points, color is position.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
           <span class="pos-badge pos-rb">RB</span>
@@ -617,7 +651,7 @@
           <span class="pos-badge pos-k">K</span>
           <span class="pos-badge pos-dst">D/ST</span>
         </div>
-        <div style="position:relative;height:420px;">
+        <div class="fl-scatter-wrap">
           <canvas id="fl-scatter-chart"></canvas>
         </div>
       </div>
@@ -627,8 +661,28 @@
     <div class="chart-section">
       <div class="chart-section-label">Roster Timeline</div>
       <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
-        <p style="font-size:0.75rem;color:var(--muted);margin:0 0 0.9rem;">
-          Top 20 players by total points, filtered by the Position and Season selections above. Solid segments are weeks started, faded segments are weeks benched or on IR.
+        <div class="fingerprint-filter-row fl-filter-row">
+          <span class="fp-filter-label">Position:</span>
+          <button class="fp-btn fl-pos-btn active" data-pos="ALL" onclick="setFlPosition('ALL')">All</button>
+          <button class="fp-btn fl-pos-btn" data-pos="QB" onclick="setFlPosition('QB')">QB</button>
+          <button class="fp-btn fl-pos-btn" data-pos="RB" onclick="setFlPosition('RB')">RB</button>
+          <button class="fp-btn fl-pos-btn" data-pos="WR" onclick="setFlPosition('WR')">WR</button>
+          <button class="fp-btn fl-pos-btn" data-pos="TE" onclick="setFlPosition('TE')">TE</button>
+          <button class="fp-btn fl-pos-btn" data-pos="K" onclick="setFlPosition('K')">K</button>
+          <button class="fp-btn fl-pos-btn" data-pos="D/ST" onclick="setFlPosition('D/ST')">D/ST</button>
+        </div>
+        <div class="fingerprint-filter-row fl-filter-row">
+          <span class="fp-filter-label">Season:</span>
+          <button class="fp-btn fl-year-btn active" data-year="career" onclick="setFlYear('career')">Career</button>
+          <button class="fp-btn fl-year-btn" data-year="2020" onclick="setFlYear(2020)">2020</button>
+          <button class="fp-btn fl-year-btn" data-year="2021" onclick="setFlYear(2021)">2021</button>
+          <button class="fp-btn fl-year-btn" data-year="2022" onclick="setFlYear(2022)">2022</button>
+          <button class="fp-btn fl-year-btn" data-year="2023" onclick="setFlYear(2023)">2023</button>
+          <button class="fp-btn fl-year-btn" data-year="2024" onclick="setFlYear(2024)">2024</button>
+          <button class="fp-btn fl-year-btn" data-year="2025" onclick="setFlYear(2025)">2025</button>
+        </div>
+        <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0 0.9rem;">
+          Top 20 players by total points. Solid segments are weeks started, faded segments are weeks benched or on IR.
         </p>
         <div id="fl-timeline-wrap"></div>
       </div>
@@ -1906,19 +1960,21 @@ var FL_POS_COLORS = {
   'D/ST': {fill:'rgba(100,90,80,0.65)', border:'rgba(100,90,80,1)'}
 };
 
-function setFlPosition(pos, btn) {
+function setFlPosition(pos) {
   flCurrentPosition = pos;
   flCurrentPage = 1;
-  document.querySelectorAll('.fl-pos-btn').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
+  document.querySelectorAll('.fl-pos-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-pos') === pos);
+  });
   renderFranchiseLeadersTable();
 }
 
-function setFlYear(year, btn) {
+function setFlYear(year) {
   flCurrentYear = year;
   flCurrentPage = 1;
-  document.querySelectorAll('.fl-year-btn').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
+  document.querySelectorAll('.fl-year-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-year') === String(year));
+  });
   renderFranchiseLeadersTable();
 }
 
@@ -2033,30 +2089,38 @@ var FL_TL_SEASONS = [2020, 2021, 2022, 2023, 2024, 2025];
 var FL_TL_WEEKS_PER_SEASON = 17;
 
 function renderFlTimeline(items) {
-  var wrap = document.getElementById('fl-timeline-wrap');
-  if (!wrap) return;
-  wrap.innerHTML = '';
+  var outerWrap = document.getElementById('fl-timeline-wrap');
+  if (!outerWrap) return;
+  outerWrap.innerHTML = '';
   if (!items || items.length === 0 || !rosterStintsData) return;
 
   var mgrStints = rosterStintsData[flCurrentManager] || rosterStintsData[normalizeFpName(flCurrentManager)] || {};
   var seasons = flCurrentYear === 'career' ? FL_TL_SEASONS : [flCurrentYear];
-  var gridCols = '150px repeat(' + seasons.length + ', 1fr)';
+  var gridCols = '130px repeat(' + seasons.length + ', 1fr)';
+
+  // Scroll container: each season column needs a real minimum pixel width
+  // to stay legible on narrow (mobile) screens, so the whole timeline
+  // scrolls horizontally instead of squeezing every column down.
+  var scroll = document.createElement('div');
+  scroll.className = 'fl-tl-scroll';
+  var inner = document.createElement('div');
+  inner.style.minWidth = (130 + seasons.length * 80) + 'px';
 
   var header = document.createElement('div');
   header.className = 'fl-tl-header';
   header.style.gridTemplateColumns = gridCols;
-  header.innerHTML = '<div></div>' + seasons.map(function(s){
+  header.innerHTML = '<div class="fl-tl-label"></div>' + seasons.map(function(s){
     return '<div style="text-align:center;">' + s + '</div>';
   }).join('');
-  wrap.appendChild(header);
+  inner.appendChild(header);
 
-  items.forEach(function(item) {
+  items.forEach(function(item, idx) {
     var playerData = mgrStints[item.player];
     var stints = playerData ? playerData.stints : [];
     stints = stints.filter(function(s){ return seasons.indexOf(s.season) !== -1; });
 
     var row = document.createElement('div');
-    row.className = 'fl-tl-row';
+    row.className = 'fl-tl-row' + (idx % 2 === 1 ? ' fl-tl-alt' : '');
     row.style.gridTemplateColumns = gridCols;
 
     var label = document.createElement('div');
@@ -2108,8 +2172,11 @@ function renderFlTimeline(items) {
       });
     });
 
-    wrap.appendChild(row);
+    inner.appendChild(row);
   });
+
+  scroll.appendChild(inner);
+  outerWrap.appendChild(scroll);
 }
 
 function renderFranchiseLeadersTable(manager) {
