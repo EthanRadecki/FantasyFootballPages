@@ -86,6 +86,27 @@
 .pos-table td.pos-grad { font-weight:700;border-radius:4px;text-align:center; }
 .pos-table td.pos-mgr { color:var(--palm);font-weight:600;white-space:nowrap; }
 
+/* ── WIN% ATTRIBUTION ── */
+.attr-mgr-row {
+  display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem;
+}
+.attr-mgr-pill {
+  padding:0.4rem 0.85rem;border-radius:99px;border:1px solid rgba(var(--accent-rgb),0.25);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.78rem;
+  font-weight:600;cursor:pointer;transition:all 0.15s;
+}
+.attr-mgr-pill:hover { background:var(--accent-glow); }
+.attr-mgr-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
+.attr-summary-row {
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.75rem;
+  margin-bottom:1.5rem;
+}
+.attr-stat-card { padding:0.9rem 1rem;text-align:center; }
+.attr-stat-label { font-size:0.58rem;text-transform:uppercase;letter-spacing:0.09em;font-weight:700;color:var(--accent);margin-bottom:0.4rem; }
+.attr-stat-num { font-family:var(--font-display);font-size:1.4rem;font-weight:900;color:var(--palm);line-height:1; }
+.attr-stat-num.attr-good { color:var(--green); }
+.attr-stat-num.attr-bad { color:var(--red); }
+
 /* ── H2H MATRIX ── */
 .h2h-scroll { overflow-x:auto; padding:1.5rem; }
 .h2h-table {
@@ -433,6 +454,54 @@
       </div>
     </div>
     <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;"><strong>RB and WR are, by a clear margin, the strongest predictors of winning</strong> once every position is controlled for. QB matters too, at roughly half the weight. TE is borderline significant. K and D/ST barely move the needle once RB, WR, and QB are accounted for, largely because there's so little manager-to-manager separation at those two positions to begin with.</p>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       WIN% ATTRIBUTION
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section">
+    <div class="section-label">Win% Attribution</div>
+    <div class="section-title">Where does a season's win% actually come from?</div>
+    <div class="callout glass">
+      <div class="callout-label">Methodology</div>
+      <p>Five ingredients, each pulled from the metric that already powers its own page: <strong>draft surplus</strong> (Surplus Value), <strong>waiver upside</strong> (only the positive value from pickups counts, bad and neutral adds contribute nothing), <strong>missed wins</strong> from Lineup Efficiency (a bad start/sit call only counts if it actually flipped a real result), <strong>trade QUAD</strong> (Trade Value), and <strong>schedule luck</strong> (regular season only, real bracket games excluded same as consolation weeks). A season-level regression (<strong>n=83 manager-seasons, R&sup2;=0.41</strong>) turns these into a per-manager breakdown of exactly how many points of win%, above or below league average, each ingredient is responsible for.</p>
+    </div>
+
+    <div class="attr-mgr-row" id="attr-mgr-pills"></div>
+
+    <div class="attr-summary-row">
+      <div class="attr-stat-card glass">
+        <div class="attr-stat-label">Actual Win%</div>
+        <div class="attr-stat-num" id="attr-actual">&mdash;</div>
+      </div>
+      <div class="attr-stat-card glass">
+        <div class="attr-stat-label">Model Predicts</div>
+        <div class="attr-stat-num" id="attr-predicted">&mdash;</div>
+      </div>
+      <div class="attr-stat-card glass">
+        <div class="attr-stat-label">Unexplained</div>
+        <div class="attr-stat-num" id="attr-residual">&mdash;</div>
+      </div>
+    </div>
+
+    <div class="chart-area-pad glass">
+      <div style="position:relative;height:420px;">
+        <canvas id="chart-waterfall"></canvas>
+      </div>
+    </div>
+    <p class="table-hint" style="margin-top:0.9rem;">Each step is that ingredient's real contribution, in percentage points, relative to a league-average manager. The last two bars show the model's full prediction against the manager's actual win% &mdash; the gap between them is what the five ingredients don't explain.</p>
+
+    <div class="chart-grid" style="margin-top:1.75rem;">
+      <div class="chart-area-pad glass">
+        <canvas id="chart-attr-coef" height="200"></canvas>
+      </div>
+      <div class="chart-area-pad glass">
+        <canvas id="chart-attr-r2" height="200"></canvas>
+      </div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;"><strong>Draft skill is the single biggest lever</strong>, with missed wins from lineup mistakes close behind. Schedule luck and trade quality land in a near tie for third. Waiver activity only shows up once it's measured as pure upside, ignore the churn and the misses, and count only the real hits. Even together, these five ingredients explain <strong>41% of season-to-season win% variance</strong>, leaving well over half of what separates a good season from a bad one to real scoring production and variance the roster-building decisions above don't capture.</p>
   </div>
 
   <hr class="section-divider">
@@ -1077,6 +1146,189 @@ function shortName(n) {
           title: { display:true, text:'Pearson r', color:C_MUTED, font:{size:11} },
           min: 0
         }
+      }
+    }
+  });
+})();
+
+/* ── WIN% ATTRIBUTION ─────────────────────────────────────────────────────── */
+(function() {
+  var DATA = {"Ethan Radecki": {"winpct": 64.2, "draft": -1.07, "waiver": 2.48, "lineup": 4.3, "trade": 2.3, "luck": -0.33, "predicted": 57.59, "residual": 6.6}, "Baylen Slansky": {"winpct": 58.0, "draft": -0.33, "waiver": 2.1, "lineup": 0.47, "trade": 1.99, "luck": 0.98, "predicted": 55.11, "residual": 2.91}, "Carmine Pittelli Jr.": {"winpct": 58.0, "draft": 3.85, "waiver": -2.01, "lineup": 2.39, "trade": -2.25, "luck": -0.33, "predicted": 51.56, "residual": 6.47}, "Brandon Hancock": {"winpct": 54.9, "draft": -0.37, "waiver": 1.25, "lineup": -0.81, "trade": -0.39, "luck": -2.28, "predicted": 47.31, "residual": 7.57}, "Anthony Kelly": {"winpct": 53.1, "draft": 1.08, "waiver": 3.11, "lineup": -0.17, "trade": 1.05, "luck": 0.33, "predicted": 55.3, "residual": -2.21}, "Andrew Root": {"winpct": 50.6, "draft": 0.46, "waiver": -0.03, "lineup": 1.11, "trade": -0.39, "luck": 2.61, "predicted": 53.67, "residual": -3.05}, "Ryan P McQuaid": {"winpct": 49.4, "draft": -3.47, "waiver": 0.9, "lineup": -0.17, "trade": -0.31, "luck": 3.26, "predicted": 50.12, "residual": -0.74}, "Ben Castaldo": {"winpct": 48.8, "draft": -0.06, "waiver": -1.26, "lineup": -0.17, "trade": 0.45, "luck": 0.65, "predicted": 49.52, "residual": -0.74}, "Max Malich": {"winpct": 48.1, "draft": 0.43, "waiver": 1.44, "lineup": -4.64, "trade": -0.26, "luck": 0.0, "predicted": 46.88, "residual": 1.27}, "Charlie Gorman": {"winpct": 48.1, "draft": 3.64, "waiver": -1.46, "lineup": 0.47, "trade": -0.8, "luck": 0.0, "predicted": 51.76, "residual": -3.61}, "Cole Maney": {"winpct": 48.1, "draft": 0.09, "waiver": -3.4, "lineup": 1.75, "trade": -0.69, "luck": -1.31, "predicted": 46.36, "residual": 1.79}, "Deniz Bileydi": {"winpct": 39.5, "draft": -3.18, "waiver": -0.62, "lineup": -2.09, "trade": -1.82, "luck": -0.33, "predicted": 41.87, "residual": -2.36}, "Aidan Quigley": {"winpct": 39.1, "draft": 2.28, "waiver": -2.47, "lineup": -3.49, "trade": -0.48, "luck": -3.13, "predicted": 42.61, "residual": -3.48}, "Quin Gegwich": {"winpct": 37.0, "draft": -2.97, "waiver": -0.44, "lineup": 0.47, "trade": 1.5, "luck": -0.65, "predicted": 47.82, "residual": -10.78}};
+  var LEAGUE_INTERCEPT = 54.02;
+  var STEPS = ['draft','waiver','lineup','trade','luck'];
+  var STEP_LABELS = {draft:'Draft', waiver:'Waiver', lineup:'Lineup', trade:'Trade', luck:'Luck'};
+
+  var managers = Object.keys(DATA).sort();
+  var currentMgr = managers[0];
+  var waterfallChart = null;
+
+  function renderPills() {
+    var el = document.getElementById('attr-mgr-pills');
+    el.innerHTML = managers.map(function(m) {
+      var short = m.replace(' Jr.','').replace('Ryan P ','Ryan ');
+      return '<button class="attr-mgr-pill' + (m===currentMgr?' active':'') + '" onclick="setAttrManager(\''+m+'\')">' + short + '</button>';
+    }).join('');
+  }
+
+  window.setAttrManager = function(mgr) {
+    currentMgr = mgr;
+    document.querySelectorAll('.attr-mgr-pill').forEach(function(p, i) {
+      p.classList.toggle('active', managers[i] === mgr);
+    });
+    renderWaterfall();
+    renderSummary();
+  };
+
+  function renderSummary() {
+    var d = DATA[currentMgr];
+    document.getElementById('attr-actual').textContent = d.winpct.toFixed(1) + '%';
+    document.getElementById('attr-predicted').textContent = d.predicted.toFixed(1) + '%';
+    var resEl = document.getElementById('attr-residual');
+    var sign = d.residual >= 0 ? '+' : '';
+    resEl.textContent = sign + d.residual.toFixed(1) + 'pp';
+    resEl.className = 'attr-stat-num ' + (d.residual >= 0 ? 'attr-good' : 'attr-bad');
+  }
+
+  function renderWaterfall() {
+    var d = DATA[currentMgr];
+    var labels = ['League avg'];
+    STEPS.forEach(function(s){ labels.push(STEP_LABELS[s]); });
+    labels.push('Predicted', 'Actual');
+
+    var cum = LEAGUE_INTERCEPT;
+    var bars = [[0, LEAGUE_INTERCEPT]];
+    var colors = ['rgba(156,148,156,0.55)'];
+    STEPS.forEach(function(s) {
+      var v = d[s];
+      var start = cum;
+      cum += v;
+      bars.push([Math.min(start,cum), Math.max(start,cum)]);
+      colors.push(v >= 0 ? 'rgba(90,138,90,0.8)' : 'rgba(168,90,90,0.8)');
+    });
+    bars.push([0, d.predicted]);
+    colors.push('rgba(156,132,156,0.75)');
+    bars.push([0, d.winpct]);
+    colors.push('rgba(212,175,55,0.85)');
+
+    if (waterfallChart) { waterfallChart.destroy(); }
+    var ctx = document.getElementById('chart-waterfall').getContext('2d');
+    waterfallChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: bars,
+          backgroundColor: colors,
+          borderRadius: 4,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                var i = ctx.dataIndex;
+                if (i === 0) return 'League average: ' + LEAGUE_INTERCEPT.toFixed(1) + '%';
+                if (i === labels.length - 2) return 'Model predicts: ' + d.predicted.toFixed(1) + '%';
+                if (i === labels.length - 1) return 'Actual win%: ' + d.winpct.toFixed(1) + '%';
+                var stepKey = STEPS[i-1];
+                var v = d[stepKey];
+                return STEP_LABELS[stepKey] + ': ' + (v>=0?'+':'') + v.toFixed(2) + 'pp';
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: currentMgr.replace(' Jr.','') + '  |  win% built step by step',
+            color: C_TEXT_MID,
+            font: { size: 13, weight: '600' },
+            padding: { bottom: 14 }
+          }
+        },
+        scales: {
+          x: { grid: gridStyle(), ticks: Object.assign(tickStyle(), { font: { size: 11 } }) },
+          y: {
+            grid: gridStyle(), ticks: Object.assign(tickStyle(), { callback: function(v){ return v+'%'; } }),
+            title: { display: true, text: 'Win%', color: C_MUTED, font: { size: 11 } }
+          }
+        }
+      }
+    });
+  }
+
+  renderPills();
+  renderWaterfall();
+  renderSummary();
+
+  // Final standardized coefficients across all five factors
+  var COEF_LABELS = ['Draft','Lineup','Trade','Luck','Waiver'];
+  var COEF_VALS   = [0.503, 0.305, 0.208, 0.207, 0.186];
+  function attrGreenScale(vals, alpha) {
+    var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+    return vals.map(function(v) {
+      var t = mx !== mn ? (v - mn) / (mx - mn) : 0.5;
+      var r = Math.round(180 + (40  - 180) * t);
+      var g = Math.round(220 + (120 - 220) * t);
+      var b = Math.round(180 + (70  - 180) * t);
+      return 'rgba('+r+','+g+','+b+','+alpha+')';
+    });
+  }
+  new Chart(document.getElementById('chart-attr-coef').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: COEF_LABELS,
+      datasets: [{
+        data: COEF_VALS,
+        backgroundColor: attrGreenScale(COEF_VALS, 0.75),
+        borderColor: attrGreenScale(COEF_VALS, 1.0),
+        borderWidth: 1.5,
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(ctx){ return 'Standardized weight: +' + ctx.parsed.y.toFixed(3); } } },
+        title: { display: true, text: 'Relative Importance  |  All Five Significant, p < 0.05', color: C_TEXT_MID, font: { size: 12, weight: '600' }, padding: { bottom: 12 } }
+      },
+      scales: {
+        x: { grid: gridStyle(), ticks: Object.assign(tickStyle(), { font: { size: 11 } }) },
+        y: { grid: gridStyle(), ticks: tickStyle(), title: { display: true, text: 'Standardized coefficient', color: C_MUTED, font: { size: 11 } }, min: 0 }
+      }
+    }
+  });
+
+  // The model's own refinement history -- R^2 at each methodology fix, in the
+  // actual order those fixes were made
+  var R2_LABELS = ['Original model', '+ outcome-based\nlineup', '+ real trade\nQUAD', '+ schedule\nluck', '+ upside-only\nwaiver'];
+  var R2_VALS   = [0.197, 0.302, 0.334, 0.389, 0.412];
+  new Chart(document.getElementById('chart-attr-r2').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: R2_LABELS,
+      datasets: [{
+        data: R2_VALS,
+        backgroundColor: attrGreenScale(R2_VALS, 0.75),
+        borderColor: attrGreenScale(R2_VALS, 1.0),
+        borderWidth: 1.5,
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(ctx){ return 'R\u00b2 = ' + ctx.parsed.y.toFixed(3); } } },
+        title: { display: true, text: 'Model Refinement  |  Each Fix Improved Fit', color: C_TEXT_MID, font: { size: 12, weight: '600' }, padding: { bottom: 12 } }
+      },
+      scales: {
+        x: { grid: gridStyle(), ticks: Object.assign(tickStyle(), { font: { size: 10 } }) },
+        y: { grid: gridStyle(), ticks: tickStyle(), title: { display: true, text: 'R\u00b2', color: C_MUTED, font: { size: 11 } }, min: 0, max: 0.5 }
       }
     }
   });
