@@ -1716,9 +1716,17 @@ function shortName(n) {
 (function() {
   var pills = Array.from(document.querySelectorAll('.jump-nav-pill'));
   if (!pills.length) return;
+  var nav = document.getElementById('jump-nav');
   var sections = pills.map(function(p) {
     return document.getElementById(p.dataset.target);
   }).filter(Boolean);
+
+  function centerPillInStrip(pill) {
+    // Scrolls only the horizontal pill strip itself — never the page.
+    if (!nav || !window.matchMedia('(max-width:768px)').matches) return;
+    var target = (pill.offsetLeft + pill.offsetWidth / 2) - (nav.clientWidth / 2);
+    nav.scrollTo({ left: target, behavior: 'smooth' });
+  }
 
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
@@ -1727,9 +1735,7 @@ function shortName(n) {
       if (entry.isIntersecting) {
         pills.forEach(function(p) { p.classList.remove('active'); });
         pill.classList.add('active');
-        if (window.matchMedia('(max-width:768px)').matches) {
-          pill.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
-        }
+        centerPillInStrip(pill);
       }
     });
   }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
