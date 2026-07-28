@@ -62,6 +62,53 @@
 @media(max-width:768px) {
   .tv-table { font-size:0.74rem; }
 }
+
+/* ── CHAPTER RAIL (in-page section nav) ── */
+.chapter-rail {
+  position:fixed;top:50%;right:1.25rem;transform:translateY(-50%);
+  z-index:20;display:flex;flex-direction:column;gap:0.85rem;align-items:flex-end;
+}
+.chapter-rail-item { display:flex;align-items:center;gap:0.6rem;text-decoration:none;cursor:pointer; }
+.chapter-rail-label {
+  font-size:0.68rem;font-weight:600;color:var(--muted);white-space:nowrap;
+  opacity:0;transform:translateX(6px);transition:opacity 0.18s,transform 0.18s;
+  background:rgba(245,240,232,0.95);padding:0.25rem 0.6rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.15);
+}
+.chapter-rail-item:hover .chapter-rail-label,
+.chapter-rail-item.active .chapter-rail-label { opacity:1;transform:translateX(0); }
+.chapter-rail-dot {
+  width:9px;height:9px;border-radius:50%;background:rgba(var(--accent-rgb),0.25);
+  flex-shrink:0;transition:all 0.18s;border:1px solid rgba(var(--accent-rgb),0.4);
+}
+.chapter-rail-item:hover .chapter-rail-dot { background:rgba(var(--accent-rgb),0.6); }
+.chapter-rail-item.active .chapter-rail-dot {
+  background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(var(--accent-rgb),0.15);
+}
+@media(max-width:1100px) { .chapter-rail { display:none; } }
+
+.jump-fab {
+  display:none;position:fixed;bottom:1.25rem;right:1.25rem;z-index:25;
+  background:var(--accent);color:var(--bg);border:none;border-radius:999px;
+  padding:0.7rem 1.1rem;font-size:0.78rem;font-weight:700;
+  box-shadow:0 4px 18px rgba(0,0,0,0.18);cursor:pointer;
+  align-items:center;gap:0.4rem;font-family:inherit;
+}
+@media(max-width:1100px) { .jump-fab { display:inline-flex; } }
+.jump-sheet { display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,0.35); }
+.jump-sheet.open { display:block; }
+.jump-sheet-inner {
+  position:absolute;left:0;right:0;bottom:0;background:var(--bg,#f5f0e8);
+  border-radius:1rem 1rem 0 0;padding:1.25rem 1.5rem 1.75rem;max-height:70vh;overflow-y:auto;
+  border-top:1px solid rgba(var(--accent-rgb),0.2);
+}
+.jump-sheet-title { font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:700;margin-bottom:0.75rem; }
+.jump-sheet a {
+  display:block;padding:0.65rem 0;font-size:0.92rem;font-weight:600;color:var(--text);
+  text-decoration:none;border-bottom:1px solid rgba(var(--accent-rgb),0.08);
+}
+.jump-sheet a:last-child { border-bottom:none; }
+.jump-sheet a.active { color:var(--accent); }
 </style>
 </head>
 <body>
@@ -125,6 +172,29 @@
     <p>Every real trade in league history (2020-2025), graded on four metrics and combined into one composite score.</p>
   </div>
 
+  <div class="chapter-rail" id="chapter-rail">
+    <a href="#manager-leaderboard" class="chapter-rail-item" data-target="manager-leaderboard"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Manager Leaderboard</span></a>
+    <a href="#trade-quality-win-pct" class="chapter-rail-item" data-target="trade-quality-win-pct"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Trade Quality vs. Win Percentage</span></a>
+    <a href="#trade-network" class="chapter-rail-item" data-target="trade-network"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Trade Network</span></a>
+    <a href="#trade-explorer" class="chapter-rail-item" data-target="trade-explorer"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Trade Explorer</span></a>
+    <a href="#most-traded-players" class="chapter-rail-item" data-target="most-traded-players"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Most Traded Players</span></a>
+    <a href="#all-trades" class="chapter-rail-item" data-target="all-trades"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">All Trades</span></a>
+  </div>
+
+  <button class="jump-fab" onclick="toggleJumpSheet(true)">&#9776; Jump to</button>
+  <div class="jump-sheet" id="jump-sheet" onclick="if(event.target===this)toggleJumpSheet(false)">
+    <div class="jump-sheet-inner">
+      <div class="jump-sheet-title">Jump to Section</div>
+      <a href="#manager-leaderboard" data-target="manager-leaderboard" onclick="toggleJumpSheet(false)">Manager Leaderboard</a>
+      <a href="#trade-quality-win-pct" data-target="trade-quality-win-pct" onclick="toggleJumpSheet(false)">Trade Quality vs. Win Percentage</a>
+      <a href="#trade-network" data-target="trade-network" onclick="toggleJumpSheet(false)">Trade Network</a>
+      <a href="#trade-explorer" data-target="trade-explorer" onclick="toggleJumpSheet(false)">Trade Explorer</a>
+      <a href="#most-traded-players" data-target="most-traded-players" onclick="toggleJumpSheet(false)">Most Traded Players</a>
+      <a href="#all-trades" data-target="all-trades" onclick="toggleJumpSheet(false)">All Trades</a>
+    </div>
+  </div>
+
+
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
     <ul style="margin:0 0 0.75rem;padding-left:1.2rem;line-height:1.6;">
@@ -138,7 +208,7 @@
     <p style="margin:0;font-size:0.8rem;color:var(--muted);"><em>Note: reversed trades are excluded entirely, multi-team trades are linked and graded on each manager's true net position, and Thomas Sullivan / William Serafin (2020 only) are excluded, same as the rest of the site.</em></p>
   </div>
 
-  <div class="section-label">Manager Leaderboard</div>
+  <div class="section-label" id="manager-leaderboard">Manager Leaderboard</div>
   <div class="section-title">Average QUAD per trade, career or by season.</div>
   <div class="chart-card-interactive glass">
     <div class="heatmap-controls" id="quad-pills"></div>
@@ -148,7 +218,7 @@
     <p class="metric-note">The bright bar shows <strong>average QUAD per trade</strong> (bottom axis). The faint background bar shows <strong>number of trades made</strong> (top axis), scaled to this view, so a manager with 3 trades doesn't look as thick as one with 25. Hover a row for that manager's best and worst trade in this view.</p>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;">Trade Quality vs. Win Percentage</div>
+  <div class="section-label" style="margin-top:2rem;" id="trade-quality-win-pct">Trade Quality vs. Win Percentage</div>
   <div class="section-title">Does making good trades actually correlate with winning more than making a lot of them?</div>
   <div class="chart-card-interactive glass">
     <div id="winpct-legend" style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;font-size:0.72rem;color:var(--muted);"></div>
@@ -158,7 +228,7 @@
     <p class="metric-note">Each bubble is one manager, positioned by <strong>average QUAD per trade</strong> (x-axis, trade quality) and <strong>career win percentage</strong> (y-axis, bracket-only games, consolation weeks excluded). Bubble size is <strong>trades made</strong>, so volume is still visible even though it's not an axis. The dashed line is the best fit across all 14 managers. Trade quality correlates with winning more strongly than trade volume does, though it's still far from the whole story, a lot of winning comes down to the draft, waiver wire, and week-to-week lineup decisions covered elsewhere on this site.</p>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;">Trade Network</div>
+  <div class="section-label" style="margin-top:2rem;" id="trade-network">Trade Network</div>
   <div class="section-title">Who trades with who. Node size is total trades made; drag any manager to explore.</div>
   <div class="chart-card-interactive glass">
     <div style="position:relative;height:560px;" id="network-container">
@@ -168,7 +238,7 @@
     <p class="metric-note">Line thickness is how many times two managers have traded. Hover a manager to see their most-traded partners, positions exchanged, and who tends to come out ahead. Hover a line for the exact breakdown between those two.</p>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;">Trade Explorer</div>
+  <div class="section-label" style="margin-top:2rem;" id="trade-explorer">Trade Explorer</div>
   <div class="section-title">Filter down to any slice of trade history and tap a trade to see the full breakdown.</div>
   <div class="chart-card-interactive glass">
     <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Season</div>
@@ -193,7 +263,7 @@
     <div id="explorer-detail" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(var(--accent-rgb),0.2);"></div>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;">Most Traded Players</div>
+  <div class="section-label" style="margin-top:2rem;" id="most-traded-players">Most Traded Players</div>
   <div class="section-title">Players who changed hands the most, across every real trade in league history.</div>
   <div class="chart-card-interactive glass">
     <div style="position:relative;height:520px;">
@@ -202,7 +272,7 @@
     <p class="metric-note">Hover a bar for the full trade history: which managers acquired that player, and in what seasons.</p>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;">All Trades</div>
+  <div class="section-label" style="margin-top:2rem;" id="all-trades">All Trades</div>
   <div class="section-title">Every real trade, one row per manager's side. Click a column to sort.</div>
   <div class="heatmap-controls" id="trades-season-pills"></div>
   <div class="table-wrap glass">
@@ -1020,6 +1090,23 @@ try {
 renderTradesSeasonPills();
 renderTradesTable();
 wireSortableHeaders('trades-table', renderTradesTable, tradesSortState);
+
+/* ── Chapter-rail scroll-spy ── */
+function toggleJumpSheet(open) { document.getElementById('jump-sheet').classList.toggle('open', open); }
+(function() {
+  var items = Array.from(document.querySelectorAll('.chapter-rail-item, .jump-sheet a'));
+  if (!items.length) return;
+  var targets = Array.from(new Set(items.map(function(i){ return i.dataset.target; })))
+    .map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        items.forEach(function(i){ i.classList.toggle('active', i.dataset.target === entry.target.id); });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(function(t){ observer.observe(t); });
+})();
 </script>
 </body>
 </html>

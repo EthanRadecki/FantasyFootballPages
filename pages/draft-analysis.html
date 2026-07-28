@@ -100,6 +100,53 @@
   .hr-stat-row { grid-template-columns:1fr; }
 }
 @media(max-width:480px) { .slot-grid { grid-template-columns:1fr; } }
+
+/* ── CHAPTER RAIL (in-page section nav) ── */
+.chapter-rail {
+  position:fixed;top:50%;right:1.25rem;transform:translateY(-50%);
+  z-index:20;display:flex;flex-direction:column;gap:0.85rem;align-items:flex-end;
+}
+.chapter-rail-item { display:flex;align-items:center;gap:0.6rem;text-decoration:none;cursor:pointer; }
+.chapter-rail-label {
+  font-size:0.68rem;font-weight:600;color:var(--muted);white-space:nowrap;
+  opacity:0;transform:translateX(6px);transition:opacity 0.18s,transform 0.18s;
+  background:rgba(245,240,232,0.95);padding:0.25rem 0.6rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.15);
+}
+.chapter-rail-item:hover .chapter-rail-label,
+.chapter-rail-item.active .chapter-rail-label { opacity:1;transform:translateX(0); }
+.chapter-rail-dot {
+  width:9px;height:9px;border-radius:50%;background:rgba(var(--accent-rgb),0.25);
+  flex-shrink:0;transition:all 0.18s;border:1px solid rgba(var(--accent-rgb),0.4);
+}
+.chapter-rail-item:hover .chapter-rail-dot { background:rgba(var(--accent-rgb),0.6); }
+.chapter-rail-item.active .chapter-rail-dot {
+  background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(var(--accent-rgb),0.15);
+}
+@media(max-width:1100px) { .chapter-rail { display:none; } }
+
+.jump-fab {
+  display:none;position:fixed;bottom:1.25rem;right:1.25rem;z-index:25;
+  background:var(--accent);color:var(--bg);border:none;border-radius:999px;
+  padding:0.7rem 1.1rem;font-size:0.78rem;font-weight:700;
+  box-shadow:0 4px 18px rgba(0,0,0,0.18);cursor:pointer;
+  align-items:center;gap:0.4rem;font-family:inherit;
+}
+@media(max-width:1100px) { .jump-fab { display:inline-flex; } }
+.jump-sheet { display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,0.35); }
+.jump-sheet.open { display:block; }
+.jump-sheet-inner {
+  position:absolute;left:0;right:0;bottom:0;background:var(--bg,#f5f0e8);
+  border-radius:1rem 1rem 0 0;padding:1.25rem 1.5rem 1.75rem;max-height:70vh;overflow-y:auto;
+  border-top:1px solid rgba(var(--accent-rgb),0.2);
+}
+.jump-sheet-title { font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:700;margin-bottom:0.75rem; }
+.jump-sheet a {
+  display:block;padding:0.65rem 0;font-size:0.92rem;font-weight:600;color:var(--text);
+  text-decoration:none;border-bottom:1px solid rgba(var(--accent-rgb),0.08);
+}
+.jump-sheet a:last-child { border-bottom:none; }
+.jump-sheet a.active { color:var(--accent); }
 </style>
 </head>
 <body>
@@ -163,12 +210,37 @@
     <p>Draft slot success, player hit rates, and the greatest steals in league history (2020-2025)</p>
   </div>
 
+  <div class="chapter-rail" id="chapter-rail">
+    <a href="#draft-slot-analysis" class="chapter-rail-item" data-target="draft-slot-analysis"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Draft Slot Analysis</span></a>
+    <a href="#detailed-breakdown" class="chapter-rail-item" data-target="detailed-breakdown"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Detailed Breakdown</span></a>
+    <a href="#manager-distribution" class="chapter-rail-item" data-target="manager-distribution"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Manager Distribution</span></a>
+    <a href="#hit-rate-by-round" class="chapter-rail-item" data-target="hit-rate-by-round"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Hit Rate by Round</span></a>
+    <a href="#position-breakdown" class="chapter-rail-item" data-target="position-breakdown"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Position Breakdown</span></a>
+    <a href="#late-round-legends" class="chapter-rail-item" data-target="late-round-legends"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Late-Round Legends</span></a>
+    <a href="#surplus-value-index" class="chapter-rail-item" data-target="surplus-value-index"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Surplus Value Index</span></a>
+  </div>
+
+  <button class="jump-fab" onclick="toggleJumpSheet(true)">&#9776; Jump to</button>
+  <div class="jump-sheet" id="jump-sheet" onclick="if(event.target===this)toggleJumpSheet(false)">
+    <div class="jump-sheet-inner">
+      <div class="jump-sheet-title">Jump to Section</div>
+      <a href="#draft-slot-analysis" data-target="draft-slot-analysis" onclick="toggleJumpSheet(false)">Draft Slot Analysis</a>
+      <a href="#detailed-breakdown" data-target="detailed-breakdown" onclick="toggleJumpSheet(false)">Detailed Breakdown</a>
+      <a href="#manager-distribution" data-target="manager-distribution" onclick="toggleJumpSheet(false)">Manager Distribution</a>
+      <a href="#hit-rate-by-round" data-target="hit-rate-by-round" onclick="toggleJumpSheet(false)">Hit Rate by Round</a>
+      <a href="#position-breakdown" data-target="position-breakdown" onclick="toggleJumpSheet(false)">Position Breakdown</a>
+      <a href="#late-round-legends" data-target="late-round-legends" onclick="toggleJumpSheet(false)">Late-Round Legends</a>
+      <a href="#surplus-value-index" data-target="surplus-value-index" onclick="toggleJumpSheet(false)">Surplus Value Index</a>
+    </div>
+  </div>
+
+
   <div class="callout glass">
     <div class="callout-label">How It Works</div>
     <p><strong>Dominance Score</strong> measures how much better or worse a team scored compared to the league average each week. <strong>Manager-Adjusted Performance</strong> compares how a manager actually performed from each draft slot versus what we would expect based on their career average. A positive value means that slot tends to produce better results than the manager's baseline.</p>
   </div>
 
-  <div class="section-label">Draft Slot Analysis</div>
+  <div class="section-label" id="draft-slot-analysis">Draft Slot Analysis</div>
   <div class="section-title">Playoff rate and adjusted performance by slot.</div>
   <div class="chart-grid">
     <div class="chart-card-interactive glass">
@@ -181,7 +253,7 @@
     </div>
   </div>
 
-  <div class="section-label">Detailed Breakdown</div>
+  <div class="section-label" id="detailed-breakdown">Detailed Breakdown</div>
   <div class="section-title">Draft slot performance by the numbers.</div>
   <div class="table-wrap glass">
     <table class="da-table">
@@ -210,11 +282,11 @@
     </table>
   </div>
 
-  <div class="section-label">Manager Distribution</div>
+  <div class="section-label" id="manager-distribution">Manager Distribution</div>
   <div class="section-title">Who picked from each slot?</div>
   <div class="slot-grid" id="slot-grid"></div>
 
-  <div class="section-label" style="margin-top:1rem;">Hit Rate by Round</div>
+  <div class="section-label" style="margin-top:1rem;" id="hit-rate-by-round">Hit Rate by Round</div>
   <div class="section-title">How often does each draft tier produce a starter?</div>
 
   <div class="callout glass">
@@ -255,7 +327,7 @@
     </div>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;">Position Breakdown</div>
+  <div class="section-label" style="margin-top:2rem;" id="position-breakdown">Position Breakdown</div>
   <div class="section-title">Which positions hit most reliably at each tier?</div>
   <div class="callout glass">
     <div class="callout-label">Reading the Gradient</div>
@@ -279,7 +351,7 @@
     </div>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;">Late-Round Legends</div>
+  <div class="section-label" style="margin-top:2rem;" id="late-round-legends">Late-Round Legends</div>
   <div class="section-title">The best late-round picks in league history.</div>
 
   <div class="callout glass">
@@ -310,7 +382,7 @@
     <p class="metric-note">Above Avg = PPR/game minus the position average for that season. Games = regular season games played.</p>
   </div>
 
-  <div class="section-label" style="margin-top:1rem;">Surplus Value Index</div>
+  <div class="section-label" style="margin-top:1rem;" id="surplus-value-index">Surplus Value Index</div>
   <div class="section-title">Who actually drafts best in this league?</div>
 
   <div class="callout glass">
@@ -752,6 +824,23 @@ renderStealsTable(ALL_TIME_STEALS);
       +'</tr>';
   });
   tbody.innerHTML=html;
+})();
+
+/* ── Chapter-rail scroll-spy ── */
+function toggleJumpSheet(open) { document.getElementById('jump-sheet').classList.toggle('open', open); }
+(function() {
+  var items = Array.from(document.querySelectorAll('.chapter-rail-item, .jump-sheet a'));
+  if (!items.length) return;
+  var targets = Array.from(new Set(items.map(function(i){ return i.dataset.target; })))
+    .map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        items.forEach(function(i){ i.classList.toggle('active', i.dataset.target === entry.target.id); });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(function(t){ observer.observe(t); });
 })();
 </script>
 </body>

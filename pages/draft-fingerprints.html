@@ -115,6 +115,53 @@
 }
 .cluster-dot { width:10px;height:10px;border-radius:50%;flex-shrink:0; }
 @media(max-width:768px){ .archetype-cards { grid-template-columns:1fr; } }
+
+/* ── CHAPTER RAIL (in-page section nav) ── */
+.chapter-rail {
+  position:fixed;top:50%;right:1.25rem;transform:translateY(-50%);
+  z-index:20;display:flex;flex-direction:column;gap:0.85rem;align-items:flex-end;
+}
+.chapter-rail-item { display:flex;align-items:center;gap:0.6rem;text-decoration:none;cursor:pointer; }
+.chapter-rail-label {
+  font-size:0.68rem;font-weight:600;color:var(--muted);white-space:nowrap;
+  opacity:0;transform:translateX(6px);transition:opacity 0.18s,transform 0.18s;
+  background:rgba(245,240,232,0.95);padding:0.25rem 0.6rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.15);
+}
+.chapter-rail-item:hover .chapter-rail-label,
+.chapter-rail-item.active .chapter-rail-label { opacity:1;transform:translateX(0); }
+.chapter-rail-dot {
+  width:9px;height:9px;border-radius:50%;background:rgba(var(--accent-rgb),0.25);
+  flex-shrink:0;transition:all 0.18s;border:1px solid rgba(var(--accent-rgb),0.4);
+}
+.chapter-rail-item:hover .chapter-rail-dot { background:rgba(var(--accent-rgb),0.6); }
+.chapter-rail-item.active .chapter-rail-dot {
+  background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(var(--accent-rgb),0.15);
+}
+@media(max-width:1100px) { .chapter-rail { display:none; } }
+
+.jump-fab {
+  display:none;position:fixed;bottom:1.25rem;right:1.25rem;z-index:25;
+  background:var(--accent);color:var(--bg);border:none;border-radius:999px;
+  padding:0.7rem 1.1rem;font-size:0.78rem;font-weight:700;
+  box-shadow:0 4px 18px rgba(0,0,0,0.18);cursor:pointer;
+  align-items:center;gap:0.4rem;font-family:inherit;
+}
+@media(max-width:1100px) { .jump-fab { display:inline-flex; } }
+.jump-sheet { display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,0.35); }
+.jump-sheet.open { display:block; }
+.jump-sheet-inner {
+  position:absolute;left:0;right:0;bottom:0;background:var(--bg,#f5f0e8);
+  border-radius:1rem 1rem 0 0;padding:1.25rem 1.5rem 1.75rem;max-height:70vh;overflow-y:auto;
+  border-top:1px solid rgba(var(--accent-rgb),0.2);
+}
+.jump-sheet-title { font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:700;margin-bottom:0.75rem; }
+.jump-sheet a {
+  display:block;padding:0.65rem 0;font-size:0.92rem;font-weight:600;color:var(--text);
+  text-decoration:none;border-bottom:1px solid rgba(var(--accent-rgb),0.08);
+}
+.jump-sheet a:last-child { border-bottom:none; }
+.jump-sheet a.active { color:var(--accent); }
 </style>
 </head>
 <body>
@@ -177,13 +224,36 @@
     <p>Every manager has a drafting style. Seven dimensions, one shape.</p>
   </div>
 
+  <div class="chapter-rail" id="chapter-rail">
+    <a href="#style-comparison" class="chapter-rail-item" data-target="style-comparison"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Style Comparison</span></a>
+    <a href="#raw-dimension-values" class="chapter-rail-item" data-target="raw-dimension-values"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Raw Dimension Values</span></a>
+    <a href="#draft-archetypes" class="chapter-rail-item" data-target="draft-archetypes"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Draft Archetypes</span></a>
+    <a href="#cluster-scatter" class="chapter-rail-item" data-target="cluster-scatter"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Cluster Scatter</span></a>
+    <a href="#archetype-outcomes" class="chapter-rail-item" data-target="archetype-outcomes"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Archetype Outcomes</span></a>
+    <a href="#draft-grade-vs-outcome" class="chapter-rail-item" data-target="draft-grade-vs-outcome"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Draft Grade vs Season Outcome</span></a>
+  </div>
+
+  <button class="jump-fab" onclick="toggleJumpSheet(true)">&#9776; Jump to</button>
+  <div class="jump-sheet" id="jump-sheet" onclick="if(event.target===this)toggleJumpSheet(false)">
+    <div class="jump-sheet-inner">
+      <div class="jump-sheet-title">Jump to Section</div>
+      <a href="#style-comparison" data-target="style-comparison" onclick="toggleJumpSheet(false)">Style Comparison</a>
+      <a href="#raw-dimension-values" data-target="raw-dimension-values" onclick="toggleJumpSheet(false)">Raw Dimension Values</a>
+      <a href="#draft-archetypes" data-target="draft-archetypes" onclick="toggleJumpSheet(false)">Draft Archetypes</a>
+      <a href="#cluster-scatter" data-target="cluster-scatter" onclick="toggleJumpSheet(false)">Cluster Scatter</a>
+      <a href="#archetype-outcomes" data-target="archetype-outcomes" onclick="toggleJumpSheet(false)">Archetype Outcomes</a>
+      <a href="#draft-grade-vs-outcome" data-target="draft-grade-vs-outcome" onclick="toggleJumpSheet(false)">Draft Grade vs Season Outcome</a>
+    </div>
+  </div>
+
+
   <div class="callout glass">
     <div class="callout-label">How to Read This</div>
     <p>Each axis represents a draft tendency normalized across all managers. The outer edge is the league high for that trait. Toggle managers on and off to compare styles directly. Hover any point for the raw value behind the score. All data covers 2020-2025.</p>
   </div>
 
   <!-- RADAR SECTION -->
-  <div class="section-label">Style Comparison</div>
+  <div class="section-label" id="style-comparison">Style Comparison</div>
   <div class="section-title">Select managers to overlay their draft profiles.</div>
 
   <div class="table-wrap glass" style="padding:1.5rem;">
@@ -208,7 +278,7 @@
   </div>
 
   <!-- DIMENSION TABLE -->
-  <div class="section-label" style="margin-top:2rem;">Raw Dimension Values</div>
+  <div class="section-label" style="margin-top:2rem;" id="raw-dimension-values">Raw Dimension Values</div>
   <div class="section-title">Career averages for every manager across all seven dimensions.</div>
 
   <div class="callout glass">
@@ -237,7 +307,7 @@
 
 
   <!-- ARCHETYPE SECTION -->
-  <div class="section-label" style="margin-top:2rem;">Draft Archetypes</div>
+  <div class="section-label" style="margin-top:2rem;" id="draft-archetypes">Draft Archetypes</div>
   <div class="section-title">K-means clustering groups manager-seasons into four distinct drafting styles.</div>
 
   <div class="callout glass">
@@ -247,7 +317,7 @@
 
   <div class="archetype-cards" id="archetype-cards"></div>
 
-  <div class="section-label">Cluster Scatter</div>
+  <div class="section-label" id="cluster-scatter">Cluster Scatter</div>
   <div class="section-title">Each dot is one manager-season, colored by archetype. Did better drafting actually lead to more wins?</div>
 
   <div class="table-wrap glass" style="padding:1.5rem;">
@@ -258,7 +328,7 @@
     <p class="metric-note">X axis: Weighted draft grade that season (positive = outperformed slot expectations). Y axis: Win%. Top-right = drafted well and won. Bottom-left = drafted poorly and lost. Yellow quadrants = where in-season moves, injuries, or luck explain the gap.</p>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;">Archetype Outcomes</div>
+  <div class="section-label" style="margin-top:2rem;" id="archetype-outcomes">Archetype Outcomes</div>
   <div class="section-title">How did each drafting style translate to on-field results?</div>
 
   <div class="table-wrap glass" style="padding:1.5rem;">
@@ -270,7 +340,7 @@
 
 
   <!-- DRAFT GRADE VS OUTCOME -->
-  <div class="section-label" style="margin-top:2rem;">Draft Grade vs Season Outcome</div>
+  <div class="section-label" style="margin-top:2rem;" id="draft-grade-vs-outcome">Draft Grade vs Season Outcome</div>
   <div class="section-title">Does drafting well actually translate to wins?</div>
 
   <div class="callout glass">
@@ -867,6 +937,23 @@ buildGradeOutcomeChart();
 buildScatterChart();
 buildOutcomeChart();
 
+
+/* ── Chapter-rail scroll-spy ── */
+function toggleJumpSheet(open) { document.getElementById('jump-sheet').classList.toggle('open', open); }
+(function() {
+  var items = Array.from(document.querySelectorAll('.chapter-rail-item, .jump-sheet a'));
+  if (!items.length) return;
+  var targets = Array.from(new Set(items.map(function(i){ return i.dataset.target; })))
+    .map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        items.forEach(function(i){ i.classList.toggle('active', i.dataset.target === entry.target.id); });
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(function(t){ observer.observe(t); });
+})();
 </script>
 </body>
 </html>
