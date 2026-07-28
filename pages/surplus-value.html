@@ -109,27 +109,40 @@
 
 /* ── CHAPTER RAIL (in-page section nav) ── */
 .chapter-rail {
-  position:fixed;top:50%;right:1.25rem;transform:translateY(-50%);
-  z-index:20;display:flex;flex-direction:column;gap:0.85rem;align-items:flex-end;
+  position:fixed;top:50%;transform:translateY(-50%);
+  z-index:20;display:flex;flex-direction:column;gap:0.85rem;align-items:center;
+  visibility:hidden;
 }
-.chapter-rail-item { display:flex;align-items:center;gap:0.6rem;text-decoration:none;cursor:pointer; }
-.chapter-rail-label {
-  font-size:0.68rem;font-weight:600;color:var(--muted);white-space:nowrap;
-  opacity:0;transform:translateX(6px);transition:opacity 0.18s,transform 0.18s;
-  background:rgba(245,240,232,0.95);padding:0.25rem 0.6rem;border-radius:var(--radius-sm);
-  border:1px solid rgba(var(--accent-rgb),0.15);
+.chapter-rail.visible { visibility:visible; }
+.chapter-rail::before {
+  content:'';position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);
+  width:1px;background:rgba(var(--accent-rgb),0.15);
 }
-.chapter-rail-item:hover .chapter-rail-label,
-.chapter-rail-item.active .chapter-rail-label { opacity:1;transform:translateX(0); }
+.chapter-rail-item {
+  position:relative;width:16px;height:16px;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;cursor:pointer;
+}
 .chapter-rail-dot {
-  width:9px;height:9px;border-radius:50%;background:rgba(var(--accent-rgb),0.25);
-  flex-shrink:0;transition:all 0.18s;border:1px solid rgba(var(--accent-rgb),0.4);
+  width:9px;height:9px;border-radius:50%;background:rgba(245,240,232,0.95);
+  border:1px solid rgba(var(--accent-rgb),0.4);transition:all 0.18s;position:relative;z-index:1;
 }
-.chapter-rail-item:hover .chapter-rail-dot { background:rgba(var(--accent-rgb),0.6); }
+.chapter-rail-item:hover .chapter-rail-dot { background:rgba(var(--accent-rgb),0.6);border-color:rgba(var(--accent-rgb),0.6); }
 .chapter-rail-item.active .chapter-rail-dot {
   background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(var(--accent-rgb),0.15);
 }
-@media(max-width:1100px) { .chapter-rail { display:none; } }
+.chapter-rail-label {
+  position:absolute;right:100%;top:50%;margin-right:0.7rem;
+  transform:translateY(-50%) translateX(6px);
+  font-size:0.68rem;font-weight:600;color:var(--muted);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity 0.18s,transform 0.18s;
+  background:rgba(245,240,232,0.97);padding:0.25rem 0.6rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.15);
+}
+.chapter-rail-item:hover .chapter-rail-label,
+.chapter-rail-item.active .chapter-rail-label {
+  opacity:1;transform:translateY(-50%) translateX(0);pointer-events:auto;
+}
 
 .jump-fab {
   display:none;position:fixed;bottom:1.25rem;right:1.25rem;z-index:25;
@@ -138,7 +151,7 @@
   box-shadow:0 4px 18px rgba(0,0,0,0.18);cursor:pointer;
   align-items:center;gap:0.4rem;font-family:inherit;
 }
-@media(max-width:1100px) { .jump-fab { display:inline-flex; } }
+.jump-fab.visible { display:inline-flex; }
 .jump-sheet { display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,0.35); }
 .jump-sheet.open { display:block; }
 .jump-sheet-inner {
@@ -637,9 +650,33 @@ function filterWorst(season, btn) {
 renderPickTable('best-tbody',  ALL_BEST_PICKS);
 renderPickTable('worst-tbody', ALL_WORST_PICKS);
 
-/* ── Chapter-rail scroll-spy ── */
+/* ── Chapter-rail: positioning + scroll-spy ── */
 function toggleJumpSheet(open) { document.getElementById('jump-sheet').classList.toggle('open', open); }
 (function() {
+  var rail = document.getElementById('chapter-rail');
+  var fab  = document.querySelector('.jump-fab');
+  var contentEl = document.querySelector('.content');
+  if (!rail || !contentEl) return;
+
+  var MIN_GAP = 150; // minimum free px to the right of content before showing the rail
+
+  function positionRail() {
+    var rect = contentEl.getBoundingClientRect();
+    var freeSpace = window.innerWidth - rect.right;
+    if (freeSpace >= MIN_GAP) {
+      rail.style.left = (rect.right + 28) + 'px';
+      rail.classList.add('visible');
+      if (fab) fab.classList.remove('visible');
+    } else {
+      rail.classList.remove('visible');
+      if (fab) fab.classList.add('visible');
+    }
+  }
+
+  positionRail();
+  window.addEventListener('resize', positionRail);
+  window.addEventListener('load', positionRail);
+
   var items = Array.from(document.querySelectorAll('.chapter-rail-item, .jump-sheet a'));
   if (!items.length) return;
   var targets = Array.from(new Set(items.map(function(i){ return i.dataset.target; })))
