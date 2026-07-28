@@ -74,6 +74,18 @@
 .season-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
 .season-filter-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent); }
 
+/* ── POSITIONAL PRODUCTION ── */
+.pos-table th.pos-sortable { cursor:pointer;user-select:none;transition:color 0.15s; }
+.pos-table th.pos-sortable:hover { color:var(--text); }
+.pos-table th.pos-sortable::after {
+  content:'';display:inline-block;margin-left:0.3rem;
+  border:4px solid transparent;opacity:0.25;vertical-align:middle;
+}
+.pos-table th.pos-sortable.sort-desc::after { border-top-color:var(--accent);opacity:1; }
+.pos-table th.pos-sortable.sort-asc::after { border-bottom-color:var(--accent);margin-bottom:4px;opacity:1; }
+.pos-table td.pos-grad { font-weight:700;border-radius:4px;text-align:center; }
+.pos-table td.pos-mgr { color:var(--palm);font-weight:600;white-space:nowrap; }
+
 /* ── H2H MATRIX ── */
 .h2h-scroll { overflow-x:auto; padding:1.5rem; }
 .h2h-table {
@@ -372,6 +384,55 @@
         <canvas id="chart-q-corr" height="200"></canvas>
       </div>
     </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       POSITIONAL PRODUCTION
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section">
+    <div class="section-label">Positional Production</div>
+    <div class="section-title">Which positions actually win you games?</div>
+    <div class="callout glass">
+      <div class="callout-label">Methodology</div>
+      <p>Average weekly points come from <strong>started lineups only</strong>, across every regular season game and every real playoff bracket game. Consolation-bracket games are excluded entirely, same as the rest of the site. A season-level regression (<strong>n=83 manager-seasons, R&sup2;=0.57</strong>) tests how much each position's average weekly production predicts that season's win%.</p>
+    </div>
+
+    <div class="season-filter-row">
+      <span class="season-filter-label">Show:</span>
+      <button class="season-btn active" onclick="setPosView('avg', this)">Average PPG</button>
+      <button class="season-btn" onclick="setPosView('std', this)">Consistency</button>
+    </div>
+
+    <div class="table-wrap glass">
+      <p class="table-hint" id="pos-table-hint">Career average weekly points per position, started lineups only. Click any column to sort.</p>
+      <table class="rivalry-table pos-table" id="pos-table">
+        <thead>
+          <tr>
+            <th class="pos-sortable" data-key="manager">Manager</th>
+            <th class="pos-sortable sort-desc" data-key="winpct">Win%</th>
+            <th class="pos-sortable" data-key="QB">QB</th>
+            <th class="pos-sortable" data-key="RB">RB</th>
+            <th class="pos-sortable" data-key="WR">WR</th>
+            <th class="pos-sortable" data-key="TE">TE</th>
+            <th class="pos-sortable" data-key="K">K</th>
+            <th class="pos-sortable" data-key="D/ST">D/ST</th>
+          </tr>
+        </thead>
+        <tbody id="pos-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="chart-grid" style="margin-top:1.75rem;">
+      <div class="chart-area-pad glass">
+        <canvas id="chart-pos-coef" height="200"></canvas>
+      </div>
+      <div class="chart-area-pad glass">
+        <canvas id="chart-pos-corr" height="200"></canvas>
+      </div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;"><strong>RB and WR are, by a clear margin, the strongest predictors of winning</strong> once every position is controlled for. QB matters too, at roughly half the weight. TE is borderline significant. K and D/ST barely move the needle once RB, WR, and QB are accounted for, largely because there's so little manager-to-manager separation at those two positions to begin with.</p>
   </div>
 
   <hr class="section-divider">
@@ -788,6 +849,233 @@ function shortName(n) {
           grid: gridStyle(), ticks: tickStyle(),
           title: { display:true, text:'Pearson r', color:C_MUTED, font:{size:11} },
           min: 0,
+        }
+      }
+    }
+  });
+})();
+
+/* ── POSITIONAL PRODUCTION ────────────────────────────────────────────────── */
+(function() {
+  var POSITIONS = ['QB', 'RB', 'WR', 'TE', 'K', 'D/ST'];
+
+  // Career averages and career std dev (week-to-week volatility) of started
+  // points per position, real games only (consolation weeks excluded).
+  var DATA = [
+    {mgr:'Ethan Radecki',        winpct:64.2, avg:{QB:18.93,RB:30.94,WR:40.46,TE:15.38,K:7.38,'D/ST':7.28}, std:{QB:8.48, RB:13.67,WR:14.29,TE:9.61,K:4.20,'D/ST':7.44}},
+    {mgr:'Baylen Slansky',       winpct:58.0, avg:{QB:19.89,RB:34.37,WR:38.33,TE:11.70,K:8.18,'D/ST':7.46}, std:{QB:8.81, RB:15.54,WR:16.54,TE:7.74,K:4.91,'D/ST':5.83}},
+    {mgr:'Carmine Pittelli Jr.', winpct:58.0, avg:{QB:17.46,RB:30.85,WR:38.15,TE:12.90,K:8.07,'D/ST':9.54}, std:{QB:8.91, RB:13.69,WR:15.29,TE:7.66,K:4.31,'D/ST':5.48}},
+    {mgr:'Brandon Hancock',      winpct:54.9, avg:{QB:19.97,RB:27.80,WR:41.13,TE:11.63,K:9.20,'D/ST':7.76}, std:{QB:8.55, RB:11.69,WR:15.91,TE:7.29,K:4.41,'D/ST':6.14}},
+    {mgr:'Anthony Kelly',        winpct:53.1, avg:{QB:19.11,RB:33.05,WR:35.77,TE:10.61,K:8.18,'D/ST':7.60}, std:{QB:8.72, RB:13.61,WR:14.72,TE:7.78,K:4.46,'D/ST':6.78}},
+    {mgr:'Andrew Root',          winpct:50.6, avg:{QB:20.03,RB:28.20,WR:34.12,TE:10.23,K:7.80,'D/ST':6.77}, std:{QB:8.71, RB:13.62,WR:14.98,TE:8.13,K:4.29,'D/ST':6.64}},
+    {mgr:'Ryan P McQuaid',       winpct:49.4, avg:{QB:16.64,RB:33.93,WR:30.67,TE:10.00,K:7.69,'D/ST':6.93}, std:{QB:8.53, RB:14.62,WR:15.22,TE:6.82,K:5.07,'D/ST':5.96}},
+    {mgr:'Ben Castaldo',         winpct:48.8, avg:{QB:18.41,RB:25.96,WR:40.29,TE:9.54, K:8.34,'D/ST':5.67}, std:{QB:9.38, RB:14.11,WR:15.01,TE:7.76,K:4.27,'D/ST':6.27}},
+    {mgr:'Max Malich',           winpct:48.1, avg:{QB:19.21,RB:32.29,WR:35.46,TE:10.10,K:8.81,'D/ST':6.88}, std:{QB:9.12, RB:15.32,WR:16.50,TE:7.59,K:5.10,'D/ST':6.54}},
+    {mgr:'Charlie Gorman',       winpct:48.1, avg:{QB:19.06,RB:34.14,WR:32.37,TE:10.49,K:7.60,'D/ST':7.31}, std:{QB:7.40, RB:14.64,WR:14.61,TE:8.40,K:4.85,'D/ST':6.67}},
+    {mgr:'Cole Maney',           winpct:48.1, avg:{QB:18.39,RB:27.93,WR:39.64,TE:12.54,K:7.37,'D/ST':6.64}, std:{QB:7.41, RB:12.36,WR:16.07,TE:10.02,K:4.38,'D/ST':6.60}},
+    {mgr:'Deniz Bileydi',        winpct:39.5, avg:{QB:18.15,RB:30.96,WR:36.69,TE:9.26, K:7.80,'D/ST':6.55}, std:{QB:7.08, RB:12.89,WR:16.05,TE:5.67,K:4.30,'D/ST':6.06}},
+    {mgr:'Aidan Quigley',        winpct:39.1, avg:{QB:18.26,RB:27.98,WR:37.32,TE:11.91,K:7.92,'D/ST':7.65}, std:{QB:8.69, RB:11.33,WR:13.45,TE:7.25,K:4.36,'D/ST':7.18}},
+    {mgr:'Quin Gegwich',         winpct:37.0, avg:{QB:16.33,RB:34.22,WR:33.86,TE:8.64, K:8.39,'D/ST':6.31}, std:{QB:6.36, RB:14.53,WR:14.73,TE:5.99,K:4.93,'D/ST':6.89}}
+  ];
+
+  // Standardized regression coefficients (relative importance, Win% ~ position avgs, n=83)
+  var STD_COEF = {QB:0.279, RB:0.490, WR:0.474, TE:0.232, K:0.060, 'D/ST':0.124};
+  var COEF_PVAL = {QB:0.0005, RB:0.0000, WR:0.0000, TE:0.0040, K:0.4360, 'D/ST':0.1298};
+  // Simple Pearson correlation of each position's season avg with that season's Win%
+  var CORR_R = {QB:0.285, RB:0.343, WR:0.427, TE:0.313, K:0.126, 'D/ST':0.332};
+
+  var posView = 'avg';          // 'avg' or 'std'
+  var sortKey = 'winpct';
+  var sortDir = 'desc';
+
+  // Red (bad) -> gold (mid) -> green (good), using this page's own color
+  // constants, scaled to the min/max of the column being displayed.
+  function gradeColor(value, min, max, invert) {
+    if (max === min) return 'transparent';
+    var t = (value - min) / (max - min);
+    if (invert) t = 1 - t;
+    var stops = t <= 0.5
+      ? [hexToRgb(C_RED), hexToRgb(C_GOLD), t * 2]
+      : [hexToRgb(C_GOLD), hexToRgb(C_GREEN), (t - 0.5) * 2];
+    var a = stops[0], b = stops[1], f = stops[2];
+    var r = Math.round(a[0] + (b[0]-a[0])*f);
+    var g = Math.round(a[1] + (b[1]-a[1])*f);
+    var bl = Math.round(a[2] + (b[2]-a[2])*f);
+    return 'rgba(' + r + ',' + g + ',' + bl + ',0.32)';
+  }
+  function hexToRgb(hex) {
+    hex = hex.replace('#','');
+    return [parseInt(hex.substr(0,2),16), parseInt(hex.substr(2,2),16), parseInt(hex.substr(4,2),16)];
+  }
+
+  function renderPosTable() {
+    var tbody = document.getElementById('pos-tbody');
+    var valField = posView === 'avg' ? 'avg' : 'std';
+
+    // Column min/max for gradient scaling
+    var ranges = {winpct:[Infinity,-Infinity]};
+    POSITIONS.forEach(function(p){ ranges[p] = [Infinity,-Infinity]; });
+    DATA.forEach(function(d) {
+      ranges.winpct[0] = Math.min(ranges.winpct[0], d.winpct);
+      ranges.winpct[1] = Math.max(ranges.winpct[1], d.winpct);
+      POSITIONS.forEach(function(p) {
+        var v = d[valField][p];
+        ranges[p][0] = Math.min(ranges[p][0], v);
+        ranges[p][1] = Math.max(ranges[p][1], v);
+      });
+    });
+
+    var rows = DATA.slice();
+    rows.sort(function(a, b) {
+      var av = sortKey === 'manager' ? a.mgr : (sortKey === 'winpct' ? a.winpct : a[valField][sortKey]);
+      var bv = sortKey === 'manager' ? b.mgr : (sortKey === 'winpct' ? b.winpct : b[valField][sortKey]);
+      if (sortKey === 'manager') return sortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+      return sortDir === 'asc' ? av - bv : bv - av;
+    });
+
+    // For "Consistency" view, LOWER std dev is better (more consistent), so invert the color scale
+    var invert = posView === 'std';
+
+    tbody.innerHTML = rows.map(function(d) {
+      var winBg = gradeColor(d.winpct, ranges.winpct[0], ranges.winpct[1], false);
+      var cells = POSITIONS.map(function(p) {
+        var v = d[valField][p];
+        var bg = gradeColor(v, ranges[p][0], ranges[p][1], invert);
+        return '<td class="pos-grad" style="background:' + bg + ';">' + v.toFixed(1) + '</td>';
+      }).join('');
+      return '<tr><td class="pos-mgr">' + d.mgr + '</td>'
+        + '<td class="pos-grad" style="background:' + winBg + ';">' + d.winpct.toFixed(1) + '</td>'
+        + cells + '</tr>';
+    }).join('');
+  }
+
+  window.setPosView = function(view, btn) {
+    posView = view;
+    document.querySelectorAll('.season-filter-row .season-btn').forEach(function(b){
+      if (b.closest('.season-filter-row') === btn.closest('.season-filter-row')) b.classList.remove('active');
+    });
+    btn.classList.add('active');
+    document.getElementById('pos-table-hint').textContent = view === 'avg'
+      ? 'Career average weekly points per position, started lineups only. Click any column to sort.'
+      : 'Career week-to-week std dev per position (lower = more consistent). Click any column to sort.';
+    renderPosTable();
+  };
+
+  document.querySelectorAll('#pos-table th.pos-sortable').forEach(function(th) {
+    th.addEventListener('click', function() {
+      var key = th.getAttribute('data-key');
+      if (sortKey === key) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortKey = key;
+        sortDir = key === 'manager' ? 'asc' : 'desc';
+      }
+      document.querySelectorAll('#pos-table th.pos-sortable').forEach(function(t) {
+        t.classList.remove('sort-asc', 'sort-desc');
+      });
+      th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+      renderPosTable();
+    });
+  });
+
+  renderPosTable();
+
+  // Bar charts: standardized coefficients + simple correlations by position
+  function posColors(vals, alpha) {
+    var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+    return vals.map(function(v) {
+      var t = mx !== mn ? (v - mn) / (mx - mn) : 0.5;
+      var r = Math.round(180 + (40  - 180) * t);
+      var g = Math.round(220 + (120 - 220) * t);
+      var b = Math.round(180 + (70  - 180) * t);
+      return 'rgba('+r+','+g+','+b+','+alpha+')';
+    });
+  }
+
+  var coefVals = POSITIONS.map(function(p){ return STD_COEF[p]; });
+  var corrVals = POSITIONS.map(function(p){ return CORR_R[p]; });
+
+  function pLabel(p) { return p < 0.01 ? '***' : p < 0.05 ? '**' : p < 0.1 ? '*' : ''; }
+
+  new Chart(document.getElementById('chart-pos-coef').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: POSITIONS,
+      datasets: [{
+        label: 'Standardized coefficient',
+        data: coefVals,
+        backgroundColor: posColors(coefVals, 0.75),
+        borderColor: posColors(coefVals, 1.0),
+        borderWidth: 1.5,
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var pos = POSITIONS[ctx.dataIndex];
+              var p = COEF_PVAL[pos];
+              return 'Std coef: +' + ctx.parsed.y.toFixed(3) + '  p=' + p.toFixed(4) + pLabel(p);
+            }
+          }
+        },
+        title: {
+          display: true,
+          text: 'Standardized Coefficients  |  Win% ~ Position Avg, R\u00b2 0.57',
+          color: C_TEXT_MID,
+          font: { size:12, weight:'600' },
+          padding: { bottom:12 }
+        }
+      },
+      scales: {
+        x: { grid:gridStyle(), ticks:Object.assign(tickStyle(), { font:{size:11} }) },
+        y: {
+          grid: gridStyle(), ticks: tickStyle(),
+          title: { display:true, text:'Relative importance', color:C_MUTED, font:{size:11} },
+          min: 0
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('chart-pos-corr').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: POSITIONS,
+      datasets: [{
+        label: 'Pearson r',
+        data: corrVals,
+        backgroundColor: posColors(corrVals, 0.75),
+        borderColor: posColors(corrVals, 1.0),
+        borderWidth: 1.5,
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          callbacks: { label: function(ctx) { return 'Pearson r: ' + ctx.parsed.y.toFixed(3); } }
+        },
+        title: {
+          display: true,
+          text: 'Simple Correlation with Season Win%',
+          color: C_TEXT_MID,
+          font: { size:12, weight:'600' },
+          padding: { bottom:12 }
+        }
+      },
+      scales: {
+        x: { grid:gridStyle(), ticks:Object.assign(tickStyle(), { font:{size:11} }) },
+        y: {
+          grid: gridStyle(), ticks: tickStyle(),
+          title: { display:true, text:'Pearson r', color:C_MUTED, font:{size:11} },
+          min: 0
         }
       }
     }
