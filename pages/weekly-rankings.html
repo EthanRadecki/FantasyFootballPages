@@ -219,6 +219,17 @@
     </div>
   </div>
 
+  <!-- PLAYOFF ODDS TRACKER -->
+  <div id="playoff-odds-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#127942; Playoff Odds Tracker</div>
+    <div class="glass" style="padding:1.5rem;">
+      <p style="font-size:0.78rem;color:var(--muted);margin:0 0 1rem;line-height:1.5;">Retrospective odds of finishing the regular season in the top 8. At each week, real record and points to date are combined with 5,000 simulated playouts of the remaining schedule, using each manager's scoring average and volatility up to that point. Playoff-round games are never simulated or counted &mdash; this tracks regular season only.</p>
+      <div style="position:relative;height:400px;">
+        <canvas id="chart-playoff-odds"></canvas>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
   </footer>
@@ -244,6 +255,8 @@ var LASTNAME_MAP = {
 var manifest = null;  // loaded from manifest.json
 var jsonCache = {};   // { 'year_week': data } -- avoid re-fetching
 var trajectoryChart = null;
+var playoffOddsChart = null;
+var playoffOddsData = null;  // loaded from playoff_odds.json, keyed by season
 
 // One color per manager (consistent across seasons)
 var MANAGER_COLORS = {
@@ -447,6 +460,96 @@ function renderTrajectoryChart(season, upToWeek, weeksData) {
   document.getElementById('trajectory-wrap').style.display = 'block';
 }
 
+/* ── Playoff odds chart ────────────────────────────────────────── */
+function renderPlayoffOddsChart(season, upToWeek) {
+  var seasonData = playoffOddsData ? playoffOddsData[String(season)] : null;
+  var wrap = document.getElementById('playoff-odds-wrap');
+  if (!seasonData) {
+    wrap.style.display = 'none';
+    return;
+  }
+
+  var managers = Object.keys(MANAGER_COLORS);
+  var maxWeek  = Math.min(upToWeek, seasonData.max_week);
+  var weeks    = [];
+  for (var w = 1; w <= maxWeek; w++) weeks.push(w);
+  var labels   = weeks.map(function(w){ return 'Wk ' + w; });
+
+  var datasets = managers.map(function(mgr) {
+    var color = MANAGER_COLORS[mgr] || '#9c949c';
+    var data  = weeks.map(function(w) {
+      var wk = seasonData.weeks[String(w)];
+      return wk && (mgr in wk) ? wk[mgr] : null;
+    });
+    var pointRadii = data.map(function(_, i){ return i === data.length - 1 ? 6 : 2; });
+
+    return {
+      label:                mgr.replace(' Jr.','').replace('Ryan P ','Ryan '),
+      data:                 data,
+      borderColor:          color,
+      backgroundColor:      'transparent',
+      borderWidth:          2,
+      pointRadius:          pointRadii,
+      pointBackgroundColor: color,
+      pointBorderColor:     '#fff',
+      pointBorderWidth:     1,
+      pointHoverRadius:     8,
+      tension:              0.3,
+      spanGaps:             false,
+    };
+  });
+
+  if (playoffOddsChart) {
+    playoffOddsChart.destroy();
+    playoffOddsChart = null;
+  }
+
+  var ctx = document.getElementById('chart-playoff-odds').getContext('2d');
+  playoffOddsChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive:          true,
+      maintainAspectRatio: false,
+      interaction:         { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: {
+            boxWidth: 10,
+            padding:  10,
+            color:    '#5a5550',
+            font:     { size: 11 },
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.parsed.y === null) return null;
+              return ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid:  { color: 'rgba(156,148,156,0.15)', drawBorder: false },
+          ticks: { color: '#8a8480' },
+        },
+        y: {
+          min: 0,
+          max: 100,
+          grid:    { color: 'rgba(156,148,156,0.15)', drawBorder: false },
+          ticks:   { color: '#8a8480', stepSize: 20, callback: function(v){ return v + '%'; } },
+          title:   { display: true, text: 'Playoff odds', color: '#8a8480', font: { size: 11 } },
+        }
+      }
+    }
+  });
+
+  wrap.style.display = 'block';
+}
+
 /* ── Fetch a single week JSON (with cache) ────────────────────── */
 function fetchWeek(season, week) {
   var key  = season + '_' + week;
@@ -470,6 +573,7 @@ function loadRankings() {
 
   container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#9203;</span><p>Loading...</p></div>';
   document.getElementById('trajectory-wrap').style.display = 'none';
+  document.getElementById('playoff-odds-wrap').style.display = 'none';
 
   // Fetch the selected week for the ranking cards
   fetchWeek(season, week)
@@ -488,6 +592,7 @@ function loadRankings() {
       var week   = parseInt(document.getElementById('week-select').value);
       var sorted = weeksData.slice().sort(function(a, b){ return a.week - b.week; });
       renderTrajectoryChart(season, week, sorted);
+      renderPlayoffOddsChart(season, week);
     })
     .catch(function() {
       container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#128203;</span><p>No rankings available for this week yet.</p></div>';
@@ -514,6 +619,18 @@ function onSeasonChange() {
 
 /* ── Init: load manifest, populate dropdowns ──────────────────── */
 document.addEventListener('DOMContentLoaded', function() {
+  fetch('../data/rankings/playoff_odds.json')
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      playoffOddsData = data;
+      var seasonEl = document.getElementById('season-select');
+      var weekEl   = document.getElementById('week-select');
+      if (seasonEl && seasonEl.value && weekEl && weekEl.value) {
+        renderPlayoffOddsChart(parseInt(seasonEl.value), parseInt(weekEl.value));
+      }
+    })
+    .catch(function() { playoffOddsData = null; });
+
   fetch('../data/rankings/manifest.json')
     .then(function(r){ return r.json(); })
     .then(function(data) {
