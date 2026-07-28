@@ -232,6 +232,27 @@
 .pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
 .pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
 .fl-table td.fl-grad-cell { font-weight:700;border-radius:4px; }
+
+/* ── ROSTER TIMELINE ── */
+.fl-tl-header {
+  display:grid;font-size:0.65rem;color:var(--muted);margin-bottom:0.4rem;font-weight:600;
+}
+.fl-tl-row {
+  display:grid;align-items:center;margin-bottom:0.55rem;
+}
+.fl-tl-label {
+  font-size:0.75rem;color:var(--palm);display:flex;align-items:center;gap:0.4rem;
+  padding-right:0.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.fl-tl-track {
+  position:relative;height:18px;
+}
+.fl-tl-seasoncell {
+  position:absolute;top:0;bottom:0;border-left:0.5px solid rgba(156,148,156,0.2);
+}
+.fl-tl-bar {
+  position:absolute;top:2px;height:14px;border-radius:3px;
+}
 .fl-pagination {
   display:flex;align-items:center;justify-content:center;gap:1rem;
   margin-top:0.9rem;
@@ -578,6 +599,38 @@
         <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.75rem;">
           Total points and PPG only count weeks a player was in the starting lineup. Weeks rostered counts every week on the roster, bench and IR included.
         </p>
+      </div>
+    </div>
+
+    <!-- WORKHORSE VS RENTAL SCATTER -->
+    <div class="chart-section">
+      <div class="chart-section-label">Workhorse vs. Rental</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <p style="font-size:0.75rem;color:var(--muted);margin:0 0 0.75rem;">
+          Top 50 players by total points, filtered by the Position and Season selections above. Bubble size is total points, color is position.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+          <span class="pos-badge pos-rb">RB</span>
+          <span class="pos-badge pos-wr">WR</span>
+          <span class="pos-badge pos-qb">QB</span>
+          <span class="pos-badge pos-te">TE</span>
+          <span class="pos-badge pos-k">K</span>
+          <span class="pos-badge pos-dst">D/ST</span>
+        </div>
+        <div style="position:relative;height:420px;">
+          <canvas id="fl-scatter-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROSTER TIMELINE -->
+    <div class="chart-section">
+      <div class="chart-section-label">Roster Timeline</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <p style="font-size:0.75rem;color:var(--muted);margin:0 0 0.9rem;">
+          Top 20 players by total points, filtered by the Position and Season selections above. Solid segments are weeks started, faded segments are weeks benched or on IR.
+        </p>
+        <div id="fl-timeline-wrap"></div>
       </div>
     </div>
 
@@ -1834,6 +1887,7 @@ function renderAllCharts(profile) {
 
 // ── FRANCHISE LEADERS ────────────────────────────────────────────────────────
 var franchiseLeadersData = null;
+var rosterStintsData      = null;
 var flCurrentManager      = null;
 var flCurrentPosition     = 'ALL';
 var flCurrentYear         = 'career';
@@ -1841,6 +1895,16 @@ var flSortKey             = 'total_points';
 var flSortDir             = 'desc';
 var flCurrentPage         = 1;
 var FL_PAGE_SIZE          = 20;
+var FL_SCATTER_TOP_N      = 50;
+var FL_TIMELINE_TOP_N     = 20;
+var FL_POS_COLORS = {
+  RB: {fill:'rgba(90,138,90,0.65)',  border:'rgba(90,138,90,1)'},
+  WR: {fill:'rgba(74,127,168,0.65)', border:'rgba(74,127,168,1)'},
+  QB: {fill:'rgba(168,90,90,0.65)',  border:'rgba(168,90,90,1)'},
+  TE: {fill:'rgba(212,175,55,0.65)', border:'rgba(212,175,55,1)'},
+  K:  {fill:'rgba(156,148,156,0.65)',border:'rgba(156,148,156,1)'},
+  'D/ST': {fill:'rgba(100,90,80,0.65)', border:'rgba(100,90,80,1)'}
+};
 
 function setFlPosition(pos, btn) {
   flCurrentPosition = pos;
@@ -1914,6 +1978,140 @@ function flColorGradient(value, min, max) {
   return 'rgba(' + r + ',' + g + ',' + b + ',0.32)';
 }
 
+function renderFlScatterChart(items) {
+  var canvas = document.getElementById('fl-scatter-chart');
+  if (!canvas) return;
+  destroyChart('flScatter');
+  if (!items || items.length === 0) return;
+
+  var maxPts = Math.max.apply(null, items.map(function(p){ return p.total_points; }));
+  function radius(pts) { return 4 + (maxPts > 0 ? (pts / maxPts) * 22 : 0); }
+
+  var positions = ['RB','WR','QB','TE','K','D/ST'];
+  var datasets = positions.map(function(pos) {
+    var subset = items.filter(function(p){ return p.position === pos; });
+    var colors = FL_POS_COLORS[pos] || FL_POS_COLORS.K;
+    return {
+      label: pos,
+      data: subset.map(function(p) {
+        return { x: p.weeks_rostered, y: p.ppg, r: radius(p.total_points), player: p.player, pts: p.total_points };
+      }),
+      backgroundColor: colors.fill,
+      borderColor: colors.border,
+      borderWidth: 1.5
+    };
+  }).filter(function(d){ return d.data.length > 0; });
+
+  charts['flScatter'] = new Chart(canvas.getContext('2d'), {
+    type: 'bubble',
+    data: { datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: 20 },
+      scales: {
+        x: { title: { display: true, text: 'Weeks rostered', color: C_MUTED }, grid: gridStyle(), ticks: tickStyle() },
+        y: { title: { display: true, text: 'Points per game', color: C_MUTED }, grid: gridStyle(), ticks: tickStyle() }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var d = ctx.raw;
+              return d.player + ' \u2014 ' + d.pts.toFixed(1) + ' pts, ' + d.y.toFixed(1) + ' ppg, ' + d.x + ' weeks';
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// Timeline layout constants: 6 seasons x 17 weeks each, laid out side by side
+var FL_TL_SEASONS = [2020, 2021, 2022, 2023, 2024, 2025];
+var FL_TL_WEEKS_PER_SEASON = 17;
+
+function renderFlTimeline(items) {
+  var wrap = document.getElementById('fl-timeline-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  if (!items || items.length === 0 || !rosterStintsData) return;
+
+  var mgrStints = rosterStintsData[flCurrentManager] || rosterStintsData[normalizeFpName(flCurrentManager)] || {};
+  var seasons = flCurrentYear === 'career' ? FL_TL_SEASONS : [flCurrentYear];
+  var gridCols = '150px repeat(' + seasons.length + ', 1fr)';
+
+  var header = document.createElement('div');
+  header.className = 'fl-tl-header';
+  header.style.gridTemplateColumns = gridCols;
+  header.innerHTML = '<div></div>' + seasons.map(function(s){
+    return '<div style="text-align:center;">' + s + '</div>';
+  }).join('');
+  wrap.appendChild(header);
+
+  items.forEach(function(item) {
+    var playerData = mgrStints[item.player];
+    var stints = playerData ? playerData.stints : [];
+    stints = stints.filter(function(s){ return seasons.indexOf(s.season) !== -1; });
+
+    var row = document.createElement('div');
+    row.className = 'fl-tl-row';
+    row.style.gridTemplateColumns = gridCols;
+
+    var label = document.createElement('div');
+    label.className = 'fl-tl-label';
+    label.innerHTML = flPosBadge(item.position) + '<span>' + item.player + '</span>';
+    row.appendChild(label);
+
+    var seasonCells = {};
+    seasons.forEach(function(s) {
+      var cell = document.createElement('div');
+      cell.className = 'fl-tl-track';
+      row.appendChild(cell);
+      seasonCells[s] = cell;
+    });
+
+    var colors = FL_POS_COLORS[item.position] || FL_POS_COLORS.K;
+    stints.forEach(function(stint) {
+      var cell = seasonCells[stint.season];
+      if (!cell) return;
+      var leftPct = ((stint.start - 1) / FL_TL_WEEKS_PER_SEASON) * 100;
+      var widthPct = ((stint.end - stint.start + 1) / FL_TL_WEEKS_PER_SEASON) * 100;
+      var fullBar = document.createElement('div');
+      fullBar.className = 'fl-tl-bar';
+      fullBar.style.left = leftPct + '%';
+      fullBar.style.width = widthPct + '%';
+      fullBar.style.background = colors.fill.replace(/[\d.]+\)$/, '0.25)');
+      cell.appendChild(fullBar);
+
+      // Solid sub-segments for weeks the player was actually started
+      var started = (stint.started || []).slice().sort(function(a,b){ return a-b; });
+      var runStart = null, prev = null;
+      started.concat([null]).forEach(function(w) {
+        if (w !== null && (prev === null || w === prev + 1)) {
+          if (runStart === null) runStart = w;
+        } else {
+          if (runStart !== null) {
+            var segLeft = ((runStart - 1) / FL_TL_WEEKS_PER_SEASON) * 100;
+            var segWidth = ((prev - runStart + 1) / FL_TL_WEEKS_PER_SEASON) * 100;
+            var seg = document.createElement('div');
+            seg.className = 'fl-tl-bar';
+            seg.style.left = segLeft + '%';
+            seg.style.width = segWidth + '%';
+            seg.style.background = colors.border;
+            cell.appendChild(seg);
+          }
+          runStart = w;
+        }
+        prev = w;
+      });
+    });
+
+    wrap.appendChild(row);
+  });
+}
+
 function renderFranchiseLeadersTable(manager) {
   if (manager && manager !== flCurrentManager) flCurrentPage = 1;
   if (manager) flCurrentManager = manager;
@@ -1955,6 +2153,12 @@ function renderFranchiseLeadersTable(manager) {
     var av = a[flSortKey], bv = b[flSortKey];
     return flSortDir === 'desc' ? (bv - av) : (av - bv);
   });
+
+  // Scatter and timeline always rank by total points, independent of
+  // whatever sort key the table is currently using.
+  var byPoints = list.slice().sort(function(a,b){ return b.total_points - a.total_points; });
+  renderFlScatterChart(byPoints.slice(0, FL_SCATTER_TOP_N));
+  renderFlTimeline(byPoints.slice(0, FL_TIMELINE_TOP_N));
 
   var pagination = document.getElementById('fl-pagination');
 
@@ -2088,6 +2292,18 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch(function() {
       // Franchise leaders not available -- table will silently stay empty
       franchiseLeadersData = {};
+    });
+
+  // Load roster stints (per-manager, per-player contiguous week ranges,
+  // used by the Roster Timeline visualization)
+  var stintsPromise = fetch('../data/roster_stints.json')
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      rosterStintsData = data;
+      if (flCurrentManager) renderFranchiseLeadersTable();
+    })
+    .catch(function() {
+      rosterStintsData = {};
     });
 });
 </script>
