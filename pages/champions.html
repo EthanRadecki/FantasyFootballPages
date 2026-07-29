@@ -60,6 +60,30 @@
   font-weight:700;color:var(--muted);
 }
 
+/* Roster view toggle */
+.roster-toggle-row {
+  display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;
+  padding:0.75rem 2rem 0;position:relative;z-index:1;
+}
+.roster-toggle {
+  display:inline-flex;background:rgba(156,148,156,0.12);
+  border-radius:999px;padding:0.2rem;
+}
+.roster-toggle-btn {
+  font-family:inherit;font-size:0.68rem;font-weight:700;
+  color:var(--muted);background:none;border:none;cursor:pointer;
+  padding:0.35rem 0.85rem;border-radius:999px;transition:all 0.15s;
+}
+.roster-toggle-btn.active {
+  background:var(--palm);color:var(--bg);
+}
+.roster-toggle-hint {
+  font-size:0.7rem;color:var(--muted);font-style:italic;
+}
+@media(max-width:600px) {
+  .roster-toggle-row { padding:0.65rem 1.25rem 0; }
+}
+
 /* Roster */
 .champ-roster {
   padding:1.25rem 2rem 1.5rem;
@@ -68,7 +92,20 @@
   position:relative;z-index:1;
 }
 .roster-slot {
-  display:flex;align-items:baseline;gap:0.5rem;
+  display:flex;flex-direction:column;gap:0.3rem;
+  padding:0.55rem 0.65rem;border-radius:7px;
+  background:rgba(255,255,255,0.28);
+}
+.roster-slot-top { display:flex;align-items:baseline;gap:0.5rem; }
+.roster-ppg-row {
+  display:flex;flex-wrap:wrap;gap:0.25rem 0.7rem;font-size:0.66rem;color:var(--muted);
+  padding-left:calc(2.4rem + 0.5rem);
+}
+.roster-ppg-row .ppg-val { font-weight:700;color:var(--text-mid); }
+.roster-ppg-row .ppg-po.up   { color:#4a8a5a; font-weight:700; }
+.roster-ppg-row .ppg-po.down { color:#c04a4a; font-weight:700; }
+@media(max-width:600px) {
+  .roster-ppg-row { padding-left:0; font-size:0.68rem; }
 }
 .roster-pos {
   font-size:0.62rem;font-weight:800;text-transform:uppercase;
@@ -109,6 +146,66 @@
   .champ-roster { padding:1rem 1.25rem 1.25rem;grid-template-columns:1fr 1fr; }
   .trophy-photo { max-width:90%; }
   .trophy-wrap  { padding:1.25rem; }
+}
+
+/* Banner layout with team logo */
+.champ-banner-flex { display:flex;align-items:center;gap:1.25rem; }
+.champ-logo-wrap {
+  position:relative;flex-shrink:0;width:64px;height:64px;
+}
+.champ-logo-wrap::before {
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,175,55,0.22),transparent 70%);
+}
+.champ-logo {
+  position:relative;width:64px;height:64px;object-fit:contain;
+  border-radius:8px;background:rgba(255,255,255,0.4);
+  padding:4px;display:block;
+}
+.champ-banner-text { min-width:0;flex:1; }
+.ring-badge {
+  display:inline-flex;align-items:center;gap:0.25rem;
+  font-size:0.62rem;font-weight:800;color:var(--gold);
+  background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.3);
+  padding:0.12rem 0.5rem;border-radius:999px;margin-left:0.5rem;
+  vertical-align:middle;
+}
+@media(max-width:600px) {
+  .champ-logo-wrap, .champ-logo { width:48px;height:48px; }
+}
+
+/* Champ vs runner-up mini score bar */
+.champ-margin-wrap { padding:1rem 2rem 0;position:relative;z-index:1; }
+.champ-margin-labels {
+  display:flex;justify-content:space-between;font-size:0.7rem;
+  font-weight:700;color:var(--text-mid);margin-bottom:0.35rem;
+}
+.champ-margin-labels .lbl-champ { color:var(--gold); }
+.champ-margin-labels .lbl-runner { color:var(--muted); }
+.champ-margin-bar {
+  display:flex;height:8px;border-radius:999px;overflow:hidden;
+  background:rgba(156,148,156,0.15);
+}
+.champ-margin-bar .seg-champ { background:rgba(212,175,55,0.85); }
+.champ-margin-bar .seg-runner { background:rgba(156,148,156,0.45); }
+@media(max-width:600px) { .champ-margin-wrap { padding:0.85rem 1.25rem 0; } }
+
+/* Position color coding on roster */
+.roster-pos.pos-QB   { color:#8878a8; }
+.roster-pos.pos-RB   { color:#4a7fa8; }
+.roster-pos.pos-WR   { color:#c0623a; }
+.roster-pos.pos-TE   { color:#4a9aa8; }
+.roster-pos.pos-FLEX { color:#9c949c; }
+.roster-pos.pos-K    { color:#b8860b; }
+.roster-pos.pos-DST  { color:#7a6a5a; }
+
+/* Scroll-reveal */
+.champ-card, .trophy-wrap {
+  opacity:0;transform:translateY(18px);
+  transition:opacity 0.55s ease, transform 0.55s ease;
+}
+.champ-card.revealed, .trophy-wrap.revealed {
+  opacity:1;transform:translateY(0);
 }
 </style>
 </head>
@@ -166,7 +263,7 @@
     <p>Every championship team since Preach Fantasy's founding</p>
   </div>
 
-  </div>
+  <div id="rings-callout"></div>
 
   <!-- TIMELINE -->
   <div class="section-label">Championship History</div>
@@ -208,14 +305,40 @@ var CHAMPS = [
     rs_ppg: 115.26,
     po_ppg: 111.49,
     runner_up: 'Charlie Gorman',
-    roster: [
-      {pos:'QB',   name:'Joe Burrow'},
-      {pos:'RB',   name:'Rico Dowdle'},
-      {pos:'RB',   name:'Kyren Williams'},
-      {pos:'WR',   name:'Amon-Ra St. Brown'},
-      {pos:'WR',   name:'Drake London'},
-      {pos:'TE',   name:'Juwan Johnson'},
-      {pos:'FLEX', name:'Tet McMillan'},
+    rounds: [
+      { label: 'Quarterfinal', week: 15, roster: [
+        {pos:'QB', name:'Joe Burrow', week_score:5.5, ppg:16.5},
+        {pos:'RB', name:'Kyren Williams', week_score:21.8, ppg:16.3},
+        {pos:'RB', name:'Devin Neal', week_score:10.2, ppg:12.1},
+        {pos:'WR', name:'Amon-Ra St. Brown', week_score:41.4, ppg:18.0},
+        {pos:'WR', name:'Tetairoa McMillan', week_score:4.5, ppg:13.5},
+        {pos:'FLEX', name:'Rico Dowdle', week_score:12.4, ppg:14.1},
+        {pos:'TE', name:'Theo Johnson', week_score:10.2, ppg:10.7},
+        {pos:'K', name:'Jake Bates', week_score:10.0, ppg:9.5},
+        {pos:'D/ST', name:'Panthers D/ST', week_score:5.0, ppg:16.0},
+      ]},
+      { label: 'Semifinal', week: 16, roster: [
+        {pos:'QB', name:'Jared Goff', week_score:26.46, ppg:17.5},
+        {pos:'RB', name:'Rico Dowdle', week_score:8.3, ppg:14.1},
+        {pos:'RB', name:'Kyren Williams', week_score:11.5, ppg:16.3},
+        {pos:'WR', name:'Amon-Ra St. Brown', week_score:9.4, ppg:18.0},
+        {pos:'WR', name:'Drake London', week_score:5.7, ppg:19.7},
+        {pos:'FLEX', name:'Tetairoa McMillan', week_score:19.3, ppg:13.5},
+        {pos:'TE', name:'Juwan Johnson', week_score:16.9, ppg:9.4},
+        {pos:'K', name:'Jake Bates', week_score:6.0, ppg:9.5},
+        {pos:'D/ST', name:'Bills D/ST', week_score:9.0, ppg:13.5},
+      ]},
+      { label: 'Championship', week: 17, roster: [
+        {pos:'QB', name:'Joe Burrow', week_score:20.4, ppg:16.5},
+        {pos:'RB', name:'Rico Dowdle', week_score:9.3, ppg:14.1},
+        {pos:'RB', name:'Kyren Williams', week_score:16.0, ppg:16.3},
+        {pos:'WR', name:'Amon-Ra St. Brown', week_score:14.8, ppg:18.0},
+        {pos:'WR', name:'Tetairoa McMillan', week_score:1.5, ppg:13.5},
+        {pos:'FLEX', name:'Drake London', week_score:1.4, ppg:19.7},
+        {pos:'TE', name:'Juwan Johnson', week_score:13.5, ppg:9.4},
+        {pos:'K', name:'Jake Bates', week_score:5.0, ppg:9.5},
+        {pos:'D/ST', name:'Giants D/ST', week_score:19.0, ppg:null},
+      ]},
     ]
   },
   {
@@ -223,17 +346,43 @@ var CHAMPS = [
     manager: 'Baylen Slansky',
     team: 'STATION GRITS',
     record: '9-5',
-    rs_ppg: 118.70,
+    rs_ppg: 118.7,
     po_ppg: 146.72,
     runner_up: 'Brandon Hancock',
-    roster: [
-      {pos:'QB',   name:'Jared Goff'},
-      {pos:'RB',   name:'Jahmyr Gibbs'},
-      {pos:'RB',   name:"De'Von Achane"},
-      {pos:'WR',   name:'Puka Nacua'},
-      {pos:'WR',   name:'Ladd McConkey'},
-      {pos:'TE',   name:'Zach Ertz'},
-      {pos:'FLEX', name:'Jameson Williams'},
+    rounds: [
+      { label: 'Quarterfinal', week: 15, roster: [
+        {pos:'QB', name:'Bo Nix', week_score:13.5, ppg:19.7},
+        {pos:'RB', name:'De\'Von Achane', week_score:14.6, ppg:17.7},
+        {pos:'RB', name:'Jahmyr Gibbs', week_score:28.4, ppg:18.3},
+        {pos:'WR', name:'Puka Nacua', week_score:17.8, ppg:19.0},
+        {pos:'WR', name:'Jameson Williams', week_score:12.7, ppg:11.2},
+        {pos:'FLEX', name:'Ladd McConkey', week_score:16.8, ppg:13.6},
+        {pos:'TE', name:'Zach Ertz', week_score:4.5, ppg:10.0},
+        {pos:'K', name:'Harrison Butker', week_score:2.0, ppg:null},
+        {pos:'D/ST', name:'Vikings D/ST', week_score:9.0, ppg:8.0},
+      ]},
+      { label: 'Semifinal', week: 16, roster: [
+        {pos:'QB', name:'Jared Goff', week_score:25.34, ppg:17.9},
+        {pos:'RB', name:'De\'Von Achane', week_score:31.0, ppg:17.7},
+        {pos:'RB', name:'Jahmyr Gibbs', week_score:25.4, ppg:18.3},
+        {pos:'WR', name:'Puka Nacua', week_score:13.6, ppg:19.0},
+        {pos:'WR', name:'Jameson Williams', week_score:26.0, ppg:11.2},
+        {pos:'FLEX', name:'Ladd McConkey', week_score:14.7, ppg:13.6},
+        {pos:'TE', name:'Brenton Strange', week_score:2.2, ppg:null},
+        {pos:'K', name:'Chase McLaughlin', week_score:7.0, ppg:7.6},
+        {pos:'D/ST', name:'Vikings D/ST', week_score:5.0, ppg:8.0},
+      ]},
+      { label: 'Championship', week: 17, roster: [
+        {pos:'QB', name:'Jared Goff', week_score:25.82, ppg:17.9},
+        {pos:'RB', name:'De\'Von Achane', week_score:5.8, ppg:17.7},
+        {pos:'RB', name:'Jahmyr Gibbs', week_score:26.3, ppg:18.3},
+        {pos:'WR', name:'Puka Nacua', week_score:22.9, ppg:19.0},
+        {pos:'WR', name:'Jameson Williams', week_score:24.5, ppg:11.2},
+        {pos:'FLEX', name:'Ladd McConkey', week_score:29.4, ppg:13.6},
+        {pos:'TE', name:'Chig Okonkwo', week_score:10.9, ppg:null},
+        {pos:'K', name:'Chase McLaughlin', week_score:12.0, ppg:7.6},
+        {pos:'D/ST', name:'Raiders D/ST', week_score:13.0, ppg:-4.0},
+      ]},
     ]
   },
   {
@@ -241,17 +390,43 @@ var CHAMPS = [
     manager: 'Carmine Pittelli Jr.',
     team: 'Thank You Max!',
     record: '10-4',
-    rs_ppg: 133.90,
+    rs_ppg: 133.9,
     po_ppg: 126.33,
     runner_up: 'Cole Maney',
-    roster: [
-      {pos:'QB',   name:'Josh Allen'},
-      {pos:'RB',   name:'Saquon Barkley'},
-      {pos:'RB',   name:'Tony Pollard'},
-      {pos:'WR',   name:'CeeDee Lamb'},
-      {pos:'WR',   name:'Garrett Wilson'},
-      {pos:'TE',   name:'T.J. Hockenson'},
-      {pos:'FLEX', name:'Cooper Kupp'},
+    rounds: [
+      { label: 'Quarterfinal', week: 15, roster: [
+        {pos:'QB', name:'Josh Allen', week_score:16.16, ppg:24.9},
+        {pos:'RB', name:'Tony Pollard', week_score:7.7, ppg:14.4},
+        {pos:'RB', name:'Saquon Barkley', week_score:5.7, ppg:17.4},
+        {pos:'WR', name:'Garrett Wilson', week_score:5.9, ppg:13.2},
+        {pos:'WR', name:'CeeDee Lamb', week_score:18.6, ppg:25.0},
+        {pos:'FLEX', name:'Cooper Kupp', week_score:25.1, ppg:20.7},
+        {pos:'TE', name:'T.J. Hockenson', week_score:12.3, ppg:14.1},
+        {pos:'K', name:'Jake Elliott', week_score:5.0, ppg:9.3},
+        {pos:'D/ST', name:'Browns D/ST', week_score:14.0, ppg:9.6},
+      ]},
+      { label: 'Semifinal', week: 16, roster: [
+        {pos:'QB', name:'Josh Allen', week_score:24.98, ppg:24.9},
+        {pos:'RB', name:'Tony Pollard', week_score:5.3, ppg:14.4},
+        {pos:'RB', name:'Saquon Barkley', week_score:19.4, ppg:17.4},
+        {pos:'WR', name:'Garrett Wilson', week_score:15.8, ppg:13.2},
+        {pos:'WR', name:'CeeDee Lamb', week_score:25.2, ppg:25.0},
+        {pos:'FLEX', name:'Cooper Kupp', week_score:10.9, ppg:20.7},
+        {pos:'TE', name:'T.J. Hockenson', week_score:9.8, ppg:14.1},
+        {pos:'K', name:'Jake Elliott', week_score:17.0, ppg:9.3},
+        {pos:'D/ST', name:'Jets D/ST', week_score:10.0, ppg:10.3},
+      ]},
+      { label: 'Championship', week: 17, roster: [
+        {pos:'QB', name:'Josh Allen', week_score:21.16, ppg:24.9},
+        {pos:'RB', name:'Tony Pollard', week_score:5.9, ppg:14.4},
+        {pos:'RB', name:'Saquon Barkley', week_score:8.8, ppg:17.4},
+        {pos:'WR', name:'Garrett Wilson', week_score:9.9, ppg:13.2},
+        {pos:'WR', name:'CeeDee Lamb', week_score:40.2, ppg:25.0},
+        {pos:'FLEX', name:'Cooper Kupp', week_score:12.7, ppg:20.7},
+        {pos:'TE', name:'Tyler Conklin', week_score:9.5, ppg:null},
+        {pos:'K', name:'Jake Elliott', week_score:8.0, ppg:9.3},
+        {pos:'D/ST', name:'Browns D/ST', week_score:14.0, ppg:9.6},
+      ]},
     ]
   },
   {
@@ -259,17 +434,43 @@ var CHAMPS = [
     manager: 'Anthony Kelly',
     team: 'Rolls With butter',
     record: '7-7',
-    rs_ppg: 111.30,
+    rs_ppg: 111.3,
     po_ppg: 129.25,
     runner_up: 'Ryan P McQuaid',
-    roster: [
-      {pos:'QB',   name:'Justin Fields'},
-      {pos:'RB',   name:'Travis Etienne'},
-      {pos:'RB',   name:'Zack Moss'},
-      {pos:'WR',   name:"Ja'Marr Chase"},
-      {pos:'WR',   name:'A.J. Brown'},
-      {pos:'TE',   name:'George Kittle'},
-      {pos:'FLEX', name:'Jaylen Waddle'},
+    rounds: [
+      { label: 'Quarterfinal', week: 15, roster: [
+        {pos:'QB', name:'Justin Fields', week_score:23.58, ppg:30.0},
+        {pos:'RB', name:'Travis Etienne Jr.', week_score:12.7, ppg:11.5},
+        {pos:'RB', name:'Jonathan Taylor', week_score:2.3, ppg:15.7},
+        {pos:'WR', name:'Ja\'Marr Chase', week_score:19.0, ppg:20.8},
+        {pos:'WR', name:'Jaylen Waddle', week_score:20.4, ppg:5.1},
+        {pos:'FLEX', name:'A.J. Brown', week_score:27.1, ppg:16.6},
+        {pos:'TE', name:'George Kittle', week_score:25.3, ppg:10.4},
+        {pos:'K', name:'Jason Sanders', week_score:12.0, ppg:8.7},
+        {pos:'D/ST', name:'Patriots D/ST', week_score:11.0, ppg:11.1},
+      ]},
+      { label: 'Semifinal', week: 16, roster: [
+        {pos:'QB', name:'Justin Fields', week_score:9.86, ppg:30.0},
+        {pos:'RB', name:'Travis Etienne Jr.', week_score:14.2, ppg:11.5},
+        {pos:'RB', name:'Zack Moss', week_score:8.0, ppg:null},
+        {pos:'WR', name:'Ja\'Marr Chase', week_score:13.9, ppg:20.8},
+        {pos:'WR', name:'A.J. Brown', week_score:16.3, ppg:16.6},
+        {pos:'FLEX', name:'Jaylen Waddle', week_score:25.3, ppg:5.1},
+        {pos:'TE', name:'George Kittle', week_score:30.0, ppg:10.4},
+        {pos:'K', name:'Jason Sanders', week_score:8.0, ppg:8.7},
+        {pos:'D/ST', name:'Titans D/ST', week_score:5.0, ppg:-6.0},
+      ]},
+      { label: 'Championship', week: 17, roster: [
+        {pos:'QB', name:'Justin Fields', week_score:16.2, ppg:30.0},
+        {pos:'RB', name:'Travis Etienne Jr.', week_score:23.0, ppg:11.5},
+        {pos:'RB', name:'Zack Moss', week_score:7.4, ppg:null},
+        {pos:'WR', name:'Ja\'Marr Chase', week_score:0.0, ppg:20.8},
+        {pos:'WR', name:'A.J. Brown', week_score:19.7, ppg:16.6},
+        {pos:'FLEX', name:'Jaylen Waddle', week_score:8.2, ppg:5.1},
+        {pos:'TE', name:'George Kittle', week_score:12.3, ppg:10.4},
+        {pos:'K', name:'Cameron Dicker', week_score:8.0, ppg:null},
+        {pos:'D/ST', name:'Cowboys D/ST', week_score:9.0, ppg:null},
+      ]},
     ]
   },
   {
@@ -277,17 +478,43 @@ var CHAMPS = [
     manager: 'Ben Castaldo',
     team: 'I Shoot Blanks N Shit',
     record: '9-4',
-    rs_ppg: 120.10,
+    rs_ppg: 120.1,
     po_ppg: 132.31,
     runner_up: 'Anthony Kelly',
-    roster: [
-      {pos:'QB',   name:'Josh Allen'},
-      {pos:'RB',   name:'Alvin Kamara'},
-      {pos:'RB',   name:'David Montgomery'},
-      {pos:'WR',   name:'Justin Jefferson'},
-      {pos:'WR',   name:'Deebo Samuel'},
-      {pos:'TE',   name:'Dallas Goedert'},
-      {pos:'FLEX', name:'Tyler Boyd'},
+    rounds: [
+      { label: 'Quarterfinal', week: 15, roster: [
+        {pos:'QB', name:'Carson Wentz', week_score:5.98, ppg:15.9},
+        {pos:'RB', name:'Alvin Kamara', week_score:5.1, ppg:20.3},
+        {pos:'RB', name:'David Montgomery', week_score:11.3, ppg:15.0},
+        {pos:'WR', name:'Justin Jefferson', week_score:14.7, ppg:20.2},
+        {pos:'WR', name:'Deebo Samuel', week_score:18.9, ppg:20.5},
+        {pos:'FLEX', name:'Tyler Boyd', week_score:20.6, ppg:10.2},
+        {pos:'TE', name:'Dallas Goedert', week_score:20.5, ppg:9.7},
+        {pos:'K', name:'Michael Badgley', week_score:9.0, ppg:7.4},
+        {pos:'D/ST', name:'Steelers D/ST', week_score:15.0, ppg:3.8},
+      ]},
+      { label: 'Semifinal', week: 16, roster: [
+        {pos:'QB', name:'Josh Allen', week_score:30.96, ppg:23.5},
+        {pos:'RB', name:'Alvin Kamara', week_score:7.9, ppg:20.3},
+        {pos:'RB', name:'David Montgomery', week_score:23.6, ppg:15.0},
+        {pos:'WR', name:'Justin Jefferson', week_score:19.6, ppg:20.2},
+        {pos:'WR', name:'Deebo Samuel', week_score:28.1, ppg:20.5},
+        {pos:'FLEX', name:'Ronald Jones II', week_score:16.1, ppg:null},
+        {pos:'TE', name:'Dallas Goedert', week_score:4.8, ppg:9.7},
+        {pos:'K', name:'Michael Badgley', week_score:8.0, ppg:7.4},
+        {pos:'D/ST', name:'Steelers D/ST', week_score:-2.0, ppg:3.8},
+      ]},
+      { label: 'Championship', week: 17, roster: [
+        {pos:'QB', name:'Josh Allen', week_score:20.9, ppg:23.5},
+        {pos:'RB', name:'Alvin Kamara', week_score:21.0, ppg:20.3},
+        {pos:'RB', name:'David Montgomery', week_score:20.1, ppg:15.0},
+        {pos:'WR', name:'Justin Jefferson', week_score:11.8, ppg:20.2},
+        {pos:'WR', name:'Deebo Samuel', week_score:17.2, ppg:20.5},
+        {pos:'FLEX', name:'Ronald Jones II', week_score:3.7, ppg:null},
+        {pos:'TE', name:'Dallas Goedert', week_score:13.1, ppg:9.7},
+        {pos:'K', name:'Michael Badgley', week_score:10.0, ppg:7.4},
+        {pos:'D/ST', name:'Bears D/ST', week_score:21.0, ppg:null},
+      ]},
     ]
   },
   {
@@ -298,32 +525,162 @@ var CHAMPS = [
     rs_ppg: 117.81,
     po_ppg: 131.22,
     runner_up: 'Brandon Hancock',
-    roster: [
-      {pos:'QB',   name:'Drew Brees'},
-      {pos:'RB',   name:'Nick Chubb'},
-      {pos:'RB',   name:'David Montgomery'},
-      {pos:'WR',   name:'Chris Godwin'},
-      {pos:'WR',   name:'Julio Jones'},
-      {pos:'TE',   name:'Travis Kelce'},
-      {pos:'FLEX', name:'Michael Thomas'},
+    rounds: [
+      { label: 'First Round', week: 14, roster: [
+        {pos:'QB', name:'Matthew Stafford', week_score:14.36, ppg:17.3},
+        {pos:'RB', name:'David Montgomery', week_score:24.5, ppg:26.2},
+        {pos:'RB', name:'Nick Chubb', week_score:24.3, ppg:17.6},
+        {pos:'WR', name:'Michael Thomas', week_score:16.4, ppg:16.0},
+        {pos:'WR', name:'Golden Tate', week_score:4.9, ppg:7.0},
+        {pos:'FLEX', name:'Chris Godwin', week_score:4.5, ppg:15.4},
+        {pos:'TE', name:'Travis Kelce', week_score:27.6, ppg:27.6},
+        {pos:'K', name:'Daniel Carlson', week_score:9.0, ppg:9.2},
+        {pos:'D/ST', name:'Saints D/ST', week_score:-1.0, ppg:6.0},
+      ]},
+      { label: 'Quarterfinal', week: 15, roster: [
+        {pos:'QB', name:'Philip Rivers', week_score:17.02, ppg:15.0},
+        {pos:'RB', name:'David Montgomery', week_score:29.2, ppg:26.2},
+        {pos:'RB', name:'Nick Chubb', week_score:14.6, ppg:17.6},
+        {pos:'WR', name:'Chris Godwin', week_score:13.6, ppg:15.4},
+        {pos:'WR', name:'Tre\'Quan Smith', week_score:3.5, ppg:null},
+        {pos:'FLEX', name:'Russell Gage', week_score:17.8, ppg:6.4},
+        {pos:'TE', name:'Travis Kelce', week_score:22.8, ppg:27.6},
+        {pos:'K', name:'Daniel Carlson', week_score:9.0, ppg:9.2},
+        {pos:'D/ST', name:'Browns D/ST', week_score:7.0, ppg:null},
+      ]},
+      { label: 'Semifinal', week: 16, roster: [
+        {pos:'QB', name:'Drew Brees', week_score:8.14, ppg:null},
+        {pos:'RB', name:'David Montgomery', week_score:20.1, ppg:26.2},
+        {pos:'RB', name:'Nick Chubb', week_score:17.6, ppg:17.6},
+        {pos:'WR', name:'Chris Godwin', week_score:19.4, ppg:15.4},
+        {pos:'WR', name:'Russell Gage', week_score:6.3, ppg:6.4},
+        {pos:'FLEX', name:'Ito Smith', week_score:6.1, ppg:null},
+        {pos:'TE', name:'Travis Kelce', week_score:22.8, ppg:27.6},
+        {pos:'K', name:'Daniel Carlson', week_score:13.0, ppg:9.2},
+        {pos:'D/ST', name:'Browns D/ST', week_score:6.0, ppg:null},
+      ]},
+      { label: 'Championship', week: 17, roster: [
+        {pos:'QB', name:'Philip Rivers', week_score:10.36, ppg:15.0},
+        {pos:'RB', name:'David Montgomery', week_score:28.2, ppg:26.2},
+        {pos:'RB', name:'Nick Chubb', week_score:16.8, ppg:17.6},
+        {pos:'WR', name:'Chris Godwin', week_score:30.3, ppg:15.4},
+        {pos:'WR', name:'Russell Gage', week_score:25.2, ppg:6.4},
+        {pos:'FLEX', name:'Ty Montgomery', week_score:11.7, ppg:null},
+        {pos:'TE', name:'Jonnu Smith', week_score:1.8, ppg:null},
+        {pos:'K', name:'Daniel Carlson', week_score:6.0, ppg:9.2},
+        {pos:'D/ST', name:'Saints D/ST', week_score:16.0, ppg:6.0},
+      ]},
     ]
   },
 ];
 
-function buildCard(c) {
-  var rosterHtml = c.roster.map(function(r) {
+/* ── FINALS DATA (needed by buildCard, so defined first) ── */
+var FINALS = [
+  {year:2020, champ:'Ethan Radecki',       champ_score:146.36, runner:'Brandon Hancock',  runner_score:110.96},
+  {year:2021, champ:'Ben Castaldo',         champ_score:138.80, runner:'Anthony Kelly',    runner_score:115.04},
+  {year:2022, champ:'Anthony Kelly',        champ_score:103.80, runner:'Ryan P McQuaid',   runner_score: 87.38},
+  {year:2023, champ:'Carmine Pittelli Jr.', champ_score:130.16, runner:'Cole Maney',       runner_score: 96.48},
+  {year:2024, champ:'Baylen Slansky',       champ_score:170.62, runner:'Brandon Hancock',  runner_score:144.62},
+  {year:2025, champ:'Anthony Kelly',        champ_score:100.90, runner:'Charlie Gorman',   runner_score: 71.06},
+];
+
+/* ── Team logo lookup (reuses the same logo set as managers.html) ── */
+var LOGO_MAP = {
+  'Deniz Bileydi':'Bileydi', 'Ben Castaldo':'Castaldo', 'Quin Gegwich':'Gegwich',
+  'Charlie Gorman':'Gorman', 'Brandon Hancock':'Hancock', 'Anthony Kelly':'Kelly',
+  'Max Malich':'Malich', 'Cole Maney':'Maney', 'Ryan P McQuaid':'McQuaid',
+  'Carmine Pittelli Jr.':'Pittelli', 'Aidan Quigley':'Quigley', 'Ethan Radecki':'Radecki',
+  'Andrew Root':'Root', 'Baylen Slansky':'Slansky'
+};
+function logoFor(name, year) {
+  var file = LOGO_MAP[name];
+  return file ? '../images/logos/' + file + year + '.png' : '../preach_logo.png';
+}
+
+function toggleRound(year, idx, btn) {
+  var rounds = document.querySelectorAll('.champ-roster[data-year="' + year + '"]');
+  rounds.forEach(function(el){ el.style.display = (el.dataset.idx == idx) ? '' : 'none'; });
+
+  var row = btn.parentElement;
+  row.querySelectorAll('.roster-toggle-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function renderRosterSlots(roster) {
+  return roster.map(function(r) {
+    var posClass = 'pos-' + r.pos.replace('/', '');
+    var seasonTxt = (r.ppg !== null && r.ppg !== undefined) ? r.ppg.toFixed(1) : '&mdash;';
+    var weekTxt = r.week_score.toFixed(1);
+    var wkClass = '', deltaTxt = '';
+    if (r.ppg !== null && r.ppg !== undefined) {
+      var delta = r.week_score - r.ppg;
+      if (delta > 0.1) { wkClass = 'up';   deltaTxt = ' (+' + delta.toFixed(1) + ')'; }
+      else if (delta < -0.1) { wkClass = 'down'; deltaTxt = ' (' + delta.toFixed(1) + ')'; }
+    }
+    var arrow = wkClass === 'up' ? '&#9650; ' : (wkClass === 'down' ? '&#9660; ' : '');
+
     return '<div class="roster-slot">'
-      + '<span class="roster-pos">' + r.pos + '</span>'
-      + '<span class="roster-name">' + r.name + '</span>'
+      + '<div class="roster-slot-top">'
+      +   '<span class="roster-pos ' + posClass + '">' + r.pos + '</span>'
+      +   '<span class="roster-name">' + r.name + '</span>'
+      + '</div>'
+      + '<div class="roster-ppg-row">'
+      +   '<span>Season <span class="ppg-val">' + seasonTxt + '</span></span>'
+      +   '<span>This week <span class="ppg-po ' + wkClass + '">' + arrow + weekTxt + deltaTxt + '</span></span>'
+      + '</div>'
       + '</div>';
   }).join('');
+}
+
+function buildCard(c) {
+  var lastIdx = c.rounds.length - 1; // default active = Championship (last round)
+  var toggleBtns = c.rounds.map(function(rd, idx) {
+    var activeClass = idx === lastIdx ? ' active' : '';
+    return '<button class="roster-toggle-btn' + activeClass + '" onclick="toggleRound(' + c.year + ',' + idx + ',this)">' + rd.label + '</button>';
+  }).join('');
+  var roundDivs = c.rounds.map(function(rd, idx) {
+    var displayStyle = idx === lastIdx ? '' : 'style="display:none;"';
+    return '<div class="champ-roster" data-year="' + c.year + '" data-idx="' + idx + '" ' + displayStyle + '>'
+      + renderRosterSlots(rd.roster) + '</div>';
+  }).join('');
+
+  // Ring count: how many total championships this manager has across all seasons
+  var ringCount = CHAMPS.filter(function(x){ return x.manager === c.manager; }).length;
+  var ringBadge = ringCount > 1
+    ? '<span class="ring-badge">&#127942; ' + ringCount + 'x Champion</span>'
+    : '';
+
+  // Champ-vs-runner-up mini score bar, pulled from the matching Finals entry
+  var finalsRow = FINALS.find(function(f){ return f.year === c.year; });
+  var marginHtml = '';
+  if (finalsRow) {
+    var total     = finalsRow.champ_score + finalsRow.runner_score;
+    var champPct  = (finalsRow.champ_score / total * 100).toFixed(1);
+    var runnerPct = (100 - champPct).toFixed(1);
+    marginHtml = '<div class="champ-margin-wrap">'
+      + '<div class="champ-margin-labels">'
+      +   '<span class="lbl-champ">' + c.manager.split(' ')[0] + ' &middot; ' + finalsRow.champ_score.toFixed(1) + '</span>'
+      +   '<span class="lbl-runner">' + c.runner_up.split(' ')[0] + ' &middot; ' + finalsRow.runner_score.toFixed(1) + '</span>'
+      + '</div>'
+      + '<div class="champ-margin-bar">'
+      +   '<div class="seg-champ" style="width:' + champPct + '%;"></div>'
+      +   '<div class="seg-runner" style="width:' + runnerPct + '%;"></div>'
+      + '</div>'
+      + '</div>';
+  }
 
   return '<div class="champ-card glass">'
     + '<div class="champ-banner">'
-    +   '<div class="champ-year-badge">&#127942; ' + c.year + ' Champion</div>'
-    +   '<div class="champ-title">' + c.team + '</div>'
-    +   '<div class="champ-manager-line"><strong>' + c.manager + '</strong></div>'
+    +   '<div class="champ-banner-flex">'
+    +     '<div class="champ-logo-wrap"><img class="champ-logo" src="' + logoFor(c.manager, c.year) + '" alt="' + c.manager + ' ' + c.year + ' logo"></div>'
+    +     '<div class="champ-banner-text">'
+    +       '<div class="champ-year-badge">&#127942; ' + c.year + ' Champion</div>'
+    +       '<div class="champ-title">' + c.team + '</div>'
+    +       '<div class="champ-manager-line"><strong>' + c.manager + '</strong>' + ringBadge + '</div>'
+    +     '</div>'
+    +   '</div>'
     + '</div>'
+    + marginHtml
     + '<div class="champ-stats">'
     +   '<div class="champ-stat">'
     +     '<div class="champ-stat-value gold">' + c.record + '</div>'
@@ -342,7 +699,10 @@ function buildCard(c) {
     +     '<div class="champ-stat-label">Runner-Up</div>'
     +   '</div>'
     + '</div>'
-    + '<div class="champ-roster">' + rosterHtml + '</div>'
+    + '<div class="roster-toggle-row">'
+    +   '<div class="roster-toggle">' + toggleBtns + '</div>'
+    + '</div>'
+    + roundDivs
     + '</div>';
 }
 
@@ -364,17 +724,36 @@ function buildCard(c) {
   });
 
   list.innerHTML = html;
-})();
 
-/* ── FINALS DATA ── */
-var FINALS = [
-  {year:2020, champ:'Ethan Radecki',       champ_score:146.36, runner:'Brandon Hancock',  runner_score:110.96},
-  {year:2021, champ:'Ben Castaldo',         champ_score:138.80, runner:'Anthony Kelly',    runner_score:115.04},
-  {year:2022, champ:'Anthony Kelly',        champ_score:103.80, runner:'Ryan P McQuaid',   runner_score: 87.38},
-  {year:2023, champ:'Carmine Pittelli Jr.', champ_score:130.16, runner:'Cole Maney',       runner_score: 96.48},
-  {year:2024, champ:'Baylen Slansky',       champ_score:170.62, runner:'Brandon Hancock',  runner_score:144.62},
-  {year:2025, champ:'Anthony Kelly',        champ_score:100.90, runner:'Charlie Gorman',   runner_score: 71.06},
-];
+  // Most Championships callout
+  var counts = {};
+  CHAMPS.forEach(function(c){ counts[c.manager] = (counts[c.manager] || 0) + 1; });
+  var top = Object.keys(counts).reduce(function(a, b){ return counts[a] >= counts[b] ? a : b; });
+  if (counts[top] > 1) {
+    var years = CHAMPS.filter(function(c){ return c.manager === top; }).map(function(c){ return c.year; }).sort();
+    var mostRecentYear = years[years.length - 1];
+    document.getElementById('rings-callout').innerHTML =
+      '<div class="callout glass" style="display:flex;align-items:center;gap:1rem;">'
+      + '<img src="' + logoFor(top, mostRecentYear) + '" alt="' + top + '" style="width:44px;height:44px;object-fit:contain;border-radius:8px;background:rgba(255,255,255,0.4);padding:3px;flex-shrink:0;">'
+      + '<div>'
+      +   '<div class="callout-label">Most Championships</div>'
+      +   '<p><strong>' + top + '</strong> leads the league with <strong>' + counts[top] + ' titles</strong> (' + years.join(', ') + ').</p>'
+      + '</div>'
+      + '</div>';
+  }
+
+  // Scroll-reveal
+  var revealTargets = document.querySelectorAll('.champ-card, .trophy-wrap');
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealTargets.forEach(function(el){ revealObserver.observe(el); });
+})();
 
 /* ── TIMELINE ── */
 (function() {
