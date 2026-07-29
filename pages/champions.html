@@ -13,11 +13,6 @@
   padding:0;overflow:hidden;margin-bottom:1.5rem;
   border-left:3px solid var(--gold);position:relative;
 }
-.champ-card::before {
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(212,175,55,0.05),transparent 55%);
-  pointer-events:none;z-index:0;
-}
 
 /* Year banner */
 .champ-banner {
@@ -158,8 +153,8 @@
   background:radial-gradient(circle,rgba(212,175,55,0.22),transparent 70%);
 }
 .champ-logo {
-  position:relative;width:64px;height:64px;object-fit:contain;
-  border-radius:8px;background:rgba(255,255,255,0.4);
+  position:relative;width:64px;height:64px;object-fit:cover;
+  border-radius:50%;background:rgba(255,255,255,0.4);
   padding:4px;display:block;
 }
 .champ-banner-text { min-width:0;flex:1; }
@@ -734,7 +729,7 @@ function buildCard(c) {
     var mostRecentYear = years[years.length - 1];
     document.getElementById('rings-callout').innerHTML =
       '<div class="callout glass" style="display:flex;align-items:center;gap:1rem;">'
-      + '<img src="' + logoFor(top, mostRecentYear) + '" alt="' + top + '" style="width:44px;height:44px;object-fit:contain;border-radius:8px;background:rgba(255,255,255,0.4);padding:3px;flex-shrink:0;">'
+      + '<img src="' + logoFor(top, mostRecentYear) + '" alt="' + top + '" style="width:44px;height:44px;object-fit:cover;border-radius:50%;background:rgba(255,255,255,0.4);padding:3px;flex-shrink:0;">'
       + '<div>'
       +   '<div class="callout-label">Most Championships</div>'
       +   '<p><strong>' + top + '</strong> leads the league with <strong>' + counts[top] + ' titles</strong> (' + years.join(', ') + ').</p>'
