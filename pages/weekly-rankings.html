@@ -363,6 +363,53 @@ function renderRankings(data) {
   container.innerHTML = html;
 }
 
+/* ── Playoff threshold overlay (behind the lines, in front of gridlines) ── */
+var playoffThresholdPlugin = {
+  id: 'playoffThreshold',
+  beforeDraw: function(chart) {
+    if (chart.canvas.id !== 'chart-trajectory') return;
+    var yScale = chart.scales.y;
+    var area   = chart.chartArea;
+    var ctx    = chart.ctx;
+    var yPixel = yScale.getPixelForValue(8.5); // boundary between rank 8 and 9
+
+    ctx.save();
+
+    // Faint green wash above the line (ranks 1-8, playoffs)
+    var topGrad = ctx.createLinearGradient(0, area.top, 0, yPixel);
+    topGrad.addColorStop(0, 'rgba(74,138,90,0.09)');
+    topGrad.addColorStop(1, 'rgba(74,138,90,0.015)');
+    ctx.fillStyle = topGrad;
+    ctx.fillRect(area.left, area.top, area.right - area.left, yPixel - area.top);
+
+    // Faint red wash below the line (ranks 9+, out)
+    var botGrad = ctx.createLinearGradient(0, yPixel, 0, area.bottom);
+    botGrad.addColorStop(0, 'rgba(192,74,74,0.015)');
+    botGrad.addColorStop(1, 'rgba(192,74,74,0.09)');
+    ctx.fillStyle = botGrad;
+    ctx.fillRect(area.left, yPixel, area.right - area.left, area.bottom - yPixel);
+
+    // Dashed neutral threshold line (meaning doesn't rely on color alone)
+    ctx.beginPath();
+    ctx.setLineDash([6, 4]);
+    ctx.moveTo(area.left, yPixel);
+    ctx.lineTo(area.right, yPixel);
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(90,85,80,0.5)';
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Label
+    ctx.font = "600 10px 'Outfit', sans-serif";
+    ctx.fillStyle = 'rgba(90,85,80,0.8)';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('Top 8 \u00B7 Playoffs', area.right - 4, yPixel - 3);
+
+    ctx.restore();
+  }
+};
+
 /* ── Trajectory chart ─────────────────────────────────────────── */
 function renderTrajectoryChart(season, upToWeek, weeksData) {
   // weeksData: array of week JSON objects sorted by week ascending
@@ -417,6 +464,7 @@ function renderTrajectoryChart(season, upToWeek, weeksData) {
   trajectoryChart = new Chart(ctx, {
     type: 'line',
     data: { labels: labels, datasets: datasets },
+    plugins: [playoffThresholdPlugin],
     options: {
       responsive:          true,
       maintainAspectRatio: false,
