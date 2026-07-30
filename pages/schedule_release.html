@@ -310,21 +310,30 @@
   }
   .stat-value{ font-weight:600; }
 
-  .dot-legend{
+  .h2h-history{
+    margin:8px 0 14px 0;
+    display:flex; flex-direction:column;
+    max-height:230px; overflow-y:auto;
+    border-top:1px solid var(--line);
+  }
+  .h2h-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:6px 2px;
+    border-bottom:1px solid var(--line);
+  }
+  .h2h-label{
     font-family:'IBM Plex Mono',monospace;
-    font-size:9.5px; color:var(--ink-soft);
-    display:flex; align-items:center; gap:10px;
-    margin:6px 0 6px 0;
+    font-size:10px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.4px;
   }
-  .dot-legend span{ display:inline-flex; align-items:center; gap:4px; }
-  .legend-swatch{ width:8px; height:8px; border-radius:2px; display:inline-block; }
-
-  .record-track{
-    display:flex; gap:3px; margin:2px 0 12px 0; flex-wrap:wrap;
+  .h2h-score{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px; font-weight:700;
   }
-  .rdot{ width:10px; height:10px; border-radius:2px; }
-  .rdot.win{ background:var(--win); }
-  .rdot.loss{ background:var(--loss); }
+  .h2h-score .h2h-dash{ color:var(--ink-soft); font-weight:400; margin:0 3px; }
+  .h2h-empty{
+    font-size:12.5px; color:var(--ink-soft); font-style:italic;
+    padding:8px 2px;
+  }
 
   .caption{
     margin-top:14px;
@@ -545,6 +554,10 @@ function seasonLabel(g){
   if(g.week.startsWith('Playoff')) return g.season+' playoffs';
   return "'"+g.season.slice(2)+' '+g.week.replace('Week ','Wk ');
 }
+function h2hLabel(g){
+  const yr = "'"+String(g.season).slice(2);
+  return g.label.startsWith('Week') ? yr+' '+g.label.replace('Week ','Wk ') : yr+' '+g.label;
+}
 function fmtScore(n){ return n.toFixed(1); }
 
 function generateCaption(entry, meName){
@@ -749,12 +762,17 @@ function renderTicket(entry, meName){
     ? 'First meeting'
     : `<span style="color:var(--win)">${entry.my_wins}</span>-<span style="color:var(--loss)">${entry.opp_wins}</span> <span style="color:var(--ink-soft); font-weight:500;">all-time</span>`;
 
-  const mostRecentHtml = entry.most_recent
-    ? `<b>${fmtScore(entry.most_recent.score_a)}</b> - ${fmtScore(entry.most_recent.score_b)} <span style="color:var(--ink-soft)">(${seasonLabel(entry.most_recent)})</span>`
-    : null;
-  const closestHtml = entry.closest
-    ? `${entry.closest.winner} won by ${entry.closest.margin} pts <span style="color:var(--ink-soft)">(${seasonLabel(entry.closest)})</span>`
-    : null;
+  const h2hHistory = (entry.games && entry.games.length)
+    ? `<div class="h2h-history">${entry.games.map(g => {
+        const iWon = g.winner === meName;
+        return `<div class="h2h-row">
+          <div class="h2h-label">${h2hLabel(g)}</div>
+          <div class="h2h-score">
+            <span style="color:${iWon?'var(--win)':'var(--loss)'}">${fmtScore(g.score_a)}</span><span class="h2h-dash">-</span><span style="color:${iWon?'var(--loss)':'var(--win)'}">${fmtScore(g.score_b)}</span>
+          </div>
+        </div>`;
+      }).join('')}</div>`
+    : `<div class="h2h-empty">First meeting -- no history yet.</div>`;
 
   const caption = generateCaption(entry, meName);
   const interNote = entry.week_type==='Interconference Week'
@@ -791,16 +809,7 @@ function renderTicket(entry, meName){
         </div>
         <div class="stat-line"><span class="stat-label">Series</span><span class="stat-value">${record}</span>
           <span class="conf-badge conf-${oppConf}" style="margin-left:auto">${oppConf}</span></div>
-        ${entry.total_games>0 ? `
-          <div class="dot-legend">
-            <span><span class="legend-swatch" style="background:var(--win)"></span>Win</span>
-            <span><span class="legend-swatch" style="background:var(--loss)"></span>Loss</span>
-            <span>oldest &rarr; newest</span>
-          </div>
-          <div class="record-track">${dots}</div>` : ''}
-        ${mostRecentHtml ? `<div class="stat-line"><span class="stat-label">Last time</span><span class="stat-value">${mostRecentHtml}</span></div>` : ''}
-        ${closestHtml ? `<div class="stat-line"><span class="stat-label">Closest</span><span class="stat-value">${closestHtml}</span></div>` : ''}
-        <div class="caption">${caption}</div>
+        ${h2hHistory}
       </div>
     </div>
   </div>`;
