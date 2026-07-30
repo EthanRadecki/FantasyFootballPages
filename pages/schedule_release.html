@@ -392,15 +392,25 @@
   }
   .league-matchup-list{
     padding:10px 14px 12px 14px;
-    display:flex; flex-direction:column; gap:8px;
+    display:flex; flex-direction:column;
   }
   .league-matchup-row{
     display:flex; align-items:center; gap:8px;
     font-size:12.5px;
     flex-shrink:0;
+    padding:8px 0;
+    border-bottom:1px solid var(--line);
   }
+  .league-matchup-row:last-child{ border-bottom:none; padding-bottom:2px; }
   .league-matchup-row .logo, .league-matchup-row .logo-fallback{ width:22px; height:22px; font-size:9px; }
   .league-matchup-name{ flex:1; font-weight:600; }
+  .league-team-tap{
+    display:flex; align-items:center; gap:8px; flex:1;
+    cursor:pointer; border-radius:8px; padding:4px; margin:-4px;
+    transition:background 0.12s ease;
+  }
+  .league-team-tap:active{ background:var(--bone-dim); }
+  .league-team-tap-right{ justify-content:flex-end; }
   .league-vs{
     color:var(--ink-soft); font-size:9.5px;
     font-family:'IBM Plex Mono',monospace;
@@ -454,7 +464,10 @@
     padding:4px;
     border-bottom:1px solid rgba(30,26,20,0.06);
     border-right:1px solid rgba(30,26,20,0.06);
+    cursor:pointer;
+    transition:background 0.12s ease;
   }
+  .grid-cell:active{ background:rgba(30,26,20,0.1) !important; }
   .grid-cell .logo, .grid-cell .logo-fallback{ width:26px; height:26px; font-size:9px; margin:0 auto; }
   .grid-cell.conf-cell-REP{ background:rgba(168,67,74,0.16); }
   .grid-cell.conf-cell-DEM{ background:rgba(63,101,131,0.16); }
@@ -688,7 +701,7 @@ function renderGridSchedule(){
     LEAGUE_SCHEDULE.forEach(wk=>{
       const opp = oppByTeamWeek[team][wk.week];
       const oppConf = CONF[opp];
-      html += `<td class="grid-cell conf-cell-${oppConf}">${logoImg(opp, 26)}</td>`;
+      html += `<td class="grid-cell conf-cell-${oppConf}" onclick="jumpToManagerWeek('${team}', ${wk.week})">${logoImg(opp, 26)}</td>`;
     });
     html += `</tr>`;
   });
@@ -710,11 +723,15 @@ function renderLeagueSchedule(){
       <div class="league-matchup-list">`;
     wk.matchups.forEach(m=>{
       html += `<div class="league-matchup-row">
-        ${logoImg(m.team_a, 22)}
-        <span class="league-matchup-name">${m.team_a}</span>
+        <div class="league-team-tap" onclick="jumpToManagerWeek('${m.team_a}', ${wk.week})">
+          ${logoImg(m.team_a, 22)}
+          <span class="league-matchup-name">${m.team_a}</span>
+        </div>
         <span class="league-vs">VS</span>
-        <span class="league-matchup-name" style="text-align:right">${m.team_b}</span>
-        ${logoImg(m.team_b, 22)}
+        <div class="league-team-tap league-team-tap-right" onclick="jumpToManagerWeek('${m.team_b}', ${wk.week})">
+          <span class="league-matchup-name" style="text-align:right">${m.team_b}</span>
+          ${logoImg(m.team_b, 22)}
+        </div>
         ${m.interconference ? `<span class="league-cross-tag">X-CONF</span>` : ''}
       </div>`;
     });
@@ -756,7 +773,13 @@ function renderManagerChips(selected){
   row.innerHTML = '';
   MANAGERS.forEach(m=>{
     const chip = document.createElement('div');
-    chip.className = 'chip' + (m===selected ? ' active' : '');
+    const isActive = m===selected;
+    chip.className = 'chip' + (isActive ? ' active' : '');
+    if(!isActive){
+      const c = MANAGER_COLOR[m] || '107,90,108';
+      chip.style.background = `rgba(${c},0.14)`;
+      chip.style.borderColor = `rgba(${c},0.45)`;
+    }
     chip.innerHTML = logoImg(m, 20) + '<span>' + m.split(' ')[0] + '</span>';
     chip.onclick = ()=> selectManager(m);
     row.appendChild(chip);
@@ -839,6 +862,24 @@ function renderTicket(entry, meName){
       </div>
     </div>
   </div>`;
+}
+
+function jumpToManagerWeek(name, week){
+  CURRENT_VIEW = 'my';
+  document.querySelectorAll('.toggle-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.view==='my');
+  });
+  document.getElementById('managerRow').style.display = 'flex';
+  selectManager(name);
+  requestAnimationFrame(()=>{
+    const schedule = MANAGERS_DATA[name];
+    const idx = schedule.findIndex(e => e.week === week);
+    const carousel = document.getElementById('carousel');
+    if(carousel && idx >= 0){
+      const slides = carousel.querySelectorAll('.ticket-slide');
+      if(slides[idx]) slides[idx].scrollIntoView({behavior:'instant', inline:'start', block:'nearest'});
+    }
+  });
 }
 
 function selectManager(name){
