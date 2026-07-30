@@ -122,6 +122,14 @@
 }
 .jump-sheet a:last-child { border-bottom:none; }
 .jump-sheet a.active { color:var(--accent); }
+/* Position badges — same system used across the rest of the site */
+.pos-badge { display:inline-block;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.6rem;font-weight:700;letter-spacing:0.05em; }
+.pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
+.pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
+.pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
+.pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
+.pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
+.pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
 </style>
 </head>
 <body>
@@ -278,6 +286,7 @@
 
   <div class="section-label" style="margin-top:2rem;" id="most-traded-players">Most Traded Players</div>
   <div class="section-title">Players who changed hands the most, across every real trade in league history.</div>
+  <div class="heatmap-controls" id="most-traded-pos-pills"></div>
   <div class="chart-card-interactive glass">
     <div style="position:relative;height:520px;">
       <canvas id="chart-most-traded"></canvas>
@@ -774,18 +783,49 @@ function renderNetwork() {
 
 /* ── Most Traded Players chart ── */
 var mostTradedChart = null;
+var mostTradedPosFilter = 'all';
+
+var POS_BAR_COLOR = {
+  'QB':   'rgba(168,90,90,0.85)',
+  'RB':   'rgba(90,138,90,0.85)',
+  'WR':   'rgba(74,127,168,0.85)',
+  'TE':   'rgba(212,175,55,0.85)',
+  'K':    'rgba(156,148,156,0.85)',
+  'D/ST': 'rgba(100,90,80,0.85)',
+};
+var POS_BADGE_CLASS = {
+  'QB': 'pos-qb', 'RB': 'pos-rb', 'WR': 'pos-wr',
+  'TE': 'pos-te', 'K': 'pos-k', 'D/ST': 'pos-dst',
+};
+
+function renderMostTradedPosPills() {
+  var el = document.getElementById('most-traded-pos-pills');
+  if (!el) return;
+  var positions = Array.from(new Set(MOST_TRADED.map(function(d){ return d.pos; })));
+  // Fixed, sensible order rather than whatever order first-appears in the data
+  var order = ['QB','RB','WR','TE','K','D/ST'];
+  positions.sort(function(a,b){ return order.indexOf(a) - order.indexOf(b); });
+
+  var html = '<button class="heatmap-season-pill active" onclick="setMostTradedPosFilter(\'all\', this)">All Positions</button>';
+  positions.forEach(function(p) {
+    html += '<button class="heatmap-season-pill" onclick="setMostTradedPosFilter(\'' + p + '\', this)">' + p + '</button>';
+  });
+  el.innerHTML = html;
+}
+
+function setMostTradedPosFilter(pos, btn) {
+  mostTradedPosFilter = pos;
+  btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  renderMostTraded();
+}
+
 function renderMostTraded() {
-  var top = MOST_TRADED.slice(0, 20);
-  var maxCount = d3.max ? d3.max(top, function(d){return d.count;}) : Math.max.apply(null, top.map(function(d){return d.count;}));
-
-  function greenScale(value, min, max) {
-    var p = max===min ? 1 : (value-min)/(max-min);
-    var LIGHT=[190,180,90], DEEP=[70,120,70];
-    var r=lerp(LIGHT[0],DEEP[0],p), g=lerp(LIGHT[1],DEEP[1],p), b=lerp(LIGHT[2],DEEP[2],p);
-    return 'rgba('+r+','+g+','+b+',0.9)';
-  }
-
-  var colors = top.map(function(d){ return greenScale(d.count, Math.min.apply(null, top.map(function(t){return t.count;})), maxCount); });
+  var filtered = mostTradedPosFilter === 'all'
+    ? MOST_TRADED
+    : MOST_TRADED.filter(function(d){ return d.pos === mostTradedPosFilter; });
+  var top = filtered.slice(0, 20);
+  var colors = top.map(function(d){ return POS_BAR_COLOR[d.pos] || 'rgba(156,148,156,0.85)'; });
 
   if (mostTradedChart) { mostTradedChart.destroy(); }
   var ctx = document.getElementById('chart-most-traded').getContext('2d');
@@ -810,10 +850,14 @@ function renderMostTraded() {
         legend: { display:false },
         tooltip: {
           callbacks: {
+            title: function(ctxArr){
+              var d = top[ctxArr[0].dataIndex];
+              return d.player + ' (' + d.pos + ')';
+            },
             label: function(ctx){
               var d = top[ctx.dataIndex];
-              var lines = ['Traded '+d.count+' times', 'Seasons: '+d.seasons.join(', ')];
-              lines.push('To: ' + d.managers.join(' \u2192 '));
+              var lines = ['Traded ' + d.count + ' times', 'Seasons: ' + d.seasons.join(', ')];
+              lines.push('Traded to: ' + d.managers.join(', '));
               return lines;
             }
           }
@@ -1088,6 +1132,7 @@ try {
   if (netContainer) netContainer.innerHTML = '<p class="metric-note">Network graph failed to load.</p>';
 }
 try {
+  renderMostTradedPosPills();
   renderMostTraded();
 } catch (e) {
   console.error('Most traded chart failed to render:', e);
