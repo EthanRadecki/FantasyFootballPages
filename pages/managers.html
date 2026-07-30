@@ -1790,9 +1790,9 @@ function surplusToColor(val, maxAbs) {
   var r,g,b;
   if(p < 0) {
     var t = -p;
-    r = Math.round(245 + (192-245)*( 1-t));
-    g = Math.round(240 + (58-240)*(1-t));
-    b = Math.round(232 + (58-232)*(1-t));
+    r = Math.round(245 + (192-245)*t);
+    g = Math.round(240 + (58-240)*t);
+    b = Math.round(232 + (58-232)*t);
   } else {
     var t = p;
     r = Math.round(245 + (74-245)*(t));  // bone -> terracotta inverted -> green
