@@ -410,6 +410,10 @@
     transition:background 0.12s ease;
   }
   .league-team-tap:active{ background:var(--bone-dim); }
+  .league-team-tap.conf-REP{ background:rgba(168,67,74,0.16); }
+  .league-team-tap.conf-DEM{ background:rgba(63,101,131,0.16); }
+  .league-team-tap.conf-REP:active{ background:rgba(168,67,74,0.3); }
+  .league-team-tap.conf-DEM:active{ background:rgba(63,101,131,0.3); }
   .league-team-tap-right{ justify-content:flex-end; }
   .league-vs{
     color:var(--ink-soft); font-size:9.5px;
@@ -723,12 +727,12 @@ function renderLeagueSchedule(){
       <div class="league-matchup-list">`;
     wk.matchups.forEach(m=>{
       html += `<div class="league-matchup-row">
-        <div class="league-team-tap" onclick="jumpToManagerWeek('${m.team_a}', ${wk.week})">
+        <div class="league-team-tap conf-${CONF[m.team_a]}" onclick="jumpToManagerWeek('${m.team_a}', ${wk.week})">
           ${logoImg(m.team_a, 22)}
           <span class="league-matchup-name">${m.team_a}</span>
         </div>
         <span class="league-vs">VS</span>
-        <div class="league-team-tap league-team-tap-right" onclick="jumpToManagerWeek('${m.team_b}', ${wk.week})">
+        <div class="league-team-tap league-team-tap-right conf-${CONF[m.team_b]}" onclick="jumpToManagerWeek('${m.team_b}', ${wk.week})">
           <span class="league-matchup-name" style="text-align:right">${m.team_b}</span>
           ${logoImg(m.team_b, 22)}
         </div>
