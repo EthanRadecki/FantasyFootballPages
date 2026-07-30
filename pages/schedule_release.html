@@ -553,9 +553,10 @@ const MANAGER_COLOR = {
 
 function initials(name){ return name.split(' ').map(p=>p[0]).join(''); }
 
-function logoImg(name, size){
-  return `<img class="logo" src="${LOGO_PATH(name)}" style="width:${size}px;height:${size}px"
-    onerror="this.outerHTML='<div class=&quot;logo-fallback&quot; style=&quot;width:${size}px;height:${size}px&quot;>${initials(name)}</div>'">`;
+function logoImg(name, size, borderRgb){
+  const borderStyle = borderRgb ? `border:3px solid rgb(${borderRgb});` : '';
+  return `<img class="logo" src="${LOGO_PATH(name)}" style="width:${size}px;height:${size}px;${borderStyle}"
+    onerror="this.outerHTML='<div class=&quot;logo-fallback&quot; style=&quot;width:${size}px;height:${size}px;${borderStyle}&quot;>${initials(name)}</div>'">`;
 }
 
 function hashStr(s){
@@ -824,9 +825,9 @@ function renderTicket(entry, meName){
         ${closestNote}
         ${lopsidedNote}
         <div class="matchup-row">
-          <div class="logo-halo halo-${CONF[meName]}">${logoImg(meName, 72)}</div>
+          <div class="logo-halo halo-${CONF[meName]}">${logoImg(meName, 72, MANAGER_COLOR[meName])}</div>
           <div class="matchup-vs">VS</div>
-          <div class="logo-halo halo-${oppConf}">${logoImg(entry.opponent, 72)}</div>
+          <div class="logo-halo halo-${oppConf}">${logoImg(entry.opponent, 72, MANAGER_COLOR[entry.opponent])}</div>
         </div>
         <div class="matchup-names">
           <div class="matchup-name">${meName}</div>
