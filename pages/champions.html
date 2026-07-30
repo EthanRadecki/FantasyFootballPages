@@ -13,6 +13,10 @@
   padding:0;overflow:hidden;margin-bottom:1.5rem;
   position:relative;
 }
+.champ-card::after {
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:rgba(var(--tint,156,148,156),0.08);
+}
 
 /* Year banner */
 .champ-banner {
@@ -91,10 +95,8 @@
   padding:0.55rem 0.65rem;border-radius:7px;
   background:rgba(255,255,255,0.28);
 }
-.roster-slot-top { display:flex;align-items:baseline;gap:0.5rem; }
 .roster-ppg-row {
   display:flex;flex-wrap:wrap;gap:0.25rem 0.7rem;font-size:0.66rem;color:var(--muted);
-  padding-left:calc(2.4rem + 0.5rem);
 }
 .roster-ppg-row .ppg-val { font-weight:700;color:var(--text-mid); }
 .roster-ppg-row .ppg-po.up   { color:#4a8a5a; font-weight:700; }
@@ -102,11 +104,7 @@
 @media(max-width:600px) {
   .roster-ppg-row { padding-left:0; font-size:0.68rem; }
 }
-.roster-pos {
-  font-size:0.62rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:0.08em;color:var(--accent);flex-shrink:0;
-  min-width:2.4rem;
-}
+.roster-slot-top { display:flex;align-items:center;gap:0.5rem; }
 .roster-name {
   font-size:0.8rem;font-weight:600;color:var(--text-mid);
   line-height:1.3;
@@ -184,14 +182,26 @@
 .champ-margin-bar .seg-runner { background:rgba(156,148,156,0.45); }
 @media(max-width:600px) { .champ-margin-wrap { padding:0.85rem 1.25rem 0; } }
 
-/* Position color coding on roster */
-.roster-pos.pos-QB   { color:#8878a8; }
-.roster-pos.pos-RB   { color:#4a7fa8; }
-.roster-pos.pos-WR   { color:#c0623a; }
-.roster-pos.pos-TE   { color:#4a9aa8; }
-.roster-pos.pos-FLEX { color:#9c949c; }
-.roster-pos.pos-K    { color:#b8860b; }
-.roster-pos.pos-DST  { color:#7a6a5a; }
+/* Position badges — same system used across the rest of the site */
+.pos-badge { display:inline-block;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.6rem;font-weight:700;letter-spacing:0.05em; }
+.pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
+.pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
+.pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
+.pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
+.pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
+.pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
+.pos-flex{ background:rgba(120,110,130,0.22);color:#5a5064; }
+.pos-total{ background:rgba(212,175,55,0.28);color:#8a6d10; }
+
+.team-total-slot {
+  grid-column:1 / -1;
+  background:rgba(212,175,55,0.14);
+  border:1px solid rgba(212,175,55,0.3);
+}
+.team-total-slot .roster-name { font-weight:800;color:var(--text); }
+.team-total-slot .roster-ppg-row { font-size:0.72rem; }
+.team-total-slot .ppg-val { font-size:0.85rem; }
+.team-total-slot .ppg-po { font-size:0.85rem; }
 
 /* Scroll-reveal */
 .champ-card, .trophy-wrap {
@@ -257,8 +267,6 @@
     <p>Every championship team since Preach Fantasy's founding</p>
   </div>
 
-  <div id="rings-callout"></div>
-
   <!-- TIMELINE -->
   <div class="section-label">Championship History</div>
   <div class="glass" style="padding:1.5rem;margin-bottom:1.5rem;overflow-x:auto;">
@@ -300,7 +308,7 @@ var CHAMPS = [
     po_ppg: 111.49,
     runner_up: 'Charlie Gorman',
     rounds: [
-      { label: 'Quarterfinal', week: 15, roster: [
+      { label: 'Quarterfinal', week: 15, total_score: 121.0, roster: [
         {pos:'QB', name:'Joe Burrow', week_score:5.5, ppg:16.5},
         {pos:'RB', name:'Kyren Williams', week_score:21.8, ppg:16.3},
         {pos:'RB', name:'Devin Neal', week_score:10.2, ppg:12.1},
@@ -311,7 +319,7 @@ var CHAMPS = [
         {pos:'K', name:'Jake Bates', week_score:10.0, ppg:9.5},
         {pos:'D/ST', name:'Panthers D/ST', week_score:5.0, ppg:16.0},
       ]},
-      { label: 'Semifinal', week: 16, roster: [
+      { label: 'Semifinal', week: 16, total_score: 112.56, roster: [
         {pos:'QB', name:'Jared Goff', week_score:26.46, ppg:17.5},
         {pos:'RB', name:'Rico Dowdle', week_score:8.3, ppg:14.1},
         {pos:'RB', name:'Kyren Williams', week_score:11.5, ppg:16.3},
@@ -322,7 +330,7 @@ var CHAMPS = [
         {pos:'K', name:'Jake Bates', week_score:6.0, ppg:9.5},
         {pos:'D/ST', name:'Bills D/ST', week_score:9.0, ppg:13.5},
       ]},
-      { label: 'Championship', week: 17, roster: [
+      { label: 'Championship', week: 17, total_score: 100.9, roster: [
         {pos:'QB', name:'Joe Burrow', week_score:20.4, ppg:16.5},
         {pos:'RB', name:'Rico Dowdle', week_score:9.3, ppg:14.1},
         {pos:'RB', name:'Kyren Williams', week_score:16.0, ppg:16.3},
@@ -344,7 +352,7 @@ var CHAMPS = [
     po_ppg: 146.72,
     runner_up: 'Brandon Hancock',
     rounds: [
-      { label: 'Quarterfinal', week: 15, roster: [
+      { label: 'Quarterfinal', week: 15, total_score: 119.3, roster: [
         {pos:'QB', name:'Bo Nix', week_score:13.5, ppg:19.7},
         {pos:'RB', name:'De\'Von Achane', week_score:14.6, ppg:17.7},
         {pos:'RB', name:'Jahmyr Gibbs', week_score:28.4, ppg:18.3},
@@ -355,7 +363,7 @@ var CHAMPS = [
         {pos:'K', name:'Harrison Butker', week_score:2.0, ppg:null},
         {pos:'D/ST', name:'Vikings D/ST', week_score:9.0, ppg:8.0},
       ]},
-      { label: 'Semifinal', week: 16, roster: [
+      { label: 'Semifinal', week: 16, total_score: 150.24, roster: [
         {pos:'QB', name:'Jared Goff', week_score:25.34, ppg:17.9},
         {pos:'RB', name:'De\'Von Achane', week_score:31.0, ppg:17.7},
         {pos:'RB', name:'Jahmyr Gibbs', week_score:25.4, ppg:18.3},
@@ -366,7 +374,7 @@ var CHAMPS = [
         {pos:'K', name:'Chase McLaughlin', week_score:7.0, ppg:7.6},
         {pos:'D/ST', name:'Vikings D/ST', week_score:5.0, ppg:8.0},
       ]},
-      { label: 'Championship', week: 17, roster: [
+      { label: 'Championship', week: 17, total_score: 170.62, roster: [
         {pos:'QB', name:'Jared Goff', week_score:25.82, ppg:17.9},
         {pos:'RB', name:'De\'Von Achane', week_score:5.8, ppg:17.7},
         {pos:'RB', name:'Jahmyr Gibbs', week_score:26.3, ppg:18.3},
@@ -388,7 +396,7 @@ var CHAMPS = [
     po_ppg: 126.33,
     runner_up: 'Cole Maney',
     rounds: [
-      { label: 'Quarterfinal', week: 15, roster: [
+      { label: 'Quarterfinal', week: 15, total_score: 110.46, roster: [
         {pos:'QB', name:'Josh Allen', week_score:16.16, ppg:24.9},
         {pos:'RB', name:'Tony Pollard', week_score:7.7, ppg:14.4},
         {pos:'RB', name:'Saquon Barkley', week_score:5.7, ppg:17.4},
@@ -399,7 +407,7 @@ var CHAMPS = [
         {pos:'K', name:'Jake Elliott', week_score:5.0, ppg:9.3},
         {pos:'D/ST', name:'Browns D/ST', week_score:14.0, ppg:9.6},
       ]},
-      { label: 'Semifinal', week: 16, roster: [
+      { label: 'Semifinal', week: 16, total_score: 138.38, roster: [
         {pos:'QB', name:'Josh Allen', week_score:24.98, ppg:24.9},
         {pos:'RB', name:'Tony Pollard', week_score:5.3, ppg:14.4},
         {pos:'RB', name:'Saquon Barkley', week_score:19.4, ppg:17.4},
@@ -410,7 +418,7 @@ var CHAMPS = [
         {pos:'K', name:'Jake Elliott', week_score:17.0, ppg:9.3},
         {pos:'D/ST', name:'Jets D/ST', week_score:10.0, ppg:10.3},
       ]},
-      { label: 'Championship', week: 17, roster: [
+      { label: 'Championship', week: 17, total_score: 130.16, roster: [
         {pos:'QB', name:'Josh Allen', week_score:21.16, ppg:24.9},
         {pos:'RB', name:'Tony Pollard', week_score:5.9, ppg:14.4},
         {pos:'RB', name:'Saquon Barkley', week_score:8.8, ppg:17.4},
@@ -432,7 +440,7 @@ var CHAMPS = [
     po_ppg: 129.25,
     runner_up: 'Ryan P McQuaid',
     rounds: [
-      { label: 'Quarterfinal', week: 15, roster: [
+      { label: 'Quarterfinal', week: 15, total_score: 153.38, roster: [
         {pos:'QB', name:'Justin Fields', week_score:23.58, ppg:30.0},
         {pos:'RB', name:'Travis Etienne Jr.', week_score:12.7, ppg:11.5},
         {pos:'RB', name:'Jonathan Taylor', week_score:2.3, ppg:15.7},
@@ -443,7 +451,7 @@ var CHAMPS = [
         {pos:'K', name:'Jason Sanders', week_score:12.0, ppg:8.7},
         {pos:'D/ST', name:'Patriots D/ST', week_score:11.0, ppg:11.1},
       ]},
-      { label: 'Semifinal', week: 16, roster: [
+      { label: 'Semifinal', week: 16, total_score: 130.56, roster: [
         {pos:'QB', name:'Justin Fields', week_score:9.86, ppg:30.0},
         {pos:'RB', name:'Travis Etienne Jr.', week_score:14.2, ppg:11.5},
         {pos:'RB', name:'Zack Moss', week_score:8.0, ppg:null},
@@ -454,7 +462,7 @@ var CHAMPS = [
         {pos:'K', name:'Jason Sanders', week_score:8.0, ppg:8.7},
         {pos:'D/ST', name:'Titans D/ST', week_score:5.0, ppg:-6.0},
       ]},
-      { label: 'Championship', week: 17, roster: [
+      { label: 'Championship', week: 17, total_score: 103.8, roster: [
         {pos:'QB', name:'Justin Fields', week_score:16.2, ppg:30.0},
         {pos:'RB', name:'Travis Etienne Jr.', week_score:23.0, ppg:11.5},
         {pos:'RB', name:'Zack Moss', week_score:7.4, ppg:null},
@@ -476,7 +484,7 @@ var CHAMPS = [
     po_ppg: 132.31,
     runner_up: 'Anthony Kelly',
     rounds: [
-      { label: 'Quarterfinal', week: 15, roster: [
+      { label: 'Quarterfinal', week: 15, total_score: 121.08, roster: [
         {pos:'QB', name:'Carson Wentz', week_score:5.98, ppg:15.9},
         {pos:'RB', name:'Alvin Kamara', week_score:5.1, ppg:20.3},
         {pos:'RB', name:'David Montgomery', week_score:11.3, ppg:15.0},
@@ -487,7 +495,7 @@ var CHAMPS = [
         {pos:'K', name:'Michael Badgley', week_score:9.0, ppg:7.4},
         {pos:'D/ST', name:'Steelers D/ST', week_score:15.0, ppg:3.8},
       ]},
-      { label: 'Semifinal', week: 16, roster: [
+      { label: 'Semifinal', week: 16, total_score: 137.06, roster: [
         {pos:'QB', name:'Josh Allen', week_score:30.96, ppg:23.5},
         {pos:'RB', name:'Alvin Kamara', week_score:7.9, ppg:20.3},
         {pos:'RB', name:'David Montgomery', week_score:23.6, ppg:15.0},
@@ -498,7 +506,7 @@ var CHAMPS = [
         {pos:'K', name:'Michael Badgley', week_score:8.0, ppg:7.4},
         {pos:'D/ST', name:'Steelers D/ST', week_score:-2.0, ppg:3.8},
       ]},
-      { label: 'Championship', week: 17, roster: [
+      { label: 'Championship', week: 17, total_score: 138.8, roster: [
         {pos:'QB', name:'Josh Allen', week_score:20.9, ppg:23.5},
         {pos:'RB', name:'Alvin Kamara', week_score:21.0, ppg:20.3},
         {pos:'RB', name:'David Montgomery', week_score:20.1, ppg:15.0},
@@ -520,7 +528,7 @@ var CHAMPS = [
     po_ppg: 131.22,
     runner_up: 'Brandon Hancock',
     rounds: [
-      { label: 'First Round', week: 14, roster: [
+      { label: 'First Round', week: 14, total_score: 124.56, roster: [
         {pos:'QB', name:'Matthew Stafford', week_score:14.36, ppg:17.3},
         {pos:'RB', name:'David Montgomery', week_score:24.5, ppg:26.2},
         {pos:'RB', name:'Nick Chubb', week_score:24.3, ppg:17.6},
@@ -531,7 +539,7 @@ var CHAMPS = [
         {pos:'K', name:'Daniel Carlson', week_score:9.0, ppg:9.2},
         {pos:'D/ST', name:'Saints D/ST', week_score:-1.0, ppg:6.0},
       ]},
-      { label: 'Quarterfinal', week: 15, roster: [
+      { label: 'Quarterfinal', week: 15, total_score: 134.52, roster: [
         {pos:'QB', name:'Philip Rivers', week_score:17.02, ppg:15.0},
         {pos:'RB', name:'David Montgomery', week_score:29.2, ppg:26.2},
         {pos:'RB', name:'Nick Chubb', week_score:14.6, ppg:17.6},
@@ -542,7 +550,7 @@ var CHAMPS = [
         {pos:'K', name:'Daniel Carlson', week_score:9.0, ppg:9.2},
         {pos:'D/ST', name:'Browns D/ST', week_score:7.0, ppg:null},
       ]},
-      { label: 'Semifinal', week: 16, roster: [
+      { label: 'Semifinal', week: 16, total_score: 119.44, roster: [
         {pos:'QB', name:'Drew Brees', week_score:8.14, ppg:null},
         {pos:'RB', name:'David Montgomery', week_score:20.1, ppg:26.2},
         {pos:'RB', name:'Nick Chubb', week_score:17.6, ppg:17.6},
@@ -553,7 +561,7 @@ var CHAMPS = [
         {pos:'K', name:'Daniel Carlson', week_score:13.0, ppg:9.2},
         {pos:'D/ST', name:'Browns D/ST', week_score:6.0, ppg:null},
       ]},
-      { label: 'Championship', week: 17, roster: [
+      { label: 'Championship', week: 17, total_score: 146.36, roster: [
         {pos:'QB', name:'Philip Rivers', week_score:10.36, ppg:15.0},
         {pos:'RB', name:'David Montgomery', week_score:28.2, ppg:26.2},
         {pos:'RB', name:'Nick Chubb', week_score:16.8, ppg:17.6},
@@ -586,6 +594,27 @@ var LOGO_MAP = {
   'Carmine Pittelli Jr.':'Pittelli', 'Aidan Quigley':'Quigley', 'Ethan Radecki':'Radecki',
   'Andrew Root':'Root', 'Baylen Slansky':'Slansky'
 };
+var TINT_HEX = {
+  2020: '#ea7988', 2021: '#254bae', 2022: '#21459a',
+  2023: '#e3a748', 2024: '#736ba6', 2025: '#333148'
+};
+function tintRgb(year) {
+  var hex = TINT_HEX[year];
+  if (!hex) return '156,148,156';
+  var r = parseInt(hex.slice(1,3), 16);
+  var g = parseInt(hex.slice(3,5), 16);
+  var b = parseInt(hex.slice(5,7), 16);
+  return r + ',' + g + ',' + b;
+}
+
+function recordHtml(record) {
+  var parts = record.split('-');
+  if (parts.length !== 2) return record;
+  return '<span style="color:#4a8a5a;">' + parts[0] + '</span>'
+    + '<span style="color:var(--muted);">-</span>'
+    + '<span style="color:#c04a4a;">' + parts[1] + '</span>';
+}
+
 function logoFor(name, year) {
   var file = LOGO_MAP[name];
   return file ? '../images/logos/' + file + year + '.png' : '../preach_logo.png';
@@ -600,9 +629,27 @@ function toggleRound(year, idx, btn) {
   btn.classList.add('active');
 }
 
+function renderTeamTotalSlot(seasonPpg, weekTotal) {
+  var delta = weekTotal - seasonPpg;
+  var wkClass = delta > 0.1 ? 'up' : (delta < -0.1 ? 'down' : '');
+  var arrow = wkClass === 'up' ? '&#9650; ' : (wkClass === 'down' ? '&#9660; ' : '');
+  var deltaTxt = wkClass ? ' (' + (delta > 0 ? '+' : '') + delta.toFixed(1) + ')' : '';
+
+  return '<div class="roster-slot team-total-slot">'
+    + '<div class="roster-slot-top">'
+    +   '<span class="pos-badge pos-total">TEAM</span>'
+    +   '<span class="roster-name">Total Score</span>'
+    + '</div>'
+    + '<div class="roster-ppg-row">'
+    +   '<span>Season <span class="ppg-val">' + seasonPpg.toFixed(1) + '</span></span>'
+    +   '<span>This week <span class="ppg-po ' + wkClass + '">' + arrow + weekTotal.toFixed(1) + deltaTxt + '</span></span>'
+    + '</div>'
+    + '</div>';
+}
+
 function renderRosterSlots(roster) {
   return roster.map(function(r) {
-    var posClass = 'pos-' + r.pos.replace('/', '');
+    var posClass = 'pos-' + r.pos.replace('/', '').toLowerCase();
     var seasonTxt = (r.ppg !== null && r.ppg !== undefined) ? r.ppg.toFixed(1) : '&mdash;';
     var weekTxt = r.week_score.toFixed(1);
     var wkClass = '', deltaTxt = '';
@@ -615,7 +662,7 @@ function renderRosterSlots(roster) {
 
     return '<div class="roster-slot">'
       + '<div class="roster-slot-top">'
-      +   '<span class="roster-pos ' + posClass + '">' + r.pos + '</span>'
+      +   '<span class="pos-badge ' + posClass + '">' + r.pos + '</span>'
       +   '<span class="roster-name">' + r.name + '</span>'
       + '</div>'
       + '<div class="roster-ppg-row">'
@@ -635,7 +682,9 @@ function buildCard(c) {
   var roundDivs = c.rounds.map(function(rd, idx) {
     var displayStyle = idx === lastIdx ? '' : 'style="display:none;"';
     return '<div class="champ-roster" data-year="' + c.year + '" data-idx="' + idx + '" ' + displayStyle + '>'
-      + renderRosterSlots(rd.roster) + '</div>';
+      + renderRosterSlots(rd.roster)
+      + renderTeamTotalSlot(c.rs_ppg, rd.total_score)
+      + '</div>';
   }).join('');
 
   // Ring count: how many total championships this manager has across all seasons
@@ -663,7 +712,7 @@ function buildCard(c) {
       + '</div>';
   }
 
-  return '<div class="champ-card glass">'
+  return '<div class="champ-card glass" style="--tint:' + tintRgb(c.year) + ';">'
     + '<div class="champ-banner">'
     +   '<div class="champ-banner-flex">'
     +     '<div class="champ-logo-wrap"><img class="champ-logo" src="' + logoFor(c.manager, c.year) + '" alt="' + c.manager + ' ' + c.year + ' logo"></div>'
@@ -677,7 +726,7 @@ function buildCard(c) {
     + marginHtml
     + '<div class="champ-stats">'
     +   '<div class="champ-stat">'
-    +     '<div class="champ-stat-value gold">' + c.record + '</div>'
+    +     '<div class="champ-stat-value">' + recordHtml(c.record) + '</div>'
     +     '<div class="champ-stat-label">Record</div>'
     +   '</div>'
     +   '<div class="champ-stat">'
@@ -718,23 +767,6 @@ function buildCard(c) {
   });
 
   list.innerHTML = html;
-
-  // Most Championships callout
-  var counts = {};
-  CHAMPS.forEach(function(c){ counts[c.manager] = (counts[c.manager] || 0) + 1; });
-  var top = Object.keys(counts).reduce(function(a, b){ return counts[a] >= counts[b] ? a : b; });
-  if (counts[top] > 1) {
-    var years = CHAMPS.filter(function(c){ return c.manager === top; }).map(function(c){ return c.year; }).sort();
-    var mostRecentYear = years[years.length - 1];
-    document.getElementById('rings-callout').innerHTML =
-      '<div class="callout glass" style="display:flex;align-items:center;gap:1rem;">'
-      + '<img src="' + logoFor(top, mostRecentYear) + '" alt="' + top + '" style="width:44px;height:44px;object-fit:cover;border-radius:50%;background:rgba(255,255,255,0.4);padding:3px;flex-shrink:0;">'
-      + '<div>'
-      +   '<div class="callout-label">Most Championships</div>'
-      +   '<p><strong>' + top + '</strong> leads the league with <strong>' + counts[top] + ' titles</strong> (' + years.join(', ') + ').</p>'
-      + '</div>'
-      + '</div>';
-  }
 
   // Scroll-reveal
   var revealTargets = document.querySelectorAll('.champ-card, .trophy-wrap');
