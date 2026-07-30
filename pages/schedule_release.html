@@ -316,10 +316,12 @@
     max-height:230px; overflow-y:auto;
     border-top:1px solid var(--line);
   }
-  .h2h-row{
-    display:flex; align-items:center; justify-content:space-between;
+  .h2h-game{
     padding:6px 2px;
     border-bottom:1px solid var(--line);
+  }
+  .h2h-row{
+    display:flex; align-items:center; justify-content:space-between;
   }
   .h2h-label{
     font-family:'IBM Plex Mono',monospace;
@@ -463,6 +465,24 @@
   .theme-header-closest{ background:linear-gradient(180deg, #3f6b5e, #5c9382); }
   .theme-header-lopsided{ background:linear-gradient(180deg, #6b3a1f, #a1572c); }
   .theme-header-standard{ background:linear-gradient(180deg, var(--purple), #7d6d7e); }
+  .h2h-mvp{
+    display:flex; align-items:center; gap:5px;
+    margin-top:5px;
+    font-size:11px;
+  }
+  .h2h-mvp-star{ font-size:10px; }
+  .h2h-mvp-name{
+    display:inline-flex; align-items:center; gap:4px;
+    padding:1px 7px; border-radius:10px;
+    font-weight:600;
+  }
+  .h2h-mvp-pts{ color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-size:10px; }
+  .pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
+  .pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
+  .pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
+  .pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
+  .pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
+  .pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
 </style>
 </head>
 <body>
@@ -765,11 +785,22 @@ function renderTicket(entry, meName){
   const h2hHistory = (entry.games && entry.games.length)
     ? `<div class="h2h-history">${entry.games.map(g => {
         const iWon = g.winner === meName;
-        return `<div class="h2h-row">
-          <div class="h2h-label">${h2hLabel(g)}</div>
-          <div class="h2h-score">
-            <span style="color:${iWon?'var(--win)':'var(--loss)'}">${fmtScore(g.score_a)}</span><span class="h2h-dash">-</span><span style="color:${iWon?'var(--loss)':'var(--win)'}">${fmtScore(g.score_b)}</span>
+        const posClass = g.mvp_pos ? 'pos-' + g.mvp_pos.replace('/','').toLowerCase() : '';
+        const mvpHtml = g.mvp_name
+          ? `<div class="h2h-mvp">
+              <span class="h2h-mvp-star">&#11088;</span>
+              <span class="h2h-mvp-name ${posClass}">${g.mvp_name}</span>
+              <span class="h2h-mvp-pts">${fmtScore(g.mvp_pts)}</span>
+            </div>`
+          : '';
+        return `<div class="h2h-game">
+          <div class="h2h-row">
+            <div class="h2h-label">${h2hLabel(g)}</div>
+            <div class="h2h-score">
+              <span style="color:${iWon?'var(--win)':'var(--loss)'}">${fmtScore(g.score_a)}</span><span class="h2h-dash">-</span><span style="color:${iWon?'var(--loss)':'var(--win)'}">${fmtScore(g.score_b)}</span>
+            </div>
           </div>
+          ${mvpHtml}
         </div>`;
       }).join('')}</div>`
     : `<div class="h2h-empty">First meeting -- no history yet.</div>`;
