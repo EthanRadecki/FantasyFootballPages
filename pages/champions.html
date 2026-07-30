@@ -712,7 +712,7 @@ function buildCard(c) {
       + '</div>';
   }
 
-  return '<div class="champ-card glass" style="--tint:' + tintRgb(c.year) + ';">'
+  return '<div class="champ-card glass" id="champ-' + c.year + '" style="--tint:' + tintRgb(c.year) + ';">'
     + '<div class="champ-banner">'
     +   '<div class="champ-banner-flex">'
     +     '<div class="champ-logo-wrap"><img class="champ-logo" src="' + logoFor(c.manager, c.year) + '" alt="' + c.manager + ' ' + c.year + ' logo"></div>'
@@ -786,15 +786,16 @@ function buildCard(c) {
   var el = document.getElementById('timeline');
   if (!el) return;
 
-  var nodeSize = 34;
+  var logoR    = 24;   // logo radius
+  var ringR    = logoR + 4;
   var n        = FINALS.length;
   var vbW      = 1000;
-  var vbH      = 110;
+  var vbH      = 105;
   var padX     = 80;   // inset first/last node from edges
-  var lineY    = 38;
+  var lineY    = 34;
 
   var svgParts = [];
-  svgParts.push('<svg viewBox="0 0 ' + vbW + ' ' + vbH + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">');
+  svgParts.push('<svg viewBox="0 0 ' + vbW + ' ' + vbH + '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;display:block;">');
 
   // Connecting line between first and last node x positions
   var x0 = padX;
@@ -804,27 +805,41 @@ function buildCard(c) {
   FINALS.forEach(function(f, i) {
     var cx = Math.round(padX + (xN - x0) / (n - 1) * i);
     var cy = lineY;
+    var clipId = 'timeline-clip-' + f.year;
+    var logoUrl = logoFor(f.champ, f.year);
 
-    // Glow + main circle
-    svgParts.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + (nodeSize/2 + 4) + '" fill="rgba(212,175,55,0.12)"/>');
-    svgParts.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + (nodeSize/2) + '" fill="rgba(212,175,55,0.85)" stroke="rgba(212,175,55,1)" stroke-width="1.5"/>');
-    // Year inside
-    svgParts.push('<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" font-family="Outfit,sans-serif" font-size="12" font-weight="800" fill="#3d3a38">' + f.year + '</text>');
+    svgParts.push('<a onclick="scrollToChamp(' + f.year + ')" style="cursor:pointer;">');
 
-    // Name below -- first name + last initial only to keep it tight
-    var parts    = f.champ.replace(' Jr.','').split(' ');
+    // Gold ring behind the logo
+    svgParts.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + ringR + '" fill="rgba(245,240,232,1)" stroke="rgba(212,175,55,0.9)" stroke-width="3"/>');
+
+    // Circular-clipped team logo
+    svgParts.push('<clipPath id="' + clipId + '"><circle cx="' + cx + '" cy="' + cy + '" r="' + logoR + '"/></clipPath>');
+    svgParts.push('<image href="' + logoUrl + '" xlink:href="' + logoUrl + '" x="' + (cx - logoR) + '" y="' + (cy - logoR)
+      + '" width="' + (logoR*2) + '" height="' + (logoR*2) + '" clip-path="url(#' + clipId + ')" preserveAspectRatio="xMidYMid slice"/>');
+
+    // Year below the logo
+    var yearY = cy + logoR + 20;
+    svgParts.push('<text x="' + cx + '" y="' + yearY + '" text-anchor="middle" font-family="Outfit,sans-serif" font-size="12" font-weight="800" fill="#3d3a38">' + f.year + '</text>');
+
+    // Manager name below the year
+    var parts     = f.champ.replace(' Jr.','').split(' ');
     var firstName = parts[0];
     var lastInit  = parts[parts.length - 1][0] + '.';
-    var nameY    = cy + nodeSize / 2 + 18;
+    var nameY     = yearY + 14;
     svgParts.push('<text x="' + cx + '" y="' + nameY + '" text-anchor="middle" font-family="Outfit,sans-serif" font-size="11" font-weight="700" fill="#3d3a38">' + firstName + ' ' + lastInit + '</text>');
 
-    // Champ score as a small line below name
-    svgParts.push('<text x="' + cx + '" y="' + (nameY + 14) + '" text-anchor="middle" font-family="Outfit,sans-serif" font-size="10" fill="#8a8480">' + f.champ_score + '</text>');
+    svgParts.push('</a>');
   });
 
   svgParts.push('</svg>');
   el.innerHTML = svgParts.join('');
 })();
+
+function scrollToChamp(year) {
+  var el = document.getElementById('champ-' + year);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 /* ── CHAMPIONSHIP GAME SCORES ── */
 (function() {
