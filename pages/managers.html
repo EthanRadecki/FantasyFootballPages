@@ -257,6 +257,22 @@
 .fl-tl-track {
   position:relative;height:22px;
 }
+.fl-tl-gridline {
+  position:absolute;top:0;bottom:0;width:0;
+  border-left:1px dotted rgba(156,148,156,0.35);
+}
+.fl-tl-playoff-line {
+  position:absolute;top:-2px;bottom:-2px;width:0;
+  border-left:1.5px dashed rgba(168,90,90,0.55);
+}
+.fl-tl-ticks {
+  position:relative;height:11px;font-size:0.55rem;color:var(--muted);
+}
+.fl-tl-tick {
+  position:absolute;transform:translateX(-50%);white-space:nowrap;
+}
+.fl-tl-tick.fl-tl-tick-first{ transform:translateX(0); }
+.fl-tl-tick.fl-tl-tick-last{ transform:translateX(-100%); }
 .fl-tl-seasoncell {
   position:absolute;top:0;bottom:0;border-left:0.5px solid rgba(156,148,156,0.2);
 }
@@ -598,8 +614,8 @@
                 <th>Pos</th>
                 <th class="fl-sortable sort-desc" data-sort-key="total_points" onclick="setFlSort('total_points')">Total Pts</th>
                 <th class="fl-sortable" data-sort-key="ppg" onclick="setFlSort('ppg')">PPG</th>
-                <th>Games</th>
-                <th>Weeks Rostered</th>
+                <th class="fl-sortable" data-sort-key="games_played" onclick="setFlSort('games_played')">Games</th>
+                <th class="fl-sortable" data-sort-key="weeks_rostered" onclick="setFlSort('weeks_rostered')">Weeks Rostered</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -682,7 +698,7 @@
           <button class="fp-btn fl-year-btn" data-year="2025" onclick="setFlYear(2025)">2025</button>
         </div>
         <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0 0.9rem;">
-          Top 20 players by total points. Solid segments are weeks started, faded segments are weeks benched or on IR.
+          Top 20 players by total points. Solid segments are weeks started, faded segments are weeks benched or on IR. Dotted lines mark weeks 5/9/13; the dashed red line marks the start of that season's playoffs.
         </p>
         <div id="fl-timeline-wrap"></div>
       </div>
@@ -2050,7 +2066,7 @@ function renderFlScatterChart(items) {
     return {
       label: pos,
       data: subset.map(function(p) {
-        return { x: p.weeks_rostered, y: p.ppg, r: radius(p.total_points), player: p.player, pts: p.total_points };
+        return { x: p.games_played, y: p.ppg, r: radius(p.total_points), player: p.player, pts: p.total_points };
       }),
       backgroundColor: colors.fill,
       borderColor: colors.border,
@@ -2066,7 +2082,7 @@ function renderFlScatterChart(items) {
       maintainAspectRatio: false,
       layout: { padding: 20 },
       scales: {
-        x: { title: { display: true, text: 'Weeks rostered', color: C_MUTED }, grid: gridStyle(), ticks: tickStyle() },
+        x: { title: { display: true, text: 'Games started', color: C_MUTED }, grid: gridStyle(), ticks: tickStyle() },
         y: { title: { display: true, text: 'Points per game', color: C_MUTED }, grid: gridStyle(), ticks: tickStyle() }
       },
       plugins: {
@@ -2075,7 +2091,7 @@ function renderFlScatterChart(items) {
           callbacks: {
             label: function(ctx) {
               var d = ctx.raw;
-              return d.player + ' \u2014 ' + d.pts.toFixed(1) + ' pts, ' + d.y.toFixed(1) + ' ppg, ' + d.x + ' weeks';
+              return d.player + ' \u2014 ' + d.pts.toFixed(1) + ' pts, ' + d.y.toFixed(1) + ' ppg, ' + d.x + ' games started';
             }
           }
         }
@@ -2087,6 +2103,11 @@ function renderFlScatterChart(items) {
 // Timeline layout constants: 6 seasons x 17 weeks each, laid out side by side
 var FL_TL_SEASONS = [2020, 2021, 2022, 2023, 2024, 2025];
 var FL_TL_WEEKS_PER_SEASON = 17;
+
+// Playoff start week per season (matches the site-wide regular season/playoff
+// boundary: 2020 is a 13-week regular season, every other year is 14 weeks).
+function flPlayoffStartWeek(season) { return season === 2020 ? 14 : 15; }
+var FL_TL_TICK_WEEKS = [1, 5, 9, 13, 17];
 
 function renderFlTimeline(items) {
   var outerWrap = document.getElementById('fl-timeline-wrap');
@@ -2110,7 +2131,15 @@ function renderFlTimeline(items) {
   header.className = 'fl-tl-header';
   header.style.gridTemplateColumns = gridCols;
   header.innerHTML = '<div class="fl-tl-label"></div>' + seasons.map(function(s){
-    return '<div style="text-align:center;">' + s + '</div>';
+    var ticks = FL_TL_TICK_WEEKS.map(function(w, i) {
+      var pct = ((w - 1) / FL_TL_WEEKS_PER_SEASON) * 100;
+      var cls = i === 0 ? ' fl-tl-tick-first' : (i === FL_TL_TICK_WEEKS.length - 1 ? ' fl-tl-tick-last' : '');
+      return '<span class="fl-tl-tick' + cls + '" style="left:' + pct + '%;">' + w + '</span>';
+    }).join('');
+    return '<div>'
+      + '<div style="text-align:center;">' + s + '</div>'
+      + '<div class="fl-tl-ticks">' + ticks + '</div>'
+      + '</div>';
   }).join('');
   inner.appendChild(header);
 
@@ -2134,6 +2163,23 @@ function renderFlTimeline(items) {
       cell.className = 'fl-tl-track';
       row.appendChild(cell);
       seasonCells[s] = cell;
+
+      // Faint week-reference gridlines, plus a distinct dashed marker at
+      // the season's actual regular-season/playoff boundary.
+      FL_TL_TICK_WEEKS.forEach(function(w) {
+        if (w === 1) return; // left edge, a line there is redundant
+        var pct = ((w - 1) / FL_TL_WEEKS_PER_SEASON) * 100;
+        var gl = document.createElement('div');
+        gl.className = 'fl-tl-gridline';
+        gl.style.left = pct + '%';
+        cell.appendChild(gl);
+      });
+      var poWeek = flPlayoffStartWeek(s);
+      var poPct = ((poWeek - 1) / FL_TL_WEEKS_PER_SEASON) * 100;
+      var poLine = document.createElement('div');
+      poLine.className = 'fl-tl-playoff-line';
+      poLine.style.left = poPct + '%';
+      cell.appendChild(poLine);
     });
 
     var colors = FL_POS_COLORS[item.position] || FL_POS_COLORS.K;
@@ -2246,21 +2292,27 @@ function renderFranchiseLeadersTable(manager) {
   // not just the current page, so colors stay stable while paging.
   var totalVals = list.map(function(p){ return p.total_points; });
   var ppgVals    = list.map(function(p){ return p.ppg; });
+  var gamesVals  = list.map(function(p){ return p.games_played; });
+  var weeksVals  = list.map(function(p){ return p.weeks_rostered; });
   var minTotal = Math.min.apply(null, totalVals), maxTotal = Math.max.apply(null, totalVals);
   var minPpg   = Math.min.apply(null, ppgVals),   maxPpg   = Math.max.apply(null, ppgVals);
+  var minGames = Math.min.apply(null, gamesVals), maxGames = Math.max.apply(null, gamesVals);
+  var minWeeks = Math.min.apply(null, weeksVals), maxWeeks = Math.max.apply(null, weeksVals);
 
   var html = '';
   pageItems.forEach(function(p, i) {
     var totalBg = flColorGradient(p.total_points, minTotal, maxTotal);
     var ppgBg   = flColorGradient(p.ppg, minPpg, maxPpg);
+    var gamesBg = flColorGradient(p.games_played, minGames, maxGames);
+    var weeksBg = flColorGradient(p.weeks_rostered, minWeeks, maxWeeks);
     html += '<tr>'
       + '<td>' + (start + i + 1) + '</td>'
       + '<td style="font-weight:700;color:var(--palm);">' + p.player + '</td>'
       + '<td>' + flPosBadge(p.position) + '</td>'
       + '<td class="fl-grad-cell" style="background:' + totalBg + ';">' + p.total_points.toFixed(1) + '</td>'
       + '<td class="fl-grad-cell" style="background:' + ppgBg + ';">' + p.ppg.toFixed(1) + '</td>'
-      + '<td>' + p.games_played + '</td>'
-      + '<td>' + p.weeks_rostered + '</td>'
+      + '<td class="fl-grad-cell" style="background:' + gamesBg + ';">' + p.games_played + '</td>'
+      + '<td class="fl-grad-cell" style="background:' + weeksBg + ';">' + p.weeks_rostered + '</td>'
       + '</tr>';
   });
   tbody.innerHTML = html;
