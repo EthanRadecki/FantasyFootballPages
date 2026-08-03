@@ -161,6 +161,19 @@
     </div>
   </div>
 
+  <!-- POSITION COMPARISON -->
+  <div class="chart-section">
+    <div class="chart-section-label">How Much Does Defense Actually Matter?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        Same method, run for every position: remove that position's started points from both teams in all 598 games and see how often the winner changes. Puts defense's impact in context against the rest of the roster.
+      </p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="position-flip-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
   <!-- MARGIN SCATTER -->
   <div class="chart-section">
     <div class="chart-section-label">Every Game, Margin vs. Margin Without Defense</div>
@@ -174,19 +187,6 @@
       <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:0.5rem;font-size:0.68rem;color:var(--muted);">
         <span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#c04a4a;margin-right:0.3rem;"></span>Outcome flipped</span>
         <span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#9c949c;margin-right:0.3rem;"></span>No flip</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- NET D/ST IMPACT BY MANAGER -->
-  <div class="chart-section">
-    <div class="chart-section-label">Who Defense Has Helped Most (and Least)</div>
-    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
-      <p class="methodology-note" style="margin-bottom:0.75rem;">
-        Net games gained or lost to defense, career-wide. Green means removing defense would have net helped them (defense has cost them more wins than it's secured); red means removing defense would have net hurt them.
-      </p>
-      <div class="league-chart-wrap" style="height:340px;">
-        <canvas id="net-impact-chart"></canvas>
       </div>
     </div>
   </div>
@@ -212,15 +212,15 @@
     </div>
   </div>
 
-  <!-- POSITION COMPARISON -->
+  <!-- NET D/ST IMPACT BY MANAGER -->
   <div class="chart-section">
-    <div class="chart-section-label">How Much Does Defense Actually Matter?</div>
+    <div class="chart-section-label">Who Defense Has Helped Most (and Least)</div>
     <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
-      <p class="methodology-note" style="margin-bottom:0.5rem;">
-        Same method, run for every position: remove that position's started points from both teams in all 598 games and see how often the winner changes. Puts defense's impact in context against the rest of the roster.
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Net games gained or lost to defense, career-wide. Green means removing defense would have net helped them (defense has cost them more wins than it's secured); red means removing defense would have net hurt them.
       </p>
-      <div class="league-chart-wrap" style="height:260px;">
-        <canvas id="position-flip-chart"></canvas>
+      <div class="league-chart-wrap" style="height:340px;">
+        <canvas id="net-impact-chart"></canvas>
       </div>
     </div>
   </div>
@@ -906,11 +906,11 @@ function renderSeasonFlipChart() {
 fetch('../data/dst_removed_data.json').then(function(r){ return r.json(); }).then(function(data) {
   DST_DATA = data;
   renderHeadline();
+  renderPositionFlipChart();
   renderMarginScatter();
-  renderNetImpactChart();
   renderSeasonFlipChart();
   renderSeasonPlayoffList();
-  renderPositionFlipChart();
+  renderNetImpactChart();
   renderDraftVsWaiverChart();
   renderPositionConsistencyChart();
   renderChips();
