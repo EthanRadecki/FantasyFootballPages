@@ -45,15 +45,6 @@
 .headline-mini .mini-num { font-size:1.15rem;font-weight:800;color:var(--palm);font-family:var(--font-display); }
 .headline-mini .mini-label { font-size:0.64rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:0.15rem; }
 
-.swing-row {
-  padding:0.7rem 0.15rem;border-bottom:1px solid rgba(156,148,156,0.15);font-size:0.78rem;
-}
-.swing-row:last-child { border-bottom:none; }
-.swing-meta { color:var(--muted);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.04em;display:block;margin-bottom:0.3rem; }
-.swing-line { line-height:1.5; }
-.swing-arrow-win { color:#4a8a5a;font-weight:700;display:block; }
-.swing-arrow-loss { color:#c04a4a;font-weight:700;display:block; }
-
 /* Manager selector -- background tint on hover/active, no border-left accents */
 .mgr-chip-grid {
   display:grid;grid-template-columns:repeat(auto-fill, minmax(105px, 1fr));
@@ -149,11 +140,20 @@
     </div>
   </div>
 
-  <!-- BIGGEST SWINGS -->
+  <!-- MARGIN SCATTER -->
   <div class="chart-section">
-    <div class="chart-section-label">Biggest Swings</div>
-    <div class="chart-area glass" style="padding:0.5rem 1.25rem;">
-      <div id="swing-list"></div>
+    <div class="chart-section-label">Every Game, Margin vs. Margin Without Defense</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        Each dot is one real matchup. X is how much the actual winner won by; Y is what that margin would've been without defense. Dots below the red zone flipped outright. Tap a dot for the matchup.
+      </p>
+      <div class="league-chart-wrap" style="height:320px;">
+        <canvas id="margin-scatter-chart"></canvas>
+      </div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:0.5rem;font-size:0.68rem;color:var(--muted);">
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#c04a4a;margin-right:0.3rem;"></span>Outcome flipped</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#9c949c;margin-right:0.3rem;"></span>No flip</span>
+      </div>
     </div>
   </div>
 
@@ -162,7 +162,7 @@
     <div class="chart-section-label">Who Defense Has Helped Most (and Least)</div>
     <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
       <p class="methodology-note" style="margin-bottom:0.75rem;">
-        Net games gained or lost to defense, career-wide. Green means defense has won them more games than it's cost them; red means the opposite.
+        Net games gained or lost to defense, career-wide. Green means removing defense would have net helped them (defense has cost them more wins than it's secured); red means removing defense would have net hurt them.
       </p>
       <div class="league-chart-wrap" style="height:340px;">
         <canvas id="net-impact-chart"></canvas>
@@ -212,6 +212,19 @@
     </div>
   </div>
 
+  <!-- PER-MANAGER: MARGIN SCATTER -->
+  <div class="chart-section">
+    <div class="chart-section-label">Their Every Game, Margin vs. Margin Without Defense</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        X is their actual margin (positive = win, negative = loss). Y is what that margin would've been without defense. Red dots crossed zero -- the outcome would have flipped.
+      </p>
+      <div class="league-chart-wrap" style="height:280px;">
+        <canvas id="mgr-scatter-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
   <!-- PER-MANAGER: D/ST ACQUISITION SOURCE -->
   <div class="chart-section">
     <div class="chart-section-label">Where Their D/ST Points Came From</div>
@@ -233,6 +246,7 @@
 var DST_DATA = null;
 var CURRENT_MANAGER = null;
 var acqChart = null;
+var mgrScatterChart = null;
 
 var MANAGER_COLOR_HEX = {
   'Carmine Pittelli Jr.':'#541821','Anthony Kelly':'#cdbca6','Charlie Gorman':'#9f8bc2',
@@ -259,26 +273,207 @@ function renderHeadline() {
   document.getElementById('mini-total-flips').textContent = league.total_flips;
 }
 
-function renderSwingList() {
-  var games = DST_DATA.league.all_games.filter(function(g){ return g.flipped; });
-  games.sort(function(a,b){
-    var marginA = Math.abs(a.adj_a - a.adj_b);
-    var marginB = Math.abs(b.adj_a - b.adj_b);
-    // Prioritize clean, decisive flips: small actual margin swallowed, clear adjusted margin
-    return marginB - marginA;
+var marginScatterPlugin = {
+  id: 'marginScatterZones',
+  beforeDatasetsDraw: function(chart) {
+    var xScale = chart.scales.x, yScale = chart.scales.y;
+    var area = chart.chartArea;
+    var ctx = chart.ctx;
+    ctx.save();
+
+    // Shade the y < 0 region (flipped-outcome zone)
+    var yZeroPx = yScale.getPixelForValue(0);
+    if (yZeroPx < area.bottom) {
+      ctx.fillStyle = 'rgba(192,74,74,0.08)';
+      ctx.fillRect(area.left, yZeroPx, area.right - area.left, area.bottom - yZeroPx);
+      ctx.font = "600 10px 'Outfit', sans-serif";
+      ctx.fillStyle = 'rgba(192,74,74,0.7)';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('Defensive-Flipped Matchups', area.left + 6, yZeroPx + 6);
+    }
+
+    // Y = X reference diagonal (no net effect on margin)
+    var xMin = xScale.min, xMax = xScale.max;
+    var p1x = xScale.getPixelForValue(xMin), p1y = yScale.getPixelForValue(xMin);
+    var p2x = xScale.getPixelForValue(xMax), p2y = yScale.getPixelForValue(xMax);
+    ctx.beginPath();
+    ctx.setLineDash([4, 4]);
+    ctx.moveTo(p1x, p1y);
+    ctx.lineTo(p2x, p2y);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(90,85,80,0.4)';
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.restore();
+  }
+};
+
+function renderMarginScatter() {
+  var games = DST_DATA.league.all_games;
+  var points = games.map(function(g) {
+    var winnerIsA = g.actual_winner === g.team_a;
+    var winnerScore = winnerIsA ? g.score_a : g.score_b;
+    var loserScore  = winnerIsA ? g.score_b : g.score_a;
+    var winnerAdj   = winnerIsA ? g.adj_a : g.adj_b;
+    var loserAdj    = winnerIsA ? g.adj_b : g.adj_a;
+    return {
+      x: winnerScore - loserScore,
+      y: winnerAdj - loserAdj,
+      g: g
+    };
   });
-  var top = games.slice(0, 10);
-  var html = top.map(function(g) {
-    var newWinner = g.adj_winner === 'TIE' ? 'Tie' : g.adj_winner;
-    return '<div class="swing-row">'
-      + '<span class="swing-meta">\'' + String(g.season).slice(2) + ' ' + g.label + '</span>'
-      +   '<div class="swing-line">' + g.team_a + ' ' + g.score_a.toFixed(1) + ' &ndash; ' + g.score_b.toFixed(1) + ' ' + g.team_b + '</div>'
-      +   '<span class="swing-arrow-loss">Actual winner: ' + g.actual_winner + '</span>'
-      +   '<div class="swing-line" style="margin-top:0.35rem;">' + g.team_a + ' ' + g.adj_a.toFixed(1) + ' &ndash; ' + g.adj_b.toFixed(1) + ' ' + g.team_b + '</div>'
-      +   '<span class="swing-arrow-win">No D/ST winner: ' + newWinner + '</span>'
-      + '</div>';
-  }).join('');
-  document.getElementById('swing-list').innerHTML = html || '<p class="metric-note">No flips found.</p>';
+
+  var flips = points.filter(function(p){ return p.g.flipped; });
+  var nonFlips = points.filter(function(p){ return !p.g.flipped; });
+
+  var ctx = document.getElementById('margin-scatter-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'scatter',
+    data: {
+      datasets: [
+        {
+          label: 'No flip',
+          data: nonFlips,
+          backgroundColor: 'rgba(156,148,156,0.45)',
+          radius: 3.5,
+        },
+        {
+          label: 'Outcome flipped',
+          data: flips,
+          backgroundColor: 'rgba(192,74,74,0.85)',
+          radius: 4.5,
+        },
+      ]
+    },
+    plugins: [marginScatterPlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items) {
+              var g = items[0].raw.g;
+              return '\'' + String(g.season).slice(2) + ' ' + g.label;
+            },
+            label: function(item) {
+              var g = item.raw.g;
+              var newWinner = g.adj_winner === 'TIE' ? 'Tie' : g.adj_winner;
+              return [
+                g.team_a + ' ' + g.score_a.toFixed(1) + ' - ' + g.score_b.toFixed(1) + ' ' + g.team_b,
+                'Without D/ST: ' + g.adj_a.toFixed(1) + ' - ' + g.adj_b.toFixed(1) + ' (' + newWinner + ')'
+              ];
+            }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Actual margin of victory' }, beginAtZero: true },
+        y: { title: { display: true, text: 'Margin without defense' } }
+      }
+    }
+  });
+}
+
+var mgrScatterPlugin = {
+  id: 'mgrScatterZones',
+  beforeDatasetsDraw: function(chart) {
+    var xScale = chart.scales.x, yScale = chart.scales.y;
+    var area = chart.chartArea;
+    var ctx = chart.ctx;
+    ctx.save();
+
+    var x0 = xScale.getPixelForValue(0);
+    var y0 = yScale.getPixelForValue(0);
+
+    ctx.fillStyle = 'rgba(192,74,74,0.08)';
+    // Won but would've lost (x > 0, y < 0)
+    if (x0 < area.right && y0 < area.bottom) {
+      var xStart = Math.max(x0, area.left);
+      ctx.fillRect(xStart, y0, area.right - xStart, area.bottom - y0);
+    }
+    // Lost but would've won (x < 0, y > 0)
+    if (x0 > area.left && y0 > area.top) {
+      var yEnd = Math.min(y0, area.bottom);
+      ctx.fillRect(area.left, area.top, x0 - area.left, yEnd - area.top);
+    }
+
+    // Zero reference lines
+    ctx.strokeStyle = 'rgba(90,85,80,0.25)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x0, area.top); ctx.lineTo(x0, area.bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(area.left, y0); ctx.lineTo(area.right, y0); ctx.stroke();
+
+    // Y = X diagonal (no net effect on their margin)
+    var lo = Math.min(xScale.min, yScale.min);
+    var hi = Math.max(xScale.max, yScale.max);
+    var p1x = xScale.getPixelForValue(lo), p1y = yScale.getPixelForValue(lo);
+    var p2x = xScale.getPixelForValue(hi), p2y = yScale.getPixelForValue(hi);
+    ctx.beginPath();
+    ctx.setLineDash([4, 4]);
+    ctx.moveTo(p1x, p1y);
+    ctx.lineTo(p2x, p2y);
+    ctx.strokeStyle = 'rgba(90,85,80,0.4)';
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.restore();
+  }
+};
+
+function renderMgrScatter(name) {
+  var games = DST_DATA.league.all_games.filter(function(g) {
+    return g.team_a === name || g.team_b === name;
+  });
+  var points = games.map(function(g) {
+    var isA = g.team_a === name;
+    var myScore = isA ? g.score_a : g.score_b;
+    var oppScore = isA ? g.score_b : g.score_a;
+    var myAdj = isA ? g.adj_a : g.adj_b;
+    var oppAdj = isA ? g.adj_b : g.adj_a;
+    return { x: myScore - oppScore, y: myAdj - oppAdj, g: g, opponent: isA ? g.team_b : g.team_a };
+  });
+
+  var flips = points.filter(function(p) { return (p.x >= 0) !== (p.y >= 0); });
+  var nonFlips = points.filter(function(p) { return (p.x >= 0) === (p.y >= 0); });
+
+  if (mgrScatterChart) mgrScatterChart.destroy();
+  var ctx = document.getElementById('mgr-scatter-chart').getContext('2d');
+  mgrScatterChart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+      datasets: [
+        { label: 'No flip', data: nonFlips, backgroundColor: 'rgba(156,148,156,0.5)', radius: 4 },
+        { label: 'Flipped', data: flips, backgroundColor: 'rgba(192,74,74,0.85)', radius: 5 },
+      ]
+    },
+    plugins: [mgrScatterPlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items) {
+              var g = items[0].raw.g;
+              return '\'' + String(g.season).slice(2) + ' ' + g.label + ' vs ' + items[0].raw.opponent;
+            },
+            label: function(item) {
+              var p = item.raw;
+              return ['Actual margin: ' + (p.x >= 0 ? '+' : '') + p.x.toFixed(1),
+                      'Without D/ST: ' + (p.y >= 0 ? '+' : '') + p.y.toFixed(1)];
+            }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Their actual margin' } },
+        y: { title: { display: true, text: 'Margin without defense' } }
+      }
+    }
+  });
 }
 
 function renderChips() {
@@ -302,6 +497,7 @@ function selectManager(name) {
   document.getElementById('mgr-dst-ppg-note').textContent = 'Averages ' + d.dst_ppg.toFixed(1) + ' PPG from D/ST across ' + d.games + ' games';
 
   renderFlipList(d);
+  renderMgrScatter(name);
   renderAcqPie(d);
 }
 
@@ -422,7 +618,7 @@ function renderSeasonFlipChart() {
 fetch('../data/dst_removed_data.json').then(function(r){ return r.json(); }).then(function(data) {
   DST_DATA = data;
   renderHeadline();
-  renderSwingList();
+  renderMarginScatter();
   renderNetImpactChart();
   renderSeasonFlipChart();
   renderChips();
