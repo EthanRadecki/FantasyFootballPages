@@ -212,6 +212,32 @@
     </div>
   </div>
 
+  <!-- POSITION COMPARISON -->
+  <div class="chart-section">
+    <div class="chart-section-label">How Much Does Defense Actually Matter?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        Same method, run for every position: remove that position's started points from both teams in all 598 games and see how often the winner changes. Puts defense's impact in context against the rest of the roster.
+      </p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="position-flip-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRAFT VS WAIVER -->
+  <div class="chart-section">
+    <div class="chart-section-label">Does Drafting A Defense Early Actually Help?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        Real PPG for every D/ST while on the drafting manager's roster, by the round it was actually drafted (D/ST has only ever been drafted rounds 8-16 in league history). Dashed line is the league-wide waiver/free-agent D/ST PPG for comparison. Rounds 8 and 16 have very small samples (8 and 5 real-game weeks) -- read those two bars cautiously.
+      </p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="draft-waiver-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
   <!-- MANAGER SELECTOR -->
   <div class="chart-section">
     <div class="chart-section-label">By Manager</div>
@@ -524,8 +550,14 @@ function renderSeasonPlayoffList() {
   el.innerHTML = seasons.map(function(season) {
     var s = sp[season];
     var champBadge = s.champion_changed
-      ? '<span class="season-badge changed">Champion Changed</span>'
+      ? '<span class="season-badge changed">Title Doesn\'t Hold Up</span>'
       : '<span class="season-badge same">Same Champion</span>';
+    var champNote = s.champion_changed
+      ? '<div class="season-flip-note"><strong>' + shortName(s.actual_champion) + '</strong> actually won it, '
+        + 'but would have been eliminated in the ' + s.champion_eliminated_round + ' without defense -- so a '
+        + 'different champion would have won in ' + season + '. (Exactly who can\'t be determined beyond that '
+        + 'point without simulating hypothetical matchups that never really happened.)</div>'
+      : '';
 
     var fieldHtml;
     if (s.gained.length === 0 && s.lost.length === 0) {
@@ -548,10 +580,112 @@ function renderSeasonPlayoffList() {
 
     return '<div class="season-card">'
       + '<div class="season-card-header"><span class="season-year">' + season + '</span>' + champBadge + '</div>'
+      + champNote
       + fieldHtml
       + flipNotes
       + '</div>';
   }).join('');
+}
+
+function renderPositionFlipChart() {
+  var rates = DST_DATA.position_flip_rates;
+  var order = ['QB', 'RB', 'WR', 'TE', 'K', 'D/ST'];
+  var colors = { 'QB':'#983a3a', 'RB':'#4a7a4a', 'WR':'#3a6f98', 'TE':'#a07010', 'K':'#6a6460', 'D/ST':'#504840' };
+
+  var ctx = document.getElementById('position-flip-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: order,
+      datasets: [{
+        data: order.map(function(p){ return rates[p].pct; }),
+        backgroundColor: order.map(function(p){ return colors[p]; }),
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(item) {
+              var p = order[item.dataIndex];
+              return rates[p].flips + ' of ' + rates[p].total + ' games flip (' + rates[p].pct + '%)';
+            }
+          }
+        }
+      },
+      scales: {
+        y: { title: { display: true, text: '% of games that flip' }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+var draftWaiverLinePlugin = {
+  id: 'draftWaiverLine',
+  afterDatasetsDraw: function(chart) {
+    var yScale = chart.scales.y;
+    var area = chart.chartArea;
+    var ctx = chart.ctx;
+    var yVal = chart.$waiverPPG;
+    if (yVal === undefined) return;
+    var yPx = yScale.getPixelForValue(yVal);
+    ctx.save();
+    ctx.beginPath();
+    ctx.setLineDash([5, 4]);
+    ctx.moveTo(area.left, yPx);
+    ctx.lineTo(area.right, yPx);
+    ctx.strokeStyle = 'rgba(168,90,90,0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font = "600 10px 'Outfit', sans-serif";
+    ctx.fillStyle = 'rgba(168,90,90,0.9)';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('Waiver baseline: ' + yVal.toFixed(2) + ' PPG', area.right - 4, yPx - 3);
+    ctx.restore();
+  }
+};
+
+function renderDraftVsWaiverChart() {
+  var dv = DST_DATA.draft_vs_waiver;
+  var rounds = Object.keys(dv.by_round_ppg).map(Number).sort(function(a,b){ return a-b; });
+
+  var ctx = document.getElementById('draft-waiver-chart').getContext('2d');
+  var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: rounds.map(function(r){ return 'Rd ' + r; }),
+      datasets: [{
+        data: rounds.map(function(r){ return dv.by_round_ppg[r]; }),
+        backgroundColor: 'rgba(80,72,64,0.75)',
+        borderRadius: 4,
+      }]
+    },
+    plugins: [draftWaiverLinePlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(item) {
+              var r = rounds[item.dataIndex];
+              return item.parsed.y.toFixed(2) + ' PPG (' + dv.by_round_weeks[r] + ' real-game weeks)';
+            }
+          }
+        }
+      },
+      scales: {
+        y: { title: { display: true, text: 'PPG' }, beginAtZero: true }
+      }
+    }
+  });
+  chart.$waiverPPG = dv.waiver_ppg;
+  chart.update();
 }
 
 function renderChips() {
@@ -700,6 +834,8 @@ fetch('../data/dst_removed_data.json').then(function(r){ return r.json(); }).the
   renderNetImpactChart();
   renderSeasonFlipChart();
   renderSeasonPlayoffList();
+  renderPositionFlipChart();
+  renderDraftVsWaiverChart();
   renderChips();
   var first = Object.keys(DST_DATA.managers).sort()[0];
   selectManager(first);
