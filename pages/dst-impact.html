@@ -18,47 +18,53 @@
 .pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
 .pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
 
+/* Strip any inherited border-left accent from shared card classes --
+   this site never uses that style, per standing design preference. */
+.glass, .callout, .chart-area, .page-header { border-left: none !important; }
+
+.chart-section-label { margin-bottom:0.6rem; }
+.chart-section { margin-bottom:2rem; }
+
 .headline-stat {
-  text-align:center;padding:2rem 1rem;
+  text-align:center;padding:1.5rem 0.75rem;
 }
 .headline-stat .big-num {
-  font-family:var(--font-display);font-size:3.2rem;font-weight:900;color:var(--accent);
+  font-family:var(--font-display);font-size:2.6rem;font-weight:900;color:var(--accent);
   line-height:1;
 }
 .headline-stat .big-sub {
-  font-size:0.95rem;color:var(--text-mid);margin-top:0.6rem;max-width:520px;margin-left:auto;margin-right:auto;
+  font-size:0.85rem;color:var(--text-mid);margin-top:0.6rem;max-width:420px;margin-left:auto;margin-right:auto;
 }
 .headline-mini-row {
-  display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:1.5rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:1.25rem;
 }
+.headline-mini-row .headline-mini:last-child { grid-column:1 / -1; }
 .headline-mini {
-  text-align:center;padding:0.9rem 0.5rem;background:rgba(156,148,156,0.08);border-radius:var(--radius-sm);
+  text-align:center;padding:0.8rem 0.5rem;background:rgba(156,148,156,0.08);border-radius:var(--radius-sm);
 }
-.headline-mini .mini-num { font-size:1.3rem;font-weight:800;color:var(--palm);font-family:var(--font-display); }
-.headline-mini .mini-label { font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:0.15rem; }
+.headline-mini .mini-num { font-size:1.15rem;font-weight:800;color:var(--palm);font-family:var(--font-display); }
+.headline-mini .mini-label { font-size:0.64rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:0.15rem; }
 
 .swing-row {
-  display:flex;align-items:center;justify-content:space-between;gap:0.75rem;
-  padding:0.65rem 0.25rem;border-bottom:1px solid rgba(156,148,156,0.15);font-size:0.82rem;
+  padding:0.7rem 0.15rem;border-bottom:1px solid rgba(156,148,156,0.15);font-size:0.78rem;
 }
 .swing-row:last-child { border-bottom:none; }
-.swing-meta { color:var(--muted);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap; }
-.swing-matchup { flex:1;min-width:0;padding:0 0.75rem; }
-.swing-line { white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-.swing-arrow-win { color:#4a8a5a;font-weight:700; }
-.swing-arrow-loss { color:#c04a4a;font-weight:700; }
+.swing-meta { color:var(--muted);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.04em;display:block;margin-bottom:0.3rem; }
+.swing-line { line-height:1.5; }
+.swing-arrow-win { color:#4a8a5a;font-weight:700;display:block; }
+.swing-arrow-loss { color:#c04a4a;font-weight:700;display:block; }
 
 /* Manager selector -- background tint on hover/active, no border-left accents */
 .mgr-chip-grid {
-  display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));
-  gap:0.55rem;margin-bottom:1.75rem;
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(105px, 1fr));
+  gap:0.5rem;margin-bottom:1.5rem;
 }
 .mgr-chip {
-  padding:0.75rem 0.6rem;text-align:center;cursor:pointer;border-radius:var(--radius-sm);
+  padding:0.65rem 0.4rem;text-align:center;cursor:pointer;border-radius:var(--radius-sm);
   border:1px solid rgba(156,148,156,0.25);background:rgba(156,148,156,0.05);
-  transition:all 0.15s;font-size:0.78rem;font-weight:600;color:var(--text-mid);
+  transition:all 0.15s;font-size:0.72rem;font-weight:600;color:var(--text-mid);
 }
-.mgr-chip:hover { background:rgba(var(--chip-rgb,156,148,156),0.16); }
+.mgr-chip:active { background:rgba(var(--chip-rgb,156,148,156),0.22); }
 .mgr-chip.active {
   background:rgba(var(--chip-rgb,156,148,156),0.22);
   border-color:rgba(var(--chip-rgb,156,148,156),0.55);
@@ -66,44 +72,48 @@
 }
 
 .record-compare {
-  display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:1rem 0 1.5rem;
+  display:flex;align-items:center;justify-content:center;gap:1rem;padding:0.85rem 0 1.25rem;
 }
 .record-block { text-align:center; }
-.record-block .rec-label { font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em; }
-.record-block .rec-value { font-family:var(--font-display);font-size:1.8rem;font-weight:800;margin-top:0.2rem; }
-.record-arrow { font-size:1.4rem;color:var(--muted); }
+.record-block .rec-label { font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em; }
+.record-block .rec-value { font-family:var(--font-display);font-size:1.5rem;font-weight:800;margin-top:0.2rem; }
+.record-arrow { font-size:1.2rem;color:var(--muted); }
 
 .mgr-flip-list { margin-top:0.5rem; }
 .mgr-flip-row {
-  display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.25rem;
-  border-bottom:1px solid rgba(156,148,156,0.12);font-size:0.8rem;
+  padding:0.6rem 0.15rem;
+  border-bottom:1px solid rgba(156,148,156,0.12);font-size:0.78rem;
 }
 .mgr-flip-row:last-child { border-bottom:none; }
+.flip-row-top { display:flex;align-items:center;justify-content:space-between;margin-bottom:0.3rem; }
 .flip-tag {
-  font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;
-  padding:0.15rem 0.45rem;border-radius:3px;flex-shrink:0;
+  font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;
+  padding:0.15rem 0.45rem;border-radius:3px;
 }
 .flip-tag.gained { background:rgba(74,138,90,0.18);color:#4a8a5a; }
 .flip-tag.lost   { background:rgba(192,74,74,0.18);color:#c04a4a; }
-.flip-detail { flex:1;color:var(--text-mid); }
-.flip-meta { color:var(--muted);font-size:0.7rem;white-space:nowrap; }
+.flip-detail { color:var(--text-mid);line-height:1.4; }
+.flip-meta { color:var(--muted);font-size:0.68rem;white-space:nowrap; }
 
-.pie-wrap { display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;justify-content:center; }
-.pie-canvas-wrap { position:relative;width:180px;height:180px;flex-shrink:0; }
-.pie-legend { display:flex;flex-direction:column;gap:0.5rem; }
-.pie-legend-row { display:flex;align-items:center;gap:0.5rem;font-size:0.82rem; }
+.pie-wrap { display:flex;flex-direction:column;align-items:center;gap:1rem; }
+.pie-canvas-wrap { position:relative;width:170px;height:170px;flex-shrink:0; }
+.pie-legend { display:flex;flex-direction:column;gap:0.5rem;width:100%;max-width:260px; }
+.pie-legend-row { display:flex;align-items:center;gap:0.5rem;font-size:0.78rem; }
 .pie-swatch { width:11px;height:11px;border-radius:3px;flex-shrink:0; }
 .pie-legend-val { font-weight:700;color:var(--palm);margin-left:auto;padding-left:0.75rem; }
 
+.league-chart-wrap { position:relative; }
+
 .methodology-note {
-  font-size:0.78rem;color:var(--muted);line-height:1.6;
+  font-size:0.75rem;color:var(--muted);line-height:1.6;
 }
-@media(max-width:640px) {
-  .headline-stat .big-num { font-size:2.4rem; }
-  .headline-mini-row { grid-template-columns:1fr 1fr; }
-  .headline-mini-row .headline-mini:last-child { grid-column:1 / -1; }
-  .record-compare { gap:1rem; }
-  .pie-wrap { flex-direction:column; }
+
+/* Above phone width, allow a couple of things a bit more room */
+@media(min-width:480px) {
+  .headline-stat .big-num { font-size:3.2rem; }
+  .headline-mini-row { grid-template-columns:repeat(3,1fr); }
+  .headline-mini-row .headline-mini:last-child { grid-column:auto; }
+  .pie-wrap { flex-direction:row;justify-content:center;flex-wrap:wrap; }
 }
 </style>
 </head>
@@ -147,12 +157,35 @@
     </div>
   </div>
 
+  <!-- NET D/ST IMPACT BY MANAGER -->
+  <div class="chart-section">
+    <div class="chart-section-label">Who Defense Has Helped Most (and Least)</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Net games gained or lost to defense, career-wide. Green means defense has won them more games than it's cost them; red means the opposite.
+      </p>
+      <div class="league-chart-wrap" style="height:340px;">
+        <canvas id="net-impact-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLIP RATE BY SEASON -->
+  <div class="chart-section">
+    <div class="chart-section-label">Flip Rate By Season</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <div class="league-chart-wrap" style="height:220px;">
+        <canvas id="season-flip-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
   <!-- MANAGER SELECTOR -->
   <div class="chart-section">
     <div class="chart-section-label">By Manager</div>
     <div class="mgr-chip-grid" id="mgr-chip-grid"></div>
 
-    <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
       <div style="text-align:center;font-size:0.95rem;font-weight:700;color:var(--palm);margin-bottom:0.25rem;" id="mgr-panel-name"></div>
       <div class="record-compare">
         <div class="record-block">
@@ -165,7 +198,7 @@
           <div class="rec-value" id="mgr-adj-record">--</div>
         </div>
       </div>
-      <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:-0.5rem;">
+      <p style="text-align:center;font-size:0.78rem;color:var(--muted);margin-top:-0.5rem;">
         <span id="mgr-dst-ppg-note"></span>
       </p>
     </div>
@@ -174,7 +207,7 @@
   <!-- PER-MANAGER: FLIPPED GAMES -->
   <div class="chart-section">
     <div class="chart-section-label">Games That Would Have Flipped</div>
-    <div class="chart-area glass" style="padding:0.5rem 1.25rem;">
+    <div class="chart-area glass" style="padding:0.5rem 1rem;">
       <div class="mgr-flip-list" id="mgr-flip-list"></div>
     </div>
   </div>
@@ -182,7 +215,7 @@
   <!-- PER-MANAGER: D/ST ACQUISITION SOURCE -->
   <div class="chart-section">
     <div class="chart-section-label">Where Their D/ST Points Came From</div>
-    <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
       <div class="pie-wrap">
         <div class="pie-canvas-wrap"><canvas id="acq-pie-chart"></canvas></div>
         <div class="pie-legend" id="acq-legend"></div>
@@ -239,12 +272,10 @@ function renderSwingList() {
     var newWinner = g.adj_winner === 'TIE' ? 'Tie' : g.adj_winner;
     return '<div class="swing-row">'
       + '<span class="swing-meta">\'' + String(g.season).slice(2) + ' ' + g.label + '</span>'
-      + '<div class="swing-matchup">'
-      +   '<div class="swing-line">' + g.team_a + ' ' + g.score_a.toFixed(1) + ' &ndash; ' + g.score_b.toFixed(1) + ' ' + g.team_b
-      +     ' <span class="swing-arrow-loss">actual: ' + g.actual_winner + '</span></div>'
-      +   '<div class="swing-line">' + g.team_a + ' ' + g.adj_a.toFixed(1) + ' &ndash; ' + g.adj_b.toFixed(1) + ' ' + g.team_b
-      +     ' <span class="swing-arrow-win">no D/ST: ' + newWinner + '</span></div>'
-      + '</div>'
+      +   '<div class="swing-line">' + g.team_a + ' ' + g.score_a.toFixed(1) + ' &ndash; ' + g.score_b.toFixed(1) + ' ' + g.team_b + '</div>'
+      +   '<span class="swing-arrow-loss">Actual winner: ' + g.actual_winner + '</span>'
+      +   '<div class="swing-line" style="margin-top:0.35rem;">' + g.team_a + ' ' + g.adj_a.toFixed(1) + ' &ndash; ' + g.adj_b.toFixed(1) + ' ' + g.team_b + '</div>'
+      +   '<span class="swing-arrow-win">No D/ST winner: ' + newWinner + '</span>'
       + '</div>';
   }).join('');
   document.getElementById('swing-list').innerHTML = html || '<p class="metric-note">No flips found.</p>';
@@ -286,10 +317,12 @@ function renderFlipList(d) {
     var tagClass = gained ? 'gained' : 'lost';
     var tagText = gained ? 'GAINED WIN' : 'LOST WIN';
     return '<div class="mgr-flip-row">'
-      + '<span class="flip-tag ' + tagClass + '">' + tagText + '</span>'
-      + '<span class="flip-detail">vs ' + g.opponent + ' &mdash; ' + g.my_score.toFixed(1) + '-' + g.opp_score.toFixed(1)
-      +   ' &rarr; ' + g.my_adj.toFixed(1) + '-' + g.opp_adj.toFixed(1) + '</span>'
-      + '<span class="flip-meta">\'' + String(g.season).slice(2) + ' ' + g.label + '</span>'
+      + '<div class="flip-row-top">'
+      +   '<span class="flip-tag ' + tagClass + '">' + tagText + '</span>'
+      +   '<span class="flip-meta">\'' + String(g.season).slice(2) + ' ' + g.label + '</span>'
+      + '</div>'
+      + '<div class="flip-detail">vs ' + g.opponent + ' &mdash; ' + g.my_score.toFixed(1) + '-' + g.opp_score.toFixed(1)
+      +   ' &rarr; ' + g.my_adj.toFixed(1) + '-' + g.opp_adj.toFixed(1) + '</div>'
       + '</div>';
   }).join('');
 }
@@ -321,10 +354,77 @@ function renderAcqPie(d) {
   });
 }
 
+function renderNetImpactChart() {
+  var names = Object.keys(DST_DATA.managers);
+  var rows = names.map(function(m) {
+    var games = DST_DATA.managers[m].flipped_games;
+    var gained = games.filter(function(g){ return g.direction === 'gained_win'; }).length;
+    var lost = games.filter(function(g){ return g.direction === 'lost_win'; }).length;
+    return { name: m, net: gained - lost };
+  });
+  rows.sort(function(a,b){ return b.net - a.net; });
+
+  var ctx = document.getElementById('net-impact-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: rows.map(function(r){ return shortName(r.name); }),
+      datasets: [{
+        data: rows.map(function(r){ return r.net; }),
+        backgroundColor: rows.map(function(r){ return r.net >= 0 ? 'rgba(74,138,90,0.75)' : 'rgba(192,74,74,0.75)'; }),
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { title: { display: true, text: 'Net games (gained - lost)' }, ticks: { stepSize: 1 } },
+        y: { ticks: { font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+function renderSeasonFlipChart() {
+  var seasons = [2020, 2021, 2022, 2023, 2024, 2025];
+  var counts = seasons.map(function(s) {
+    var games = DST_DATA.league.all_games.filter(function(g){ return g.season === s; });
+    var flips = games.filter(function(g){ return g.flipped; }).length;
+    return games.length ? (flips / games.length * 100) : 0;
+  });
+
+  var ctx = document.getElementById('season-flip-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: seasons,
+      datasets: [{
+        data: counts,
+        backgroundColor: 'rgba(212,175,55,0.7)',
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(ctx){ return ctx.parsed.y.toFixed(1) + '% of games flipped'; } } }
+      },
+      scales: {
+        y: { title: { display: true, text: '% flipped' }, beginAtZero: true }
+      }
+    }
+  });
+}
+
 fetch('../data/dst_removed_data.json').then(function(r){ return r.json(); }).then(function(data) {
   DST_DATA = data;
   renderHeadline();
   renderSwingList();
+  renderNetImpactChart();
+  renderSeasonFlipChart();
   renderChips();
   var first = Object.keys(DST_DATA.managers).sort()[0];
   selectManager(first);
