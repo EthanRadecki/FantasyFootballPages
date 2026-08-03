@@ -238,6 +238,20 @@
     </div>
   </div>
 
+  <!-- POSITION PREDICTABILITY -->
+  <div class="chart-section">
+    <div class="chart-section-label">How Predictable Is Each Position, Week To Week?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        For every player-season, how much does their own week-to-week score swing relative to their own average? Taller bars mean less predictable -- even knowing how good a player usually is, you can't count on any given week matching that average.
+      </p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="position-consistency-chart"></canvas>
+      </div>
+      <p class="methodology-note" id="consistency-callout" style="text-align:center;margin-top:0.4rem;font-weight:600;"></p>
+    </div>
+  </div>
+
   <!-- MANAGER SELECTOR -->
   <div class="chart-section">
     <div class="chart-section-label">By Manager</div>
@@ -688,6 +702,68 @@ function renderDraftVsWaiverChart() {
   chart.update();
 }
 
+var barValueLabelPlugin = {
+  id: 'barValueLabel',
+  afterDatasetsDraw: function(chart) {
+    var ctx = chart.ctx;
+    var meta = chart.getDatasetMeta(0);
+    ctx.save();
+    ctx.font = "700 11px 'Outfit', sans-serif";
+    ctx.fillStyle = '#3d3a38';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    meta.data.forEach(function(bar, i) {
+      var val = chart.data.datasets[0].data[i];
+      ctx.fillText(val.toFixed(2), bar.x, bar.y - 4);
+    });
+    ctx.restore();
+  }
+};
+
+function renderPositionConsistencyChart() {
+  var cv = DST_DATA.position_consistency;
+  var order = ['QB', 'RB', 'WR', 'TE', 'K', 'D/ST'];
+  var colors = { 'QB':'#983a3a', 'RB':'#4a7a4a', 'WR':'#3a6f98', 'TE':'#a07010', 'K':'#6a6460', 'D/ST':'#504840' };
+
+  var ctx = document.getElementById('position-consistency-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: order,
+      datasets: [{
+        data: order.map(function(p){ return cv[p].avg_cv; }),
+        backgroundColor: order.map(function(p){ return colors[p]; }),
+        borderRadius: 4,
+      }]
+    },
+    plugins: [barValueLabelPlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: { padding: { top: 20 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(item) {
+              var p = order[item.dataIndex];
+              return 'Based on ' + cv[p].sample + ' player-seasons';
+            }
+          }
+        }
+      },
+      scales: {
+        y: { title: { display: true, text: 'Week-to-week unpredictability' }, beginAtZero: true }
+      }
+    }
+  });
+
+  var dstCv = cv['D/ST'].avg_cv;
+  var nextHighest = Math.max.apply(null, order.filter(function(p){ return p !== 'D/ST'; }).map(function(p){ return cv[p].avg_cv; }));
+  var ratio = (dstCv / nextHighest).toFixed(1);
+  document.getElementById('consistency-callout').textContent =
+    'Defense is about ' + ratio + 'x more unpredictable, week to week, than any other position.';
+}
+
 function renderChips() {
   var grid = document.getElementById('mgr-chip-grid');
   var names = Object.keys(DST_DATA.managers).sort();
@@ -836,6 +912,7 @@ fetch('../data/dst_removed_data.json').then(function(r){ return r.json(); }).the
   renderSeasonPlayoffList();
   renderPositionFlipChart();
   renderDraftVsWaiverChart();
+  renderPositionConsistencyChart();
   renderChips();
   var first = Object.keys(DST_DATA.managers).sort()[0];
   selectManager(first);
