@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Without Defense | Preach Fantasy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* Position badges -- same system used across the rest of the site */
+.pos-badge { display:inline-block;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.6rem;font-weight:700;letter-spacing:0.05em; }
+.pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
+.pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
+.pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
+.pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
+.pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
+.pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
+
+.headline-stat {
+  text-align:center;padding:2rem 1rem;
+}
+.headline-stat .big-num {
+  font-family:var(--font-display);font-size:3.2rem;font-weight:900;color:var(--accent);
+  line-height:1;
+}
+.headline-stat .big-sub {
+  font-size:0.95rem;color:var(--text-mid);margin-top:0.6rem;max-width:520px;margin-left:auto;margin-right:auto;
+}
+.headline-mini-row {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:1.5rem;
+}
+.headline-mini {
+  text-align:center;padding:0.9rem 0.5rem;background:rgba(156,148,156,0.08);border-radius:var(--radius-sm);
+}
+.headline-mini .mini-num { font-size:1.3rem;font-weight:800;color:var(--palm);font-family:var(--font-display); }
+.headline-mini .mini-label { font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:0.15rem; }
+
+.swing-row {
+  display:flex;align-items:center;justify-content:space-between;gap:0.75rem;
+  padding:0.65rem 0.25rem;border-bottom:1px solid rgba(156,148,156,0.15);font-size:0.82rem;
+}
+.swing-row:last-child { border-bottom:none; }
+.swing-meta { color:var(--muted);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap; }
+.swing-matchup { flex:1;min-width:0;padding:0 0.75rem; }
+.swing-line { white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.swing-arrow-win { color:#4a8a5a;font-weight:700; }
+.swing-arrow-loss { color:#c04a4a;font-weight:700; }
+
+/* Manager selector -- background tint on hover/active, no border-left accents */
+.mgr-chip-grid {
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));
+  gap:0.55rem;margin-bottom:1.75rem;
+}
+.mgr-chip {
+  padding:0.75rem 0.6rem;text-align:center;cursor:pointer;border-radius:var(--radius-sm);
+  border:1px solid rgba(156,148,156,0.25);background:rgba(156,148,156,0.05);
+  transition:all 0.15s;font-size:0.78rem;font-weight:600;color:var(--text-mid);
+}
+.mgr-chip:hover { background:rgba(var(--chip-rgb,156,148,156),0.16); }
+.mgr-chip.active {
+  background:rgba(var(--chip-rgb,156,148,156),0.22);
+  border-color:rgba(var(--chip-rgb,156,148,156),0.55);
+  color:var(--palm);font-weight:800;
+}
+
+.record-compare {
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:1rem 0 1.5rem;
+}
+.record-block { text-align:center; }
+.record-block .rec-label { font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em; }
+.record-block .rec-value { font-family:var(--font-display);font-size:1.8rem;font-weight:800;margin-top:0.2rem; }
+.record-arrow { font-size:1.4rem;color:var(--muted); }
+
+.mgr-flip-list { margin-top:0.5rem; }
+.mgr-flip-row {
+  display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.25rem;
+  border-bottom:1px solid rgba(156,148,156,0.12);font-size:0.8rem;
+}
+.mgr-flip-row:last-child { border-bottom:none; }
+.flip-tag {
+  font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;
+  padding:0.15rem 0.45rem;border-radius:3px;flex-shrink:0;
+}
+.flip-tag.gained { background:rgba(74,138,90,0.18);color:#4a8a5a; }
+.flip-tag.lost   { background:rgba(192,74,74,0.18);color:#c04a4a; }
+.flip-detail { flex:1;color:var(--text-mid); }
+.flip-meta { color:var(--muted);font-size:0.7rem;white-space:nowrap; }
+
+.pie-wrap { display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;justify-content:center; }
+.pie-canvas-wrap { position:relative;width:180px;height:180px;flex-shrink:0; }
+.pie-legend { display:flex;flex-direction:column;gap:0.5rem; }
+.pie-legend-row { display:flex;align-items:center;gap:0.5rem;font-size:0.82rem; }
+.pie-swatch { width:11px;height:11px;border-radius:3px;flex-shrink:0; }
+.pie-legend-val { font-weight:700;color:var(--palm);margin-left:auto;padding-left:0.75rem; }
+
+.methodology-note {
+  font-size:0.78rem;color:var(--muted);line-height:1.6;
+}
+@media(max-width:640px) {
+  .headline-stat .big-num { font-size:2.4rem; }
+  .headline-mini-row { grid-template-columns:1fr 1fr; }
+  .headline-mini-row .headline-mini:last-child { grid-column:1 / -1; }
+  .record-compare { gap:1rem; }
+  .pie-wrap { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <div class="page-header glass">
+    <h1>Life Without Defense</h1>
+    <p>What would happen to every matchup in league history if D/ST points were removed from both sides? Six seasons, re-scored.</p>
+  </div>
+
+  <div class="callout glass">
+    <div class="callout-label">Methodology</div>
+    <p class="methodology-note">
+      For every real matchup since 2020 (regular season plus real playoff bracket games -- no consolation weeks), each team's score has its own D/ST's <strong>started</strong> points subtracted out, then the two adjusted scores are compared to see who would have actually won. If a defense scored negative points, subtracting that negative number adds the points back rather than penalizing further -- a bad week from your defense doesn't get double-counted against you. Thomas Sullivan and William Serafin (2020-only participants) are excluded, matching the rest of the site.
+    </p>
+  </div>
+
+  <!-- LEAGUE HEADLINE -->
+  <div class="chart-section">
+    <div class="chart-section-label">League-Wide Impact</div>
+    <div class="chart-area glass">
+      <div class="headline-stat">
+        <div class="big-num" id="headline-pct">--%</div>
+        <div class="big-sub" id="headline-sub">of all matchups in league history would have had a different winner without defense.</div>
+        <div class="headline-mini-row">
+          <div class="headline-mini"><div class="mini-num" id="mini-total-games">--</div><div class="mini-label">Games Analyzed</div></div>
+          <div class="headline-mini"><div class="mini-num" id="mini-total-flips">--</div><div class="mini-label">Would Flip</div></div>
+          <div class="headline-mini"><div class="mini-num" id="mini-seasons">6</div><div class="mini-label">Seasons Covered</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIGGEST SWINGS -->
+  <div class="chart-section">
+    <div class="chart-section-label">Biggest Swings</div>
+    <div class="chart-area glass" style="padding:0.5rem 1.25rem;">
+      <div id="swing-list"></div>
+    </div>
+  </div>
+
+  <!-- MANAGER SELECTOR -->
+  <div class="chart-section">
+    <div class="chart-section-label">By Manager</div>
+    <div class="mgr-chip-grid" id="mgr-chip-grid"></div>
+
+    <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+      <div style="text-align:center;font-size:0.95rem;font-weight:700;color:var(--palm);margin-bottom:0.25rem;" id="mgr-panel-name"></div>
+      <div class="record-compare">
+        <div class="record-block">
+          <div class="rec-label">Actual Record</div>
+          <div class="rec-value" id="mgr-actual-record">--</div>
+        </div>
+        <div class="record-arrow">&#8594;</div>
+        <div class="record-block">
+          <div class="rec-label">Without Defense</div>
+          <div class="rec-value" id="mgr-adj-record">--</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:-0.5rem;">
+        <span id="mgr-dst-ppg-note"></span>
+      </p>
+    </div>
+  </div>
+
+  <!-- PER-MANAGER: FLIPPED GAMES -->
+  <div class="chart-section">
+    <div class="chart-section-label">Games That Would Have Flipped</div>
+    <div class="chart-area glass" style="padding:0.5rem 1.25rem;">
+      <div class="mgr-flip-list" id="mgr-flip-list"></div>
+    </div>
+  </div>
+
+  <!-- PER-MANAGER: D/ST ACQUISITION SOURCE -->
+  <div class="chart-section">
+    <div class="chart-section-label">Where Their D/ST Points Came From</div>
+    <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+      <div class="pie-wrap">
+        <div class="pie-canvas-wrap"><canvas id="acq-pie-chart"></canvas></div>
+        <div class="pie-legend" id="acq-legend"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Preach Fantasy &middot; Est. 2020</p>
+  </footer>
+
+</div>
+<script src="../shared.js"></script>
+<script>
+var DST_DATA = null;
+var CURRENT_MANAGER = null;
+var acqChart = null;
+
+var MANAGER_COLOR_HEX = {
+  'Carmine Pittelli Jr.':'#541821','Anthony Kelly':'#cdbca6','Charlie Gorman':'#9f8bc2',
+  'Cole Maney':'#f7cdb9','Ethan Radecki':'#ea9a2e','Deniz Bileydi':'#8d9b51',
+  'Baylen Slansky':'#776aad','Andrew Root':'#4c82af','Max Malich':'#888888',
+  'Ben Castaldo':'#404c5b','Brandon Hancock':'#4875b9','Aidan Quigley':'#eb644c',
+  'Quin Gegwich':'#ad1f15','Ryan P McQuaid':'#dfc983'
+};
+function hexToRgb(hex) {
+  var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return r+','+g+','+b;
+}
+
+function shortName(name) {
+  var parts = name.replace(' Jr.','').split(' ');
+  return parts[0] + ' ' + parts[parts.length-1][0] + '.';
+}
+
+function renderHeadline() {
+  var league = DST_DATA.league;
+  var pct = (league.total_flips / league.total_games * 100).toFixed(1);
+  document.getElementById('headline-pct').textContent = pct + '%';
+  document.getElementById('mini-total-games').textContent = league.total_games;
+  document.getElementById('mini-total-flips').textContent = league.total_flips;
+}
+
+function renderSwingList() {
+  var games = DST_DATA.league.all_games.filter(function(g){ return g.flipped; });
+  games.sort(function(a,b){
+    var marginA = Math.abs(a.adj_a - a.adj_b);
+    var marginB = Math.abs(b.adj_a - b.adj_b);
+    // Prioritize clean, decisive flips: small actual margin swallowed, clear adjusted margin
+    return marginB - marginA;
+  });
+  var top = games.slice(0, 10);
+  var html = top.map(function(g) {
+    var newWinner = g.adj_winner === 'TIE' ? 'Tie' : g.adj_winner;
+    return '<div class="swing-row">'
+      + '<span class="swing-meta">\'' + String(g.season).slice(2) + ' ' + g.label + '</span>'
+      + '<div class="swing-matchup">'
+      +   '<div class="swing-line">' + g.team_a + ' ' + g.score_a.toFixed(1) + ' &ndash; ' + g.score_b.toFixed(1) + ' ' + g.team_b
+      +     ' <span class="swing-arrow-loss">actual: ' + g.actual_winner + '</span></div>'
+      +   '<div class="swing-line">' + g.team_a + ' ' + g.adj_a.toFixed(1) + ' &ndash; ' + g.adj_b.toFixed(1) + ' ' + g.team_b
+      +     ' <span class="swing-arrow-win">no D/ST: ' + newWinner + '</span></div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('swing-list').innerHTML = html || '<p class="metric-note">No flips found.</p>';
+}
+
+function renderChips() {
+  var grid = document.getElementById('mgr-chip-grid');
+  var names = Object.keys(DST_DATA.managers).sort();
+  grid.innerHTML = names.map(function(m) {
+    var rgb = hexToRgb(MANAGER_COLOR_HEX[m] || '#9c949c');
+    return '<div class="mgr-chip" style="--chip-rgb:' + rgb + ';" onclick="selectManager(\'' + m + '\')">' + shortName(m) + '</div>';
+  }).join('');
+}
+
+function selectManager(name) {
+  CURRENT_MANAGER = name;
+  document.querySelectorAll('.mgr-chip').forEach(function(c) {
+    c.classList.toggle('active', c.textContent.trim() === shortName(name));
+  });
+  var d = DST_DATA.managers[name];
+  document.getElementById('mgr-panel-name').textContent = name;
+  document.getElementById('mgr-actual-record').textContent = d.actual_record[0] + '-' + d.actual_record[1];
+  document.getElementById('mgr-adj-record').textContent = d.adj_record[0] + '-' + d.adj_record[1];
+  document.getElementById('mgr-dst-ppg-note').textContent = 'Averages ' + d.dst_ppg.toFixed(1) + ' PPG from D/ST across ' + d.games + ' games';
+
+  renderFlipList(d);
+  renderAcqPie(d);
+}
+
+function renderFlipList(d) {
+  var el = document.getElementById('mgr-flip-list');
+  if (!d.flipped_games.length) {
+    el.innerHTML = '<p class="metric-note">No games would have flipped for this manager.</p>';
+    return;
+  }
+  var games = d.flipped_games.slice().sort(function(a,b){ return a.season - b.season; });
+  el.innerHTML = games.map(function(g) {
+    var gained = g.direction === 'gained_win';
+    var tagClass = gained ? 'gained' : 'lost';
+    var tagText = gained ? 'GAINED WIN' : 'LOST WIN';
+    return '<div class="mgr-flip-row">'
+      + '<span class="flip-tag ' + tagClass + '">' + tagText + '</span>'
+      + '<span class="flip-detail">vs ' + g.opponent + ' &mdash; ' + g.my_score.toFixed(1) + '-' + g.opp_score.toFixed(1)
+      +   ' &rarr; ' + g.my_adj.toFixed(1) + '-' + g.opp_adj.toFixed(1) + '</span>'
+      + '<span class="flip-meta">\'' + String(g.season).slice(2) + ' ' + g.label + '</span>'
+      + '</div>';
+  }).join('');
+}
+
+function renderAcqPie(d) {
+  var acq = d.acquisition;
+  var vals = [acq.drafted, acq.waiver, acq.traded];
+  var labels = ['Drafted', 'Waiver / FA', 'Traded'];
+  var colors = ['#4a7fa8', '#c0623a', '#d4af37'];
+  var total = vals.reduce(function(a,b){ return a+b; }, 0);
+
+  var legendEl = document.getElementById('acq-legend');
+  legendEl.innerHTML = labels.map(function(lab, i) {
+    var pct = total !== 0 ? (vals[i] / total * 100).toFixed(0) : 0;
+    return '<div class="pie-legend-row"><span class="pie-swatch" style="background:' + colors[i] + ';"></span>'
+      + lab + '<span class="pie-legend-val">' + vals[i].toFixed(0) + ' pts (' + pct + '%)</span></div>';
+  }).join('');
+
+  if (acqChart) acqChart.destroy();
+  var ctx = document.getElementById('acq-pie-chart').getContext('2d');
+  acqChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels: labels, datasets: [{ data: vals.map(function(v){ return Math.max(v, 0); }), backgroundColor: colors, borderWidth: 0 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      cutout: '62%'
+    }
+  });
+}
+
+fetch('../data/dst_removed_data.json').then(function(r){ return r.json(); }).then(function(data) {
+  DST_DATA = data;
+  renderHeadline();
+  renderSwingList();
+  renderChips();
+  var first = Object.keys(DST_DATA.managers).sort()[0];
+  selectManager(first);
+});
+</script>
+</body>
+</html>
