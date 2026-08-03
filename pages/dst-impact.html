@@ -95,6 +95,27 @@
 
 .league-chart-wrap { position:relative; }
 
+.season-card {
+  padding:0.85rem 0.4rem;border-bottom:1px solid rgba(156,148,156,0.15);
+}
+.season-card:last-child { border-bottom:none; }
+.season-card-header {
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;
+}
+.season-year { font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--palm); }
+.season-badge {
+  font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;
+  padding:0.15rem 0.5rem;border-radius:3px;
+}
+.season-badge.changed { background:rgba(192,74,74,0.18);color:#c04a4a; }
+.season-badge.same { background:rgba(156,148,156,0.18);color:#6a6460; }
+.season-field-row { display:flex;flex-wrap:wrap;gap:0.4rem;font-size:0.74rem;margin-bottom:0.4rem; }
+.season-tag { display:inline-flex;align-items:center;gap:0.25rem;padding:0.18rem 0.5rem;border-radius:3px;font-weight:600; }
+.season-tag.gained { background:rgba(74,138,90,0.15);color:#4a8a5a; }
+.season-tag.lost { background:rgba(192,74,74,0.15);color:#c04a4a; }
+.season-none { font-size:0.74rem;color:var(--muted);font-style:italic;margin-bottom:0.3rem; }
+.season-flip-note { font-size:0.72rem;color:var(--text-mid);line-height:1.5;background:rgba(156,148,156,0.06);padding:0.5rem 0.6rem;border-radius:var(--radius-sm);margin-top:0.2rem; }
+
 .methodology-note {
   font-size:0.75rem;color:var(--muted);line-height:1.6;
 }
@@ -177,6 +198,17 @@
       <div class="league-chart-wrap" style="height:220px;">
         <canvas id="season-flip-chart"></canvas>
       </div>
+    </div>
+  </div>
+
+  <!-- WOULD THE PLAYOFFS CHANGE -->
+  <div class="chart-section">
+    <div class="chart-section-label">Would The Playoffs Change?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Per season: who'd make the top-8 playoff field under regular-season records with defense removed, versus who actually made it. Also whether any real playoff game -- using the actual bracket matchups that happened -- would have flipped. 2020 and 2021 had non-standard playoff formats (2020's field was nearly the whole league; 2021 had a single wildcard game), so treat those two years' playoff-field comparison as a looser approximation than 2022-2025.
+      </p>
+      <div id="season-playoff-list"></div>
     </div>
   </div>
 
@@ -484,6 +516,44 @@ function renderMgrScatter(name) {
   });
 }
 
+function renderSeasonPlayoffList() {
+  var sp = DST_DATA.season_playoffs;
+  var seasons = Object.keys(sp).sort();
+  var el = document.getElementById('season-playoff-list');
+
+  el.innerHTML = seasons.map(function(season) {
+    var s = sp[season];
+    var champBadge = s.champion_changed
+      ? '<span class="season-badge changed">Champion Changed</span>'
+      : '<span class="season-badge same">Same Champion</span>';
+
+    var fieldHtml;
+    if (s.gained.length === 0 && s.lost.length === 0) {
+      fieldHtml = '<div class="season-none">No change to the playoff field.</div>';
+    } else {
+      var tags = s.gained.map(function(m) {
+        return '<span class="season-tag gained">+ ' + shortName(m) + '</span>';
+      }).concat(s.lost.map(function(m) {
+        return '<span class="season-tag lost">&minus; ' + shortName(m) + '</span>';
+      }));
+      fieldHtml = '<div class="season-field-row">' + tags.join('') + '</div>';
+    }
+
+    var flipNotes = s.playoff_flips.map(function(f) {
+      var newWinner = f.adj_winner === 'TIE' ? 'a tie' : f.adj_winner;
+      return '<div class="season-flip-note">' + f.label + ': ' + f.team_a + ' ' + f.score_a.toFixed(1)
+        + ' &ndash; ' + f.score_b.toFixed(1) + ' ' + f.team_b + ' (actual: ' + f.actual_winner
+        + ') would have gone to ' + newWinner + ' without defense (' + f.adj_a.toFixed(1) + '-' + f.adj_b.toFixed(1) + ').</div>';
+    }).join('');
+
+    return '<div class="season-card">'
+      + '<div class="season-card-header"><span class="season-year">' + season + '</span>' + champBadge + '</div>'
+      + fieldHtml
+      + flipNotes
+      + '</div>';
+  }).join('');
+}
+
 function renderChips() {
   var grid = document.getElementById('mgr-chip-grid');
   var names = Object.keys(DST_DATA.managers).sort();
@@ -629,6 +699,7 @@ fetch('../data/dst_removed_data.json').then(function(r){ return r.json(); }).the
   renderMarginScatter();
   renderNetImpactChart();
   renderSeasonFlipChart();
+  renderSeasonPlayoffList();
   renderChips();
   var first = Object.keys(DST_DATA.managers).sort()[0];
   selectManager(first);
