@@ -179,6 +179,17 @@
     </div>
   </div>
 
+  <!-- DRAFT ORDER: ALL POSITIONS -->
+  <div class="chart-section">
+    <div class="chart-section-label">Does Being First To Draft It Help? (Every Position)</div>
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        A different cut than round: within each season, rank managers by draft order at that position (1st team to take one, 2nd team, and so on), regardless of which round that happened in. Strips out round entirely and just asks whether being an early mover relative to your own league that year buys you anything. Bars past a certain rank get thin (fewer managers draft that deep at every position every year); hover for sample size.
+      </p>
+      <div class="league-pie-grid" id="draft-order-grid"></div>
+    </div>
+  </div>
+
   <!-- DRAFT CAPITAL SUMMARY: ALL POSITIONS -->
   <div class="chart-section">
     <div class="chart-section-label">Who Invests Early In Which Position? (Career Average Round)</div>
@@ -693,6 +704,48 @@ function renderDraftWaiverGrid() {
   });
 }
 
+function renderDraftOrderGrid() {
+  var grid = document.getElementById('draft-order-grid');
+  grid.innerHTML = POS_ORDER.map(function(p) {
+    return '<div class="league-pie-cell">'
+      + '<div class="league-pie-label" style="background:' + POS_COLORS[p] + '22;color:' + POS_COLORS[p] + ';">' + p + '</div>'
+      + '<div class="league-chart-wrap" style="height:200px;"><canvas id="do-grid-' + p.replace('/','') + '"></canvas></div>'
+      + '</div>';
+  }).join('');
+
+  POS_ORDER.forEach(function(p) {
+    var doData = PDATA.draft_order[p];
+    var orders = Object.keys(doData.by_order_ppg).map(Number).sort(function(a,b){ return a-b; });
+    var ctx = document.getElementById('do-grid-' + p.replace('/','')).getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: orders.map(function(o){ return '#' + o; }),
+        datasets: [{
+          data: orders.map(function(o){ return doData.by_order_ppg[o]; }),
+          backgroundColor: orders.map(function(o){
+            return doData.by_order_weeks[o] < 20 ? POS_COLORS[p] + '55' : POS_COLORS[p];
+          }),
+          borderRadius: 3
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display:false },
+          tooltip: { callbacks: { label: function(item){
+            var o = orders[item.dataIndex];
+            var thin = doData.by_order_weeks[o] < 20 ? ' (thin sample)' : '';
+            return item.parsed.y.toFixed(2) + ' PPG (' + doData.by_order_weeks[o] + ' weeks)' + thin;
+          } } } },
+        scales: {
+          y: { title: { display:true, text:'PPG', font:{size:10} }, beginAtZero:true, ticks:{ font:{size:9} } },
+          x: { ticks: { font:{size:9} } }
+        }
+      }
+    });
+  });
+}
+
 function renderDraftCapitalTable() {
   var dc = PDATA.draft_capital[CURRENT_POS];
   var n = PDATA.nth_pick[CURRENT_POS];
@@ -746,6 +799,7 @@ fetch('../data/position_impact_data.json').then(function(r){ return r.json(); })
   renderCorrBarChart('ppg-corr-chart', function(p){ return PDATA.performance_correlation[p].ppg_vs_winpct.r; }, 'Correlation (r) with win%');
   renderCorrBarChart('round-corr-chart', function(p){ return PDATA.performance_correlation[p].round_vs_winpct.r; }, 'Correlation (r) with win%');
   renderDraftWaiverGrid();
+  renderDraftOrderGrid();
   renderDraftCapitalSummaryTable();
   renderLeagueAcqPies();
   renderMgrSelector();
