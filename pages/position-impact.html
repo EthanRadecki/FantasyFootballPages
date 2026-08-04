@@ -264,6 +264,16 @@
       </div>
     </div>
 
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;margin-bottom:1.5rem;">
+      <div class="chart-section-label" style="margin-bottom:0;" id="boxplot-title"></div>
+      <p class="methodology-note" style="margin:0.4rem 0 0.5rem;">
+        Real weekly score distribution by draft order at that position. Box is the middle 50% (Q1-Q3), line inside is the median, whiskers reach min/max. Ranks need at least 5 real weeks to show a box.
+      </p>
+      <div class="league-chart-wrap" style="height:300px;">
+        <canvas id="boxplot-chart"></canvas>
+      </div>
+    </div>
+
     <div class="chart-area glass" style="padding:1rem 1rem 1.25rem;">
       <div class="chart-section-label" style="margin-bottom:0.75rem;" id="dcap-title"></div>
       <div class="dcap-scroll">
@@ -623,6 +633,89 @@ function renderRoundScatterChart() {
   roundScatterChart.update();
 }
 
+var boxplotChart = null;
+
+var boxplotWhiskerPlugin = {
+  id: 'boxplotWhisker',
+  afterDatasetsDraw: function(chart) {
+    var meta = chart.getDatasetMeta(0);
+    var yScale = chart.scales.y;
+    var ctx = chart.ctx;
+    var stats = chart.$boxStats;
+    if (!stats) return;
+    ctx.save();
+    meta.data.forEach(function(bar, i) {
+      var s = stats[i];
+      if (!s) return;
+      var x = bar.x;
+      var capW = Math.min(bar.width * 0.4, 14);
+      var yMin = yScale.getPixelForValue(s.min);
+      var yMax = yScale.getPixelForValue(s.max);
+      var yQ1 = yScale.getPixelForValue(s.q1);
+      var yQ3 = yScale.getPixelForValue(s.q3);
+      var yMed = yScale.getPixelForValue(s.median);
+
+      ctx.strokeStyle = 'rgba(80,72,64,0.85)';
+      ctx.lineWidth = 1.5;
+      // lower whisker: min to Q1
+      ctx.beginPath(); ctx.moveTo(x, yMin); ctx.lineTo(x, yQ1); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x - capW/2, yMin); ctx.lineTo(x + capW/2, yMin); ctx.stroke();
+      // upper whisker: Q3 to max
+      ctx.beginPath(); ctx.moveTo(x, yMax); ctx.lineTo(x, yQ3); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x - capW/2, yMax); ctx.lineTo(x + capW/2, yMax); ctx.stroke();
+      // median line inside the box
+      ctx.strokeStyle = 'rgba(40,36,32,0.9)';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(bar.x - bar.width/2, yMed); ctx.lineTo(bar.x + bar.width/2, yMed); ctx.stroke();
+    });
+    ctx.restore();
+  }
+};
+
+function renderBoxplotChart() {
+  var bp = PDATA.draft_order[CURRENT_POS].by_order_boxplot;
+  var orders = Object.keys(bp).map(Number).sort(function(a,b){ return a-b; });
+
+  document.getElementById('boxplot-title').textContent = CURRENT_POS + ' Weekly Score Distribution By Draft Order';
+
+  var stats = orders.map(function(o){ return bp[o]; });
+
+  if (boxplotChart) boxplotChart.destroy();
+  var ctx = document.getElementById('boxplot-chart').getContext('2d');
+  boxplotChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: orders.map(function(o){ return '#' + o; }),
+      datasets: [{
+        data: stats.map(function(s){ return [s.q1, s.q3]; }),
+        backgroundColor: POS_COLORS[CURRENT_POS] + '55',
+        borderColor: POS_COLORS[CURRENT_POS],
+        borderWidth: 1.5,
+        borderSkipped: false,
+      }]
+    },
+    plugins: [boxplotWhiskerPlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          label: function(item) {
+            var s = stats[item.dataIndex];
+            return ['Median: ' + s.median, 'Q1-Q3: ' + s.q1 + ' to ' + s.q3, 'Min-Max: ' + s.min + ' to ' + s.max, 'n=' + s.n + ' weeks'];
+          }
+        } }
+      },
+      scales: {
+        y: { title: { display:true, text:'Weekly points' } },
+        x: { title: { display:true, text:'Draft order at this position' } }
+      }
+    }
+  });
+  boxplotChart.$boxStats = stats;
+  boxplotChart.update();
+}
+
 function renderPosSelector() {
   var row = document.getElementById('pos-select-row');
   row.innerHTML = POS_ORDER.map(function(p) {
@@ -639,6 +732,7 @@ function selectPosition(pos, scrollToDetail) {
   renderNetImpactChart();
   renderPpgScatterChart();
   renderRoundScatterChart();
+  renderBoxplotChart();
   renderDraftCapitalTable();
   if (scrollToDetail) {
     document.getElementById('pos-select-row').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -879,6 +973,7 @@ fetch('../data/position_impact_data.json').then(function(r){ return r.json(); })
   renderNetImpactChart();
   renderPpgScatterChart();
   renderRoundScatterChart();
+  renderBoxplotChart();
   renderDraftCapitalTable();
 });
 </script>
