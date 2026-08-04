@@ -680,6 +680,10 @@ function renderBoxplotChart() {
 
   var stats = orders.map(function(o){ return bp[o]; });
 
+  var trueMin = Math.min.apply(null, stats.map(function(s){ return s.min; }));
+  var trueMax = Math.max.apply(null, stats.map(function(s){ return s.max; }));
+  var pad = (trueMax - trueMin) * 0.08;
+
   if (boxplotChart) boxplotChart.destroy();
   var ctx = document.getElementById('boxplot-chart').getContext('2d');
   boxplotChart = new Chart(ctx, {
@@ -707,7 +711,7 @@ function renderBoxplotChart() {
         } }
       },
       scales: {
-        y: { title: { display:true, text:'Weekly points' } },
+        y: { title: { display:true, text:'Weekly points' }, min: Math.floor(trueMin - pad), max: Math.ceil(trueMax + pad) },
         x: { title: { display:true, text:'Draft order at this position' } }
       }
     }
