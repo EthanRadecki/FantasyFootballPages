@@ -53,6 +53,7 @@
   font-size:0.62rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);
   border-bottom:1px solid rgba(156,148,156,0.25);
 }
+.dcap-sortable:hover { background:rgba(156,148,156,0.12); }
 .dcap-table tbody tr:nth-child(even) { background:rgba(156,148,156,0.06); }
 .dcap-mgr-cell {
   position:sticky;left:0;z-index:1;text-align:left;font-weight:700;color:var(--palm);
@@ -445,8 +446,20 @@ function renderMgrPieGrid() {
   });
 }
 
+var dcapSort = { key: 'Manager', dir: 'asc' };
+
+function setDcapSort(key) {
+  if (dcapSort.key === key) {
+    dcapSort.dir = dcapSort.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    dcapSort.key = key;
+    dcapSort.dir = 'asc'; // ascending default: A-Z for manager, earliest-round-first for positions
+  }
+  renderDraftCapitalSummaryTable();
+}
+
 function renderDraftCapitalSummaryTable() {
-  var managers = Object.keys(PDATA.draft_capital['D/ST']).sort();
+  var allManagers = Object.keys(PDATA.draft_capital['D/ST']);
   var table = document.getElementById('dcap-summary-table');
 
   function roundColor(rnd, maxRound) {
@@ -456,9 +469,32 @@ function renderDraftCapitalSummaryTable() {
     return 'background:rgba(80,72,64,' + opacity.toFixed(2) + ');color:' + (t < 0.55 ? '#f5f0e8' : '#3d3a38') + ';';
   }
 
-  var html = '<thead><tr><th class="dcap-mgr-cell">Manager</th>'
-    + POS_ORDER.map(function(p){ return '<th style="color:' + POS_COLORS[p] + ';">' + p + '</th>'; }).join('')
-    + '</tr></thead><tbody>';
+  function sortValue(m, key) {
+    if (key === 'Manager') return m;
+    var d = PDATA.draft_capital[key][m];
+    return d ? d.career_avg_round : null;
+  }
+
+  var managers = allManagers.slice().sort(function(a, b) {
+    var va = sortValue(a, dcapSort.key);
+    var vb = sortValue(b, dcapSort.key);
+    if (dcapSort.key === 'Manager') {
+      return dcapSort.dir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+    }
+    if (va === null && vb === null) return 0;
+    if (va === null) return 1;  // no data always sorts last, regardless of direction
+    if (vb === null) return -1;
+    return dcapSort.dir === 'asc' ? va - vb : vb - va;
+  });
+
+  var headerCols = ['Manager'].concat(POS_ORDER);
+  var html = '<thead><tr>' + headerCols.map(function(col) {
+    var isManager = col === 'Manager';
+    var arrow = dcapSort.key === col ? (dcapSort.dir === 'asc' ? ' \u25B2' : ' \u25BC') : '';
+    var colorStyle = isManager ? '' : ('color:' + POS_COLORS[col] + ';');
+    var cellClass = isManager ? 'dcap-mgr-cell dcap-sortable' : 'dcap-sortable';
+    return '<th class="' + cellClass + '" style="' + colorStyle + 'cursor:pointer;" onclick="setDcapSort(\'' + col + '\')">' + col + arrow + '</th>';
+  }).join('') + '</tr></thead><tbody>';
 
   managers.forEach(function(m) {
     html += '<tr><td class="dcap-mgr-cell">' + shortName(m) + '</td>';
