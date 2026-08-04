@@ -136,6 +136,7 @@
 }
 .dcap-round-cell { font-weight:700;color:#3d3a38; }
 .dcap-streamed { color:var(--muted);font-style:italic;font-weight:400;font-size:0.7rem; }
+.dcap-not-in-league { color:rgba(156,148,156,0.4);font-weight:400;font-size:0.7rem; }
 .dcap-avg-cell { font-weight:800;color:var(--palm);border-left:1px solid rgba(156,148,156,0.25); }
 
 .perf-corr-block { margin-bottom:1.25rem; }
@@ -720,7 +721,9 @@ function renderDraftCapitalTable() {
     html += '<tr><td class="dcap-mgr-cell">' + shortName(m) + '</td>';
     years.forEach(function(y) {
       var rnd = d.by_year[y];
-      if (rnd === null) {
+      if (rnd === 'not_in_league') {
+        html += '<td class="dcap-not-in-league">&mdash;</td>';
+      } else if (rnd === null) {
         html += '<td class="dcap-streamed">streamed</td>';
       } else {
         html += '<td class="dcap-round-cell" style="' + roundColor(rnd) + '">Rd ' + rnd + '</td>';
