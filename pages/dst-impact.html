@@ -116,6 +116,35 @@
 .season-none { font-size:0.74rem;color:var(--muted);font-style:italic;margin-bottom:0.3rem; }
 .season-flip-note { font-size:0.72rem;color:var(--text-mid);line-height:1.5;background:rgba(156,148,156,0.06);padding:0.5rem 0.6rem;border-radius:var(--radius-sm);margin-top:0.2rem; }
 
+.dcap-scroll {
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+.dcap-table {
+  border-collapse:collapse;font-size:0.76rem;white-space:nowrap;
+}
+.dcap-table th, .dcap-table td {
+  padding:0.45rem 0.6rem;text-align:center;
+}
+.dcap-table thead th {
+  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);
+  border-bottom:1px solid rgba(156,148,156,0.25);
+}
+.dcap-table tbody tr:nth-child(even) { background:rgba(156,148,156,0.06); }
+.dcap-mgr-cell {
+  position:sticky;left:0;z-index:1;text-align:left;font-weight:700;color:var(--palm);
+  background:var(--bg);border-right:1px solid rgba(156,148,156,0.25);
+}
+.dcap-round-cell { font-weight:700;color:#3d3a38; }
+.dcap-streamed { color:var(--muted);font-style:italic;font-weight:400;font-size:0.7rem; }
+.dcap-avg-cell { font-weight:800;color:var(--palm);border-left:1px solid rgba(156,148,156,0.25); }
+
+.perf-corr-block { margin-bottom:1.25rem; }
+.perf-corr-block:last-of-type { margin-bottom:0; }
+.perf-corr-label { font-size:0.8rem;font-weight:700;color:var(--palm);margin-bottom:0.4rem;text-align:center; }
+.perf-corr-readout {
+  text-align:center;font-size:0.76rem;color:var(--text-mid);margin-top:0.4rem;font-weight:600;
+}
+
 .methodology-note {
   font-size:0.75rem;color:var(--muted);line-height:1.6;
 }
@@ -171,6 +200,33 @@
       <div class="league-chart-wrap" style="height:260px;">
         <canvas id="position-flip-chart"></canvas>
       </div>
+    </div>
+  </div>
+
+  <!-- DST PERFORMANCE VS TEAM SUCCESS -->
+  <div class="chart-section">
+    <div class="chart-section-label">Does A Better (Or Earlier-Drafted) Defense Actually Win You More Games?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Every manager-season (n=83): their regular-season win% against their D/ST's real PPG that year, and separately against the earliest round they drafted a D/ST that season (n=71, seasons where one was drafted).
+      </p>
+      <div class="perf-corr-block">
+        <div class="perf-corr-label">D/ST PPG &rarr; Win%</div>
+        <div class="league-chart-wrap" style="height:220px;">
+          <canvas id="ppg-corr-chart"></canvas>
+        </div>
+        <p class="perf-corr-readout" id="ppg-corr-readout"></p>
+      </div>
+      <div class="perf-corr-block">
+        <div class="perf-corr-label">D/ST Draft Round &rarr; Win%</div>
+        <div class="league-chart-wrap" style="height:220px;">
+          <canvas id="round-corr-chart"></canvas>
+        </div>
+        <p class="perf-corr-readout" id="round-corr-readout"></p>
+      </div>
+      <p class="methodology-note" style="margin-top:0.5rem;">
+        A better-performing defense does correlate with winning a bit more -- not surprising, since D/ST points are literally part of your score. But when you drafted it barely matters: the round-to-round difference is close to noise. Correlation isn't causation either way -- good all-around managers may just also happen to land a decent D/ST.
+      </p>
     </div>
   </div>
 
@@ -230,10 +286,23 @@
     <div class="chart-section-label">Does Drafting A Defense Early Actually Help?</div>
     <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
       <p class="methodology-note" style="margin-bottom:0.5rem;">
-        Real PPG for every D/ST while on the drafting manager's roster, by the round it was actually drafted (D/ST has only ever been drafted rounds 8-16 in league history). Dashed line is the league-wide waiver/free-agent D/ST PPG for comparison. Rounds 8 and 16 have very small samples (8 and 5 real-game weeks) -- read those two bars cautiously.
+        Real PPG for every D/ST while on the drafting manager's roster, by the round it was actually drafted (D/ST has only ever been drafted rounds 8-16 in league history). Dashed line is the league-wide waiver/free-agent D/ST PPG for comparison. Rounds 8 and 16 have very small samples -- read those two bars cautiously.
       </p>
       <div class="league-chart-wrap" style="height:260px;">
         <canvas id="draft-waiver-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRAFT CAPITAL BY MANAGER -->
+  <div class="chart-section">
+    <div class="chart-section-label">Who Actually Spends Draft Capital On A Defense?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 1.25rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        The round each manager drafted their <em>first</em> D/ST in a given year (some draft more than one, but this is the earliest -- the real signal of how much capital they committed). Darker cells mean an earlier pick. Sorted by career average, earliest investors at top.
+      </p>
+      <div class="dcap-scroll">
+        <table class="dcap-table" id="dcap-table"></table>
       </div>
     </div>
   </div>
@@ -601,6 +670,137 @@ function renderSeasonPlayoffList() {
   }).join('');
 }
 
+var trendLinePlugin = {
+  id: 'trendLine',
+  afterDatasetsDraw: function(chart) {
+    var xScale = chart.scales.x, yScale = chart.scales.y;
+    var area = chart.chartArea;
+    var ctx = chart.ctx;
+    var trend = chart.$trend;
+    if (!trend) return;
+    var x1 = xScale.min, x2 = xScale.max;
+    var y1 = trend.slope * x1 + trend.intercept;
+    var y2 = trend.slope * x2 + trend.intercept;
+    ctx.save();
+    ctx.beginPath();
+    ctx.setLineDash([5, 4]);
+    ctx.moveTo(xScale.getPixelForValue(x1), yScale.getPixelForValue(y1));
+    ctx.lineTo(xScale.getPixelForValue(x2), yScale.getPixelForValue(y2));
+    ctx.strokeStyle = 'rgba(90,85,80,0.55)';
+    ctx.lineWidth = 1.75;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+};
+
+function renderDraftCapitalTable() {
+  var dc = DST_DATA.draft_capital;
+  var years = ['2020','2021','2022','2023','2024','2025'];
+  var managers = Object.keys(dc).sort(function(a,b) {
+    var aAvg = dc[a].career_avg_round, bAvg = dc[b].career_avg_round;
+    if (aAvg === null) return 1;
+    if (bAvg === null) return -1;
+    return aAvg - bAvg;
+  });
+
+  function roundColor(rnd) {
+    if (rnd === null) return '';
+    var t = Math.max(0, Math.min(1, (rnd - 8) / (16 - 8)));
+    var opacity = 1 - t * 0.75; // round 8 -> 1.0, round 16 -> 0.25
+    return 'background:rgba(80,72,64,' + opacity.toFixed(2) + ');color:' + (t < 0.55 ? '#f5f0e8' : '#3d3a38') + ';';
+  }
+
+  var html = '<thead><tr><th class="dcap-mgr-cell">Manager</th>'
+    + years.map(function(y){ return '<th>' + y + '</th>'; }).join('')
+    + '<th>Career Avg</th></tr></thead><tbody>';
+
+  managers.forEach(function(m) {
+    var d = dc[m];
+    html += '<tr><td class="dcap-mgr-cell">' + shortName(m) + '</td>';
+    years.forEach(function(y) {
+      var rnd = d.by_year[y];
+      if (rnd === null) {
+        html += '<td class="dcap-streamed">streamed</td>';
+      } else {
+        html += '<td class="dcap-round-cell" style="' + roundColor(rnd) + '">Rd ' + rnd + '</td>';
+      }
+    });
+    var avgTxt = d.career_avg_round !== null ? 'Rd ' + d.career_avg_round.toFixed(1) : '&mdash;';
+    html += '<td class="dcap-avg-cell">' + avgTxt + '</td></tr>';
+  });
+
+  html += '</tbody>';
+  document.getElementById('dcap-table').innerHTML = html;
+}
+
+function renderPpgCorrChart() {
+  var dp = DST_DATA.dst_performance;
+  var stat = dp.ppg_vs_winpct;
+  var points = dp.points.map(function(p){ return { x: p.ppg, y: p.win_pct * 100, season: p.season, manager: p.manager }; });
+
+  var ctx = document.getElementById('ppg-corr-chart').getContext('2d');
+  var chart = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: [{ data: points, backgroundColor: 'rgba(80,72,64,0.6)', radius: 4 }] },
+    plugins: [trendLinePlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items) { var p = items[0].raw; return p.manager + ' \u2019' + String(p.season).slice(2); },
+            label: function(item) { return item.raw.x.toFixed(1) + ' PPG, ' + item.raw.y.toFixed(0) + '% win rate'; }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: 'D/ST PPG' } },
+        y: { title: { display: true, text: 'Win %' } }
+      }
+    }
+  });
+  chart.$trend = { slope: stat.slope * 100, intercept: stat.intercept * 100 };
+  chart.update();
+  document.getElementById('ppg-corr-readout').textContent =
+    'r = ' + stat.r.toFixed(3) + '  (R\u00B2 = ' + (stat.r2*100).toFixed(1) + '%,  n = ' + stat.n + ')';
+}
+
+function renderRoundCorrChart() {
+  var dp = DST_DATA.dst_performance;
+  var stat = dp.round_vs_winpct;
+  var points = dp.points.filter(function(p){ return p.drafted_round !== null; })
+    .map(function(p){ return { x: p.drafted_round, y: p.win_pct * 100, season: p.season, manager: p.manager }; });
+
+  var ctx = document.getElementById('round-corr-chart').getContext('2d');
+  var chart = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: [{ data: points, backgroundColor: 'rgba(80,72,64,0.6)', radius: 4 }] },
+    plugins: [trendLinePlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: function(items) { var p = items[0].raw; return p.manager + ' \u2019' + String(p.season).slice(2); },
+            label: function(item) { return 'Drafted round ' + item.raw.x + ', ' + item.raw.y.toFixed(0) + '% win rate'; }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: 'D/ST Draft Round' } },
+        y: { title: { display: true, text: 'Win %' } }
+      }
+    }
+  });
+  chart.$trend = { slope: stat.slope * 100, intercept: stat.intercept * 100 };
+  chart.update();
+  document.getElementById('round-corr-readout').textContent =
+    'r = ' + stat.r.toFixed(3) + '  (R\u00B2 = ' + (stat.r2*100).toFixed(1) + '%,  n = ' + stat.n + ')';
+}
+
 function renderPositionFlipChart() {
   var rates = DST_DATA.position_flip_rates;
   var order = ['QB', 'RB', 'WR', 'TE', 'K', 'D/ST'];
@@ -907,11 +1107,14 @@ fetch('../data/dst_removed_data.json').then(function(r){ return r.json(); }).the
   DST_DATA = data;
   renderHeadline();
   renderPositionFlipChart();
+  renderPpgCorrChart();
+  renderRoundCorrChart();
   renderMarginScatter();
   renderSeasonFlipChart();
   renderSeasonPlayoffList();
   renderNetImpactChart();
   renderDraftVsWaiverChart();
+  renderDraftCapitalTable();
   renderPositionConsistencyChart();
   renderChips();
   var first = Object.keys(DST_DATA.managers).sort()[0];
