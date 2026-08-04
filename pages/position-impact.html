@@ -182,9 +182,19 @@
   <!-- DRAFT ORDER: ALL POSITIONS -->
   <div class="chart-section">
     <div class="chart-section-label">Does Being First To Draft It Help? (Every Position)</div>
-    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+    <div class="chart-area glass" style="padding:1.25rem 1rem;margin-bottom:1.5rem;">
       <p class="methodology-note" style="margin-bottom:0.75rem;">
-        A different cut than round: within each season, rank managers by draft order at that position (1st team to take one, 2nd team, and so on), regardless of which round that happened in. Strips out round entirely and just asks whether being an early mover relative to your own league that year buys you anything. Bars past a certain rank get thin (fewer managers draft that deep at every position every year); hover for sample size.
+        Every position's PPG by draft order, indexed to their own 1st pick = 100%, so shapes are directly comparable regardless of each position's raw scoring scale. A flat line near 100 means draft order doesn't matter; a line that slides downward means it does. Only well-sampled ranks (20+ real weeks) are plotted.
+      </p>
+      <div class="league-chart-wrap" style="height:320px;">
+        <canvas id="draft-order-index-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <div class="chart-section-label" style="margin-bottom:0.75rem;">Exact PPG By Draft Order (Detail)</div>
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Within each season, rank managers by draft order at that position (1st team to take one, 2nd team, and so on), regardless of which round that happened in. Bars past a certain rank get thin (fewer managers draft that deep at every position every year); hover for sample size.
       </p>
       <div class="league-pie-grid" id="draft-order-grid"></div>
     </div>
@@ -704,6 +714,66 @@ function renderDraftWaiverGrid() {
   });
 }
 
+var hundredLinePlugin = {
+  id: 'hundredLine',
+  beforeDatasetsDraw: function(chart) {
+    var yScale = chart.scales.y, area = chart.chartArea, ctx = chart.ctx;
+    var yPx = yScale.getPixelForValue(100);
+    ctx.save();
+    ctx.beginPath();
+    ctx.setLineDash([4, 4]);
+    ctx.moveTo(area.left, yPx);
+    ctx.lineTo(area.right, yPx);
+    ctx.strokeStyle = 'rgba(90,85,80,0.5)';
+    ctx.lineWidth = 1.25;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+};
+
+function renderDraftOrderIndexChart() {
+  var maxOrder = 0;
+  var datasets = POS_ORDER.map(function(p) {
+    var doData = PDATA.draft_order[p];
+    var orders = Object.keys(doData.by_order_ppg).map(Number).sort(function(a,b){ return a-b; });
+    var wellSampled = orders.filter(function(o){ return doData.by_order_weeks[o] >= 20; });
+    var base = doData.by_order_ppg[wellSampled[0]];
+    maxOrder = Math.max(maxOrder, wellSampled[wellSampled.length - 1]);
+    return {
+      label: p,
+      data: wellSampled.map(function(o){ return { x: o, y: Math.round(doData.by_order_ppg[o] / base * 100) }; }),
+      borderColor: POS_COLORS[p],
+      backgroundColor: POS_COLORS[p],
+      borderWidth: 2.5,
+      pointRadius: 3,
+      tension: 0.15,
+      fill: false,
+    };
+  });
+
+  var ctx = document.getElementById('draft-order-index-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: { datasets: datasets },
+    plugins: [hundredLinePlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+        tooltip: { callbacks: {
+          title: function(items){ return items[0].dataset.label + ', order #' + items[0].raw.x; },
+          label: function(item){ return item.raw.y + '% of their own 1st-pick average'; }
+        } }
+      },
+      scales: {
+        x: { type: 'linear', title: { display:true, text:'Draft order at that position' }, ticks: { stepSize: 1 }, min: 1, max: maxOrder },
+        y: { title: { display:true, text:'% of that position\u2019s 1st-pick PPG' } }
+      }
+    }
+  });
+}
+
 function renderDraftOrderGrid() {
   var grid = document.getElementById('draft-order-grid');
   grid.innerHTML = POS_ORDER.map(function(p) {
@@ -799,6 +869,7 @@ fetch('../data/position_impact_data.json').then(function(r){ return r.json(); })
   renderCorrBarChart('ppg-corr-chart', function(p){ return PDATA.performance_correlation[p].ppg_vs_winpct.r; }, 'Correlation (r) with win%');
   renderCorrBarChart('round-corr-chart', function(p){ return PDATA.performance_correlation[p].round_vs_winpct.r; }, 'Correlation (r) with win%');
   renderDraftWaiverGrid();
+  renderDraftOrderIndexChart();
   renderDraftOrderGrid();
   renderDraftCapitalSummaryTable();
   renderLeagueAcqPies();
