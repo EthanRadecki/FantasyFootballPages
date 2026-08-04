@@ -167,6 +167,30 @@
     </div>
   </div>
 
+  <!-- DRAFT VS WAIVER: ALL POSITIONS -->
+  <div class="chart-section">
+    <div class="chart-section-label">Does Drafting Early Help? (Every Position)</div>
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Real PPG by the round each manager's pick at that position was drafted (1st pick for QB/TE/K/D-ST, 2nd pick for RB/WR -- see methodology above). Dashed line is the league-wide waiver/free-agent PPG baseline for that position.
+      </p>
+      <div class="league-pie-grid" id="draft-waiver-grid"></div>
+    </div>
+  </div>
+
+  <!-- DRAFT CAPITAL SUMMARY: ALL POSITIONS -->
+  <div class="chart-section">
+    <div class="chart-section-label">Who Invests Early In Which Position? (Career Average Round)</div>
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Each manager's career-average draft round for their Nth pick at each position (lower = earlier/more capital). Click a position below for the full year-by-year breakdown.
+      </p>
+      <div class="dcap-scroll">
+        <table class="dcap-table" id="dcap-summary-table"></table>
+      </div>
+    </div>
+  </div>
+
   <!-- LEAGUE-WIDE ACQUISITION PIES -->
   <div class="chart-section">
     <div class="chart-section-label">League-Wide: Where Does Production Come From?</div>
@@ -175,6 +199,15 @@
         Every point ever scored at each position, league-wide, by how it was acquired.
       </p>
       <div class="league-pie-grid" id="league-pie-grid"></div>
+    </div>
+  </div>
+
+  <!-- MANAGER-SPECIFIC ACQUISITION PIES -->
+  <div class="chart-section">
+    <div class="chart-section-label">Where Does Their Production Come From? (Pick A Manager)</div>
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <div class="mgr-select-row" id="mgr-select-row"></div>
+      <div class="league-pie-grid" id="mgr-pie-grid"></div>
     </div>
   </div>
 
@@ -194,10 +227,18 @@
     </div>
 
     <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;margin-bottom:1.5rem;">
-      <div class="chart-section-label" style="margin-bottom:0;" id="draft-waiver-title"></div>
-      <p class="pick-convention-note" id="pick-convention-note"></p>
+      <div class="chart-section-label" style="margin-bottom:0;" id="ppg-scatter-title"></div>
+      <p class="methodology-note" style="margin:0.4rem 0 0.5rem;" id="ppg-scatter-note"></p>
       <div class="league-chart-wrap" style="height:260px;">
-        <canvas id="draft-waiver-chart"></canvas>
+        <canvas id="ppg-scatter-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;margin-bottom:1.5rem;">
+      <div class="chart-section-label" style="margin-bottom:0;" id="round-scatter-title"></div>
+      <p class="methodology-note" style="margin:0.4rem 0 0.5rem;" id="round-scatter-note"></p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="round-scatter-chart"></canvas>
       </div>
     </div>
 
@@ -205,15 +246,6 @@
       <div class="chart-section-label" style="margin-bottom:0.75rem;" id="dcap-title"></div>
       <div class="dcap-scroll">
         <table class="dcap-table" id="dcap-table"></table>
-      </div>
-    </div>
-
-    <div class="chart-area glass" style="padding:1.25rem 1rem;margin-top:1.5rem;">
-      <div class="chart-section-label" style="margin-bottom:0;" id="mgr-pie-title"></div>
-      <div class="mgr-select-row" id="mgr-select-row"></div>
-      <div class="pie-wrap">
-        <div class="pie-canvas-wrap"><canvas id="mgr-acq-pie-chart"></canvas></div>
-        <div class="pie-legend" id="mgr-acq-legend"></div>
       </div>
     </div>
   </div>
@@ -231,7 +263,7 @@ var CURRENT_MGR = null;
 var POS_COLORS = { 'QB':'#983a3a', 'RB':'#4a7a4a', 'WR':'#3a6f98', 'TE':'#a07010', 'K':'#6a6460', 'D/ST':'#504840' };
 var POS_ORDER = ['QB','RB','WR','TE','K','D/ST'];
 
-var netImpactChart = null, draftWaiverChart = null;
+var netImpactChart = null, ppgScatterChart = null, roundScatterChart = null;
 
 function shortName(name) {
   var parts = name.replace(' Jr.','').split(' ');
@@ -331,8 +363,6 @@ function renderCorrBarChart(canvasId, valueFn, axisLabel) {
 
 var ACQ_COLORS = ['#4a7fa8', '#c0623a', '#d4af37']; // Drafted, Waiver/FA, Traded
 var ACQ_LABELS = ['Drafted', 'Waiver / FA', 'Traded'];
-var mgrAcqChart = null;
-
 function renderLeagueAcqPies() {
   var grid = document.getElementById('league-pie-grid');
   grid.innerHTML = POS_ORDER.map(function(p) {
@@ -365,7 +395,7 @@ function renderLeagueAcqPies() {
 }
 
 function renderMgrSelector() {
-  var managers = Object.keys(PDATA.acquisition_source[CURRENT_POS].per_manager).sort();
+  var managers = Object.keys(PDATA.acquisition_source['D/ST'].per_manager).sort();
   if (!CURRENT_MGR || managers.indexOf(CURRENT_MGR) === -1) {
     CURRENT_MGR = managers[0];
   }
@@ -381,29 +411,159 @@ function selectMgrForPie(m) {
   document.querySelectorAll('.mgr-select-pill').forEach(function(el) {
     el.classList.toggle('active', el.textContent.trim() === shortName(m));
   });
-  renderMgrAcqPie();
+  renderMgrPieGrid();
 }
 
-function renderMgrAcqPie() {
-  document.getElementById('mgr-pie-title').textContent = 'Where ' + CURRENT_POS + ' Points Came From';
-  var acq = PDATA.acquisition_source[CURRENT_POS].per_manager[CURRENT_MGR];
-  var vals = [acq.drafted, acq.waiver, acq.traded];
-  var total = vals.reduce(function(a,b){ return a+b; }, 0);
-
-  var legendEl = document.getElementById('mgr-acq-legend');
-  legendEl.innerHTML = ACQ_LABELS.map(function(lab, i) {
-    var pct = total !== 0 ? (vals[i] / total * 100).toFixed(0) : 0;
-    return '<div class="pie-legend-row"><span class="pie-swatch" style="background:' + ACQ_COLORS[i] + ';"></span>'
-      + lab + '<span class="pie-legend-val">' + vals[i].toFixed(0) + ' pts (' + pct + '%)</span></div>';
+function renderMgrPieGrid() {
+  var grid = document.getElementById('mgr-pie-grid');
+  grid.innerHTML = POS_ORDER.map(function(p) {
+    return '<div class="league-pie-cell">'
+      + '<div class="league-pie-label" style="background:' + POS_COLORS[p] + '22;color:' + POS_COLORS[p] + ';">' + p + '</div>'
+      + '<div class="pie-canvas-wrap" style="margin:0 auto;"><canvas id="mgr-pie-' + p.replace('/','') + '"></canvas></div>'
+      + '<div class="pie-legend" id="mgr-pie-legend-' + p.replace('/','') + '" style="margin:0.5rem auto 0;"></div>'
+      + '</div>';
   }).join('');
 
-  if (mgrAcqChart) mgrAcqChart.destroy();
-  var ctx = document.getElementById('mgr-acq-pie-chart').getContext('2d');
-  mgrAcqChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: { labels: ACQ_LABELS, datasets: [{ data: vals.map(function(v){ return Math.max(v,0); }), backgroundColor: ACQ_COLORS, borderWidth: 0 }] },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, cutout:'62%' }
+  POS_ORDER.forEach(function(p) {
+    var acq = PDATA.acquisition_source[p].per_manager[CURRENT_MGR];
+    var vals = [acq.drafted, acq.waiver, acq.traded];
+    var total = vals.reduce(function(a,b){ return a+b; }, 0);
+
+    var legendEl = document.getElementById('mgr-pie-legend-' + p.replace('/',''));
+    legendEl.innerHTML = ACQ_LABELS.map(function(lab, i) {
+      var pct = total !== 0 ? (vals[i] / total * 100).toFixed(0) : 0;
+      return '<div class="pie-legend-row"><span class="pie-swatch" style="background:' + ACQ_COLORS[i] + ';"></span>'
+        + lab + '<span class="pie-legend-val">' + pct + '%</span></div>';
+    }).join('');
+
+    var ctx = document.getElementById('mgr-pie-' + p.replace('/','')).getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: { labels: ACQ_LABELS, datasets: [{ data: vals.map(function(v){ return Math.max(v,0); }), backgroundColor: ACQ_COLORS, borderWidth: 0 }] },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, cutout:'62%' }
+    });
   });
+}
+
+function renderDraftCapitalSummaryTable() {
+  var managers = Object.keys(PDATA.draft_capital['D/ST']).sort();
+  var table = document.getElementById('dcap-summary-table');
+
+  function roundColor(rnd, maxRound) {
+    if (rnd === null) return '';
+    var t = Math.max(0, Math.min(1, (rnd - 1) / (maxRound - 1)));
+    var opacity = 1 - t * 0.75;
+    return 'background:rgba(80,72,64,' + opacity.toFixed(2) + ');color:' + (t < 0.55 ? '#f5f0e8' : '#3d3a38') + ';';
+  }
+
+  var html = '<thead><tr><th class="dcap-mgr-cell">Manager</th>'
+    + POS_ORDER.map(function(p){ return '<th style="color:' + POS_COLORS[p] + ';">' + p + '</th>'; }).join('')
+    + '</tr></thead><tbody>';
+
+  managers.forEach(function(m) {
+    html += '<tr><td class="dcap-mgr-cell">' + shortName(m) + '</td>';
+    POS_ORDER.forEach(function(p) {
+      var avg = PDATA.draft_capital[p][m] ? PDATA.draft_capital[p][m].career_avg_round : null;
+      if (avg === null || avg === undefined) {
+        html += '<td class="dcap-streamed">&mdash;</td>';
+      } else {
+        html += '<td style="' + roundColor(avg, 16) + 'font-weight:700;cursor:pointer;" onclick="selectPosition(\'' + p + '\', true)" title="Click to see ' + p + ' detail">' + avg.toFixed(1) + '</td>';
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+var scatterTrendPlugin = {
+  id: 'scatterTrend',
+  afterDatasetsDraw: function(chart) {
+    var xScale = chart.scales.x, yScale = chart.scales.y;
+    var ctx = chart.ctx;
+    var trend = chart.$trend;
+    if (!trend) return;
+    var x1 = xScale.min, x2 = xScale.max;
+    var y1 = trend.slope * x1 + trend.intercept;
+    var y2 = trend.slope * x2 + trend.intercept;
+    ctx.save();
+    ctx.beginPath();
+    ctx.setLineDash([5, 4]);
+    ctx.moveTo(xScale.getPixelForValue(x1), yScale.getPixelForValue(y1));
+    ctx.lineTo(xScale.getPixelForValue(x2), yScale.getPixelForValue(y2));
+    ctx.strokeStyle = 'rgba(90,85,80,0.55)';
+    ctx.lineWidth = 1.75;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+};
+
+function renderPpgScatterChart() {
+  var perf = PDATA.performance_correlation[CURRENT_POS];
+  var stat = perf.ppg_vs_winpct;
+  var points = perf.points.map(function(p){ return { x: p.ppg, y: p.win_pct * 100, season: p.season, manager: p.manager }; });
+
+  document.getElementById('ppg-scatter-title').textContent = CURRENT_POS + ' PPG vs. Win%';
+  document.getElementById('ppg-scatter-note').textContent =
+    'r = ' + stat.r.toFixed(3) + '  (R\u00B2 = ' + (stat.r2*100).toFixed(1) + '%,  n = ' + stat.n + ')';
+
+  if (ppgScatterChart) ppgScatterChart.destroy();
+  var ctx = document.getElementById('ppg-scatter-chart').getContext('2d');
+  ppgScatterChart = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: [{ data: points, backgroundColor: POS_COLORS[CURRENT_POS] + '99', radius: 4 }] },
+    plugins: [scatterTrendPlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display:false },
+        tooltip: { callbacks: {
+          title: function(items){ var p = items[0].raw; return p.manager + ' \u2019' + String(p.season).slice(2); },
+          label: function(item){ return item.raw.x.toFixed(1) + ' PPG, ' + item.raw.y.toFixed(0) + '% win rate'; }
+        } } },
+      scales: {
+        x: { title: { display:true, text: CURRENT_POS + ' PPG' } },
+        y: { title: { display:true, text:'Win %' } }
+      }
+    }
+  });
+  ppgScatterChart.$trend = { slope: stat.slope * 100, intercept: stat.intercept * 100 };
+  ppgScatterChart.update();
+}
+
+function renderRoundScatterChart() {
+  var perf = PDATA.performance_correlation[CURRENT_POS];
+  var stat = perf.round_vs_winpct;
+  var n = PDATA.nth_pick[CURRENT_POS];
+  var ordinal = n === 1 ? '1st' : '2nd';
+  var points = perf.points.filter(function(p){ return p.drafted_round !== null; })
+    .map(function(p){ return { x: p.drafted_round, y: p.win_pct * 100, season: p.season, manager: p.manager }; });
+
+  document.getElementById('round-scatter-title').textContent = ordinal + ' ' + CURRENT_POS + ' Draft Round vs. Win%';
+  document.getElementById('round-scatter-note').textContent =
+    'r = ' + stat.r.toFixed(3) + '  (R\u00B2 = ' + (stat.r2*100).toFixed(1) + '%,  n = ' + stat.n + ')';
+
+  if (roundScatterChart) roundScatterChart.destroy();
+  var ctx = document.getElementById('round-scatter-chart').getContext('2d');
+  roundScatterChart = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: [{ data: points, backgroundColor: POS_COLORS[CURRENT_POS] + '99', radius: 4 }] },
+    plugins: [scatterTrendPlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display:false },
+        tooltip: { callbacks: {
+          title: function(items){ var p = items[0].raw; return p.manager + ' \u2019' + String(p.season).slice(2); },
+          label: function(item){ return 'Drafted round ' + item.raw.x + ', ' + item.raw.y.toFixed(0) + '% win rate'; }
+        } } },
+      scales: {
+        x: { title: { display:true, text: ordinal + ' ' + CURRENT_POS + ' draft round' } },
+        y: { title: { display:true, text:'Win %' } }
+      }
+    }
+  });
+  roundScatterChart.$trend = { slope: stat.slope * 100, intercept: stat.intercept * 100 };
+  roundScatterChart.update();
 }
 
 function renderPosSelector() {
@@ -414,16 +574,18 @@ function renderPosSelector() {
   }).join('');
 }
 
-function selectPosition(pos) {
+function selectPosition(pos, scrollToDetail) {
   CURRENT_POS = pos;
   document.querySelectorAll('.pos-select-pill').forEach(function(el) {
     el.classList.toggle('active', el.dataset.pos === pos);
   });
   renderNetImpactChart();
-  renderDraftWaiverChart();
+  renderPpgScatterChart();
+  renderRoundScatterChart();
   renderDraftCapitalTable();
-  renderMgrSelector();
-  renderMgrAcqPie();
+  if (scrollToDetail) {
+    document.getElementById('pos-select-row').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 function renderNetImpactChart() {
@@ -454,38 +616,45 @@ function renderNetImpactChart() {
   });
 }
 
-function renderDraftWaiverChart() {
-  var dv = PDATA.draft_vs_waiver[CURRENT_POS];
-  var rounds = Object.keys(dv.by_round_ppg).map(Number).sort(function(a,b){ return a-b; });
-  var n = PDATA.nth_pick[CURRENT_POS];
-  var ordinal = n === 1 ? '1st' : '2nd';
+function renderDraftWaiverGrid() {
+  var grid = document.getElementById('draft-waiver-grid');
+  grid.innerHTML = POS_ORDER.map(function(p) {
+    var n = PDATA.nth_pick[p];
+    var ordinal = n === 1 ? '1st' : '2nd';
+    return '<div class="league-pie-cell">'
+      + '<div class="league-pie-label" style="background:' + POS_COLORS[p] + '22;color:' + POS_COLORS[p] + ';">' + p + ' (' + ordinal + ' pick)</div>'
+      + '<div class="league-chart-wrap" style="height:200px;"><canvas id="dv-grid-' + p.replace('/','') + '"></canvas></div>'
+      + '</div>';
+  }).join('');
 
-  document.getElementById('draft-waiver-title').textContent = 'Does Drafting ' + CURRENT_POS + ' Early Help?';
-  document.getElementById('pick-convention-note').textContent =
-    'Based on the round each manager\'s ' + ordinal + ' ' + CURRENT_POS + ' was drafted';
-
-  if (draftWaiverChart) draftWaiverChart.destroy();
-  var ctx = document.getElementById('draft-waiver-chart').getContext('2d');
-  draftWaiverChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: rounds.map(function(r){ return 'Rd ' + r; }),
-      datasets: [{ data: rounds.map(function(r){ return dv.by_round_ppg[r]; }),
-        backgroundColor: POS_COLORS[CURRENT_POS], borderRadius: 4 }]
-    },
-    plugins: [draftWaiverLinePlugin],
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display:false },
-        tooltip: { callbacks: { label: function(item){
-          var r = rounds[item.dataIndex];
-          return item.parsed.y.toFixed(2) + ' PPG (' + dv.by_round_weeks[r] + ' real-game weeks)';
-        } } } },
-      scales: { y: { title: { display:true, text:'PPG' }, beginAtZero:true } }
-    }
+  POS_ORDER.forEach(function(p) {
+    var dv = PDATA.draft_vs_waiver[p];
+    var rounds = Object.keys(dv.by_round_ppg).map(Number).sort(function(a,b){ return a-b; });
+    var ctx = document.getElementById('dv-grid-' + p.replace('/','')).getContext('2d');
+    var chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: rounds.map(function(r){ return 'Rd ' + r; }),
+        datasets: [{ data: rounds.map(function(r){ return dv.by_round_ppg[r]; }),
+          backgroundColor: POS_COLORS[p], borderRadius: 3 }]
+      },
+      plugins: [draftWaiverLinePlugin],
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display:false },
+          tooltip: { callbacks: { label: function(item){
+            var r = rounds[item.dataIndex];
+            return item.parsed.y.toFixed(2) + ' PPG (' + dv.by_round_weeks[r] + ' weeks)';
+          } } } },
+        scales: {
+          y: { title: { display:true, text:'PPG', font:{size:10} }, beginAtZero:true, ticks:{ font:{size:9} } },
+          x: { ticks: { font:{size:9} } }
+        }
+      }
+    });
+    chart.$waiverPPG = dv.waiver_ppg;
+    chart.update();
   });
-  draftWaiverChart.$waiverPPG = dv.waiver_ppg;
-  draftWaiverChart.update();
 }
 
 function renderDraftCapitalTable() {
@@ -540,13 +709,16 @@ fetch('../data/position_impact_data.json').then(function(r){ return r.json(); })
   renderConsistencyChart();
   renderCorrBarChart('ppg-corr-chart', function(p){ return PDATA.performance_correlation[p].ppg_vs_winpct.r; }, 'Correlation (r) with win%');
   renderCorrBarChart('round-corr-chart', function(p){ return PDATA.performance_correlation[p].round_vs_winpct.r; }, 'Correlation (r) with win%');
+  renderDraftWaiverGrid();
+  renderDraftCapitalSummaryTable();
   renderLeagueAcqPies();
+  renderMgrSelector();
+  renderMgrPieGrid();
   renderPosSelector();
   renderNetImpactChart();
-  renderDraftWaiverChart();
+  renderPpgScatterChart();
+  renderRoundScatterChart();
   renderDraftCapitalTable();
-  renderMgrSelector();
-  renderMgrAcqPie();
 });
 </script>
 </body>
