@@ -1045,6 +1045,14 @@ function renderPerfChart(profile) {
   var barColors = seasons.map(function(s){ return pfgRankColor(s.pfgRank, 0.72); });
   var barBorders = seasons.map(function(s){ return pfgRankColor(s.pfgRank, 1.0); });
 
+  // PF/G realistically never approaches 0, so anchoring the right axis
+  // there (Chart.js's default for a bar dataset) wastes most of the
+  // vertical space and flattens real season-to-season differences into a
+  // thin band near the top. Floor it just below the lowest value actually
+  // in this chart instead, rounded to a clean multiple of 10.
+  var yRightVals = pfgVals.concat(leagueAvgVals.filter(function(v){ return v !== null; }));
+  var yRightMin = Math.max(0, Math.floor((Math.min.apply(null, yRightVals) - 10) / 10) * 10);
+
   var ctx = document.getElementById('chart-perf').getContext('2d');
   charts['perf'] = new Chart(ctx, {
     data: {
@@ -1131,6 +1139,7 @@ function renderPerfChart(profile) {
           title: { display: true, text: 'PF/G', color: C_MUTED, font: { size: 11 } },
           ticks: tickStyle(),
           grid: { drawOnChartArea: false },
+          min: yRightMin,
         }
       }
     }
