@@ -1,0 +1,20 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Python (local data pipeline scripts/venvs, not currently committed here)
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+
+# Local scratch / temp exports
+*.tmp
+*.bak
