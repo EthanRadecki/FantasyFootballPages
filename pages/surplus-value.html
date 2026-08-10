@@ -16,18 +16,6 @@
   border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
 }
 .back-link:hover { background:var(--accent-glow); }
-.draft-subnav { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem; }
-.draft-subnav-pill {
-  display:inline-flex;align-items:center;gap:0.35rem;font-size:0.76rem;font-weight:600;
-  color:var(--accent);text-decoration:none;
-  padding:0.35rem 0.75rem;border-radius:var(--radius-sm);
-  border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
-}
-.draft-subnav-pill:hover { background:var(--accent-glow); }
-.draft-subnav-pill.current {
-  background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
-  pointer-events:none;
-}
 .career-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
 .career-table thead th {
   text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
@@ -84,11 +72,6 @@
 .manager-bw-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
 .manager-bw-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .manager-bw-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
-.pos-badge { display:inline-block;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;letter-spacing:0.06em; }
-.pos-rb { background:rgba(90,138,90,0.18);color:#5a8a5a; }
-.pos-wr { background:rgba(74,127,168,0.18);color:#4a7fa8; }
-.pos-qb { background:rgba(168,90,90,0.18);color:#a85a5a; }
-.pos-te { background:rgba(212,175,55,0.18);color:#b8960a; }
 .season-filter-row { display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap; }
 .season-btn {
   padding:0.35rem 0.85rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);

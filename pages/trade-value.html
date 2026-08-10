@@ -10,18 +10,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
-.draft-subnav { display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem; }
-.draft-subnav-pill {
-  display:inline-flex;align-items:center;gap:0.35rem;font-size:0.76rem;font-weight:600;
-  color:var(--accent);text-decoration:none;
-  padding:0.35rem 0.75rem;border-radius:var(--radius-sm);
-  border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
-}
-.draft-subnav-pill:hover { background:var(--accent-glow); }
-.draft-subnav-pill.current {
-  background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700;
-  pointer-events:none;
-}
 .chart-card-interactive { padding:1.5rem; }
 .chart-card-interactive .chart-card-label {
   font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
@@ -123,13 +111,6 @@
 .jump-sheet a:last-child { border-bottom:none; }
 .jump-sheet a.active { color:var(--accent); }
 /* Position badges — same system used across the rest of the site */
-.pos-badge { display:inline-block;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.6rem;font-weight:700;letter-spacing:0.05em; }
-.pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
-.pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
-.pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
-.pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
-.pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
-.pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
 </style>
 </head>
 <body>
