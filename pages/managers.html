@@ -37,7 +37,7 @@
 .mgr-pill .mgr-quick {
   font-size:0.68rem;color:var(--muted);
 }
-.mgr-pill.active .mgr-name { color:var(--mgr-accent,var(--accent)); }
+.mgr-pill.active .mgr-name { color:var(--mgr-accent-text,var(--accent)); }
 
 /* ── PROFILE SECTION ── */
 #manager-profile { display:none; }
@@ -119,7 +119,7 @@
 .season-table thead th {
   text-align:left;padding:0.65rem 0.7rem;
   font-size:0.64rem;text-transform:uppercase;letter-spacing:0.08em;
-  font-weight:700;color:var(--mgr-accent,var(--accent));
+  font-weight:700;color:var(--mgr-accent-text,var(--accent));
   border-bottom:2px solid rgba(var(--mgr-accent-rgb,var(--accent-rgb)),0.25);
   white-space:nowrap;
 }
@@ -143,7 +143,7 @@
 }
 .chart-section-label {
   font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
-  color:var(--mgr-accent,var(--accent));font-weight:700;margin-bottom:0.75rem;
+  color:var(--mgr-accent-text,var(--accent));font-weight:700;margin-bottom:0.75rem;
   padding-left:0.25rem;
 }
 .chart-area {
@@ -196,7 +196,7 @@
   font-weight:500;cursor:pointer;transition:all 0.15s;
 }
 .fp-btn:hover { background:var(--accent-glow); }
-.fp-btn.active { background:var(--mgr-accent,var(--accent));color:var(--bg);border-color:var(--mgr-accent,var(--accent));font-weight:700; }
+.fp-btn.active { background:var(--mgr-accent-text,var(--accent));color:var(--bg);border-color:var(--mgr-accent-text,var(--accent));font-weight:700; }
 
 /* Season color swatches -- consistent hue per year across every filter
    button and year-labeled cell on this page. */
@@ -262,10 +262,10 @@
   .bsw-podium-card.rank-1 .bsw-podium-points { font-size:1.4rem; }
   .bsw-podium-player { font-size:0.72rem; }
 }
-.fp-filter-label { font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--mgr-accent,var(--accent)); }
+.fp-filter-label { font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--mgr-accent-text,var(--accent)); }
 .fp-link {
   display:inline-flex;align-items:center;gap:0.3rem;
-  font-size:0.72rem;font-weight:600;color:var(--mgr-accent,var(--accent));text-decoration:none;margin-left:auto;
+  font-size:0.72rem;font-weight:600;color:var(--mgr-accent-text,var(--accent));text-decoration:none;margin-left:auto;
   padding:0.25rem 0.6rem;border-radius:4px;border:1px solid rgba(var(--mgr-accent-rgb,var(--accent-rgb)),0.25);transition:all 0.15s;
 }
 .fp-link:hover { background:var(--accent-glow); }
@@ -274,7 +274,7 @@
 .fl-table th.fl-sortable {
   cursor:pointer;user-select:none;transition:color 0.15s;
 }
-.fl-table th.fl-sortable:hover { color:var(--mgr-accent,var(--accent)); }
+.fl-table th.fl-sortable:hover { color:var(--mgr-accent-text,var(--accent)); }
 .fl-table th.fl-sortable::after {
   content:'';display:inline-block;margin-left:0.35rem;
   border:4px solid transparent;opacity:0.25;vertical-align:middle;
@@ -357,7 +357,7 @@
   background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.75rem;
   font-weight:600;cursor:pointer;transition:all 0.15s;
 }
-.fl-page-btn:hover:not(:disabled) { background:var(--accent-glow);color:var(--mgr-accent,var(--accent)); }
+.fl-page-btn:hover:not(:disabled) { background:var(--accent-glow);color:var(--mgr-accent-text,var(--accent)); }
 .fl-page-btn:disabled { opacity:0.3;cursor:default; }
 .fl-page-info { font-size:0.72rem;color:var(--muted);font-weight:600;white-space:nowrap; }
 
@@ -479,72 +479,72 @@
 
   <!-- MANAGER SELECTOR GRID -->
   <div class="mgr-grid" id="mgr-grid">
-    <div class="mgr-pill glass" data-manager="Deniz Bileydi" data-lastname="Bileydi" style="--mgr-accent:#8d9b51;--mgr-accent-rgb:141,155,81;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Deniz Bileydi" data-lastname="Bileydi" style="--mgr-accent:#8d9b51;--mgr-accent-rgb:141,155,81;--mgr-accent-text:#68733c;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Bileydi.png" alt="">
       <div class="mgr-name">Deniz Bileydi</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Ben Castaldo" data-lastname="Castaldo" style="--mgr-accent:#404c5b;--mgr-accent-rgb:64,76,91;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Ben Castaldo" data-lastname="Castaldo" style="--mgr-accent:#404c5b;--mgr-accent-rgb:64,76,91;--mgr-accent-text:#404c5b;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Castaldo.png" alt="">
       <div class="mgr-name">Ben Castaldo</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Quin Gegwich" data-lastname="Gegwich" style="--mgr-accent:#ad1f15;--mgr-accent-rgb:173,31,21;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Quin Gegwich" data-lastname="Gegwich" style="--mgr-accent:#ad1f15;--mgr-accent-rgb:173,31,21;--mgr-accent-text:#ad1f15;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Gegwich.png" alt="">
       <div class="mgr-name">Quin Gegwich</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Charlie Gorman" data-lastname="Gorman" style="--mgr-accent:#9f8bc2;--mgr-accent-rgb:159,139,194;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Charlie Gorman" data-lastname="Gorman" style="--mgr-accent:#9f8bc2;--mgr-accent-rgb:159,139,194;--mgr-accent-text:#785ca9;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Gorman.png" alt="">
       <div class="mgr-name">Charlie Gorman</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Brandon Hancock" data-lastname="Hancock" style="--mgr-accent:#4875b9;--mgr-accent-rgb:72,117,185;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Brandon Hancock" data-lastname="Hancock" style="--mgr-accent:#4875b9;--mgr-accent-rgb:72,117,185;--mgr-accent-text:#416cab;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Hancock.png" alt="">
       <div class="mgr-name">Brandon Hancock</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Anthony Kelly" data-lastname="Kelly" style="--mgr-accent:#cdbca6;--mgr-accent-rgb:205,188,166;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Anthony Kelly" data-lastname="Kelly" style="--mgr-accent:#cdbca6;--mgr-accent-rgb:205,188,166;--mgr-accent-text:#7f6647;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Kelly.png" alt="">
       <div class="mgr-name">Anthony Kelly</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Max Malich" data-lastname="Malich" style="--mgr-accent:#888888;--mgr-accent-rgb:136,136,136;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Max Malich" data-lastname="Malich" style="--mgr-accent:#888888;--mgr-accent-rgb:136,136,136;--mgr-accent-text:#696969;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Malich.png" alt="">
       <div class="mgr-name">Max Malich</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Cole Maney" data-lastname="Maney" style="--mgr-accent:#f7cdb9;--mgr-accent-rgb:247,205,185;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Cole Maney" data-lastname="Maney" style="--mgr-accent:#f7cdb9;--mgr-accent-rgb:247,205,185;--mgr-accent-text:#ba4b15;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Maney.png" alt="">
       <div class="mgr-name">Cole Maney</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Ryan P McQuaid" data-lastname="McQuaid" style="--mgr-accent:#dfc983;--mgr-accent-rgb:223,201,131;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Ryan P McQuaid" data-lastname="McQuaid" style="--mgr-accent:#dfc983;--mgr-accent-rgb:223,201,131;--mgr-accent-text:#7f6921;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/McQuaid.png" alt="">
       <div class="mgr-name">Ryan McQuaid</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Carmine Pittelli Jr" data-lastname="Pittelli" style="--mgr-accent:#541821;--mgr-accent-rgb:84,24,33;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Carmine Pittelli Jr" data-lastname="Pittelli" style="--mgr-accent:#541821;--mgr-accent-rgb:84,24,33;--mgr-accent-text:#541821;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Pittelli.png" alt="">
       <div class="mgr-name">Carmine Pittelli Jr</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Aidan Quigley" data-lastname="Quigley" style="--mgr-accent:#eb644c;--mgr-accent-rgb:235,100,76;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Aidan Quigley" data-lastname="Quigley" style="--mgr-accent:#eb644c;--mgr-accent-rgb:235,100,76;--mgr-accent-text:#c53016;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Quigley.png" alt="">
       <div class="mgr-name">Aidan Quigley</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Ethan Radecki" data-lastname="Radecki" style="--mgr-accent:#ea9a2e;--mgr-accent-rgb:234,154,46;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Ethan Radecki" data-lastname="Radecki" style="--mgr-accent:#ea9a2e;--mgr-accent-rgb:234,154,46;--mgr-accent-text:#985e0f;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Radecki.png" alt="">
       <div class="mgr-name">Ethan Radecki</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Andrew Root" data-lastname="Root" style="--mgr-accent:#4c82af;--mgr-accent-rgb:76,130,175;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Andrew Root" data-lastname="Root" style="--mgr-accent:#4c82af;--mgr-accent-rgb:76,130,175;--mgr-accent-text:#406d93;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Root.png" alt="">
       <div class="mgr-name">Andrew Root</div>
       <div class="mgr-quick">--</div>
     </div>
-    <div class="mgr-pill glass" data-manager="Baylen Slansky" data-lastname="Slansky" style="--mgr-accent:#776aad;--mgr-accent-rgb:119,106,173;" onclick="selectManager(this)">
+    <div class="mgr-pill glass" data-manager="Baylen Slansky" data-lastname="Slansky" style="--mgr-accent:#776aad;--mgr-accent-rgb:119,106,173;--mgr-accent-text:#7163a9;" onclick="selectManager(this)">
       <img class="mgr-logo" src="../images/logos/Slansky.png" alt="">
       <div class="mgr-name">Baylen Slansky</div>
       <div class="mgr-quick">--</div>
@@ -2641,10 +2641,12 @@ function selectManager(el) {
   var profileEl = document.getElementById('manager-profile');
   profileEl.classList.add('visible');
 
-  var mgrAccent    = el.style.getPropertyValue('--mgr-accent');
-  var mgrAccentRgb = el.style.getPropertyValue('--mgr-accent-rgb');
+  var mgrAccent     = el.style.getPropertyValue('--mgr-accent');
+  var mgrAccentRgb  = el.style.getPropertyValue('--mgr-accent-rgb');
+  var mgrAccentText = el.style.getPropertyValue('--mgr-accent-text');
   if (mgrAccent) profileEl.style.setProperty('--mgr-accent', mgrAccent);
   if (mgrAccentRgb) profileEl.style.setProperty('--mgr-accent-rgb', mgrAccentRgb);
+  if (mgrAccentText) profileEl.style.setProperty('--mgr-accent-text', mgrAccentText);
 
   var name = el.getAttribute('data-manager');
   var profile = null;
