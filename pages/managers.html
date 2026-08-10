@@ -2126,7 +2126,7 @@ function renderBswTable(manager) {
   var rest = pageItems.slice(3);
 
   function seasonPillHtml(season) {
-    var color = SEASON_COLORS[season] || 'var(--muted)';
+    var color = SEASON_PILL_COLORS[season] || 'var(--muted)';
     return '<span class="season-pill" style="background:' + color + ';">' + season + '</span>';
   }
 
@@ -2192,9 +2192,12 @@ var FL_POS_COLORS = {
   'D/ST': {fill:'rgba(100,90,80,0.65)', border:'rgba(100,90,80,1)'}
 };
 
-// Season colors, consistent across every year-labeled element on this
-// page (filter buttons, table cells, timeline headers).
-var SEASON_COLORS = {
+// Season colors for the pill badges used across year filter buttons, the
+// Best Single-Week table, and the Roster Timeline headers. Named distinctly
+// from SEASON_COLORS above (that one's an index-based array the Scoring
+// Trend / Power Rankings charts cycle through) since this one is keyed by
+// actual year and the two must not collide.
+var SEASON_PILL_COLORS = {
   2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
   2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#6d9679'
 };
@@ -2435,7 +2438,7 @@ function renderFlTimeline(items) {
       return '<span class="fl-tl-tick' + cls + '" style="left:' + pct + '%;">' + w + '</span>';
     }).join('');
     return '<div>'
-      + '<div style="text-align:center;"><span class="season-pill" style="background:' + (SEASON_COLORS[s] || 'var(--muted)') + ';">' + s + '</span></div>'
+      + '<div style="text-align:center;"><span class="season-pill" style="background:' + (SEASON_PILL_COLORS[s] || 'var(--muted)') + ';">' + s + '</span></div>'
       + '<div class="fl-tl-ticks">' + ticks + '</div>'
       + '</div>';
   }).join('');
