@@ -346,7 +346,7 @@ function renderManagerProfile(profile, totalManagers) {
     else if (s.pfgRank <= 10) pfgCellClass = 'cell-mid';
     else pfgCellClass = 'cell-bad';
 
-    var yearColor = (typeof SEASON_COLORS !== 'undefined' && SEASON_COLORS[s.year]) || null;
+    var yearColor = (typeof SEASON_PILL_COLORS !== 'undefined' && SEASON_PILL_COLORS[s.year]) || null;
     var yearCell = yearColor
       ? '<span class="season-pill" style="background:' + yearColor + ';">' + s.year + '</span>'
       : s.year;
