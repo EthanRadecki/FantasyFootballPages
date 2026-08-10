@@ -2649,8 +2649,20 @@ function selectManager(el) {
   }
 
   if (profile) {
-    renderManagerProfile(profile, totalManagers);
-    renderAllCharts(profile);
+    // The profile section was just switched from display:none to
+    // display:block above. Chart.js measures each canvas's container size
+    // at construction time -- rendering in the same synchronous tick means
+    // the browser hasn't laid out the newly-visible container yet, so the
+    // charts come back squished/flattened. Waiting two animation frames
+    // lets layout settle first (one frame isn't reliably enough across
+    // browsers), which is why re-clicking a pill "fixes" it today -- by
+    // then the container's already visible and correctly sized.
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        renderManagerProfile(profile, totalManagers);
+        renderAllCharts(profile);
+      });
+    });
   }
 
   profileEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
