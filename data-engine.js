@@ -346,8 +346,13 @@ function renderManagerProfile(profile, totalManagers) {
     else if (s.pfgRank <= 10) pfgCellClass = 'cell-mid';
     else pfgCellClass = 'cell-bad';
 
+    var yearColor = (typeof SEASON_COLORS !== 'undefined' && SEASON_COLORS[s.year]) || null;
+    var yearCell = yearColor
+      ? '<span class="season-pill" style="background:' + yearColor + ';">' + s.year + '</span>'
+      : s.year;
+
     tr.innerHTML =
-      '<td class="val-bold">' + s.year + '</td>' +
+      '<td class="val-bold">' + yearCell + '</td>' +
       '<td>' + s.team + '</td>' +
       '<td>' + s.w + '-' + s.l + '</td>' +
       '<td class="val-bold">' + s.winPct.toFixed(3) + '</td>' +
