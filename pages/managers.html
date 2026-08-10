@@ -232,6 +232,12 @@
 .pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
 .pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
 .fl-table td.fl-grad-cell { font-weight:700;border-radius:4px; }
+.bsw-player-cell { display:flex;align-items:center;gap:0.5rem; }
+.bsw-headshot {
+  width:24px;height:24px;border-radius:50%;object-fit:cover;
+  flex-shrink:0;background:rgba(255,255,255,0.5);
+  border:2px solid rgba(156,148,156,0.5);
+}
 .fl-scatter-wrap { position:relative;height:420px; }
 @media(max-width:768px) {
   .fl-scatter-wrap { height:320px; }
@@ -581,6 +587,51 @@
       </div>
     </div>
 
+    <!-- BEST SINGLE-WEEK PERFORMANCES -->
+    <div class="chart-section">
+      <div class="chart-section-label">Best Single-Week Performances</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <div class="fingerprint-filter-row bsw-filter-row">
+          <span class="fp-filter-label">Position:</span>
+          <button class="fp-btn bsw-pos-btn active" data-pos="ALL" onclick="setBswPosition('ALL')">All</button>
+          <button class="fp-btn bsw-pos-btn" data-pos="QB" onclick="setBswPosition('QB')">QB</button>
+          <button class="fp-btn bsw-pos-btn" data-pos="RB" onclick="setBswPosition('RB')">RB</button>
+          <button class="fp-btn bsw-pos-btn" data-pos="WR" onclick="setBswPosition('WR')">WR</button>
+          <button class="fp-btn bsw-pos-btn" data-pos="TE" onclick="setBswPosition('TE')">TE</button>
+          <button class="fp-btn bsw-pos-btn" data-pos="K" onclick="setBswPosition('K')">K</button>
+          <button class="fp-btn bsw-pos-btn" data-pos="D/ST" onclick="setBswPosition('D/ST')">D/ST</button>
+        </div>
+        <div class="fingerprint-filter-row bsw-filter-row">
+          <span class="fp-filter-label">Season:</span>
+          <button class="fp-btn bsw-year-btn active" data-year="career" onclick="setBswYear('career')">Career</button>
+          <button class="fp-btn bsw-year-btn" data-year="2020" onclick="setBswYear(2020)">2020</button>
+          <button class="fp-btn bsw-year-btn" data-year="2021" onclick="setBswYear(2021)">2021</button>
+          <button class="fp-btn bsw-year-btn" data-year="2022" onclick="setBswYear(2022)">2022</button>
+          <button class="fp-btn bsw-year-btn" data-year="2023" onclick="setBswYear(2023)">2023</button>
+          <button class="fp-btn bsw-year-btn" data-year="2024" onclick="setBswYear(2024)">2024</button>
+          <button class="fp-btn bsw-year-btn" data-year="2025" onclick="setBswYear(2025)">2025</button>
+        </div>
+        <div class="table-wrap">
+          <table class="season-table" id="bsw-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Player</th>
+                <th>Pos</th>
+                <th>Points</th>
+                <th>Week</th>
+                <th>Season</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.75rem;">
+          Single starting-lineup weeks only. Headshots shown for the top 3.
+        </p>
+      </div>
+    </div>
+
     <!-- FRANCHISE LEADERS -->
     <div class="chart-section">
       <div class="chart-section-label">Franchise Leaders</div>
@@ -657,7 +708,7 @@
           <button class="fp-btn fl-year-btn" data-year="2025" onclick="setFlYear(2025)">2025</button>
         </div>
         <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0;">
-          Top 50 players by total points. Bubble size is total points, color is position.
+          Top 50 players by total points. Bubble size is total points, ring color is position, and headshots fill in where a match exists.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
           <span class="pos-badge pos-rb">RB</span>
@@ -1953,6 +2004,84 @@ function renderAllCharts(profile) {
   renderFingerprintChart(normalizeFpName(profile.name));
   renderHeatmap(normalizeFpName(profile.name));
   renderFranchiseLeadersTable(profile.name);
+  renderBswTable(profile.name);
+}
+
+// ── BEST SINGLE-WEEK PERFORMANCES ───────────────────────────────────────────
+// Independent of the Franchise Leaders / Workhorse / Timeline filter state
+// below on purpose -- this section is about individual explosive weeks, not
+// season aggregates, so its Position/Season buttons shouldn't also flip
+// those other sections.
+var bestSingleWeekData  = null;   // { "<Manager>": [ {player, position, season, week, points}, ... ] }
+var bswCurrentManager   = null;
+var bswCurrentPosition  = 'ALL';
+var bswCurrentYear      = 'career';
+var BSW_TABLE_ROWS      = 10;
+var BSW_HEADSHOT_TOP_N  = 3;
+
+function setBswPosition(pos) {
+  bswCurrentPosition = pos;
+  document.querySelectorAll('.bsw-pos-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-pos') === pos);
+  });
+  renderBswTable();
+}
+
+function setBswYear(year) {
+  bswCurrentYear = year;
+  document.querySelectorAll('.bsw-year-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-year') === String(year));
+  });
+  renderBswTable();
+}
+
+function renderBswTable(manager) {
+  if (manager) bswCurrentManager = manager;
+  var tbody = document.querySelector('#bsw-table tbody');
+  if (!tbody) return;
+  if (!bswCurrentManager || !bestSingleWeekData) return;
+
+  var rows = bestSingleWeekData[bswCurrentManager]
+    || bestSingleWeekData[normalizeFpName(bswCurrentManager)]
+    || [];
+
+  var filtered = rows.filter(function(r) {
+    if (bswCurrentYear !== 'career' && r.season !== bswCurrentYear) return false;
+    if (bswCurrentPosition !== 'ALL' && r.position !== bswCurrentPosition) return false;
+    return true;
+  });
+
+  // Source data is already sorted desc by points per manager, but re-sort
+  // defensively since filtering doesn't guarantee order is preserved.
+  filtered = filtered.slice().sort(function(a, b){ return b.points - a.points; });
+  var pageItems = filtered.slice(0, BSW_TABLE_ROWS);
+
+  if (pageItems.length === 0) {
+    tbody.innerHTML = '<tr class="fl-empty-row"><td colspan="6">No players match this filter.</td></tr>';
+    return;
+  }
+
+  var html = '';
+  pageItems.forEach(function(p, i) {
+    var headshotHtml = '';
+    if (i < BSW_HEADSHOT_TOP_N && HEADSHOT_DATA) {
+      var url = HEADSHOT_DATA[p.player + '|' + p.position];
+      if (url) {
+        var colors = FL_POS_COLORS[p.position] || FL_POS_COLORS.K;
+        headshotHtml = '<img class="bsw-headshot" src="' + url + '" alt="' + p.player
+          + '" style="border-color:' + colors.border + ';" loading="lazy" onerror="this.remove();">';
+      }
+    }
+    html += '<tr>'
+      + '<td>' + (i + 1) + '</td>'
+      + '<td style="font-weight:700;color:var(--palm);"><span class="bsw-player-cell">' + headshotHtml + '<span>' + p.player + '</span></span></td>'
+      + '<td>' + flPosBadge(p.position) + '</td>'
+      + '<td>' + p.points.toFixed(1) + '</td>'
+      + '<td>Week ' + p.week + '</td>'
+      + '<td>' + p.season + '</td>'
+      + '</tr>';
+  });
+  tbody.innerHTML = html;
 }
 
 // ── FRANCHISE LEADERS ────────────────────────────────────────────────────────
@@ -1975,6 +2104,29 @@ var FL_POS_COLORS = {
   K:  {fill:'rgba(156,148,156,0.65)',border:'rgba(156,148,156,1)'},
   'D/ST': {fill:'rgba(100,90,80,0.65)', border:'rgba(100,90,80,1)'}
 };
+
+// Player headshots, keyed "Player Name|POS". Loaded once on init (see
+// bottom of file) and reused by the Workhorse vs. Rental scatter below.
+var HEADSHOT_DATA = null;
+
+// Image() cache so the canvas plugin below can draw synchronously once an
+// image is loaded, and trigger a redraw the first time each one arrives.
+var HEADSHOT_IMG_CACHE = {};
+function getHeadshotImg(url) {
+  if (!url) return null;
+  var cached = HEADSHOT_IMG_CACHE[url];
+  if (cached) return cached.complete && cached.naturalWidth > 0 ? cached : null;
+  var img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function() {
+    // Redraw once this specific image arrives so bubbles fill in
+    // progressively instead of waiting on the whole set.
+    if (charts['flScatter']) { try { charts['flScatter'].draw(); } catch (e) {} }
+  };
+  img.src = url;
+  HEADSHOT_IMG_CACHE[url] = img;
+  return null;
+}
 
 function setFlPosition(pos) {
   flCurrentPosition = pos;
@@ -2066,7 +2218,8 @@ function renderFlScatterChart(items) {
     return {
       label: pos,
       data: subset.map(function(p) {
-        return { x: p.games_played, y: p.ppg, r: radius(p.total_points), player: p.player, pts: p.total_points };
+        var hsUrl = HEADSHOT_DATA ? HEADSHOT_DATA[p.player + '|' + p.position] : null;
+        return { x: p.games_played, y: p.ppg, r: radius(p.total_points), player: p.player, pts: p.total_points, headshotUrl: hsUrl };
       }),
       backgroundColor: colors.fill,
       borderColor: colors.border,
@@ -2074,9 +2227,46 @@ function renderFlScatterChart(items) {
     };
   }).filter(function(d){ return d.data.length > 0; });
 
+  // Draws a circular-clipped headshot on top of each bubble, ringed in the
+  // position color. Bubbles with no headshot match (or an image that
+  // hasn't finished loading yet) just keep the flat position-colored fill
+  // Chart.js already draws, so there's no broken/empty state.
+  var headshotPlugin = {
+    id: 'flHeadshots',
+    afterDatasetsDraw: function(chart) {
+      var ctx = chart.ctx;
+      chart.data.datasets.forEach(function(ds, dsIndex) {
+        var meta = chart.getDatasetMeta(dsIndex);
+        if (!meta || meta.hidden) return;
+        meta.data.forEach(function(point, i) {
+          var raw = ds.data[i];
+          if (!raw || !raw.headshotUrl) return;
+          var img = getHeadshotImg(raw.headshotUrl);
+          if (!img) return;
+          var x = point.x, y = point.y, r = raw.r;
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(x, y, Math.max(r - 1, 0), 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+          ctx.drawImage(img, x - r, y - r, r * 2, r * 2);
+          ctx.restore();
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(x, y, Math.max(r - 0.75, 0), 0, Math.PI * 2);
+          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = ds.borderColor;
+          ctx.stroke();
+          ctx.restore();
+        });
+      });
+    }
+  };
+
   charts['flScatter'] = new Chart(canvas.getContext('2d'), {
     type: 'bubble',
     data: { datasets: datasets },
+    plugins: [headshotPlugin],
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -2423,6 +2613,30 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .catch(function() {
       rosterStintsData = {};
+    });
+
+  // Load player headshots (used by the Workhorse vs. Rental scatter and
+  // the Best Single-Week Performances table)
+  var headshotPromise = fetch('../data/player_headshots.json')
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      HEADSHOT_DATA = data;
+      if (flCurrentManager) renderFranchiseLeadersTable();
+      if (bswCurrentManager) renderBswTable();
+    })
+    .catch(function() {
+      HEADSHOT_DATA = {};
+    });
+
+  // Load best single-week performances (see generate_best_single_week.py)
+  var bswPromise = fetch('../data/best_single_week.json')
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      bestSingleWeekData = data;
+      if (bswCurrentManager) renderBswTable();
+    })
+    .catch(function() {
+      bestSingleWeekData = {};
     });
 });
 </script>

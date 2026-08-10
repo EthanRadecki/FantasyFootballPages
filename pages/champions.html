@@ -109,6 +109,11 @@
   font-size:0.8rem;font-weight:600;color:var(--text-mid);
   line-height:1.3;
 }
+.roster-headshot {
+  width:26px;height:26px;border-radius:50%;object-fit:cover;
+  flex-shrink:0;background:rgba(255,255,255,0.5);
+  border:2px solid rgba(156,148,156,0.5);
+}
 
 /* Trophy handoff */
 .trophy-wrap {
@@ -647,6 +652,31 @@ function renderTeamTotalSlot(seasonPpg, weekTotal) {
     + '</div>';
 }
 
+// Position -> ring color, matches the .pos-badge text colors above exactly.
+var POS_RING_COLOR = {
+  QB: '#983a3a', RB: '#4a7a4a', WR: '#3a6f98',
+  TE: '#a07010', K: '#6a6460', 'D/ST': '#504840'
+};
+
+// player_headshots.json is keyed "Player Name|POS" (real position, not FLEX).
+// FLEX slots don't carry a real position on the roster entry, so we probe
+// the skill positions in order; the one known name collision in this data
+// (Josh Johnson, QB vs RB, 2021) is an old journeyman who was never a
+// relevant FLEX play, so the arbitrary priority order here is a non-issue.
+var HEADSHOTS = {};
+function lookupHeadshot(name, pos) {
+  if (pos === 'FLEX') {
+    var tryOrder = ['RB', 'WR', 'TE', 'QB', 'K'];
+    for (var i = 0; i < tryOrder.length; i++) {
+      var hit = HEADSHOTS[name + '|' + tryOrder[i]];
+      if (hit) return { url: hit, pos: tryOrder[i] };
+    }
+    return null;
+  }
+  var url = HEADSHOTS[name + '|' + pos];
+  return url ? { url: url, pos: pos } : null;
+}
+
 function renderRosterSlots(roster) {
   return roster.map(function(r) {
     var posClass = 'pos-' + r.pos.replace('/', '').toLowerCase();
@@ -660,8 +690,17 @@ function renderRosterSlots(roster) {
     }
     var arrow = wkClass === 'up' ? '&#9650; ' : (wkClass === 'down' ? '&#9660; ' : '');
 
+    var headshotHtml = '';
+    var hs = lookupHeadshot(r.name, r.pos);
+    if (hs) {
+      var ringColor = POS_RING_COLOR[hs.pos] || 'rgba(156,148,156,0.5)';
+      headshotHtml = '<img class="roster-headshot" src="' + hs.url + '" alt="' + r.name
+        + '" style="border-color:' + ringColor + ';" loading="lazy" onerror="this.remove();">';
+    }
+
     return '<div class="roster-slot">'
       + '<div class="roster-slot-top">'
+      +   headshotHtml
       +   '<span class="pos-badge ' + posClass + '">' + r.pos + '</span>'
       +   '<span class="roster-name">' + r.name + '</span>'
       + '</div>'
@@ -749,7 +788,13 @@ function buildCard(c) {
     + '</div>';
 }
 
-(function() {
+fetch('../data/player_headshots.json')
+  .then(function(r) { return r.json(); })
+  .then(function(data) { HEADSHOTS = data; })
+  .catch(function() { HEADSHOTS = {}; })
+  .then(function() { buildChampList(); });
+
+function buildChampList() {
   var list = document.getElementById('champ-list');
   var html = '';
 
@@ -779,7 +824,7 @@ function buildCard(c) {
     });
   }, { threshold: 0.12 });
   revealTargets.forEach(function(el){ revealObserver.observe(el); });
-})();
+}
 
 /* ── TIMELINE ── */
 (function() {
