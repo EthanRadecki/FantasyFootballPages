@@ -197,6 +197,71 @@
 }
 .fp-btn:hover { background:var(--accent-glow); }
 .fp-btn.active { background:var(--mgr-accent,var(--accent));color:var(--bg);border-color:var(--mgr-accent,var(--accent));font-weight:700; }
+
+/* Season color swatches -- consistent hue per year across every filter
+   button and year-labeled cell on this page. */
+.year-swatch-btn { position:relative;padding-left:1.5rem; }
+.year-swatch-btn::before {
+  content:'';position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;background:var(--swatch-color,var(--muted));
+}
+.year-swatch-btn.active {
+  background:var(--swatch-color,var(--mgr-accent,var(--accent))) !important;
+  border-color:var(--swatch-color,var(--mgr-accent,var(--accent))) !important;
+  color:#fff !important;
+}
+.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.season-pill {
+  display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
+  font-size:0.68rem;font-weight:700;color:#fff;
+}
+
+/* Best Single-Week Performances podium */
+.bsw-podium {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0.65rem;
+  margin-bottom:1.1rem;
+}
+.bsw-podium-card {
+  background:rgba(255,255,255,0.32);border-radius:10px;
+  padding:1rem 0.6rem 0.85rem;text-align:center;position:relative;
+}
+.bsw-podium-card.rank-1 { background:rgba(255,255,255,0.5); }
+.bsw-podium-rank {
+  font-family:var(--font-display,inherit);font-weight:900;
+  font-size:1.1rem;color:var(--muted);margin-bottom:0.4rem;
+}
+.bsw-podium-headshot {
+  width:56px;height:56px;border-radius:50%;object-fit:cover;
+  display:block;margin:0 auto 0.5rem;background:rgba(255,255,255,0.5);
+  border:3px solid rgba(156,148,156,0.5);
+}
+.bsw-podium-card.rank-1 .bsw-podium-headshot { width:68px;height:68px; }
+.bsw-podium-placeholder {
+  width:56px;height:56px;border-radius:50%;margin:0 auto 0.5rem;
+  background:rgba(156,148,156,0.15);
+}
+.bsw-podium-player {
+  font-weight:700;color:var(--palm);font-size:0.82rem;line-height:1.25;
+  margin-bottom:0.35rem;min-height:2.1em;
+}
+.bsw-podium-points {
+  font-family:var(--font-display,inherit);font-weight:900;
+  font-size:1.5rem;color:var(--text);line-height:1;
+}
+.bsw-podium-card.rank-1 .bsw-podium-points { font-size:1.85rem; }
+.bsw-podium-meta {
+  font-size:0.66rem;color:var(--muted);margin-top:0.4rem;
+  display:flex;align-items:center;justify-content:center;gap:0.35rem;flex-wrap:wrap;
+}
+@media(max-width:600px) {
+  .bsw-podium { gap:0.4rem; }
+  .bsw-podium-card { padding:0.75rem 0.35rem 0.6rem; }
+  .bsw-podium-headshot { width:44px;height:44px; }
+  .bsw-podium-card.rank-1 .bsw-podium-headshot { width:52px;height:52px; }
+  .bsw-podium-points { font-size:1.15rem; }
+  .bsw-podium-card.rank-1 .bsw-podium-points { font-size:1.4rem; }
+  .bsw-podium-player { font-size:0.72rem; }
+}
 .fp-filter-label { font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--mgr-accent,var(--accent)); }
 .fp-link {
   display:inline-flex;align-items:center;gap:0.3rem;
@@ -232,12 +297,6 @@
 .pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
 .pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
 .fl-table td.fl-grad-cell { font-weight:700;border-radius:4px; }
-.bsw-player-cell { display:flex;align-items:center;gap:0.5rem; }
-.bsw-headshot {
-  width:24px;height:24px;border-radius:50%;object-fit:cover;
-  flex-shrink:0;background:rgba(255,255,255,0.5);
-  border:2px solid rgba(156,148,156,0.5);
-}
 .fl-scatter-wrap { position:relative;height:420px; }
 @media(max-width:768px) {
   .fl-scatter-wrap { height:320px; }
@@ -604,13 +663,14 @@
         <div class="fingerprint-filter-row bsw-filter-row">
           <span class="fp-filter-label">Season:</span>
           <button class="fp-btn bsw-year-btn active" data-year="career" onclick="setBswYear('career')">Career</button>
-          <button class="fp-btn bsw-year-btn" data-year="2020" onclick="setBswYear(2020)">2020</button>
-          <button class="fp-btn bsw-year-btn" data-year="2021" onclick="setBswYear(2021)">2021</button>
-          <button class="fp-btn bsw-year-btn" data-year="2022" onclick="setBswYear(2022)">2022</button>
-          <button class="fp-btn bsw-year-btn" data-year="2023" onclick="setBswYear(2023)">2023</button>
-          <button class="fp-btn bsw-year-btn" data-year="2024" onclick="setBswYear(2024)">2024</button>
-          <button class="fp-btn bsw-year-btn" data-year="2025" onclick="setBswYear(2025)">2025</button>
+          <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#a4969d;" data-year="2020" onclick="setBswYear(2020)">2020</button>
+          <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#8a93ab;" data-year="2021" onclick="setBswYear(2021)">2021</button>
+          <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#d8b28e;" data-year="2022" onclick="setBswYear(2022)">2022</button>
+          <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" data-year="2023" onclick="setBswYear(2023)">2023</button>
+          <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#9aadae;" data-year="2024" onclick="setBswYear(2024)">2024</button>
+          <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#a9b88b;" data-year="2025" onclick="setBswYear(2025)">2025</button>
         </div>
+        <div class="bsw-podium" id="bsw-podium"></div>
         <div class="table-wrap">
           <table class="season-table" id="bsw-table">
             <thead>
@@ -627,7 +687,7 @@
           </table>
         </div>
         <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.75rem;">
-          Single starting-lineup weeks only. Headshots shown for the top 3.
+          Single starting-lineup weeks only.
         </p>
       </div>
     </div>
@@ -649,12 +709,12 @@
         <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Season:</span>
           <button class="fp-btn fl-year-btn active" data-year="career" onclick="setFlYear('career')">Career</button>
-          <button class="fp-btn fl-year-btn" data-year="2020" onclick="setFlYear(2020)">2020</button>
-          <button class="fp-btn fl-year-btn" data-year="2021" onclick="setFlYear(2021)">2021</button>
-          <button class="fp-btn fl-year-btn" data-year="2022" onclick="setFlYear(2022)">2022</button>
-          <button class="fp-btn fl-year-btn" data-year="2023" onclick="setFlYear(2023)">2023</button>
-          <button class="fp-btn fl-year-btn" data-year="2024" onclick="setFlYear(2024)">2024</button>
-          <button class="fp-btn fl-year-btn" data-year="2025" onclick="setFlYear(2025)">2025</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#a4969d;" data-year="2020" onclick="setFlYear(2020)">2020</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#8a93ab;" data-year="2021" onclick="setFlYear(2021)">2021</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#d8b28e;" data-year="2022" onclick="setFlYear(2022)">2022</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" data-year="2023" onclick="setFlYear(2023)">2023</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#9aadae;" data-year="2024" onclick="setFlYear(2024)">2024</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#a9b88b;" data-year="2025" onclick="setFlYear(2025)">2025</button>
         </div>
         <div class="table-wrap">
           <table class="season-table fl-table" id="franchise-leaders-table">
@@ -700,12 +760,12 @@
         <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Season:</span>
           <button class="fp-btn fl-year-btn active" data-year="career" onclick="setFlYear('career')">Career</button>
-          <button class="fp-btn fl-year-btn" data-year="2020" onclick="setFlYear(2020)">2020</button>
-          <button class="fp-btn fl-year-btn" data-year="2021" onclick="setFlYear(2021)">2021</button>
-          <button class="fp-btn fl-year-btn" data-year="2022" onclick="setFlYear(2022)">2022</button>
-          <button class="fp-btn fl-year-btn" data-year="2023" onclick="setFlYear(2023)">2023</button>
-          <button class="fp-btn fl-year-btn" data-year="2024" onclick="setFlYear(2024)">2024</button>
-          <button class="fp-btn fl-year-btn" data-year="2025" onclick="setFlYear(2025)">2025</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#a4969d;" data-year="2020" onclick="setFlYear(2020)">2020</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#8a93ab;" data-year="2021" onclick="setFlYear(2021)">2021</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#d8b28e;" data-year="2022" onclick="setFlYear(2022)">2022</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" data-year="2023" onclick="setFlYear(2023)">2023</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#9aadae;" data-year="2024" onclick="setFlYear(2024)">2024</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#a9b88b;" data-year="2025" onclick="setFlYear(2025)">2025</button>
         </div>
         <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0;">
           Top 50 players by total points. Bubble size is total points, ring color is position, and headshots fill in where a match exists.
@@ -741,12 +801,12 @@
         <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Season:</span>
           <button class="fp-btn fl-year-btn active" data-year="career" onclick="setFlYear('career')">Career</button>
-          <button class="fp-btn fl-year-btn" data-year="2020" onclick="setFlYear(2020)">2020</button>
-          <button class="fp-btn fl-year-btn" data-year="2021" onclick="setFlYear(2021)">2021</button>
-          <button class="fp-btn fl-year-btn" data-year="2022" onclick="setFlYear(2022)">2022</button>
-          <button class="fp-btn fl-year-btn" data-year="2023" onclick="setFlYear(2023)">2023</button>
-          <button class="fp-btn fl-year-btn" data-year="2024" onclick="setFlYear(2024)">2024</button>
-          <button class="fp-btn fl-year-btn" data-year="2025" onclick="setFlYear(2025)">2025</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#a4969d;" data-year="2020" onclick="setFlYear(2020)">2020</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#8a93ab;" data-year="2021" onclick="setFlYear(2021)">2021</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#d8b28e;" data-year="2022" onclick="setFlYear(2022)">2022</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" data-year="2023" onclick="setFlYear(2023)">2023</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#9aadae;" data-year="2024" onclick="setFlYear(2024)">2024</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#a9b88b;" data-year="2025" onclick="setFlYear(2025)">2025</button>
         </div>
         <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0 0.9rem;">
           Top 20 players by total points. Solid segments are weeks started, faded segments are weeks benched or on IR. Dotted lines mark weeks 5/9/13; the dashed red line marks the start of that season's playoffs.
@@ -811,12 +871,12 @@
         <div class="fingerprint-filter-row">
           <span class="fp-filter-label">Season:</span>
           <button class="fp-btn active" onclick="setFpSeason('career',this)">Career</button>
-          <button class="fp-btn" onclick="setFpSeason(2020,this)">2020</button>
-          <button class="fp-btn" onclick="setFpSeason(2021,this)">2021</button>
-          <button class="fp-btn" onclick="setFpSeason(2022,this)">2022</button>
-          <button class="fp-btn" onclick="setFpSeason(2023,this)">2023</button>
-          <button class="fp-btn" onclick="setFpSeason(2024,this)">2024</button>
-          <button class="fp-btn" onclick="setFpSeason(2025,this)">2025</button>
+          <button class="fp-btn year-swatch-btn" data-year="2020" style="--swatch-color:#a4969d;" onclick="setFpSeason(2020,this)">2020</button>
+          <button class="fp-btn year-swatch-btn" data-year="2021" style="--swatch-color:#8a93ab;" onclick="setFpSeason(2021,this)">2021</button>
+          <button class="fp-btn year-swatch-btn" data-year="2022" style="--swatch-color:#d8b28e;" onclick="setFpSeason(2022,this)">2022</button>
+          <button class="fp-btn year-swatch-btn" data-year="2023" style="--swatch-color:#bf8f8f;" onclick="setFpSeason(2023,this)">2023</button>
+          <button class="fp-btn year-swatch-btn" data-year="2024" style="--swatch-color:#9aadae;" onclick="setFpSeason(2024,this)">2024</button>
+          <button class="fp-btn year-swatch-btn" data-year="2025" style="--swatch-color:#a9b88b;" onclick="setFpSeason(2025,this)">2025</button>
           <a href="draft-fingerprints.html" class="fp-link">Full Comparison &#8594;</a>
         </div>
         <div style="position:relative;height:300px;">
@@ -2017,7 +2077,6 @@ var bswCurrentManager   = null;
 var bswCurrentPosition  = 'ALL';
 var bswCurrentYear      = 'career';
 var BSW_TABLE_ROWS      = 10;
-var BSW_HEADSHOT_TOP_N  = 3;
 
 function setBswPosition(pos) {
   bswCurrentPosition = pos;
@@ -2037,8 +2096,9 @@ function setBswYear(year) {
 
 function renderBswTable(manager) {
   if (manager) bswCurrentManager = manager;
+  var podiumEl = document.getElementById('bsw-podium');
   var tbody = document.querySelector('#bsw-table tbody');
-  if (!tbody) return;
+  if (!podiumEl || !tbody) return;
   if (!bswCurrentManager || !bestSingleWeekData) return;
 
   var rows = bestSingleWeekData[bswCurrentManager]
@@ -2057,28 +2117,55 @@ function renderBswTable(manager) {
   var pageItems = filtered.slice(0, BSW_TABLE_ROWS);
 
   if (pageItems.length === 0) {
+    podiumEl.innerHTML = '';
     tbody.innerHTML = '<tr class="fl-empty-row"><td colspan="6">No players match this filter.</td></tr>';
     return;
   }
 
-  var html = '';
-  pageItems.forEach(function(p, i) {
-    var headshotHtml = '';
-    if (i < BSW_HEADSHOT_TOP_N && HEADSHOT_DATA) {
+  var top3 = pageItems.slice(0, 3);
+  var rest = pageItems.slice(3);
+
+  function seasonPillHtml(season) {
+    var color = SEASON_COLORS[season] || 'var(--muted)';
+    return '<span class="season-pill" style="background:' + color + ';">' + season + '</span>';
+  }
+
+  // Podium: top 3, prominent, laid out horizontally in rank order.
+  var podiumHtml = top3.map(function(p, i) {
+    var headshotHtml = '<div class="bsw-podium-placeholder"></div>';
+    if (HEADSHOT_DATA) {
       var url = HEADSHOT_DATA[p.player + '|' + p.position];
       if (url) {
         var colors = FL_POS_COLORS[p.position] || FL_POS_COLORS.K;
-        headshotHtml = '<img class="bsw-headshot" src="' + url + '" alt="' + p.player
-          + '" style="border-color:' + colors.border + ';" loading="lazy" onerror="this.remove();">';
+        headshotHtml = '<img class="bsw-podium-headshot" src="' + url + '" alt="' + p.player
+          + '" style="border-color:' + colors.border + ';" loading="lazy" onerror="this.outerHTML=\'<div class=&quot;bsw-podium-placeholder&quot;></div>\';">';
       }
     }
+    return '<div class="bsw-podium-card rank-' + (i + 1) + '">'
+      + '<div class="bsw-podium-rank">#' + (i + 1) + '</div>'
+      + headshotHtml
+      + '<div class="bsw-podium-player">' + p.player + '</div>'
+      + flPosBadge(p.position)
+      + '<div class="bsw-podium-points">' + p.points.toFixed(1) + '</div>'
+      + '<div class="bsw-podium-meta"><span>Week ' + p.week + '</span>' + seasonPillHtml(p.season) + '</div>'
+      + '</div>';
+  }).join('');
+  podiumEl.innerHTML = podiumHtml;
+
+  // Table: ranks 4-10.
+  if (rest.length === 0) {
+    tbody.innerHTML = '';
+    return;
+  }
+  var html = '';
+  rest.forEach(function(p, i) {
     html += '<tr>'
-      + '<td>' + (i + 1) + '</td>'
-      + '<td style="font-weight:700;color:var(--palm);"><span class="bsw-player-cell">' + headshotHtml + '<span>' + p.player + '</span></span></td>'
+      + '<td>' + (i + 4) + '</td>'
+      + '<td style="font-weight:700;color:var(--palm);">' + p.player + '</td>'
       + '<td>' + flPosBadge(p.position) + '</td>'
       + '<td>' + p.points.toFixed(1) + '</td>'
       + '<td>Week ' + p.week + '</td>'
-      + '<td>' + p.season + '</td>'
+      + '<td>' + seasonPillHtml(p.season) + '</td>'
       + '</tr>';
   });
   tbody.innerHTML = html;
@@ -2105,6 +2192,13 @@ var FL_POS_COLORS = {
   'D/ST': {fill:'rgba(100,90,80,0.65)', border:'rgba(100,90,80,1)'}
 };
 
+// Season colors, consistent across every year-labeled element on this
+// page (filter buttons, table cells, timeline headers).
+var SEASON_COLORS = {
+  2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
+  2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#6d9679'
+};
+
 // Player headshots, keyed "Player Name|POS". Loaded once on init (see
 // bottom of file) and reused by the Workhorse vs. Rental scatter below.
 var HEADSHOT_DATA = null;
@@ -2117,11 +2211,15 @@ function getHeadshotImg(url) {
   var cached = HEADSHOT_IMG_CACHE[url];
   if (cached) return cached.complete && cached.naturalWidth > 0 ? cached : null;
   var img = new Image();
-  img.crossOrigin = 'anonymous';
   img.onload = function() {
     // Redraw once this specific image arrives so bubbles fill in
-    // progressively instead of waiting on the whole set.
-    if (charts['flScatter']) { try { charts['flScatter'].draw(); } catch (e) {} }
+    // progressively instead of waiting on the whole set. Guarded so a
+    // late-arriving image from a since-replaced chart can't touch a dead
+    // canvas after the user has changed filters.
+    var chart = charts['flScatter'];
+    if (chart && chart.canvas && chart.canvas.isConnected) {
+      try { chart.draw(); } catch (e) {}
+    }
   };
   img.src = url;
   HEADSHOT_IMG_CACHE[url] = img;
@@ -2270,6 +2368,16 @@ function renderFlScatterChart(items) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      // Mobile browsers fire resize events constantly while scrolling
+      // (address bar collapsing/expanding). Each resize forces a full
+      // redraw, and the headshot plugin's per-bubble clip+drawImage work
+      // is too heavy to repeat at that frequency -- resizeDelay batches
+      // those into one redraw instead of thrashing every scroll tick.
+      resizeDelay: 200,
+      // No entrance animation: with it on, every bubble would run the
+      // clip+drawImage pass on each of ~60 animation frames per render,
+      // which is the main source of the mobile jank.
+      animation: false,
       layout: { padding: 20 },
       scales: {
         x: { title: { display: true, text: 'Games started', color: C_MUTED }, grid: gridStyle(), ticks: tickStyle() },
@@ -2327,7 +2435,7 @@ function renderFlTimeline(items) {
       return '<span class="fl-tl-tick' + cls + '" style="left:' + pct + '%;">' + w + '</span>';
     }).join('');
     return '<div>'
-      + '<div style="text-align:center;">' + s + '</div>'
+      + '<div style="text-align:center;"><span class="season-pill" style="background:' + (SEASON_COLORS[s] || 'var(--muted)') + ';">' + s + '</span></div>'
       + '<div class="fl-tl-ticks">' + ticks + '</div>'
       + '</div>';
   }).join('');
