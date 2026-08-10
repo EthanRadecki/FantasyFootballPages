@@ -663,8 +663,14 @@ var POS_RING_COLOR = {
 // the skill positions in order; the one known name collision in this data
 // (Josh Johnson, QB vs RB, 2021) is an old journeyman who was never a
 // relevant FLEX play, so the arbitrary priority order here is a non-issue.
+//
+// Desktop only -- see IS_MOBILE_VIEWPORT below. On mobile, extra image
+// requests and per-slot rendering caused enough issues that it's not
+// worth it there.
+var IS_MOBILE_VIEWPORT = window.matchMedia('(max-width: 768px)').matches;
 var HEADSHOTS = {};
 function lookupHeadshot(name, pos) {
+  if (IS_MOBILE_VIEWPORT) return null;
   if (pos === 'FLEX') {
     var tryOrder = ['RB', 'WR', 'TE', 'QB', 'K'];
     for (var i = 0; i < tryOrder.length; i++) {
@@ -788,11 +794,15 @@ function buildCard(c) {
     + '</div>';
 }
 
-fetch('../data/player_headshots.json')
-  .then(function(r) { return r.json(); })
-  .then(function(data) { HEADSHOTS = data; })
-  .catch(function() { HEADSHOTS = {}; })
-  .then(function() { buildChampList(); });
+if (IS_MOBILE_VIEWPORT) {
+  buildChampList();
+} else {
+  fetch('../data/player_headshots.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) { HEADSHOTS = data; })
+    .catch(function() { HEADSHOTS = {}; })
+    .then(function() { buildChampList(); });
+}
 
 function buildChampList() {
   var list = document.getElementById('champ-list');

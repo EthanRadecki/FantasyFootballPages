@@ -952,15 +952,16 @@ var C_MUTED    = '#8a8480';
 var C_TEXT_MID = '#5a5550';
 var C_BG       = 'rgba(213,207,200,0)'; // transparent for chart bg
 
-// Season line palette — one color per season (2020-2025)
-var SEASON_COLORS = [
-  '#9c949c',  // 2020 — accent/mauve
-  '#7a9cbf',  // 2021 — slate blue
-  '#c4996e',  // 2022 — warm terra
-  '#7aab8a',  // 2023 — sage green
-  '#b88fae',  // 2024 — soft lavender
-  '#d4af37',  // 2025 — gold
-];
+// Headshots (Workhorse scatter bubbles, Best Single-Week podium) are
+// desktop-only -- on mobile the extra image requests and per-bubble canvas
+// clipping caused enough jank/issues that it's not worth it. Checked once
+// at load; a mid-session resize/rotation won't flip this, matching how
+// most "mobile vs. desktop feature" gates on this site behave.
+var IS_MOBILE_VIEWPORT = window.matchMedia('(max-width: 768px)').matches;
+
+// (Season colors now live in one place -- SEASON_COLORS, defined below
+// near the Franchise Leaders section -- keyed by actual year so every
+// chart and UI element on this page draws from the same palette.)
 
 // ── Shared Chart.js defaults ─────────────────────────────────────────────────
 Chart.defaults.font.family = "'Outfit', sans-serif";
@@ -1589,7 +1590,7 @@ function renderTrendsChart(profile) {
 
   // One dataset per season -- per-point marker style encodes win/loss
   var datasets = seasons.map(function(yr, i) {
-    var color = SEASON_COLORS[i % SEASON_COLORS.length];
+    var color = SEASON_COLORS[yr] || '#9c949c';
     var data         = [];
     var pointBg      = [];  // filled = win, hollow (white fill) = loss
     var pointRadius  = [];
@@ -1747,7 +1748,7 @@ function renderRankChart(profile) {
   for (var w = 1; w <= maxWeek; w++) weekLabels.push('Wk ' + w);
 
   var datasets = seasons.map(function(yr, i) {
-    var color = SEASON_COLORS[i % SEASON_COLORS.length];
+    var color = SEASON_COLORS[yr] || '#9c949c';
     var data  = [];
     for (var w = 1; w <= maxWeek; w++) {
       var r = bySeason[yr][w];
@@ -2126,19 +2127,22 @@ function renderBswTable(manager) {
   var rest = pageItems.slice(3);
 
   function seasonPillHtml(season) {
-    var color = SEASON_PILL_COLORS[season] || 'var(--muted)';
+    var color = SEASON_COLORS[season] || 'var(--muted)';
     return '<span class="season-pill" style="background:' + color + ';">' + season + '</span>';
   }
 
   // Podium: top 3, prominent, laid out horizontally in rank order.
   var podiumHtml = top3.map(function(p, i) {
-    var headshotHtml = '<div class="bsw-podium-placeholder"></div>';
-    if (HEADSHOT_DATA) {
-      var url = HEADSHOT_DATA[p.player + '|' + p.position];
-      if (url) {
-        var colors = FL_POS_COLORS[p.position] || FL_POS_COLORS.K;
-        headshotHtml = '<img class="bsw-podium-headshot" src="' + url + '" alt="' + p.player
-          + '" style="border-color:' + colors.border + ';" loading="lazy" onerror="this.outerHTML=\'<div class=&quot;bsw-podium-placeholder&quot;></div>\';">';
+    var headshotHtml = '';
+    if (!IS_MOBILE_VIEWPORT) {
+      headshotHtml = '<div class="bsw-podium-placeholder"></div>';
+      if (HEADSHOT_DATA) {
+        var url = HEADSHOT_DATA[p.player + '|' + p.position];
+        if (url) {
+          var colors = FL_POS_COLORS[p.position] || FL_POS_COLORS.K;
+          headshotHtml = '<img class="bsw-podium-headshot" src="' + url + '" alt="' + p.player
+            + '" style="border-color:' + colors.border + ';" loading="lazy" onerror="this.outerHTML=\'<div class=&quot;bsw-podium-placeholder&quot;></div>\';">';
+        }
       }
     }
     return '<div class="bsw-podium-card rank-' + (i + 1) + '">'
@@ -2192,12 +2196,11 @@ var FL_POS_COLORS = {
   'D/ST': {fill:'rgba(100,90,80,0.65)', border:'rgba(100,90,80,1)'}
 };
 
-// Season colors for the pill badges used across year filter buttons, the
-// Best Single-Week table, and the Roster Timeline headers. Named distinctly
-// from SEASON_COLORS above (that one's an index-based array the Scoring
-// Trend / Power Rankings charts cycle through) since this one is keyed by
-// actual year and the two must not collide.
-var SEASON_PILL_COLORS = {
+// Single source of truth for season colors, keyed by year. Used by the
+// year filter buttons (pos/year swatches), the Best Single-Week table,
+// the Roster Timeline headers, the Season-by-Season Year column (see
+// data-engine.js), and the Scoring Trend / Power Rankings charts above.
+var SEASON_COLORS = {
   2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
   2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#6d9679'
 };
@@ -2367,7 +2370,7 @@ function renderFlScatterChart(items) {
   charts['flScatter'] = new Chart(canvas.getContext('2d'), {
     type: 'bubble',
     data: { datasets: datasets },
-    plugins: [headshotPlugin],
+    plugins: IS_MOBILE_VIEWPORT ? [] : [headshotPlugin],
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -2438,7 +2441,7 @@ function renderFlTimeline(items) {
       return '<span class="fl-tl-tick' + cls + '" style="left:' + pct + '%;">' + w + '</span>';
     }).join('');
     return '<div>'
-      + '<div style="text-align:center;"><span class="season-pill" style="background:' + (SEASON_PILL_COLORS[s] || 'var(--muted)') + ';">' + s + '</span></div>'
+      + '<div style="text-align:center;"><span class="season-pill" style="background:' + (SEASON_COLORS[s] || 'var(--muted)') + ';">' + s + '</span></div>'
       + '<div class="fl-tl-ticks">' + ticks + '</div>'
       + '</div>';
   }).join('');
@@ -2727,17 +2730,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
   // Load player headshots (used by the Workhorse vs. Rental scatter and
-  // the Best Single-Week Performances table)
-  var headshotPromise = fetch('../data/player_headshots.json')
-    .then(function(r){ return r.json(); })
-    .then(function(data) {
-      HEADSHOT_DATA = data;
-      if (flCurrentManager) renderFranchiseLeadersTable();
-      if (bswCurrentManager) renderBswTable();
-    })
-    .catch(function() {
-      HEADSHOT_DATA = {};
-    });
+  // the Best Single-Week Performances table). Desktop only -- see
+  // IS_MOBILE_VIEWPORT above.
+  var headshotPromise = IS_MOBILE_VIEWPORT
+    ? Promise.resolve().then(function() { HEADSHOT_DATA = {}; })
+    : fetch('../data/player_headshots.json')
+        .then(function(r){ return r.json(); })
+        .then(function(data) {
+          HEADSHOT_DATA = data;
+          if (flCurrentManager) renderFranchiseLeadersTable();
+          if (bswCurrentManager) renderBswTable();
+        })
+        .catch(function() {
+          HEADSHOT_DATA = {};
+        });
 
   // Load best single-week performances (see generate_best_single_week.py)
   var bswPromise = fetch('../data/best_single_week.json')
