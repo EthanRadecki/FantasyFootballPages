@@ -812,7 +812,9 @@
     <div class="chart-section">
       <div class="chart-section-label">Performance Over Time</div>
       <div class="chart-area glass">
-        <canvas id="chart-perf" height="110"></canvas>
+        <div style="position:relative;height:220px;">
+          <canvas id="chart-perf"></canvas>
+        </div>
       </div>
     </div>
 
@@ -820,7 +822,9 @@
     <div class="chart-section">
       <div class="chart-section-label">Schedule Luck by Season</div>
       <div class="chart-area glass">
-        <canvas id="chart-luck" height="110"></canvas>
+        <div style="position:relative;height:220px;">
+          <canvas id="chart-luck"></canvas>
+        </div>
       </div>
     </div>
 
@@ -829,13 +833,17 @@
       <div class="chart-section">
         <div class="chart-section-label">Head-to-Head Records</div>
         <div class="chart-area glass">
-          <canvas id="chart-h2h" height="260"></canvas>
+          <div style="position:relative;height:260px;">
+            <canvas id="chart-h2h"></canvas>
+          </div>
         </div>
       </div>
       <div class="chart-section">
         <div class="chart-section-label">Scoring Distribution</div>
         <div class="chart-area glass">
-          <canvas id="chart-dist" height="260"></canvas>
+          <div style="position:relative;height:260px;">
+            <canvas id="chart-dist"></canvas>
+          </div>
         </div>
       </div>
     </div>
@@ -844,7 +852,9 @@
     <div class="chart-section">
       <div class="chart-section-label">Seasonal Scoring Trends</div>
       <div class="chart-area glass">
-        <canvas id="chart-trends" height="110"></canvas>
+        <div style="position:relative;height:280px;">
+          <canvas id="chart-trends"></canvas>
+        </div>
       </div>
     </div>
 
@@ -852,7 +862,9 @@
     <div class="chart-section">
       <div class="chart-section-label">Power Ranking Trajectory</div>
       <div class="chart-area glass">
-        <canvas id="chart-rank" height="110"></canvas>
+        <div style="position:relative;height:220px;">
+          <canvas id="chart-rank"></canvas>
+        </div>
       </div>
     </div>
 
@@ -1080,6 +1092,7 @@ function renderPerfChart(profile) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: {
@@ -1217,6 +1230,7 @@ function renderLuckChart(profile) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: {
@@ -1293,6 +1307,7 @@ function renderH2HChart(profile) {
     options: {
       indexAxis: 'y',
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -1485,6 +1500,7 @@ function renderDistChart(profile) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           display: true,
@@ -1653,6 +1669,7 @@ function renderTrendsChart(profile) {
     data: { labels: weekLabels, datasets: datasets },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: {
@@ -1770,6 +1787,7 @@ function renderRankChart(profile) {
     data: { labels: weekLabels, datasets: datasets },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: {
