@@ -283,7 +283,7 @@
       <div id="explorer-tooltip" style="position:absolute;pointer-events:none;opacity:0;background:rgba(30,26,20,0.92);color:#f5f0e8;padding:0.5rem 0.7rem;border-radius:6px;font-size:0.75rem;max-width:240px;line-height:1.5;transition:opacity 0.1s;z-index:10;"></div>
       <div id="explorer-empty" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:0.95rem;color:var(--muted);font-weight:600;">No Trades Were Found</div>
     </div>
-    <p class="metric-note">Diamonds are trades, logos are managers. Tap a diamond for the full breakdown below. Bigger diamonds involved more managers.</p>
+    <p class="metric-note">Diamonds are trades, logos are managers. Tap a diamond for the full breakdown below. Bigger diamonds involved more managers. <strong>Click any manager to center the graph on their trades</strong> (this also sets the Manager A filter above, so the view gets less crowded too). Drag any node afterward to move it freely, or <a href="#" onclick="resetExplorerLayout();return false;" style="color:var(--accent);font-weight:700;">reset the layout</a> to go back to the free-floating view.</p>
 
     <div id="explorer-detail" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(var(--accent-rgb),0.2);"></div>
   </div>
@@ -334,6 +334,11 @@
 <script src="../shared.js"></script>
 <script>
 /* ── Shared red/gold/green gradient helper ── */
+// Trade Explorer's frame clamp (below) is desktop-only -- on a small
+// screen forcing everything into an already-tiny box just makes the
+// crowding worse, so mobile keeps the original free-floating behavior.
+var IS_MOBILE_VIEWPORT = window.matchMedia('(max-width: 768px)').matches;
+
 var GOOD = [90,138,90];
 var MID  = [212,175,55];
 var BAD  = [168,90,90];
@@ -1116,6 +1121,15 @@ function renderExplorer() {
             .attr('text-anchor','middle').attr('dy','0.35em').attr('font-size','11px').attr('font-weight','700')
             .attr('fill','#6b5f50').style('pointer-events','none');
         });
+      g.on('click', function(){
+        // Selecting a manager both narrows the filter (fewer nodes,
+        // less crowding) and centers the result on them, same idea as
+        // the Trade Network graph's click-to-center.
+        explorerState.managerA = d.name;
+        explorerState.managerB = 'any';
+        renderExplorerFilters();
+        renderExplorer();
+      });
       g.append('title').text(d.name);
     } else {
       var n = d.data;
@@ -1144,17 +1158,86 @@ function renderExplorer() {
     // doesn't stop any individual node from drifting past the edges.
     // Clamp explicitly instead, using each node's own radius so circles
     // and diamonds stay fully on-screen rather than getting clipped.
-    var pad = 16;
-    graphNodes.forEach(function(d){
-      var r = d.type === 'manager' ? 22 : (d.data.managers.length >= 3 ? 15 : 10);
-      d.x = Math.max(r + pad, Math.min(width - r - pad, d.x));
-      d.y = Math.max(r + pad, Math.min(height - r - pad, d.y));
-    });
+    // Desktop only -- see IS_MOBILE_VIEWPORT above.
+    if (!IS_MOBILE_VIEWPORT) {
+      var pad = 16;
+      graphNodes.forEach(function(d){
+        var r = d.type === 'manager' ? 22 : (d.data.managers.length >= 3 ? 15 : 10);
+        d.x = Math.max(r + pad, Math.min(width - r - pad, d.x));
+        d.y = Math.max(r + pad, Math.min(height - r - pad, d.y));
+      });
+    }
     linkSel
       .attr('x1', function(d){return d.source.x;}).attr('y1', function(d){return d.source.y;})
       .attr('x2', function(d){return d.target.x;}).attr('y2', function(d){return d.target.y;});
     nodeGroup.attr('transform', function(d){ return 'translate('+d.x+','+d.y+')'; });
   });
+
+  // Whenever a specific manager is selected (via clicking their node
+  // above, or the Manager A pill), pin them at the center and ring
+  // everyone still on screen evenly around them: their trade partners
+  // first (most shared trades nearest the top), then the trade diamonds
+  // themselves in chronological order. Same idea as the Trade Network
+  // graph, adapted for this graph's two node types.
+  function centerExplorerOn(managerName) {
+    var center = graphNodes.find(function(n){ return n.type === 'manager' && n.name === managerName; });
+    if (!center) return;
+
+    var cx = width / 2, cy = height / 2;
+    var radius = Math.min(width, height) * 0.36;
+
+    var otherManagers = graphNodes.filter(function(n){ return n.type === 'manager' && n.name !== managerName; });
+    var tradeNodesArr = graphNodes.filter(function(n){ return n.type === 'trade'; });
+
+    var sharedCount = {};
+    otherManagers.forEach(function(m){
+      sharedCount[m.name] = filtered.filter(function(n){
+        return n.managers.some(function(x){ return x.m === m.name; });
+      }).length;
+    });
+    otherManagers.sort(function(a,b){ return (sharedCount[b.name]||0) - (sharedCount[a.name]||0); });
+    tradeNodesArr.sort(function(a,b){ return a.data.season - b.data.season; });
+
+    var ring = otherManagers.concat(tradeNodesArr);
+    var targets = {};
+    targets[center.id] = { x: cx, y: cy };
+    var angleStep = (2 * Math.PI) / Math.max(ring.length, 1);
+    ring.forEach(function(n, i){
+      var angle = -Math.PI/2 + i * angleStep;
+      targets[n.id] = { x: cx + radius*Math.cos(angle), y: cy + radius*Math.sin(angle) };
+    });
+
+    sim.stop();
+    var duration = 700;
+    var starts = graphNodes.map(function(n){ return { n: n, x: n.x, y: n.y }; });
+    var timer = d3.timer(function(elapsed){
+      var t = Math.min(elapsed / duration, 1);
+      var e = d3.easeCubicInOut(t);
+      starts.forEach(function(s){
+        var target = targets[s.n.id];
+        if (!target) return;
+        s.n.x = s.x + (target.x - s.x) * e;
+        s.n.y = s.y + (target.y - s.y) * e;
+      });
+      linkSel.attr('x1', function(d){return d.source.x;}).attr('y1', function(d){return d.source.y;})
+             .attr('x2', function(d){return d.target.x;}).attr('y2', function(d){return d.target.y;});
+      nodeGroup.attr('transform', function(d){ return 'translate('+d.x+','+d.y+')'; });
+      if (t >= 1) {
+        timer.stop();
+        graphNodes.forEach(function(n){ var tgt = targets[n.id]; if (tgt) { n.fx = tgt.x; n.fy = tgt.y; } });
+      }
+    });
+  }
+
+  if (explorerState.managerA !== 'any') {
+    centerExplorerOn(explorerState.managerA);
+  }
+
+  // Escape hatch back to fully free-form physics.
+  window.resetExplorerLayout = function(){
+    graphNodes.forEach(function(n){ n.fx = null; n.fy = null; });
+    sim.alpha(1).restart();
+  };
 }
 
 
