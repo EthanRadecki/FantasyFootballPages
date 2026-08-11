@@ -11,7 +11,9 @@
       "ppg_to_date": 136.65,
       "record_to_date": "2-1",
       "last_score": 110.12,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "The #1 team for the third straight week, despite the loss — still the team to beat until proven otherwise.",
+      "blurb": "The #1-ranked team for the third week in a row, Carmine did lose this past week, but I think that's because of <mark class=\"hl-player\">Saquon</mark>'s absence, a few players underperforming, and him unluckily playing one of the best teams in the league. I'll keep this short and simple since he's been in this same position for the past three weeks: Carmine is still the team to beat and will be dangerous until proven to be a two-week wonder. I will say this, though — his team is far from unbeatable, and in fact he has the 4th-lowest projected points for this upcoming week. But until he loses and shows he's not the #1 team in the league, he'll continue to come in at the #1 spot."
     },
     {
       "manager": "Cole Maney",
@@ -22,7 +24,9 @@
       "ppg_to_date": 128.89,
       "record_to_date": "2-1",
       "last_score": 148.34,
-      "streak": "W2"
+      "streak": "W2",
+      "synopsis": "No weak spot in the lineup and a genuine shot at a rare 10-win season — bye weeks are the only real threat.",
+      "blurb": "May come as a surprise to most, but Cole hasn't been plagued with injuries this year and has been able to showcase his managing skills by starting the season 2-1. I genuinely don't see a weak spot in this team's lineup, but I'd keep an eye on <mark class=\"hl-player\">Henry</mark> as he continues to age with one of the worst Titans teams he's ever had. Also, Cole's team doesn't have as much bench depth as other teams do, so a key injury could cause this team to drop a few spots without a big trade. Now, <mark class=\"hl-player\">Keenan Allen</mark>, <mark class=\"hl-player\">Engram</mark>, and <mark class=\"hl-player\">ARSB</mark> have been electric to start the season, so it'll be interesting to see how their production progresses as the season moves on. I think Cole has the team needed for one of the only 10-win seasons in PFFL history, but bye weeks may be the killer for this team. Overall, this team is dangerous at full strength, which it most likely will be for most of the season and the playoffs."
     },
     {
       "manager": "Charlie Gorman",
@@ -33,7 +37,9 @@
       "ppg_to_date": 114.63,
       "record_to_date": "2-1",
       "last_score": 125.28,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "A certified weekly threat — improving every week, with a top-two jump not far off.",
+      "blurb": "A certified weekly threat, Charlie has improved his output every week, and that doesn't look like it's stopping soon. A top QB, two top-15 RBs, two top-10 WRs, and <mark class=\"hl-player\">Alvin Kamara</mark> off his suspension have this team in elite status. Some may point to the poor TE and say this team doesn't have a chance to beat other top teams, but I wouldn't worry too much about that, since most TEs in the league don't score more than 10 consistently anyway. This is one of the teams to beat going forward, and with the team improving every week, I wouldn't be surprised to see a jump into the top two as early as next week."
     },
     {
       "manager": "Ethan Radecki",
@@ -44,7 +50,9 @@
       "ppg_to_date": 135.09,
       "record_to_date": "3-0",
       "last_score": 113.5,
-      "streak": "W3"
+      "streak": "W3",
+      "synopsis": "A comfortable #4 — not because of any weakness, but because the top three simply look unstoppable.",
+      "blurb": "I'm ranking myself comfortably at the #4 spot this week, not because my team got much worse or a player got injured, but because the three teams above are simply looking like they'll be dominant for the rest of the season. That said, I do believe this team has what it takes to compete for another PFFL championship, with the WR trio of <mark class=\"hl-player\">Brown</mark>, <mark class=\"hl-player\">Smith</mark>, and <mark class=\"hl-player\">Evans</mark> alongside <mark class=\"hl-player\">CMC</mark>, <mark class=\"hl-player\">Andrews</mark>, and <mark class=\"hl-player\">Herbert</mark>. One hole in this team's lineup, however, is the obvious weakness at RB2, so be on the lookout for this manager to be shopping for a new one. Overall, #4 is a solid position for a team that looks primed for another PFFL playoff run."
     },
     {
       "manager": "Deniz Bileydi",
@@ -55,7 +63,9 @@
       "ppg_to_date": 118.32,
       "record_to_date": "2-1",
       "last_score": 176.16,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "Winner of one of the best matchups ever — hasn't even hit its peak ranking yet.",
+      "blurb": "The winner of one of the best PFFL matchups of all time, Deniz jumps four spots this week to secure a place in the top five. This team is certainly a fun one to watch, with the likes of <mark class=\"hl-player\">Adams</mark>, <mark class=\"hl-player\">Tua</mark>, and <mark class=\"hl-player\">Achane</mark>, all of whom provide weekly top-3-team upside for the veteran manager. Be on the lookout for Deniz to work with his solid bench depth and upgrade at a few weak positions in the coming weeks. Overall, this team has yet to hit its peak ranking for the season, in my opinion, and will be a lock for the playoffs by the 3/4 mark of the regular season, barring injuries."
     },
     {
       "manager": "Brandon Hancock",
@@ -66,7 +76,9 @@
       "ppg_to_date": 116.97,
       "record_to_date": "1-2",
       "last_score": 126.26,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "The 2nd-most points against in the league — unlucky, and now down his FLEX for the year.",
+      "blurb": "The biggest riser this week, Brandon has been unlucky up to this point due to his PA being <strong class=\"hl-stat\">430</strong> (2nd-most in the league), with the next-highest person's being <strong class=\"hl-stat\">370</strong>. Brandon lost his flex, <mark class=\"hl-player\">Mike Williams</mark>, to a season-ending ACL tear in week three, which will definitely hurt his chances to compete for a championship this year, but he's also one of the deepest teams in the league (<mark class=\"hl-player\">Marquise Brown</mark> as a backup flex). However, I do feel this team lacks the star power, aside from <mark class=\"hl-player\">Diggs</mark>, that's needed to win a PFFL championship. Look out for Brandon to rise in these rankings if his team continues to produce big numbers, or he makes a big trade to pair that star power with his depth."
     },
     {
       "manager": "Ryan P McQuaid",
@@ -77,7 +89,9 @@
       "ppg_to_date": 105.87,
       "record_to_date": "2-1",
       "last_score": 125.38,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "The Creator, or maybe just the most 'mid' manager in the league — 106 points a week says the latter.",
+      "blurb": "<em class=\"hl-team\">The Creator</em>, more like <em class=\"hl-team\">The Most Mid PFFL Manager Ever</em>. Ryan has never been 'dominant' in the past 4 years, but I'd be wrong to say he hasn't been at least good. Yes, he did make it to the championship last year, but he didn't win it, so does it really count? Now, he's smack dab in the middle of the rankings for the 2nd straight week because he's averaged <strong class=\"hl-stat\">106</strong> points per week to this point, while the league average is <strong class=\"hl-stat\">110</strong> per week — but that margin could be accounted for by <mark class=\"hl-player\">Jones</mark> being injured recently and <mark class=\"hl-player\">Breece</mark>'s poor production to start the year. At this point, I'd assume Ryan to be a weekly threat to go for 150+, but his team does have a big bust factor that locks him into the #7 spot."
     },
     {
       "manager": "Aidan Quigley",
@@ -88,7 +102,9 @@
       "ppg_to_date": 106.99,
       "record_to_date": "3-0",
       "last_score": 108.36,
-      "streak": "W3"
+      "streak": "W3",
+      "synopsis": "A controversial 3-0 team ranked 8th — the record is lucky, but the best TE in fantasy is not.",
+      "blurb": "Most likely my most controversial placement on this list, I have one of the two 3-0 teams at the #8 spot. Before you discredit my rankings, understand that Aidan has the 6th-least points scored through the first three weeks of the season, while having the least points scored against him. Fantasy football is a 'sport' that's very different from others in that record is based on matchups made up of independent variables (the players), since they produce against real-life opponents, and who you're matched up against in any given week doesn't impact how your players play. Thus, teams can turn out to be very lucky and have a better record than other teams solely because they played opponents on down weeks. Another stat that I think justifies this placement: if Aidan had other people's schedules to start the season, he would have started 0-3 in three of them and 3-0 in none of them, aside from his own. Okay, I'm done explaining why he's not higher — now I'll say why this team actually has a great chance to compete for a championship. Having the best TE in fantasy will always be one of the biggest advantages there is, and pairing that with three low-tier WR2s and a proven WR1 can be dangerous. Aidan's RB2 and QB are his weak spots, though, and if he wants to prove me and everyone else wrong, he'll have to upgrade at those positions as the season progresses."
     },
     {
       "manager": "Ben Castaldo",
@@ -99,7 +115,9 @@
       "ppg_to_date": 130.84,
       "record_to_date": "0-3",
       "last_score": 166.06,
-      "streak": "L3"
+      "streak": "L3",
+      "synopsis": "The defending champ is 0-3 and running out of room for error — desperation mode incoming.",
+      "blurb": "The 2021 PFFL champion finds himself in a tricky situation after falling to Deniz in week three, causing a 0-3 start to the season. This was the week Ben needed to win to establish some sort of stable ground, but now he might be entering desperation mode. In previous seasons, we've seen the last-seeded playoff team have anywhere from 6-8 losses, meaning that even though Ben has a talented roster, he can't lose more than 3-5 weeks for the rest of the regular season. I understand his team has the talent to be a playoff team and can certainly cause some mayhem when <mark class=\"hl-player\">Kupp</mark> is healthy, but none of that will matter if Kupp returns in week five and Ben is already 1-4. However, I do believe in the previous champion to make some noise and mount a playoff push with his talent, which is why I have the 0-3 team at #9 this week."
     },
     {
       "manager": "Max Malich",
@@ -110,7 +128,9 @@
       "ppg_to_date": 109.87,
       "record_to_date": "1-2",
       "last_score": 98.94,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "The week's biggest faller after a sub-100 week, but the young RBs should bounce back soon.",
+      "blurb": "The biggest faller this week due to being an extremely inconsistent team, Max finds himself in the bottom five because of his sub-100 week three. Now, I don't see this team being this low for long, due to young RBs that will continue to get better as the season goes on and WRs bound to have better weeks than 13, 10, and 8. Also, the underwhelming play of <mark class=\"hl-player\">Darren Waller</mark> has Malich stuck in the hole he's in, but I don't think it'll keep him there. Always looking to trade, keep an eye out for Max to continue to upgrade even when the sun looks like it's setting. After all, we saw what major trades did for his team back in week two."
     },
     {
       "manager": "Andrew Root",
@@ -121,7 +141,9 @@
       "ppg_to_date": 89.01,
       "record_to_date": "1-2",
       "last_score": 109.58,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "Started #1 in the league, has since fallen to the bottom five — a first missed playoffs looms.",
+      "blurb": "One of the most disappointing starts to a PFFL season I've ever seen — Andrew started the season as the #1-ranked team but has since fallen to the bottom five. Yes, <mark class=\"hl-player\">Lamar</mark> has picked it up since his 6-point performance in week one, and <mark class=\"hl-player\">Puka Nacua</mark> has been a top-5 WR to start the season, but the loss of <mark class=\"hl-player\">Nick Chubb</mark> leaves a hole at the RB2 position while the RB1 position is underwhelming as well (<mark class=\"hl-player\">Jacobs</mark> has only averaged 10 points through the first three weeks). Root isn't in a great position, but he's not in no-man's-land — he still has valuable pieces on his roster, so if he wanted a change of scenery, he could get it. However, until I'm proven wrong, I believe this team will not be shaken up, and because of that it's in jeopardy of causing Andrew to miss the PFFL playoffs for the first time in franchise history."
     },
     {
       "manager": "Quin Gegwich",
@@ -132,7 +154,9 @@
       "ppg_to_date": 82.85,
       "record_to_date": "1-2",
       "last_score": 70.36,
-      "streak": "L2"
+      "streak": "L2",
+      "synopsis": "Under 80 again — injuries to the RB1 and WR1 have this looking like the league's worst team on paper.",
+      "blurb": "The newest member of the PFFL management staff, Quin finds himself in a familiar position of putting up less than <strong class=\"hl-stat\">80</strong> points. On the surface, this team looks like it should be labeled the worst team in the league, combining for <strong class=\"hl-stat\">148</strong> in the past two weeks, but injuries to his RB1 and WR1, as well as disappointing play from his WR2 and TE1, have put him in this position. Don't be surprised if Quin begins to pick it back up in week four, depending on <mark class=\"hl-player\">Waddle</mark> and <mark class=\"hl-player\">Ekeler</mark>'s health."
     },
     {
       "manager": "Baylen Slansky",
@@ -143,7 +167,9 @@
       "ppg_to_date": 90.51,
       "record_to_date": "1-2",
       "last_score": 111.36,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "A first win finally arrives — but Rhamondre and Najee combining for 18 a week is a real problem.",
+      "blurb": "The 2nd straight week at the #13 spot, Baylen's team did show a little promise this weekend, however. <mark class=\"hl-player\">Ja'Marr</mark> finally produced more than 10 points, and he got his first win, edging out Malich <strong class=\"hl-stat\">111-99</strong>. Not all faith has been restored, though — <mark class=\"hl-player\">Rhamondre</mark> and <mark class=\"hl-player\">Najee</mark> are combining to average <strong class=\"hl-stat\">18</strong> points per week, which is extremely poor for a team's 2nd and 3rd round picks. All this team needed to be back in the mix for the playoffs was a win, and this past week secured that. It'll be interesting to watch how <mark class=\"hl-player\">Kirk</mark> and <mark class=\"hl-player\">Kittle</mark> play when <mark class=\"hl-player\">Aiyuk</mark> comes back, and how <mark class=\"hl-player\">Moss</mark> will play for the next few weeks with a Taylor return on the horizon — but then again, it may never come."
     },
     {
       "manager": "Anthony Kelly",
@@ -154,7 +180,9 @@
       "ppg_to_date": 84.85,
       "record_to_date": "0-3",
       "last_score": 70.3,
-      "streak": "L3"
+      "streak": "L3",
+      "synopsis": "An 0-3 start for the defending champ — Bijan is nearly the only bright spot left.",
+      "blurb": "An embarrassing start to the 2023-2024 PFFL season for the defending champ — Anthony is 0-3 and has put up a whopping <strong class=\"hl-stat\">254</strong> points in the first three weeks. The only real bright spot on this team is <mark class=\"hl-player\">Bijan</mark>, and that's about it. <mark class=\"hl-player\">Tee Higgins</mark> has been a bust, and <mark class=\"hl-player\">Jonathan Taylor</mark> sitting on your IR is doing nothing to help your cause. Anthony's season may be over in some people's eyes, but I believe that if he works his magic and pulls off some trades, he can potentially find a way into the playoffs — and from there, it's anyone's ball game."
     }
   ]
 }
