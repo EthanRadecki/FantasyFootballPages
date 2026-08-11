@@ -150,6 +150,18 @@
 .rank-blurb strong.hl-stat { color:var(--accent);font-weight:800; }
 .rank-blurb em.hl-team { color:var(--muted);font-style:italic;font-weight:600; }
 
+.rank-blurb ul.rank-blurb-specs {
+  list-style:none;margin:0 0 0.55rem 0;padding:0;
+  display:flex;flex-direction:column;gap:0.18rem;
+}
+.rank-blurb ul.rank-blurb-specs li {
+  font-size:0.78rem;color:var(--muted);padding-left:0.9rem;position:relative;
+}
+.rank-blurb ul.rank-blurb-specs li::before {
+  content:'\2022';position:absolute;left:0;color:var(--accent);font-weight:800;
+}
+.rank-blurb p { margin:0; }
+
 @media(max-width:768px) {
   .rank-blurb { max-width:none; }
 }
