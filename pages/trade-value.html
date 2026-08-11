@@ -1184,7 +1184,13 @@ function renderExplorer() {
     if (!center) return;
 
     var cx = width / 2, cy = height / 2;
-    var radius = Math.min(width, height) * 0.36;
+    // Two separate rings, each spread across its own full circle
+    // independently, rather than one mixed ring spaced by combined
+    // index -- with far more trade diamonds than managers, spacing
+    // everything by one shared index compressed the (few) managers into
+    // a tiny arc instead of spreading them around the whole circle.
+    var mgrRadius = Math.min(width, height) * 0.22;
+    var tradeRadius = Math.min(width, height) * 0.42;
 
     var otherManagers = graphNodes.filter(function(n){ return n.type === 'manager' && n.name !== managerName; });
     var tradeNodesArr = graphNodes.filter(function(n){ return n.type === 'trade'; });
@@ -1198,13 +1204,19 @@ function renderExplorer() {
     otherManagers.sort(function(a,b){ return (sharedCount[b.name]||0) - (sharedCount[a.name]||0); });
     tradeNodesArr.sort(function(a,b){ return a.data.season - b.data.season; });
 
-    var ring = otherManagers.concat(tradeNodesArr);
     var targets = {};
     targets[center.id] = { x: cx, y: cy };
-    var angleStep = (2 * Math.PI) / Math.max(ring.length, 1);
-    ring.forEach(function(n, i){
-      var angle = -Math.PI/2 + i * angleStep;
-      targets[n.id] = { x: cx + radius*Math.cos(angle), y: cy + radius*Math.sin(angle) };
+
+    var mgrAngleStep = (2 * Math.PI) / Math.max(otherManagers.length, 1);
+    otherManagers.forEach(function(n, i){
+      var angle = -Math.PI/2 + i * mgrAngleStep;
+      targets[n.id] = { x: cx + mgrRadius*Math.cos(angle), y: cy + mgrRadius*Math.sin(angle) };
+    });
+
+    var tradeAngleStep = (2 * Math.PI) / Math.max(tradeNodesArr.length, 1);
+    tradeNodesArr.forEach(function(n, i){
+      var angle = -Math.PI/2 + i * tradeAngleStep;
+      targets[n.id] = { x: cx + tradeRadius*Math.cos(angle), y: cy + tradeRadius*Math.sin(angle) };
     });
 
     sim.stop();
