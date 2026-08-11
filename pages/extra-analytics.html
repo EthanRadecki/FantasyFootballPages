@@ -193,7 +193,7 @@ html { scroll-behavior:smooth; }
 .gspectrum-wrap {
   padding:2.6rem 1.5rem 2.6rem;margin-bottom:1.25rem;position:relative;
 }
-.gspectrum-axis { position:relative;height:2px; }
+.gspectrum-axis { position:relative;height:2px;margin-bottom:2.4rem; }
 .gspectrum-band {
   position:absolute;top:-9px;height:20px;border-radius:99px;
   background:linear-gradient(90deg,rgba(156,132,156,0.08),rgba(156,132,156,0.16),rgba(156,132,156,0.08));
@@ -225,9 +225,11 @@ html { scroll-behavior:smooth; }
   transform:translateX(-0.75px);z-index:1;
 }
 .gspectrum-extreme-lbl {
-  position:absolute;top:20px;transform:translateX(-50%);
-  font-size:0.58rem;font-weight:700;white-space:nowrap;
+  position:absolute;top:22px;
+  font-size:0.58rem;font-weight:700;white-space:nowrap;max-width:45vw;
 }
+.gspectrum-extreme-lbl.align-start { left:6px; text-align:left; }
+.gspectrum-extreme-lbl.align-end   { right:6px; text-align:right; }
 .gspectrum-pin {
   position:absolute;top:0;transform:translate(-50%,-50%);
   cursor:pointer;z-index:2;
@@ -343,9 +345,8 @@ html { scroll-behavior:smooth; }
   font-family:var(--font-display);font-size:0.82rem;font-weight:700;
   text-align:center;padding:0.15rem 0.5rem;border-radius:99px;
   background:rgba(var(--accent-rgb),0.12);white-space:nowrap;line-height:1.35;
+  color:var(--text);
 }
-.gg-score-bubble.gg-close { color:var(--red); }
-.gg-score-bubble.gg-blow  { color:var(--green); }
 .gg-opp-stats { text-align:right; }
 .gg-stat-row { font-size:0.68rem;color:var(--text-mid); }
 .gg-stat-row b { color:var(--text);font-weight:600; }
@@ -496,7 +497,7 @@ html { scroll-behavior:smooth; }
     <div class="section-title">Who had to earn it?</div>
     <div class="callout glass">
       <div class="callout-label">How It Works</div>
-      <p>Each title run is scored on three things: how many points opponents actually scored against the champion, how strong those opponents were across the regular season, and whether they were hot or cold in the five games right before facing the champion. Every score is measured against the full history of the league, not just these six runs, so the scale stays fixed as new champions get added. Runs with fewer playoff games get a small statistical adjustment so a three-game path isn't judged unevenly against a four-game path. Weighted 70/15/15, heavily toward how tough the games themselves actually were, and mapped to a fixed 0-100 scale every year.</p>
+      <p>Each title run is scored on three things: <strong>points opponents actually scored</strong> against the champion, <strong>how strong those opponents were</strong> across the regular season, and whether they were <strong>hot or cold</strong> in the five games right before facing the champion. Every score is measured against the <strong>full history of the league</strong>, so the scale stays fixed as new champions get added. Three-game and four-game runs get a small statistical adjustment to compare fairly. <strong>Weighted 70/15/15</strong>, heavily toward how tough the games themselves actually were.</p>
     </div>
 
     <div class="gauntlet-legend">
@@ -525,7 +526,7 @@ html { scroll-behavior:smooth; }
     <div class="gauntlet-stretch-intro">
       <div class="section-title" style="font-size:1.1rem;margin-top:1.75rem;">How hard is hard? The same math, every 3-week stretch ever.</div>
       <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;">
-        A title run is really just a 3-game (or 4-game) stretch of opponents. The exact same Gauntlet Score methodology applies to <em>any</em> manager's any 3 consecutive real weeks, not just playoff runs. Applying it to all 575 such stretches in league history (one known forfeit week excluded, same as the rest of the site), deduplicated so overlapping week-ranges from the same manager-season only count once, surfaces the true scale: even the single hardest stretch ever only reaches 75.2, because averaging three games' worth of opponent quality mechanically pulls the result toward the middle. That compression is what makes the scale honest. It's also why a title run's score can look modest in isolation while still ranking among the toughest stretches in league history.
+        A title run is really just a 3-game (or 4-game) stretch of opponents. The same Gauntlet Score methodology applies to <strong>any manager's any 3 consecutive real weeks</strong>, not just playoff runs. Applied to <strong>all 575 such stretches</strong> in league history (one known forfeit week excluded), deduplicated to one stretch per manager-season, it reveals the true scale: even the <strong>single hardest stretch ever only reaches 75.2</strong>, because averaging three games' worth of opponent quality mechanically pulls the result toward the middle. That compression is what makes the scale honest, and it's why a title run's score can look modest in isolation while still ranking among the toughest ever.
       </p>
     </div>
 
@@ -1583,13 +1584,16 @@ function shortName(n) {
     spectrum.appendChild(lbl);
   });
 
-  // Reference lines for the hardest/easiest of all 579 three-week
+  // Reference lines for the hardest/easiest of all 575 three-week
   // stretches ever recorded (see the stretch section below), so the six
   // champions' scores can be read against the true scale, not just each
-  // other.
+  // other. Labels anchor to whichever edge they're nearest (both values
+  // sit close to the ends of the axis already) rather than centering on
+  // the exact value -- centered text near an edge clips on narrow
+  // screens, edge-anchored text never does, regardless of viewport width.
   [
-    { val: 75.16, label: 'Hardest stretch ever', color: '#a85a5a' },
-    { val: 28.73, label: 'Easiest stretch ever', color: '#5a8a6a' },
+    { val: 75.16, label: 'Hardest stretch ever', color: '#a85a5a', align: 'end' },
+    { val: 28.73, label: 'Easiest stretch ever', color: '#5a8a6a', align: 'start' },
   ].forEach(function(ext) {
     var line = document.createElement('div');
     line.className = 'gspectrum-extreme';
@@ -1597,8 +1601,7 @@ function shortName(n) {
     line.style.background = 'repeating-linear-gradient(180deg,' + ext.color + ' 0 3px,transparent 3px 6px)';
     spectrum.appendChild(line);
     var elbl = document.createElement('div');
-    elbl.className = 'gspectrum-extreme-lbl';
-    elbl.style.left = specPct(ext.val) + '%';
+    elbl.className = 'gspectrum-extreme-lbl align-' + ext.align;
     elbl.style.color = ext.color;
     elbl.textContent = ext.label;
     spectrum.appendChild(elbl);
@@ -1706,7 +1709,6 @@ function shortName(n) {
     inner.className = 'gauntlet-games-inner';
     inner.innerHTML = '<div class="gg-round-label">Playoff results</div>';
     c.games.forEach(function(g) {
-      var closeClass = g.m < 5 ? 'gg-close' : g.m > 30 ? 'gg-blow' : '';
       var ms = (g.m > 0 ? '+' : '') + g.m;
       var domG = (g.dom >= 0 ? '+' : '') + g.dom;
       var streakG = (g.streak >= 0 ? '+' : '') + g.streak;
@@ -1714,7 +1716,7 @@ function shortName(n) {
       row.className = 'gg-game-row';
       row.innerHTML = '<div><div class="gg-opp-name">vs. ' + g.opp + '</div>'
         + '<div class="gg-opp-team">' + g.ot + ' &bull; ' + g.r + '</div></div>'
-        + '<div class="gg-score-bubble ' + closeClass + '">' + g.cs + '&ndash;' + g.os
+        + '<div class="gg-score-bubble">' + g.cs + '&ndash;' + g.os
         + '<br><span style="font-size:0.68rem;font-weight:400">' + ms + '</span></div>'
         + '<div class="gg-opp-stats">'
         + '<div class="gg-stat-row">Reg PPG <b>' + g.rppg + '</b></div>'
@@ -1776,7 +1778,6 @@ function shortName(n) {
       inner.className = 'gauntlet-games-inner';
       inner.innerHTML = '<div class="gg-round-label">Opponents faced</div>';
       s.games.forEach(function(g) {
-        var closeClass = Math.abs(g.margin) < 5 ? 'gg-close' : Math.abs(g.margin) > 30 ? 'gg-blow' : '';
         var ms = (g.margin > 0 ? '+' : '') + g.margin;
         var domG = (g.opp_dom >= 0 ? '+' : '') + g.opp_dom;
         var surgeG = (g.opp_surge >= 0 ? '+' : '') + g.opp_surge;
@@ -1784,7 +1785,7 @@ function shortName(n) {
         row.className = 'gg-game-row';
         row.innerHTML = '<div><div class="gg-opp-name">vs. ' + g.opponent + '</div>'
           + '<div class="gg-opp-team">' + g.week + '</div></div>'
-          + '<div class="gg-score-bubble ' + closeClass + '">' + g.own_score + '&ndash;' + g.opp_score
+          + '<div class="gg-score-bubble">' + g.own_score + '&ndash;' + g.opp_score
           + '<br><span style="font-size:0.68rem;font-weight:400">' + ms + '</span></div>'
           + '<div class="gg-opp-stats">'
           + '<div class="gg-stat-row">Streak <b>' + surgeG + '</b></div>'
