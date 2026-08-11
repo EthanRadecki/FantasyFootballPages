@@ -1,0 +1,92 @@
+{
+  "season": 2025,
+  "round": "Quarterfinals",
+  "round_label": "Round 1",
+  "overview": "Well, it's finally here — the 2025 Preach Fantasy Playoffs kick off today, and with that comes predictions for each first-round matchup. Before getting into predictions, a look back at some league history: the league has yet to have a repeat champion in its first 5 seasons, but that very well may change this season — every champion from 2020 to 2024 has officially made the 2025 playoffs, so there's definitely a good chance. There are also a couple of playoff rematches this round: Ryan and Ethan face off in Round 1 for the third time (also met in '20 and '23), and Cole and Anthony meet in Round 1 for a second time (also met in '20).",
+  "matchups": [
+    {
+      "matchup_label": "1 vs 8",
+      "higher_seed": {
+        "seed": 1,
+        "team": "A$AP Monke",
+        "manager": "Ben Castaldo",
+        "projection": 122.4,
+        "regular_season_avg": 114.9,
+        "record": "11-3"
+      },
+      "lower_seed": {
+        "seed": 8,
+        "team": "Worthy of a Warren(t)",
+        "manager": "Charlie Gorman",
+        "projection": 114.5,
+        "regular_season_avg": 109.0,
+        "record": "7-7"
+      },
+      "pick": "A$AP Monke",
+      "blurb": "The first matchup of the 2025 Preach Fantasy Playoffs is between the 1st and 8th seeds, and honestly this might be a tighter matchup than we've seen from prior years' 1v8. Since 2022, the 1v8 matchup has been decided by about 41 points on average, so A$AP should have the upper hand here. However, WoaW has averaged about 124 points per game the last three weeks while A$AP averaged 113 in the same period. <strong class=\"hl-stat\">My verdict: give me A$AP to advance.</strong>"
+    },
+    {
+      "matchup_label": "2 vs 7",
+      "higher_seed": {
+        "seed": 2,
+        "team": "Shakir to Death",
+        "manager": "Cole Maney",
+        "projection": 126.8,
+        "regular_season_avg": 129.6,
+        "record": "9-5"
+      },
+      "lower_seed": {
+        "seed": 7,
+        "team": "Rolls With Butter",
+        "manager": "Anthony Kelly",
+        "projection": 115.9,
+        "regular_season_avg": 115.3,
+        "record": "7-7"
+      },
+      "pick": "Shakir to Death",
+      "blurb": "We witnessed a top-4 season from a PF/G perspective, and it would be a shame if that dominance ended early, but I do think RWB has a shot here in Round 1. The stats may not show it, but STD has had two sub-90 performances in the past 5 weeks, while RWB has stayed about that mark all season. It may be unlikely, but there's a chance the 7th seed knocks out the 2nd seed. <strong class=\"hl-stat\">My verdict: although I like RWB's chances, I still think STD will get the job done and advance.</strong>"
+    },
+    {
+      "matchup_label": "3 vs 6",
+      "higher_seed": {
+        "seed": 3,
+        "team": "Make Fantasy Great Again",
+        "manager": "Ryan P McQuaid",
+        "projection": 120.3,
+        "regular_season_avg": 110.1,
+        "record": "10-4"
+      },
+      "lower_seed": {
+        "seed": 6,
+        "team": "Oh He Likes Cooking!",
+        "manager": "Ethan Radecki",
+        "projection": 101.5,
+        "regular_season_avg": 116.1,
+        "record": "7-7"
+      },
+      "pick": "Make Fantasy Great Again",
+      "blurb": "The final matchup of the 1st round, and with that comes the biggest difference in projections between the two teams. However, MFGA has looked very beatable the past 6 weeks, averaging around 94 points per game in that period, which makes this matchup very intriguing. Still, Cooking's success will largely rely on <mark class=\"hl-player\">Michael Wilson</mark>, and with the Houston matchup I don't see the magic continuing. <strong class=\"hl-stat\">My verdict: despite MFGA's recent poor play, I think they'll do just enough to move on.</strong>"
+    },
+    {
+      "matchup_label": "4 vs 5",
+      "higher_seed": {
+        "seed": 4,
+        "team": "Station Grits",
+        "manager": "Baylen Slansky",
+        "projection": 116.9,
+        "regular_season_avg": 117.2,
+        "record": "9-5"
+      },
+      "lower_seed": {
+        "seed": 5,
+        "team": "LaPorta Potty",
+        "manager": "Carmine Pittelli Jr.",
+        "projection": 108.3,
+        "regular_season_avg": 113.4,
+        "record": "9-5"
+      },
+      "pick": "Station Grits",
+      "blurb": "In theory the 4v5 matchup should be the closest one in the first round, but I really don't think that'll be the case this year. LP started the season strong, going 6-2 in the first 8 weeks, but then injuries came along and they haven't left. On the other hand, Grits has gone 4-2 in the past 6 weeks with two monster performances in Weeks 13 and 14. <strong class=\"hl-stat\">My verdict: I think the hot hand gets the win in Round 1, so give me Grits to move on.</strong>"
+    }
+  ]
+}
