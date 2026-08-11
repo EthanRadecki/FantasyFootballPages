@@ -260,7 +260,7 @@
       <svg id="network-svg" style="width:100%;height:100%;"></svg>
       <div id="network-tooltip" style="position:absolute;pointer-events:none;opacity:0;background:rgba(30,26,20,0.92);color:#f5f0e8;padding:0.55rem 0.75rem;border-radius:6px;font-size:0.78rem;max-width:260px;line-height:1.5;transition:opacity 0.1s;z-index:10;"></div>
     </div>
-    <p class="metric-note">Line thickness is how many times two managers have traded. Hover a manager to see their most-traded partners, positions exchanged, and who tends to come out ahead. Hover a line for the exact breakdown between those two.</p>
+    <p class="metric-note">Line thickness is how many times two managers have traded. Hover a manager to see their most-traded partners, positions exchanged, and who tends to come out ahead. Hover a line for the exact breakdown between those two. <strong>Click any manager to pin them at the center</strong> with everyone else arranged evenly around them. Drag any node afterward to move it freely again, or <a href="#" onclick="resetNetworkLayout();return false;" style="color:var(--accent);font-weight:700;">reset the layout</a> to go back to the free-floating view.</p>
   </div>
 
   <div class="section-label" style="margin-top:2rem;" id="trade-explorer">Trade Explorer</div>
@@ -655,9 +655,6 @@ function renderWinPct() {
 }
 
 
-var MANAGER_COLORS = ['#8a5a4a','#5a7a8a','#8a7a4a','#6a5a8a','#4a8a6a','#8a4a6a','#4a6a8a',
-                      '#8a6a4a','#5a8a7a','#7a5a8a','#8a5a7a','#5a6a8a','#6a8a5a','#8a7a5a'];
-
 function renderNetwork() {
   var container = document.getElementById('network-container');
   var svg = d3.select('#network-svg');
@@ -666,7 +663,6 @@ function renderNetwork() {
   svg.attr('viewBox', [0,0,width,height]);
   svg.selectAll('*').remove();
 
-  var colorScale = d3.scaleOrdinal().domain(NETWORK_DATA.nodes.map(function(n){return n.id;})).range(MANAGER_COLORS);
   var radiusScale = d3.scaleSqrt().domain([0, d3.max(NETWORK_DATA.nodes, function(d){return d.trades;})]).range([10, 34]);
   var widthScale = d3.scaleSqrt().domain([1, d3.max(NETWORK_DATA.edges, function(d){return d.n;})]).range([1, 9]);
 
@@ -751,7 +747,8 @@ function renderNetwork() {
     .on('mouseout', function(){
       tooltip.style('opacity', 0);
       linkSel.attr('stroke-opacity', 0.35);
-    });
+    })
+    .on('click', function(event, d){ centerOnManager(d.id); });
 
   nodeGroup.each(function(d) {
     var g = d3.select(this);
@@ -787,6 +784,64 @@ function renderNetwork() {
       .attr('x2', function(d){return d.target.x;}).attr('y2', function(d){return d.target.y;});
     nodeGroup.attr('transform', function(d){ return 'translate('+d.x+','+d.y+')'; });
   });
+
+  // Click a manager to pin them at the center and arrange everyone else
+  // evenly around them in a circle, ordered by how many times they've
+  // traded with the center (strongest partnerships land near the top).
+  // Nodes stay draggable afterward -- dragging any node already releases
+  // its pin via the existing drag handlers above, so the free-form
+  // physics is still there whenever you want it, just not the default
+  // view anymore for whatever you haven't touched.
+  function centerOnManager(managerId) {
+    var center = nodes.find(function(n){ return n.id === managerId; });
+    if (!center) return;
+
+    var cx = width / 2, cy = height / 2;
+    var radius = Math.min(width, height) * 0.36;
+
+    var tradeCountWith = {};
+    NETWORK_DATA.edges.forEach(function(e){
+      if (e.a === managerId) tradeCountWith[e.b] = e.n;
+      else if (e.b === managerId) tradeCountWith[e.a] = e.n;
+    });
+    var others = nodes.filter(function(n){ return n.id !== managerId; })
+      .sort(function(a,b){ return (tradeCountWith[b.id]||0) - (tradeCountWith[a.id]||0); });
+
+    var targets = {};
+    targets[managerId] = { x: cx, y: cy };
+    var angleStep = (2 * Math.PI) / Math.max(others.length, 1);
+    others.forEach(function(n, i){
+      var angle = -Math.PI/2 + i * angleStep;
+      targets[n.id] = { x: cx + radius*Math.cos(angle), y: cy + radius*Math.sin(angle) };
+    });
+
+    simulation.stop();
+    var duration = 700;
+    var starts = nodes.map(function(n){ return { n: n, x: n.x, y: n.y }; });
+    var timer = d3.timer(function(elapsed){
+      var t = Math.min(elapsed / duration, 1);
+      var e = d3.easeCubicInOut(t);
+      starts.forEach(function(s){
+        var target = targets[s.n.id];
+        s.n.x = s.x + (target.x - s.x) * e;
+        s.n.y = s.y + (target.y - s.y) * e;
+      });
+      linkSel.attr('x1', function(d){return d.source.x;}).attr('y1', function(d){return d.source.y;})
+             .attr('x2', function(d){return d.target.x;}).attr('y2', function(d){return d.target.y;});
+      nodeGroup.attr('transform', function(d){ return 'translate('+d.x+','+d.y+')'; });
+      if (t >= 1) {
+        timer.stop();
+        nodes.forEach(function(n){ var tgt = targets[n.id]; n.fx = tgt.x; n.fy = tgt.y; });
+      }
+    });
+  }
+
+  // Escape hatch back to fully free-form physics, in case pinning
+  // everything into the radial layout isn't what's wanted anymore.
+  window.resetNetworkLayout = function(){
+    nodes.forEach(function(n){ n.fx = null; n.fy = null; });
+    simulation.alpha(1).restart();
+  };
 }
 
 /* ── Most Traded Players chart ── */
