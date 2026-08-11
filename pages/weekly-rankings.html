@@ -120,6 +120,40 @@
 .rank-card.tier-gold .rank-logo { width:56px;height:56px; }
 .rank-card.tier-gold .rank-record { font-size:1.15rem; }
 
+/* ── HISTORICAL BLURB (look-back text) ── */
+.rank-blurb-toggle {
+  display:inline-flex;align-items:center;gap:0.35rem;
+  font-size:0.72rem;font-weight:700;color:var(--accent);
+  background:none;border:none;cursor:pointer;padding:0;
+  margin-top:0.55rem;font-family:var(--font);letter-spacing:0.01em;
+}
+.rank-blurb-toggle:hover { text-decoration:underline; }
+.rank-blurb-toggle .chevron {
+  display:inline-block;transition:transform 0.2s;font-size:0.65rem;
+}
+.rank-blurb-toggle.open .chevron { transform:rotate(90deg); }
+
+.rank-blurb {
+  display:none;font-size:0.83rem;line-height:1.7;color:var(--text-mid);
+  margin-top:0.65rem;padding-top:0.65rem;max-width:52ch;
+  border-top:1px solid rgba(var(--accent-rgb),0.15);
+}
+.rank-blurb.open { display:block; }
+
+/* Inline tag styles -- reset <mark>'s default yellow, keep everything
+   tied to the page's season-themed accent so it retints automatically */
+.rank-blurb mark.hl-player {
+  background:rgba(var(--accent-rgb),0.12);color:var(--palm);
+  font-weight:700;font-style:normal;padding:0.02rem 0.32rem;
+  border-radius:3px;white-space:nowrap;
+}
+.rank-blurb strong.hl-stat { color:var(--accent);font-weight:800; }
+.rank-blurb em.hl-team { color:var(--muted);font-style:italic;font-weight:600; }
+
+@media(max-width:768px) {
+  .rank-blurb { max-width:none; }
+}
+
 /* ── EMPTY / LOADING ── */
 .empty-state { text-align:center;padding:4rem 2rem; }
 .empty-state .empty-icon { font-size:2.5rem;margin-bottom:1rem;display:block;opacity:0.3; }
@@ -356,10 +390,16 @@ function renderRankings(data) {
   // Sort worst to best (14 first) for suspense reveal
   var teams = data.teams.slice().sort(function(a, b){ return b.rank - a.rank; });
 
+  // Historical write-ups are filed a week behind the JSON snapshot they're
+  // attached to (this file's "Week N" text describes performance through
+  // the prior week), so label the look-back toggle with that earlier week.
+  var blurbWeek = data.week - 1;
+
   teams.forEach(function(t) {
     var tier     = getTierClass(t.rank);
     var lastname = LASTNAME_MAP[t.manager] || '';
     var logo     = '../images/logos/' + lastname + '.png';
+    var slug     = lastname.toLowerCase();
 
     // Sub-line: avg rank + streak
     var subParts = [];
@@ -390,11 +430,23 @@ function renderRankings(data) {
     // Logo
     html += '<img class="rank-logo" src="' + logo + '" alt="">';
 
+    // Look-back toggle + full historical write-up (blurbWeek's text, if we have it)
+    var blurbHtml = '';
+    if (t.blurb) {
+      blurbHtml = '<button class="rank-blurb-toggle" id="blurb-btn-' + slug + '" '
+                + 'onclick="toggleBlurb(\'' + slug + '\',' + blurbWeek + ')">'
+                + '<span class="chevron">&#9656;</span>'
+                + '<span class="toggle-label">Read the Week ' + blurbWeek + ' take</span>'
+                + '</button>'
+                + '<div class="rank-blurb" id="blurb-' + slug + '">' + t.blurb + '</div>';
+    }
+
     // Info
     html += '<div class="rank-info">'
           + '<div class="rank-manager">' + t.manager + '</div>'
           + (subHtml ? '<div class="rank-sub">' + subHtml + '</div>' : '')
           + (t.synopsis ? '<div class="rank-synopsis">&ldquo;' + t.synopsis + '&rdquo;</div>' : '')
+          + blurbHtml
           + '</div>';
 
     // Stats
@@ -405,6 +457,18 @@ function renderRankings(data) {
 
   html += '</div>';
   container.innerHTML = html;
+}
+
+/* ── Look-back blurb expand/collapse ─────────────────────────────
+   Historical write-up text lags the JSON snapshot by one week, so the
+   toggle always reads "Week N" for the week the text actually covers. */
+function toggleBlurb(slug, week) {
+  var blurb = document.getElementById('blurb-' + slug);
+  var btn   = document.getElementById('blurb-btn-' + slug);
+  var label = btn.querySelector('.toggle-label');
+  var isOpen = blurb.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  label.textContent = (isOpen ? 'Hide the Week ' : 'Read the Week ') + week + ' take';
 }
 
 /* ── Playoff threshold overlay (behind the lines, in front of gridlines) ── */
