@@ -11,7 +11,9 @@
       "ppg_to_date": 143.18,
       "record_to_date": "1-0",
       "last_score": 143.18,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "Potentially the best RB duo in the league in CMC and Kamara — the weakest links put up 53.9 combined.",
+      "blurb": "Has potentially the best running back duo in the league, <mark class=\"hl-player\">CMC</mark> and <mark class=\"hl-player\">Kamara</mark>, although the CMC + Mason situation could get interesting. The 'weakest' parts of this team, <mark class=\"hl-player\">Reed</mark> and <mark class=\"hl-player\">Worthy</mark>, just put up a combined <strong class=\"hl-stat\">53.9</strong> points. Expect a bounce-back game from <mark class=\"hl-player\">Murray</mark>, but <mark class=\"hl-player\">Andrews</mark> is questionable, along with kicker and D/ST showing out weekly."
     },
     {
       "manager": "Aidan Quigley",
@@ -22,7 +24,9 @@
       "ppg_to_date": 136.36,
       "record_to_date": "1-0",
       "last_score": 136.36,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "The 2nd-most points in the league even with Marvin Harrison Jr. scoring 1.4 — a slight TD-dependence concern.",
+      "blurb": "Put up the second-most points in the league this week despite <mark class=\"hl-player\">Marvin Harrison Jr.</mark> scoring 1.4 points. <mark class=\"hl-player\">Dak</mark> and <mark class=\"hl-player\">Goedert</mark> were underwhelming (QB17 + TE11), but the team was still able to dominate. The only issue is a slight chance of touchdown dependence, but that could just be how the season plays out."
     },
     {
       "manager": "Max Malich",
@@ -33,7 +37,9 @@
       "ppg_to_date": 130.48,
       "record_to_date": "1-0",
       "last_score": 130.48,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "Allen and Saquon combined for 49% of the team's points — concern brewing at QB2 depth in Buffalo.",
+      "blurb": "<mark class=\"hl-player\">Allen</mark> (QB1) and <mark class=\"hl-player\">Saquon</mark> (RB1) combined for 49% of Max's points in Week 1, and allowed for some duds from others. <mark class=\"hl-player\">Henry</mark> (vs LV) and <mark class=\"hl-player\">Keenan</mark> (vs HOU) are also set for bigger roles this week because of better game scripts. There's concern around <mark class=\"hl-player\">Daniel Jones</mark> being a competent quarterback (QB33) for <mark class=\"hl-player\">Nabers</mark>, and <mark class=\"hl-player\">Kincaid</mark>'s involvement (2 targets) in the Buffalo passing game."
     },
     {
       "manager": "Baylen Slansky",
@@ -44,7 +50,9 @@
       "ppg_to_date": 115.98,
       "record_to_date": "1-0",
       "last_score": 115.98,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "The 7th-most points in the league despite Amon-Ra's worst game ever and a below-average D/ST + K.",
+      "blurb": "<mark class=\"hl-player\">Richardson</mark> and <mark class=\"hl-player\">Achane</mark> look like potential locks for top-3 at their respective positions. Scored the 7th-most points in the league despite <mark class=\"hl-player\">Amon-Ra</mark> having one of his worst games ever, and D/ST and kicker scoring eleven points below the league average. The <mark class=\"hl-player\">Puka</mark> injury stings, but can be recovered from easily if the right moves are made."
     },
     {
       "manager": "Anthony Kelly",
@@ -55,7 +63,9 @@
       "ppg_to_date": 117.82,
       "record_to_date": "1-0",
       "last_score": 117.82,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "The 6th-most points in Week 1 without a single 25+ point performance — depth doing the heavy lifting.",
+      "blurb": "Maybe he wasn't meant to be 10th last week... Scored the sixth-most points in Week 1 despite not having a player go crazy (25+ points). If <mark class=\"hl-player\">Conner</mark> stays healthy, the RB duo of <mark class=\"hl-player\">Hall</mark> (RB13) and Conner (RB8) could be sneaky top 3. The issues with this team are that <mark class=\"hl-player\">Evans</mark> could be TD-dependent (2 in Week 1), and <mark class=\"hl-player\">Caleb</mark>/<mark class=\"hl-player\">Schultz</mark> haven't shown promise."
     },
     {
       "manager": "Brandon Hancock",
@@ -66,7 +76,9 @@
       "ppg_to_date": 112.52,
       "record_to_date": "1-0",
       "last_score": 112.52,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "The only team to not move in the rankings this week — everyone but Lamar and DK played well.",
+      "blurb": "Not going anywhere. Brandon is the only team to not shift in the rankings this week. Everyone except for <mark class=\"hl-player\">Lamar</mark> (QB5) and <mark class=\"hl-player\">DK</mark> (WR59) played well, leading to a solid week overall. <mark class=\"hl-player\">Njoku</mark>'s injury should be monitored, which leaves <mark class=\"hl-player\">Kraft</mark> as the team's TE1. <mark class=\"hl-player\">Watson</mark> was saved by a touchdown, but <mark class=\"hl-player\">Dobbins</mark> may be placed in the flex if this team has problems in the future."
     },
     {
       "manager": "Ethan Radecki",
@@ -77,7 +89,9 @@
       "ppg_to_date": 118.18,
       "record_to_date": "0-1",
       "last_score": 118.18,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "Completely smacked in Week 1 — -25 points relative to expectation, even with CMC absent for the opponent.",
+      "blurb": "Completely smacked in Week 1 (-25 points), even with his opponent not having CMC. The running backs were a huge letdown (RB23 + RB68), while the wide receivers were the opposite (WR2 + WR7). The quarterback rotation will be interesting to monitor and must be better (QB13 + QB16 + QB19). Without better all-around play, the team is capped in the 7th spot."
     },
     {
       "manager": "Deniz Bileydi",
@@ -88,7 +102,9 @@
       "ppg_to_date": 119.66,
       "record_to_date": "0-1",
       "last_score": 119.66,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "A strong Week 1 in a loss — only one touchdown across RB/WR/TE signals TD regression is coming.",
+      "blurb": "A strong showing in Week 1, despite the loss, leads to Deniz moving up a few spots, but not too high, because the D/ST combined for 33 points (20 is average). Only one touchdown scored between the running backs, wide receivers, and tight end signals some TD regression to come (hopefully). The <mark class=\"hl-player\">Ferguson</mark> injury will be tough, but <mark class=\"hl-player\">Likely</mark> is a great substitute."
     },
     {
       "manager": "Cole Maney",
@@ -99,7 +115,9 @@
       "ppg_to_date": 99.84,
       "record_to_date": "1-0",
       "last_score": 99.84,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "Jumped four spots despite missing 100 points — the RB duo looked like a true workhorse tandem.",
+      "blurb": "Jumps up four spots in the rankings despite failing to score 100 points in Week 1. Running back duo of <mark class=\"hl-player\">Walker III</mark> and <mark class=\"hl-player\">Stevenson</mark> showed workhorse ability with a combined 50 opportunities. <mark class=\"hl-player\">Bowers</mark> and <mark class=\"hl-player\">Coleman</mark> look like potential top receiving options in their respective offenses. Got extremely unlucky with D/ST and kicker this week."
     },
     {
       "manager": "Ryan P McQuaid",
@@ -110,7 +128,9 @@
       "ppg_to_date": 98.18,
       "record_to_date": "0-1",
       "last_score": 98.18,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "Goff, Terry, and Amari Cooper all no-showed in Week 1 — Rice could be a WR1 if the target share holds.",
+      "blurb": "<mark class=\"hl-player\">Goff</mark>, <mark class=\"hl-player\">Scary Terry</mark>, and <mark class=\"hl-player\">Amari Cooper</mark> did not show up in Week 1. Running backs were solid, but not incredible (RB20 + RB28), which may decrease the team's ceiling in future weeks. <mark class=\"hl-player\">Rice</mark> may be a WR1 this year if he continues to command the same target share from <mark class=\"hl-player\">Mahomes</mark> while getting into the end zone."
     },
     {
       "manager": "Quin Gegwich",
@@ -121,7 +141,9 @@
       "ppg_to_date": 110.7,
       "record_to_date": "0-1",
       "last_score": 110.7,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "Dropping 10 spots is dramatic, but Quin's no stranger to being this low — Pollard and Jacobs are the bright spots.",
+      "blurb": "Dropping 10 spots is impressive, and could be an exaggeration, but Quin is no stranger to being this low. The combination of <mark class=\"hl-player\">Jordan Love</mark> being out for a few weeks and <mark class=\"hl-player\">Brandon Aubrey</mark> being the leading scorer on this team is a bad sign. On the bright side, <mark class=\"hl-player\">Pollard</mark> looks like a legit RB2, <mark class=\"hl-player\">Jacobs</mark> is a workhorse in Green Bay, and <mark class=\"hl-player\">Engram</mark>/<mark class=\"hl-player\">Lamb</mark> are bound to have better weeks going forward."
     },
     {
       "manager": "Charlie Gorman",
@@ -132,7 +154,9 @@
       "ppg_to_date": 111.96,
       "record_to_date": "0-1",
       "last_score": 111.96,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "Kelce looks like he won't return value with more target competition — Daniels flashed top-5 QB upside.",
+      "blurb": "Showed a lack of depth at WR with <mark class=\"hl-player\">Higgins</mark> out; a big pick-me-up from the kicker won't happen every week. Running backs have top-10 weekly upside, but the rest of the team has a very low floor. <mark class=\"hl-player\">Kelce</mark> looks like he won't return value due to increased target competition. <mark class=\"hl-player\">Daniels</mark> showed weekly top-5 QB upside with his rushing ability."
     },
     {
       "manager": "Ben Castaldo",
@@ -143,7 +167,9 @@
       "ppg_to_date": 88.56,
       "record_to_date": "0-1",
       "last_score": 88.56,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "No position over 10 points besides RB2 and WR1 — a low floor most any given week.",
+      "blurb": "No position scored over 10 points this week besides RB2 and WR1, showing a low floor any given week. 2nd- and 3rd-round picks (<mark class=\"hl-player\">London</mark> + <mark class=\"hl-player\">Aiyuk</mark>) combined for <strong class=\"hl-stat\">8.3</strong> points, but they're expected to be better as their situations improve. The only reason for not being last again is that the team showed at least some promise to be decent in Week 1."
     },
     {
       "manager": "Carmine Pittelli Jr.",
@@ -154,7 +180,9 @@
       "ppg_to_date": 76.22,
       "record_to_date": "0-1",
       "last_score": 76.22,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "The RBs combined for just 7.3, and a bad Olave week signaled some real bench-depth concerns.",
+      "blurb": "Running backs didn't show any promise, combining for just <strong class=\"hl-stat\">7.3</strong> points. <mark class=\"hl-player\">Olave</mark> had a very bad week with only 2 targets, but game script called for less passing from the Saints — expect a bounce back in Week 2. Could be just a fluke game, but <mark class=\"hl-player\">Hurts</mark> finished outside the top-10 QBs."
     }
   ]
 }
