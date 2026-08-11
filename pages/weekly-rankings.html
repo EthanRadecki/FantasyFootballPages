@@ -259,22 +259,65 @@ var trajectoryChart = null;
 var playoffOddsChart = null;
 var playoffOddsData = null;  // loaded from playoff_odds.json, keyed by season
 
-// One color per manager (consistent across seasons)
+// Per-season theme color, text-safe darkened variants of the same
+// palette used for season pills elsewhere on the site (managers.html,
+// waiver-value.html, etc.) -- the raw pill colors are too light to use
+// as the page's live --accent (which renders as solid text/borders in
+// a lot of places), same fix as the manager colors below.
+var SEASON_THEME_COLORS = {
+  2020: '#77676f', 2021: '#5f6984', 2022: '#916032',
+  2023: '#9a5858', 2024: '#5c7172', 2025: '#617044', 2026: '#53735c'
+};
+
+function hexToRgbString(hex) {
+  hex = hex.replace('#', '');
+  var r = parseInt(hex.substring(0,2), 16);
+  var g = parseInt(hex.substring(2,4), 16);
+  var b = parseInt(hex.substring(4,6), 16);
+  return r + ',' + g + ',' + b;
+}
+
+// Retints the whole page to the selected season's color by overriding
+// the site's shared --accent/--accent-rgb/--accent-glow variables --
+// everything already using var(--accent) (nav highlights, section
+// labels, filter selects, table headers, etc.) follows automatically,
+// no need to touch those rules individually. Falls back to the site's
+// default neutral accent for any season not in the map.
+function applySeasonTheme(season) {
+  var root = document.documentElement;
+  var color = SEASON_THEME_COLORS[season];
+  if (!color) {
+    root.style.removeProperty('--accent');
+    root.style.removeProperty('--accent-rgb');
+    root.style.removeProperty('--accent-glow');
+    return;
+  }
+  var rgb = hexToRgbString(color);
+  root.style.setProperty('--accent', color);
+  root.style.setProperty('--accent-rgb', rgb);
+  root.style.setProperty('--accent-glow', 'rgba(' + rgb + ',0.18)');
+}
+
+// One color per manager (consistent across seasons). Same text-safe
+// variants used on managers.html/trade-value.html -- the raw brand
+// colors (Cole's peach, Ryan's gold, etc.) are too light to read as thin
+// chart lines on this page's background, same issue as using them as
+// solid text elsewhere on the site.
 var MANAGER_COLORS = {
-  'Aidan Quigley':       '#9c949c',
-  'Andrew Root':         '#4a7fa8',
-  'Anthony Kelly':       '#5a8a6a',
-  'Baylen Slansky':      '#d4af37',
-  'Ben Castaldo':        '#b07050',
-  'Brandon Hancock':     '#8878a8',
-  'Carmine Pittelli Jr.':'#c04a4a',
-  'Charlie Gorman':      '#4a9aa8',
-  'Cole Maney':          '#a8884a',
-  'Deniz Bileydi':       '#7a6aa8',
-  'Ethan Radecki':       '#4a8a5a',
-  'Max Malich':          '#a84a7a',
-  'Quin Gegwich':        '#5a7aa8',
-  'Ryan P McQuaid':      '#c07840',
+  'Aidan Quigley':       '#c53016',
+  'Andrew Root':         '#406d93',
+  'Anthony Kelly':       '#7f6647',
+  'Baylen Slansky':      '#7163a9',
+  'Ben Castaldo':        '#404c5b',
+  'Brandon Hancock':     '#416cab',
+  'Carmine Pittelli Jr.':'#541821',
+  'Charlie Gorman':      '#785ca9',
+  'Cole Maney':          '#ba4b15',
+  'Deniz Bileydi':       '#68733c',
+  'Ethan Radecki':       '#985e0f',
+  'Max Malich':          '#696969',
+  'Quin Gegwich':        '#ad1f15',
+  'Ryan P McQuaid':      '#7f6921',
 };
 
 /* ── Tier ─────────────────────────────────────────────────────── */
@@ -663,6 +706,7 @@ function onSeasonChange() {
       weekSel.appendChild(opt);
     });
   }
+  applySeasonTheme(season);
   loadRankings();
 }
 
