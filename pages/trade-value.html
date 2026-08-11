@@ -38,6 +38,36 @@
 }
 .heatmap-season-pill:hover { background:var(--accent-glow); }
 .heatmap-season-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
+
+/* Season color swatches -- same palette used on managers.html */
+.heatmap-season-pill.year-swatch-btn { position:relative;padding-left:1.6rem; }
+.heatmap-season-pill.year-swatch-btn::before {
+  content:'';position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);
+  width:7px;height:7px;border-radius:50%;background:var(--swatch-color,var(--accent));
+}
+.heatmap-season-pill.year-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.heatmap-season-pill.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.season-pill {
+  display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
+  font-size:0.68rem;font-weight:700;color:#fff;
+}
+
+/* Position color swatches -- same treatment, using the pos-badge palette */
+.heatmap-season-pill.pos-swatch-btn { position:relative;padding-left:1.6rem; }
+.heatmap-season-pill.pos-swatch-btn::before {
+  content:'';position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);
+  width:7px;height:7px;border-radius:50%;background:var(--swatch-color,var(--accent));
+}
+.heatmap-season-pill.pos-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.heatmap-season-pill.pos-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
 .multi-badge {
   display:inline-block;font-size:0.62rem;font-weight:700;color:#4a7fa8;
@@ -368,7 +398,8 @@ function renderQuadPills() {
   var html = '';
   keys.forEach(function(k) {
     var label = k === 'career' ? 'Career' : k;
-    html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+'" onclick="setQuadFilter(\''+k+'\', this)">'+label+'</button>';
+    var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
+    html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="setQuadFilter(\''+k+'\', this)">'+label+'</button>';
   });
   el.innerHTML = html;
 }
@@ -779,6 +810,17 @@ var POS_BADGE_CLASS = {
   'QB': 'pos-qb', 'RB': 'pos-rb', 'WR': 'pos-wr',
   'TE': 'pos-te', 'K': 'pos-k', 'D/ST': 'pos-dst',
 };
+// Season colors -- same palette used on managers.html.
+var SEASON_COLORS = {
+  2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
+  2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#6d9679'
+};
+// Position colors (solid hex, for filter-pill swatches) -- same palette
+// as the canonical .pos-badge system and POS_BAR_COLOR above.
+var POSITION_COLORS = {
+  QB: '#983a3a', RB: '#4a7a4a', WR: '#3a6f98',
+  TE: '#a07010', K: '#6a6460', 'D/ST': '#504840'
+};
 
 function renderMostTradedPosPills() {
   var el = document.getElementById('most-traded-pos-pills');
@@ -790,7 +832,8 @@ function renderMostTradedPosPills() {
 
   var html = '<button class="heatmap-season-pill active" onclick="setMostTradedPosFilter(\'all\', this)">All Positions</button>';
   positions.forEach(function(p) {
-    html += '<button class="heatmap-season-pill" onclick="setMostTradedPosFilter(\'' + p + '\', this)">' + p + '</button>';
+    var swatch = POSITION_COLORS[p] ? ' pos-swatch-btn" style="--swatch-color:' + POSITION_COLORS[p] + ';' : '';
+    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setMostTradedPosFilter(\'' + p + '\', this)">' + p + '</button>';
   });
   el.innerHTML = html;
 }
@@ -858,9 +901,10 @@ function renderMostTraded() {
 var explorerState = { season: 'all', type: 'all', managerA: 'any', managerB: 'any' };
 var explorerSimulation = null;
 
-function explorerPill(container, label, value, isActive, onClick) {
+function explorerPill(container, label, value, isActive, onClick, swatchColor) {
   var btn = document.createElement('div');
-  btn.className = 'heatmap-season-pill' + (isActive ? ' active' : '');
+  btn.className = 'heatmap-season-pill' + (isActive ? ' active' : '') + (swatchColor ? ' year-swatch-btn' : '');
+  if (swatchColor) btn.style.setProperty('--swatch-color', swatchColor);
   btn.textContent = label;
   btn.addEventListener('click', onClick);
   container.appendChild(btn);
@@ -874,7 +918,7 @@ function renderExplorerFilters() {
   seasonEl.innerHTML = '';
   explorerPill(seasonEl, 'All Seasons', 'all', explorerState.season==='all', function(){ explorerState.season='all'; renderExplorerFilters(); renderExplorer(); });
   seasons.forEach(function(s){
-    explorerPill(seasonEl, s, s, explorerState.season===s, function(){ explorerState.season=s; renderExplorerFilters(); renderExplorer(); });
+    explorerPill(seasonEl, s, s, explorerState.season===s, function(){ explorerState.season=s; renderExplorerFilters(); renderExplorer(); }, SEASON_COLORS[s]);
   });
 
   var typeEl = document.getElementById('explorer-type-pills');
@@ -1050,7 +1094,8 @@ function renderTradesSeasonPills() {
   var seasons = [...new Set(TRADES.map(function(t){return t.s;}))].sort();
   var html = '<button class="heatmap-season-pill active" onclick="setTradesSeasonFilter(\'all\', this)">All Seasons</button>';
   seasons.forEach(function(s) {
-    html += '<button class="heatmap-season-pill" onclick="setTradesSeasonFilter('+s+', this)">'+s+'</button>';
+    var swatch = SEASON_COLORS[s] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[s] + ';' : '';
+    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setTradesSeasonFilter('+s+', this)">'+s+'</button>';
   });
   el.innerHTML = html;
 }
@@ -1075,9 +1120,10 @@ function renderTradesTable() {
     var fitBg = gradientColor(d.fit, FIT_SCALE.min, FIT_SCALE.max, true);
     var necBg = d.nec === null ? null : gradientColor(d.nec, NEC_SCALE.min, NEC_SCALE.max, true);
     var necDisplay = d.nec === null ? '&mdash;' : d.nec.toFixed(1);
+    var seasonColor = SEASON_COLORS[d.s] || 'var(--muted)';
     html += '<tr>'
       +'<td class="tv-rank">'+(i+1)+'</td>'
-      +'<td>'+d.s+(d.multi ? '<span class="multi-badge">MULTI</span>' : '')+'</td>'
+      +'<td><span class="season-pill" style="background:'+seasonColor+';">'+d.s+'</span>'+(d.multi ? '<span class="multi-badge">MULTI</span>' : '')+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.m+'</td>'
       +'<td class="got-txt">'+d.got.join(', ')+'</td>'
       +'<td class="gave-txt">'+d.gave.join(', ')+'</td>'

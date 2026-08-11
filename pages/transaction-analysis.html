@@ -9,16 +9,57 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <style>
-.subpage-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-top:1rem; }
+/* ── STAT GRID (replaces the old inline-bolded-numbers callout) ── */
+.txn-stat-grid {
+  display:grid;grid-template-columns:repeat(5,1fr);gap:0.6rem;
+  margin-bottom:1rem;
+}
+.txn-stat {
+  padding:1.1rem 0.75rem;text-align:center;
+}
+.txn-stat .stat-value {
+  font-family:var(--font-display);font-size:1.7rem;font-weight:900;
+  color:var(--palm);line-height:1;margin-bottom:0.3rem;
+}
+.txn-stat .stat-label {
+  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.09em;
+  color:var(--muted);font-weight:600;line-height:1.3;
+}
+.txn-methodology {
+  font-size:0.76rem;color:var(--muted);line-height:1.6;
+  padding-top:0.9rem;border-top:1px solid rgba(var(--accent-rgb),0.14);
+}
+.txn-methodology strong { color:var(--text-mid); }
+@media(max-width:900px) { .txn-stat-grid { grid-template-columns:repeat(3,1fr); } }
+@media(max-width:600px) { .txn-stat-grid { grid-template-columns:repeat(2,1fr); } }
+
+/* ── SUB-ANALYSIS CARDS ── */
+.subpage-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:0.85rem;margin-top:1rem; }
 .subpage-card {
   text-decoration:none;color:var(--text);
-  padding:1.5rem;border-left:3px solid var(--accent);transition:all 0.25s;
+  padding:1.65rem 1.5rem;transition:all 0.2s;
+  display:flex;flex-direction:column;
 }
-.subpage-card:hover { transform:translateY(-2px); }
-.subpage-card h3 { font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--palm);margin-bottom:0.3rem; }
-.subpage-card p { font-size:0.78rem;color:var(--muted);line-height:1.5; }
-.subpage-card.coming-soon { opacity:0.55;pointer-events:none; }
-.subpage-card .card-arrow { display:inline-block;margin-top:0.6rem;font-size:0.75rem;font-weight:600;color:var(--accent); }
+.subpage-card:hover {
+  transform:translateY(-3px);
+  border-color:rgba(var(--accent-rgb),0.4);
+  box-shadow:0 8px 28px var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.subpage-card-icon {
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--accent-glow);color:var(--accent);
+  margin-bottom:0.9rem;
+}
+.subpage-card-icon svg { width:20px;height:20px; }
+.subpage-card h3 { font-family:var(--font-display);font-size:1.05rem;font-weight:800;color:var(--palm);margin-bottom:0.35rem; }
+.subpage-card p { font-size:0.8rem;color:var(--muted);line-height:1.55;flex-grow:1; }
+.subpage-card .card-arrow {
+  display:inline-flex;align-items:center;gap:0.3rem;
+  margin-top:0.9rem;font-size:0.75rem;font-weight:700;color:var(--accent);
+  transition:gap 0.2s;
+}
+.subpage-card:hover .card-arrow { gap:0.5rem; }
 @media(max-width:768px) {
   .subpage-grid { grid-template-columns:1fr; }
 }
@@ -87,23 +128,65 @@
 
   <div class="callout glass">
     <div class="callout-label">About This Data</div>
-    <p>This covers everything after the draft: <strong>adds</strong>, <strong>drops</strong>, <strong>trades</strong>, and weekly lineup decisions. Six seasons (2020-2025) add up to <strong>1,360 draft picks</strong>, <strong>2,162 waiver/free agent adds</strong>, <strong>2,165 drops</strong>, and <strong>871 trade line-items</strong> across <strong>150 real trades</strong>. Thomas Sullivan and William Serafin (2020 only) are excluded, same as the rest of the site. Playoff weeks only count real bracket games. Consolation weeks are excluded.</p>
+    <div class="txn-stat-grid">
+      <div class="txn-stat">
+        <div class="stat-value">1,360</div>
+        <div class="stat-label">Draft Picks</div>
+      </div>
+      <div class="txn-stat">
+        <div class="stat-value">2,162</div>
+        <div class="stat-label">Waiver / FA Adds</div>
+      </div>
+      <div class="txn-stat">
+        <div class="stat-value">2,165</div>
+        <div class="stat-label">Drops</div>
+      </div>
+      <div class="txn-stat">
+        <div class="stat-value">871</div>
+        <div class="stat-label">Trade Line-Items</div>
+      </div>
+      <div class="txn-stat">
+        <div class="stat-value">150</div>
+        <div class="stat-label">Real Trades</div>
+      </div>
+    </div>
+    <p class="txn-methodology">This covers everything after the draft: <strong>adds</strong>, <strong>drops</strong>, <strong>trades</strong>, and weekly lineup decisions across six seasons (2020&ndash;2025). Thomas Sullivan and William Serafin (2020 only) are excluded, same as the rest of the site. Playoff weeks only count real bracket games &mdash; consolation weeks are excluded.</p>
   </div>
 
   <div class="section-label" style="margin-top:1rem;">Explore The Data</div>
   <div class="section-title">Pick a sub-analysis below.</div>
   <div class="subpage-grid">
     <a href="lineup-efficiency.html" class="subpage-card glass">
+      <div class="subpage-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="3.5" height="10"></rect>
+          <rect x="10.25" y="6" width="3.5" height="14"></rect>
+          <rect x="16.5" y="13" width="3.5" height="7"></rect>
+        </svg>
+      </div>
       <h3>Lineup Efficiency</h3>
       <p>Actual points started vs. the best possible lineup every roster could have set, week by week.</p>
       <span class="card-arrow">View analysis &#8594;</span>
     </a>
     <a href="waiver-value.html" class="subpage-card glass">
+      <div class="subpage-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"></circle>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+      </div>
       <h3>Waiver Wire Value</h3>
       <p><strong>Points per week rostered</strong> for every pickup, 2020-2025.</p>
       <span class="card-arrow">View analysis &#8594;</span>
     </a>
     <a href="trade-value.html" class="subpage-card glass">
+      <div class="subpage-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 7 H17 M17 7 L14 4 M17 7 L14 10"></path>
+          <path d="M17 17 H7 M7 17 L10 14 M7 17 L10 20"></path>
+        </svg>
+      </div>
       <h3>Trade Value</h3>
       <p>Every real trade, graded on <strong>Trade Grade</strong>, <strong>Realized Gains</strong>, <strong>Fit</strong>, and <strong>Necessity</strong>, combined into one QUAD score.</p>
       <span class="card-arrow">View analysis &#8594;</span>

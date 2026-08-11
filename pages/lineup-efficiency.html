@@ -40,6 +40,24 @@
 }
 .heatmap-season-pill:hover { background:var(--accent-glow); }
 .heatmap-season-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
+
+/* Season color swatches -- same palette used on managers.html, applied
+   consistently here for the year filter pills and table season columns. */
+.heatmap-season-pill.year-swatch-btn { position:relative;padding-left:1.6rem; }
+.heatmap-season-pill.year-swatch-btn::before {
+  content:'';position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);
+  width:7px;height:7px;border-radius:50%;background:var(--swatch-color,var(--accent));
+}
+.heatmap-season-pill.year-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.heatmap-season-pill.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.season-pill {
+  display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
+  font-size:0.68rem;font-weight:700;color:#fff;
+}
 .heatmap-legend { display:flex;align-items:center;gap:0.5rem;font-size:0.72rem;color:var(--muted);margin-bottom:1.25rem;flex-wrap:wrap; }
 .heatmap-legend-bar {
   width:120px;height:10px;border-radius:5px;
@@ -256,9 +274,6 @@
 
   <div class="section-label" style="margin-top:2rem;" id="biggest-lineup-blunders">Biggest Lineup Blunders</div>
   <div class="section-title">The 10 largest single-week efficiency gaps in league history.</div>
-  <div class="callout glass">
-    <p style="margin:0;"><strong>Not every blunder cost a win.</strong> Some managers left huge points on the bench and still won easily.</p>
-  </div>
   <div class="table-wrap glass">
     <table class="le-table" id="blunders-table">
       <thead>
@@ -272,6 +287,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="../shared.js"></script>
 <script>
+// Season colors -- same palette used on managers.html, for the year
+// filter pills and the Biggest Blunders Season column.
+var SEASON_COLORS = {
+  2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
+  2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#6d9679'
+};
+
 // Efficiency gap by manager, filterable: "career" plus each individual season.
 // Fixed global min/max (7.55-22.07) used for coloring across every filter, so
 // a given shade of red/green means the same thing whether viewing Career or a
@@ -333,7 +355,8 @@ function renderEfficiencyPills() {
   var html = '';
   keys.forEach(function(k) {
     var label = k === 'career' ? 'Career' : k;
-    html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+'" onclick="renderEfficiencyChart(\''+k+'\', this)">'+label+'</button>';
+    var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
+    html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="renderEfficiencyChart(\''+k+'\', this)">'+label+'</button>';
   });
   el.innerHTML = html;
 }
@@ -418,9 +441,10 @@ function renderBlunders() {
     var t = (d.gap - minG) / (maxG - minG);
     var gr = lerp(212,168,t), gg = lerp(175,90,t), gb = lerp(55,90,t);
     var gapBg = 'rgba('+gr+','+gg+','+gb+',0.85)';
+    var seasonColor = SEASON_COLORS[d.season] || 'var(--muted)';
     html += '<tr>'
       +'<td class="le-rank">'+(i+1)+'</td>'
-      +'<td>'+d.season+'</td>'
+      +'<td><span class="season-pill" style="background:'+seasonColor+';">'+d.season+'</span></td>'
       +'<td>'+d.week+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
       +'<td><span style="background:'+actualBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:600;">'+d.actual.toFixed(1)+'</span></td>'
@@ -464,7 +488,8 @@ function renderHeatmapSeasonPills() {
   var el = document.getElementById('season-pills');
   var html = '<button class="heatmap-season-pill active" data-season="career" onclick="renderCareerAvgGrid(this)">Career Avg</button>';
   HEATMAP_SEASONS.forEach(function(s) {
-    html += '<button class="heatmap-season-pill" data-season="'+s+'" onclick="renderHeatmapGrid('+s+', this)">'+s+'</button>';
+    var swatch = SEASON_COLORS[s] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[s] + ';' : '';
+    html += '<button class="heatmap-season-pill'+swatch+'" data-season="'+s+'" onclick="renderHeatmapGrid('+s+', this)">'+s+'</button>';
   });
   el.innerHTML = html;
 }
