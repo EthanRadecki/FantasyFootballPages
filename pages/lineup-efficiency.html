@@ -30,6 +30,11 @@
 .outcome-loss { background:rgba(192,98,58,0.18);color:#c0623a; }
 .missed-badge { color:#c0623a;font-weight:700;font-size:0.72rem; }
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
+.methodology-list { margin:0;padding-left:1.2rem;line-height:1.65;font-size:0.85rem; }
+.methodology-list li { margin-bottom:0.5rem; }
+.methodology-list li:last-child { margin-bottom:0; }
+.methodology-list strong { color:var(--palm); }
+.methodology-list em { color:var(--muted); }
 
 /* ── Weekly Efficiency Calendar heatmap ── */
 .heatmap-controls { display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem; }
@@ -230,7 +235,11 @@
 
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
-    <p>The <strong>optimal lineup</strong> is the best possible score from a manager's full roster that week. It follows real slot rules: 1 QB, 2 RB, 2 WR, 1 TE, 1 FLEX, 1 D/ST, 1 K. <strong>IR players are excluded.</strong> Bye weeks and consolation weeks are excluded too. One exception: a manager who skipped setting a lineup after elimination (since banned) is excluded from the efficiency average but still counts as a missed win, since he'd have won with any real lineup.</p>
+    <ul class="methodology-list">
+      <li><strong>Optimal lineup:</strong> the best possible score from a manager's full roster that week, following real slot rules (1 QB, 2 RB, 2 WR, 1 TE, 1 FLEX, 1 D/ST, 1 K).</li>
+      <li><strong>IR players are excluded.</strong> <em>Bye weeks and consolation weeks are excluded too.</em></li>
+      <li><strong>One exception:</strong> a manager who skipped setting a lineup after elimination (since banned) is excluded from the efficiency average, but still counts as a missed win, since he'd have won with any real lineup.</li>
+    </ul>
   </div>
 
   <div class="section-label" id="career-leaderboard">Career Leaderboard</div>

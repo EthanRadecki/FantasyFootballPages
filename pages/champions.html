@@ -188,7 +188,7 @@
 .champ-margin-bar .seg-runner { background:rgba(156,148,156,0.45); }
 @media(max-width:600px) { .champ-margin-wrap { padding:0.85rem 1.25rem 0; } }
 
-/* Position badges — same system used across the rest of the site (see
+/* Position badges, same system used across the rest of the site (see
    style.css), plus two extras this page needs: FLEX slots and the
    team-total row. */
 .pos-flex{ background:rgba(120,110,130,0.22);color:#5a5064; }
@@ -682,7 +682,7 @@ function lookupHeadshot(name, pos) {
 function renderRosterSlots(roster) {
   return roster.map(function(r) {
     var posClass = 'pos-' + r.pos.replace('/', '').toLowerCase();
-    var seasonTxt = (r.ppg !== null && r.ppg !== undefined) ? r.ppg.toFixed(1) : '&mdash;';
+    var seasonTxt = (r.ppg !== null && r.ppg !== undefined) ? r.ppg.toFixed(1) : '&ndash;';
     var weekTxt = r.week_score.toFixed(1);
     var wkClass = '', deltaTxt = '';
     if (r.ppg !== null && r.ppg !== undefined) {

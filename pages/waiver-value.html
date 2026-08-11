@@ -29,6 +29,11 @@
 .type-waiver { background:rgba(74,127,168,0.18);color:#4a7fa8; }
 .type-freeagent { background:rgba(154,144,128,0.18);color:#8a7f6e; }
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
+.methodology-list { margin:0;padding-left:1.2rem;line-height:1.65;font-size:0.85rem; }
+.methodology-list li { margin-bottom:0.5rem; }
+.methodology-list li:last-child { margin-bottom:0; }
+.methodology-list strong { color:var(--palm); }
+.methodology-list em { color:var(--muted); }
 .wv-table th.sortable { cursor:pointer;user-select:none;transition:color 0.15s; }
 .wv-table th.sortable:hover { color:var(--palm); }
 .wv-table th.sortable::after { content:'\2195'; opacity:0.35;margin-left:0.3rem;font-size:0.7rem; }
@@ -149,9 +154,13 @@
 
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
-    <p>The league used <strong>FAAB bidding</strong> only in 2025. From 2020-2024 it ran on <strong>reverse-order waiver priority</strong>, where a successful claim sends you to the back of the line. Since "cost" isn't comparable across those two systems, this page measures pure output instead.</p>
-    <p>Raw points aren't fair across positions though, a mediocre QB pickup outscores a great TE pickup every week just because QBs score more. So every pickup gets a <strong>position-adjusted value</strong>: how many standard deviations above or below the average <em>rostered</em> player at that position, that week, across the whole league. A value of 0 means "exactly average for a rostered player at that position." Most pickups score <strong>below zero</strong>, since most waiver adds are below-average by definition, that's expected, not a bug.</p>
-    <p>A stint ends at the next drop or trade-away, whichever comes first. Bye weeks are kept (real production, even without a fantasy opponent that week), but consolation/loser-bracket weeks are excluded, since teams are often already eliminated and not managed seriously by that point. Thomas Sullivan and William Serafin (2020 only) are excluded too.</p>
+    <ul class="methodology-list">
+      <li><strong>Scoring systems changed over time:</strong> FAAB bidding only in 2025. <em>2020-2024 ran on reverse-order waiver priority</em>, where a successful claim sends you to the back of the line. Since "cost" isn't comparable across those two systems, this page measures pure output instead.</li>
+      <li><strong>Position-adjusted value:</strong> raw points aren't fair across positions, <em>a mediocre QB pickup outscores a great TE pickup every week just because QBs score more.</em> So every pickup gets scored on how many standard deviations above or below the average rostered player at that position, that week, across the whole league. A value of 0 means exactly average for a rostered player at that position.</li>
+      <li><strong>Most pickups score below zero.</strong> <em>That's expected, not a bug</em>, since most waiver adds are below-average by definition.</li>
+      <li><strong>Stints:</strong> a stint ends at the next drop or trade-away, whichever comes first. Bye weeks are kept (real production, even without a fantasy opponent that week), but <em>consolation/loser-bracket weeks are excluded</em>, since teams are often already eliminated and not managed seriously by that point.</li>
+      <li><strong>Excluded:</strong> Thomas Sullivan and William Serafin (2020 only), same as the rest of the site.</li>
+    </ul>
   </div>
 
   <div class="section-label">Career Leaderboard</div>

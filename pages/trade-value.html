@@ -39,36 +39,30 @@
 .heatmap-season-pill:hover { background:var(--accent-glow); }
 .heatmap-season-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
 
-/* Season color swatches -- same palette used on managers.html */
-.heatmap-season-pill.year-swatch-btn { position:relative;padding-left:1.6rem; }
-.heatmap-season-pill.year-swatch-btn::before {
+/* Color swatches for filter pills -- used for season, position, and
+   manager colors alike, since the visual treatment (a dot + a filled
+   active state) is identical regardless of what the color represents. */
+.heatmap-season-pill.color-swatch-btn { position:relative;padding-left:1.6rem; }
+.heatmap-season-pill.color-swatch-btn::before {
   content:'';position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);
   width:7px;height:7px;border-radius:50%;background:var(--swatch-color,var(--accent));
 }
-.heatmap-season-pill.year-swatch-btn.active {
+.heatmap-season-pill.color-swatch-btn.active {
   background:var(--swatch-color,var(--accent)) !important;
   border-color:var(--swatch-color,var(--accent)) !important;
   color:#fff !important;
 }
-.heatmap-season-pill.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.heatmap-season-pill.color-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
 .season-pill {
   display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
   font-size:0.68rem;font-weight:700;color:#fff;
 }
-
-/* Position color swatches -- same treatment, using the pos-badge palette */
-.heatmap-season-pill.pos-swatch-btn { position:relative;padding-left:1.6rem; }
-.heatmap-season-pill.pos-swatch-btn::before {
-  content:'';position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);
-  width:7px;height:7px;border-radius:50%;background:var(--swatch-color,var(--accent));
-}
-.heatmap-season-pill.pos-swatch-btn.active {
-  background:var(--swatch-color,var(--accent)) !important;
-  border-color:var(--swatch-color,var(--accent)) !important;
-  color:#fff !important;
-}
-.heatmap-season-pill.pos-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
+.methodology-list { margin:0 0 0.75rem;padding-left:1.2rem;line-height:1.65;font-size:0.85rem; }
+.methodology-list li { margin-bottom:0.5rem; }
+.methodology-list li:last-child { margin-bottom:0; }
+.methodology-list strong { color:var(--palm); }
+.methodology-list em { color:var(--muted); }
 .multi-badge {
   display:inline-block;font-size:0.62rem;font-weight:700;color:#4a7fa8;
   border:1px solid rgba(74,127,168,0.4);border-radius:4px;background:rgba(74,127,168,0.12);
@@ -139,7 +133,7 @@
 }
 .jump-sheet a:last-child { border-bottom:none; }
 .jump-sheet a.active { color:var(--accent); }
-/* Position badges — same system used across the rest of the site */
+/* Position badges, same system used across the rest of the site */
 </style>
 </head>
 <body>
@@ -228,13 +222,13 @@
 
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
-    <ul style="margin:0 0 0.75rem;padding-left:1.2rem;line-height:1.6;">
-      <li><strong>Trade Grade</strong> <span style="color:var(--muted);">(z-score)</span> &mdash; value swing: what you got minus what you gave, position-adjusted.</li>
-      <li><strong>Realized Gains</strong> <span style="color:var(--muted);">(z-score)</span> &mdash; same swing, counting only weeks the player was started.</li>
-      <li><strong>Fit Score</strong> <span style="color:var(--muted);">(z-score shift)</span> &mdash; team's positional output, before the trade vs. after.</li>
-      <li><strong>Necessity Score</strong> <span style="color:var(--muted);">(points/week, shrunk for small samples)</span> &mdash; acquired player vs. best unstarted bench option that week.</li>
-      <li><strong>Playoff Weighting</strong> <span style="color:var(--muted);">(1.0x&ndash;2.0x multiplier)</span> &mdash; production counts more the later it happens: Regular 1.0x, First Round 1.15x, Quarterfinal 1.3x, Semifinal 1.6x, Championship 2.0x.</li>
-      <li><strong>QUAD</strong> <span style="color:var(--muted);">(z-score)</span> &mdash; the four metrics combined, weighted 35/30/20/15 (Realized Gains/Trade Grade/Fit/Necessity).</li>
+    <ul class="methodology-list">
+      <li><strong>Trade Grade</strong> <span style="color:var(--muted);">(z-score)</span>: value swing: what you got minus what you gave, position-adjusted.</li>
+      <li><strong>Realized Gains</strong> <span style="color:var(--muted);">(z-score)</span>: same swing, counting only weeks the player was started.</li>
+      <li><strong>Fit Score</strong> <span style="color:var(--muted);">(z-score shift)</span>: team's positional output, before the trade vs. after.</li>
+      <li><strong>Necessity Score</strong> <span style="color:var(--muted);">(points/week, shrunk for small samples)</span>: acquired player vs. best unstarted bench option that week.</li>
+      <li><strong>Playoff Weighting</strong> <span style="color:var(--muted);">(1.0x&ndash;2.0x multiplier)</span>: production counts more the later it happens: Regular 1.0x, First Round 1.15x, Quarterfinal 1.3x, Semifinal 1.6x, Championship 2.0x.</li>
+      <li><strong>QUAD</strong> <span style="color:var(--muted);">(z-score)</span>: the four metrics combined, weighted 35/30/20/15 (Realized Gains/Trade Grade/Fit/Necessity).</li>
     </ul>
     <p style="margin:0;font-size:0.8rem;color:var(--muted);"><em>Note: reversed trades are excluded entirely, multi-team trades are linked and graded on each manager's true net position, and Thomas Sullivan / William Serafin (2020 only) are excluded, same as the rest of the site.</em></p>
   </div>
@@ -281,7 +275,7 @@
     <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Manager A</div>
     <div class="heatmap-controls" id="explorer-manager-a-pills"></div>
 
-    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Manager B <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);">(optional &mdash; pick a second manager to see only trades between the two)</span></div>
+    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Manager B <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);">(optional, pick a second manager to see only trades between the two)</span></div>
     <div class="heatmap-controls" id="explorer-manager-b-pills" style="margin-bottom:1rem;"></div>
 
     <div style="position:relative;height:480px;" id="explorer-container">
@@ -307,6 +301,7 @@
   <div class="section-label" style="margin-top:2rem;" id="all-trades">All Trades</div>
   <div class="section-title">Every real trade, one row per manager's side. Click a column to sort.</div>
   <div class="heatmap-controls" id="trades-season-pills"></div>
+  <div class="heatmap-controls" id="trades-manager-pills" style="margin-top:0.4rem;"></div>
   <div class="table-wrap glass">
     <table class="tv-table" id="trades-table">
       <thead>
@@ -398,7 +393,7 @@ function renderQuadPills() {
   var html = '';
   keys.forEach(function(k) {
     var label = k === 'career' ? 'Career' : k;
-    var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
+    var swatch = SEASON_COLORS[k] ? ' color-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
     html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="setQuadFilter(\''+k+'\', this)">'+label+'</button>';
   });
   el.innerHTML = html;
@@ -821,6 +816,17 @@ var POSITION_COLORS = {
   QB: '#983a3a', RB: '#4a7a4a', WR: '#3a6f98',
   TE: '#a07010', K: '#6a6460', 'D/ST': '#504840'
 };
+// Manager colors, text-safe variants (same ones used on managers.html)
+// so a filled pill with white text on top stays readable -- several of
+// the raw brand colors (Cole's peach, Ryan's gold, Anthony's tan, etc.)
+// are too light for that when used as a solid fill.
+var MANAGER_COLORS = {
+  'Deniz Bileydi': '#68733c', 'Ben Castaldo': '#404c5b', 'Quin Gegwich': '#ad1f15',
+  'Charlie Gorman': '#785ca9', 'Brandon Hancock': '#416cab', 'Anthony Kelly': '#7f6647',
+  'Max Malich': '#696969', 'Cole Maney': '#ba4b15', 'Ryan P McQuaid': '#7f6921',
+  'Carmine Pittelli Jr.': '#541821', 'Aidan Quigley': '#c53016', 'Ethan Radecki': '#985e0f',
+  'Andrew Root': '#406d93', 'Baylen Slansky': '#7163a9'
+};
 
 function renderMostTradedPosPills() {
   var el = document.getElementById('most-traded-pos-pills');
@@ -832,7 +838,7 @@ function renderMostTradedPosPills() {
 
   var html = '<button class="heatmap-season-pill active" onclick="setMostTradedPosFilter(\'all\', this)">All Positions</button>';
   positions.forEach(function(p) {
-    var swatch = POSITION_COLORS[p] ? ' pos-swatch-btn" style="--swatch-color:' + POSITION_COLORS[p] + ';' : '';
+    var swatch = POSITION_COLORS[p] ? ' color-swatch-btn" style="--swatch-color:' + POSITION_COLORS[p] + ';' : '';
     html += '<button class="heatmap-season-pill'+swatch+'" onclick="setMostTradedPosFilter(\'' + p + '\', this)">' + p + '</button>';
   });
   el.innerHTML = html;
@@ -903,7 +909,7 @@ var explorerSimulation = null;
 
 function explorerPill(container, label, value, isActive, onClick, swatchColor) {
   var btn = document.createElement('div');
-  btn.className = 'heatmap-season-pill' + (isActive ? ' active' : '') + (swatchColor ? ' year-swatch-btn' : '');
+  btn.className = 'heatmap-season-pill' + (isActive ? ' active' : '') + (swatchColor ? ' color-swatch-btn' : '');
   if (swatchColor) btn.style.setProperty('--swatch-color', swatchColor);
   btn.textContent = label;
   btn.addEventListener('click', onClick);
@@ -931,7 +937,7 @@ function renderExplorerFilters() {
   aEl.innerHTML = '';
   explorerPill(aEl, 'Any', 'any', explorerState.managerA==='any', function(){ explorerState.managerA='any'; explorerState.managerB='any'; renderExplorerFilters(); renderExplorer(); });
   managers.forEach(function(m){
-    explorerPill(aEl, m, m, explorerState.managerA===m, function(){ explorerState.managerA = (explorerState.managerA===m ? 'any' : m); renderExplorerFilters(); renderExplorer(); });
+    explorerPill(aEl, m, m, explorerState.managerA===m, function(){ explorerState.managerA = (explorerState.managerA===m ? 'any' : m); renderExplorerFilters(); renderExplorer(); }, MANAGER_COLORS[m]);
   });
 
   var bEl = document.getElementById('explorer-manager-b-pills');
@@ -941,7 +947,7 @@ function renderExplorerFilters() {
   } else {
     explorerPill(bEl, 'Any', 'any', explorerState.managerB==='any', function(){ explorerState.managerB='any'; renderExplorerFilters(); renderExplorer(); });
     managers.filter(function(m){return m!==explorerState.managerA;}).forEach(function(m){
-      explorerPill(bEl, m, m, explorerState.managerB===m, function(){ explorerState.managerB = (explorerState.managerB===m ? 'any' : m); renderExplorerFilters(); renderExplorer(); });
+      explorerPill(bEl, m, m, explorerState.managerB===m, function(){ explorerState.managerB = (explorerState.managerB===m ? 'any' : m); renderExplorerFilters(); renderExplorer(); }, MANAGER_COLORS[m]);
     });
   }
 }
@@ -962,7 +968,7 @@ function renderTradeDetail(node) {
   var panel = document.getElementById('explorer-detail');
   var rows = node.managers.map(function(m){
     var quadBg = gradientColor(m.quad, QUAD_SCALE.min, QUAD_SCALE.max, true);
-    var necDisplay = m.nec === null ? '&mdash;' : m.nec.toFixed(1);
+    var necDisplay = m.nec === null ? '&ndash;' : m.nec.toFixed(1);
     return '<tr>'
       + '<td style="font-weight:600;color:var(--palm);">'+m.m+'</td>'
       + '<td class="got-txt">'+m.got.join(', ')+'</td>'
@@ -978,7 +984,7 @@ function renderTradeDetail(node) {
   panel.innerHTML =
     '<div style="font-family:var(--font-display);font-weight:800;font-size:1rem;color:var(--palm);margin-bottom:0.25rem;">'
       + node.season + (node.multi ? '<span class="multi-badge">'+node.managers.length+'-TEAM</span>' : '') + '</div>'
-    + '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem;">Positions involved: ' + (node.positions.join(', ') || '&mdash;') + '</div>'
+    + '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem;">Positions involved: ' + (node.positions.join(', ') || '&ndash;') + '</div>'
     + '<div class="table-wrap" style="overflow-x:auto;">'
     + '<table class="tv-table"><thead><tr><th>Manager</th><th>Got</th><th>Gave</th><th>Trade Grade</th><th>Realized Gains</th><th>Fit</th><th>Necessity/wk</th><th>QUAD</th></tr></thead>'
     + '<tbody>'+rows+'</tbody></table></div>';
@@ -1066,7 +1072,7 @@ function renderExplorer() {
         .attr('fill', color).attr('fill-opacity', 0.85).attr('stroke', '#f5f0e8').attr('stroke-width', 1.5)
         .on('mouseover', function(event){
           var names = n.managers.map(function(m){return m.m;}).join(', ');
-          tooltip.style('opacity',1).html('<strong>'+n.season+'</strong> &mdash; '+names+(n.multi?' (multi-team)':''))
+          tooltip.style('opacity',1).html('<strong>'+n.season+':</strong> '+names+(n.multi?' (multi-team)':''))
             .style('left',(event.offsetX+12)+'px').style('top',(event.offsetY+12)+'px');
         })
         .on('mousemove', function(event){
@@ -1088,13 +1094,14 @@ function renderExplorer() {
 
 var tradesSortState = { key: 'quad', type: 'number', dir: 'desc' };
 var tradesSeasonFilter = 'all';
+var tradesManagerFilter = 'all';
 
 function renderTradesSeasonPills() {
   var el = document.getElementById('trades-season-pills');
   var seasons = [...new Set(TRADES.map(function(t){return t.s;}))].sort();
   var html = '<button class="heatmap-season-pill active" onclick="setTradesSeasonFilter(\'all\', this)">All Seasons</button>';
   seasons.forEach(function(s) {
-    var swatch = SEASON_COLORS[s] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[s] + ';' : '';
+    var swatch = SEASON_COLORS[s] ? ' color-swatch-btn" style="--swatch-color:' + SEASON_COLORS[s] + ';' : '';
     html += '<button class="heatmap-season-pill'+swatch+'" onclick="setTradesSeasonFilter('+s+', this)">'+s+'</button>';
   });
   el.innerHTML = html;
@@ -1107,9 +1114,30 @@ function setTradesSeasonFilter(season, btn) {
   renderTradesTable();
 }
 
+function renderTradesManagerPills() {
+  var el = document.getElementById('trades-manager-pills');
+  if (!el) return;
+  var managers = [...new Set(TRADES.map(function(t){return t.m;}))].sort();
+  var html = '<button class="heatmap-season-pill active" onclick="setTradesManagerFilter(\'all\', this)">All Managers</button>';
+  managers.forEach(function(m) {
+    var swatch = MANAGER_COLORS[m] ? ' color-swatch-btn" style="--swatch-color:' + MANAGER_COLORS[m] + ';' : '';
+    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setTradesManagerFilter(\''+m+'\', this)">'+m+'</button>';
+  });
+  el.innerHTML = html;
+}
+
+function setTradesManagerFilter(manager, btn) {
+  tradesManagerFilter = manager;
+  btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  renderTradesTable();
+}
+
 function renderTradesTable() {
   var tbody = document.querySelector('#trades-table tbody');
-  var data = tradesSeasonFilter === 'all' ? TRADES : TRADES.filter(function(t){ return t.s === tradesSeasonFilter; });
+  var data = TRADES;
+  if (tradesSeasonFilter !== 'all') data = data.filter(function(t){ return t.s === tradesSeasonFilter; });
+  if (tradesManagerFilter !== 'all') data = data.filter(function(t){ return t.m === tradesManagerFilter; });
   var rows = sortRows(data, tradesSortState.key, tradesSortState.type, tradesSortState.dir);
 
   var html = '';
@@ -1119,7 +1147,7 @@ function renderTradesTable() {
     var rgBg = gradientColor(d.rg, RG_SCALE.min, RG_SCALE.max, true);
     var fitBg = gradientColor(d.fit, FIT_SCALE.min, FIT_SCALE.max, true);
     var necBg = d.nec === null ? null : gradientColor(d.nec, NEC_SCALE.min, NEC_SCALE.max, true);
-    var necDisplay = d.nec === null ? '&mdash;' : d.nec.toFixed(1);
+    var necDisplay = d.nec === null ? '&ndash;' : d.nec.toFixed(1);
     var seasonColor = SEASON_COLORS[d.s] || 'var(--muted)';
     html += '<tr>'
       +'<td class="tv-rank">'+(i+1)+'</td>'
@@ -1174,6 +1202,7 @@ try {
   if (expContainer) expContainer.innerHTML = '<p class="metric-note">Trade Explorer failed to load.</p>';
 }
 renderTradesSeasonPills();
+renderTradesManagerPills();
 renderTradesTable();
 wireSortableHeaders('trades-table', renderTradesTable, tradesSortState);
 

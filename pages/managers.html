@@ -936,7 +936,7 @@
 <script src="../data-engine.js"></script>
 <script>
 /* ══════════════════════════════════════
-   Managers page — chart rendering
+   Managers page: chart rendering
    ══════════════════════════════════════ */
 
 var profileLookup = null;
@@ -945,7 +945,7 @@ var allMatchupData = null;   // raw matchup rows, kept for chart use
 var allStatsData   = null;   // raw stats rows, kept for league avg
 var allRankingData = null;   // { manager -> { year -> { week -> rank } } }, loaded from JSONs
 
-// Chart instances — destroyed and rebuilt on each manager switch
+// Chart instances, destroyed and rebuilt on each manager switch
 var charts = {};
 
 // ── Palette constants (match CSS vars) ──────────────────────────────────────
@@ -2036,7 +2036,7 @@ function showHmTooltip(e, cellData, rd, sl) {
   var avgSign = cellData.avg_surplus >= 0 ? '+' : '';
   title.textContent = 'Round '+rd+', Slot '+sl
     +' ('+cellData.n_seasons+' season'+(cellData.n_seasons>1?'s':'')+')'
-    +' — avg: '+avgSign+cellData.avg_surplus.toFixed(2);
+    +', avg: '+avgSign+cellData.avg_surplus.toFixed(2);
 
   var html = '';
   cellData.picks.forEach(function(p) {
