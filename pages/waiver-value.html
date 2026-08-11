@@ -211,10 +211,11 @@
   <div class="section-title">Every pickup, grouped by the week it was added. When does volume peak, and when is the value actually good?</div>
   <div class="chart-card-interactive glass">
     <div class="heatmap-controls" id="week-value-season-pills"></div>
+    <div class="heatmap-controls" id="week-value-weeks-pills" style="margin-top:0.4rem;"></div>
     <div style="position:relative;height:420px;">
       <canvas id="chart-week-value"></canvas>
     </div>
-    <p class="metric-note">Bars (left axis) are <strong>pickup volume</strong> that week, split waiver vs. free agent. The line (right axis) is <strong>average position-adjusted value</strong> of pickups added that week, all types combined. Weeks 15&ndash;17 are playoff weeks, only teams still alive are actively managing by then, so both volume and the sample size behind that average drop off fast.</p>
+    <p class="metric-note">Bars (left axis) are <strong>pickup volume</strong> that week, split waiver vs. free agent. The line (right axis) is <strong>average position-adjusted value</strong> of pickups added that week, all types combined. <strong>Use the weeks-rostered filter to separate pickups that actually stuck around from same-week churn.</strong> Weeks 15&ndash;17 are playoff weeks, only teams still alive are actively managing by then, so both volume and the sample size behind that average drop off fast.</p>
   </div>
 
   <div class="section-label" style="margin-top:2rem;">Best Pickups Ever</div>
@@ -596,6 +597,7 @@ renderTotalValueFilters();
 // this is about league-wide timing patterns, not any one manager.
 var weekValueChart = null;
 var weekValueSeasonFilter = 'career';
+var weekValueMinWeeks = 0;
 
 function renderWeekValueFilters() {
   var el = document.getElementById('week-value-season-pills');
@@ -606,6 +608,12 @@ function renderWeekValueFilters() {
     html += '<button class="heatmap-season-pill'+swatch+'" onclick="setWeekValueSeason('+s+', this)">'+s+'</button>';
   });
   el.innerHTML = html;
+
+  var weeksEl = document.getElementById('week-value-weeks-pills');
+  var buckets = [[0,'All Pickups'], [2,'2+ Weeks Rostered'], [4,'4+ Weeks Rostered'], [8,'8+ Weeks Rostered']];
+  weeksEl.innerHTML = buckets.map(function(b){
+    return '<button class="heatmap-season-pill'+(b[0]===0?' active':'')+'" onclick="setWeekValueMinWeeks('+b[0]+', this)">'+b[1]+'</button>';
+  }).join('');
 }
 
 function setWeekValueSeason(season, btn) {
@@ -615,9 +623,18 @@ function setWeekValueSeason(season, btn) {
   renderWeekValueChart();
 }
 
+function setWeekValueMinWeeks(minWeeks, btn) {
+  weekValueMinWeeks = minWeeks;
+  btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  renderWeekValueChart();
+}
+
 function renderWeekValueChart() {
   var pool = WAIVER_STINTS.filter(function(r){
-    return weekValueSeasonFilter === 'career' || r.s === weekValueSeasonFilter;
+    if (weekValueSeasonFilter !== 'career' && r.s !== weekValueSeasonFilter) return false;
+    if (r.wk < weekValueMinWeeks) return false;
+    return true;
   });
 
   var maxWeek = 17;
@@ -691,7 +708,7 @@ function renderWeekValueChart() {
         x: { grid: { display: false } },
         yCount: {
           position: 'left', stacked: true,
-          title: { display: true, text: 'Pickups added' },
+          title: { display: true, text: weekValueMinWeeks > 0 ? 'Pickups added (' + weekValueMinWeeks + '+ weeks rostered)' : 'Pickups added' },
           ticks: { precision: 0 }
         },
         yValue: {
