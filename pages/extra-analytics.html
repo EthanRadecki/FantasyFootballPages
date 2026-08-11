@@ -191,7 +191,7 @@ html { scroll-behavior:smooth; }
 
 /* ── GAUNTLET SPECTRUM ── */
 .gspectrum-wrap {
-  padding:2.6rem 1.5rem 1.8rem;margin-bottom:1.25rem;position:relative;
+  padding:2.6rem 1.5rem 2.6rem;margin-bottom:1.25rem;position:relative;
 }
 .gspectrum-axis { position:relative;height:2px; }
 .gspectrum-band {
@@ -219,6 +219,14 @@ html { scroll-behavior:smooth; }
 .gspectrum-tick-lbl {
   position:absolute;top:8px;transform:translateX(-50%);
   font-size:0.6rem;color:var(--muted);font-variant-numeric:tabular-nums;
+}
+.gspectrum-extreme {
+  position:absolute;top:-20px;bottom:-20px;width:1.5px;
+  transform:translateX(-0.75px);z-index:1;
+}
+.gspectrum-extreme-lbl {
+  position:absolute;top:20px;transform:translateX(-50%);
+  font-size:0.58rem;font-weight:700;white-space:nowrap;
 }
 .gspectrum-pin {
   position:absolute;top:0;transform:translate(-50%,-50%);
@@ -345,6 +353,21 @@ html { scroll-behavior:smooth; }
   font-size:0.74rem;color:var(--muted);line-height:1.65;margin-top:1.1rem;
   padding:0.7rem 0.95rem;border-radius:10px;
   background:rgba(0,0,0,0.04);border-left:3px solid rgba(var(--accent-rgb),0.35);
+}
+.gauntlet-stretch-cols { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem; }
+.gauntlet-grid-compact { gap:0.75rem; }
+.gstretch-col-label {
+  font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;
+  margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:2px solid;
+}
+.gstretch-hard { color:#a85a5a;border-color:rgba(168,90,90,0.3); }
+.gstretch-easy { color:#5a8a6a;border-color:rgba(90,138,106,0.3); }
+.gauntlet-rank-line {
+  font-size:0.7rem;font-weight:600;color:var(--accent);margin-top:0.15rem;
+}
+.gauntlet-rank-line em { color:var(--muted);font-weight:400;font-style:normal; }
+@media(max-width:800px) {
+  .gauntlet-stretch-cols { grid-template-columns:1fr; }
 }
 @media(max-width:600px) {
   .gauntlet-card-header { grid-template-columns:auto 1fr; }
@@ -473,18 +496,18 @@ html { scroll-behavior:smooth; }
     <div class="section-title">Who had to earn it?</div>
     <div class="callout glass">
       <div class="callout-label">How It Works</div>
-      <p>Each title run is scored on three things: how many points opponents actually scored against the champion, how strong those opponents were across the regular season, and whether they were hot or cold in the five games right before facing the champion. Every score is measured against the full history of the league, not just these six runs, so the scale stays fixed as new champions get added. Runs with fewer playoff games get a small statistical adjustment so a three-game path isn't judged unevenly against a four-game path. Weighted 40/30/30 and mapped to a fixed 0-100 scale every year.</p>
+      <p>Each title run is scored on three things: how many points opponents actually scored against the champion, how strong those opponents were across the regular season, and whether they were hot or cold in the five games right before facing the champion. Every score is measured against the full history of the league, not just these six runs, so the scale stays fixed as new champions get added. Runs with fewer playoff games get a small statistical adjustment so a three-game path isn't judged unevenly against a four-game path. Weighted 70/15/15, heavily toward how tough the games themselves actually were, and mapped to a fixed 0-100 scale every year.</p>
     </div>
 
     <div class="gauntlet-legend">
       <div class="gauntlet-legend-item">
-        <div class="gauntlet-legend-dot" style="background:#4a7fa8"></div>Opp. Points Against (40%)
+        <div class="gauntlet-legend-dot" style="background:#4a7fa8"></div>Opp. Points Against (70%)
       </div>
       <div class="gauntlet-legend-item">
-        <div class="gauntlet-legend-dot" style="background:#a85a5a"></div>Opp. Dominance (30%)
+        <div class="gauntlet-legend-dot" style="background:#a85a5a"></div>Opp. Dominance (15%)
       </div>
       <div class="gauntlet-legend-item">
-        <div class="gauntlet-legend-dot" style="background:#9c849c"></div>Opp. Hot Streak (30%)
+        <div class="gauntlet-legend-dot" style="background:#9c849c"></div>Opp. Hot Streak (15%)
       </div>
     </div>
 
@@ -496,8 +519,27 @@ html { scroll-behavior:smooth; }
     <div class="gauntlet-grid" id="gauntletGrid"></div>
 
     <p class="gauntlet-method-note">
-      Gauntlet Score blends three z-scored components: points scored against the champion, opponent regular-season dominance, and opponent hot streak entering the game. Each is measured against the full league history and mapped through a fixed curve, not scaled to just these six runs. Games are lightly shrunk toward the league average based on how many rounds each champion played, so three-game and four-game runs compare fairly. Weighted 40/30/30. A score near 50 is a typical path. Anything further out means the field was tougher or softer than usual.
+      Gauntlet Score blends three z-scored components: points scored against the champion, opponent regular-season dominance, and opponent hot streak entering the game. Each is measured against the full league history and mapped through a fixed curve, not scaled to just these six runs. Games are lightly shrunk toward the league average based on how many rounds each champion played, so three-game and four-game runs compare fairly. Weighted 70/15/15, so this is mostly about how tough the actual games were, with dominance and hot streak adding a smaller layer of nuance. A score near 50 is a typical path. Anything further out means the field was tougher or softer than usual.
     </p>
+
+    <div class="gauntlet-stretch-intro">
+      <div class="section-title" style="font-size:1.1rem;margin-top:1.75rem;">How hard is hard? The same math, every 3-week stretch ever.</div>
+      <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;">
+        A title run is really just a 3-game (or 4-game) stretch of opponents. The exact same Gauntlet Score methodology applies to <em>any</em> manager's any 3 consecutive real weeks, not just playoff runs. Applying it to all 575 such stretches in league history (one known forfeit week excluded, same as the rest of the site), deduplicated so overlapping week-ranges from the same manager-season only count once, surfaces the true scale: even the single hardest stretch ever only reaches 75.2, because averaging three games' worth of opponent quality mechanically pulls the result toward the middle. That compression is what makes the scale honest. It's also why a title run's score can look modest in isolation while still ranking among the toughest stretches in league history.
+      </p>
+    </div>
+
+    <div class="gauntlet-stretch-cols">
+      <div class="gauntlet-stretch-col">
+        <div class="gstretch-col-label gstretch-hard">Hardest 3-Week Stretches Ever</div>
+        <div class="gauntlet-grid gauntlet-grid-compact" id="hardestStretchGrid"></div>
+      </div>
+      <div class="gauntlet-stretch-col">
+        <div class="gstretch-col-label gstretch-easy">Easiest 3-Week Stretches Ever</div>
+        <div class="gauntlet-grid gauntlet-grid-compact" id="easiestStretchGrid"></div>
+      </div>
+    </div>
+
   </div>
 
   <hr class="section-divider">
@@ -1453,38 +1495,53 @@ function shortName(n) {
 
 /* ── 5. CHAMPIONSHIP GAUNTLET ─────────────────────────────────────────────── */
 (function() {
+  // Each champion's rank among all 579 three-week stretches in league
+  // history (see generate_gauntlet_stretches.py), computed by applying
+  // the exact same Gauntlet Score methodology to every possible 3-week
+  // stretch any manager has faced, not just championship runs. 2020's
+  // run was 4 games, so its rank reflects the best 3-game subset of
+  // that run, not a literal equivalent -- flagged via `subset: true`.
+  var CHAMPION_RANKS = {
+    '2024_Baylen Slansky':        { rank: 42,  total: 575 },
+    '2022_Anthony Kelly':         { rank: 156, total: 575 },
+    '2023_Carmine Pittelli Jr.':  { rank: 274, total: 575 },
+    '2020_Ethan Radecki':         { rank: 253, total: 487, sameLength: 4 },
+    '2021_Ben Castaldo':          { rank: 342, total: 575 },
+    '2025_Anthony Kelly':         { rank: 514, total: 575 },
+  };
+
   var CHAMPIONS = [
-    {year:2024,champion:'Baylen Slansky',team:'STATION GRITS',gs:63.0,n:3,s_pts:61.2,s_dom:72.0,s_streak:56.4,
+    {year:2024,champion:'Baylen Slansky',team:'STATION GRITS',gs:62.1,n:3,s_pts:61.2,s_dom:72.0,s_streak:56.4,
      raw_pts:0.6081,raw_dom:1.2597,raw_streak:0.3418,
      games:[{r:'Round 1',opp:'Max Malich',ot:'Dent.',cs:119.3,os:116.6,m:2.7,dom:1.65,rppg:128.7,streak:-2.1},
             {r:'Round 2',opp:'Cole Maney',ot:'Glass of Charbonnet',cs:150.2,os:120.8,m:29.4,dom:0.634,rppg:119.5,streak:9.0},
             {r:'Round 3',opp:'Brandon Hancock',ot:'The Minutemen',cs:170.6,os:144.6,m:26.0,dom:1.495,rppg:127.3,streak:3.3}]},
-    {year:2023,champion:'Carmine Pittelli Jr.',team:'Thank You Max!',gs:58.1,n:3,s_pts:40.5,s_dom:65.9,s_streak:73.7,
-     raw_pts:-0.5143,raw_dom:0.8812,raw_streak:1.377,
-     games:[{r:'Round 1',opp:'Aidan Quigley',ot:'Tony Fkn Romo',cs:110.5,os:79.3,m:31.2,dom:0.398,rppg:117.0,streak:3.0},
-            {r:'Round 2',opp:'Charlie Gorman',ot:'San Giacomos FF',cs:138.4,os:124.1,m:14.3,dom:1.517,rppg:131.9,streak:28.3},
-            {r:'Round 3',opp:'Cole Maney',ot:'Addison Square Garden',cs:130.2,os:96.5,m:33.7,dom:0.729,rppg:121.4,streak:6.3}]},
-    {year:2022,champion:'Anthony Kelly',team:'Rolls With Butter',gs:55.3,n:3,s_pts:53.1,s_dom:66.1,s_streak:47.4,
+    {year:2022,champion:'Anthony Kelly',team:'Rolls With Butter',gs:54.2,n:3,s_pts:53.1,s_dom:66.1,s_streak:47.4,
      raw_pts:0.1651,raw_dom:0.8875,raw_streak:-0.1378,
      games:[{r:'Round 1',opp:'Ethan Radecki',ot:'Tiger King',cs:153.4,os:153.1,m:0.3,dom:1.388,rppg:119.3,streak:-2.2},
             {r:'Round 2',opp:'Brandon Hancock',ot:'The Minutemen',cs:130.6,os:109.1,m:21.5,dom:1.325,rppg:118.9,streak:-0.8},
             {r:'Round 3',opp:'Ryan P McQuaid',ot:'Mike White',cs:103.8,os:87.4,m:16.4,dom:-0.051,rppg:110.2,streak:0.5}]},
-    {year:2025,champion:'Anthony Kelly',team:'Rolls With Butter',gs:50.9,n:3,s_pts:28.2,s_dom:65.3,s_streak:66.7,
-     raw_pts:-1.2473,raw_dom:0.8434,raw_streak:0.9271,
-     games:[{r:'Round 1',opp:'Cole Maney',ot:'Shakir to death',cs:121.0,os:109.9,m:11.1,dom:2.202,rppg:129.6,streak:-13.8},
-            {r:'Round 2',opp:'Ethan Radecki',ot:'Oh He Likes Cooking!',cs:112.6,os:65.3,m:47.3,dom:0.589,rppg:116.1,streak:17.2},
-            {r:'Round 3',opp:'Charlie Gorman',ot:'Worthy of a Warren(t)',cs:100.9,os:71.1,m:29.8,dom:-0.26,rppg:109.0,streak:22.3}]},
-    {year:2020,champion:'Ethan Radecki',team:'Slant Boy v2',gs:49.1,n:4,s_pts:48.1,s_dom:43.8,s_streak:55.8,
+    {year:2023,champion:'Carmine Pittelli Jr.',team:'Thank You Max!',gs:49.3,n:3,s_pts:40.5,s_dom:65.9,s_streak:73.7,
+     raw_pts:-0.5143,raw_dom:0.8812,raw_streak:1.377,
+     games:[{r:'Round 1',opp:'Aidan Quigley',ot:'Tony Fkn Romo',cs:110.5,os:79.3,m:31.2,dom:0.398,rppg:117.0,streak:3.0},
+            {r:'Round 2',opp:'Charlie Gorman',ot:'San Giacomos FF',cs:138.4,os:124.1,m:14.3,dom:1.517,rppg:131.9,streak:28.3},
+            {r:'Round 3',opp:'Cole Maney',ot:'Addison Square Garden',cs:130.2,os:96.5,m:33.7,dom:0.729,rppg:121.4,streak:6.3}]},
+    {year:2020,champion:'Ethan Radecki',team:'Slant Boy v2',gs:48.6,n:4,s_pts:48.1,s_dom:43.8,s_streak:55.8,
      raw_pts:-0.0961,raw_dom:-0.3095,raw_streak:0.2936,
      games:[{r:'Round 1',opp:'Ryan P McQuaid',ot:'New York Jets',cs:124.6,os:117.1,m:7.4,dom:-1.06,rppg:97.4,streak:-11.8},
             {r:'Round 2',opp:'Andrew Root',ot:'N.Y. Routensss',cs:134.5,os:105.8,m:28.7,dom:-0.098,rppg:110.1,streak:2.7},
             {r:'Round 3',opp:'Deniz Bileydi',ot:'Chicago We got um',cs:119.4,os:106.7,m:12.7,dom:0.648,rppg:119.9,streak:7.4},
             {r:'Round 4',opp:'Brandon Hancock',ot:'The Minutemen',cs:146.4,os:111.0,m:35.4,dom:-0.728,rppg:101.8,streak:13.7}]},
-    {year:2021,champion:'Ben Castaldo',team:'I shoot b n s',gs:47.9,n:3,s_pts:46.3,s_dom:49.9,s_streak:48.1,
+    {year:2021,champion:'Ben Castaldo',team:'I shoot b n s',gs:47.1,n:3,s_pts:46.3,s_dom:49.9,s_streak:48.1,
      raw_pts:-0.1981,raw_dom:-0.0051,raw_streak:-0.1,
      games:[{r:'Round 2',opp:'Baylen Slansky',ot:'AND I...AM ...IRON MAN',cs:121.1,os:107.7,m:13.3,dom:0.618,rppg:118.0,streak:5.3},
             {r:'Round 3',opp:'Andrew Root',ot:'N.Y. Routensss',cs:137.1,os:100.2,m:36.8,dom:-2.16,rppg:92.0,streak:-12.1},
-            {r:'Round 4',opp:'Anthony Kelly',ot:'Zay Sutherland',cs:138.8,os:115.0,m:23.8,dom:1.526,rppg:126.5,streak:5.3}]}
+            {r:'Round 4',opp:'Anthony Kelly',ot:'Zay Sutherland',cs:138.8,os:115.0,m:23.8,dom:1.526,rppg:126.5,streak:5.3}]},
+    {year:2025,champion:'Anthony Kelly',team:'Rolls With Butter',gs:39.5,n:3,s_pts:28.2,s_dom:65.3,s_streak:66.7,
+     raw_pts:-1.2473,raw_dom:0.8434,raw_streak:0.9271,
+     games:[{r:'Round 1',opp:'Cole Maney',ot:'Shakir to death',cs:121.0,os:109.9,m:11.1,dom:2.202,rppg:129.6,streak:-13.8},
+            {r:'Round 2',opp:'Ethan Radecki',ot:'Oh He Likes Cooking!',cs:112.6,os:65.3,m:47.3,dom:0.589,rppg:116.1,streak:17.2},
+            {r:'Round 3',opp:'Charlie Gorman',ot:'Worthy of a Warren(t)',cs:100.9,os:71.1,m:29.8,dom:-0.26,rppg:109.0,streak:22.3}]}
   ];
 
   var COLORS  = ['#a85a5a','#b87060','#9c849c','#7a90a0','#6a9a7a','#5a8a6a'];
@@ -1492,7 +1549,7 @@ function shortName(n) {
 
   // Gauntlet Spectrum -- fixed axis 25-75 (roughly +/-1 std dev on the logistic curve),
   // independent of these six samples, so the window won't shift as new champions are added.
-  var SPEC_MIN = 25, SPEC_MAX = 75;
+  var SPEC_MIN = 20, SPEC_MAX = 80;
   function specPct(v) { return Math.max(0, Math.min(100, (v - SPEC_MIN) / (SPEC_MAX - SPEC_MIN) * 100)); }
 
   var spectrum = document.getElementById('gauntletSpectrum');
@@ -1524,6 +1581,27 @@ function shortName(n) {
     lbl.style.left = specPct(t) + '%';
     lbl.textContent = t;
     spectrum.appendChild(lbl);
+  });
+
+  // Reference lines for the hardest/easiest of all 579 three-week
+  // stretches ever recorded (see the stretch section below), so the six
+  // champions' scores can be read against the true scale, not just each
+  // other.
+  [
+    { val: 75.16, label: 'Hardest stretch ever', color: '#a85a5a' },
+    { val: 28.73, label: 'Easiest stretch ever', color: '#5a8a6a' },
+  ].forEach(function(ext) {
+    var line = document.createElement('div');
+    line.className = 'gspectrum-extreme';
+    line.style.left = specPct(ext.val) + '%';
+    line.style.background = 'repeating-linear-gradient(180deg,' + ext.color + ' 0 3px,transparent 3px 6px)';
+    spectrum.appendChild(line);
+    var elbl = document.createElement('div');
+    elbl.className = 'gspectrum-extreme-lbl';
+    elbl.style.left = specPct(ext.val) + '%';
+    elbl.style.color = ext.color;
+    elbl.textContent = ext.label;
+    spectrum.appendChild(elbl);
   });
 
   var byPos = CHAMPIONS.map(function(c,i){ return {c:c, origIndex:i}; }).sort(function(a,b){ return a.c.gs - b.c.gs; });
@@ -1566,7 +1644,7 @@ function shortName(n) {
 
   var caption = document.createElement('div');
   caption.className = 'gspectrum-caption';
-  caption.textContent = 'Every title run compared on the same fixed scale. Most cluster near the league average -- no run in six seasons has been a true statistical outlier.';
+  caption.textContent = 'Every title run compared on the same fixed scale. Relative to each other, the six sit fairly close together. But close together isn\u2019t the same as unremarkable: as the full stretch-history comparison below shows, Baylen\u2019s 2024 run still ranks in the toughest 8% of any 3-week stretch anyone has faced.';
   legend.parentElement.appendChild(caption);
 
   // Cards
@@ -1579,6 +1657,14 @@ function shortName(n) {
     card.className = 'gauntlet-card';
     card.id = 'gc' + i;
 
+    var rk = CHAMPION_RANKS[c.year + '_' + c.champion];
+    var rankLine = '';
+    if (rk) {
+      var topPct = (rk.rank / rk.total * 100).toFixed(1);
+      var lengthWord = rk.sameLength ? rk.sameLength : 3;
+      rankLine = '<div class="gauntlet-rank-line">Ranks #' + rk.rank + ' of ' + rk.total + ' ' + lengthWord + '-week stretches ever, top ' + topPct + '%</div>';
+    }
+
     var header = document.createElement('div');
     header.className = 'gauntlet-card-header';
     header.innerHTML = '<div class="gauntlet-rank-badge" style="background:' + col + '">' + (i+1) + '</div>'
@@ -1586,6 +1672,7 @@ function shortName(n) {
       + '<div class="gcm-name">' + c.champion + '</div>'
       + '<div class="gcm-team">' + c.team + '</div>'
       + '<div class="gcm-year">' + c.year + ' &nbsp;&bull;&nbsp; ' + c.games.length + ' playoff games</div>'
+      + rankLine
       + '</div>'
       + '<div class="gauntlet-score-block">'
       + '<div class="gsb-num" style="color:' + col + '">' + c.gs + '</div>'
@@ -1649,6 +1736,78 @@ function shortName(n) {
     card.appendChild(gamesDiv);
     grid.appendChild(card);
   });
+})();
+
+/* ── HARDEST / EASIEST 3-WEEK STRETCHES EVER ────────────────────────────────
+   Same Gauntlet Score methodology as above, generalized to every possible
+   3-consecutive-real-week stretch any manager has faced, not just
+   championship playoff runs. See generate_gauntlet_stretches.py. */
+(function() {
+  var HARDEST = [{"season":2024,"manager":"Quin Gegwich","s_pts":82.3,"s_dom":70.1,"s_streak":46.9,"gs":75.16,"games":[{"week":"Week 14","opponent":"Brandon Hancock","own_score":130.5,"opp_score":146.7,"margin":-16.2,"opp_dom":1.495,"opp_surge":-5.2},{"week":"Playoff Round 1","opponent":"Ethan Radecki","own_score":176.1,"opp_score":175.5,"margin":0.6,"opp_dom":0.358,"opp_surge":5.3},{"week":"Playoff Round 2","opponent":"Brandon Hancock","own_score":119.0,"opp_score":164.3,"margin":-45.3,"opp_dom":1.495,"opp_surge":-3.7}]},{"season":2023,"manager":"Anthony Kelly","s_pts":76.5,"s_dom":73.0,"s_streak":54.5,"gs":72.66,"games":[{"week":"Week 11","opponent":"Cole Maney","own_score":95.4,"opp_score":115.2,"margin":-19.8,"opp_dom":0.729,"opp_surge":-0.7},{"week":"Week 12","opponent":"Carmine Pittelli Jr.","own_score":96.3,"opp_score":149.8,"margin":-53.5,"opp_dom":1.667,"opp_surge":3.5},{"week":"Week 13","opponent":"Charlie Gorman","own_score":70.3,"opp_score":186.8,"margin":-116.5,"opp_dom":1.517,"opp_surge":4.4}]},{"season":2023,"manager":"Aidan Quigley","s_pts":78.4,"s_dom":62.9,"s_streak":43.0,"gs":70.76,"games":[{"week":"Week 12","opponent":"Cole Maney","own_score":130.2,"opp_score":146.1,"margin":-15.9,"opp_dom":0.729,"opp_surge":-4.5},{"week":"Week 13","opponent":"Baylen Slansky","own_score":98.6,"opp_score":157.2,"margin":-58.6,"opp_dom":-0.315,"opp_surge":-5.4},{"week":"Week 14","opponent":"Carmine Pittelli Jr.","own_score":120.4,"opp_score":159.2,"margin":-38.8,"opp_dom":1.667,"opp_surge":0.8}]},{"season":2025,"manager":"Brandon Hancock","s_pts":71.1,"s_dom":68.9,"s_streak":58.9,"gs":68.91,"games":[{"week":"Week 7","opponent":"Cole Maney","own_score":123.0,"opp_score":188.7,"margin":-65.7,"opp_dom":2.202,"opp_surge":3.4},{"week":"Week 8","opponent":"Ben Castaldo","own_score":91.2,"opp_score":93.8,"margin":-2.6,"opp_dom":0.441,"opp_surge":0.7},{"week":"Week 9","opponent":"Anthony Kelly","own_score":97.0,"opp_score":142.1,"margin":-45.1,"opp_dom":0.49,"opp_surge":9.4}]},{"season":2022,"manager":"Max Malich","s_pts":74.0,"s_dom":69.4,"s_streak":40.8,"gs":68.34,"games":[{"week":"Week 6","opponent":"Ethan Radecki","own_score":91.6,"opp_score":157.1,"margin":-65.5,"opp_dom":1.388,"opp_surge":0.8},{"week":"Week 7","opponent":"Andrew Root","own_score":99.7,"opp_score":134.3,"margin":-34.6,"opp_dom":1.309,"opp_surge":-3.4},{"week":"Week 8","opponent":"Deniz Bileydi","own_score":148.8,"opp_score":147.5,"margin":1.3,"opp_dom":0.518,"opp_surge":-9.6}]}];
+
+  var EASIEST = [{"season":2021,"manager":"Baylen Slansky","s_pts":19.4,"s_dom":41.4,"s_streak":59.5,"gs":28.73,"games":[{"week":"Week 9","opponent":"Ryan P McQuaid","own_score":88.4,"opp_score":68.4,"margin":20.1,"opp_dom":-0.504,"opp_surge":5.1},{"week":"Week 10","opponent":"Carmine Pittelli Jr.","own_score":102.8,"opp_score":71.6,"margin":31.2,"opp_dom":0.437,"opp_surge":0.3},{"week":"Week 11","opponent":"Charlie Gorman","own_score":118.9,"opp_score":60.2,"margin":58.7,"opp_dom":-1.252,"opp_surge":8.9}]},{"season":2025,"manager":"Ben Castaldo","s_pts":25.3,"s_dom":40.8,"s_streak":48.4,"gs":31.09,"games":[{"week":"Week 10","opponent":"Andrew Root","own_score":134.1,"opp_score":60.0,"margin":74.1,"opp_dom":-0.336,"opp_surge":16.2},{"week":"Week 11","opponent":"Aidan Quigley","own_score":102.8,"opp_score":68.3,"margin":34.5,"opp_dom":-1.795,"opp_surge":4.1},{"week":"Week 12","opponent":"Baylen Slansky","own_score":144.5,"opp_score":104.8,"margin":39.7,"opp_dom":0.717,"opp_surge":-21.7}]},{"season":2021,"manager":"Andrew Root","s_pts":28.1,"s_dom":43.9,"s_streak":33.9,"gs":31.35,"games":[{"week":"Week 11","opponent":"Brandon Hancock","own_score":85.1,"opp_score":96.6,"margin":-11.5,"opp_dom":0.832,"opp_surge":0.6},{"week":"Week 12","opponent":"Ryan P McQuaid","own_score":54.4,"opp_score":98.9,"margin":-44.5,"opp_dom":-0.504,"opp_surge":-7.8},{"week":"Week 13","opponent":"Charlie Gorman","own_score":54.9,"opp_score":51.5,"margin":3.3,"opp_dom":-1.252,"opp_surge":-15.3}]},{"season":2021,"manager":"Ryan P McQuaid","s_pts":31.2,"s_dom":28.8,"s_streak":41.6,"gs":32.38,"games":[{"week":"Week 10","opponent":"Max Malich","own_score":104.4,"opp_score":90.9,"margin":13.5,"opp_dom":-0.386,"opp_surge":-3.0},{"week":"Week 11","opponent":"Deniz Bileydi","own_score":104.1,"opp_score":116.0,"margin":-11.9,"opp_dom":-0.952,"opp_surge":-0.9},{"week":"Week 12","opponent":"Andrew Root","own_score":98.9,"opp_score":54.4,"margin":44.5,"opp_dom":-2.16,"opp_surge":-7.2}]},{"season":2023,"manager":"Ryan P McQuaid","s_pts":27.9,"s_dom":41.4,"s_streak":47.4,"gs":32.81,"games":[{"week":"Week 11","opponent":"Baylen Slansky","own_score":82.7,"opp_score":71.9,"margin":10.7,"opp_dom":-0.315,"opp_surge":-1.0},{"week":"Week 12","opponent":"Andrew Root","own_score":118.9,"opp_score":87.9,"margin":31.0,"opp_dom":-0.894,"opp_surge":-2.9},{"week":"Week 13","opponent":"Max Malich","own_score":156.7,"opp_score":86.0,"margin":70.7,"opp_dom":-0.12,"opp_surge":1.1}]}];
+
+  function buildStretchCards(list, gridId, hardColor) {
+    var grid = document.getElementById(gridId);
+    list.forEach(function(s, i) {
+      var card = document.createElement('div');
+      card.className = 'gauntlet-card';
+
+      var header = document.createElement('div');
+      header.className = 'gauntlet-card-header';
+      var weekLabel = s.games[0].week.replace('Playoff ', '') + '\u2013' + s.games[2].week.replace('Playoff ', '');
+      header.innerHTML = '<div class="gauntlet-rank-badge" style="background:' + hardColor + '">' + (i+1) + '</div>'
+        + '<div class="gauntlet-card-meta">'
+        + '<div class="gcm-name">' + s.manager + '</div>'
+        + '<div class="gcm-team">' + s.season + ' &nbsp;&bull;&nbsp; ' + weekLabel + '</div>'
+        + '</div>'
+        + '<div class="gauntlet-score-block">'
+        + '<div class="gsb-num" style="color:' + hardColor + '">' + s.gs.toFixed(1) + '</div>'
+        + '<div class="gsb-lbl">Gauntlet Score</div>'
+        + '</div>';
+
+      var tog = document.createElement('div');
+      tog.className = 'gauntlet-toggle';
+      tog.innerHTML = 'Game-by-game breakdown <span class="gauntlet-toggle-arrow">&#9660;</span>';
+
+      var gamesDiv = document.createElement('div');
+      gamesDiv.className = 'gauntlet-games';
+      var inner = document.createElement('div');
+      inner.className = 'gauntlet-games-inner';
+      inner.innerHTML = '<div class="gg-round-label">Opponents faced</div>';
+      s.games.forEach(function(g) {
+        var closeClass = Math.abs(g.margin) < 5 ? 'gg-close' : Math.abs(g.margin) > 30 ? 'gg-blow' : '';
+        var ms = (g.margin > 0 ? '+' : '') + g.margin;
+        var domG = (g.opp_dom >= 0 ? '+' : '') + g.opp_dom;
+        var surgeG = (g.opp_surge >= 0 ? '+' : '') + g.opp_surge;
+        var row = document.createElement('div');
+        row.className = 'gg-game-row';
+        row.innerHTML = '<div><div class="gg-opp-name">vs. ' + g.opponent + '</div>'
+          + '<div class="gg-opp-team">' + g.week + '</div></div>'
+          + '<div class="gg-score-bubble ' + closeClass + '">' + g.own_score + '&ndash;' + g.opp_score
+          + '<br><span style="font-size:0.68rem;font-weight:400">' + ms + '</span></div>'
+          + '<div class="gg-opp-stats">'
+          + '<div class="gg-stat-row">Streak <b>' + surgeG + '</b></div>'
+          + '<div class="gg-stat-row">Dom z <b>' + domG + '</b></div>'
+          + '</div>';
+        inner.appendChild(row);
+      });
+      gamesDiv.appendChild(inner);
+
+      tog.addEventListener('click', function() {
+        var open = gamesDiv.classList.toggle('open');
+        tog.querySelector('.gauntlet-toggle-arrow').style.transform = open ? 'rotate(180deg)' : '';
+      });
+
+      card.appendChild(header);
+      card.appendChild(tog);
+      card.appendChild(gamesDiv);
+      grid.appendChild(card);
+    });
+  }
+
+  buildStretchCards(HARDEST, 'hardestStretchGrid', '#a85a5a');
+  buildStretchCards(EASIEST, 'easiestStretchGrid', '#5a8a6a');
 })();
 
 /* ── CLOSEST GAMES EVER ───────────────────────────────────────────────────── */
