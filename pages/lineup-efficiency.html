@@ -151,6 +151,55 @@
 }
 .jump-sheet a:last-child { border-bottom:none; }
 .jump-sheet a.active { color:var(--accent); }
+
+/* ── ROSTER SNAPSHOT MODAL (Biggest Lineup Blunders) ── */
+.roster-modal-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);
+  z-index:200;display:none;align-items:center;justify-content:center;padding:1.25rem;
+}
+.roster-modal-overlay.active { display:flex; }
+.roster-modal-inner {
+  background:var(--bg,#f5f0e8);border-radius:var(--radius);
+  max-width:640px;width:100%;max-height:85vh;overflow-y:auto;
+  padding:1.75rem;position:relative;
+  box-shadow:0 24px 80px rgba(0,0,0,0.35);
+}
+.roster-modal-close {
+  position:absolute;top:1rem;right:1rem;background:none;border:none;
+  font-size:1.1rem;color:var(--muted);cursor:pointer;padding:0.4rem;
+}
+.roster-modal-close:hover { color:var(--palm); }
+.roster-modal-header { margin-bottom:1.1rem;padding-right:1.5rem; }
+.roster-modal-title { font-family:var(--font-display);font-size:1.2rem;font-weight:800;color:var(--palm); }
+.roster-modal-meta { font-size:0.8rem;color:var(--muted);margin-top:0.2rem; }
+.roster-modal-stats { display:flex;gap:1.5rem;margin-top:0.85rem;flex-wrap:wrap; }
+.roster-modal-stat-label { font-size:0.64rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:600; }
+.roster-modal-stat-val { font-family:var(--font-display);font-weight:800;color:var(--palm);font-size:1.05rem;margin-top:0.1rem; }
+.roster-modal-section-label {
+  font-size:0.66rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;
+  color:var(--accent);margin:1.1rem 0 0.4rem;
+}
+.roster-row {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.4rem 0;border-bottom:1px solid rgba(var(--accent-rgb),0.08);
+}
+.roster-row:last-child { border-bottom:none; }
+.roster-row-left { display:flex;align-items:center;gap:0.55rem;min-width:0; }
+.roster-row-slot { font-size:0.6rem;font-weight:700;color:var(--muted);width:2.6rem;flex-shrink:0;text-transform:uppercase; }
+.roster-row-player { font-weight:600;color:var(--palm);font-size:0.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.roster-row-points { font-weight:700;font-size:0.88rem;color:var(--text-mid);flex-shrink:0;padding-left:0.75rem; }
+.roster-row.bench-top .roster-row-points { color:#c0623a; }
+.roster-row.bench-top .roster-row-player { color:#c0623a; }
+.le-table tbody tr.blunder-row { cursor:pointer; }
+
+/* Position badges -- canonical system used across the rest of the site */
+.pos-badge { display:inline-block;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.6rem;font-weight:700;letter-spacing:0.05em; }
+.pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
+.pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
+.pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
+.pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
+.pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
+.pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
 </style>
 </head>
 <body>
@@ -232,6 +281,13 @@
     </div>
   </div>
 
+  <div class="roster-modal-overlay" id="roster-modal" onclick="if(event.target===this)closeRosterModal()">
+    <div class="roster-modal-inner">
+      <button class="roster-modal-close" onclick="closeRosterModal()">&#10005;</button>
+      <div id="roster-modal-body"></div>
+    </div>
+  </div>
+
 
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
@@ -291,6 +347,7 @@
       <tbody></tbody>
     </table>
   </div>
+  <p class="metric-note">Click any row to see that manager's full starting lineup and bench for the week.</p>
 
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -339,6 +396,70 @@ var BLUNDERS = [
   {season:2022, week:2,  manager:"Carmine Pittelli Jr.", actual:125.86, optimal:180.06, gap:54.20, outcome:"Win",  missed:false},
   {season:2022, week:5,  manager:"Carmine Pittelli Jr.", actual:85.56,  optimal:138.46, gap:52.90, outcome:"Loss", missed:false},
 ];
+
+// Full starting lineup + bench for each of the 10 rows above, same order,
+// so BLUNDER_ROSTERS[i] always matches BLUNDERS[i]. Generated from
+// weekly_rosters_clean.csv by generate_blunder_rosters.py -- see that
+// script for why this doesn't try to re-derive the optimal lineup itself.
+var BLUNDER_ROSTERS = [{"season":2024,"week":11,"manager":"Andrew Root","starters":[{"player":"Anthony Richardson","position":"QB","slot":"QB","points":28.1},{"player":"Christian McCaffrey","position":"RB","slot":"RB","points":14.6},{"player":"Alvin Kamara","position":"RB","slot":"RB","points":12.9},{"player":"Jayden Reed","position":"WR","slot":"WR","points":9.8},{"player":"Deebo Samuel Sr.","position":"WR","slot":"WR","points":6.1},{"player":"Mark Andrews","position":"TE","slot":"TE","points":4.2},{"player":"Chase Brown","position":"RB","slot":"RB/WR/TE","points":19.3},{"player":"Titans D/ST","position":"D/ST","slot":"D/ST","points":4.0},{"player":"Cameron Dicker","position":"K","slot":"K","points":12.0}],"bench":[{"player":"Taysom Hill","position":"TE","slot":"BE","points":41.5},{"player":"Jauan Jennings","position":"WR","slot":"BE","points":25.1},{"player":"Christian Watson","position":"WR","slot":"BE","points":19.0},{"player":"Xavier Worthy","position":"WR","slot":"BE","points":16.8},{"player":"Quentin Johnston","position":"WR","slot":"BE","points":12.8},{"player":"Ravens D/ST","position":"D/ST","slot":"BE","points":6.0},{"player":"Kyler Murray","position":"QB","slot":"BE","points":0.0}]},{"season":2023,"week":4,"manager":"Deniz Bileydi","starters":[{"player":"Tua Tagovailoa","position":"QB","slot":"QB","points":14.0},{"player":"Jerome Ford","position":"RB","slot":"RB","points":9.5},{"player":"Miles Sanders","position":"RB","slot":"RB","points":6.2},{"player":"Davante Adams","position":"WR","slot":"WR","points":15.5},{"player":"Amari Cooper","position":"WR","slot":"WR","points":2.6},{"player":"Kyle Pitts","position":"TE","slot":"TE","points":4.1},{"player":"De'Von Achane","position":"RB","slot":"RB/WR/TE","points":27.0},{"player":"Bengals D/ST","position":"D/ST","slot":"D/ST","points":2.0},{"player":"Harrison Butker","position":"K","slot":"K","points":11.0}],"bench":[{"player":"Nico Collins","position":"WR","slot":"BE","points":35.8},{"player":"David Montgomery","position":"RB","slot":"BE","points":34.1},{"player":"Jared Goff","position":"QB","slot":"BE","points":11.4},{"player":"Zay Flowers","position":"WR","slot":"BE","points":8.0},{"player":"Logan Thomas","position":"TE","slot":"BE","points":7.3},{"player":"Jerick McKinnon","position":"RB","slot":"BE","points":0.7},{"player":"Jamaal Williams","position":"RB","slot":"IR","points":0.0},{"player":"Rondale Moore","position":"WR","slot":"BE","points":0.0}]},{"season":2025,"week":1,"manager":"Andrew Root","starters":[{"player":"Joe Burrow","position":"QB","slot":"QB","points":8.8},{"player":"James Cook III","position":"RB","slot":"RB","points":21.2},{"player":"Kenneth Walker III","position":"RB","slot":"RB","points":5.4},{"player":"Ja'Marr Chase","position":"WR","slot":"WR","points":4.6},{"player":"Cooper Kupp","position":"WR","slot":"WR","points":3.5},{"player":"Travis Kelce","position":"TE","slot":"TE","points":12.7},{"player":"Calvin Ridley","position":"WR","slot":"RB/WR/TE","points":6.7},{"player":"Patriots D/ST","position":"D/ST","slot":"D/ST","points":5.0},{"player":"Jake Bates","position":"K","slot":"K","points":7.0}],"bench":[{"player":"Justin Herbert","position":"QB","slot":"BE","points":27.9},{"player":"Keon Coleman","position":"WR","slot":"BE","points":25.2},{"player":"Quentin Johnston","position":"WR","slot":"BE","points":24.9},{"player":"J.J. McCarthy","position":"QB","slot":"BE","points":22.2},{"player":"Jordan Love","position":"QB","slot":"BE","points":15.9},{"player":"Tre' Harris","position":"WR","slot":"BE","points":2.1},{"player":"Michael Wilson","position":"WR","slot":"BE","points":1.5}]},{"season":2024,"week":15,"manager":"Ryan P McQuaid","starters":[{"player":"Brock Purdy","position":"QB","slot":"QB","points":4.0},{"player":"Rico Dowdle","position":"RB","slot":"RB","points":14.9},{"player":"Najee Harris","position":"RB","slot":"RB","points":3.1},{"player":"Jaxon Smith-Njigba","position":"WR","slot":"WR","points":18.3},{"player":"Amari Cooper","position":"WR","slot":"WR","points":0.0},{"player":"Sam LaPorta","position":"TE","slot":"TE","points":18.1},{"player":"Keenan Allen","position":"WR","slot":"RB/WR/TE","points":20.2},{"player":"Jets D/ST","position":"D/ST","slot":"D/ST","points":3.0},{"player":"Wil Lutz","position":"K","slot":"K","points":8.0}],"bench":[{"player":"Aaron Rodgers","position":"QB","slot":"BE","points":30.1},{"player":"Falcons D/ST","position":"D/ST","slot":"BE","points":21.0},{"player":"Noah Gray","position":"TE","slot":"BE","points":10.1},{"player":"DeAndre Hopkins","position":"WR","slot":"BE","points":8.6},{"player":"Blake Corum","position":"RB","slot":"BE","points":4.0},{"player":"Isaiah Davis","position":"RB","slot":"BE","points":3.6},{"player":"George Pickens","position":"WR","slot":"BE","points":0.0},{"player":"Rashee Rice","position":"WR","slot":"IR","points":0.0}]},{"season":2025,"week":7,"manager":"Max Malich","starters":[{"player":"Caleb Williams","position":"QB","slot":"QB","points":4.7},{"player":"Quinshon Judkins","position":"RB","slot":"RB","points":26.4},{"player":"Woody Marks","position":"RB","slot":"RB","points":12.5},{"player":"Nico Collins","position":"WR","slot":"WR","points":6.7},{"player":"Brian Thomas Jr.","position":"WR","slot":"WR","points":6.1},{"player":"Darren Waller","position":"TE","slot":"TE","points":0.0},{"player":"Mike Evans","position":"WR","slot":"RB/WR/TE","points":0.0},{"player":"Broncos D/ST","position":"D/ST","slot":"D/ST","points":4.0},{"player":"Eddy Pineiro","position":"K","slot":"K","points":11.0}],"bench":[{"player":"Jaxson Dart","position":"QB","slot":"BE","points":28.4},{"player":"Wan'Dale Robinson","position":"WR","slot":"BE","points":15.5},{"player":"T.J. Hockenson","position":"TE","slot":"BE","points":10.3},{"player":"Packers D/ST","position":"D/ST","slot":"BE","points":8.0},{"player":"Sterling Shepard","position":"WR","slot":"BE","points":7.5},{"player":"Elic Ayomanor","position":"WR","slot":"BE","points":4.9},{"player":"Jaydon Blue","position":"RB","slot":"BE","points":4.4},{"player":"Trey Benson","position":"RB","slot":"IR","points":0.0}]},{"season":2023,"week":5,"manager":"Anthony Kelly","starters":[{"player":"Anthony Richardson","position":"QB","slot":"QB","points":4.4},{"player":"Bijan Robinson","position":"RB","slot":"RB","points":11.8},{"player":"Jonathan Taylor","position":"RB","slot":"RB","points":4.4},{"player":"Brandon Aiyuk","position":"WR","slot":"WR","points":9.8},{"player":"Jahan Dotson","position":"WR","slot":"WR","points":6.0},{"player":"Dalton Kincaid","position":"TE","slot":"TE","points":3.9},{"player":"Jaylen Warren","position":"RB","slot":"RB/WR/TE","points":10.9},{"player":"Chiefs D/ST","position":"D/ST","slot":"D/ST","points":5.0},{"player":"Greg Joseph","position":"K","slot":"K","points":9.0}],"bench":[{"player":"Brock Purdy","position":"QB","slot":"BE","points":26.1},{"player":"Dalton Schultz","position":"TE","slot":"BE","points":19.5},{"player":"Drake London","position":"WR","slot":"BE","points":14.7},{"player":"DJ Chark Jr.","position":"WR","slot":"BE","points":13.2},{"player":"Jayden Reed","position":"WR","slot":"BE","points":1.7},{"player":"Tee Higgins","position":"WR","slot":"BE","points":0.0},{"player":"Joshua Kelley","position":"RB","slot":"BE","points":0.0}]},{"season":2023,"week":1,"manager":"Anthony Kelly","starters":[{"player":"Patrick Mahomes","position":"QB","slot":"QB","points":19.5},{"player":"Bijan Robinson","position":"RB","slot":"RB","points":20.3},{"player":"Cam Akers","position":"RB","slot":"RB","points":8.9},{"player":"Jahan Dotson","position":"WR","slot":"WR","points":9.0},{"player":"Tee Higgins","position":"WR","slot":"WR","points":0.0},{"player":"Isaiah Likely","position":"TE","slot":"TE","points":1.4},{"player":"Drake London","position":"WR","slot":"RB/WR/TE","points":0.0},{"player":"Commanders D/ST","position":"D/ST","slot":"D/ST","points":12.0},{"player":"Greg Joseph","position":"K","slot":"K","points":5.0}],"bench":[{"player":"Brandon Aiyuk","position":"WR","slot":"BE","points":32.9},{"player":"Anthony Richardson","position":"QB","slot":"BE","points":20.9},{"player":"Joshua Kelley","position":"RB","slot":"BE","points":15.1},{"player":"Jaylen Warren","position":"RB","slot":"BE","points":6.8},{"player":"Juwan Johnson","position":"TE","slot":"BE","points":6.6},{"player":"Deon Jackson","position":"RB","slot":"BE","points":3.8},{"player":"Dalton Schultz","position":"TE","slot":"BE","points":2.4},{"player":"DJ Chark Jr.","position":"WR","slot":"IR","points":0.0}]},{"season":2020,"week":15,"manager":"Anthony Kelly","starters":[{"player":"Kyler Murray","position":"QB","slot":"QB","points":33.1},{"player":"Alvin Kamara","position":"RB","slot":"RB","points":18.4},{"player":"Mike Davis","position":"RB","slot":"RB","points":8.1},{"player":"Keenan Allen","position":"WR","slot":"WR","points":2.6},{"player":"DeVante Parker","position":"WR","slot":"WR","points":0.0},{"player":"Eric Ebron","position":"TE","slot":"TE","points":0.0},{"player":"Amari Cooper","position":"WR","slot":"RB/WR/TE","points":2.3},{"player":"Ravens D/ST","position":"D/ST","slot":"D/ST","points":12.0},{"player":"Tyler Bass","position":"K","slot":"K","points":12.0}],"bench":[{"player":"Jalen Hurts","position":"QB","slot":"BE","points":37.8},{"player":"Tyron Johnson","position":"WR","slot":"BE","points":15.1},{"player":"Austin Hooper","position":"TE","slot":"BE","points":15.1},{"player":"Jalen Guyton","position":"WR","slot":"BE","points":13.5},{"player":"Latavius Murray","position":"RB","slot":"BE","points":10.9},{"player":"Cole Kmet","position":"TE","slot":"BE","points":3.2},{"player":"Christian McCaffrey","position":"RB","slot":"BE","points":0.0}]},{"season":2022,"week":2,"manager":"Carmine Pittelli Jr.","starters":[{"player":"Russell Wilson","position":"QB","slot":"QB","points":11.1},{"player":"Nick Chubb","position":"RB","slot":"RB","points":32.3},{"player":"Christian McCaffrey","position":"RB","slot":"RB","points":16.8},{"player":"Tee Higgins","position":"WR","slot":"WR","points":19.1},{"player":"Jerry Jeudy","position":"WR","slot":"WR","points":2.2},{"player":"Logan Thomas","position":"TE","slot":"TE","points":12.7},{"player":"Darrell Henderson Jr.","position":"RB","slot":"RB/WR/TE","points":10.7},{"player":"Cowboys D/ST","position":"D/ST","slot":"D/ST","points":9.0},{"player":"Brandon McManus","position":"K","slot":"K","points":12.0}],"bench":[{"player":"Tua Tagovailoa","position":"QB","slot":"BE","points":38.9},{"player":"Rashod Bateman","position":"WR","slot":"BE","points":20.8},{"player":"Jakobi Meyers","position":"WR","slot":"BE","points":18.5},{"player":"Hunter Renfrow","position":"WR","slot":"BE","points":10.9},{"player":"James Cook","position":"RB","slot":"BE","points":5.3},{"player":"Rondale Moore","position":"WR","slot":"BE","points":0.0},{"player":"Chuba Hubbard","position":"RB","slot":"BE","points":-2.0}]},{"season":2022,"week":5,"manager":"Carmine Pittelli Jr.","starters":[{"player":"Russell Wilson","position":"QB","slot":"QB","points":9.2},{"player":"Christian McCaffrey","position":"RB","slot":"RB","points":23.4},{"player":"J.K. Dobbins","position":"RB","slot":"RB","points":4.4},{"player":"CeeDee Lamb","position":"WR","slot":"WR","points":10.3},{"player":"Tee Higgins","position":"WR","slot":"WR","points":0.0},{"player":"Tyler Conklin","position":"TE","slot":"TE","points":0.0},{"player":"JuJu Smith-Schuster","position":"WR","slot":"RB/WR/TE","points":6.3},{"player":"Cowboys D/ST","position":"D/ST","slot":"D/ST","points":22.0},{"player":"Brandon McManus","position":"K","slot":"K","points":10.0}],"bench":[{"player":"Jakobi Meyers","position":"WR","slot":"BE","points":24.1},{"player":"Hayden Hurst","position":"TE","slot":"BE","points":17.3},{"player":"Rondale Moore","position":"WR","slot":"BE","points":13.1},{"player":"James Cook","position":"RB","slot":"BE","points":9.1},{"player":"Rachaad White","position":"RB","slot":"BE","points":7.2},{"player":"Darrell Henderson Jr.","position":"RB","slot":"BE","points":7.0},{"player":"Tua Tagovailoa","position":"QB","slot":"IR","points":0.0},{"player":"Logan Thomas","position":"TE","slot":"BE","points":0.0}]}];
+
+var SLOT_LABEL = { 'RB/WR/TE': 'FLEX', 'BE': 'BENCH', 'IR': 'IR' };
+function slotLabel(slot) { return SLOT_LABEL[slot] || slot; }
+
+function posBadgeClass(pos) { return 'pos-' + pos.replace('/', '').toLowerCase(); }
+function rosterRowHtml(p, isBenchTop) {
+  return '<div class="roster-row' + (isBenchTop ? ' bench-top' : '') + '">'
+    + '<div class="roster-row-left">'
+    +   '<span class="roster-row-slot">' + slotLabel(p.slot) + '</span>'
+    +   '<span class="roster-row-player">' + p.player + '</span>'
+    +   '<span class="pos-badge ' + posBadgeClass(p.position) + '">' + p.position + '</span>'
+    + '</div>'
+    + '<span class="roster-row-points">' + p.points.toFixed(1) + '</span>'
+    + '</div>';
+}
+
+function openRosterModal(i) {
+  var d = BLUNDERS[i];
+  var roster = BLUNDER_ROSTERS[i];
+  if (!roster) return;
+
+  var bench = roster.bench.slice();
+  var starters = roster.starters;
+  var benchTopPoints = bench.length ? bench[0].points : null;
+
+  var seasonColor = SEASON_COLORS[d.season] || 'var(--muted)';
+  var html = ''
+    + '<div class="roster-modal-header">'
+    +   '<div class="roster-modal-title">' + d.manager + '</div>'
+    +   '<div class="roster-modal-meta">'
+    +     '<span class="season-pill" style="background:' + seasonColor + ';">' + d.season + '</span> &nbsp;Week ' + d.week
+    +   '</div>'
+    +   '<div class="roster-modal-stats">'
+    +     '<div><div class="roster-modal-stat-label">Actual</div><div class="roster-modal-stat-val">' + d.actual.toFixed(1) + '</div></div>'
+    +     '<div><div class="roster-modal-stat-label">Optimal</div><div class="roster-modal-stat-val">' + d.optimal.toFixed(1) + '</div></div>'
+    +     '<div><div class="roster-modal-stat-label">Gap</div><div class="roster-modal-stat-val" style="color:#c0623a;">+' + d.gap.toFixed(1) + '</div></div>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="roster-modal-section-label">Starting Lineup</div>'
+    + starters.map(function(p){ return rosterRowHtml(p, false); }).join('')
+    + '<div class="roster-modal-section-label">Bench</div>'
+    + (bench.length
+        ? bench.map(function(p){ return rosterRowHtml(p, p.points === benchTopPoints); }).join('')
+        : '<p style="font-size:0.8rem;color:var(--muted);">No bench players recorded for this week.</p>');
+
+  document.getElementById('roster-modal-body').innerHTML = html;
+  document.getElementById('roster-modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeRosterModal() {
+  document.getElementById('roster-modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeRosterModal();
+});
 
 /* ── Shared red/gold/green gradient helper ── */
 var GOOD = [90,138,90];   // green = good
@@ -451,7 +572,7 @@ function renderBlunders() {
     var gr = lerp(212,168,t), gg = lerp(175,90,t), gb = lerp(55,90,t);
     var gapBg = 'rgba('+gr+','+gg+','+gb+',0.85)';
     var seasonColor = SEASON_COLORS[d.season] || 'var(--muted)';
-    html += '<tr>'
+    html += '<tr class="blunder-row" onclick="openRosterModal('+i+')">'
       +'<td class="le-rank">'+(i+1)+'</td>'
       +'<td><span class="season-pill" style="background:'+seasonColor+';">'+d.season+'</span></td>'
       +'<td>'+d.week+'</td>'
