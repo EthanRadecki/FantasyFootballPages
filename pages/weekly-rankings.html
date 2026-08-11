@@ -396,7 +396,8 @@ function renderRankings(data) {
   var container = document.getElementById('rankings-content');
   var html = '';
 
-  html += '<div class="rankings-label">&#128202; Power Rankings &mdash; ' + data.season + ' Week ' + data.week + '</div>';
+  var periodLabel = data.label ? data.label : ('Week ' + data.week);
+  html += '<div class="rankings-label">&#128202; Power Rankings &mdash; ' + data.season + ' ' + periodLabel + '</div>';
   html += '<div class="rankings-list">';
 
   // Sort worst to best (14 first) for suspense reveal
@@ -405,7 +406,9 @@ function renderRankings(data) {
   // Historical write-ups are filed a week behind the JSON snapshot they're
   // attached to (this file's "Week N" text describes performance through
   // the prior week), so label the look-back toggle with that earlier week.
-  var blurbWeek = data.week - 1;
+  // A file can override this with blurb_label (e.g. "End of Season") when
+  // the write-up isn't tied to a single specific week.
+  var blurbLabel = data.blurb_label ? data.blurb_label : ('Week ' + (data.week - 1));
 
   teams.forEach(function(t) {
     var tier     = getTierClass(t.rank);
@@ -446,9 +449,9 @@ function renderRankings(data) {
     var blurbHtml = '';
     if (t.blurb) {
       blurbHtml = '<button class="rank-blurb-toggle" id="blurb-btn-' + slug + '" '
-                + 'onclick="toggleBlurb(\'' + slug + '\',' + blurbWeek + ')">'
+                + 'onclick="toggleBlurb(\'' + slug + '\',\'' + blurbLabel + '\')">'
                 + '<span class="chevron">&#9656;</span>'
-                + '<span class="toggle-label">Read the Week ' + blurbWeek + ' take</span>'
+                + '<span class="toggle-label">Read the ' + blurbLabel + ' take</span>'
                 + '</button>'
                 + '<div class="rank-blurb" id="blurb-' + slug + '">' + t.blurb + '</div>';
     }
@@ -474,13 +477,13 @@ function renderRankings(data) {
 /* ── Look-back blurb expand/collapse ─────────────────────────────
    Historical write-up text lags the JSON snapshot by one week, so the
    toggle always reads "Week N" for the week the text actually covers. */
-function toggleBlurb(slug, week) {
+function toggleBlurb(slug, label) {
   var blurb = document.getElementById('blurb-' + slug);
   var btn   = document.getElementById('blurb-btn-' + slug);
-  var label = btn.querySelector('.toggle-label');
+  var lbl   = btn.querySelector('.toggle-label');
   var isOpen = blurb.classList.toggle('open');
   btn.classList.toggle('open', isOpen);
-  label.textContent = (isOpen ? 'Hide the Week ' : 'Read the Week ') + week + ' take';
+  lbl.textContent = (isOpen ? 'Hide the ' : 'Read the ') + label + ' take';
 }
 
 /* ── Playoff threshold overlay (behind the lines, in front of gridlines) ── */
@@ -778,7 +781,8 @@ function onSeasonChange() {
     entry.weeks.slice().reverse().forEach(function(w) {
       var opt = document.createElement('option');
       opt.value = w;
-      opt.textContent = 'Week ' + w;
+      var lbl = (entry.weekLabels && entry.weekLabels[w]) ? entry.weekLabels[w] : ('Week ' + w);
+      opt.textContent = lbl;
       weekSel.appendChild(opt);
     });
   }
