@@ -1139,6 +1139,17 @@ function renderExplorer() {
   });
 
   sim.on('tick', function(){
+    // Nothing above constrains node positions to the visible frame --
+    // forceCenter only pulls the average position toward center, it
+    // doesn't stop any individual node from drifting past the edges.
+    // Clamp explicitly instead, using each node's own radius so circles
+    // and diamonds stay fully on-screen rather than getting clipped.
+    var pad = 16;
+    graphNodes.forEach(function(d){
+      var r = d.type === 'manager' ? 22 : (d.data.managers.length >= 3 ? 15 : 10);
+      d.x = Math.max(r + pad, Math.min(width - r - pad, d.x));
+      d.y = Math.max(r + pad, Math.min(height - r - pad, d.y));
+    });
     linkSel
       .attr('x1', function(d){return d.source.x;}).attr('y1', function(d){return d.source.y;})
       .attr('x2', function(d){return d.target.x;}).attr('y2', function(d){return d.target.y;});
