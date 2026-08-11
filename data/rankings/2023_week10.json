@@ -11,7 +11,9 @@
       "ppg_to_date": 130.25,
       "record_to_date": "6-3",
       "last_score": 130.32,
-      "streak": "W2"
+      "streak": "W2",
+      "synopsis": "Closely matched with the #2 team, but takes the top spot — Saquon and Pollard need to pick it up though.",
+      "blurb": "The top two teams in our current rankings are very closely matched, but for this week's update, I've decided to place Carmine's team in the top spot. I've consistently highlighted the overall strength of Carmine's starting lineup, which remains solid. However, there have been occasional concerns about the performance of the flex position. One area of consideration is the performance of <mark class=\"hl-player\">Saquon</mark> and <mark class=\"hl-player\">Pollard</mark>, who haven't met the high expectations set for them. If this trend continues, it may become a cause for concern in the upcoming weeks."
     },
     {
       "manager": "Ethan Radecki",
@@ -22,7 +24,9 @@
       "ppg_to_date": 131.65,
       "record_to_date": "8-1",
       "last_score": 117.64,
-      "streak": "W4"
+      "streak": "W4",
+      "synopsis": "Already clinched a playoff berth — one of the fastest qualifications in PFFL history.",
+      "blurb": "There's not much to comment on regarding this team, except for the notable achievement of possessing the best record in the league and being considered one of the top contenders to secure the 2023 PFFL Championship. This past week, they've already clinched a playoff berth, marking one of the swiftest qualifications for the playoffs in PFFL history. Keep a close watch on this team, as it's well-positioned to potentially reclaim the top spot by the end of the season."
     },
     {
       "manager": "Charlie Gorman",
@@ -33,7 +37,9 @@
       "ppg_to_date": 121.85,
       "record_to_date": "5-4",
       "last_score": 132.7,
-      "streak": "L2"
+      "streak": "L2",
+      "synopsis": "Back in the top three, with a full-strength version of this roster still yet to be unleashed.",
+      "blurb": "Charlie has reclaimed a position in the top three, and it wouldn't be astonishing to see his continued presence in this upper echelon through the rest of the season. This team's intrinsic talent suggests that, as they regain full health, they'll unveil their potential as a formidable powerhouse. This team stands as one of the favorites to secure the 2023 PFFL Championship, an assertion that should hardly surprise anyone at this point."
     },
     {
       "manager": "Aidan Quigley",
@@ -44,7 +50,9 @@
       "ppg_to_date": 115.34,
       "record_to_date": "6-3",
       "last_score": 90.06,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "A brief top-three stint and a drop, but a near-lock for the playoffs and a threat to anyone.",
+      "blurb": "Aidan's team enjoyed a brief stint in the top three, and despite their recent drop in rankings, it's reasonable to anticipate their sustained presence near the upper echelons of the standings. There's little to comment on regarding this team other than the noteworthy status of being a near-lock for the playoffs, making them a formidable contender capable of challenging and potentially upsetting any of the top-ranked teams."
     },
     {
       "manager": "Baylen Slansky",
@@ -55,7 +63,9 @@
       "ppg_to_date": 109.14,
       "record_to_date": "6-3",
       "last_score": 141.92,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "One of the league's most remarkable comeback stories — 6-3 now, with 140+ in Week 9 alone.",
+      "blurb": "Baylen's team has staged one of the most remarkable comebacks in the entire league this season, now boasting a 6-3 record and an impressive 140+ point performance in Week 9. Following a lackluster Week 1, there was a tendency to prematurely dismiss this team, which has proven to be a significant overreaction. The team's performance in the final month of the season will be closely watched, particularly given an upcoming schedule featuring matchups against three top-five teams and two bottom-three teams."
     },
     {
       "manager": "Brandon Hancock",
@@ -66,7 +76,9 @@
       "ppg_to_date": 118.18,
       "record_to_date": "5-4",
       "last_score": 95.82,
-      "streak": "W2"
+      "streak": "W2",
+      "synopsis": "A season-low 95.82 points, but still a win — 130+ point weeks are the bar for a real championship run.",
+      "blurb": "In Week 9 of the 2023 PFFL season, this team posted its lowest point total of the year, amounting to 95.82 points. Nevertheless, they managed to secure a victory. Brandon's team has been characterized by its consistent performance, yet to make a serious playoff run and contend for the 2023 PFFL Championship, it'll be imperative for the team to consistently achieve point totals in the range of 130 or more. As the playoffs approach, this team is likely to emerge as a significant threat."
     },
     {
       "manager": "Cole Maney",
@@ -77,7 +89,9 @@
       "ppg_to_date": 115.84,
       "record_to_date": "4-5",
       "last_score": 86.08,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "Previously an every-week top-five team, now cooling off — but a bounce-back is expected soon.",
+      "blurb": "Previously referred to as an 'every-week top-five team,' this team currently occupies the #7 position in the rankings. Last week, they registered their lowest point total of the entire season. However, it's essential to note that this downturn may be attributed to key players being on a bye week. Anticipating a rebound in performance, it's reasonable to expect this team will remain competitive in the playoff race and potentially regain a top-five ranking for the remainder of the season."
     },
     {
       "manager": "Anthony Kelly",
@@ -88,7 +102,9 @@
       "ppg_to_date": 96.66,
       "record_to_date": "5-4",
       "last_score": 134.62,
-      "streak": "W4"
+      "streak": "W4",
+      "synopsis": "The second-fewest points in the league, yet on a four-game win streak and in playoff position.",
+      "blurb": "As of the present moment, Anthony's team would secure a playoff berth as the 8th seed, despite having scored the second-lowest number of points this season. Recent performance is commendable, with the team achieving victory in four consecutive matchups. However, the conclusion of the season will be of utmost importance in evaluating overall prospects. The remaining five games on the schedule encompass contests against both lower-ranked and top-ranked teams, presenting an intriguing scenario for strategic game planning."
     },
     {
       "manager": "Deniz Bileydi",
@@ -99,7 +115,9 @@
       "ppg_to_date": 109.35,
       "record_to_date": "5-4",
       "last_score": 126.02,
-      "streak": "W2"
+      "streak": "W2",
+      "synopsis": "Stuck in the 7-10 range all season — the two injured top-10 RBs returning will decide the rest.",
+      "blurb": "Throughout the season, this team has maintained a somewhat stagnant position within the 7-10 range, creating curiosity about their playoff prospects. Deniz's team has exhibited a degree of inconsistency, with performances varying from exceptional to subpar. The team's potential as a contender hinges on the sustained productivity of its players and the imminent return to form of their two top-ten-ranked running backs, who are recovering from injuries."
     },
     {
       "manager": "Max Malich",
@@ -110,7 +128,9 @@
       "ppg_to_date": 105.21,
       "record_to_date": "3-6",
       "last_score": 87.24,
-      "streak": "L2"
+      "streak": "L2",
+      "synopsis": "Playoff odds sitting at 9% per ESPN — but Kyler Murray could still spark a late-season run.",
+      "blurb": "Max's ranking has remained unchanged this week, which might come as a surprise given that he's suffered two consecutive losses, failing to surpass the 100-point mark in either contest. Despite the seemingly low playoff odds, which stand at a mere 9% according to ESPN, there remains a viable opportunity to mount a late-season playoff campaign. <mark class=\"hl-player\">Kyler Murray</mark> could potentially serve as the linchpin for this team's resurgence, and if all of Max's players perform at their best, the team is capable of competing successfully against any opponent."
     },
     {
       "manager": "Andrew Root",
@@ -121,7 +141,9 @@
       "ppg_to_date": 101.03,
       "record_to_date": "4-5",
       "last_score": 73.88,
-      "streak": "L2"
+      "streak": "L2",
+      "synopsis": "Not in a great spot, but a manager with a track record of turning things around.",
+      "blurb": "The current ranking aligns with Root's team's performance, yet there's potential for an upward trajectory in the ensuing weeks. This team has encountered a streak of unfortunate outcomes this season; however, the manager, who has a history of success, has the opportunity to surmount challenges, adapt, and guide his team back into playoff contention. It'll demand a substantial and concerted effort, but if there's a manager capable of it, it's undoubtedly Andrew."
     },
     {
       "manager": "Ryan P McQuaid",
@@ -132,7 +154,9 @@
       "ppg_to_date": 99.25,
       "record_to_date": "3-6",
       "last_score": 74.3,
-      "streak": "L5"
+      "streak": "L5",
+      "synopsis": "Five straight losses and stuck at #12 — a Jefferson return is the clearest path back.",
+      "blurb": "Ryan's team has experienced five consecutive losses, marking the second-longest active streak in the PFFL. Consequently, they've maintained the 12th position for two consecutive weeks. Nonetheless, there remain prospects for a playoff berth, particularly upon the anticipated return of <mark class=\"hl-player\">Jefferson</mark> in the forthcoming weeks. A late surge toward the playoffs remains conceivable, contingent on some favorable fortune."
     },
     {
       "manager": "Quin Gegwich",
@@ -143,7 +167,9 @@
       "ppg_to_date": 90.9,
       "record_to_date": "1-8",
       "last_score": 121.4,
-      "streak": "L8"
+      "streak": "L8",
+      "synopsis": "Out of the 14th spot, but with the league's worst record, the question is how long it lasts.",
+      "blurb": "Finally, Quin has moved out of the 14th spot, but how long will this last? Quin's team does have the worst record, but he's been much more effective recently than Ben, which has led to him moving up a spot. I'd expect Ben to move up once again if he can win another game, potentially saving him from having to do the punishment."
     },
     {
       "manager": "Ben Castaldo",
@@ -154,7 +180,9 @@
       "ppg_to_date": 103.21,
       "record_to_date": "2-7",
       "last_score": 81.28,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "A change at the bottom — three straight weeks under 82 points earns Ben the last spot this time.",
+      "blurb": "I've decided to make a change to the last-ranked team this week, and perhaps with good reason. Ben's performance has been consistently poor over the past few weeks, failing to reach the 82-point mark in the past three weeks. Although Ben's team has a stronger chance of making the playoffs compared to Quin, whom I have ranked higher this week, I believe a change was necessary for at least one week based on recent scores."
     }
   ]
 }

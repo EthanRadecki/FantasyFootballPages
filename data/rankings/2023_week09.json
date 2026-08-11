@@ -11,7 +11,9 @@
       "ppg_to_date": 133.4,
       "record_to_date": "7-1",
       "last_score": 162.42,
-      "streak": "W3"
+      "streak": "W3",
+      "synopsis": "#1 for the fourth straight week — the RB2 spot is the only real thing left to address.",
+      "blurb": "Ethan's team maintains the #1 spot for the fourth consecutive week. Although the team had a challenging week in Week 8, it's undeniably been a top-three contender throughout the season. With one more win, this team will secure a spot in the 2023 PFFL Playoffs, and Ethan is undoubtedly aiming to secure his 2nd PFFL championship in franchise history. One point of concern is the RB2 position, and it remains to be seen whether he'll make moves to address that gap."
     },
     {
       "manager": "Carmine Pittelli Jr.",
@@ -22,7 +24,9 @@
       "ppg_to_date": 130.24,
       "record_to_date": "5-3",
       "last_score": 155.66,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "Back in the top two, well-deserved — even the flex options (Sutton, Davis) are pulling their weight.",
+      "blurb": "Carmine's team has reclaimed the top two position, and it's well-deserved. The team remains solid at all positions, and even the flex options in <mark class=\"hl-player\">Sutton</mark> and <mark class=\"hl-player\">Davis</mark> have been performing admirably. It's unlikely this team will make any trades, and it's set to remain a strong contender for the PFFL championship in the near future."
     },
     {
       "manager": "Aidan Quigley",
@@ -33,7 +37,9 @@
       "ppg_to_date": 118.5,
       "record_to_date": "6-2",
       "last_score": 144.26,
-      "streak": "W3"
+      "streak": "W3",
+      "synopsis": "Into the top three for the first time this season — a genuine PFFL championship contender.",
+      "blurb": "Another incredible week in Week 8 has propelled Aidan's team into the top three for the first time this season. Currently, it appears this team is a strong contender for the PFFL championship, but the remaining games will determine whether that holds true. Aidan's team is undeniably one of the most exciting squads this year, and it's expected to continue its impressive performance in the coming weeks."
     },
     {
       "manager": "Charlie Gorman",
@@ -44,7 +50,9 @@
       "ppg_to_date": 120.49,
       "record_to_date": "5-3",
       "last_score": 142.16,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "Sub-100 points only once all season, even through injuries to Deebo and Kyren — an impressive floor.",
+      "blurb": "Another bonafide top-five squad, Charlie's team has a brighter outlook for the coming weeks and the rest of the season. Despite the injuries to <mark class=\"hl-player\">Deebo</mark> and <mark class=\"hl-player\">Kyren</mark>, this team has managed to produce consistently. Notably, they've scored less than 100 points only once this season, which is an impressive feat. With that kind of performance, this team looks like a strong contender for the playoffs, and a few more wins should secure their spot."
     },
     {
       "manager": "Cole Maney",
@@ -55,7 +63,9 @@
       "ppg_to_date": 119.56,
       "record_to_date": "4-4",
       "last_score": 124.46,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "A bonafide top-five team again, though bye weeks and a tough schedule remain real hurdles.",
+      "blurb": "Maintaining its position as a bonafide top-five team in the weekly rankings, Cole's team secures the 5th spot once again. There's no denying this team is strong, but it faces a couple of challenges that may affect performance in the coming weeks. First, navigating the bye weeks could be tough due to a lack of depth, potentially resulting in significant losses. Second, a challenging schedule for the rest of the season might require this team to fight for wins later in the year. Making the playoffs still seems like a reasonable expectation."
     },
     {
       "manager": "Brandon Hancock",
@@ -66,7 +76,9 @@
       "ppg_to_date": 120.98,
       "record_to_date": "4-4",
       "last_score": 119.56,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "The weakest of the top six on paper, but a recent trade adds real uncertainty to that read.",
+      "blurb": "As we enter the top six teams, Brandon's team currently ranks as the weakest among them. However, the recent trade with Anthony introduces an element of uncertainty, and the impact may not be fully apparent until the following week. Despite this, I believe Brandon's team is still in a good position to secure a spot in the playoffs. To do so, it'll need to continue performing consistently, and may even require a bit of luck to become a locked-in contender for the 2023 PFFL Playoffs."
     },
     {
       "manager": "Deniz Bileydi",
@@ -77,7 +89,9 @@
       "ppg_to_date": 107.27,
       "record_to_date": "4-4",
       "last_score": 103.96,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "A solid rebound to 7th — two returning top-10 RBs and a QB change in Vegas could boost Davante Adams too.",
+      "blurb": "Deniz's team has made a solid rebound this week, climbing back to the 7th spot in the rankings. While his performance has been inconsistent in recent weeks, several factors could contribute to his team's improvement. The return of two top-10 running backs from injury will strengthen the weakest part of his roster. Additionally, the presence of <mark class=\"hl-player\">Davante Adams</mark>, who may perform better with the new QB in Las Vegas, adds to his team's potential. Breaking into the top six will be a challenging task that requires strong and consistent performances."
     },
     {
       "manager": "Baylen Slansky",
@@ -88,7 +102,9 @@
       "ppg_to_date": 105.04,
       "record_to_date": "5-3",
       "last_score": 89.7,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "10th in points per week, but a Week 3-6 stretch says this team can return to that peak form.",
+      "blurb": "Probably one of the hardest teams to rank this week — Baylen's team has the 10th-most points scored per week this season, and the past two weeks he hasn't been able to break the 100-point mark, but his team was very good Week 3 through Week 6. If Baylen has another bad week, I'd have no choice but to drop him again, but I have faith this team can return to peak form and jump back up the rankings. It has some good depth, but it lacks the star player that all the top teams have — though that may not matter if his players produce like they used to."
     },
     {
       "manager": "Andrew Root",
@@ -99,7 +115,9 @@
       "ppg_to_date": 104.42,
       "record_to_date": "4-4",
       "last_score": 91.48,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "Inconsistently average, but that might be exactly enough for a 7th or 8th seed.",
+      "blurb": "No change of scenery for Root this week, which shouldn't be a surprise. This team has been inconsistently average, and I honestly think it'll be enough for Andrew to make the playoffs as the 8th or 7th seed. One good thing: this team has the upside to be top five any given week, and all Andrew needs is for players like <mark class=\"hl-player\">Jacobs</mark> and <mark class=\"hl-player\">Jeudy</mark> to step up. One bad thing: this team doesn't have great depth, and the upcoming bye weeks may derail the playoff push."
     },
     {
       "manager": "Max Malich",
@@ -110,7 +128,9 @@
       "ppg_to_date": 107.45,
       "record_to_date": "3-5",
       "last_score": 98.2,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "A late-season push is possible — Jahmyr Gibbs is delivering, and Montgomery's return should help.",
+      "blurb": "Max's team has the potential to make a late-season push for a playoff spot, even though they currently have the third-worst record. With standout performances from players like <mark class=\"hl-player\">Jahmyr Gibbs</mark>, there's room for optimism. However, consistency will be key in the coming weeks, especially when <mark class=\"hl-player\">David Montgomery</mark> returns to the Lions. Max will need his team to perform at a high level to secure a playoff spot."
     },
     {
       "manager": "Anthony Kelly",
@@ -121,7 +141,9 @@
       "ppg_to_date": 91.92,
       "record_to_date": "4-4",
       "last_score": 102.0,
-      "streak": "W3"
+      "streak": "W3",
+      "synopsis": "Climbing out of the bottom three, with recent trades suggesting a real shift in fortunes.",
+      "blurb": "Anthony's team has shown improvement, and he's managed to climb out of the bottom three, demonstrating his potential to compete in the playoffs. Recent trades may have strengthened his team, suggesting a positive shift in his fortunes. As the season progresses, it will be interesting to see if his team continues to perform well and secures a playoff spot, or if he'll miss the PFFL Playoffs for the first time in the league's history."
     },
     {
       "manager": "Ryan P McQuaid",
@@ -132,7 +154,9 @@
       "ppg_to_date": 102.37,
       "record_to_date": "3-5",
       "last_score": 94.2,
-      "streak": "L4"
+      "streak": "L4",
+      "synopsis": "The 3rd-worst record and points total, and now Kirk Cousins is done for the year on top of it.",
+      "blurb": "Big fall this week, and you may think it's undeserved, but I'll try to explain myself the best I can. Ryan has the 3rd-least points scored per week this season, he had the 4th-least points scored this past week, he has the 3rd-worst record (3-5), and the cherry on top is that <mark class=\"hl-player\">Kirk Cousins</mark> is out for the rest of the season. If that's all the reasons for why he has the 3rd-worst ranking, then why was he ranked at #9 last week? Well, I think the main reason I brought him down so much is the reduced odds that <mark class=\"hl-player\">Jefferson</mark> returns and is the top-five WR that Ryan drafted him to be. I still think this team has a good chance to be a playoff team, but at this point it just wouldn't be fair to continue ranking him as such."
     },
     {
       "manager": "Ben Castaldo",
@@ -143,7 +167,9 @@
       "ppg_to_date": 105.95,
       "record_to_date": "1-7",
       "last_score": 80.02,
-      "streak": "L3"
+      "streak": "L3",
+      "synopsis": "A challenging season that needs to turn around fast to have any shot at the playoffs.",
+      "blurb": "Ben's team is facing a challenging season, and they need to turn things around quickly to have a shot at the playoffs. Otherwise, they might be looking at a season of playing to avoid coming in last. Every single week will be crucial for their performance. Short review, but it feels like I've been saying the same thing every week."
     },
     {
       "manager": "Quin Gegwich",
@@ -154,7 +180,9 @@
       "ppg_to_date": 87.08,
       "record_to_date": "1-7",
       "last_score": 122.88,
-      "streak": "L7"
+      "streak": "L7",
+      "synopsis": "A solid Week 8 despite the bottom-of-the-rankings status — playoffs are gone, but individual wins are still on the table.",
+      "blurb": "It's good to see Quin having a solid week in Week 8, even though he's been at the bottom of the rankings. While his playoff chances might be almost zero, there's still an opportunity to win individual weeks and avoid coming in last place. Wishing Quin the best of luck for the remainder of the season!"
     }
   ]
 }

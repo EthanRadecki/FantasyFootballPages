@@ -11,7 +11,9 @@
       "ppg_to_date": 130.01,
       "record_to_date": "8-5",
       "last_score": 186.78,
-      "streak": "W3"
+      "streak": "W3",
+      "synopsis": "Breaking through for the top spot for the first time all season, averaging 162 a week over the last three.",
+      "blurb": "Breaking through for the first time this season, Charlie has claimed the top spot in the rankings. His team's dominance over the past three weeks has been remarkable, boasting an impressive average of 162 points per week during that stretch. With a roster free of injuries and top-tier players at every position, Charlie seems poised for a strong playoff run. This marks Charlie's return to the playoffs for the first time since 2020, a year when everyone in the league made the playoffs. Anticipation is high, with expectations of Charlie securing his first playoff win in PFFL history and potentially his first PFFL Championship."
     },
     {
       "manager": "Carmine Pittelli Jr.",
@@ -22,7 +24,9 @@
       "ppg_to_date": 131.94,
       "record_to_date": "9-4",
       "last_score": 110.48,
-      "streak": "W2"
+      "streak": "W2",
+      "synopsis": "A win even without key bye-week players — now positioned to lock up the 2nd seed.",
+      "blurb": "Carmine's ability to secure a victory despite the absence of key players due to bye weeks is undoubtedly impressive, even if the matchup was against the league's bottom team. Consistently standing out as one of the top teams, Carmine's squad has earned praise for its resilience and performance. Now positioned to secure the 2nd seed, Carmine's team seems poised for a favorable playoff run, even if potential matchups against Aidan or Baylen won't be easy."
     },
     {
       "manager": "Brandon Hancock",
@@ -33,7 +37,9 @@
       "ppg_to_date": 120.75,
       "record_to_date": "8-5",
       "last_score": 124.76,
-      "streak": "L1"
+      "streak": "L1",
+      "synopsis": "Back in the top three, averaging 126 over the past four weeks — the Taylor loss offset by the Pacheco pickup.",
+      "blurb": "Returning to the top three, Brandon's team is poised for a playoff run reminiscent of the impressive performance in 2020, with the ultimate goal of securing a championship trophy this time around. Over the past four weeks, Brandon has showcased consistency, averaging around 126 points — an outstanding accomplishment. The recent loss of <mark class=\"hl-player\">Taylor</mark> may introduce some uncertainty, but the addition of <mark class=\"hl-player\">Pacheco</mark> is expected to be a fantastic replacement."
     },
     {
       "manager": "Ethan Radecki",
@@ -44,7 +50,9 @@
       "ppg_to_date": 129.89,
       "record_to_date": "12-1",
       "last_score": 95.18,
-      "streak": "W8"
+      "streak": "W8",
+      "synopsis": "A notable drop after injuries to Mark Andrews and Tank Dell — still a formidable playoff threat.",
+      "blurb": "Experiencing a notable drop in the rankings this week, Ethan's team has been dealt a tough hand with unfortunate injuries, particularly to key players like <mark class=\"hl-player\">Mark Andrews</mark> and <mark class=\"hl-player\">Tank Dell</mark>. These setbacks have shifted the team from a top rank to outside the top three. Despite the setbacks, Ethan's team remains a formidable opponent heading into the 2023 PFFL Playoffs."
     },
     {
       "manager": "Cole Maney",
@@ -55,7 +63,9 @@
       "ppg_to_date": 121.6,
       "record_to_date": "8-5",
       "last_score": 126.32,
-      "streak": "W4"
+      "streak": "W4",
+      "synopsis": "A stable lineup unchanged since Week 1 — poised for a historic first-ever PFFL Championship run.",
+      "blurb": "Cole's team remains a constant in the rankings this week, firmly securing the 5th spot. With a stable lineup that hasn't seen changes since Week 1, Cole seems to have found a winning formula. Despite lacking major alterations, Cole's team is poised for a historic PFFL Championship run, aiming for a breakthrough in franchise history."
     },
     {
       "manager": "Baylen Slansky",
@@ -66,7 +76,9 @@
       "ppg_to_date": 109.13,
       "record_to_date": "7-6",
       "last_score": 157.18,
-      "streak": "W1"
+      "streak": "W1",
+      "synopsis": "Averaging 144 points over the past two weeks — catching fire right as the playoffs approach.",
+      "blurb": "Baylen's team experienced significant changes during trade deadline week, and the transformation appears to have yielded positive results. Scoring an impressive average of 144 points over the past two weeks signifies an uptick in production, setting the stage for a potential playoff run. Baylen vies for either the 7th or 6th seed, and whoever faces him should be wary of the upset potential."
     },
     {
       "manager": "Aidan Quigley",
@@ -77,7 +89,9 @@
       "ppg_to_date": 116.74,
       "record_to_date": "7-6",
       "last_score": 98.56,
-      "streak": "L2"
+      "streak": "L2",
+      "synopsis": "A disappointing week from Terry aside, this team remains strong heading into a big Week 14 vs. Carmine.",
+      "blurb": "Aidan experiences a slight setback in the rankings this week, but his team remains strong. A disappointing performance from <mark class=\"hl-player\">Terry</mark> in Week 13 may have impacted the team's overall reputation, but Aidan has an opportunity to bounce back in Week 14, particularly against a formidable opponent like Carmine. Aidan is determined to surpass his previous playoff appearance in 2021, aiming for his first playoff win in franchise history."
     },
     {
       "manager": "Ryan P McQuaid",
@@ -88,7 +102,9 @@
       "ppg_to_date": 104.39,
       "record_to_date": "6-7",
       "last_score": 156.7,
-      "streak": "W3"
+      "streak": "W3",
+      "synopsis": "A win-or-go-home rematch of the 2022 championship — the Jefferson trade could decide it either way.",
+      "blurb": "The stakes are equally high for Ryan, as it's a win-or-go-home scenario. Ryan's team showed strength in Week 13, but there's uncertainty about whether they can replicate it. The absence of <mark class=\"hl-player\">McBride</mark> this week adds another layer of intrigue. An interesting subplot: the recent trade where Ryan sent <mark class=\"hl-player\">Jefferson</mark> to Anthony a few weeks ago. This rematch of the 2022 PFFL Championship is the most talked-about matchup of the week."
     },
     {
       "manager": "Anthony Kelly",
@@ -99,7 +115,9 @@
       "ppg_to_date": 95.33,
       "record_to_date": "6-7",
       "last_score": 70.32,
-      "streak": "L3"
+      "streak": "L3",
+      "synopsis": "A win-or-go-home week for a fourth straight playoff appearance — the Jefferson debut adds intrigue.",
+      "blurb": "The stakes are high as Anthony faces a pivotal week in the season. While his overall points scored may reflect a down year, Anthony has managed to secure some narrow victories, keeping his playoff hopes alive. Securing a playoff berth for the fourth consecutive year is within reach. The debut of <mark class=\"hl-player\">Jefferson</mark> in Anthony's lineup adds an element of anticipation, though he's currently projected to trail Ryan in this win-or-go-home week."
     },
     {
       "manager": "Max Malich",
@@ -110,7 +128,9 @@
       "ppg_to_date": 107.93,
       "record_to_date": "5-8",
       "last_score": 86.0,
-      "streak": "L2"
+      "streak": "L2",
+      "synopsis": "A strong late push (123 points a week over weeks 10-12) still fell just short for a second straight year.",
+      "blurb": "Similar to Deniz, Max faced elimination from the playoffs in Week 13. Despite a robust playoff push, averaging 123 points in weeks 10-12, Max fell short of securing a playoff spot for the second consecutive year. As the current season comes to a close, history suggests a potential playoff return in 2024."
     },
     {
       "manager": "Deniz Bileydi",
@@ -121,7 +141,9 @@
       "ppg_to_date": 104.85,
       "record_to_date": "5-8",
       "last_score": 82.7,
-      "streak": "L4"
+      "streak": "L4",
+      "synopsis": "Consistently 5th-10th all year, but landed at the lower end of that range and out of the playoffs.",
+      "blurb": "There isn't much to add about Deniz's team; we're familiar with his managerial style, but 2023 brought something different. Despite consistently ranking between 5th and 10th throughout the season, it's intriguing that the team ultimately landed at the lower end of that spectrum. This marks the second time Deniz has finished below a .500 win percentage. Officially out of the playoffs this time, it'll be intriguing to see whether this trend persists in seasons to come."
     },
     {
       "manager": "Ben Castaldo",
@@ -132,7 +154,9 @@
       "ppg_to_date": 102.28,
       "record_to_date": "4-9",
       "last_score": 109.8,
-      "streak": "W2"
+      "streak": "W2",
+      "synopsis": "Finally out of the bottom two, even if it's likely too late — the lowest win percentage of his four seasons.",
+      "blurb": "Finally breaking free from the bottom two for the first time since Week 6, Ben's team has shown signs of life to close out the season, even though the comeback might be a tad too late. Persistent injuries plagued the team throughout the season, making it a struggle for consistent competition. This season marks Ben's lowest win percentage across all four seasons. Despite the challenges, I'm optimistic the manager will stage a solid comeback, securing more victories in 2024."
     },
     {
       "manager": "Andrew Root",
@@ -143,7 +167,9 @@
       "ppg_to_date": 97.89,
       "record_to_date": "4-9",
       "last_score": 82.82,
-      "streak": "L6"
+      "streak": "L6",
+      "synopsis": "The first missed playoffs in franchise history — no standout player at any position this year.",
+      "blurb": "Andrew's PFFL season was a rollercoaster of highs and lows. There were bright moments, like <mark class=\"hl-player\">Puka</mark>'s stellar performance in the first month, but also tough times, especially when <mark class=\"hl-player\">Chubb</mark> suffered a season-ending injury in Week 2. This marks the first time in PFFL history that Andrew won't be part of the playoffs, but I'm confident a strong comeback awaits in 2024. This team ranks as Andrew's least successful, lacking a standout player at any position."
     },
     {
       "manager": "Quin Gegwich",
@@ -154,7 +180,9 @@
       "ppg_to_date": 93.85,
       "record_to_date": "2-11",
       "last_score": 103.58,
-      "streak": "L3"
+      "streak": "L3",
+      "synopsis": "The bottom spot officially clinched — an underperforming roster, but some savvy trades along the way.",
+      "blurb": "Quin officially clinched the bottom spot in the 2023 PFFL season, and it's hard to argue otherwise. With the fewest wins, one of the lowest points scored against him, and the least points put up by any team over 13 weeks, it was a challenging season. Dealing with <mark class=\"hl-player\">Ekeler</mark>'s absence for nearly a month, lackluster performances from <mark class=\"hl-player\">Ridley</mark> and <mark class=\"hl-player\">Lawrence</mark>, and <mark class=\"hl-player\">Waddle</mark> not quite meeting expectations made it a rough ride. Despite the setbacks, Quin pulled off some savvy trades, proving he's got a place in this league. Here's to hoping for a stronger comeback in 2024."
     }
   ]
 }
