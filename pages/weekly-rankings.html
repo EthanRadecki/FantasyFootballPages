@@ -9,20 +9,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <style>
-/* ── SEASON LOGO ── */
+/* ── SEASON LOGO / HERO ──
+   Mirrors index.html's centered hero treatment (big logo, radial glow,
+   large title) rather than the smaller inline-logo-next-to-title layout
+   this started with -- the logo should feel like the page's anchor, the
+   same way it does on the homepage. */
 .page-header.glass {
-  display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;
+  display:block;text-align:center;
+  padding:3rem 2rem 2.5rem;position:relative;overflow:hidden;
 }
+.page-header.glass::before {
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 50% 60% at 50% 40%, rgba(var(--accent-rgb),0.08), transparent 70%);
+}
+.page-header.glass h1,
+.page-header.glass p { position:relative; }
 .season-logo {
-  width:64px;height:64px;border-radius:16px;object-fit:cover;flex-shrink:0;
-  box-shadow:0 4px 20px rgba(var(--accent-rgb),0.25);
-  border:2px solid rgba(var(--accent-rgb),0.3);
+  width:120px;height:120px;border-radius:24px;object-fit:cover;
+  margin-bottom:1.25rem;position:relative;
+  box-shadow:0 6px 32px rgba(var(--accent-rgb),0.2);
+  border:2px solid rgba(var(--accent-rgb),0.25);
   transition:box-shadow 0.3s,border-color 0.3s;
 }
-.page-header-text { min-width:0; }
 
 @media(max-width:600px) {
-  .season-logo { width:52px;height:52px;border-radius:13px; }
+  .season-logo { width:90px;height:90px;border-radius:18px; }
 }
 
 /* ── FILTER BAR ── */
@@ -412,10 +423,8 @@
 
   <div class="page-header glass">
     <img id="season-logo" class="season-logo" src="" alt="" style="display:none;">
-    <div class="page-header-text">
-      <h1>Weekly Rankings</h1>
-      <p>Power rankings across every season of Preach Fantasy</p>
-    </div>
+    <h1>Weekly Rankings</h1>
+    <p>Power rankings across every season of Preach Fantasy</p>
   </div>
 
   <div class="filter-bar glass">
@@ -824,8 +833,16 @@ function renderTrajectoryChart(season, upToWeek, weeksData) {
 
 /* ── Playoff odds chart ────────────────────────────────────────── */
 function renderPlayoffOddsChart(season, upToWeek) {
-  var seasonData = playoffOddsData ? playoffOddsData[String(season)] : null;
   var wrap = document.getElementById('playoff-odds-wrap');
+  // upToWeek is NaN when the current selection is a playoff round slug
+  // (e.g. "quarterfinals") rather than a numeric week -- this chart only
+  // ever tracks the regular-season countdown, so bail out rather than
+  // fall through and show an empty/broken chart.
+  if (isNaN(upToWeek)) {
+    wrap.style.display = 'none';
+    return;
+  }
+  var seasonData = playoffOddsData ? playoffOddsData[String(season)] : null;
   if (!seasonData) {
     wrap.style.display = 'none';
     return;
@@ -1206,8 +1223,9 @@ document.addEventListener('DOMContentLoaded', function() {
       playoffOddsData = data;
       var seasonEl = document.getElementById('season-select');
       var weekEl   = document.getElementById('week-select');
-      if (seasonEl && seasonEl.value && weekEl && weekEl.value) {
-        renderPlayoffOddsChart(parseInt(seasonEl.value), parseInt(weekEl.value));
+      var wk       = weekEl ? parseInt(weekEl.value, 10) : NaN;
+      if (seasonEl && seasonEl.value && weekEl && weekEl.value && !isNaN(wk)) {
+        renderPlayoffOddsChart(parseInt(seasonEl.value), wk);
       }
     })
     .catch(function() { playoffOddsData = null; });
