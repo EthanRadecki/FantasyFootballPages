@@ -68,6 +68,15 @@
   border:1px solid rgba(74,127,168,0.4);border-radius:4px;background:rgba(74,127,168,0.12);
   padding:0.03rem 0.35rem;margin-left:0.35rem;letter-spacing:0.02em;
 }
+#explorer-detail-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;
+  color:var(--accent);margin-bottom:0.6rem;
+}
+@keyframes explorerDetailFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(156,148,156,0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(156,148,156,0); }
+}
+#explorer-detail.flash { animation: explorerDetailFlash 0.7s ease-out; }
 .got-txt { color:#4a7fa8; }
 .gave-txt { color:#a8664a; }
 @media(max-width:768px) {
@@ -285,7 +294,7 @@
     </div>
     <p class="metric-note">Diamonds are trades, logos are managers. Tap a diamond for the full breakdown below. Bigger diamonds involved more managers. <strong>Click any manager to center the graph on their trades</strong> (this also sets the Manager A filter above, so the view gets less crowded too). Drag any node afterward to move it freely, or <a href="#" onclick="resetExplorerLayout();return false;" style="color:var(--accent);font-weight:700;">reset the layout</a> to go back to the free-floating view.</p>
 
-    <div id="explorer-detail" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(var(--accent-rgb),0.2);"></div>
+    <div id="explorer-detail" class="glass" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
   </div>
 
   <div class="section-label" style="margin-top:2rem;" id="most-traded-players">Most Traded Players</div>
@@ -1041,14 +1050,28 @@ function renderTradeDetail(node) {
       + '</tr>';
   }).join('');
 
+  var seasonColor = SEASON_COLORS[node.season] || 'var(--muted)';
   panel.innerHTML =
-    '<div style="font-family:var(--font-display);font-weight:800;font-size:1rem;color:var(--palm);margin-bottom:0.25rem;">'
-      + node.season + (node.multi ? '<span class="multi-badge">'+node.managers.length+'-TEAM</span>' : '') + '</div>'
+    '<div id="explorer-detail-label">Trade Details</div>'
+    + '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;">'
+      + '<span class="season-pill" style="background:'+seasonColor+';font-size:0.8rem;">'+node.season+'</span>'
+      + (node.multi ? '<span class="multi-badge">'+node.managers.length+'-TEAM</span>' : '')
+    + '</div>'
     + '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem;">Positions involved: ' + (node.positions.join(', ') || '&ndash;') + '</div>'
     + '<div class="table-wrap" style="overflow-x:auto;">'
     + '<table class="tv-table"><thead><tr><th>Manager</th><th>Got</th><th>Gave</th><th>Trade Grade</th><th>Realized Gains</th><th>Fit</th><th>Necessity/wk</th><th>QUAD</th></tr></thead>'
     + '<tbody>'+rows+'</tbody></table></div>';
   panel.style.display = 'block';
+
+  // Make it obvious something just appeared: scroll it into view (the
+  // graph can be tall enough that the panel opens below the fold,
+  // especially on mobile) and give it a quick attention flash. The
+  // reflow trick lets the flash re-trigger even if you click several
+  // diamonds in a row without the animation getting stuck mid-way.
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  panel.classList.remove('flash');
+  void panel.offsetWidth;
+  panel.classList.add('flash');
 }
 
 function renderExplorer() {
