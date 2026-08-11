@@ -9,6 +9,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <style>
+/* ── SEASON LOGO ── */
+.page-header.glass {
+  display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;
+}
+.season-logo {
+  width:64px;height:64px;border-radius:16px;object-fit:cover;flex-shrink:0;
+  box-shadow:0 4px 20px rgba(var(--accent-rgb),0.25);
+  border:2px solid rgba(var(--accent-rgb),0.3);
+  transition:box-shadow 0.3s,border-color 0.3s;
+}
+.page-header-text { min-width:0; }
+
+@media(max-width:600px) {
+  .season-logo { width:52px;height:52px;border-radius:13px; }
+}
+
 /* ── FILTER BAR ── */
 .filter-bar {
   display:flex;align-items:center;gap:1rem;
@@ -142,13 +158,16 @@
 
 /* Inline tag styles -- reset <mark>'s default yellow, keep everything
    tied to the page's season-themed accent so it retints automatically */
-.rank-blurb mark.hl-player {
+.rank-blurb mark.hl-player,
+.matchup-pick-text mark.hl-player {
   background:rgba(var(--accent-rgb),0.12);color:var(--palm);
   font-weight:700;font-style:normal;padding:0.02rem 0.32rem;
   border-radius:3px;white-space:nowrap;
 }
-.rank-blurb strong.hl-stat { color:var(--accent);font-weight:800; }
-.rank-blurb em.hl-team { color:var(--muted);font-style:italic;font-weight:600; }
+.rank-blurb strong.hl-stat,
+.matchup-pick-text strong.hl-stat { color:var(--accent);font-weight:800; }
+.rank-blurb em.hl-team,
+.matchup-pick-text em.hl-team { color:var(--muted);font-style:italic;font-weight:600; }
 
 .rank-blurb ul.rank-blurb-specs {
   list-style:none;margin:0 0 0.55rem 0;padding:0;
@@ -191,6 +210,62 @@
   padding:1.4rem 1.6rem;margin-bottom:2rem;
   font-size:0.88rem;line-height:1.7;color:var(--text-mid);
   border-top:3px solid var(--accent);
+}
+
+/* ── BRACKET GRAPHIC ──
+   Generated from the same matchup/pick data as the cards below, so it
+   scales automatically: 4 matchups draws QF+SF+Championship columns,
+   2 draws SF+Championship, 1 draws just the Championship slot. Scrolls
+   horizontally on narrow viewports rather than stacking -- a bracket
+   fundamentally reads left-to-right and squashing it into a column
+   loses the shape entirely. */
+.bracket-wrap { overflow-x:auto;margin-bottom:2.5rem;padding-bottom:0.5rem; }
+.bracket {
+  display:flex;align-items:stretch;gap:2.5rem;
+  min-width:680px;padding:0.5rem 0.25rem;
+}
+.bracket-col { display:flex;flex-direction:column;flex:1;min-width:190px; }
+.bracket-col-label {
+  font-family:'Caveat',cursive;font-weight:700;font-size:1.15rem;color:var(--accent);
+  text-align:center;margin-bottom:1rem;
+}
+.bracket-col-slots { display:flex;flex-direction:column;justify-content:space-around;flex:1;gap:1.25rem; }
+
+.bracket-pair {
+  position:relative;display:flex;flex-direction:column;
+  justify-content:space-between;gap:1rem;flex:1;padding-right:1.25rem;
+}
+.bracket-pair::after {
+  content:'';position:absolute;top:22%;bottom:22%;right:0;width:1.25rem;
+  border-right:2px solid rgba(var(--accent-rgb),0.35);
+  border-top:2px solid rgba(var(--accent-rgb),0.35);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.35);
+  border-radius:0 8px 8px 0;
+}
+.bracket-col:last-child .bracket-pair,
+.bracket-col:last-child .bracket-pair::after { display:none; }
+
+.bracket-slot {
+  padding:0.55rem 0.75rem;font-size:0.76rem;
+  border:1px solid rgba(var(--accent-rgb),0.18);border-radius:var(--radius-sm);
+}
+.bracket-slot-team { display:flex;align-items:center;gap:0.45rem;padding:0.3rem 0; }
+.bracket-slot-team + .bracket-slot-team { border-top:1px solid rgba(var(--accent-rgb),0.12); }
+.bracket-slot-seed {
+  font-family:var(--font-display);font-weight:800;color:var(--muted);
+  font-size:0.7rem;width:1.1rem;text-align:center;flex-shrink:0;
+}
+.bracket-slot-name {
+  font-family:'Caveat',cursive;font-weight:700;font-size:0.95rem;
+  color:var(--text-mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.bracket-slot-team.is-pick .bracket-slot-name { color:var(--palm); }
+.bracket-slot-team.is-pick .bracket-slot-seed { color:var(--accent); }
+.bracket-slot.is-pending { opacity:0.7; }
+.bracket-slot.is-pending .bracket-slot-name { font-style:italic; }
+.bracket-pending-tag {
+  font-size:0.6rem;text-transform:uppercase;letter-spacing:0.07em;
+  font-weight:700;color:var(--muted);margin-bottom:0.35rem;text-align:center;
 }
 
 .playoff-matchups { display:flex;flex-direction:column;gap:1.5rem;margin-bottom:2.5rem; }
@@ -336,8 +411,11 @@
   </div>
 
   <div class="page-header glass">
-    <h1>Weekly Rankings</h1>
-    <p>Power rankings across every season of Preach Fantasy</p>
+    <img id="season-logo" class="season-logo" src="" alt="" style="display:none;">
+    <div class="page-header-text">
+      <h1>Weekly Rankings</h1>
+      <p>Power rankings across every season of Preach Fantasy</p>
+    </div>
   </div>
 
   <div class="filter-bar glass">
@@ -414,7 +492,7 @@ var playoffOddsData = null;  // loaded from playoff_odds.json, keyed by season
 // a lot of places), same fix as the manager colors below.
 var SEASON_THEME_COLORS = {
   2020: '#77676f', 2021: '#5f6984', 2022: '#916032',
-  2023: '#9a5858', 2024: '#5c7172', 2025: '#617044', 2026: '#53735c'
+  2023: '#9a5858', 2024: '#5c7172', 2025: '#617044', 2026: '#9b4d8b'
 };
 
 function hexToRgbString(hex) {
@@ -438,12 +516,23 @@ function applySeasonTheme(season) {
     root.style.removeProperty('--accent');
     root.style.removeProperty('--accent-rgb');
     root.style.removeProperty('--accent-glow');
-    return;
+  } else {
+    var rgb = hexToRgbString(color);
+    root.style.setProperty('--accent', color);
+    root.style.setProperty('--accent-rgb', rgb);
+    root.style.setProperty('--accent-glow', 'rgba(' + rgb + ',0.18)');
   }
-  var rgb = hexToRgbString(color);
-  root.style.setProperty('--accent', color);
-  root.style.setProperty('--accent-rgb', rgb);
-  root.style.setProperty('--accent-glow', 'rgba(' + rgb + ',0.18)');
+
+  // Swap in that season's logo (its background color is what the
+  // SEASON_THEME_COLORS accent above is a darkened, text-safe match of,
+  // so the frame glow and the artwork read as the same palette).
+  var logo = document.getElementById('season-logo');
+  if (logo) {
+    logo.onerror = function() { logo.style.display = 'none'; };
+    logo.onload  = function() { logo.style.display = 'inline-block'; };
+    logo.alt = 'Preach Fantasy ' + season;
+    logo.src = '../images/logos/league/preach_logo_' + season + '.png';
+  }
 }
 
 // One color per manager (consistent across seasons). Same text-safe
@@ -841,6 +930,102 @@ function recordWins(rec) {
   return parseInt(parts[0], 10) || 0;
 }
 
+/* ── Bracket graphic ───────────────────────────────────────────
+   Builds columns from the round's actual matchups, then keeps
+   halving the "pick" list into projected next-round pairings until
+   one slot remains. Only draws for bracket-shaped rounds (4, 2, or
+   1 matchups) -- anything else just skips the graphic rather than
+   guessing at a shape. Pairing order (0&3, 1&2 for a 4-matchup round)
+   matches the actual bracket seeding: 1v8 meets the 4v5 winner,
+   2v7 meets the 3v6 winner. */
+function adjacentPairs(len) {
+  var pairs = [];
+  for (var i = 0; i < len; i += 2) pairs.push([i, i+1]);
+  return pairs;
+}
+
+function buildBracketHtml(data) {
+  var matchups = data.matchups;
+  var n = matchups.length;
+  var pairOrder = { 4: [[0,3],[1,2]], 2: [[0,1]], 1: [[0]] };
+  if (!pairOrder[n]) return '';
+
+  var columns = [];
+
+  // Column 0: this round's real matchups, reordered so adjacent slots
+  // are the ones that actually feed the same next-round matchup
+  // (1v8 meets the 4v5 winner, 2v7 meets the 3v6 winner, etc).
+  var order = [].concat.apply([], pairOrder[n]);
+  var firstSlots = order.map(function(i) {
+    var m = matchups[i];
+    return { seedTop: m.higher_seed.seed, nameTop: m.higher_seed.team,
+              seedBot: m.lower_seed.seed,  nameBot: m.lower_seed.team,
+              pickName: m.pick, known: true };
+  });
+  columns.push({ label: data.round_label, slots: firstSlots, pairs: adjacentPairs(firstSlots.length) });
+
+  // Subsequent columns: halve the picks into projected pairings until one slot remains
+  var nextRoundNames = { 4: ['Semifinals','Championship'], 2: ['Championship'], 1: [] };
+  var names = nextRoundNames[n] || [];
+  var currentPicks = order.map(function(i){ return matchups[i].pick; });
+  var ni = 0;
+  while (currentPicks.length > 1) {
+    var slots = [], nextPicks = [];
+    for (var i = 0; i < currentPicks.length; i += 2) {
+      slots.push({ nameTop: currentPicks[i], nameBot: currentPicks[i+1], known: false });
+      nextPicks.push(null);
+    }
+    columns.push({ label: names[ni] || 'Next Round', slots: slots, pairs: adjacentPairs(slots.length) });
+    currentPicks = nextPicks;
+    ni++;
+  }
+
+  return buildBracketHtmlActual(columns);
+}
+
+function bracketSlotHtml(slot) {
+  if (slot.known) {
+    var topPick = slot.pickName === slot.nameTop;
+    var botPick = slot.pickName === slot.nameBot;
+    return '<div class="bracket-slot">'
+         + '<div class="bracket-slot-team' + (topPick ? ' is-pick' : '') + '">'
+         + '<span class="bracket-slot-seed">' + slot.seedTop + '</span>'
+         + '<span class="bracket-slot-name">' + slot.nameTop + '</span></div>'
+         + '<div class="bracket-slot-team' + (botPick ? ' is-pick' : '') + '">'
+         + '<span class="bracket-slot-seed">' + slot.seedBot + '</span>'
+         + '<span class="bracket-slot-name">' + slot.nameBot + '</span></div>'
+         + '</div>';
+  }
+  var topName = slot.nameTop || 'TBD';
+  var botName = slot.nameBot || 'TBD';
+  return '<div class="bracket-slot is-pending">'
+       + '<div class="bracket-pending-tag">Projected</div>'
+       + '<div class="bracket-slot-team"><span class="bracket-slot-name">' + topName + '</span></div>'
+       + '<div class="bracket-slot-team"><span class="bracket-slot-name">' + botName + '</span></div>'
+       + '</div>';
+}
+
+function buildBracketHtmlActual(columns) {
+  var html = '<div class="bracket-wrap"><div class="bracket">';
+  columns.forEach(function(col, ci) {
+    html += '<div class="bracket-col"><div class="bracket-col-label">' + col.label + '</div>';
+    html += '<div class="bracket-col-slots">';
+    var isLast = (ci === columns.length - 1);
+    if (isLast) {
+      col.slots.forEach(function(s) { html += bracketSlotHtml(s); });
+    } else {
+      col.pairs.forEach(function(pair) {
+        html += '<div class="bracket-pair">';
+        pair.forEach(function(idx) { html += bracketSlotHtml(col.slots[idx]); });
+        html += '</div>';
+      });
+    }
+    html += '</div></div>';
+  });
+  html += '</div></div>';
+  return html;
+}
+
 function renderPlayoffBracket(data) {
   var container = document.getElementById('rankings-content');
   var html = '';
@@ -853,6 +1038,8 @@ function renderPlayoffBracket(data) {
   if (data.overview) {
     html += '<div class="playoff-overview glass">' + data.overview + '</div>';
   }
+
+  html += buildBracketHtml(data);
 
   html += '<div class="playoff-matchups">';
 
