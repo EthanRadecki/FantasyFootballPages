@@ -136,7 +136,7 @@ function renderLeaderboard(list) {
     var luckPrefix = luckDisplay > 0 ? '+' : '';
 
     tr.innerHTML =
-      '<td><a href="#" class="manager-link">' + m.name + '</a></td>' +
+      '<td><a href="pages/managers.html?manager=' + encodeURIComponent(m.name) + '" class="manager-link">' + m.name + '</a></td>' +
       '<td class="' + cellColor(winRanks[m.name], total) + '">' + m.totalW + '</td>' +
       '<td class="' + cellColor(lossRanks[m.name], total) + '">' + m.totalL + '</td>' +
       '<td class="' + cellColor(winPctRanks[m.name], total) + '">' + m.winPct.toFixed(3) + '</td>' +
