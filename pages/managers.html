@@ -2695,6 +2695,16 @@ function selectManager(el) {
   profileEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// Auto-select a manager if the page was loaded with ?manager=Name in the URL
+// (e.g. linked from the all-time leaderboard on the homepage).
+function selectManagerFromUrl() {
+  var params = new URLSearchParams(window.location.search);
+  var name = params.get('manager');
+  if (!name) return;
+  var pill = document.querySelector('.mgr-pill[data-manager="' + name.replace(/"/g, '\\"') + '"]');
+  if (pill) selectManager(pill);
+}
+
 // ── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   // Load CSV data and ranking JSONs in parallel
@@ -2707,6 +2717,7 @@ document.addEventListener('DOMContentLoaded', function() {
     profileLookup  = buildManagerProfiles(allStatsData, allMatchupData);
     totalManagers  = Object.keys(profileLookup).length;
     updateManagerPills(profileLookup);
+    selectManagerFromUrl();
   });
 
   // Load manifest then fetch all ranking JSONs and build lookup
