@@ -23,6 +23,11 @@
     --line:rgba(30,26,20,0.14);
     --win:#4c8a5e;
     --loss:#b8402f;
+    /* 2026's season color, sampled from preach_logo_2026.png's background.
+       Used sparingly as a page-wide accent, not a base color -- this file's
+       bone/ink/rep/dem/gold palette stays intentionally separate from the
+       main site's per-season SEASON_THEME_COLORS system. */
+    --year-accent:#d8b1d0;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0; overscroll-behavior:none;}
@@ -44,6 +49,16 @@
     flex-direction:column;
     overflow:hidden;
   }
+  .app::before{
+    /* Very slight year-color wash, not a background swap -- keep this
+       subtle if adjusted, it's meant to be felt more than seen. */
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse 70% 40% at 50% 0%, rgba(216,177,208,0.16), transparent 65%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .topbar, .carousel-wrap{ position:relative; z-index:1; }
 
   /* HEADER */
   .topbar{
@@ -52,6 +67,32 @@
     background:var(--bone);
     padding:16px 18px 0 18px;
     border-bottom:1px solid var(--line);
+  }
+  .hero{
+    display:flex; flex-direction:column; align-items:center;
+    padding:6px 0 4px 0;
+    position:relative;
+  }
+  .hero-glow{
+    position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+    width:220px; height:220px;
+    /* rgba literal, not var(--year-accent), since this needs partial
+       opacity and the variable stores a plain hex value */
+    background:radial-gradient(circle, rgba(216,177,208,0.55), transparent 70%);
+    pointer-events:none;
+  }
+  .hero-logo{
+    width:90px; height:90px; object-fit:contain;
+    border-radius:16px;
+    position:relative; z-index:1;
+  }
+  .hero-title{
+    font-family:'Anton', sans-serif;
+    font-size:27px;
+    letter-spacing:0.5px;
+    line-height:1;
+    margin-top:8px;
+    position:relative; z-index:1;
   }
   .brand-title{
     font-family:'Anton', sans-serif;
@@ -65,6 +106,7 @@
     color:var(--ink-soft);
     letter-spacing:1px;
     text-transform:uppercase;
+    text-align:center;
     margin-top:3px;
     margin-bottom:12px;
   }
@@ -499,7 +541,11 @@
 <body>
 <div class="app">
   <div class="topbar">
-    <div class="brand-title">SCHEDULE RELEASE</div>
+    <div class="hero">
+      <div class="hero-glow"></div>
+      <img class="hero-logo" src="../images/logos/league/preach_logo_2026.png" alt="" onerror="this.remove()">
+      <div class="hero-title">SCHEDULE RELEASE</div>
+    </div>
     <div class="brand-sub">Preach Fantasy &middot; Season 2026</div>
     <div class="manager-row" id="managerRow"></div>
     <div class="view-toggle" id="viewToggle">
@@ -551,21 +597,31 @@ function hexToRgb(hex){
   return `${r},${g},${b}`;
 }
 
+// Anthony Kelly, Cole Maney, Ryan McQuaid, Andrew Root, and Brandon Hancock
+// were updated from their original colors -- the old values were either too
+// pale to read against the app's bone/lavender backgrounds (Anthony/Cole/Ryan
+// were all light tan/peach/gold, barely visible on the manager chips and MVP
+// pills) or collided with another manager's color (Andrew Root and Brandon
+// Hancock were both nearly the same blue). Each replacement stays within the
+// original color's family (tan/brown, peach/rust, gold, blue x2) but shifted
+// in lightness/saturation for contrast and separation -- verified for WCAG
+// contrast against both backgrounds and minimum distance from all other 13
+// manager colors, not eyeballed.
 const MANAGER_COLOR = {
   'Carmine Pittelli': hexToRgb('#541821'),
-  'Anthony Kelly': hexToRgb('#cdbca6'),
+  'Anthony Kelly': hexToRgb('#6b4423'),
   'Charlie Gorman': hexToRgb('#9f8bc2'),
-  'Cole Maney': hexToRgb('#f7cdb9'),
+  'Cole Maney': hexToRgb('#945738'),
   'Ethan Radecki': hexToRgb('#ea9a2e'),
   'Deniz Bileydi': hexToRgb('#8d9b51'),
   'Baylen Slansky': hexToRgb('#776aad'),
-  'Andrew Root': hexToRgb('#4c82af'),
+  'Andrew Root': hexToRgb('#1d7fb8'),
   'Max Malich': hexToRgb('#888888'),
   'Ben Castaldo': hexToRgb('#404c5b'),
-  'Brandon Hancock': hexToRgb('#4875b9'),
+  'Brandon Hancock': hexToRgb('#0a10c2'),
   'Aidan Quigley': hexToRgb('#eb644c'),
   'Quin Gegwich': hexToRgb('#ad1f15'),
-  'Ryan McQuaid': hexToRgb('#dfc983')
+  'Ryan McQuaid': hexToRgb('#a67c1a')
 };
 
 function initials(name){ return name.split(' ').map(p=>p[0]).join(''); }
