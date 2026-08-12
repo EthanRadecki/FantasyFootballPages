@@ -114,6 +114,8 @@ function renderLeaderboard(list) {
   var winPctRanks = getRanks(list, 'winPct', false);
   var playoffRanks = getRanks(list, 'totalPlayoffs', false);
   var pfgRanks = getRanks(list, 'avgPfg', false);
+  // avgLuck is raw (unnegated) LR_zscore: lower = luckier, so ascending rank = best
+  var luckRanks = getRanks(list, 'avgLuck', true);
 
   function cellColor(rank, total) {
     var norm = (rank - 1) / (total - 1);
@@ -132,7 +134,6 @@ function renderLeaderboard(list) {
     // LR_zscore is inverted: positive = unlucky, negative = lucky.
     // Negate for display so positive = lucky = green.
     var luckDisplay = -m.avgLuck;
-    var luckClass = luckDisplay >= 0 ? 'val-green' : 'val-red';
     var luckPrefix = luckDisplay > 0 ? '+' : '';
 
     tr.innerHTML =
@@ -143,7 +144,7 @@ function renderLeaderboard(list) {
       '<td class="' + cellColor(playoffRanks[m.name], total) + '">' + m.totalPlayoffs + '</td>' +
       '<td>' + champCell + '</td>' +
       '<td class="' + cellColor(pfgRanks[m.name], total) + '">' + m.avgPfg.toFixed(1) + '</td>' +
-      '<td class="' + luckClass + '">' + luckPrefix + luckDisplay.toFixed(2) + '</td>' +
+      '<td class="' + cellColor(luckRanks[m.name], total) + '">' + luckPrefix + luckDisplay.toFixed(2) + '</td>' +
       '<td class="val-small">' + bestRec + '</td>' +
       '<td class="val-small">' + worstRec + '</td>';
     tbody.appendChild(tr);
