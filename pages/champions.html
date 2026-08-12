@@ -160,7 +160,7 @@
   border-radius:50%;background:rgba(255,255,255,0.4);
   padding:4px;display:block;
 }
-.champ-banner-text { min-width:0;flex:1; }
+.champ-banner-text { min-width:0;flex:1;padding-right:56px; }
 .ring-badge {
   display:inline-flex;align-items:center;gap:0.25rem;
   font-size:0.62rem;font-weight:800;color:var(--gold);
@@ -170,6 +170,28 @@
 }
 @media(max-width:600px) {
   .champ-logo-wrap, .champ-logo { width:48px;height:48px; }
+  .champ-banner-text { padding-right:44px; }
+}
+
+/* Season league logo -- a small corner watermark on each card, distinct
+   from the manager's own team logo (.champ-logo above) so the two don't
+   compete for attention. Soft rounded square, not circular, on purpose:
+   keeps it visually differentiated from every circular logo elsewhere on
+   this page. Sits absolutely within .champ-banner (already position:
+   relative), so it never disturbs the existing flex layout. */
+.champ-season-logo-wrap {
+  position:absolute;top:1rem;right:1.4rem;z-index:2;
+  width:44px;height:44px;
+}
+.champ-season-logo {
+  width:100%;height:100%;object-fit:contain;
+  border-radius:10px;
+  background:rgba(255,255,255,0.55);
+  box-shadow:0 3px 10px rgba(30,26,20,0.12);
+  padding:3px;display:block;
+}
+@media(max-width:600px) {
+  .champ-season-logo-wrap { width:34px;height:34px;top:0.85rem;right:1rem; }
 }
 
 /* Champ vs runner-up mini score bar */
@@ -621,6 +643,10 @@ function logoFor(name, year) {
   return file ? '../images/logos/' + file + year + '.png' : '../preach_logo.png';
 }
 
+function seasonLogoFor(year) {
+  return '../images/logos/league/preach_logo_' + year + '.png';
+}
+
 function toggleRound(year, idx, btn) {
   var rounds = document.querySelectorAll('.champ-roster[data-year="' + year + '"]');
   rounds.forEach(function(el){ el.style.display = (el.dataset.idx == idx) ? '' : 'none'; });
@@ -755,6 +781,7 @@ function buildCard(c) {
 
   return '<div class="champ-card glass" id="champ-' + c.year + '" style="--tint:' + tintRgb(c.year) + ';">'
     + '<div class="champ-banner">'
+    +   '<div class="champ-season-logo-wrap"><img class="champ-season-logo" src="' + seasonLogoFor(c.year) + '" alt="' + c.year + ' season logo" onerror="this.parentElement.remove()"></div>'
     +   '<div class="champ-banner-flex">'
     +     '<div class="champ-logo-wrap"><img class="champ-logo" src="' + logoFor(c.manager, c.year) + '" alt="' + c.manager + ' ' + c.year + ' logo"></div>'
     +     '<div class="champ-banner-text">'
