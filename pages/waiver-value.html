@@ -49,6 +49,7 @@
 .heatmap-season-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
 @media(max-width:768px) {
   .wv-table { font-size:0.74rem; }
+  .wv-chart-scroll { overflow-x:auto; }
 }
 
 /* Position badges -- canonical system used across the rest of the site */
@@ -224,8 +225,10 @@
     <div class="heatmap-controls" id="week-value-season-pills"></div>
     <div class="heatmap-controls" id="week-value-weeks-pills" style="margin-top:0.4rem;"></div>
     <div class="heatmap-controls" id="week-value-pos-pills" style="margin-top:0.4rem;"></div>
-    <div style="position:relative;height:420px;">
-      <canvas id="chart-week-value"></canvas>
+    <div class="wv-chart-scroll">
+      <div style="position:relative;height:420px;min-width:700px;">
+        <canvas id="chart-week-value"></canvas>
+      </div>
     </div>
     <p class="metric-note">Bars (left axis) are <strong>pickup volume</strong> that week, split waiver vs. free agent. The line (right axis) is <strong>average position-adjusted value</strong> of pickups added that week, all types combined. <strong>Click a bar to see the top pickups from that week.</strong> Use the weeks-rostered filter to separate pickups that actually stuck around from same-week churn. Weeks 15&ndash;17 are playoff weeks, only teams still alive are actively managing by then, so both volume and the sample size behind that average drop off fast.</p>
     <div id="week-value-detail" class="glass detail-panel" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>

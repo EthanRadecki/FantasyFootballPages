@@ -79,8 +79,16 @@
 #explorer-detail.flash { animation: explorerDetailFlash 0.7s ease-out; }
 .got-txt { color:#4a7fa8; }
 .gave-txt { color:#a8664a; }
+/* Dashed line between different trades in the Trades by Week detail
+   panel -- only at the boundary between one trade's tbody and the
+   next, so sides of the same trade stay flush against each other. */
+.tw-table tbody.tw-trade-group + tbody.tw-trade-group tr:first-child td {
+  border-top: 1.5px dashed rgba(var(--accent-rgb), 0.35);
+  padding-top: 0.85rem;
+}
 @media(max-width:768px) {
   .tv-table { font-size:0.74rem; }
+  .tw-chart-scroll { overflow-x:auto; }
 }
 
 /* ── CHAPTER RAIL (in-page section nav) ── */
@@ -311,8 +319,10 @@
   <div class="section-title">Every trade, grouped by the week it happened. When does the league make the most deals, and when are they actually good ones?</div>
   <div class="chart-card-interactive glass">
     <div class="heatmap-controls" id="trade-week-season-pills"></div>
-    <div style="position:relative;height:420px;">
-      <canvas id="chart-trade-week"></canvas>
+    <div class="tw-chart-scroll">
+      <div style="position:relative;height:420px;min-width:700px;">
+        <canvas id="chart-trade-week"></canvas>
+      </div>
     </div>
     <p class="metric-note">Bars (left axis) are <strong>trade count</strong> that week &mdash; a multi-team trade counts once, not once per manager. The line (right axis) is <strong>average QUAD</strong> across both sides of every trade made that week. <strong>Click a bar to see the trades from that week.</strong> Trades taper off after week 13&ndash;14 as rosters lock in for the playoff push.</p>
     <div id="trade-week-detail" class="glass detail-panel" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
@@ -1134,16 +1144,19 @@ function renderTradeWeekDetail(week) {
     ? '<span style="color:var(--muted);font-weight:600;">Career</span>'
     : '<span class="season-pill" style="background:'+(SEASON_COLORS[tradeWeekSeasonFilter]||'var(--muted)')+';font-size:0.8rem;">'+tradeWeekSeasonFilter+'</span>';
 
-  var rowsHtml = '';
-  groups.forEach(function(sides){
+  // Each trade group gets its own <tbody> -- rows within a group stay
+  // exactly as they were, this is purely so a CSS sibling rule can drop
+  // a dashed line between one trade's tbody and the next, without
+  // touching the borders between the sides of the same trade.
+  var groupsHtml = groups.map(function(sides){
     var multiTag = sides[0].multi ? '<span class="multi-badge">MULTI</span>' : '';
     var seasonTag = tradeWeekSeasonFilter === 'career'
       ? '<span class="season-pill" style="background:'+(SEASON_COLORS[sides[0].s]||'var(--muted)')+';">'+sides[0].s+'</span> '
       : '';
-    sides.forEach(function(r){
+    var rows = sides.map(function(r){
       var mColor = MANAGER_COLORS[r.m] || 'var(--palm)';
       var quadBg = gradientColor(r.quad, TRADE_WEEK_QUAD_MIN, TRADE_WEEK_QUAD_MAX, true);
-      rowsHtml += '<tr>'
+      var row = '<tr>'
         + '<td>'+seasonTag+multiTag+'</td>'
         + '<td style="font-weight:600;color:'+mColor+';">'+r.m+'</td>'
         + '<td class="got-txt">'+(r.got.length ? r.got.join(', ') : '&ndash;')+'</td>'
@@ -1151,8 +1164,10 @@ function renderTradeWeekDetail(week) {
         + '<td><span style="background:'+quadBg+';color:#fff;padding:0.12rem 0.45rem;border-radius:4px;font-weight:700;">'+(r.quad>=0?'+':'')+r.quad.toFixed(2)+'</span></td>'
         + '</tr>';
       seasonTag = ''; multiTag = '';
-    });
-  });
+      return row;
+    }).join('');
+    return '<tbody class="tw-trade-group">'+rows+'</tbody>';
+  }).join('');
 
   var countNote = groups.length + ' trade' + (groups.length === 1 ? '' : 's') + ' this week' + (tradeWeekSeasonFilter === 'career' ? ' across all seasons.' : ' in ' + tradeWeekSeasonFilter + '.');
 
@@ -1165,8 +1180,8 @@ function renderTradeWeekDetail(week) {
     + (groups.length === 0
         ? '<p style="font-size:0.85rem;color:var(--muted);">No trades happened this week for this filter.</p>'
         : '<div class="table-wrap" style="overflow-x:auto;padding:0;">'
-          + '<table class="tv-table"><thead><tr><th>Season</th><th>Manager</th><th>Got</th><th>Gave</th><th>QUAD</th></tr></thead>'
-          + '<tbody>'+rowsHtml+'</tbody></table></div>'
+          + '<table class="tv-table tw-table"><thead><tr><th>Season</th><th>Manager</th><th>Got</th><th>Gave</th><th>QUAD</th></tr></thead>'
+          + groupsHtml + '</table></div>'
           + '<p class="metric-note" style="margin-top:0.5rem;">'+countNote+'</p>');
   panel.style.display = 'block';
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
