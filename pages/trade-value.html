@@ -307,6 +307,17 @@
     <p class="metric-note">Hover a bar for the full trade history: which managers acquired that player, and in what seasons.</p>
   </div>
 
+  <div class="section-label" style="margin-top:2rem;" id="trades-by-week">Trades by Week of the Season</div>
+  <div class="section-title">Every trade, grouped by the week it happened. When does the league make the most deals, and when are they actually good ones?</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="trade-week-season-pills"></div>
+    <div style="position:relative;height:420px;">
+      <canvas id="chart-trade-week"></canvas>
+    </div>
+    <p class="metric-note">Bars (left axis) are <strong>trade count</strong> that week &mdash; a multi-team trade counts once, not once per manager. The line (right axis) is <strong>average QUAD</strong> across both sides of every trade made that week. <strong>Click a bar to see the trades from that week.</strong> Trades taper off after week 13&ndash;14 as rosters lock in for the playoff push.</p>
+    <div id="trade-week-detail" class="glass detail-panel" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
+  </div>
+
   <div class="section-label" style="margin-top:2rem;" id="all-trades">All Trades</div>
   <div class="section-title">Every real trade, one row per manager's side. Click a column to sort.</div>
   <div class="heatmap-controls" id="trades-season-pills"></div>
@@ -338,6 +349,7 @@
 <script src="../data/most_traded_data.js"></script>
 <script src="../data/winpct_data.js"></script>
 <script src="../data/trade_explorer_data.js"></script>
+<script src="../data/trade_week_data.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="../shared.js"></script>
@@ -877,7 +889,7 @@ var POS_BADGE_CLASS = {
 // Season colors -- same palette used on managers.html.
 var SEASON_COLORS = {
   2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
-  2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#9b4d8b'
+  2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#c292b8'
 };
 // Position colors (solid hex, for filter-pill swatches) -- same palette
 // as the canonical .pos-badge system and POS_BAR_COLOR above.
@@ -969,6 +981,198 @@ function renderMostTraded() {
       }
     }
   });
+}
+
+// Trades by week of the season: trade count (bars) and average QUAD
+// (line) grouped by the week each trade happened. TRADE_WEEK_DATA has
+// one row per manager's side of a trade (same shape as TRADES elsewhere
+// on this page), so counting distinct group ids avoids double-counting
+// multi-team trades. Season-filterable; no position or weeks-rostered
+// equivalent exists for trades, so those filters are intentionally left
+// out rather than forcing a substitute that doesn't map to anything real.
+var tradeWeekChart = null;
+var tradeWeekSeasonFilter = 'career';
+var tradeWeekLastClicked = null;
+// True population min/max of QUAD across every trade in TRADE_WEEK_DATA,
+// computed once -- not guessed -- so the detail panel's color gradient
+// reflects the real range of outcomes, the same way the site's other
+// gradient scales are all derived from actual data rather than assumed.
+var TRADE_WEEK_QUAD_MIN = Math.min.apply(null, TRADE_WEEK_DATA.map(function(r){ return r.quad; }));
+var TRADE_WEEK_QUAD_MAX = Math.max.apply(null, TRADE_WEEK_DATA.map(function(r){ return r.quad; }));
+
+function renderTradeWeekFilters() {
+  var el = document.getElementById('trade-week-season-pills');
+  if (!el) return;
+  var seasons = Array.from(new Set(TRADE_WEEK_DATA.map(function(r){ return r.s; }))).sort();
+  var html = '<button class="heatmap-season-pill active" onclick="setTradeWeekSeason(\'career\', this)">Career</button>';
+  seasons.forEach(function(s){
+    var swatch = SEASON_COLORS[s] ? ' color-swatch-btn" style="--swatch-color:' + SEASON_COLORS[s] + ';' : '';
+    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setTradeWeekSeason('+s+', this)">'+s+'</button>';
+  });
+  el.innerHTML = html;
+}
+
+function setTradeWeekSeason(season, btn) {
+  tradeWeekSeasonFilter = season;
+  btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  renderTradeWeekChart();
+  if (tradeWeekLastClicked !== null) renderTradeWeekDetail(tradeWeekLastClicked);
+}
+
+function renderTradeWeekChart() {
+  var pool = TRADE_WEEK_DATA.filter(function(r){
+    return tradeWeekSeasonFilter === 'career' || r.s === tradeWeekSeasonFilter;
+  });
+
+  var maxWeek = 17;
+  var byWeek = {};
+  for (var w = 1; w <= maxWeek; w++) byWeek[w] = { groups: {}, quadSum: 0, n: 0 };
+  pool.forEach(function(r){
+    var b = byWeek[r.wk];
+    if (!b) return;
+    b.groups[r.g] = true;
+    b.quadSum += r.quad;
+    b.n++;
+  });
+
+  var labels = [], tradeCounts = [], avgQuads = [];
+  for (var wk = 1; wk <= maxWeek; wk++) {
+    var b = byWeek[wk];
+    labels.push('Wk ' + wk);
+    tradeCounts.push(Object.keys(b.groups).length);
+    avgQuads.push(b.n ? +(b.quadSum / b.n).toFixed(3) : null);
+  }
+
+  if (tradeWeekChart) { tradeWeekChart.destroy(); }
+  var ctx = document.getElementById('chart-trade-week').getContext('2d');
+  tradeWeekChart = new Chart(ctx, {
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Trades',
+          data: tradeCounts,
+          backgroundColor: 'rgba(74,127,168,0.85)',
+          yAxisID: 'yCount',
+          order: 2,
+        },
+        {
+          type: 'line',
+          label: 'Avg QUAD',
+          data: avgQuads,
+          borderColor: '#c0623a',
+          backgroundColor: 'rgba(192,98,58,0.1)',
+          borderWidth: 2.5,
+          pointRadius: 3,
+          pointBackgroundColor: '#c0623a',
+          tension: 0.3,
+          spanGaps: true,
+          yAxisID: 'yValue',
+          order: 1,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      onHover: function(event, elements) {
+        event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+      },
+      onClick: function(event, elements) {
+        if (!elements.length) return;
+        var weekIndex = elements[0].index;
+        tradeWeekLastClicked = weekIndex + 1;
+        renderTradeWeekDetail(tradeWeekLastClicked);
+      },
+      plugins: {
+        legend: { position: 'top', align: 'end', labels: { boxWidth: 12, padding: 14 } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        yCount: {
+          position: 'left',
+          title: { display: true, text: 'Trades' },
+          ticks: { precision: 0 }
+        },
+        yValue: {
+          position: 'right',
+          title: { display: true, text: 'Average QUAD' },
+          grid: { drawOnChartArea: false }
+        }
+      }
+    }
+  });
+}
+
+// Detail panel for a clicked week bar: every trade from that week,
+// respecting the active season filter, deduplicated to one row per
+// trade (both sides shown together) rather than one row per manager.
+function renderTradeWeekDetail(week) {
+  var panel = document.getElementById('trade-week-detail');
+  if (!panel) return;
+  var pool = TRADE_WEEK_DATA.filter(function(r){
+    if (r.wk !== week) return false;
+    return tradeWeekSeasonFilter === 'career' || r.s === tradeWeekSeasonFilter;
+  });
+
+  var byGroup = {};
+  pool.forEach(function(r){
+    if (!byGroup[r.g]) byGroup[r.g] = [];
+    byGroup[r.g].push(r);
+  });
+  var groups = Object.keys(byGroup).map(function(g){ return byGroup[g]; });
+  groups.sort(function(a,b){
+    var maxA = Math.max.apply(null, a.map(function(r){return Math.abs(r.quad);}));
+    var maxB = Math.max.apply(null, b.map(function(r){return Math.abs(r.quad);}));
+    return maxB - maxA;
+  });
+
+  var seasonLabel = tradeWeekSeasonFilter === 'career'
+    ? '<span style="color:var(--muted);font-weight:600;">Career</span>'
+    : '<span class="season-pill" style="background:'+(SEASON_COLORS[tradeWeekSeasonFilter]||'var(--muted)')+';font-size:0.8rem;">'+tradeWeekSeasonFilter+'</span>';
+
+  var rowsHtml = '';
+  groups.forEach(function(sides){
+    var multiTag = sides[0].multi ? '<span class="multi-badge">MULTI</span>' : '';
+    var seasonTag = tradeWeekSeasonFilter === 'career'
+      ? '<span class="season-pill" style="background:'+(SEASON_COLORS[sides[0].s]||'var(--muted)')+';">'+sides[0].s+'</span> '
+      : '';
+    sides.forEach(function(r){
+      var mColor = MANAGER_COLORS[r.m] || 'var(--palm)';
+      var quadBg = gradientColor(r.quad, TRADE_WEEK_QUAD_MIN, TRADE_WEEK_QUAD_MAX, true);
+      rowsHtml += '<tr>'
+        + '<td>'+seasonTag+multiTag+'</td>'
+        + '<td style="font-weight:600;color:'+mColor+';">'+r.m+'</td>'
+        + '<td class="got-txt">'+(r.got.length ? r.got.join(', ') : '&ndash;')+'</td>'
+        + '<td class="gave-txt">'+(r.gave.length ? r.gave.join(', ') : '&ndash;')+'</td>'
+        + '<td><span style="background:'+quadBg+';color:#fff;padding:0.12rem 0.45rem;border-radius:4px;font-weight:700;">'+(r.quad>=0?'+':'')+r.quad.toFixed(2)+'</span></td>'
+        + '</tr>';
+      seasonTag = ''; multiTag = '';
+    });
+  });
+
+  var countNote = groups.length + ' trade' + (groups.length === 1 ? '' : 's') + ' this week' + (tradeWeekSeasonFilter === 'career' ? ' across all seasons.' : ' in ' + tradeWeekSeasonFilter + '.');
+
+  panel.innerHTML =
+    '<div class="detail-panel-label">Week Details</div>'
+    + '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">'
+      + '<span style="font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--palm);">Week '+week+'</span>'
+      + seasonLabel
+    + '</div>'
+    + (groups.length === 0
+        ? '<p style="font-size:0.85rem;color:var(--muted);">No trades happened this week for this filter.</p>'
+        : '<div class="table-wrap" style="overflow-x:auto;padding:0;">'
+          + '<table class="tv-table"><thead><tr><th>Season</th><th>Manager</th><th>Got</th><th>Gave</th><th>QUAD</th></tr></thead>'
+          + '<tbody>'+rowsHtml+'</tbody></table></div>'
+          + '<p class="metric-note" style="margin-top:0.5rem;">'+countNote+'</p>');
+  panel.style.display = 'block';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  panel.classList.remove('flash');
+  void panel.offsetWidth;
+  panel.classList.add('flash');
 }
 
 
@@ -1394,6 +1598,16 @@ try {
   renderMostTraded();
 } catch (e) {
   console.error('Most traded chart failed to render:', e);
+}
+try {
+  renderTradeWeekFilters();
+  renderTradeWeekChart();
+} catch (e) {
+  console.error('Trades by week chart failed to render:', e);
+  var twCard = document.getElementById('chart-trade-week');
+  if (twCard && twCard.parentElement) {
+    twCard.parentElement.innerHTML = '<p class="metric-note">Chart failed to load.</p>';
+  }
 }
 try {
   renderExplorerFilters();
