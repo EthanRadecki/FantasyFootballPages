@@ -602,31 +602,24 @@ function hexToRgb(hex){
   return `${r},${g},${b}`;
 }
 
-// Anthony Kelly, Cole Maney, Ryan McQuaid, Andrew Root, and Brandon Hancock
-// were updated from their original colors -- the old values were either too
-// pale to read against the app's bone/lavender backgrounds (Anthony/Cole/Ryan
-// were all light tan/peach/gold, barely visible on the manager chips and MVP
-// pills) or collided with another manager's color (Andrew Root and Brandon
-// Hancock were both nearly the same blue). Each replacement stays within the
-// original color's family (tan/brown, peach/rust, gold, blue x2) but shifted
-// in lightness/saturation for contrast and separation -- verified for WCAG
-// contrast against both backgrounds and minimum distance from all other 13
-// manager colors, not eyeballed.
+// Synced with the canonical MANAGER_COLORS map used elsewhere on the site
+// (managers.html / trade-value.html), not this page's own separately-tuned
+// values. If a manager's color ever changes there, update it here too.
 const MANAGER_COLOR = {
   'Carmine Pittelli': hexToRgb('#541821'),
-  'Anthony Kelly': hexToRgb('#6b4423'),
-  'Charlie Gorman': hexToRgb('#9f8bc2'),
-  'Cole Maney': hexToRgb('#945738'),
-  'Ethan Radecki': hexToRgb('#ea9a2e'),
-  'Deniz Bileydi': hexToRgb('#8d9b51'),
-  'Baylen Slansky': hexToRgb('#776aad'),
-  'Andrew Root': hexToRgb('#1d7fb8'),
-  'Max Malich': hexToRgb('#888888'),
+  'Anthony Kelly': hexToRgb('#7f6647'),
+  'Charlie Gorman': hexToRgb('#9e89c0'),
+  'Cole Maney': hexToRgb('#ba4b15'),
+  'Ethan Radecki': hexToRgb('#985e0f'),
+  'Deniz Bileydi': hexToRgb('#68733c'),
+  'Baylen Slansky': hexToRgb('#7269aa'),
+  'Andrew Root': hexToRgb('#2d5375'),
+  'Max Malich': hexToRgb('#696969'),
   'Ben Castaldo': hexToRgb('#404c5b'),
-  'Brandon Hancock': hexToRgb('#0a10c2'),
-  'Aidan Quigley': hexToRgb('#eb644c'),
-  'Quin Gegwich': hexToRgb('#ad1f15'),
-  'Ryan McQuaid': hexToRgb('#a67c1a')
+  'Brandon Hancock': hexToRgb('#416cab'),
+  'Aidan Quigley': hexToRgb('#c53016'),
+  'Quin Gegwich': hexToRgb('#4598ce'),
+  'Ryan McQuaid': hexToRgb('#bd0517')
 };
 
 function initials(name){ return name.split(' ').map(p=>p[0]).join(''); }
