@@ -31,7 +31,10 @@
   letter-spacing:0.08em;font-weight:700;color:var(--accent);
   border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;text-align:center;
 }
-.slot-table th.row-header { text-align:left; }
+.slot-table th.row-header {
+  text-align:left;position:sticky;left:0;z-index:2;
+  background:var(--bg,#f5f0e8);box-shadow:2px 0 4px rgba(0,0,0,0.06);
+}
 .slot-table td {
   padding:0.55rem 0.75rem;text-align:center;font-size:0.78rem;font-weight:700;
   border:1px solid rgba(var(--accent-rgb),0.08);white-space:nowrap;position:relative;
@@ -39,6 +42,8 @@
 .slot-table td.row-header {
   text-align:left;font-weight:800;color:var(--palm);padding-left:0.75rem;
   font-family:var(--font-display);
+  position:sticky;left:0;z-index:1;
+  background:var(--bg,#f5f0e8);box-shadow:2px 0 4px rgba(0,0,0,0.06);
 }
 .slot-table td.is-repeat { background:rgba(var(--accent-rgb),0.08); }
 .slot-repeat-tag {
