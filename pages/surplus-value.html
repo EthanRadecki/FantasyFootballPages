@@ -385,6 +385,37 @@ var SEASON_COLORS = {
   2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
   2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#6d9679'
 };
+// Red/gold/green pill gradient -- same treatment as waiver-value.html's
+// surplus/z-score pills. Kept separate from gradientColor() below, which
+// drives the bone-red-green chart bars and heatmap and stays untouched.
+var RGG_GOOD = [90,138,90];
+var RGG_MID  = [212,175,55];
+var RGG_BAD  = [168,90,90];
+// Population-wide scale for individual pick surplus, NOT the min/max of
+// whichever curated best/worst list happens to be on screen. Verified
+// against the complete pick-level draft board (every pick, every manager,
+// every season) -- true global min/max across ~1,150 picks. Using a fixed
+// population scale means a best-list's "weakest" entry still reads mostly
+// green/gold (it's a great pick relative to the whole league, not just
+// relative to the other 14 picks shown), and a worst-list's "least bad"
+// entry reads orange/gold rather than green, for the same reason.
+var POP_SURPLUS_MIN = -11.61;
+var POP_SURPLUS_MAX = 13.77;
+function rggLerp(a,b,t){ return Math.round(a+(b-a)*t); }
+function rggColor(value, min, max, invert) {
+  var p = max===min ? 0.5 : (value - min) / (max - min);
+  if (invert) p = 1 - p;
+  var c0 = p<=0.5 ? RGG_GOOD : RGG_MID;
+  var c1 = p<=0.5 ? RGG_MID : RGG_BAD;
+  var t = p<=0.5 ? p/0.5 : (p-0.5)/0.5;
+  var r = rggLerp(c0[0],c1[0],t), g = rggLerp(c0[1],c1[1],t), b = rggLerp(c0[2],c1[2],t);
+  return 'rgba('+r+','+g+','+b+',0.85)';
+}
+function rggPill(value, min, max, decimals, signed) {
+  var bg = rggColor(value, min, max, true);
+  var sign = signed && value >= 0 ? '+' : '';
+  return '<span style="background:'+bg+';color:#fff;padding:0.12rem 0.45rem;border-radius:4px;font-weight:700;">'+sign+value.toFixed(decimals)+'</span>';
+}
 function gridStyle() { return { color:'rgba(156,148,156,0.15)', drawBorder:false }; }
 function tickStyle() { return { color:C_MUTED }; }
 function gradientColor(val, min, max, alpha) {
@@ -541,14 +572,16 @@ var SEASON_WORST = {"2020": [{"rank": 1, "player": "Mark Ingram II", "pos": "RB"
 (function(){
   var tbody=document.getElementById('career-tbody');
   if(!tbody) return;
+  var avgVals=CAREER_GRADES.map(function(d){return d.avg_surplus;});
+  var avgMin=Math.min.apply(null,avgVals), avgMax=Math.max.apply(null,avgVals);
+  var totVals=CAREER_GRADES.map(function(d){return d.total_surplus;});
+  var totMin=Math.min.apply(null,totVals), totMax=Math.max.apply(null,totVals);
   var html='';
   CAREER_GRADES.forEach(function(d){
-    var s=d.avg_surplus>=0?'+':'', ts=d.total_surplus>=0?'+':'';
-    var cls=d.avg_surplus>=0?'val-green':'val-red';
     html+='<tr><td class="manager-rank">'+d.rank+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
-      +'<td class="'+cls+'">'+s+d.avg_surplus.toFixed(3)+'</td>'
-      +'<td class="'+cls+'">'+ts+d.total_surplus.toFixed(1)+'</td>'
+      +'<td>'+rggPill(d.avg_surplus, avgMin, avgMax, 3, true)+'</td>'
+      +'<td>'+rggPill(d.total_surplus, totMin, totMax, 1, true)+'</td>'
       +'<td>'+d.total_picks+'</td><td>'+d.seasons+'</td></tr>';
   });
   tbody.innerHTML=html;
@@ -564,8 +597,13 @@ var SEASON_WORST = {"2020": [{"rank": 1, "player": "Mark Ingram II", "pos": "RB"
     smm[yr]={min:Math.min.apply(null,vals),max:Math.max.apply(null,vals)};
   });
   var html='<table class="heatmap-table"><thead><tr><th class="row-header">Manager</th>';
-  SEASONS.forEach(function(yr){html+='<th>'+yr+'</th>';});
+  SEASONS.forEach(function(yr){
+    var yc=SEASON_COLORS[yr]||'var(--muted)';
+    html+='<th style="color:'+yc+';border-bottom-color:'+yc+';">'+yr+'</th>';
+  });
   html+='<th>Career Avg</th></tr></thead><tbody>';
+  var careerAvgVals=CAREER_GRADES.map(function(d){return d.avg_surplus;});
+  var careerAvgMin=Math.min.apply(null,careerAvgVals), careerAvgMax=Math.max.apply(null,careerAvgVals);
   MANAGERS_ORDERED.forEach(function(manager){
     html+='<tr><td>'+manager+'</td>';
     SEASONS.forEach(function(yr){
@@ -584,8 +622,7 @@ var SEASON_WORST = {"2020": [{"rank": 1, "player": "Mark Ingram II", "pos": "RB"
     });
     var career=CAREER_GRADES.find(function(d){return d.manager===manager;});
     if(career){
-      var cavg=career.avg_surplus,cs=cavg>=0?'+':'',cc=cavg>=0?'val-green':'val-red';
-      html+='<td class="'+cc+'">'+cs+cavg.toFixed(3)+'</td>';
+      html+='<td>'+rggPill(career.avg_surplus, careerAvgMin, careerAvgMax, 3, true)+'</td>';
     } else { html+='<td></td>'; }
     html+='</tr>';
   });
@@ -607,12 +644,12 @@ var SEASON_WORST = {"2020": [{"rank": 1, "player": "Mark Ingram II", "pos": "RB"
       +'<td><span class="pos-badge '+bpos+'">'+d.bestPos+'</span></td>'
       +'<td><span class="season-pill" style="background:'+(SEASON_COLORS[d.bestSeason]||'var(--muted)')+';">'+d.bestSeason+'</span></td>'
       +'<td>'+d.bestRd+'</td>'
-      +'<td class="val-green">+'+d.bestSurplus.toFixed(2)+'</td>'
+      +'<td>'+rggPill(d.bestSurplus, POP_SURPLUS_MIN, POP_SURPLUS_MAX, 2, true)+'</td>'
       +'<td style="border-left:1px solid rgba(var(--accent-rgb),0.15);color:var(--palm);font-weight:600">'+d.worst+'</td>'
       +'<td><span class="pos-badge '+wpos+'">'+d.worstPos+'</span></td>'
       +'<td><span class="season-pill" style="background:'+(SEASON_COLORS[d.worstSeason]||'var(--muted)')+';">'+d.worstSeason+'</span></td>'
       +'<td>'+d.worstRd+'</td>'
-      +'<td class="val-red">'+d.worstSurplus.toFixed(2)+'</td>'
+      +'<td>'+rggPill(d.worstSurplus, POP_SURPLUS_MIN, POP_SURPLUS_MAX, 2, true)+'</td>'
       +'</tr>';
   });
   tbody.innerHTML=html;
@@ -625,15 +662,13 @@ function renderPickTable(tbodyId, data) {
   var html='';
   data.forEach(function(d){
     var pc='pos-'+d.pos.toLowerCase();
-    var cls=d.surplus>=0?'val-green':'val-red';
-    var sign=d.surplus>=0?'+':'';
     html+='<tr><td class="pick-rank">'+d.rank+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.player+'</td>'
       +'<td><span class="pos-badge '+pc+'">'+d.pos+'</span></td>'
       +'<td>'+d.round+'</td><td>'+d.pick+'</td><td><span class="season-pill" style="background:'+(SEASON_COLORS[d.season]||'var(--muted)')+';">'+d.season+'</span></td>'
       +'<td style="color:var(--text-mid)">'+d.actual.toFixed(1)+'</td>'
       +'<td style="color:var(--muted)">'+d.expected.toFixed(1)+'</td>'
-      +'<td class="'+cls+'">'+sign+d.surplus.toFixed(2)+'</td>'
+      +'<td>'+rggPill(d.surplus, POP_SURPLUS_MIN, POP_SURPLUS_MAX, 2, true)+'</td>'
       +'<td>'+d.manager+'</td></tr>';
   });
   tbody.innerHTML=html;
