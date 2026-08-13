@@ -49,36 +49,38 @@
     flex-direction:column;
     overflow:hidden;
   }
-  .app::before{
-    /* Very slight year-color wash, not a background swap -- keep this
-       subtle if adjusted, it's meant to be felt more than seen. A slow
-       drift is layered on so it reads as ambient light shifting rather
-       than a static glow -- long duration, tiny amplitude, no hard
-       edges to notice mid-motion. */
+  .topbar, .carousel-wrap{ position:relative; z-index:1; }
+
+  /* 2026 YEAR TEXTURE -- a single overlay above every other layer
+     (topbar included) so it's never hidden behind an opaque panel.
+     pointer-events:none means it's purely visual; every tap, scroll,
+     and swipe passes straight through to whatever's underneath. Two
+     effects layered together: a slow-drifting radial wash (ambient
+     light shifting, not a static glow) and a faint grain tinted in
+     the same year-accent purple rather than neutral gray, so the
+     texture reads as part of the page's color story. Both are kept
+     deliberately slow and low-opacity -- meant to be felt, not seen. */
+  .year-texture{
+    position:absolute; inset:0;
+    z-index:60;
+    pointer-events:none;
+  }
+  .year-texture::before{
     content:'';
     position:absolute; inset:-12%;
-    background:radial-gradient(ellipse 70% 40% at 50% 0%, rgba(216,177,208,0.16), transparent 65%);
-    pointer-events:none;
-    z-index:0;
+    background:radial-gradient(ellipse 70% 40% at 50% 0%, rgba(216,177,208,0.22), transparent 65%);
     animation: yearWashDrift 38s ease-in-out infinite;
     will-change: transform;
   }
-  .app::after{
-    /* Faint grain, tinted in the same 2026 year-accent rather than
-       neutral gray, so the texture reads as part of the page's color
-       story instead of a generic paper-noise effect. Opacity is kept
-       very low and the tile drifts extremely slowly -- meant to add
-       tone, not to be independently noticed. */
+  .year-texture::after{
     content:'';
     position:absolute; inset:0;
     background:var(--year-accent);
-    opacity:0.05;
+    opacity:0.07;
     -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     -webkit-mask-size:180px 180px;
     mask-size:180px 180px;
-    pointer-events:none;
-    z-index:0;
     animation: grainDrift 60s linear infinite;
   }
   @keyframes yearWashDrift{
@@ -90,9 +92,8 @@
     to{ -webkit-mask-position:360px 360px; mask-position:360px 360px; }
   }
   @media (prefers-reduced-motion: reduce){
-    .app::before, .app::after{ animation:none; }
+    .year-texture::before, .year-texture::after{ animation:none; }
   }
-  .topbar, .carousel-wrap{ position:relative; z-index:1; }
 
   /* HEADER */
   .topbar{
@@ -294,6 +295,20 @@
     transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1), transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
   }
   .ticket.active-card{ opacity:1; transform:scale(1) rotate(0deg); }
+  .ticket::after{
+    /* Bottom fade hints there's more to scroll to inside ticket-body.
+       Lives on the card (not the scrolling element itself) so it sits
+       as a fixed overlay on top of the content rather than trying to
+       scroll along with it. Harmless when a card's content already
+       fits without scrolling -- it just sits over empty space. */
+    content:'';
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:26px;
+    background:linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.85));
+    pointer-events:none;
+    z-index:2;
+  }
 
   .ticket.rivalry .ticket-body{ background:linear-gradient(180deg, rgba(168,67,74,0.06), rgba(255,255,255,0) 40%); }
   .ticket.biggame .ticket-body{ background:linear-gradient(180deg, rgba(184,137,47,0.08), rgba(255,255,255,0) 40%); }
@@ -341,7 +356,7 @@
     padding:16px 18px 18px 18px;
     flex:1;
     display:flex; flex-direction:column;
-    justify-content:center;
+    justify-content:flex-start;
     overflow-y:auto;
   }
 
@@ -391,8 +406,12 @@
   .h2h-history{
     margin:8px 0 14px 0;
     display:flex; flex-direction:column;
-    max-height:230px; overflow-y:auto;
     border-top:1px solid var(--line);
+  }
+  .h2h-section-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.6px;
+    margin:14px 0 2px 0;
   }
   .h2h-game{
     padding:6px 2px;
@@ -595,6 +614,7 @@
   </div>
 
   <div id="content" class="carousel-wrap"></div>
+  <div class="year-texture" aria-hidden="true"></div>
 </div>
 
 <script>
@@ -893,8 +913,11 @@ function renderTicket(entry, meName){
     ? 'First meeting'
     : `<span style="color:var(--win)">${entry.my_wins}</span>-<span style="color:var(--loss)">${entry.opp_wins}</span> <span style="color:var(--ink-soft); font-weight:500;">all-time</span>`;
 
+  const gameCount = entry.games ? entry.games.length : 0;
+  const h2hLabel_ = `<div class="h2h-section-label">Head-to-Head History${gameCount ? ` &middot; ${gameCount} game${gameCount===1?'':'s'}` : ''}</div>`;
   const h2hHistory = (entry.games && entry.games.length)
-    ? `<div class="h2h-history">${entry.games.map(g => {
+    ? `${h2hLabel_}
+       <div class="h2h-history">${entry.games.map(g => {
         const iWon = g.winner === meName;
         const mvpColor = MANAGER_COLOR[g.winner] || '107,90,108';
         const mvpHtml = g.mvp_name
@@ -914,7 +937,7 @@ function renderTicket(entry, meName){
           ${mvpHtml}
         </div>`;
       }).join('')}</div>`
-    : `<div class="h2h-empty">First meeting -- no history yet.</div>`;
+    : `${h2hLabel_}<div class="h2h-empty">First meeting &mdash; no history yet.</div>`;
 
   const caption = generateCaption(entry, meName);
   const interNote = entry.week_type==='Interconference Week'
