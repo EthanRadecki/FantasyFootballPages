@@ -552,20 +552,20 @@ var SLOTS         = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 var PLAYOFF_RATES = [83.3,66.7,66.7,33.3,66.7,50.0,83.3,83.3,50.0,50.0,83.3,66.7,83.3,50.0];
 var OVERPERFS     = [-0.250,0.263,-0.430,-0.068,-0.149,-0.655,0.112,-0.063,0.026,0.331,-0.155,0.219,0.371,0.448];
 var SLOT_DATA = {
-  1:[['Anthony Kelly',2020],['Andrew Root',2021],['Charlie Gorman',2022],['Ryan McQuaid',2023],['Andrew Root',2024],['Ryan McQuaid',2025]],
-  2:[['Andrew Root',2020],['Deniz Bileydi',2021],['Ryan McQuaid',2022],['Ethan Radecki',2023],['Quin Gegwich',2024],['Andrew Root',2025]],
-  3:[['Charlie Gorman',2020],['Ben Castaldo',2021],['Carmine Pittelli',2022],['Baylen Slansky',2023],['Ben Castaldo',2024],['Deniz Bileydi',2025]],
-  4:[['Baylen Slansky',2020],['Charlie Gorman',2021],['Quin Gegwich',2022],['Quin Gegwich',2023],['Anthony Kelly',2024],['Ben Castaldo',2025]],
-  5:[['Brandon Hancock',2020],['Baylen Slansky',2021],['Ethan Radecki',2022],['Aidan Quigley',2023],['Deniz Bileydi',2024],['Brandon Hancock',2025]],
-  6:[['Cole Maney',2020],['Ryan McQuaid',2021],['Cole Maney',2022],['Ben Castaldo',2023],['Baylen Slansky',2024],['Ethan Radecki',2025]],
-  7:[['Ryan McQuaid',2020],['Cole Maney',2021],['Brandon Hancock',2022],['Charlie Gorman',2023],['Cole Maney',2024],['Aidan Quigley',2025]],
-  8:[['Max Malich',2020],['Ethan Radecki',2021],['Anthony Kelly',2022],['Anthony Kelly',2023],['Brandon Hancock',2024],['Baylen Slansky',2025]],
-  9:[['Carmine Pittelli',2020],['Carmine Pittelli',2021],['Aidan Quigley',2022],['Max Malich',2023],['Carmine Pittelli',2024],['Anthony Kelly',2025]],
-  10:[['Ethan Radecki',2020],['Aidan Quigley',2021],['Baylen Slansky',2022],['Deniz Bileydi',2023],['Charlie Gorman',2024],['Cole Maney',2025]],
-  11:[['Quin Gegwich',2020],['Max Malich',2021],['Max Malich',2022],['Cole Maney',2023],['Ethan Radecki',2024],['Charlie Gorman',2025]],
-  12:[['Deniz Bileydi',2020],['Brandon Hancock',2021],['Ben Castaldo',2022],['Brandon Hancock',2023],['Max Malich',2024],['Max Malich',2025]],
-  13:[['Ben Castaldo',2020],['Quin Gegwich',2021],['Deniz Bileydi',2022],['Carmine Pittelli',2023],['Ryan McQuaid',2024],['Carmine Pittelli',2025]],
-  14:[['Thomas Sullivan',2020],['Anthony Kelly',2021],['Andrew Root',2022],['Andrew Root',2023],['Aidan Quigley',2024],['Quin Gegwich',2025]],
+  1:[['Anthony Kelly',2020],['Andrew Root',2021],['Charlie Gorman',2022],['Ryan McQuaid',2023],['Andrew Root',2024],['Ryan McQuaid',2025],['Charlie Gorman',2026]],
+  2:[['Andrew Root',2020],['Deniz Bileydi',2021],['Ryan McQuaid',2022],['Ethan Radecki',2023],['Quin Gegwich',2024],['Andrew Root',2025],['Carmine Pittelli',2026]],
+  3:[['Charlie Gorman',2020],['Ben Castaldo',2021],['Carmine Pittelli',2022],['Baylen Slansky',2023],['Ben Castaldo',2024],['Deniz Bileydi',2025],['Aidan Quigley',2026]],
+  4:[['Baylen Slansky',2020],['Charlie Gorman',2021],['Quin Gegwich',2022],['Quin Gegwich',2023],['Anthony Kelly',2024],['Ben Castaldo',2025],['Max Malich',2026]],
+  5:[['Brandon Hancock',2020],['Baylen Slansky',2021],['Ethan Radecki',2022],['Aidan Quigley',2023],['Deniz Bileydi',2024],['Brandon Hancock',2025],['Ryan McQuaid',2026]],
+  6:[['Cole Maney',2020],['Ryan McQuaid',2021],['Cole Maney',2022],['Ben Castaldo',2023],['Baylen Slansky',2024],['Ethan Radecki',2025],['Cole Maney',2026]],
+  7:[['Ryan McQuaid',2020],['Cole Maney',2021],['Brandon Hancock',2022],['Charlie Gorman',2023],['Cole Maney',2024],['Aidan Quigley',2025],['Baylen Slansky',2026]],
+  8:[['Max Malich',2020],['Ethan Radecki',2021],['Anthony Kelly',2022],['Anthony Kelly',2023],['Brandon Hancock',2024],['Baylen Slansky',2025],['Deniz Bileydi',2026]],
+  9:[['Carmine Pittelli',2020],['Carmine Pittelli',2021],['Aidan Quigley',2022],['Max Malich',2023],['Carmine Pittelli',2024],['Anthony Kelly',2025],['Quin Gegwich',2026]],
+  10:[['Ethan Radecki',2020],['Aidan Quigley',2021],['Baylen Slansky',2022],['Deniz Bileydi',2023],['Charlie Gorman',2024],['Cole Maney',2025],['Anthony Kelly',2026]],
+  11:[['Quin Gegwich',2020],['Max Malich',2021],['Max Malich',2022],['Cole Maney',2023],['Ethan Radecki',2024],['Charlie Gorman',2025],['Ben Castaldo',2026]],
+  12:[['Deniz Bileydi',2020],['Brandon Hancock',2021],['Ben Castaldo',2022],['Brandon Hancock',2023],['Max Malich',2024],['Max Malich',2025],['Brandon Hancock',2026]],
+  13:[['Ben Castaldo',2020],['Quin Gegwich',2021],['Deniz Bileydi',2022],['Carmine Pittelli',2023],['Ryan McQuaid',2024],['Carmine Pittelli',2025],['Andrew Root',2026]],
+  14:[['Thomas Sullivan',2020],['Anthony Kelly',2021],['Andrew Root',2022],['Andrew Root',2023],['Aidan Quigley',2024],['Quin Gegwich',2025],['Ethan Radecki',2026]],
 };
 
 (function(){
@@ -624,11 +624,15 @@ var SLOT_DATA = {
 (function(){
   var wrap=document.getElementById('slot-grid');
   if(!wrap) return;
-  var years=[2020,2021,2022,2023,2024,2025];
+  var years=[2020,2021,2022,2023,2024,2025,2026];
+  var UPCOMING_YEAR=2026;
   var html='<table class="slot-table"><thead><tr><th class="row-header">Slot</th>';
   years.forEach(function(yr){
     var yc=SEASON_COLORS[yr]||'var(--muted)';
-    html+='<th style="color:'+yc+';border-bottom-color:'+yc+';">'+yr+'</th>';
+    var upcoming=yr===UPCOMING_YEAR;
+    html+='<th style="color:'+yc+';border-bottom-color:'+yc+';'+(upcoming?'border-left:2px dashed rgba(var(--accent-rgb),0.3);':'')+'">'+yr
+      +(upcoming?'<div style="font-size:0.55rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);margin-top:0.15rem;">UPCOMING</div>':'')
+      +'</th>';
   });
   html+='</tr></thead><tbody>';
   for(var slot=1;slot<=14;slot++){
@@ -640,11 +644,13 @@ var SLOT_DATA = {
     html+='<tr><td class="row-header">Slot '+slot+'</td>';
     years.forEach(function(yr){
       var manager=byYear[yr];
-      if(!manager){ html+='<td style="color:var(--muted);font-size:0.7rem;">&mdash;</td>'; return; }
+      var upcoming=yr===UPCOMING_YEAR;
+      var borderStyle=upcoming?'border-left:2px dashed rgba(var(--accent-rgb),0.3);':'';
+      if(!manager){ html+='<td style="color:var(--muted);font-size:0.7rem;'+borderStyle+'">&mdash;</td>'; return; }
       var mc=MANAGER_COLORS[manager]||'var(--palm)';
       var isRepeat=counts[manager]>1;
       var tag=isRepeat?'<span class="slot-repeat-tag" style="background:'+mc+';">&times;'+counts[manager]+'</span>':'';
-      html+='<td class="'+(isRepeat?'is-repeat':'')+'"><span style="color:'+mc+';">'+manager+'</span>'+tag+'</td>';
+      html+='<td class="'+(isRepeat?'is-repeat':'')+'" style="'+borderStyle+'"><span style="color:'+mc+';'+(upcoming?'font-style:italic;':'')+'">'+manager+'</span>'+tag+'</td>';
     });
     html+='</tr>';
   }
