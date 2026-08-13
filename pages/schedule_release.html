@@ -4,6 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>Preach Fantasy: Schedule Release</title>
+
+<!-- Favicon -- shown in browser tabs, bookmarks, etc. -->
+<link rel="icon" type="image/png" href="../images/logos/league/preach_logo_2026.png">
+<link rel="apple-touch-icon" href="../images/logos/league/preach_logo_2026.png">
+
+<!-- Open Graph / Twitter Card -- controls the preview card that shows
+     up when this URL is shared via text message, iMessage, Slack,
+     Twitter/X, Facebook, etc. og:image points at the live GitHub Pages
+     URL rather than a relative path -- the app/site scraping the link
+     fetches it directly, with no browser session to resolve a
+     relative path against. -->
+<meta property="og:title" content="Preach Fantasy: 2026 Schedule Release">
+<meta property="og:description" content="The 2026 schedule is live. See who you're up against, and revisit the history behind every matchup.">
+<meta property="og:image" content="https://ethanradecki.github.io/FantasyFootballPages/images/logos/league/preach_logo_2026.png">
+<meta property="og:url" content="https://ethanradecki.github.io/FantasyFootballPages/pages/schedule_release.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Preach Fantasy: 2026 Schedule Release">
+<meta name="twitter:description" content="The 2026 schedule is live. See who you're up against, and revisit the history behind every matchup.">
+<meta name="twitter:image" content="https://ethanradecki.github.io/FantasyFootballPages/images/logos/league/preach_logo_2026.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -246,7 +267,17 @@
   }
 
   /* CAROUSEL: one full card per view, no peeking */
-  .carousel-wrap{ flex:1; min-height:0; display:flex; flex-direction:column; }
+  .carousel-wrap{
+    flex:1; min-height:0; display:flex; flex-direction:column;
+    /* Solid base for the whole content area -- My Schedule, Full
+       Schedule, and Grid all render into this same container. Blocks
+       the year-texture from ever showing through any of them,
+       regardless of what transparency an individual ticket or grid
+       cell uses (e.g. the per-manager tinted ticket background is
+       semi-transparent by design, which is fine once it's blending
+       against this solid layer instead of the texture underneath). */
+    background:var(--bone);
+  }
   .carousel{
     flex:1;
     min-height:0;
