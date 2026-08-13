@@ -31,6 +31,18 @@
 }
 .filter-btn:hover { background:var(--accent-glow); }
 .filter-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
+/* Season color swatches -- consistent hue per year, matches managers.html/waiver-value.html. */
+.filter-btn.year-swatch-btn { position:relative;padding-left:1.5rem; }
+.filter-btn.year-swatch-btn::before {
+  content:'';position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;background:var(--swatch-color,var(--muted));
+}
+.filter-btn.year-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.filter-btn.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
 
 /* Manager toggle chips */
 .mgr-toggle-grid {
@@ -260,12 +272,12 @@
     <div class="filter-row">
       <span class="filter-label">Season:</span>
       <button class="filter-btn active" onclick="setSeason('career',this)">Career</button>
-      <button class="filter-btn" onclick="setSeason(2020,this)">2020</button>
-      <button class="filter-btn" onclick="setSeason(2021,this)">2021</button>
-      <button class="filter-btn" onclick="setSeason(2022,this)">2022</button>
-      <button class="filter-btn" onclick="setSeason(2023,this)">2023</button>
-      <button class="filter-btn" onclick="setSeason(2024,this)">2024</button>
-      <button class="filter-btn" onclick="setSeason(2025,this)">2025</button>
+      <button class="filter-btn year-swatch-btn" style="--swatch-color:#a4969d;" onclick="setSeason(2020,this)">2020</button>
+      <button class="filter-btn year-swatch-btn" style="--swatch-color:#8a93ab;" onclick="setSeason(2021,this)">2021</button>
+      <button class="filter-btn year-swatch-btn" style="--swatch-color:#d8b28e;" onclick="setSeason(2022,this)">2022</button>
+      <button class="filter-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" onclick="setSeason(2023,this)">2023</button>
+      <button class="filter-btn year-swatch-btn" style="--swatch-color:#9aadae;" onclick="setSeason(2024,this)">2024</button>
+      <button class="filter-btn year-swatch-btn" style="--swatch-color:#a9b88b;" onclick="setSeason(2025,this)">2025</button>
     </div>
     <!-- Manager chips -->
     <div class="mgr-toggle-grid" id="mgr-chips"></div>
@@ -358,7 +370,7 @@ var FINGERPRINTS = {"Aidan Quigley": {"2021": {"raw": {"early_rb": 66.7, "early_
 var FP_LABELS = ['Early RB%','Early WR%','QB Timing','TE Timing','Skill Diversity','K/DST Patience','Surplus'];
 var FP_DIMS   = ['early_rb','early_wr','qb_timing','te_timing','diversity','kdst_patience','surplus'];
 
-var MGR_COLORS = ['#541821','#cdbca6','#9f8bc2','#f7cdb9','#ea9a2e','#8d9b51','#776aad','#4c82af','#888888','#404c5b','#4875b9','#eb644c','#ad1f15','#dfc983'];
+var MGR_COLORS = ['#541821','#cdbca6','#9f8bc2','#f7cdb9','#ea9a2e','#8d9b51','#776aad','#4c82af','#888888','#404c5b','#4875b9','#eb644c','#7db7dd','#d76974'];
 
 var MANAGERS_ORDERED = [
   {name:'Carmine Pittelli', logo:'Pittelli'},

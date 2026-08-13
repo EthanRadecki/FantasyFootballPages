@@ -55,6 +55,22 @@
 }
 .season-btn:hover { background:var(--accent-glow); }
 .season-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
+/* Season color swatches -- consistent hue per year, matches managers.html/waiver-value.html. */
+.season-btn.year-swatch-btn { position:relative;padding-left:1.5rem; }
+.season-btn.year-swatch-btn::before {
+  content:'';position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;background:var(--swatch-color,var(--muted));
+}
+.season-btn.year-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.season-btn.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.season-pill {
+  display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
+  font-size:0.68rem;font-weight:700;color:#fff;
+}
 .season-filter-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent); }
 .surplus-mini-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
 .surplus-mini-table thead th {
@@ -359,12 +375,12 @@
     <div class="season-filter-row">
       <span class="season-filter-label">Season:</span>
       <button class="season-btn active" onclick="filterSteals('all', this)">All Time</button>
-      <button class="season-btn" onclick="filterSteals(2020, this)">2020</button>
-      <button class="season-btn" onclick="filterSteals(2021, this)">2021</button>
-      <button class="season-btn" onclick="filterSteals(2022, this)">2022</button>
-      <button class="season-btn" onclick="filterSteals(2023, this)">2023</button>
-      <button class="season-btn" onclick="filterSteals(2024, this)">2024</button>
-      <button class="season-btn" onclick="filterSteals(2025, this)">2025</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#a4969d;" onclick="filterSteals(2020, this)">2020</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#8a93ab;" onclick="filterSteals(2021, this)">2021</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#d8b28e;" onclick="filterSteals(2022, this)">2022</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" onclick="filterSteals(2023, this)">2023</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#9aadae;" onclick="filterSteals(2024, this)">2024</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#a9b88b;" onclick="filterSteals(2025, this)">2025</button>
     </div>
     <table class="steals-table">
       <thead>
@@ -415,6 +431,12 @@ Chart.defaults.font.family = "'Outfit', sans-serif";
 Chart.defaults.font.size   = 12;
 Chart.defaults.color       = '#5a5550';
 var C_MUTED = '#8a8480';
+// Season colors -- same palette used for pills/swatches elsewhere on the site
+// (managers.html, waiver-value.html, etc).
+var SEASON_COLORS = {
+  2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
+  2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#6d9679'
+};
 
 function gridStyle() { return { color:'rgba(156,148,156,0.15)', drawBorder:false }; }
 function tickStyle() { return { color:C_MUTED }; }
@@ -759,7 +781,7 @@ function renderStealsTable(data) {
       +'<td><span class="pos-badge '+posClass+'">'+s.pos+'</span></td>'
       +'<td>'+s.round+'</td>'
       +'<td>'+s.slot+'</td>'
-      +'<td>'+s.season+'</td>'
+      +'<td><span class="season-pill" style="background:'+(SEASON_COLORS[s.season]||'var(--muted)')+';">'+s.season+'</span></td>'
       +'<td style="font-weight:600;color:var(--accent)">'+s.ppg.toFixed(1)+'</td>'
       +'<td style="font-weight:600;color:#5a8a5a">+'+s.above.toFixed(2)+'</td>'
       +'<td>'+s.games+'</td>'

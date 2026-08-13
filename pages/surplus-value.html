@@ -80,6 +80,22 @@
 }
 .season-btn:hover { background:var(--accent-glow); }
 .season-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
+/* Season color swatches -- consistent hue per year, matches managers.html/waiver-value.html. */
+.season-btn.year-swatch-btn { position:relative;padding-left:1.5rem; }
+.season-btn.year-swatch-btn::before {
+  content:'';position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;background:var(--swatch-color,var(--muted));
+}
+.season-btn.year-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.season-btn.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.season-pill {
+  display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
+  font-size:0.68rem;font-weight:700;color:#fff;
+}
 .season-filter-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent); }
 .chart-card-interactive { padding:1.5rem; }
 .chart-card-interactive .chart-card-label {
@@ -308,12 +324,12 @@
     <div class="season-filter-row">
       <span class="season-filter-label">Season:</span>
       <button class="season-btn active" onclick="filterBest('all',this)">All Time</button>
-      <button class="season-btn" onclick="filterBest(2020,this)">2020</button>
-      <button class="season-btn" onclick="filterBest(2021,this)">2021</button>
-      <button class="season-btn" onclick="filterBest(2022,this)">2022</button>
-      <button class="season-btn" onclick="filterBest(2023,this)">2023</button>
-      <button class="season-btn" onclick="filterBest(2024,this)">2024</button>
-      <button class="season-btn" onclick="filterBest(2025,this)">2025</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#a4969d;" onclick="filterBest(2020,this)">2020</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#8a93ab;" onclick="filterBest(2021,this)">2021</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#d8b28e;" onclick="filterBest(2022,this)">2022</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" onclick="filterBest(2023,this)">2023</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#9aadae;" onclick="filterBest(2024,this)">2024</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#a9b88b;" onclick="filterBest(2025,this)">2025</button>
     </div>
     <table class="pick-table">
       <thead>
@@ -336,12 +352,12 @@
     <div class="season-filter-row">
       <span class="season-filter-label">Season:</span>
       <button class="season-btn active" onclick="filterWorst('all',this)">All Time</button>
-      <button class="season-btn" onclick="filterWorst(2020,this)">2020</button>
-      <button class="season-btn" onclick="filterWorst(2021,this)">2021</button>
-      <button class="season-btn" onclick="filterWorst(2022,this)">2022</button>
-      <button class="season-btn" onclick="filterWorst(2023,this)">2023</button>
-      <button class="season-btn" onclick="filterWorst(2024,this)">2024</button>
-      <button class="season-btn" onclick="filterWorst(2025,this)">2025</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#a4969d;" onclick="filterWorst(2020,this)">2020</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#8a93ab;" onclick="filterWorst(2021,this)">2021</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#d8b28e;" onclick="filterWorst(2022,this)">2022</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" onclick="filterWorst(2023,this)">2023</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#9aadae;" onclick="filterWorst(2024,this)">2024</button>
+      <button class="season-btn year-swatch-btn" style="--swatch-color:#a9b88b;" onclick="filterWorst(2025,this)">2025</button>
     </div>
     <table class="pick-table">
       <thead>
@@ -363,6 +379,12 @@ Chart.defaults.font.family = "'Outfit', sans-serif";
 Chart.defaults.font.size   = 12;
 Chart.defaults.color       = '#5a5550';
 var C_MUTED = '#8a8480';
+// Season colors -- same palette used for pills/swatches elsewhere on the site
+// (managers.html, waiver-value.html, etc).
+var SEASON_COLORS = {
+  2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
+  2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#6d9679'
+};
 function gridStyle() { return { color:'rgba(156,148,156,0.15)', drawBorder:false }; }
 function tickStyle() { return { color:C_MUTED }; }
 function gradientColor(val, min, max, alpha) {
@@ -583,12 +605,12 @@ var SEASON_WORST = {"2020": [{"rank": 1, "player": "Mark Ingram II", "pos": "RB"
       +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
       +'<td style="color:var(--palm);font-weight:600">'+d.best+'</td>'
       +'<td><span class="pos-badge '+bpos+'">'+d.bestPos+'</span></td>'
-      +'<td>'+d.bestSeason+'</td>'
+      +'<td><span class="season-pill" style="background:'+(SEASON_COLORS[d.bestSeason]||'var(--muted)')+';">'+d.bestSeason+'</span></td>'
       +'<td>'+d.bestRd+'</td>'
       +'<td class="val-green">+'+d.bestSurplus.toFixed(2)+'</td>'
       +'<td style="border-left:1px solid rgba(var(--accent-rgb),0.15);color:var(--palm);font-weight:600">'+d.worst+'</td>'
       +'<td><span class="pos-badge '+wpos+'">'+d.worstPos+'</span></td>'
-      +'<td>'+d.worstSeason+'</td>'
+      +'<td><span class="season-pill" style="background:'+(SEASON_COLORS[d.worstSeason]||'var(--muted)')+';">'+d.worstSeason+'</span></td>'
       +'<td>'+d.worstRd+'</td>'
       +'<td class="val-red">'+d.worstSurplus.toFixed(2)+'</td>'
       +'</tr>';
@@ -608,7 +630,7 @@ function renderPickTable(tbodyId, data) {
     html+='<tr><td class="pick-rank">'+d.rank+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.player+'</td>'
       +'<td><span class="pos-badge '+pc+'">'+d.pos+'</span></td>'
-      +'<td>'+d.round+'</td><td>'+d.pick+'</td><td>'+d.season+'</td>'
+      +'<td>'+d.round+'</td><td>'+d.pick+'</td><td><span class="season-pill" style="background:'+(SEASON_COLORS[d.season]||'var(--muted)')+';">'+d.season+'</span></td>'
       +'<td style="color:var(--text-mid)">'+d.actual.toFixed(1)+'</td>'
       +'<td style="color:var(--muted)">'+d.expected.toFixed(1)+'</td>'
       +'<td class="'+cls+'">'+sign+d.surplus.toFixed(2)+'</td>'
