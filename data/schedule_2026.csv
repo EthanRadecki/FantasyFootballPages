@@ -6,20 +6,20 @@ Week,Week_Type,Team_A,Team_B,Team_A_Conf,Team_B_Conf,Interconference
 1,Rivalry Week,Cole Maney,Carmine Pittelli,DEM,REP,True
 1,Rivalry Week,Quin Gegwich,Ben Castaldo,REP,REP,False
 1,Rivalry Week,Charlie Gorman,Aidan Quigley,REP,DEM,True
-2,Standard,Charlie Gorman,Cole Maney,REP,DEM,True
-2,Standard,Brandon Hancock,Andrew Root,REP,DEM,True
-2,Standard,Carmine Pittelli,Anthony Kelly,REP,REP,False
-2,Standard,Ryan McQuaid,Baylen Slansky,REP,DEM,True
-2,Standard,Ben Castaldo,Max Malich,REP,DEM,True
-2,Standard,Quin Gegwich,Deniz Bileydi,REP,DEM,True
-2,Standard,Ethan Radecki,Aidan Quigley,DEM,DEM,False
-3,Standard,Carmine Pittelli,Ethan Radecki,REP,DEM,True
-3,Standard,Charlie Gorman,Deniz Bileydi,REP,DEM,True
+2,Standard,Ethan Radecki,Deniz Bileydi,DEM,DEM,False
+2,Standard,Ryan McQuaid,Brandon Hancock,REP,REP,False
+2,Standard,Baylen Slansky,Max Malich,DEM,DEM,False
+2,Standard,Ben Castaldo,Charlie Gorman,REP,REP,False
+2,Standard,Carmine Pittelli,Quin Gegwich,REP,REP,False
+2,Standard,Anthony Kelly,Cole Maney,REP,DEM,True
+2,Standard,Aidan Quigley,Andrew Root,DEM,DEM,False
+3,Standard,Max Malich,Ethan Radecki,DEM,DEM,False
+3,Standard,Deniz Bileydi,Aidan Quigley,DEM,DEM,False
+3,Standard,Brandon Hancock,Charlie Gorman,REP,REP,False
 3,Standard,Quin Gegwich,Baylen Slansky,REP,DEM,True
-3,Standard,Aidan Quigley,Andrew Root,DEM,DEM,False
-3,Standard,Ben Castaldo,Anthony Kelly,REP,REP,False
-3,Standard,Brandon Hancock,Max Malich,REP,DEM,True
-3,Standard,Ryan McQuaid,Cole Maney,REP,DEM,True
+3,Standard,Ben Castaldo,Ryan McQuaid,REP,REP,False
+3,Standard,Cole Maney,Andrew Root,DEM,DEM,False
+3,Standard,Anthony Kelly,Carmine Pittelli,REP,REP,False
 4,Closest Rivalries Week,Max Malich,Ryan McQuaid,DEM,REP,True
 4,Closest Rivalries Week,Baylen Slansky,Aidan Quigley,DEM,DEM,False
 4,Closest Rivalries Week,Anthony Kelly,Quin Gegwich,REP,REP,False
@@ -28,33 +28,33 @@ Week,Week_Type,Team_A,Team_B,Team_A_Conf,Team_B_Conf,Interconference
 4,Closest Rivalries Week,Ben Castaldo,Ethan Radecki,REP,DEM,True
 4,Closest Rivalries Week,Deniz Bileydi,Cole Maney,DEM,DEM,False
 5,Interconference Week,Ryan McQuaid,Andrew Root,REP,DEM,True
-5,Interconference Week,Ben Castaldo,Aidan Quigley,REP,DEM,True
-5,Interconference Week,Anthony Kelly,Cole Maney,REP,DEM,True
-5,Interconference Week,Quin Gegwich,Ethan Radecki,REP,DEM,True
-5,Interconference Week,Carmine Pittelli,Baylen Slansky,REP,DEM,True
-5,Interconference Week,Charlie Gorman,Max Malich,REP,DEM,True
-5,Interconference Week,Brandon Hancock,Deniz Bileydi,REP,DEM,True
+5,Interconference Week,Baylen Slansky,Anthony Kelly,DEM,REP,True
+5,Interconference Week,Aidan Quigley,Quin Gegwich,DEM,REP,True
+5,Interconference Week,Max Malich,Ben Castaldo,DEM,REP,True
+5,Interconference Week,Charlie Gorman,Deniz Bileydi,REP,DEM,True
+5,Interconference Week,Cole Maney,Brandon Hancock,DEM,REP,True
+5,Interconference Week,Carmine Pittelli,Ethan Radecki,REP,DEM,True
+6,Interconference Week,Brandon Hancock,Aidan Quigley,REP,DEM,True
 6,Interconference Week,Ben Castaldo,Deniz Bileydi,REP,DEM,True
-6,Interconference Week,Quin Gegwich,Andrew Root,REP,DEM,True
-6,Interconference Week,Charlie Gorman,Ethan Radecki,REP,DEM,True
-6,Interconference Week,Ryan McQuaid,Aidan Quigley,REP,DEM,True
-6,Interconference Week,Carmine Pittelli,Max Malich,REP,DEM,True
-6,Interconference Week,Baylen Slansky,Anthony Kelly,DEM,REP,True
-6,Interconference Week,Brandon Hancock,Cole Maney,REP,DEM,True
-7,Standard,Carmine Pittelli,Andrew Root,REP,DEM,True
-7,Standard,Anthony Kelly,Ethan Radecki,REP,DEM,True
-7,Standard,Baylen Slansky,Deniz Bileydi,DEM,DEM,False
-7,Standard,Ryan McQuaid,Ben Castaldo,REP,REP,False
-7,Standard,Charlie Gorman,Brandon Hancock,REP,REP,False
-7,Standard,Quin Gegwich,Cole Maney,REP,DEM,True
-7,Standard,Aidan Quigley,Max Malich,DEM,DEM,False
-8,Standard,Ryan McQuaid,Brandon Hancock,REP,REP,False
-8,Standard,Aidan Quigley,Deniz Bileydi,DEM,DEM,False
-8,Standard,Baylen Slansky,Andrew Root,DEM,DEM,False
-8,Standard,Charlie Gorman,Ben Castaldo,REP,REP,False
-8,Standard,Anthony Kelly,Max Malich,REP,DEM,True
-8,Standard,Cole Maney,Ethan Radecki,DEM,DEM,False
-8,Standard,Quin Gegwich,Carmine Pittelli,REP,REP,False
+6,Interconference Week,Andrew Root,Anthony Kelly,DEM,REP,True
+6,Interconference Week,Ryan McQuaid,Cole Maney,REP,DEM,True
+6,Interconference Week,Carmine Pittelli,Baylen Slansky,REP,DEM,True
+6,Interconference Week,Quin Gegwich,Ethan Radecki,REP,DEM,True
+6,Interconference Week,Charlie Gorman,Max Malich,REP,DEM,True
+7,Interconference Week,Brandon Hancock,Max Malich,REP,DEM,True
+7,Interconference Week,Andrew Root,Carmine Pittelli,DEM,REP,True
+7,Interconference Week,Ethan Radecki,Anthony Kelly,DEM,REP,True
+7,Interconference Week,Charlie Gorman,Cole Maney,REP,DEM,True
+7,Interconference Week,Quin Gegwich,Deniz Bileydi,REP,DEM,True
+7,Interconference Week,Baylen Slansky,Ryan McQuaid,DEM,REP,True
+7,Interconference Week,Ben Castaldo,Aidan Quigley,REP,DEM,True
+8,Standard,Andrew Root,Baylen Slansky,DEM,DEM,False
+8,Standard,Max Malich,Cole Maney,DEM,DEM,False
+8,Standard,Deniz Bileydi,Anthony Kelly,DEM,REP,True
+8,Standard,Brandon Hancock,Ben Castaldo,REP,REP,False
+8,Standard,Charlie Gorman,Quin Gegwich,REP,REP,False
+8,Standard,Ethan Radecki,Aidan Quigley,DEM,DEM,False
+8,Standard,Carmine Pittelli,Ryan McQuaid,REP,REP,False
 9,Lopsided History Week,Ethan Radecki,Ryan McQuaid,DEM,REP,True
 9,Lopsided History Week,Brandon Hancock,Quin Gegwich,REP,REP,False
 9,Lopsided History Week,Andrew Root,Max Malich,DEM,DEM,False
@@ -69,27 +69,27 @@ Week,Week_Type,Team_A,Team_B,Team_A_Conf,Team_B_Conf,Interconference
 10,Big Game Week,Deniz Bileydi,Ryan McQuaid,DEM,REP,True
 10,Big Game Week,Carmine Pittelli,Aidan Quigley,REP,DEM,True
 10,Big Game Week,Quin Gegwich,Max Malich,REP,DEM,True
-11,Standard,Quin Gegwich,Charlie Gorman,REP,REP,False
-11,Standard,Cole Maney,Andrew Root,DEM,DEM,False
-11,Standard,Ethan Radecki,Max Malich,DEM,DEM,False
-11,Standard,Anthony Kelly,Deniz Bileydi,REP,DEM,True
-11,Standard,Ben Castaldo,Baylen Slansky,REP,DEM,True
-11,Standard,Aidan Quigley,Brandon Hancock,DEM,REP,True
-11,Standard,Ryan McQuaid,Carmine Pittelli,REP,REP,False
-12,Standard,Quin Gegwich,Aidan Quigley,REP,DEM,True
-12,Standard,Ryan McQuaid,Charlie Gorman,REP,REP,False
-12,Standard,Deniz Bileydi,Andrew Root,DEM,DEM,False
-12,Standard,Brandon Hancock,Anthony Kelly,REP,REP,False
-12,Standard,Baylen Slansky,Ethan Radecki,DEM,DEM,False
-12,Standard,Cole Maney,Max Malich,DEM,DEM,False
-12,Standard,Carmine Pittelli,Ben Castaldo,REP,REP,False
-13,Standard,Ryan McQuaid,Quin Gegwich,REP,REP,False
-13,Standard,Charlie Gorman,Carmine Pittelli,REP,REP,False
-13,Standard,Aidan Quigley,Cole Maney,DEM,DEM,False
-13,Standard,Anthony Kelly,Andrew Root,REP,DEM,True
-13,Standard,Brandon Hancock,Ben Castaldo,REP,REP,False
-13,Standard,Deniz Bileydi,Ethan Radecki,DEM,DEM,False
-13,Standard,Baylen Slansky,Max Malich,DEM,DEM,False
+11,Standard,Anthony Kelly,Max Malich,REP,DEM,True
+11,Standard,Charlie Gorman,Ryan McQuaid,REP,REP,False
+11,Standard,Brandon Hancock,Deniz Bileydi,REP,DEM,True
+11,Standard,Ethan Radecki,Baylen Slansky,DEM,DEM,False
+11,Standard,Ben Castaldo,Carmine Pittelli,REP,REP,False
+11,Standard,Cole Maney,Aidan Quigley,DEM,DEM,False
+11,Standard,Andrew Root,Quin Gegwich,DEM,REP,True
+12,Standard,Deniz Bileydi,Baylen Slansky,DEM,DEM,False
+12,Standard,Max Malich,Aidan Quigley,DEM,DEM,False
+12,Standard,Anthony Kelly,Ben Castaldo,REP,REP,False
+12,Standard,Brandon Hancock,Andrew Root,REP,DEM,True
+12,Standard,Carmine Pittelli,Charlie Gorman,REP,REP,False
+12,Standard,Quin Gegwich,Ryan McQuaid,REP,REP,False
+12,Standard,Cole Maney,Ethan Radecki,DEM,DEM,False
+13,Trade Partner Week,Carmine Pittelli,Max Malich,REP,DEM,True
+13,Trade Partner Week,Anthony Kelly,Brandon Hancock,REP,REP,False
+13,Trade Partner Week,Ethan Radecki,Charlie Gorman,DEM,REP,True
+13,Trade Partner Week,Deniz Bileydi,Andrew Root,DEM,DEM,False
+13,Trade Partner Week,Quin Gegwich,Cole Maney,REP,DEM,True
+13,Trade Partner Week,Ryan McQuaid,Aidan Quigley,REP,DEM,True
+13,Trade Partner Week,Baylen Slansky,Ben Castaldo,DEM,REP,True
 14,Rivalry Week,Ethan Radecki,Andrew Root,DEM,DEM,False
 14,Rivalry Week,Max Malich,Deniz Bileydi,DEM,DEM,False
 14,Rivalry Week,Ryan McQuaid,Anthony Kelly,REP,REP,False
