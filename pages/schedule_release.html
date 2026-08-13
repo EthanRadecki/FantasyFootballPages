@@ -277,11 +277,26 @@
     border:1.5px solid var(--line);
     display:flex;
     flex-direction:column;
-    opacity:0.4;
     transform:scale(0.86) rotate(-1deg);
-    transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1), transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+    transition:transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
   }
-  .ticket.active-card{ opacity:1; transform:scale(1) rotate(0deg); }
+  .ticket.active-card{ transform:scale(1) rotate(0deg); }
+  .ticket-dim{
+    /* Dims inactive/peeking cards in the carousel. This is a scrim
+       layered on top of .ticket's own content rather than opacity on
+       .ticket itself -- element opacity would make .ticket's "opaque"
+       white background partially see-through too, letting the page
+       texture behind it bleed onto every non-active card. Keeping
+       .ticket itself always fully opaque means the texture only ever
+       shows in the gaps around cards, never on a card's surface. */
+    position:absolute; inset:0;
+    background:#fff;
+    opacity:0.6;
+    z-index:4;
+    pointer-events:none;
+    transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .ticket.active-card .ticket-dim{ opacity:0; }
   .ticket.has-more-scroll::after{
     /* Bottom fade hints there's more to scroll to inside ticket-body.
        Lives on the card (not the scrolling element itself) so it sits
@@ -967,6 +982,7 @@ function renderTicket(entry, meName){
   return `
   <div class="ticket-slide">
     <div class="ticket ${tClass}" style="${ticketBg}">
+      <div class="ticket-dim"></div>
       ${banner.html}
       <div class="ticket-body">
         <div class="week-tag">Week ${entry.week}</div>
