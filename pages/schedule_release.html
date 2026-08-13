@@ -54,45 +54,30 @@
   /* 2026 YEAR TEXTURE -- a single overlay above every other layer
      (topbar included) so it's never hidden behind an opaque panel.
      pointer-events:none means it's purely visual; every tap, scroll,
-     and swipe passes straight through to whatever's underneath. Two
-     effects layered together: a slow-drifting radial wash (ambient
-     light shifting, not a static glow) and a faint grain tinted in
-     the same year-accent purple rather than neutral gray, so the
-     texture reads as part of the page's color story. Both are kept
-     deliberately slow and low-opacity -- meant to be felt, not seen. */
+     and swipe passes straight through to whatever's underneath.
+     Built entirely from plain CSS gradients (no SVG masks/filters --
+     those can silently fail in some WebViews with no visible error,
+     which was likely why the grain wasn't showing at all). A radial
+     wash plus a diagonal hairline texture, both tinted in the 2026
+     year-accent purple, animated by drifting background-position. */
   .year-texture{
     position:absolute; inset:0;
     z-index:60;
     pointer-events:none;
+    background:
+      radial-gradient(ellipse 70% 40% at 50% 0%, rgba(216,177,208,0.4), transparent 65%),
+      repeating-linear-gradient(135deg,
+        rgba(216,177,208,0.16) 0px, rgba(216,177,208,0.16) 1.5px,
+        transparent 1.5px, transparent 7px);
+    background-size: auto, 11px 11px;
+    animation: yearTextureDrift 40s ease-in-out infinite;
   }
-  .year-texture::before{
-    content:'';
-    position:absolute; inset:-12%;
-    background:radial-gradient(ellipse 70% 40% at 50% 0%, rgba(216,177,208,0.22), transparent 65%);
-    animation: yearWashDrift 38s ease-in-out infinite;
-    will-change: transform;
-  }
-  .year-texture::after{
-    content:'';
-    position:absolute; inset:0;
-    background:var(--year-accent);
-    opacity:0.07;
-    -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    -webkit-mask-size:180px 180px;
-    mask-size:180px 180px;
-    animation: grainDrift 60s linear infinite;
-  }
-  @keyframes yearWashDrift{
-    0%,100%{ transform:translate(0,0) scale(1); }
-    50%{ transform:translate(1.5%,2%) scale(1.05); }
-  }
-  @keyframes grainDrift{
-    from{ -webkit-mask-position:0 0; mask-position:0 0; }
-    to{ -webkit-mask-position:360px 360px; mask-position:360px 360px; }
+  @keyframes yearTextureDrift{
+    0%,100%{ background-position: 0% 0%, 0px 0px; }
+    50%{ background-position: 3% 4%, 60px 60px; }
   }
   @media (prefers-reduced-motion: reduce){
-    .year-texture::before, .year-texture::after{ animation:none; }
+    .year-texture{ animation:none; }
   }
 
   /* HEADER */
@@ -295,12 +280,12 @@
     transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1), transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
   }
   .ticket.active-card{ opacity:1; transform:scale(1) rotate(0deg); }
-  .ticket::after{
+  .ticket.has-more-scroll::after{
     /* Bottom fade hints there's more to scroll to inside ticket-body.
        Lives on the card (not the scrolling element itself) so it sits
        as a fixed overlay on top of the content rather than trying to
-       scroll along with it. Harmless when a card's content already
-       fits without scrolling -- it just sits over empty space. */
+       scroll along with it. Only shown when JS has confirmed the
+       card's content genuinely overflows -- see markScrollableTickets. */
     content:'';
     position:absolute;
     left:0; right:0; bottom:0;
@@ -308,6 +293,28 @@
     background:linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.85));
     pointer-events:none;
     z-index:2;
+  }
+  .ticket.has-more-scroll::before{
+    /* Explicit "this scrolls" cue, not just an implicit fade -- a
+       small chevron that gently bounces, sitting above the fade
+       (higher z-index) so it stays legible against it. */
+    content:'\2304';
+    position:absolute;
+    left:50%; bottom:4px;
+    transform:translateX(-50%);
+    font-size:15px; line-height:1;
+    color:var(--ink-soft);
+    opacity:0.55;
+    pointer-events:none;
+    z-index:3;
+    animation: scrollHintBounce 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollHintBounce{
+    0%,100%{ transform:translateX(-50%) translateY(0); }
+    50%{ transform:translateX(-50%) translateY(4px); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticket.has-more-scroll::before{ animation:none; }
   }
 
   .ticket.rivalry .ticket-body{ background:linear-gradient(180deg, rgba(168,67,74,0.06), rgba(255,255,255,0) 40%); }
@@ -1035,6 +1042,21 @@ function selectManager(name){
   const slides = carousel.querySelectorAll('.ticket-slide');
   const tickets = carousel.querySelectorAll('.ticket');
   const dots = progress.querySelectorAll('.pdot');
+
+  // Only show the "scroll for more" fade/chevron on cards that actually
+  // overflow -- a card whose history already fits shouldn't hint at
+  // scrolling that doesn't exist. Re-checked on resize since rotating a
+  // device or opening the on-screen keyboard changes available height.
+  function markScrollableTickets(){
+    tickets.forEach(t=>{
+      const body = t.querySelector('.ticket-body');
+      if(!body) return;
+      t.classList.toggle('has-more-scroll', body.scrollHeight > body.clientHeight + 2);
+    });
+  }
+  markScrollableTickets();
+  window.addEventListener('resize', markScrollableTickets);
+
   const observer = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       const idx = Array.from(slides).indexOf(e.target);
