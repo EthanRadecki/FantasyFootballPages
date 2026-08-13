@@ -51,12 +51,46 @@
   }
   .app::before{
     /* Very slight year-color wash, not a background swap -- keep this
-       subtle if adjusted, it's meant to be felt more than seen. */
+       subtle if adjusted, it's meant to be felt more than seen. A slow
+       drift is layered on so it reads as ambient light shifting rather
+       than a static glow -- long duration, tiny amplitude, no hard
+       edges to notice mid-motion. */
     content:'';
-    position:absolute; inset:0;
+    position:absolute; inset:-12%;
     background:radial-gradient(ellipse 70% 40% at 50% 0%, rgba(216,177,208,0.16), transparent 65%);
     pointer-events:none;
     z-index:0;
+    animation: yearWashDrift 38s ease-in-out infinite;
+    will-change: transform;
+  }
+  .app::after{
+    /* Faint grain, tinted in the same 2026 year-accent rather than
+       neutral gray, so the texture reads as part of the page's color
+       story instead of a generic paper-noise effect. Opacity is kept
+       very low and the tile drifts extremely slowly -- meant to add
+       tone, not to be independently noticed. */
+    content:'';
+    position:absolute; inset:0;
+    background:var(--year-accent);
+    opacity:0.05;
+    -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    -webkit-mask-size:180px 180px;
+    mask-size:180px 180px;
+    pointer-events:none;
+    z-index:0;
+    animation: grainDrift 60s linear infinite;
+  }
+  @keyframes yearWashDrift{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(1.5%,2%) scale(1.05); }
+  }
+  @keyframes grainDrift{
+    from{ -webkit-mask-position:0 0; mask-position:0 0; }
+    to{ -webkit-mask-position:360px 360px; mask-position:360px 360px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .app::before, .app::after{ animation:none; }
   }
   .topbar, .carousel-wrap{ position:relative; z-index:1; }
 
