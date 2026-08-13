@@ -80,11 +80,20 @@
 .got-txt { color:#4a7fa8; }
 .gave-txt { color:#a8664a; }
 /* Dashed line between different trades in the Trades by Week detail
-   panel -- only at the boundary between one trade's tbody and the
-   next, so sides of the same trade stay flush against each other. */
-.tw-table tbody.tw-trade-group + tbody.tw-trade-group tr:first-child td {
-  border-top: 1.5px dashed rgba(var(--accent-rgb), 0.35);
-  padding-top: 0.85rem;
+   panel -- a dedicated empty row rather than a border on the adjacent
+   data rows, since a cell border competing with border-collapse's
+   existing row separator isn't guaranteed to win that conflict and can
+   silently disappear depending on the browser. This way there's only
+   ever one border in play at that grid line. */
+.tw-table tr.tw-divider td {
+  border: hidden;
+  padding: 0.5rem 0 0;
+  height: 0;
+}
+.tw-table tr.tw-divider td::before {
+  content: '';
+  display: block;
+  border-top: 1.5px dashed rgba(var(--accent-rgb), 0.4);
 }
 @media(max-width:768px) {
   .tv-table { font-size:0.74rem; }
@@ -1144,11 +1153,14 @@ function renderTradeWeekDetail(week) {
     ? '<span style="color:var(--muted);font-weight:600;">Career</span>'
     : '<span class="season-pill" style="background:'+(SEASON_COLORS[tradeWeekSeasonFilter]||'var(--muted)')+';font-size:0.8rem;">'+tradeWeekSeasonFilter+'</span>';
 
-  // Each trade group gets its own <tbody> -- rows within a group stay
-  // exactly as they were, this is purely so a CSS sibling rule can drop
-  // a dashed line between one trade's tbody and the next, without
-  // touching the borders between the sides of the same trade.
-  var groupsHtml = groups.map(function(sides){
+  // Each trade group's rows stay exactly as they were. Between groups
+  // (not between sides of the same trade) a dedicated, empty spacer row
+  // carries the dashed line on its own border -- this sidesteps
+  // border-collapse conflict resolution entirely (a cell-level border
+  // competing with the existing row separator can lose or get dropped
+  // depending on the browser, which is why the sibling-selector version
+  // of this didn't reliably show up), so it renders the same everywhere.
+  var groupsHtml = groups.map(function(sides, gi){
     var multiTag = sides[0].multi ? '<span class="multi-badge">MULTI</span>' : '';
     var seasonTag = tradeWeekSeasonFilter === 'career'
       ? '<span class="season-pill" style="background:'+(SEASON_COLORS[sides[0].s]||'var(--muted)')+';">'+sides[0].s+'</span> '
@@ -1166,7 +1178,8 @@ function renderTradeWeekDetail(week) {
       seasonTag = ''; multiTag = '';
       return row;
     }).join('');
-    return '<tbody class="tw-trade-group">'+rows+'</tbody>';
+    var divider = gi > 0 ? '<tr class="tw-divider"><td colspan="5"></td></tr>' : '';
+    return divider + rows;
   }).join('');
 
   var countNote = groups.length + ' trade' + (groups.length === 1 ? '' : 's') + ' this week' + (tradeWeekSeasonFilter === 'career' ? ' across all seasons.' : ' in ' + tradeWeekSeasonFilter + '.');
@@ -1181,7 +1194,7 @@ function renderTradeWeekDetail(week) {
         ? '<p style="font-size:0.85rem;color:var(--muted);">No trades happened this week for this filter.</p>'
         : '<div class="table-wrap" style="overflow-x:auto;padding:0;">'
           + '<table class="tv-table tw-table"><thead><tr><th>Season</th><th>Manager</th><th>Got</th><th>Gave</th><th>QUAD</th></tr></thead>'
-          + groupsHtml + '</table></div>'
+          + '<tbody>' + groupsHtml + '</tbody></table></div>'
           + '<p class="metric-note" style="margin-top:0.5rem;">'+countNote+'</p>');
   panel.style.display = 'block';
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
