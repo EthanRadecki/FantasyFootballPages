@@ -24,11 +24,29 @@
   color:var(--accent);font-weight:700;margin-bottom:1rem;
 }
 .chart-card-interactive canvas { display:block;width:100% !important; }
-.slot-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:2rem; }
-.slot-card { padding:1rem 1.25rem;border-left:2px solid var(--accent); }
-.slot-num { font-family:var(--font-display);font-size:1.1rem;font-weight:900;color:var(--accent);margin-bottom:0.4rem; }
-.slot-managers { font-size:0.78rem;color:var(--muted);line-height:1.7; }
-.slot-managers span { color:var(--text-mid); }
+.slot-table-wrap { overflow-x:auto;padding:1.5rem;margin-bottom:2rem; }
+.slot-table { border-collapse:collapse;font-size:0.8rem;width:100%; }
+.slot-table th {
+  padding:0.55rem 0.75rem;font-size:0.65rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;text-align:center;
+}
+.slot-table th.row-header { text-align:left; }
+.slot-table td {
+  padding:0.55rem 0.75rem;text-align:center;font-size:0.78rem;font-weight:700;
+  border:1px solid rgba(var(--accent-rgb),0.08);white-space:nowrap;position:relative;
+}
+.slot-table td.row-header {
+  text-align:left;font-weight:800;color:var(--palm);padding-left:0.75rem;
+  font-family:var(--font-display);
+}
+.slot-table td.is-repeat { background:rgba(var(--accent-rgb),0.08); }
+.slot-repeat-tag {
+  font-size:0.58rem;font-weight:800;color:#fff;
+  padding:0.02rem 0.32rem;border-radius:999px;margin-left:0.3rem;
+  vertical-align:middle;
+}
+.slot-table tr:last-child td { border-bottom:none; }
 .hr-stat-row { display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem; }
 .hr-stat-card { padding:1.25rem 1.5rem;text-align:center; }
 .hr-stat-tier { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--accent);margin-bottom:0.5rem; }
@@ -93,10 +111,8 @@
 .explore-btn svg { width:16px;height:16px; }
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
 @media(max-width:768px) {
-  .slot-grid { grid-template-columns:repeat(2,1fr); }
   .hr-stat-row { grid-template-columns:1fr; }
 }
-@media(max-width:480px) { .slot-grid { grid-template-columns:1fr; } }
 
 /* ── CHAPTER RAIL (in-page section nav) ── */
 .chapter-rail {
@@ -294,7 +310,7 @@
 
   <div class="section-label" id="manager-distribution">Manager Distribution</div>
   <div class="section-title">Who picked from each slot?</div>
-  <div class="slot-grid" id="slot-grid"></div>
+  <div class="slot-table-wrap glass" id="slot-grid"></div>
 
   <div class="section-label" style="margin-top:1rem;" id="hit-rate-by-round">Hit Rate by Round</div>
   <div class="section-title">How often does each draft tier produce a starter?</div>
@@ -434,6 +450,25 @@ var C_MUTED = '#8a8480';
 var SEASON_COLORS = {
   2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
   2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#6d9679'
+};
+// Manager colors -- canonical text-safe set, same as managers.html/weekly-rankings.html.
+var MANAGER_COLORS = {
+  'Ethan Radecki':    '#985e0f',
+  'Andrew Root':       '#2d5375',
+  'Max Malich':        '#696969',
+  'Deniz Bileydi':     '#68733c',
+  'Baylen Slansky':    '#7269aa',
+  'Cole Maney':        '#ba4b15',
+  'Aidan Quigley':     '#c53016',
+  'Anthony Kelly':     '#7f6647',
+  'Ben Castaldo':      '#404c5b',
+  'Brandon Hancock':   '#416cab',
+  'Carmine Pittelli':  '#541821',
+  'Charlie Gorman':    '#9e89c0',
+  'Quin Gegwich':      '#4598ce',
+  'Ryan McQuaid':      '#bd0517',
+  'Thomas Sullivan':   '#8a8480',
+  'William Serafin':   '#8a8480'
 };
 // Red/gold/green pill gradient -- same treatment as waiver-value.html's
 // surplus/z-score pills. Kept separate from gradientColor() above, which
@@ -587,15 +622,34 @@ var SLOT_DATA = {
 })();
 
 (function(){
-  var grid=document.getElementById('slot-grid');
-  if(!grid) return;
-  var html='';
+  var wrap=document.getElementById('slot-grid');
+  if(!wrap) return;
+  var years=[2020,2021,2022,2023,2024,2025];
+  var html='<table class="slot-table"><thead><tr><th class="row-header">Slot</th>';
+  years.forEach(function(yr){
+    var yc=SEASON_COLORS[yr]||'var(--muted)';
+    html+='<th style="color:'+yc+';border-bottom-color:'+yc+';">'+yr+'</th>';
+  });
+  html+='</tr></thead><tbody>';
   for(var slot=1;slot<=14;slot++){
     var entries=SLOT_DATA[slot]||[];
-    var mHtml=entries.map(function(e){return '<span>'+e[0]+'</span> ('+e[1]+')';}).join('<br>');
-    html+='<div class="slot-card glass"><div class="slot-num">Slot '+slot+'</div><div class="slot-managers">'+mHtml+'</div></div>';
+    var byYear={};
+    entries.forEach(function(e){ byYear[e[1]]=e[0]; });
+    var counts={};
+    entries.forEach(function(e){ counts[e[0]]=(counts[e[0]]||0)+1; });
+    html+='<tr><td class="row-header">Slot '+slot+'</td>';
+    years.forEach(function(yr){
+      var manager=byYear[yr];
+      if(!manager){ html+='<td style="color:var(--muted);font-size:0.7rem;">&mdash;</td>'; return; }
+      var mc=MANAGER_COLORS[manager]||'var(--palm)';
+      var isRepeat=counts[manager]>1;
+      var tag=isRepeat?'<span class="slot-repeat-tag" style="background:'+mc+';">&times;'+counts[manager]+'</span>':'';
+      html+='<td class="'+(isRepeat?'is-repeat':'')+'"><span style="color:'+mc+';">'+manager+'</span>'+tag+'</td>';
+    });
+    html+='</tr>';
   }
-  grid.innerHTML=html;
+  html+='</tbody></table>';
+  wrap.innerHTML=html;
 })();
 
 /* SECTION 2 - Hit Rate */
