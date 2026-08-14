@@ -87,6 +87,25 @@
 }
 .detail-panel.flash { animation: detailPanelFlash 0.7s ease-out; }
 
+/* Pagination -- same treatment as the Full Ledger table on managers.html */
+.upside-pagination {
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  margin-top:0.9rem;
+}
+.upside-page-btn {
+  padding:0.35rem 0.8rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.75rem;
+  font-weight:600;cursor:pointer;transition:all 0.15s;
+}
+.upside-page-btn:hover:not(:disabled) { background:var(--accent-glow);color:var(--accent); }
+.upside-page-btn:disabled { opacity:0.3;cursor:default; }
+.upside-page-info { font-size:0.72rem;color:var(--muted);font-weight:600;white-space:nowrap; }
+@media(max-width:480px) {
+  .upside-pagination { gap:0.6rem; }
+  .upside-page-info { font-size:0.66rem; }
+  .upside-page-btn { padding:0.3rem 0.6rem;font-size:0.7rem; }
+}
+
 /* Position color swatches -- same treatment, using the pos-badge palette */
 .heatmap-season-pill.pos-swatch-btn { position:relative;padding-left:1.6rem; }
 .heatmap-season-pill.pos-swatch-btn::before {
@@ -227,7 +246,8 @@
     <div style="position:relative;height:480px;">
       <canvas id="chart-upside"></canvas>
     </div>
-    <p class="metric-note">Career totals, all positions by default, no minimum weeks rostered. Bars only ever go up since bad and neutral adds contribute nothing here, unlike the total above.</p>
+    <p class="metric-note">Career totals, all positions by default, no minimum weeks rostered. Bars only ever go up since bad and neutral adds contribute nothing here, unlike the total above. <strong>Click a manager's bar to see every pickup behind it.</strong></p>
+    <div id="upside-detail" class="glass detail-panel" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
   </div>
 
   <div class="section-label" style="margin-top:2rem;">Value by Week of the Season</div>
@@ -754,6 +774,7 @@ function setUpsideSeason(season, btn) {
   btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
   btn.classList.add('active');
   renderUpsideChart();
+  if (upsideLastClicked !== null) { upsidePage = 1; renderUpsideDetail(upsideLastClicked); }
 }
 
 function setUpsidePosition(pos, btn) {
@@ -761,6 +782,7 @@ function setUpsidePosition(pos, btn) {
   btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
   btn.classList.add('active');
   renderUpsideChart();
+  if (upsideLastClicked !== null) { upsidePage = 1; renderUpsideDetail(upsideLastClicked); }
 }
 
 function renderUpsideChart() {
@@ -794,6 +816,15 @@ function renderUpsideChart() {
       indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
+      onHover: function(event, elements) {
+        event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+      },
+      onClick: function(event, elements) {
+        if (!elements.length) return;
+        upsideLastClicked = rows[elements[0].index].m;
+        upsidePage = 1;
+        renderUpsideDetail(upsideLastClicked);
+      },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -808,6 +839,91 @@ function renderUpsideChart() {
       }
     }
   });
+}
+
+// Detail panel for a clicked manager bar: every one of their positive-value
+// pickups within the current season/position filter, paginated 10 at a
+// time (rather than truncated to a top-N) so the list runs all the way
+// down to the weakest qualifying pickup instead of just the highlights.
+var upsideLastClicked = null;
+var upsidePage = 1;
+var UPSIDE_PAGE_SIZE = 10;
+
+function renderUpsideDetail(manager) {
+  var panel = document.getElementById('upside-detail');
+  var pool = WAIVER_STINTS.filter(function(r){
+    if (r.m !== manager) return false;
+    if (upsideSeasonFilter !== 'career' && r.s !== upsideSeasonFilter) return false;
+    if (upsidePosFilter !== 'ALL' && r.pos !== upsidePosFilter) return false;
+    return r.z > 0;
+  });
+  pool.sort(function(a,b){ return b.z - a.z; });
+
+  var totalPages = Math.max(1, Math.ceil(pool.length / UPSIDE_PAGE_SIZE));
+  if (upsidePage > totalPages) upsidePage = totalPages;
+  if (upsidePage < 1) upsidePage = 1;
+  var start = (upsidePage - 1) * UPSIDE_PAGE_SIZE;
+  var page = pool.slice(start, start + UPSIDE_PAGE_SIZE);
+
+  var seasonLabel = upsideSeasonFilter === 'career'
+    ? '<span style="color:var(--muted);font-weight:600;">Career</span>'
+    : '<span class="season-pill" style="background:'+(SEASON_COLORS[upsideSeasonFilter]||'var(--muted)')+';font-size:0.8rem;">'+upsideSeasonFilter+'</span>';
+
+  var rowsHtml = page.map(function(r, i){
+    var typeClass = r.t === 'W' ? 'type-waiver' : 'type-freeagent';
+    var typeLabel = r.t === 'W' ? 'Waiver' : 'Free Agent';
+    var zBg = greenScale(r.z, BEST_TOTALZ_MIN, BEST_TOTALZ_MAX);
+    var seasonCell = upsideSeasonFilter === 'career'
+      ? '<td><span class="season-pill" style="background:'+(SEASON_COLORS[r.s]||'var(--muted)')+';">'+r.s+'</span></td>'
+      : '';
+    return '<tr>'
+      + '<td class="wv-rank">'+(start + i + 1)+'</td>'
+      + seasonCell
+      + '<td style="font-weight:600;color:var(--palm);">'+r.p+'</td>'
+      + '<td><span class="pos-badge '+posBadgeClass(r.pos)+'">'+r.pos+'</span></td>'
+      + '<td>Wk '+r.sw+'</td>'
+      + '<td><span class="type-badge '+typeClass+'">'+typeLabel+'</span></td>'
+      + '<td>'+r.wk+'</td>'
+      + '<td><span style="background:'+zBg+';color:#fff;padding:0.12rem 0.45rem;border-radius:4px;font-weight:700;">+'+r.z.toFixed(2)+'</span></td>'
+      + '</tr>';
+  }).join('');
+
+  var seasonCol = upsideSeasonFilter === 'career' ? '<th>Season</th>' : '';
+
+  panel.innerHTML =
+    '<div class="detail-panel-label">Manager Details</div>'
+    + '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">'
+      + '<span style="font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--palm);">'+manager+'</span>'
+      + seasonLabel
+    + '</div>'
+    + (pool.length === 0
+        ? '<p style="font-size:0.85rem;color:var(--muted);">No positive-value pickups match this filter combination for this manager.</p>'
+        : '<div class="table-wrap" style="overflow-x:auto;padding:0;">'
+          + '<table class="wv-table"><thead><tr><th>Rank</th>'+seasonCol+'<th>Player</th><th>Pos</th><th>Start Week</th><th>Type</th><th>Weeks Rostered</th><th>Total Value</th></tr></thead>'
+          + '<tbody>'+rowsHtml+'</tbody></table></div>'
+          + '<div class="upside-pagination">'
+            + '<button class="upside-page-btn" onclick="upsidePrevPage()" '+(upsidePage<=1?'disabled':'')+'>&#8592; Prev</button>'
+            + '<span class="upside-page-info">Page '+upsidePage+' of '+totalPages+' ('+pool.length+' pickup'+(pool.length===1?'':'s')+')</span>'
+            + '<button class="upside-page-btn" onclick="upsideNextPage()" '+(upsidePage>=totalPages?'disabled':'')+'>Next &#8594;</button>'
+          + '</div>');
+  panel.style.display = 'block';
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  panel.classList.remove('flash');
+  void panel.offsetWidth;
+  panel.classList.add('flash');
+}
+
+function upsidePrevPage() {
+  if (upsidePage <= 1 || !upsideLastClicked) return;
+  upsidePage -= 1;
+  renderUpsideDetail(upsideLastClicked);
+}
+
+function upsideNextPage() {
+  if (!upsideLastClicked) return;
+  upsidePage += 1;
+  renderUpsideDetail(upsideLastClicked);
 }
 
 // Value by week of the season: volume (bars, split waiver/FA) and
