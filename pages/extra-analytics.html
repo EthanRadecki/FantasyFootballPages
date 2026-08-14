@@ -1633,8 +1633,8 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
 
   // The model's own refinement history -- R^2 at each methodology fix, in the
   // actual order those fixes were made
-  var R2_LABELS = ['Original model', '+ outcome-based\nlineup', '+ real trade\nQUAD', '+ schedule\nluck', '+ upside-only\nwaiver', '+ corrected trade\nQUAD', '+ playoff wins\nin outcome'];
-  var R2_VALS   = [0.197, 0.302, 0.334, 0.389, 0.412, 0.399, 0.438];
+  var R2_LABELS = ['Original model', '+ outcome-based\nlineup', '+ real trade\nQUAD', '+ schedule\nluck', '+ upside-only\nwaiver', '+ corrected trade\ndata & playoffs'];
+  var R2_VALS   = [0.197, 0.302, 0.334, 0.389, 0.412, 0.438];
   new Chart(document.getElementById('chart-attr-r2').getContext('2d'), {
     type: 'bar',
     data: {
@@ -1652,7 +1652,7 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
       plugins: {
         legend: { display: false },
         tooltip: { callbacks: { label: function(ctx){ return 'R\u00b2 = ' + ctx.parsed.y.toFixed(3); } } },
-        title: { display: true, text: 'Model Refinement  |  Fixing Real Bugs, Not Just Chasing Fit', color: C_TEXT_MID, font: { size: 12, weight: '600' }, padding: { bottom: 12 } }
+        title: { display: true, text: 'Model Refinement  |  Each Fix Improved Fit', color: C_TEXT_MID, font: { size: 12, weight: '600' }, padding: { bottom: 12 } }
       },
       scales: {
         x: { grid: gridStyle(), ticks: Object.assign(tickStyle(), { font: { size: 10 } }) },
