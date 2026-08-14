@@ -267,7 +267,6 @@
     <a href="#career-leaderboard" class="chapter-rail-item" data-target="career-leaderboard"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Career Leaderboard</span></a>
     <a href="#depth-adjusted-efficiency" class="chapter-rail-item" data-target="depth-adjusted-efficiency"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Depth-Adjusted Efficiency</span></a>
     <a href="#league-trend" class="chapter-rail-item" data-target="league-trend"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">League Trend by Season</span></a>
-    <a href="#manager-consistency" class="chapter-rail-item" data-target="manager-consistency"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Manager Consistency</span></a>
     <a href="#weekly-efficiency-calendar" class="chapter-rail-item" data-target="weekly-efficiency-calendar"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Weekly Efficiency Calendar</span></a>
     <a href="#bench-depth" class="chapter-rail-item" data-target="bench-depth"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Bench Depth</span></a>
     <a href="#missed-wins" class="chapter-rail-item" data-target="missed-wins"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Missed Wins</span></a>
@@ -281,7 +280,6 @@
       <a href="#career-leaderboard" data-target="career-leaderboard" onclick="toggleJumpSheet(false)">Career Leaderboard</a>
       <a href="#depth-adjusted-efficiency" data-target="depth-adjusted-efficiency" onclick="toggleJumpSheet(false)">Depth-Adjusted Efficiency</a>
       <a href="#league-trend" data-target="league-trend" onclick="toggleJumpSheet(false)">League Trend by Season</a>
-      <a href="#manager-consistency" data-target="manager-consistency" onclick="toggleJumpSheet(false)">Manager Consistency</a>
       <a href="#weekly-efficiency-calendar" data-target="weekly-efficiency-calendar" onclick="toggleJumpSheet(false)">Weekly Efficiency Calendar</a>
       <a href="#bench-depth" data-target="bench-depth" onclick="toggleJumpSheet(false)">Bench Depth</a>
       <a href="#missed-wins" data-target="missed-wins" onclick="toggleJumpSheet(false)">Missed Wins</a>
@@ -303,7 +301,7 @@
       <li><strong>Optimal lineup:</strong> the best possible score from a manager's full roster that week, following real slot rules (1 QB, 2 RB, 2 WR, 1 TE, 1 FLEX, 1 D/ST, 1 K).</li>
       <li><strong>IR players are excluded.</strong> <em>Bye weeks and consolation weeks are excluded too.</em></li>
       <li><strong>Excluded from the average:</strong> weeks with 2+ mandatory slots left empty despite a real bench alternative. Still counts as a missed win if applicable. A single empty slot stays in as normal data.</li>
-      <li><strong>Bench depth:</strong> weekly bench value compared to other benches at the same position, summed across the bench, averaged over time. Measures roster talent, not decision quality.</li>
+      <li><strong>Bench depth:</strong> weekly bench value compared to other benches at the same position, summed across the bench, averaged over time. Measures roster talent, not decision quality. Example: a score of 3.99 means a manager's whole bench, added together, nets out to about 4 points above what a league-average bench would post that week. It is not "each bench player is 4 points better."</li>
     </ul>
   </div>
 
@@ -344,18 +342,6 @@
     </div>
   </div>
 
-  <div class="section-label" style="margin-top:2rem;" id="manager-consistency">Manager Consistency</div>
-  <div class="section-title">Average gap tells you how good. This tells you how predictable.</div>
-  <div class="chart-grid" style="grid-template-columns:1fr;">
-    <div class="chart-card-interactive glass">
-      <div class="chart-card-label">Avg Efficiency Gap vs. Week-to-Week Volatility</div>
-      <div style="position:relative;height:460px;">
-        <canvas id="chart-consistency"></canvas>
-      </div>
-      <p class="metric-note">X-axis: average gap. Y-axis: week-to-week variation. Bottom-left is sharp and consistent.</p>
-    </div>
-  </div>
-
   <div class="section-label" style="margin-top:2rem;" id="weekly-efficiency-calendar">Weekly Efficiency Calendar</div>
   <div class="section-title">Every manager, every week. Green means a tight lineup, red means points left on the bench.</div>
   <div class="chart-card-interactive glass">
@@ -388,7 +374,7 @@
       <div style="position:relative;height:460px;">
         <canvas id="chart-depth-wins"></canvas>
       </div>
-      <p class="metric-note">Correlation is weak (r&asymp;0.35). Depth does not reliably predict win rate.</p>
+      <p class="metric-note">One point per manager-season. Correlation is weak (r&asymp;0.30). Depth does not reliably predict win rate.</p>
     </div>
   </div>
 
@@ -425,6 +411,24 @@
 var SEASON_COLORS = {
   2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
   2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#c292b8'
+};
+
+// Manager colors -- canonical text-safe set, same as managers.html/weekly-rankings.html.
+var MANAGER_COLORS = {
+  'Ethan Radecki':        '#985e0f',
+  'Andrew Root':          '#2d5375',
+  'Max Malich':           '#696969',
+  'Deniz Bileydi':        '#68733c',
+  'Baylen Slansky':       '#7269aa',
+  'Cole Maney':           '#ba4b15',
+  'Aidan Quigley':        '#c53016',
+  'Anthony Kelly':        '#7f6647',
+  'Ben Castaldo':         '#404c5b',
+  'Brandon Hancock':      '#416cab',
+  'Carmine Pittelli Jr.': '#541821',
+  'Charlie Gorman':       '#9e89c0',
+  'Quin Gegwich':         '#4598ce',
+  'Ryan P McQuaid':       '#bd0517'
 };
 
 // Efficiency gap by manager, filterable: "career" plus each individual season.
@@ -599,12 +603,14 @@ renderEfficiencyChart('career');
 /* ==== NEW: Depth, Trend, and Consistency data ==== */
 var DEPTH_BY_FILTER = { "career": [{m:"Anthony Kelly",d:7.57},{m:"Brandon Hancock",d:3.99},{m:"Andrew Root",d:3.02},{m:"Quin Gegwich",d:1.24},{m:"Deniz Bileydi",d:1.03},{m:"Ethan Radecki",d:1.01},{m:"Ben Castaldo",d:-0.45},{m:"Baylen Slansky",d:-0.63},{m:"Ryan P McQuaid",d:-0.97},{m:"Max Malich",d:-0.98},{m:"Carmine Pittelli Jr.",d:-1.77},{m:"Cole Maney",d:-3.66},{m:"Aidan Quigley",d:-5.32},{m:"Charlie Gorman",d:-5.66}], "2020":[{m:"Max Malich",d:8.29},{m:"Deniz Bileydi",d:6.84},{m:"Carmine Pittelli Jr.",d:4.98},{m:"Quin Gegwich",d:4.69},{m:"Anthony Kelly",d:4.27},{m:"Ethan Radecki",d:4.09},{m:"Baylen Slansky",d:2.75},{m:"Andrew Root",d:2.18},{m:"Brandon Hancock",d:-2.86},{m:"Charlie Gorman",d:-3.78},{m:"Ben Castaldo",d:-6.48},{m:"Cole Maney",d:-13.01},{m:"Ryan P McQuaid",d:-13.85}],"2021":[{m:"Anthony Kelly",d:12.96},{m:"Ethan Radecki",d:6.38},{m:"Brandon Hancock",d:5.83},{m:"Ryan P McQuaid",d:3.89},{m:"Aidan Quigley",d:2.7},{m:"Ben Castaldo",d:1.79},{m:"Baylen Slansky",d:0.73},{m:"Cole Maney",d:-0.13},{m:"Charlie Gorman",d:-3.2},{m:"Carmine Pittelli Jr.",d:-4.75},{m:"Andrew Root",d:-5.03},{m:"Max Malich",d:-6.14},{m:"Quin Gegwich",d:-8.45},{m:"Deniz Bileydi",d:-10.15}],"2022":[{m:"Andrew Root",d:6.88},{m:"Brandon Hancock",d:6.68},{m:"Ryan P McQuaid",d:5.26},{m:"Anthony Kelly",d:4.43},{m:"Ethan Radecki",d:3.74},{m:"Quin Gegwich",d:1.69},{m:"Deniz Bileydi",d:1.64},{m:"Max Malich",d:-0.66},{m:"Ben Castaldo",d:-1.42},{m:"Aidan Quigley",d:-2.6},{m:"Carmine Pittelli Jr.",d:-2.98},{m:"Charlie Gorman",d:-7.58},{m:"Cole Maney",d:-8.42},{m:"Baylen Slansky",d:-10.81}],"2023":[{m:"Brandon Hancock",d:11.25},{m:"Deniz Bileydi",d:5.74},{m:"Quin Gegwich",d:5.72},{m:"Anthony Kelly",d:5.72},{m:"Baylen Slansky",d:4.24},{m:"Ethan Radecki",d:3.38},{m:"Carmine Pittelli Jr.",d:0.64},{m:"Andrew Root",d:-1.62},{m:"Ben Castaldo",d:-1.77},{m:"Ryan P McQuaid",d:-2.41},{m:"Charlie Gorman",d:-2.53},{m:"Cole Maney",d:-8.34},{m:"Max Malich",d:-8.46},{m:"Aidan Quigley",d:-10.23}],"2024":[{m:"Deniz Bileydi",d:6.52},{m:"Ben Castaldo",d:6.4},{m:"Andrew Root",d:6.3},{m:"Quin Gegwich",d:5.97},{m:"Anthony Kelly",d:3.18},{m:"Ryan P McQuaid",d:1.32},{m:"Baylen Slansky",d:-0.09},{m:"Brandon Hancock",d:-1.38},{m:"Cole Maney",d:-2.48},{m:"Carmine Pittelli Jr.",d:-2.7},{m:"Max Malich",d:-4.19},{m:"Aidan Quigley",d:-4.34},{m:"Charlie Gorman",d:-5.74},{m:"Ethan Radecki",d:-8.56}],"2025":[{m:"Anthony Kelly",d:13.51},{m:"Cole Maney",d:9.66},{m:"Andrew Root",d:9.19},{m:"Brandon Hancock",d:6.12},{m:"Max Malich",d:4.45},{m:"Baylen Slansky",d:-0.78},{m:"Ben Castaldo",d:-1.04},{m:"Ryan P McQuaid",d:-1.94},{m:"Ethan Radecki",d:-3.08},{m:"Quin Gegwich",d:-3.27},{m:"Carmine Pittelli Jr.",d:-5.3},{m:"Deniz Bileydi",d:-5.68},{m:"Charlie Gorman",d:-10.3},{m:"Aidan Quigley",d:-11.76}] };
 var DEPTH_ADJUSTED_DATA = [{m:"Cole Maney",raw:11.38,depth:-3.66,adj:-1.35},{m:"Quin Gegwich",raw:13.36,depth:1.24,adj:-1.12},{m:"Ethan Radecki",raw:13.51,depth:1.01,adj:-0.89},{m:"Baylen Slansky",raw:13.1,depth:-0.63,adj:-0.72},{m:"Anthony Kelly",raw:16.14,depth:7.57,adj:-0.59},{m:"Aidan Quigley",raw:11.86,depth:-5.32,adj:-0.28},{m:"Brandon Hancock",raw:15.33,depth:3.99,adj:-0.13},{m:"Ben Castaldo",raw:13.85,depth:-0.45,adj:-0.03},{m:"Carmine Pittelli Jr.",raw:13.64,depth:-1.77,adj:0.23},{m:"Charlie Gorman",raw:12.39,depth:-5.66,adj:0.36},{m:"Deniz Bileydi",raw:14.84,depth:1.03,adj:0.43},{m:"Ryan P McQuaid",raw:14.78,depth:-0.97,adj:1.09},{m:"Max Malich",raw:15.11,depth:-0.98,adj:1.42},{m:"Andrew Root",raw:16.71,depth:3.02,adj:1.59}];
-var CONSISTENCY_DATA = [{m:"Cole Maney",avg:11.38,sd:9.96},{m:"Aidan Quigley",avg:11.86,sd:10.6},{m:"Charlie Gorman",avg:12.39,sd:10.97},{m:"Baylen Slansky",avg:13.1,sd:10.84},{m:"Quin Gegwich",avg:13.36,sd:10.24},{m:"Ethan Radecki",avg:13.51,sd:11.35},{m:"Carmine Pittelli Jr.",avg:13.64,sd:11.68},{m:"Ben Castaldo",avg:13.85,sd:11.28},{m:"Ryan P McQuaid",avg:14.78,sd:10.46},{m:"Deniz Bileydi",avg:14.84,sd:12.73},{m:"Max Malich",avg:15.11,sd:11.89},{m:"Brandon Hancock",avg:15.33,sd:11.04},{m:"Anthony Kelly",avg:16.14,sd:12.88},{m:"Andrew Root",avg:16.71,sd:13.39}];
 var SEASON_TREND_DATA = [{s:2020,g:15.18},{s:2021,g:14.22},{s:2022,g:13.58},{s:2023,g:13.72},{s:2024,g:13.34},{s:2025,g:14.33}];
-var DEPTH_VS_WINS_DATA = [{m:"Anthony Kelly",d:7.57,wr:56.5},{m:"Brandon Hancock",d:3.99,wr:54.8},{m:"Andrew Root",d:3.02,wr:50.0},{m:"Quin Gegwich",d:1.24,wr:36.9},{m:"Deniz Bileydi",d:1.03,wr:40.0},{m:"Ethan Radecki",d:1.01,wr:63.4},{m:"Ben Castaldo",d:-0.45,wr:50.0},{m:"Baylen Slansky",d:-0.63,wr:57.3},{m:"Ryan P McQuaid",d:-0.97,wr:47.7},{m:"Max Malich",d:-0.98,wr:47.7},{m:"Carmine Pittelli Jr.",d:-1.77,wr:57.3},{m:"Cole Maney",d:-3.66,wr:47.2},{m:"Aidan Quigley",d:-5.32,wr:38.0},{m:"Charlie Gorman",d:-5.66,wr:48.3}];
+var DEPTH_VS_WINS_DATA = [{m:"Andrew Root",s:2020,d:2.18,wr:57.1},{m:"Anthony Kelly",s:2020,d:4.27,wr:64.3},{m:"Baylen Slansky",s:2020,d:2.75,wr:69.2},{m:"Ben Castaldo",s:2020,d:-6.48,wr:46.7},{m:"Brandon Hancock",s:2020,d:-2.86,wr:35.3},{m:"Carmine Pittelli Jr.",s:2020,d:4.98,wr:61.5},{m:"Charlie Gorman",s:2020,d:-3.78,wr:46.2},{m:"Cole Maney",s:2020,d:-13.01,wr:15.4},{m:"Deniz Bileydi",s:2020,d:6.84,wr:53.3},{m:"Ethan Radecki",s:2020,d:4.09,wr:75.0},{m:"Max Malich",s:2020,d:8.29,wr:53.3},{m:"Quin Gegwich",s:2020,d:4.69,wr:38.5},{m:"Ryan P McQuaid",s:2020,d:-13.85,wr:30.8},{m:"Aidan Quigley",s:2021,d:2.7,wr:50.0},{m:"Andrew Root",s:2021,d:-5.03,wr:46.7},{m:"Anthony Kelly",s:2021,d:12.96,wr:75.0},{m:"Baylen Slansky",s:2021,d:0.73,wr:50.0},{m:"Ben Castaldo",s:2021,d:1.79,wr:75.0},{m:"Brandon Hancock",s:2021,d:5.83,wr:64.3},{m:"Carmine Pittelli Jr.",s:2021,d:-4.75,wr:66.7},{m:"Charlie Gorman",s:2021,d:-3.2,wr:38.5},{m:"Cole Maney",s:2021,d:-0.13,wr:35.7},{m:"Deniz Bileydi",s:2021,d:-10.15,wr:38.5},{m:"Ethan Radecki",s:2021,d:6.38,wr:40.0},{m:"Max Malich",s:2021,d:-6.14,wr:38.5},{m:"Quin Gegwich",s:2021,d:-8.45,wr:38.5},{m:"Ryan P McQuaid",s:2021,d:3.89,wr:30.8},{m:"Aidan Quigley",s:2022,d:-2.6,wr:42.9},{m:"Andrew Root",s:2022,d:6.88,wr:68.8},{m:"Anthony Kelly",s:2022,d:4.43,wr:58.8},{m:"Baylen Slansky",s:2022,d:-10.81,wr:35.7},{m:"Ben Castaldo",s:2022,d:-1.42,wr:50.0},{m:"Brandon Hancock",s:2022,d:6.68,wr:62.5},{m:"Carmine Pittelli Jr.",s:2022,d:-2.98,wr:46.7},{m:"Charlie Gorman",s:2022,d:-7.58,wr:50.0},{m:"Cole Maney",s:2022,d:-8.42,wr:28.6},{m:"Deniz Bileydi",s:2022,d:1.64,wr:46.7},{m:"Ethan Radecki",s:2022,d:3.74,wr:60.0},{m:"Max Malich",s:2022,d:-0.66,wr:46.7},{m:"Quin Gegwich",s:2022,d:1.69,wr:35.7},{m:"Ryan P McQuaid",s:2022,d:5.26,wr:58.8},{m:"Aidan Quigley",s:2023,d:-10.23,wr:46.7},{m:"Andrew Root",s:2023,d:-1.62,wr:35.7},{m:"Anthony Kelly",s:2023,d:5.72,wr:42.9},{m:"Baylen Slansky",s:2023,d:4.24,wr:53.3},{m:"Ben Castaldo",s:2023,d:-1.77,wr:28.6},{m:"Brandon Hancock",s:2023,d:11.25,wr:60.0},{m:"Carmine Pittelli Jr.",s:2023,d:0.64,wr:76.5},{m:"Charlie Gorman",s:2023,d:-2.53,wr:62.5},{m:"Cole Maney",s:2023,d:-8.34,wr:58.8},{m:"Deniz Bileydi",s:2023,d:5.74,wr:35.7},{m:"Ethan Radecki",s:2023,d:3.38,wr:81.2},{m:"Max Malich",s:2023,d:-8.46,wr:42.9},{m:"Quin Gegwich",s:2023,d:5.72,wr:14.3},{m:"Ryan P McQuaid",s:2023,d:-2.41,wr:46.7},{m:"Aidan Quigley",s:2024,d:-4.34,wr:35.7},{m:"Andrew Root",s:2024,d:6.3,wr:46.7},{m:"Anthony Kelly",s:2024,d:3.18,wr:35.7},{m:"Baylen Slansky",s:2024,d:-0.09,wr:70.6},{m:"Ben Castaldo",s:2024,d:6.4,wr:21.4},{m:"Brandon Hancock",s:2024,d:-1.38,wr:64.7},{m:"Carmine Pittelli Jr.",s:2024,d:-2.7,wr:28.6},{m:"Charlie Gorman",s:2024,d:-5.74,wr:35.7},{m:"Cole Maney",s:2024,d:-2.48,wr:75.0},{m:"Deniz Bileydi",s:2024,d:6.52,wr:35.7},{m:"Ethan Radecki",s:2024,d:-8.56,wr:73.3},{m:"Max Malich",s:2024,d:-4.19,wr:60.0},{m:"Quin Gegwich",s:2024,d:5.97,wr:56.2},{m:"Ryan P McQuaid",s:2024,d:1.32,wr:46.7},{m:"Aidan Quigley",s:2025,d:-11.76,wr:14.3},{m:"Andrew Root",s:2025,d:9.19,wr:42.9},{m:"Anthony Kelly",s:2025,d:13.51,wr:58.8},{m:"Baylen Slansky",s:2025,d:-0.78,wr:62.5},{m:"Ben Castaldo",s:2025,d:-1.04,wr:73.3},{m:"Brandon Hancock",s:2025,d:6.12,wr:42.9},{m:"Carmine Pittelli Jr.",s:2025,d:-5.3,wr:60.0},{m:"Charlie Gorman",s:2025,d:-10.3,wr:52.9},{m:"Cole Maney",s:2025,d:9.66,wr:60.0},{m:"Deniz Bileydi",s:2025,d:-5.68,wr:28.6},{m:"Ethan Radecki",s:2025,d:-3.08,wr:50.0},{m:"Max Malich",s:2025,d:4.45,wr:42.9},{m:"Quin Gegwich",s:2025,d:-3.27,wr:35.7},{m:"Ryan P McQuaid",s:2025,d:-1.94,wr:66.7}];
 
-var DEPTH_GLOBAL_MIN = Math.min.apply(null, DEPTH_BY_FILTER.career.map(function(d){return d.d;}));
-var DEPTH_GLOBAL_MAX = Math.max.apply(null, DEPTH_BY_FILTER.career.map(function(d){return d.d;}));
+var DEPTH_ALL_VALUES = Object.keys(DEPTH_BY_FILTER).reduce(function(acc, key){
+  return acc.concat(DEPTH_BY_FILTER[key].map(function(d){ return d.d; }));
+}, []);
+var DEPTH_GLOBAL_MIN = Math.min.apply(null, DEPTH_ALL_VALUES);
+var DEPTH_GLOBAL_MAX = Math.max.apply(null, DEPTH_ALL_VALUES);
 
 /* ---- Depth-Adjusted Efficiency (bar chart, career only) ---- */
 var depthAdjustedChart = null;
@@ -684,44 +690,6 @@ function renderSeasonTrendChart() {
 }
 renderSeasonTrendChart();
 
-/* ---- Manager Consistency (scatter: avg gap x stdev) ---- */
-var consistencyChart = null;
-function renderConsistencyChart() {
-  if (consistencyChart) { consistencyChart.destroy(); }
-  var ctx = document.getElementById('chart-consistency').getContext('2d');
-  consistencyChart = new Chart(ctx, {
-    type: 'scatter',
-    data: {
-      datasets: [{
-        data: CONSISTENCY_DATA.map(function(d){ return {x:d.avg, y:d.sd, m:d.m}; }),
-        backgroundColor: 'rgba(74,127,168,0.7)',
-        pointRadius: 7,
-        pointHoverRadius: 9,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display:false },
-        tooltip: {
-          callbacks: {
-            label: function(ctx){
-              var d = ctx.raw;
-              return d.m+': avg '+d.x.toFixed(2)+', stdev '+d.y.toFixed(2);
-            }
-          }
-        }
-      },
-      scales: {
-        x: { title:{display:true,text:'Avg efficiency gap'} },
-        y: { title:{display:true,text:'Week-to-week variation'} }
-      }
-    }
-  });
-}
-renderConsistencyChart();
-
 /* ---- Bench Depth (bar chart, career + season toggle) ---- */
 var depthChart = null;
 function renderDepthPills() {
@@ -777,15 +745,38 @@ var depthWinsChart = null;
 function renderDepthWinsChart() {
   if (depthWinsChart) { depthWinsChart.destroy(); }
   var ctx = document.getElementById('chart-depth-wins').getContext('2d');
+
+  // Line of best fit across all manager-season points
+  var xs = DEPTH_VS_WINS_DATA.map(function(d){return d.d;});
+  var xMin = Math.min.apply(null, xs), xMax = Math.max.apply(null, xs);
+  var fitSlope = 0.7455, fitIntercept = 49.3516;
+  var fitLine = [
+    {x: xMin, y: fitSlope*xMin + fitIntercept},
+    {x: xMax, y: fitSlope*xMax + fitIntercept}
+  ];
+
   depthWinsChart = new Chart(ctx, {
     type: 'scatter',
     data: {
-      datasets: [{
-        data: DEPTH_VS_WINS_DATA.map(function(d){ return {x:d.d, y:d.wr, m:d.m}; }),
-        backgroundColor: 'rgba(74,127,168,0.7)',
-        pointRadius: 7,
-        pointHoverRadius: 9,
-      }]
+      datasets: [
+        {
+          label: 'Manager-seasons',
+          data: DEPTH_VS_WINS_DATA.map(function(d){ return {x:d.d, y:d.wr, m:d.m, s:d.s}; }),
+          backgroundColor: DEPTH_VS_WINS_DATA.map(function(d){ return MANAGER_COLORS[d.m] || 'rgba(74,127,168,0.7)'; }),
+          pointRadius: 6,
+          pointHoverRadius: 8,
+        },
+        {
+          type: 'line',
+          label: 'Best fit',
+          data: fitLine,
+          borderColor: 'rgba(30,26,20,0.4)',
+          borderWidth: 2,
+          borderDash: [6,4],
+          pointRadius: 0,
+          fill: false,
+        }
+      ]
     },
     options: {
       responsive: true,
@@ -795,14 +786,15 @@ function renderDepthWinsChart() {
         tooltip: {
           callbacks: {
             label: function(ctx){
+              if (ctx.dataset.label === 'Best fit') return null;
               var d = ctx.raw;
-              return d.m+': depth '+d.x.toFixed(2)+', win rate '+d.y.toFixed(1)+'%';
+              return d.m+' ('+d.s+'): depth '+d.x.toFixed(2)+', win rate '+d.y.toFixed(1)+'%';
             }
           }
         }
       },
       scales: {
-        x: { title:{display:true,text:'Avg bench depth score'} },
+        x: { title:{display:true,text:'Bench depth score'} },
         y: { title:{display:true,text:'Win rate (%)'} }
       }
     }
