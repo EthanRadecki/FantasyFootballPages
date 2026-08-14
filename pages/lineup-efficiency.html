@@ -628,7 +628,7 @@ function renderEfficiencyChart(filterKey, btn) {
       plugins: { legend: { display:false } },
       scales: {
         x: { min:0, max:25, title:{display:true,text:'Avg points left on bench per week'} },
-        y: { ticks:{ autoSkip:false, font:{size:12} } }
+        y: { ticks:{ autoSkip:false, font:{size:12}, color: function(ctx){ var mgr = rows[ctx.index] && rows[ctx.index].m; return MANAGER_COLORS[mgr] || '#1e1a14'; } } }
       }
     }
   });
@@ -710,7 +710,7 @@ function renderDepthAdjustedChart() {
       },
       scales: {
         x: { title:{display:true,text:'Adjusted gap (negative = better than depth predicts)'} },
-        y: { ticks:{ autoSkip:false, font:{size:12} } }
+        y: { ticks:{ autoSkip:false, font:{size:12}, color: function(ctx){ var mgr = rows[ctx.index] && rows[ctx.index].m; return MANAGER_COLORS[mgr] || '#1e1a14'; } } }
       }
     }
   });
@@ -792,7 +792,7 @@ function renderDepthChart(filterKey, btn) {
       plugins: { legend: { display:false } },
       scales: {
         x: { title:{display:true,text:'Avg bench depth score (higher = deeper bench)'} },
-        y: { ticks:{ autoSkip:false, font:{size:12} } }
+        y: { ticks:{ autoSkip:false, font:{size:12}, color: function(ctx){ var mgr = rows[ctx.index] && rows[ctx.index].m; return MANAGER_COLORS[mgr] || '#1e1a14'; } } }
       }
     }
   });
