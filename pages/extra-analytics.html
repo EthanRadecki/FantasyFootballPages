@@ -840,7 +840,7 @@ html { scroll-behavior:smooth; }
     <div class="section-title">Where does a season's win% actually come from?</div>
     <div class="callout glass">
       <div class="callout-label">Methodology</div>
-      <p>Five ingredients, each pulled from the metric that already powers its own page: <strong>draft surplus</strong> (Surplus Value), <strong>waiver upside</strong> (only the positive value from pickups counts, bad and neutral adds contribute nothing), <strong>missed wins</strong> from Lineup Efficiency (a bad start/sit call only counts if it actually flipped a real result), <strong>trade QUAD</strong> (Trade Value), and <strong>schedule luck</strong> (regular season only, real bracket games excluded same as consolation weeks). A season-level regression (<strong>n=83 manager-seasons, R&sup2;=0.41</strong>) turns these into a per-manager breakdown of exactly how many points of win%, above or below league average, each ingredient is responsible for.</p>
+      <p>Five ingredients, each pulled from the metric that already powers its own page: <strong>draft surplus</strong> (Surplus Value), <strong>waiver upside</strong> (only the positive value from pickups counts, bad and neutral adds contribute nothing), <strong>missed wins</strong> from Lineup Efficiency (a bad start/sit call only counts if it actually flipped a real result), <strong>trade QUAD</strong> (Trade Value), and <strong>schedule luck</strong> (regular season only, real bracket games excluded same as consolation weeks). The outcome being explained, Win%, includes real playoff bracket games (still no consolation games), which schedule luck itself deliberately doesn't: a shrinking bracket field breaks the weekly-median comparison luck depends on in a way it doesn't break a plain win/loss count. A season-level regression (<strong>n=83 manager-seasons, R&sup2;=0.44</strong>) turns these into a per-manager breakdown of exactly how many points of win%, above or below league average, each ingredient is responsible for.</p>
     </div>
 
     <div class="attr-mgr-row" id="attr-mgr-pills"></div>
@@ -875,7 +875,7 @@ html { scroll-behavior:smooth; }
         <canvas id="chart-attr-r2" height="200"></canvas>
       </div>
     </div>
-    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;"><strong>Draft skill is the single biggest lever</strong>, with missed wins from lineup mistakes close behind. Schedule luck and trade quality land in a near tie for third. Waiver activity only shows up once it's measured as pure upside, ignore the churn and the misses, and count only the real hits. Even together, these five ingredients explain <strong>41% of season-to-season win% variance</strong>, leaving well over half of what separates a good season from a bad one to real scoring production and variance the roster-building decisions above don't capture.</p>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;"><strong>Draft skill is the single biggest lever</strong>, with missed wins from lineup mistakes close behind. Waiver value edges out trade quality and schedule luck, which land in a near tie for last. Waiver activity only shows up once it's measured as pure upside, ignore the churn and the misses, and count only the real hits. Even together, these five ingredients explain <strong>44% of season-to-season win% variance</strong>, leaving well over half of what separates a good season from a bad one to real scoring production and variance the roster-building decisions above don't capture.</p>
   </div>
   <footer>
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
@@ -1481,8 +1481,8 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
 
 /* ── WIN% ATTRIBUTION ─────────────────────────────────────────────────────── */
 (function() {
-  var DATA = {"Ethan Radecki": {"winpct": 64.2, "draft": -1.07, "waiver": 2.48, "lineup": 4.3, "trade": 2.3, "luck": -0.33, "predicted": 57.59, "residual": 6.6}, "Baylen Slansky": {"winpct": 58.0, "draft": -0.33, "waiver": 2.1, "lineup": 0.47, "trade": 1.99, "luck": 0.98, "predicted": 55.11, "residual": 2.91}, "Carmine Pittelli Jr.": {"winpct": 58.0, "draft": 3.85, "waiver": -2.01, "lineup": 2.39, "trade": -2.25, "luck": -0.33, "predicted": 51.56, "residual": 6.47}, "Brandon Hancock": {"winpct": 54.9, "draft": -0.37, "waiver": 1.25, "lineup": -0.81, "trade": -0.39, "luck": -2.28, "predicted": 47.31, "residual": 7.57}, "Anthony Kelly": {"winpct": 53.1, "draft": 1.08, "waiver": 3.11, "lineup": -0.17, "trade": 1.05, "luck": 0.33, "predicted": 55.3, "residual": -2.21}, "Andrew Root": {"winpct": 50.6, "draft": 0.46, "waiver": -0.03, "lineup": 1.11, "trade": -0.39, "luck": 2.61, "predicted": 53.67, "residual": -3.05}, "Ryan P McQuaid": {"winpct": 49.4, "draft": -3.47, "waiver": 0.9, "lineup": -0.17, "trade": -0.31, "luck": 3.26, "predicted": 50.12, "residual": -0.74}, "Ben Castaldo": {"winpct": 48.8, "draft": -0.06, "waiver": -1.26, "lineup": -0.17, "trade": 0.45, "luck": 0.65, "predicted": 49.52, "residual": -0.74}, "Max Malich": {"winpct": 48.1, "draft": 0.43, "waiver": 1.44, "lineup": -4.64, "trade": -0.26, "luck": 0.0, "predicted": 46.88, "residual": 1.27}, "Charlie Gorman": {"winpct": 48.1, "draft": 3.64, "waiver": -1.46, "lineup": 0.47, "trade": -0.8, "luck": 0.0, "predicted": 51.76, "residual": -3.61}, "Cole Maney": {"winpct": 48.1, "draft": 0.09, "waiver": -3.4, "lineup": 1.75, "trade": -0.69, "luck": -1.31, "predicted": 46.36, "residual": 1.79}, "Deniz Bileydi": {"winpct": 39.5, "draft": -3.18, "waiver": -0.62, "lineup": -2.09, "trade": -1.82, "luck": -0.33, "predicted": 41.87, "residual": -2.36}, "Aidan Quigley": {"winpct": 39.1, "draft": 2.28, "waiver": -2.47, "lineup": -3.49, "trade": -0.48, "luck": -3.13, "predicted": 42.61, "residual": -3.48}, "Quin Gegwich": {"winpct": 37.0, "draft": -2.97, "waiver": -0.44, "lineup": 0.47, "trade": 1.5, "luck": -0.65, "predicted": 47.82, "residual": -10.78}};
-  var LEAGUE_INTERCEPT = 54.02;
+  var DATA = {"Aidan Quigley":{"winpct": 37.9, "draft": 2.31, "waiver": -3.07, "lineup": -3.04, "trade": -0.88, "luck": -2.91, "predicted": 41.67, "residual": -3.76},"Andrew Root":{"winpct": 49.6, "draft": 0.47, "waiver": -0.03, "lineup": 0.97, "trade": -0.32, "luck": 2.43, "predicted": 52.78, "residual": -3.15},"Anthony Kelly":{"winpct": 55.9, "draft": 1.09, "waiver": 3.87, "lineup": -0.15, "trade": 1.19, "luck": 0.3, "predicted": 55.58, "residual": 0.34},"Baylen Slansky":{"winpct": 56.9, "draft": -0.34, "waiver": 2.61, "lineup": 0.41, "trade": 1.52, "luck": 0.91, "predicted": 54.38, "residual": 2.52},"Ben Castaldo":{"winpct": 49.2, "draft": -0.06, "waiver": -1.56, "lineup": -0.15, "trade": 0.62, "luck": 0.61, "predicted": 48.72, "residual": 0.44},"Brandon Hancock":{"winpct": 54.9, "draft": -0.37, "waiver": 1.55, "lineup": -0.7, "trade": -0.78, "luck": -1.82, "predicted": 47.15, "residual": 7.79},"Carmine Pittelli Jr.":{"winpct": 56.7, "draft": 3.9, "waiver": -2.5, "lineup": 2.08, "trade": -1.84, "luck": -0.3, "predicted": 50.6, "residual": 6.05},"Charlie Gorman":{"winpct": 47.6, "draft": 3.69, "waiver": -1.82, "lineup": 0.41, "trade": -0.84, "luck": 0.0, "predicted": 50.72, "residual": -3.09},"Cole Maney":{"winpct": 45.6, "draft": 0.09, "waiver": -4.22, "lineup": 1.52, "trade": -0.65, "luck": -1.21, "predicted": 44.8, "residual": 0.78},"Deniz Bileydi":{"winpct": 39.7, "draft": -3.22, "waiver": -0.78, "lineup": -1.82, "trade": -1.83, "luck": -0.61, "predicted": 41.02, "residual": -1.27},"Ethan Radecki":{"winpct": 63.3, "draft": -1.08, "waiver": 3.08, "lineup": 3.75, "trade": 2.12, "luck": -0.3, "predicted": 56.84, "residual": 6.43},"Max Malich":{"winpct": 47.4, "draft": 0.44, "waiver": 1.79, "lineup": -4.04, "trade": 0.22, "luck": 0.0, "predicted": 47.68, "residual": -0.32},"Quin Gegwich":{"winpct": 36.5, "draft": -3.01, "waiver": -0.55, "lineup": 0.41, "trade": 1.19, "luck": -0.61, "predicted": 46.71, "residual": -10.23},"Ryan P McQuaid":{"winpct": 46.7, "draft": -3.51, "waiver": 1.12, "lineup": -0.15, "trade": 0.12, "luck": 3.03, "predicted": 49.88, "residual": -3.15}};
+  var LEAGUE_INTERCEPT = 49.27;
   var STEPS = ['draft','waiver','lineup','trade','luck'];
   var STEP_LABELS = {draft:'Draft', waiver:'Waiver', lineup:'Lineup', trade:'Trade', luck:'Luck'};
 
@@ -1593,8 +1593,8 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
   renderSummary();
 
   // Final standardized coefficients across all five factors
-  var COEF_LABELS = ['Draft','Lineup','Trade','Luck','Waiver'];
-  var COEF_VALS   = [0.503, 0.305, 0.208, 0.207, 0.186];
+  var COEF_LABELS = ['Draft','Lineup','Waiver','Trade','Luck'];
+  var COEF_VALS   = [0.535, 0.278, 0.243, 0.207, 0.200];
   function attrGreenScale(vals, alpha) {
     var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
     return vals.map(function(v) {
@@ -1633,8 +1633,8 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
 
   // The model's own refinement history -- R^2 at each methodology fix, in the
   // actual order those fixes were made
-  var R2_LABELS = ['Original model', '+ outcome-based\nlineup', '+ real trade\nQUAD', '+ schedule\nluck', '+ upside-only\nwaiver'];
-  var R2_VALS   = [0.197, 0.302, 0.334, 0.389, 0.412];
+  var R2_LABELS = ['Original model', '+ outcome-based\nlineup', '+ real trade\nQUAD', '+ schedule\nluck', '+ upside-only\nwaiver', '+ corrected trade\nQUAD', '+ playoff wins\nin outcome'];
+  var R2_VALS   = [0.197, 0.302, 0.334, 0.389, 0.412, 0.399, 0.438];
   new Chart(document.getElementById('chart-attr-r2').getContext('2d'), {
     type: 'bar',
     data: {
@@ -1652,7 +1652,7 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
       plugins: {
         legend: { display: false },
         tooltip: { callbacks: { label: function(ctx){ return 'R\u00b2 = ' + ctx.parsed.y.toFixed(3); } } },
-        title: { display: true, text: 'Model Refinement  |  Each Fix Improved Fit', color: C_TEXT_MID, font: { size: 12, weight: '600' }, padding: { bottom: 12 } }
+        title: { display: true, text: 'Model Refinement  |  Fixing Real Bugs, Not Just Chasing Fit', color: C_TEXT_MID, font: { size: 12, weight: '600' }, padding: { bottom: 12 } }
       },
       scales: {
         x: { grid: gridStyle(), ticks: Object.assign(tickStyle(), { font: { size: 10 } }) },
