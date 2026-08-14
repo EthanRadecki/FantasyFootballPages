@@ -219,6 +219,17 @@
     <div id="total-value-detail" class="glass detail-panel" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
   </div>
 
+  <div class="section-label" style="margin-top:2rem;">Waiver Upside (Positive-Only)</div>
+  <div class="section-title">Same pickups, but every add that scored below replacement is treated as zero instead of a loss. Only real hits count.</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="upside-season-pills"></div>
+    <div class="heatmap-controls" id="upside-position-pills" style="margin-top:0.4rem;"></div>
+    <div style="position:relative;height:480px;">
+      <canvas id="chart-upside"></canvas>
+    </div>
+    <p class="metric-note">Career totals, all positions by default, no minimum weeks rostered. Bars only ever go up since bad and neutral adds contribute nothing here, unlike the total above.</p>
+  </div>
+
   <div class="section-label" style="margin-top:2rem;">Value by Week of the Season</div>
   <div class="section-title">Every pickup, grouped by the week it was added. When does volume peak, and when is the value actually good?</div>
   <div class="chart-card-interactive glass">
@@ -707,6 +718,98 @@ function renderTotalValueDetail(manager) {
 
 renderTotalValueFilters();
 
+// Waiver Upside (Positive-Only): same WAIVER_STINTS pool as the chart
+// above, but every stint with Total_Z <= 0 is dropped before summing by
+// manager instead of being netted in. Feeds the win attribution model on
+// extra-analytics.html, where only positive waiver value counts.
+var upsideChart = null;
+var upsideSeasonFilter = 'career';
+var upsidePosFilter = 'ALL';
+
+// Fixed across every season x position combination so a bar's color means
+// the same thing everywhere, whether it's Career/ALL or a thin slice like
+// 2021/K. Computed directly from WAIVER_STINTS, positive stints only.
+var UPSIDE_MIN = 0.0, UPSIDE_MAX = 86.81;
+
+function renderUpsideFilters() {
+  var seasonEl = document.getElementById('upside-season-pills');
+  var seasons = [2020, 2021, 2022, 2023, 2024, 2025];
+  var html = '<button class="heatmap-season-pill active" onclick="setUpsideSeason(\'career\', this)">Career</button>';
+  seasons.forEach(function(s){
+    var swatch = SEASON_COLORS[s] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[s] + ';' : '';
+    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setUpsideSeason('+s+', this)">'+s+'</button>';
+  });
+  seasonEl.innerHTML = html;
+
+  var posEl = document.getElementById('upside-position-pills');
+  posEl.innerHTML = POSITION_KEYS.map(function(p){
+    var label = p === 'ALL' ? 'All Positions' : p;
+    var swatch = POSITION_COLORS[p] ? ' pos-swatch-btn" style="--swatch-color:' + POSITION_COLORS[p] + ';' : '';
+    return '<button class="heatmap-season-pill'+(p==='ALL'?' active':'')+swatch+'" onclick="setUpsidePosition(\''+p+'\', this)">'+label+'</button>';
+  }).join('');
+}
+
+function setUpsideSeason(season, btn) {
+  upsideSeasonFilter = season;
+  btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  renderUpsideChart();
+}
+
+function setUpsidePosition(pos, btn) {
+  upsidePosFilter = pos;
+  btn.parentElement.querySelectorAll('.heatmap-season-pill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  renderUpsideChart();
+}
+
+function renderUpsideChart() {
+  var pool = WAIVER_STINTS.filter(function(r){
+    if (upsideSeasonFilter !== 'career' && r.s !== upsideSeasonFilter) return false;
+    if (upsidePosFilter !== 'ALL' && r.pos !== upsidePosFilter) return false;
+    return r.z > 0;
+  });
+
+  var byManager = {};
+  pool.forEach(function(r){
+    byManager[r.m] = (byManager[r.m] || 0) + r.z;
+  });
+
+  var rows = Object.keys(byManager).map(function(m){ return { m: m, v: byManager[m] }; });
+  rows.sort(function(a,b){ return b.v - a.v; });
+
+  if (upsideChart) { upsideChart.destroy(); }
+  var ctx = document.getElementById('chart-upside').getContext('2d');
+  upsideChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: rows.map(function(d){ return d.m; }),
+      datasets: [{
+        data: rows.map(function(d){ return +d.v.toFixed(2); }),
+        backgroundColor: rows.map(function(d){ return greenScale(d.v, UPSIDE_MIN, UPSIDE_MAX); }),
+        borderRadius: 3
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(item) { return 'Total value: +' + item.parsed.x.toFixed(2); }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Positive-only total value (sum of z-scores)' } },
+        y: { ticks: { autoSkip: false, font: { size: 12 } } }
+      }
+    }
+  });
+}
+
 // Value by week of the season: volume (bars, split waiver/FA) and
 // average per-pickup value (line) for every pickup, grouped by the week
 // it was added (Start_Week). Season-filterable, all managers combined --
@@ -1014,6 +1117,8 @@ renderWaiverPills();
 renderWaiverChart();
 renderSplitTable();
 renderTotalValueChart();
+renderUpsideFilters();
+renderUpsideChart();
 renderWeekValueChart();
 wireSortableHeaders('split-table', renderSplitTable, splitSortState);
 renderBestPills();
