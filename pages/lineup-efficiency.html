@@ -24,6 +24,11 @@
 .le-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
 .le-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
 .le-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
+.le-table th.sortable { cursor:pointer;user-select:none;transition:color 0.15s; }
+.le-table th.sortable:hover { color:var(--palm); }
+.le-table th.sortable::after { content:'\2195'; opacity:0.35;margin-left:0.3rem;font-size:0.7rem; }
+.le-table th.sortable.sorted-asc::after { content:'\2191'; opacity:1; }
+.le-table th.sortable.sorted-desc::after { content:'\2193'; opacity:1; }
 .le-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
 .outcome-badge { display:inline-block;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;letter-spacing:0.04em; }
 .outcome-win { background:rgba(74,127,168,0.18);color:#4a7fa8; }
@@ -323,12 +328,12 @@
   <div class="table-wrap glass">
     <table class="le-table" id="missed-wins-table">
       <thead>
-        <tr><th>Rank</th><th>Manager</th><th>Weeks</th><th>Missed Wins</th><th>Missed %</th><th>Reg Season</th><th>Playoffs</th></tr>
+        <tr><th>Rank</th><th class="sortable" data-key="manager" data-type="text">Manager</th><th class="sortable" data-key="weeks" data-type="number">Weeks</th><th class="sortable" data-key="losses" data-type="number">Losses</th><th class="sortable" data-key="n" data-type="number">Missed Wins</th><th class="sortable" data-key="rate" data-type="number">Missed %</th><th class="sortable" data-key="reg" data-type="number">Reg Season</th><th class="sortable" data-key="po" data-type="number">Playoffs</th></tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
-  <p class="metric-note">Playoff sample sizes are small (2-12 games per manager), so a single missed win can swing that column a lot.</p>
+  <p class="metric-note">Missed % is missed wins divided by losses, not all games played. Playoff sample sizes are small (2-12 games per manager), so a single missed win can swing that column a lot.</p>
 
   <div class="section-label" style="margin-top:2rem;" id="career-leaderboard">Career Leaderboard</div>
   <div class="section-title">Average points left on the bench per week. Lower is better.</div>
@@ -455,20 +460,20 @@ var EFFICIENCY_BY_FILTER = {"career":[{m:"Andrew Root",g:16.71,w:88},{m:"Anthony
 var EFFICIENCY_GLOBAL_MIN = 7.55, EFFICIENCY_GLOBAL_MAX = 22.07;
 
 var MISSED_WINS = [
-  {manager:"Max Malich",weeks:86,n:21,rate:24.4,reg:19,po:2},
-  {manager:"Deniz Bileydi",weeks:85,n:17,rate:20.0,reg:16,po:1},
-  {manager:"Aidan Quigley",weeks:71,n:16,rate:22.5,reg:14,po:2},
-  {manager:"Brandon Hancock",weeks:93,n:15,rate:16.1,reg:12,po:3},
-  {manager:"Ben Castaldo",weeks:86,n:14,rate:16.3,reg:12,po:2},
-  {manager:"Anthony Kelly",weeks:92,n:14,rate:15.2,reg:12,po:2},
-  {manager:"Ryan P McQuaid",weeks:88,n:14,rate:15.9,reg:12,po:2},
-  {manager:"Baylen Slansky",weeks:89,n:13,rate:14.6,reg:12,po:1},
-  {manager:"Quin Gegwich",weeks:84,n:13,rate:15.5,reg:13,po:0},
-  {manager:"Charlie Gorman",weeks:87,n:13,rate:14.9,reg:12,po:1},
-  {manager:"Andrew Root",weeks:88,n:12,rate:13.6,reg:10,po:2},
-  {manager:"Cole Maney",weeks:89,n:11,rate:12.4,reg:11,po:0},
-  {manager:"Carmine Pittelli Jr.",weeks:88,n:10,rate:11.4,reg:9,po:1},
-  {manager:"Ethan Radecki",weeks:93,n:7,rate:7.5,reg:5,po:2},
+  {manager:"Max Malich",weeks:86,losses:45,n:21,rate:46.7,reg:19,po:2},
+  {manager:"Aidan Quigley",weeks:71,losses:44,n:16,rate:36.4,reg:14,po:2},
+  {manager:"Brandon Hancock",weeks:93,losses:42,n:15,rate:35.7,reg:12,po:3},
+  {manager:"Anthony Kelly",weeks:92,losses:40,n:14,rate:35.0,reg:12,po:2},
+  {manager:"Baylen Slansky",weeks:89,losses:38,n:13,rate:34.2,reg:12,po:1},
+  {manager:"Deniz Bileydi",weeks:85,losses:51,n:17,rate:33.3,reg:16,po:1},
+  {manager:"Ben Castaldo",weeks:86,losses:44,n:14,rate:31.8,reg:12,po:2},
+  {manager:"Ryan P McQuaid",weeks:88,losses:46,n:14,rate:30.4,reg:12,po:2},
+  {manager:"Charlie Gorman",weeks:87,losses:45,n:13,rate:28.9,reg:12,po:1},
+  {manager:"Andrew Root",weeks:88,losses:44,n:12,rate:27.3,reg:10,po:2},
+  {manager:"Carmine Pittelli Jr.",weeks:88,losses:38,n:10,rate:26.3,reg:9,po:1},
+  {manager:"Quin Gegwich",weeks:84,losses:53,n:13,rate:24.5,reg:13,po:0},
+  {manager:"Cole Maney",weeks:89,losses:47,n:11,rate:23.4,reg:11,po:0},
+  {manager:"Ethan Radecki",weeks:93,losses:34,n:7,rate:20.6,reg:5,po:2},
 ];
 
 var BLUNDERS = [
@@ -561,6 +566,41 @@ function gradientColor(value, min, max, invert) {
   var t = p<=0.5 ? p/0.5 : (p-0.5)/0.5;
   var r = lerp(c0[0],c1[0],t), g = lerp(c0[1],c1[1],t), b = lerp(c0[2],c1[2],t);
   return 'rgba('+r+','+g+','+b+',0.85)';
+}
+
+/* ── Generic column sort helper ── */
+function sortRows(rows, key, type, dir) {
+  var sorted = rows.slice().sort(function(a,b){
+    var av = a[key], bv = b[key];
+    if (av === null || av === undefined) av = type === 'text' ? '' : -999;
+    if (bv === null || bv === undefined) bv = type === 'text' ? '' : -999;
+    if (type === 'text') { av = (av||'').toLowerCase(); bv = (bv||'').toLowerCase(); }
+    if (av < bv) return dir === 'asc' ? -1 : 1;
+    if (av > bv) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  return sorted;
+}
+
+function wireSortableHeaders(tableId, renderFn, state) {
+  document.querySelectorAll('#'+tableId+' th.sortable').forEach(function(th){
+    th.addEventListener('click', function(){
+      var key = th.getAttribute('data-key');
+      var type = th.getAttribute('data-type') || 'number';
+      if (state.key === key) {
+        state.dir = state.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        state.key = key;
+        state.type = type;
+        state.dir = 'desc';
+      }
+      document.querySelectorAll('#'+tableId+' th.sortable').forEach(function(h){
+        h.classList.remove('sorted-asc','sorted-desc');
+      });
+      th.classList.add(state.dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+      renderFn();
+    });
+  });
 }
 
 /* ── Career/season-filterable efficiency gap bar chart ── */
@@ -857,8 +897,15 @@ function renderDepthWinsChart() {
 renderDepthWinsChart();
 
 
+var missedWinsSortState = { key:'rate', type:'number', dir:'desc' };
 function renderMissedWins() {
   var tbody = document.querySelector('#missed-wins-table tbody');
+  var rows = sortRows(MISSED_WINS, missedWinsSortState.key, missedWinsSortState.type, missedWinsSortState.dir);
+
+  var minN = Math.min.apply(null, MISSED_WINS.map(function(d){return d.n;}));
+  var maxN = Math.max.apply(null, MISSED_WINS.map(function(d){return d.n;}));
+  var minL = Math.min.apply(null, MISSED_WINS.map(function(d){return d.losses;}));
+  var maxL = Math.max.apply(null, MISSED_WINS.map(function(d){return d.losses;}));
   var minR = Math.min.apply(null, MISSED_WINS.map(function(d){return d.rate;}));
   var maxR = Math.max.apply(null, MISSED_WINS.map(function(d){return d.rate;}));
   var minReg = Math.min.apply(null, MISSED_WINS.map(function(d){return d.reg;}));
@@ -866,7 +913,9 @@ function renderMissedWins() {
   var minPo = Math.min.apply(null, MISSED_WINS.map(function(d){return d.po;}));
   var maxPo = Math.max.apply(null, MISSED_WINS.map(function(d){return d.po;}));
   var html = '';
-  MISSED_WINS.forEach(function(d, i){
+  rows.forEach(function(d, i){
+    var nBg = gradientColor(d.n, minN, maxN);
+    var lBg = gradientColor(d.losses, minL, maxL);
     var bg = gradientColor(d.rate, minR, maxR);
     var regBg = gradientColor(d.reg, minReg, maxReg);
     var poBg = gradientColor(d.po, minPo, maxPo);
@@ -874,7 +923,8 @@ function renderMissedWins() {
       +'<td class="le-rank">'+(i+1)+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.manager+'</td>'
       +'<td>'+d.weeks+'</td>'
-      +'<td class="val-bold">'+d.n+'</td>'
+      +'<td><span style="background:'+lBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:600;">'+d.losses+'</span></td>'
+      +'<td><span style="background:'+nBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;">'+d.n+'</span></td>'
       +'<td><span style="background:'+bg+';color:#fff;padding:0.2rem 0.55rem;border-radius:4px;font-weight:700;">'+d.rate.toFixed(1)+'%</span></td>'
       +'<td><span style="background:'+regBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:600;">'+d.reg+'</span></td>'
       +'<td><span style="background:'+poBg+';color:#fff;padding:0.15rem 0.5rem;border-radius:4px;font-weight:600;">'+d.po+'</span></td>'
@@ -916,6 +966,7 @@ function renderBlunders() {
 }
 
 renderMissedWins();
+wireSortableHeaders('missed-wins-table', renderMissedWins, missedWinsSortState);
 renderBlunders();
 
 /* ── Weekly Efficiency Calendar heatmap ──
