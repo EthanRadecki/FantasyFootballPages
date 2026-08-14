@@ -496,8 +496,11 @@ function openRosterModal(i) {
   var roster = ROSTERS_BY_FILTER[blundersFilter][i];
   if (!roster) return;
 
-  var bench = roster.bench.slice();
-  var starters = roster.starters;
+  var SLOT_ORDER = ['QB','RB','WR','TE','RB/WR/TE','D/ST','K'];
+  var starters = roster.starters.slice().sort(function(a,b){
+    return SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot);
+  });
+  var bench = roster.bench.slice().sort(function(a,b){ return b.points - a.points; });
   var benchTopPoints = bench.length ? bench[0].points : null;
 
   var seasonColor = SEASON_COLORS[d.season] || 'var(--muted)';
