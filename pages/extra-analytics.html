@@ -61,7 +61,13 @@ html { scroll-behavior:smooth; }
 .conf-badge { display:inline-block;padding:0.15rem 0.55rem;border-radius:20px;font-size:0.65rem;font-weight:700;letter-spacing:0.03em; }
 .conf-dem { background:rgba(74,127,168,0.18);color:#4a7fa8; }
 .conf-rep { background:rgba(192,98,58,0.18);color:#c0623a; }
-.conf-stat-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:1.5rem; }
+.conf-stat-grid { display:grid;grid-template-columns:repeat(6,1fr);gap:0.75rem;margin-bottom:1.5rem; }
+@media(max-width:900px) { .conf-stat-grid { grid-template-columns:repeat(3,1fr); } }
+@media(max-width:500px) { .conf-stat-grid { grid-template-columns:repeat(2,1fr); } }
+.season-pill {
+  display:inline-block;padding:0.22rem 0.7rem;border-radius:20px;
+  font-weight:700;font-size:0.72rem;color:#fff;letter-spacing:0.02em;
+}
 .conf-teams-grid { display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem; }
 .conf-teams-col { padding:1.1rem 1.25rem; }
 .conf-teams-col.conf-col-dem { background:rgba(74,127,168,0.05); }
@@ -87,15 +93,17 @@ html { scroll-behavior:smooth; }
 .conf-rep-text { color:#c0623a; }
 
 /* ── REUSABLE STAT TABLES ── */
-.rivalry-table, .closest-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
-.rivalry-table thead th, .closest-table thead th {
+.rivalry-table, .closest-table, .conf-mgr-table, .conf-year-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
+.rivalry-table thead th, .closest-table thead th, .conf-mgr-table thead th, .conf-year-table thead th {
   text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
   letter-spacing:0.08em;font-weight:700;color:var(--accent);
   border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
 }
-.rivalry-table tbody tr, .closest-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
-.rivalry-table tbody tr:hover, .closest-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
-.rivalry-table tbody td, .closest-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
+.rivalry-table tbody tr, .closest-table tbody tr, .conf-mgr-table tbody tr, .conf-year-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
+.rivalry-table tbody tr:hover, .closest-table tbody tr:hover, .conf-mgr-table tbody tr:hover, .conf-year-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.rivalry-table tbody td, .closest-table tbody td, .conf-mgr-table tbody td, .conf-year-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
+.conf-mgr-table tbody td.conf-mgr-name { color:var(--palm);font-weight:600; }
+.conf-mgr-table tbody td.num, .conf-year-table tbody td.num { font-variant-numeric:tabular-nums; }
 .margin-val { font-family:var(--font-display);font-weight:900;color:var(--accent); }
 .closest-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
 .po-badge {
@@ -658,6 +666,13 @@ html { scroll-behavior:smooth; }
         </div>
       </div>
       <div class="conf-stat-card glass">
+        <div class="conf-stat-label">Title Game Trips</div>
+        <div class="conf-stat-vals">
+          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">3</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">9</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
+        </div>
+      </div>
+      <div class="conf-stat-card glass">
         <div class="conf-stat-label">Playoff Trips</div>
         <div class="conf-stat-vals">
           <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">27</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
@@ -665,22 +680,69 @@ html { scroll-behavior:smooth; }
         </div>
       </div>
       <div class="conf-stat-card glass">
-        <div class="conf-stat-label">Avg PF/Game</div>
+        <div class="conf-stat-label">H2H Regular Season</div>
         <div class="conf-stat-vals">
-          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">112.7</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
-          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">111.1</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">145</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">147</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
         </div>
       </div>
       <div class="conf-stat-card glass">
-        <div class="conf-stat-label">Avg Win%</div>
+        <div class="conf-stat-label">H2H Playoffs</div>
         <div class="conf-stat-vals">
-          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">49.9%</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
-          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">49.9%</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">11</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">16</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
+        </div>
+      </div>
+      <div class="conf-stat-card glass">
+        <div class="conf-stat-label">Avg PF/Game</div>
+        <div class="conf-stat-vals">
+          <div class="conf-stat-val"><div class="conf-stat-num conf-dem-text">111.9</div><div class="conf-stat-tag conf-dem-text">DEM</div></div>
+          <div class="conf-stat-val"><div class="conf-stat-num conf-rep-text">110.9</div><div class="conf-stat-tag conf-rep-text">REP</div></div>
         </div>
       </div>
     </div>
 
-    <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:1.5rem;">Across six seasons the two conferences are <strong>basically identical</strong>. Same average scoring, same average win rate, same number of playoff trips. REP has four titles to DEM's two, but that's <strong>a coin flip landing one way six times</strong>, not a real edge. The schedule doesn't even favor same-conference matchups: only <strong>46% of all-time games</strong> have come within a conference, barely different from the 50% you'd get by chance. DEM and REP are a fun label, not a competitive divide.</p>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:1.5rem;">On paper the conferences are close to identical: the same number of playoff trips, scoring within a point of each other, and a regular season record that's basically a coin flip (147-145, REP). REP does pull ahead in the playoffs (16-11), and the gap really shows at the top. REP has reached <strong>9 of 12 possible championships</strong> and won 4, while DEM has reached 3 and won 2.</p>
+
+    <div class="table-wrap glass">
+      <p class="table-hint">Manager-by-manager record against the other conference, regular season and real playoff games only.</p>
+      <table class="conf-mgr-table">
+        <thead><tr><th>Manager</th><th>Conf</th><th>Record</th><th>Win%</th><th>Avg PF</th><th>Avg PA</th><th>Margin</th></tr></thead>
+        <tbody>
+          <tr><td class="conf-mgr-name">Ethan Radecki</td><td><span class="conf-badge conf-dem">DEM</span></td><td class="num">32-17</td><td class="num">.653</td><td class="num">122.9</td><td class="num">113.8</td><td class="num attr-good">+9.1</td></tr>
+          <tr><td class="conf-mgr-name">Baylen Slansky</td><td><span class="conf-badge conf-dem">DEM</span></td><td class="num">28-20</td><td class="num">.583</td><td class="num">119.3</td><td class="num">111.3</td><td class="num attr-good">+8.1</td></tr>
+          <tr><td class="conf-mgr-name">Cole Maney</td><td><span class="conf-badge conf-dem">DEM</span></td><td class="num">24-25</td><td class="num">.490</td><td class="num">111.5</td><td class="num">111.0</td><td class="num attr-good">+0.5</td></tr>
+          <tr><td class="conf-mgr-name">Max Malich</td><td><span class="conf-badge conf-dem">DEM</span></td><td class="num">21-23</td><td class="num">.477</td><td class="num">110.5</td><td class="num">105.6</td><td class="num attr-good">+4.8</td></tr>
+          <tr><td class="conf-mgr-name">Aidan Quigley</td><td><span class="conf-badge conf-dem">DEM</span></td><td class="num">18-22</td><td class="num">.450</td><td class="num">112.1</td><td class="num">113.9</td><td class="num attr-bad">-1.8</td></tr>
+          <tr><td class="conf-mgr-name">Andrew Root</td><td><span class="conf-badge conf-dem">DEM</span></td><td class="num">19-27</td><td class="num">.413</td><td class="num">101.3</td><td class="num">107.4</td><td class="num attr-bad">-6.1</td></tr>
+          <tr><td class="conf-mgr-name">Deniz Bileydi</td><td><span class="conf-badge conf-dem">DEM</span></td><td class="num">14-29</td><td class="num">.326</td><td class="num">104.7</td><td class="num">113.5</td><td class="num attr-bad">-8.8</td></tr>
+          <tr><td class="conf-mgr-name">Anthony Kelly</td><td><span class="conf-badge conf-rep">REP</span></td><td class="num">29-18</td><td class="num">.617</td><td class="num">115.3</td><td class="num">111.2</td><td class="num attr-good">+4.1</td></tr>
+          <tr><td class="conf-mgr-name">Carmine Pittelli Jr.</td><td><span class="conf-badge conf-rep">REP</span></td><td class="num">25-18</td><td class="num">.581</td><td class="num">115.1</td><td class="num">108.1</td><td class="num attr-good">+7.0</td></tr>
+          <tr><td class="conf-mgr-name">Brandon Hancock</td><td><span class="conf-badge conf-rep">REP</span></td><td class="num">26-21</td><td class="num">.553</td><td class="num">115.2</td><td class="num">118.1</td><td class="num attr-bad">-2.8</td></tr>
+          <tr><td class="conf-mgr-name">Ben Castaldo</td><td><span class="conf-badge conf-rep">REP</span></td><td class="num">24-20</td><td class="num">.545</td><td class="num">109.6</td><td class="num">107.3</td><td class="num attr-good">+2.4</td></tr>
+          <tr><td class="conf-mgr-name">Charlie Gorman</td><td><span class="conf-badge conf-rep">REP</span></td><td class="num">21-25</td><td class="num">.457</td><td class="num">107.9</td><td class="num">112.8</td><td class="num attr-bad">-5.0</td></tr>
+          <tr><td class="conf-mgr-name">Quin Gegwich</td><td><span class="conf-badge conf-rep">REP</span></td><td class="num">20-25</td><td class="num">.444</td><td class="num">107.8</td><td class="num">115.2</td><td class="num attr-bad">-7.4</td></tr>
+          <tr><td class="conf-mgr-name">Ryan P McQuaid</td><td><span class="conf-badge conf-rep">REP</span></td><td class="num">18-29</td><td class="num">.383</td><td class="num">105.4</td><td class="num">110.2</td><td class="num attr-bad">-4.9</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;margin-bottom:1.5rem;">Two managers stand out for the wrong reason: <strong>Max Malich</strong> has a losing record (.477) despite a positive margin, and <strong>Brandon Hancock</strong> has a winning record (.553) despite a negative one.</p>
+
+    <div class="table-wrap glass">
+      <p class="table-hint">Interconference record by season, REP-DEM.</p>
+      <table class="conf-year-table">
+        <thead><tr><th>Season</th><th>Record</th><th>REP Win%</th><th>Games</th></tr></thead>
+        <tbody>
+          <tr><td><span class="season-pill" style="background:#a4969d">2020</span></td><td class="num">16-22</td><td class="num">.421</td><td class="num">38</td></tr>
+          <tr><td><span class="season-pill" style="background:#8a93ab">2021</span></td><td class="num">33-19</td><td class="num">.635</td><td class="num">52</td></tr>
+          <tr><td><span class="season-pill" style="background:#d8b28e">2022</span></td><td class="num">32-27</td><td class="num">.542</td><td class="num">59</td></tr>
+          <tr><td><span class="season-pill" style="background:#bf8f8f">2023</span></td><td class="num">27-30</td><td class="num">.474</td><td class="num">57</td></tr>
+          <tr><td><span class="season-pill" style="background:#9aadae">2024</span></td><td class="num">20-36</td><td class="num">.357</td><td class="num">56</td></tr>
+          <tr><td><span class="season-pill" style="background:#a9b88b">2025</span></td><td class="num">35-22</td><td class="num">.614</td><td class="num">57</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;margin-bottom:1.5rem;">No conference has strung together back-to-back dominant years. <strong>2024 was DEM's best season</strong> against REP, and REP answered right back with its best in <strong>2025</strong>.</p>
 
     <div class="table-wrap glass">
       <p class="table-hint">Longest-running rivalries by total meetings, regular season and playoffs combined.</p>
