@@ -39,6 +39,21 @@
 .season-btn.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
 .season-filter-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent); }
 
+/* Manager filter pills */
+.mgr-btn {
+  display:inline-flex;align-items:center;gap:0.45rem;
+  padding:0.35rem 0.85rem;border-radius:999px;border:1px solid rgba(var(--accent-rgb),0.25);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.78rem;
+  font-weight:600;cursor:pointer;transition:all 0.15s;white-space:nowrap;
+}
+.mgr-btn:hover { background:var(--accent-glow); }
+.mgr-btn .mgr-dot { width:8px;height:8px;border-radius:50%;background:var(--mgr-color,var(--muted));flex-shrink:0; }
+.mgr-btn.mgr-all.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
+.mgr-btn.active:not(.mgr-all) { background:var(--mgr-color);border-color:var(--mgr-color);color:#fff; }
+.mgr-btn.active:not(.mgr-all) .mgr-dot { background:rgba(255,255,255,0.85); }
+.draft-board th, .draft-board td { transition:opacity 0.2s; }
+.draft-board th.mgr-dim, .draft-board td.mgr-dim { opacity:0.22; }
+
 /* Draft board */
 .board-wrap { overflow-x:auto;padding:1.5rem; }
 
@@ -219,6 +234,25 @@
       <button class="season-btn year-swatch-btn" style="--swatch-color:#d8b28e;" onclick="setYear(2022,this)">2022</button>
       <button class="season-btn year-swatch-btn" style="--swatch-color:#8a93ab;" onclick="setYear(2021,this)">2021</button>
       <button class="season-btn year-swatch-btn" style="--swatch-color:#a4969d;" onclick="setYear(2020,this)">2020</button>
+    </div>
+
+    <div class="season-filter-row">
+      <span class="season-filter-label">Manager:</span>
+      <button class="mgr-btn mgr-all active" onclick="setManagerFilter('all',this)">All Managers</button>
+      <button class="mgr-btn" style="--mgr-color:#c53016;" onclick="setManagerFilter('Aidan Quigley',this)"><span class="mgr-dot"></span>Aidan Quigley</button>
+      <button class="mgr-btn" style="--mgr-color:#2d5375;" onclick="setManagerFilter('Andrew Root',this)"><span class="mgr-dot"></span>Andrew Root</button>
+      <button class="mgr-btn" style="--mgr-color:#7f6647;" onclick="setManagerFilter('Anthony Kelly',this)"><span class="mgr-dot"></span>Anthony Kelly</button>
+      <button class="mgr-btn" style="--mgr-color:#7269aa;" onclick="setManagerFilter('Baylen Slansky',this)"><span class="mgr-dot"></span>Baylen Slansky</button>
+      <button class="mgr-btn" style="--mgr-color:#404c5b;" onclick="setManagerFilter('Ben Castaldo',this)"><span class="mgr-dot"></span>Ben Castaldo</button>
+      <button class="mgr-btn" style="--mgr-color:#416cab;" onclick="setManagerFilter('Brandon Hancock',this)"><span class="mgr-dot"></span>Brandon Hancock</button>
+      <button class="mgr-btn" style="--mgr-color:#541821;" onclick="setManagerFilter('Carmine Pittelli',this)"><span class="mgr-dot"></span>Carmine Pittelli Jr.</button>
+      <button class="mgr-btn" style="--mgr-color:#9e89c0;" onclick="setManagerFilter('Charlie Gorman',this)"><span class="mgr-dot"></span>Charlie Gorman</button>
+      <button class="mgr-btn" style="--mgr-color:#ba4b15;" onclick="setManagerFilter('Cole Maney',this)"><span class="mgr-dot"></span>Cole Maney</button>
+      <button class="mgr-btn" style="--mgr-color:#68733c;" onclick="setManagerFilter('Deniz Bileydi',this)"><span class="mgr-dot"></span>Deniz Bileydi</button>
+      <button class="mgr-btn" style="--mgr-color:#985e0f;" onclick="setManagerFilter('Ethan Radecki',this)"><span class="mgr-dot"></span>Ethan Radecki</button>
+      <button class="mgr-btn" style="--mgr-color:#696969;" onclick="setManagerFilter('Max Malich',this)"><span class="mgr-dot"></span>Max Malich</button>
+      <button class="mgr-btn" style="--mgr-color:#4598ce;" onclick="setManagerFilter('Quin Gegwich',this)"><span class="mgr-dot"></span>Quin Gegwich</button>
+      <button class="mgr-btn" style="--mgr-color:#bd0517;" onclick="setManagerFilter('Ryan McQuaid',this)"><span class="mgr-dot"></span>Ryan P McQuaid</button>
     </div>
 
     <div class="pos-legend">
@@ -420,7 +454,7 @@ function buildBoard(year) {
   var thead = document.getElementById('board-head');
   var headHtml = '<tr><th style="width:48px;min-width:48px;"></th>';
   orderedManagers.forEach(function(m) {
-    headHtml += '<th>'
+    headHtml += '<th data-manager="'+m.name+'">'
       + '<img src="../images/logos/'+m.logo+'.png" alt="'+m.name+'" class="manager-logo" onerror="this.style.display=\'none\'">'
       + '<span class="manager-name-header">'+m.short+'</span>'
       + '</th>';
@@ -449,14 +483,14 @@ function buildBoard(year) {
 
       var pick = roundPicks[pickIdx];
       if (!pick) {
-        bodyHtml += '<td></td>';
+        bodyHtml += '<td data-manager="'+m.name+'"></td>';
         return;
       }
 
       var pc = posClass(pick.pos);
       var tipData = JSON.stringify({n:pick.p, pos:pick.pos, ppg:pick.ppg, g:pick.g, rd:round, manager:m.name});
 
-      bodyHtml += '<td class="cell-'+pc+'" onclick="showTip(event, '+tipData.replace(/"/g,"'")+', this)">'
+      bodyHtml += '<td class="cell-'+pc+'" data-manager="'+m.name+'" onclick="showTip(event, '+tipData.replace(/"/g,"'")+', this)">'
         + '<div class="pick-cell">'
         + '<span class="pick-name">'+pick.p+'</span>'
         + '<span class="pos-badge pos-'+pc+'">'+pick.pos+'</span>'
@@ -468,6 +502,7 @@ function buildBoard(year) {
   }
 
   tbody.innerHTML = bodyHtml;
+  applyManagerFilter();
 }
 
 /* Tooltip */
@@ -515,6 +550,26 @@ function setYear(year, btn) {
   btn.classList.add('active');
   currentYear = year;
   buildBoard(year);
+}
+
+var currentManagerFilter = 'all';
+
+function setManagerFilter(name, btn) {
+  document.querySelectorAll('.mgr-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  currentManagerFilter = name;
+  applyManagerFilter();
+}
+
+function applyManagerFilter() {
+  var cells = document.querySelectorAll('#draft-board th[data-manager], #draft-board td[data-manager]');
+  cells.forEach(function(c) {
+    if (currentManagerFilter === 'all' || c.getAttribute('data-manager') === currentManagerFilter) {
+      c.classList.remove('mgr-dim');
+    } else {
+      c.classList.add('mgr-dim');
+    }
+  });
 }
 
 buildBoard(2025);
