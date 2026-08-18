@@ -211,6 +211,19 @@
   color:#fff !important;
 }
 .year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+
+/* Position filter buttons -- colored per position, matching .pos-badge hues used site-wide */
+.pos-swatch-btn { position:relative;padding-left:1.5rem; }
+.pos-swatch-btn::before {
+  content:'';position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;background:var(--swatch-color,var(--muted));
+}
+.pos-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.pos-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
 .season-pill {
   display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
   font-size:0.68rem;font-weight:700;color:#fff;
@@ -646,12 +659,12 @@
         <div class="fingerprint-filter-row bsw-filter-row">
           <span class="fp-filter-label">Position:</span>
           <button class="fp-btn bsw-pos-btn active" data-pos="ALL" onclick="setBswPosition('ALL')">All</button>
-          <button class="fp-btn bsw-pos-btn" data-pos="QB" onclick="setBswPosition('QB')">QB</button>
-          <button class="fp-btn bsw-pos-btn" data-pos="RB" onclick="setBswPosition('RB')">RB</button>
-          <button class="fp-btn bsw-pos-btn" data-pos="WR" onclick="setBswPosition('WR')">WR</button>
-          <button class="fp-btn bsw-pos-btn" data-pos="TE" onclick="setBswPosition('TE')">TE</button>
-          <button class="fp-btn bsw-pos-btn" data-pos="K" onclick="setBswPosition('K')">K</button>
-          <button class="fp-btn bsw-pos-btn" data-pos="D/ST" onclick="setBswPosition('D/ST')">D/ST</button>
+          <button class="fp-btn bsw-pos-btn pos-swatch-btn" style="--swatch-color:#983a3a;" data-pos="QB" onclick="setBswPosition('QB')">QB</button>
+          <button class="fp-btn bsw-pos-btn pos-swatch-btn" style="--swatch-color:#4a7a4a;" data-pos="RB" onclick="setBswPosition('RB')">RB</button>
+          <button class="fp-btn bsw-pos-btn pos-swatch-btn" style="--swatch-color:#3a6f98;" data-pos="WR" onclick="setBswPosition('WR')">WR</button>
+          <button class="fp-btn bsw-pos-btn pos-swatch-btn" style="--swatch-color:#a07010;" data-pos="TE" onclick="setBswPosition('TE')">TE</button>
+          <button class="fp-btn bsw-pos-btn pos-swatch-btn" style="--swatch-color:#6a6460;" data-pos="K" onclick="setBswPosition('K')">K</button>
+          <button class="fp-btn bsw-pos-btn pos-swatch-btn" style="--swatch-color:#504840;" data-pos="D/ST" onclick="setBswPosition('D/ST')">D/ST</button>
         </div>
         <div class="fingerprint-filter-row bsw-filter-row">
           <span class="fp-filter-label">Season:</span>
@@ -692,12 +705,12 @@
         <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Position:</span>
           <button class="fp-btn fl-pos-btn active" data-pos="ALL" onclick="setFlPosition('ALL')">All</button>
-          <button class="fp-btn fl-pos-btn" data-pos="QB" onclick="setFlPosition('QB')">QB</button>
-          <button class="fp-btn fl-pos-btn" data-pos="RB" onclick="setFlPosition('RB')">RB</button>
-          <button class="fp-btn fl-pos-btn" data-pos="WR" onclick="setFlPosition('WR')">WR</button>
-          <button class="fp-btn fl-pos-btn" data-pos="TE" onclick="setFlPosition('TE')">TE</button>
-          <button class="fp-btn fl-pos-btn" data-pos="K" onclick="setFlPosition('K')">K</button>
-          <button class="fp-btn fl-pos-btn" data-pos="D/ST" onclick="setFlPosition('D/ST')">D/ST</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#983a3a;" data-pos="QB" onclick="setFlPosition('QB')">QB</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#4a7a4a;" data-pos="RB" onclick="setFlPosition('RB')">RB</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#3a6f98;" data-pos="WR" onclick="setFlPosition('WR')">WR</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#a07010;" data-pos="TE" onclick="setFlPosition('TE')">TE</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#6a6460;" data-pos="K" onclick="setFlPosition('K')">K</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#504840;" data-pos="D/ST" onclick="setFlPosition('D/ST')">D/ST</button>
         </div>
         <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Season:</span>
@@ -743,12 +756,12 @@
         <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Position:</span>
           <button class="fp-btn fl-pos-btn active" data-pos="ALL" onclick="setFlPosition('ALL')">All</button>
-          <button class="fp-btn fl-pos-btn" data-pos="QB" onclick="setFlPosition('QB')">QB</button>
-          <button class="fp-btn fl-pos-btn" data-pos="RB" onclick="setFlPosition('RB')">RB</button>
-          <button class="fp-btn fl-pos-btn" data-pos="WR" onclick="setFlPosition('WR')">WR</button>
-          <button class="fp-btn fl-pos-btn" data-pos="TE" onclick="setFlPosition('TE')">TE</button>
-          <button class="fp-btn fl-pos-btn" data-pos="K" onclick="setFlPosition('K')">K</button>
-          <button class="fp-btn fl-pos-btn" data-pos="D/ST" onclick="setFlPosition('D/ST')">D/ST</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#983a3a;" data-pos="QB" onclick="setFlPosition('QB')">QB</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#4a7a4a;" data-pos="RB" onclick="setFlPosition('RB')">RB</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#3a6f98;" data-pos="WR" onclick="setFlPosition('WR')">WR</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#a07010;" data-pos="TE" onclick="setFlPosition('TE')">TE</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#6a6460;" data-pos="K" onclick="setFlPosition('K')">K</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#504840;" data-pos="D/ST" onclick="setFlPosition('D/ST')">D/ST</button>
         </div>
         <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Season:</span>
@@ -784,12 +797,12 @@
         <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Position:</span>
           <button class="fp-btn fl-pos-btn active" data-pos="ALL" onclick="setFlPosition('ALL')">All</button>
-          <button class="fp-btn fl-pos-btn" data-pos="QB" onclick="setFlPosition('QB')">QB</button>
-          <button class="fp-btn fl-pos-btn" data-pos="RB" onclick="setFlPosition('RB')">RB</button>
-          <button class="fp-btn fl-pos-btn" data-pos="WR" onclick="setFlPosition('WR')">WR</button>
-          <button class="fp-btn fl-pos-btn" data-pos="TE" onclick="setFlPosition('TE')">TE</button>
-          <button class="fp-btn fl-pos-btn" data-pos="K" onclick="setFlPosition('K')">K</button>
-          <button class="fp-btn fl-pos-btn" data-pos="D/ST" onclick="setFlPosition('D/ST')">D/ST</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#983a3a;" data-pos="QB" onclick="setFlPosition('QB')">QB</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#4a7a4a;" data-pos="RB" onclick="setFlPosition('RB')">RB</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#3a6f98;" data-pos="WR" onclick="setFlPosition('WR')">WR</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#a07010;" data-pos="TE" onclick="setFlPosition('TE')">TE</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#6a6460;" data-pos="K" onclick="setFlPosition('K')">K</button>
+          <button class="fp-btn fl-pos-btn pos-swatch-btn" style="--swatch-color:#504840;" data-pos="D/ST" onclick="setFlPosition('D/ST')">D/ST</button>
         </div>
         <div class="fingerprint-filter-row fl-filter-row">
           <span class="fp-filter-label">Season:</span>
