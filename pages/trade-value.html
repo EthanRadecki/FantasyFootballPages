@@ -348,6 +348,7 @@
         <tr>
           <th>Rank</th>
           <th class="sortable" data-key="s">Season</th>
+          <th class="sortable" data-key="wk">Week</th>
           <th class="sortable" data-key="m" data-type="text">Manager</th>
           <th data-key="got">Got</th>
           <th data-key="gave">Gave</th>
@@ -1622,6 +1623,7 @@ function renderTradesTable() {
     html += '<tr>'
       +'<td class="tv-rank">'+(i+1)+'</td>'
       +'<td><span class="season-pill" style="background:'+seasonColor+';">'+d.s+'</span>'+(d.multi ? '<span class="multi-badge">MULTI</span>' : '')+'</td>'
+      +'<td>Wk '+d.wk+'</td>'
       +'<td style="font-weight:600;color:var(--palm)">'+d.m+'</td>'
       +'<td class="got-txt">'+d.got.join(', ')+'</td>'
       +'<td class="gave-txt">'+d.gave.join(', ')+'</td>'
