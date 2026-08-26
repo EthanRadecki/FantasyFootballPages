@@ -166,6 +166,30 @@
 .mx-tag-week{background:rgba(0,0,0,0.35);backdrop-filter:blur(4px);}
 .mx-tag-playoff{background:rgba(212,175,55,0.85);margin-left:auto;}
 
+/* ── Playoff intensity tiers: 1=earliest round … 4=championship ── */
+.mx-card.mx-po{
+  border:1px solid rgba(212,175,55,var(--po-op,0));
+  box-shadow:0 4px 16px rgba(212,175,55,var(--po-glow,0));
+}
+.mx-card.mx-po::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;z-index:1;
+  background:linear-gradient(90deg, transparent, rgba(212,175,55,var(--po-bar,0)), transparent);
+}
+.mx-card.mx-po-1{--po-op:0.22;--po-glow:0;--po-bar:0.35;}
+.mx-card.mx-po-2{--po-op:0.38;--po-glow:0.08;--po-bar:0.55;}
+.mx-card.mx-po-3{--po-op:0.55;--po-glow:0.16;--po-bar:0.8;}
+.mx-card.mx-po-4{
+  --po-op:0.85;--po-glow:0.3;--po-bar:1;
+  background:linear-gradient(155deg, rgba(212,175,55,0.1), transparent 60%);
+  animation:mxFadeUp 0.4s cubic-bezier(0.16,1,0.3,1) both, mxChampGlow 2.6s ease-in-out infinite;
+}
+@keyframes mxChampGlow{
+  0%,100%{box-shadow:0 4px 16px rgba(212,175,55,0.3);}
+  50%{box-shadow:0 6px 24px rgba(212,175,55,0.5);}
+}
+.mx-po-3 .mx-tag-playoff, .mx-po-4 .mx-tag-playoff{font-size:0.66rem;padding:0.2rem 0.6rem;}
+.mx-po-4 .mx-tag-playoff{background:#d4af37;box-shadow:0 0 10px rgba(212,175,55,0.65);}
+
 .mx-card-body{display:flex;align-items:stretch;padding-top:1.7rem;}
 .mx-side{
   flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;
@@ -304,9 +328,10 @@
 @media(max-width:768px){
   .mx-hero h1{font-size:1.9rem;}
   .mx-side-team{max-width:90px;}
+  .mx-card.mx-po-4{box-shadow:0 4px 16px rgba(212,175,55,0.3);animation:mxFadeUp 0.4s cubic-bezier(0.16,1,0.3,1) both;}
 }
 @media(prefers-reduced-motion:reduce){
-  .mx-card,.mx-modal{animation:none;}
+  .mx-card,.mx-modal,.mx-card.mx-po-4{animation:none;}
 }
 body.mx-modal-lock{overflow:hidden;}
 </style>
@@ -477,6 +502,15 @@ body.mx-modal-lock{overflow:hidden;}
     var forSeason = ROUND_NAMES[game.season];
     if(forSeason && num && forSeason[num]) return forSeason[num];
     return { full: game.weekLabel, short: (game.weekLabel||'').replace('Playoff ','') };
+  }
+  function playoffTier(game){
+    if(!game.isPlayoff) return 0;
+    switch(getRoundInfo(game).short){
+      case 'Championship': return 4;
+      case 'Semifinals': return 3;
+      case 'Quarterfinals': return 2;
+      default: return 1; // Round of 15, Wild Card, etc.
+    }
   }
 
   // This particular game saw one manager sit their entire healthy roster
@@ -798,7 +832,8 @@ body.mx-modal-lock{overflow:hidden;}
 
   function buildCard(game, idx){
     var el = document.createElement('div');
-    el.className = 'mx-card glass';
+    var tier = playoffTier(game);
+    el.className = 'mx-card glass' + (tier ? ' mx-po mx-po-'+tier : '');
     el.style.animationDelay = (Math.min(idx%BATCH,11)*0.03)+'s';
     var seasonColor = SEASON_COLORS[game.season] || '#888';
     el.innerHTML =
