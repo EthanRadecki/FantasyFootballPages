@@ -124,7 +124,6 @@
 
 .mx-h2h-summary{
   margin-top:0.9rem;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.9rem;flex-wrap:wrap;
-  border-left:3px solid var(--mx-accent);
 }
 .mx-h2h-summary strong{color:var(--palm);}
 .mx-h2h-summary .mx-h2h-record{font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--mx-accent);}
@@ -214,7 +213,7 @@
 
 /* ── Modal ── */
 .mx-modal-overlay{
-  position:fixed;inset:0;background:rgba(8,8,10,0.72);backdrop-filter:blur(6px);
+  position:fixed;inset:0;background:rgba(6,6,8,0.82);backdrop-filter:blur(6px);
   z-index:1000;display:none;align-items:flex-start;justify-content:center;
   padding:3.5rem 1rem 2rem;overflow-y:auto;
 }
@@ -222,6 +221,9 @@
 .mx-modal{
   max-width:820px;width:100%;position:relative;padding:1.75rem 1.75rem 1.5rem;
   animation:mxModalIn 0.25s cubic-bezier(0.16,1,0.3,1) both;
+  background:#17171b;background-image:none;backdrop-filter:none;
+  border:1px solid rgba(255,255,255,0.1);border-radius:16px;
+  box-shadow:0 24px 64px rgba(0,0,0,0.5);
 }
 @keyframes mxModalIn{from{opacity:0;transform:translateY(16px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}
 .mx-modal-close{
@@ -438,6 +440,44 @@ body.mx-modal-lock{overflow:hidden;}
   var FALLBACK_PALETTE = ['#6d6a5f','#5c6b73','#7a5c58','#5f6e4c','#6b5a75'];
   var SLOT_LABELS = {'QB':'QB','RB':'RB','WR':'WR','TE':'TE','RB/WR/TE':'FLEX','D/ST':'D/ST','K':'K'};
 
+  function standardRounds(){
+    return {
+      1:{full:'Quarterfinals', short:'Quarterfinals'},
+      2:{full:'Semifinals', short:'Semifinals'},
+      3:{full:'Championship', short:'Championship'}
+    };
+  }
+  var ROUND_NAMES = {
+    2020:{
+      1:{full:'The Round of 15', short:'Round of 15'},
+      2:{full:'Quarterfinals', short:'Quarterfinals'},
+      3:{full:'Semifinals', short:'Semifinals'},
+      4:{full:'Championship', short:'Championship'}
+    },
+    2021:{
+      1:{full:'The Wild Card Matchup', short:'Wild Card'},
+      2:{full:'Quarterfinals', short:'Quarterfinals'},
+      3:{full:'Semifinals', short:'Semifinals'},
+      4:{full:'Championship', short:'Championship'}
+    },
+    2022: standardRounds(),
+    2023: standardRounds(),
+    2024: standardRounds(),
+    2025: standardRounds()
+  };
+  function getRoundInfo(game){
+    var m = /Round (\d+)/.exec(game.weekLabel || '');
+    var num = m ? parseInt(m[1],10) : null;
+    var forSeason = ROUND_NAMES[game.season];
+    if(forSeason && num && forSeason[num]) return forSeason[num];
+    return { full: game.weekLabel, short: (game.weekLabel||'').replace('Playoff ','') };
+  }
+
+  // This particular game saw one manager sit their entire healthy roster
+  // (a non-competitive scoreline), so it's excluded from "record" style
+  // superlatives even though it remains fully visible/filterable.
+  var SUPERLATIVE_EXCLUDE = { '2024-14-BaylenSlansky-BenCastaldo': true };
+
   function hashStr(s){var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}return h;}
   function managerColor(name){
     if(MANAGER_COLORS[name]) return MANAGER_COLORS[name];
@@ -487,7 +527,7 @@ body.mx-modal-lock{overflow:hidden;}
 
     var seasons = Array.from(new Set(games.map(function(g){return g.season;}))).sort();
 
-    heroSub.innerHTML = '<strong>'+games.length+'</strong> matchups on record across <strong>'+seasons.length+'</strong> seasons ('+seasons[0]+'&ndash;'+seasons[seasons.length-1]+') &mdash; every game with a full box score.';
+    heroSub.innerHTML = '<strong>'+games.length+'</strong> matchups on record across <strong>'+seasons.length+'</strong> seasons ('+seasons[0]+'&ndash;'+seasons[seasons.length-1]+'), every game with a full box score.';
 
     buildSeasonPills(seasons);
     buildManagerOptions();
@@ -538,9 +578,10 @@ body.mx-modal-lock{overflow:hidden;}
   function buildQuickJump(){
     var wrap = document.getElementById('quickJump');
     if(!ALL_GAMES.length) return;
-    var closest = ALL_GAMES.reduce(function(a,b){return b.margin<a.margin?b:a;});
-    var blowout = ALL_GAMES.reduce(function(a,b){return b.margin>a.margin?b:a;});
-    var highest = ALL_GAMES.reduce(function(a,b){return b.combined>a.combined?b:a;});
+    var eligible = ALL_GAMES.filter(function(g){ return !SUPERLATIVE_EXCLUDE[g.id]; });
+    var closest = eligible.reduce(function(a,b){return b.margin<a.margin?b:a;});
+    var blowout = eligible.reduce(function(a,b){return b.margin>a.margin?b:a;});
+    var highest = eligible.reduce(function(a,b){return b.combined>a.combined?b:a;});
     var chips = [
       {icon:'&#128293;', label:'Closest Game', game:closest, value:closest.margin.toFixed(2)+' pt margin'},
       {icon:'&#128165;', label:'Biggest Blowout', game:blowout, value:blowout.margin.toFixed(1)+' pt margin'},
@@ -725,7 +766,7 @@ body.mx-modal-lock{overflow:hidden;}
   }
 
   function weekShortLabel(game){
-    return game.isPlayoff ? game.weekLabel.replace('Playoff ', '') : 'Wk ' + game.week;
+    return game.isPlayoff ? getRoundInfo(game).short : 'Wk ' + game.week;
   }
 
   function sideHtml(side, opp, isModal){
@@ -806,7 +847,7 @@ body.mx-modal-lock{overflow:hidden;}
       '<div class="mx-modal-header">'+
         '<div class="mx-modal-tags">'+
           '<span class="mx-tag" style="--tag-color:'+seasonColor+'">'+game.season+'</span>'+
-          '<span class="mx-tag mx-tag-week">'+(game.isPlayoff ? game.weekLabel : 'Week '+game.week)+'</span>'+
+          '<span class="mx-tag mx-tag-week">'+(game.isPlayoff ? getRoundInfo(game).full : 'Week '+game.week)+'</span>'+
           (game.isPlayoff ? '<span class="mx-tag mx-tag-playoff">&#127942; Playoffs</span>' : '')+
         '</div>'+
         '<div class="mx-modal-vs">'+
