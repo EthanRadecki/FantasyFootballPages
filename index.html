@@ -44,7 +44,7 @@
   display:flex;align-items:center;gap:1.5rem;
   padding:1.5rem 2rem;margin-bottom:2rem;
   text-decoration:none;color:var(--text);transition:transform 0.2s;
-  border-left:3px solid var(--gold);position:relative;overflow:hidden;
+  position:relative;overflow:hidden;
 }
 .champ-banner::before {
   content:'';position:absolute;inset:0;pointer-events:none;
@@ -86,7 +86,7 @@
 .nav-card {
   text-decoration:none;color:var(--text);
   padding:1.75rem 1.5rem;transition:all 0.25s;position:relative;overflow:hidden;
-  border-left:3px solid var(--accent);
+  
 }
 .nav-card:hover { transform:translateY(-2px); }
 .nav-card h3 {
@@ -110,121 +110,30 @@
 }
 .nav-card:hover::before { opacity:1; }
 
-/* ── MANAGERS -- terra, arc watermark ── */
-.card-managers {
-  border-left-color:#b07050;
-  --card-accent:#b07050;
-}
-.card-managers::after {
-  content:'';position:absolute;right:-30px;bottom:-30px;
-  width:140px;height:140px;border-radius:50%;pointer-events:none;z-index:0;
-  border:18px solid rgba(176,112,80,0.07);
-  box-shadow:0 0 0 18px rgba(176,112,80,0.04);
-}
-.card-managers::before {
-  background:radial-gradient(ellipse 70% 70% at 85% 100%, rgba(176,112,80,0.1), transparent 65%);
-}
-.card-managers .card-arrow { color:#b07050; }
+/* ── CARD ACCENTS ── */
+.card-managers { --card-accent:#b07050; }
+.card-draft { --card-accent:#5a8a6a; }
+.card-rankings { --card-accent:#8878a8; }
+.card-champions { --card-accent:var(--gold); }
+.card-transactions { --card-accent:#3d7a7a; }
+.card-analytics { --card-accent:#9c849c; }
+.card-matchups { --card-accent:#a8524f; }
 
-/* ── DRAFT ANALYSIS -- sage green, diagonal grid ── */
-.card-draft {
-  border-left-color:#5a8a6a;
-  --card-accent:#5a8a6a;
-}
-.card-draft::after {
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 12px,
-    rgba(90,138,106,0.05) 12px,
-    rgba(90,138,106,0.05) 13px
-  );
-}
-.card-draft::before {
-  background:radial-gradient(ellipse 70% 60% at 95% 5%, rgba(90,138,106,0.1), transparent 65%);
-}
-.card-draft .card-arrow { color:#5a8a6a; }
+.nav-card::after { content:'';position:absolute;left:1.5rem;right:1.5rem;bottom:0.7rem;height:2px;border-radius:99px;background:linear-gradient(90deg,transparent,var(--card-accent),transparent);opacity:0.55;transition:opacity 0.25s,transform 0.25s;transform:scaleX(0.72);z-index:0; }
+.nav-card:hover::after { opacity:0.95;transform:scaleX(1); }
+.nav-card::before { background:radial-gradient(ellipse 70% 80% at 100% 100%,color-mix(in srgb,var(--card-accent) 11%,transparent),transparent 68%); }
+.nav-card .card-arrow { color:var(--card-accent); }
+.card-subpage-pill { background:color-mix(in srgb,var(--card-accent) 12%,transparent);color:var(--card-accent); }
 
-/* ── WEEKLY RANKINGS -- lavender, wave lines ── */
-.card-rankings {
-  border-left-color:#8878a8;
-  --card-accent:#8878a8;
-}
-.card-rankings::after {
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 200% 20% at 50% 30%, rgba(136,120,168,0.06) 0%, transparent 100%),
-    radial-gradient(ellipse 200% 20% at 50% 60%, rgba(136,120,168,0.04) 0%, transparent 100%),
-    radial-gradient(ellipse 200% 20% at 50% 90%, rgba(136,120,168,0.03) 0%, transparent 100%);
-}
-.card-rankings::before {
-  background:radial-gradient(ellipse 80% 60% at 10% 0%, rgba(136,120,168,0.1), transparent 65%);
-}
-.card-rankings .card-arrow { color:#8878a8; }
-
-/* ── CHAMPIONS -- gold, shimmer ── */
-.card-champions {
-  border-left-color:var(--gold);
-  --card-accent:var(--gold);
-}
-.card-champions::after {
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:linear-gradient(135deg,
-    rgba(212,175,55,0.07) 0%,
-    transparent 40%,
-    rgba(212,175,55,0.04) 60%,
-    transparent 100%
-  );
-}
-.card-champions::before {
-  background:radial-gradient(ellipse 60% 60% at 85% 15%, rgba(212,175,55,0.14), transparent 65%);
-}
-.card-champions .card-arrow { color:var(--gold); }
-
-/* ── TRANSACTION ANALYSIS -- teal, exchange chevrons ── */
-.card-transactions {
-  border-left-color:#3d7a7a;
-  --card-accent:#3d7a7a;
-}
-.card-transactions::after {
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 12px,
-    rgba(61,122,122,0.05) 12px,
-    rgba(61,122,122,0.05) 13px
-  );
-}
-.card-transactions::before {
-  background:radial-gradient(ellipse 70% 60% at 5% 95%, rgba(61,122,122,0.1), transparent 65%);
-}
-.card-transactions .card-arrow { color:#3d7a7a; }
-
-/* ── EXTRA ANALYTICS -- mauve, scatter dots ── */
-.card-analytics {
-  border-left-color:#9c849c;
-  --card-accent:#9c849c;
-}
-.card-analytics::after {
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:
-    radial-gradient(circle, rgba(156,132,156,0.18) 1px, transparent 1px),
-    radial-gradient(circle, rgba(156,132,156,0.10) 1px, transparent 1px);
-  background-size:22px 22px, 11px 11px;
-  background-position:0 0, 11px 11px;
-}
-.card-analytics::before {
-  background:radial-gradient(ellipse 70% 60% at 90% 90%, rgba(156,132,156,0.1), transparent 65%);
-}
-.card-analytics .card-arrow { color:#9c849c; }
+/* ── CHAMPION BANNER ACCENT ── */
+.champ-banner { border-left:none;border-bottom:2px solid rgba(212,175,55,0.45);border-radius:0 0 10px 10px; }
+.champ-banner::after { content:'';position:absolute;left:8%;right:8%;bottom:0;height:2px;border-radius:99px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.8; }
 
 @media(max-width:900px) { .nav-grid { grid-template-columns:repeat(2,1fr); } }
 @media(max-width:768px) {
   .hero h1 { font-size:2.1rem; }
   .hero-logo { width:90px;height:90px;border-radius:18px; }
-  .champ-banner { flex-direction:column;text-align:center;gap:0.75rem;padding:1.5rem;border-left:none;border-top:3px solid var(--gold); }
+  .champ-banner { flex-direction:column;text-align:center;gap:0.75rem;padding:1.5rem;border-left:none; }
   .champ-arrow { display:none; }
 }
 @media(max-width:480px) { .nav-grid { grid-template-columns:1fr; } }
@@ -293,6 +202,7 @@
 .nav-grid .nav-card:nth-child(4) { animation-delay:0.39s; }
 .nav-grid .nav-card:nth-child(5) { animation-delay:0.44s; }
 .nav-grid .nav-card:nth-child(6) { animation-delay:0.49s; }
+.nav-grid .nav-card:nth-child(7) { animation-delay:0.54s; }
 @media(prefers-reduced-motion:reduce) {
   .hero, .champ-banner, .home-leaderboard, .nav-card { animation:none; }
 }
@@ -407,6 +317,11 @@
       <h3><span class="icon">&#127942;</span> Champions</h3>
       <p>Hall of champions from every season since the league's founding.</p>
       <span class="card-arrow">View champions &#8594;</span>
+    </a>
+    <a href="pages/matchups.html" class="nav-card card-matchups glass">
+      <h3><span class="icon">&#9878;</span> Matchup Explorer</h3>
+      <p>Explore every regular season and playoff matchup in league history, sortable by year, managers, and margin of victory.</p>
+      <span class="card-arrow">Explore matchups &#8594;</span>
     </a>
     <a href="pages/draft-analysis.html" class="nav-card card-draft glass">
       <h3><span class="icon">&#128200;</span> Draft Analysis</h3>
