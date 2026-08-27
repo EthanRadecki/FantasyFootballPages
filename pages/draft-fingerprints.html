@@ -367,14 +367,14 @@
   <div class="archetype-cards" id="archetype-cards"></div>
 
   <div class="section-label" id="cluster-scatter">Cluster Scatter</div>
-  <div class="section-title">Each dot is one manager-season, colored by archetype. Did better drafting actually lead to more wins?</div>
+  <div class="section-title">Each dot is one manager-season, colored by archetype. Did better drafting actually lead to more scoring?</div>
 
   <div class="table-wrap glass" style="padding:1.5rem;">
     <div class="cluster-legend" id="cluster-legend"></div>
     <div class="cluster-scatter-wrap">
       <canvas id="chart-scatter"></canvas>
     </div>
-    <p class="metric-note">X axis: surplus per pick that season. Y axis: win%. The four quadrants are purely descriptive: Kruskal-Wallis tests found no significant link between archetype and either Win% or PPG (see Archetype Outcomes below), so no quadrant should be read as "the draft caused the record."</p>
+    <p class="metric-note">X axis: surplus per pick that season. Y axis: points per game, with the dashed line marking the league-wide average across all 85 manager-seasons. The four quadrants are purely descriptive: Kruskal-Wallis tests found no significant link between archetype and either Win% or PPG (see Archetype Outcomes below), so no quadrant should be read as "the draft caused the record."</p>
   </div>
 
   <div class="section-label" style="margin-top:2rem;" id="archetype-outcomes">Archetype Outcomes</div>
@@ -749,13 +749,18 @@ function buildOutcomeSurplusStrip(){
 function buildScatterChart(){
   var ctx = document.getElementById('chart-scatter').getContext('2d');
 
+  var allPpg = ARCHETYPES.assignments.map(function(a){ return a.outcomes.ppg; }).filter(function(v){ return v!==null && v!==undefined; });
+  var meanPpg = allPpg.reduce(function(s,v){ return s+v; }, 0) / allPpg.length;
+
   var datasets = ARCHETYPES.cluster_summary.map(function(c){
     var pts = ARCHETYPES.assignments
       .filter(function(a){ return a.cluster === c.id; })
       .map(function(a){ return {
         x: a.outcomes.surplus,
-        y: a.outcomes.win_pct!==null ? Math.round(a.outcomes.win_pct*1000)/10 : null,
-        manager: a.manager, season: a.season, ppg: a.outcomes.ppg, archetype: a.archetype,
+        y: a.outcomes.ppg,
+        manager: a.manager, season: a.season,
+        winPct: a.outcomes.win_pct!==null ? Math.round(a.outcomes.win_pct*1000)/10 : null,
+        archetype: a.archetype,
       }; })
       .filter(function(p){ return p.y !== null && p.x !== null; });
     return {
@@ -769,7 +774,7 @@ function buildScatterChart(){
     id: 'quadrants',
     beforeDraw: function(chart){
       var ctx2 = chart.ctx, xScale = chart.scales.x, yScale = chart.scales.y;
-      var midX = xScale.getPixelForValue(0), midY = yScale.getPixelForValue(50);
+      var midX = xScale.getPixelForValue(0), midY = yScale.getPixelForValue(meanPpg);
       var left = xScale.left, right = xScale.right, top = yScale.top, bottom = yScale.bottom;
       ctx2.save();
       ctx2.fillStyle = 'rgba(90,138,90,0.06)'; ctx2.fillRect(midX, top, right-midX, midY-top);
@@ -781,10 +786,10 @@ function buildScatterChart(){
       ctx2.beginPath(); ctx2.moveTo(left, midY); ctx2.lineTo(right, midY); ctx2.stroke();
       ctx2.setLineDash([]);
       ctx2.font = '600 10px Outfit, sans-serif';
-      ctx2.fillStyle = 'rgba(90,138,90,0.6)';  ctx2.fillText('High surplus, high win%', midX+8, top+14);
-      ctx2.fillStyle = 'rgba(168,90,90,0.6)';  ctx2.fillText('Low surplus, low win%', left+6, bottom-6);
-      ctx2.fillStyle = 'rgba(150,130,80,0.6)'; ctx2.fillText('Low surplus, high win%', left+6, top+14);
-      ctx2.fillText('High surplus, low win%', midX+8, bottom-6);
+      ctx2.fillStyle = 'rgba(90,138,90,0.6)';  ctx2.fillText('High surplus, high PPG', midX+8, top+14);
+      ctx2.fillStyle = 'rgba(168,90,90,0.6)';  ctx2.fillText('Low surplus, low PPG', left+6, bottom-6);
+      ctx2.fillStyle = 'rgba(150,130,80,0.6)'; ctx2.fillText('Low surplus, high PPG', left+6, top+14);
+      ctx2.fillText('High surplus, low PPG', midX+8, bottom-6);
       ctx2.restore();
     }
   };
@@ -804,8 +809,8 @@ function buildScatterChart(){
               return [
                 'Archetype: ' + r.archetype,
                 'Surplus: ' + (r.x>=0?'+':'') + r.x.toFixed(3) + '/pick',
-                'Win%: ' + r.y.toFixed(1) + '%',
-                'PPG: ' + (r.ppg!==null ? r.ppg.toFixed(1) : 'N/A'),
+                'PPG: ' + r.y.toFixed(1),
+                'Win%: ' + (r.winPct!==null ? r.winPct.toFixed(1)+'%' : 'N/A'),
               ];
             }
           }
@@ -814,8 +819,8 @@ function buildScatterChart(){
       scales: {
         x: { grid:{color:'rgba(156,148,156,0.12)',drawBorder:false}, ticks:{color:'#8a8480'},
              title:{display:true,text:'Surplus Per Pick',color:'#8a8480',font:{size:11}} },
-        y: { grid:{color:'rgba(156,148,156,0.12)',drawBorder:false}, ticks:{color:'#8a8480',callback:function(v){return v+'%';}},
-             title:{display:true,text:'Win %',color:'#8a8480',font:{size:11}}, min:5, max:90 }
+        y: { grid:{color:'rgba(156,148,156,0.12)',drawBorder:false}, ticks:{color:'#8a8480'},
+             title:{display:true,text:'Points Per Game',color:'#8a8480',font:{size:11}}, grace:'10%' }
       }
     },
     plugins: [quadrantPlugin]
