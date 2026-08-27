@@ -139,19 +139,12 @@
 .metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
 .group-desc { font-size:0.78rem;color:var(--text-mid);margin-bottom:0.9rem;line-height:1.5; }
 
-/* ── Headline finding callout ── */
-.reality-check { border-left:3px solid #b9843f; }
-.reality-check .callout-label { color:#b9843f; }
-.reality-stats { display:flex;flex-wrap:wrap;gap:1.5rem;margin-top:0.85rem; }
-.reality-stat { min-width:120px; }
-.reality-stat-val { font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:var(--palm);line-height:1; }
-.reality-stat-lbl { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);font-weight:700;margin-top:0.25rem; }
-
 /* ── ARCHETYPE SECTION ── */
 .archetype-cards { display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin-bottom:1.5rem; }
-.archetype-card { padding:1.25rem 1.5rem;border-left:3px solid var(--accent); }
-.archetype-card-head { display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-bottom:0.25rem; }
-.archetype-name { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--palm); }
+.archetype-card { padding:1.25rem 1.5rem; }
+.archetype-card-head { display:flex;align-items:center;gap:0.55rem;margin-bottom:0.25rem; }
+.archetype-dot { width:12px;height:12px;border-radius:50%;flex-shrink:0; }
+.archetype-name { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--palm);flex:1; }
 .archetype-n { font-size:0.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap; }
 .archetype-desc { font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem;line-height:1.5; }
 .archetype-stats { display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem; }
@@ -308,16 +301,6 @@
     <p>Every manager-season is scored on 20 drafting signals, distilled here into 10 non-redundant traits. The radar below normalizes each trait against the field <em>for that season</em> (outer edge = that year's league max), so the shapes compare drafting style, not draft-year inflation. Toggle managers on and off, switch between seasons or career, and hover any point for the raw number behind it. All data covers 2020-2025, 85 manager-seasons across 16 managers.</p>
   </div>
 
-  <div class="callout glass reality-check">
-    <div class="callout-label">The Headline Finding, Stated Plainly</div>
-    <p>Across every test we ran, drafting style showed <strong>no detectable relationship</strong> to regular-season outcomes. These archetypes describe <em>how</em> managers draft, not whether they win. Treat everything below as a lens on philosophy, not a scouting grade.</p>
-    <div class="reality-stats">
-      <div class="reality-stat"><div class="reality-stat-val">p = 0.232</div><div class="reality-stat-lbl">Archetype vs Win%</div></div>
-      <div class="reality-stat"><div class="reality-stat-val">p = 0.568</div><div class="reality-stat-lbl">Archetype vs PPG</div></div>
-      <div class="reality-stat"><div class="reality-stat-val">14 / 16</div><div class="reality-stat-lbl">Managers span &gt;1 archetype</div></div>
-      <div class="reality-stat"><div class="reality-stat-val">0.53 ± 0.18</div><div class="reality-stat-lbl">Bootstrap cluster stability (ARI)</div></div>
-    </div>
-  </div>
   <!-- SCOUTING REPORT / RADAR SECTION -->
   <div class="section-label" id="style-comparison">Scouting Report</div>
   <div class="section-title">Select managers to overlay their draft profiles.</div>
@@ -391,7 +374,7 @@
     <div class="cluster-scatter-wrap">
       <canvas id="chart-scatter"></canvas>
     </div>
-    <p class="metric-note">X axis: surplus per pick that season. Y axis: win%. The four quadrants are purely descriptive. Per the headline finding above, surplus and win% aren't statistically linked here, so no quadrant should be read as "the draft caused the record."</p>
+    <p class="metric-note">X axis: surplus per pick that season. Y axis: win%. The four quadrants are purely descriptive: Kruskal-Wallis tests found no significant link between archetype and either Win% or PPG (see Archetype Outcomes below), so no quadrant should be read as "the draft caused the record."</p>
   </div>
 
   <div class="section-label" style="margin-top:2rem;" id="archetype-outcomes">Archetype Outcomes</div>
@@ -473,7 +456,7 @@ var GROUP_DESCRIPTIONS = {
   patience: "How many rounds later than the field a manager waits to draft their first player at each non-RB/WR skill position. Higher = more patient.",
   conviction: "How far off consensus ADP a manager drafts, expressed five different ways. These five metrics correlate heavily (r=0.73\u20130.84); read them as one signal from different angles, not five independent votes.",
   posdev: "Average ADP deviation broken out by position. Sign convention (reach vs. value) wasn't re-confirmed this session, so read relative ranking across managers rather than the raw sign.",
-  outcomes: "Regular-season results. Not significantly associated with any drafting signal above; see the Headline Finding callout.",
+  outcomes: "Regular-season results. Not significantly associated with any drafting signal above (Kruskal-Wallis p=0.232 for Win%, p=0.568 for PPG).",
   career_extras: "Career-only figures not used in the season-level clustering: raw first-pick rounds by position, positional concentration (mirror image of diversity), and draft adaptability, i.e. how much a manager's approach varies year to year."
 };
 
@@ -734,8 +717,9 @@ function buildArchetypeCards(){
   var el = document.getElementById('archetype-cards'); if(!el) return;
   el.innerHTML = ARCHETYPES.cluster_summary.map(function(c){
     var o = c.outcomes;
-    return '<div class="archetype-card glass" style="border-left-color:'+c.color+'">'
-      +'<div class="archetype-card-head"><div class="archetype-name" style="color:'+c.color+'">'+c.name+'</div>'
+    return '<div class="archetype-card glass">'
+      +'<div class="archetype-card-head"><span class="archetype-dot" style="background:'+c.color+'"></span>'
+      +'<div class="archetype-name" style="color:'+c.color+'">'+c.name+'</div>'
       +'<div class="archetype-n">n='+c.n+'</div></div>'
       +'<div class="archetype-desc">'+c.desc+'</div>'
       +'<div class="archetype-stats">'
