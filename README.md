@@ -86,10 +86,6 @@ Deep-dive analytics grab bag:
 - Consolation/loser-bracket weeks are excluded from most "real games" analyses (lineup efficiency, waiver value, trade value, closest games, schedule luck, win% attribution); only real bracket games count.
 - Playoff round labels are season-aware: 2020 and 2021 use different schemes than 2022-2025 due to bracket-format changes.
 
-## Notable Rule Change
-
-- **D/ST scoring floor-of-0:** after evaluating D/ST scoring design, a floor-of-0 rule (no negative D/ST scores) was chosen as the preferred modification. It was selected for its minimal footprint, since it only affects a small fraction of team-weeks rather than overcorrecting outcomes broadly.
-
 ## Data Pipeline
 
 - **Raw data:** `weekly_rosters_bracket_only.csv` (player-level, weekly), `matchup_data.csv` (team-level, weekly)
