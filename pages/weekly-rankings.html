@@ -165,6 +165,37 @@
 }
 .rank-blurb-toggle.open .chevron { transform:rotate(90deg); }
 
+/* ── DRAFT ARCHETYPE BADGE -- links a manager's current-season draft
+   to its nearest historical archetype from Draft Fingerprints. Visual
+   weight is deliberately toned down for "borderline" and "poor_fit"
+   calls so the UI doesn't assert more certainty than the clustering
+   actually supports (documented silhouette 0.09-0.17). ── */
+.archetype-badge {
+  display:inline-flex;align-items:center;gap:0.4rem;flex-wrap:wrap;
+  font-size:0.7rem;margin-top:0.5rem;padding:0.35rem 0.65rem;
+  border-radius:20px;background:rgba(var(--accent-rgb),0.06);
+  border:1px solid rgba(var(--accent-rgb),0.15);
+}
+.archetype-badge .archetype-icon { font-size:0.85rem; }
+.archetype-badge .archetype-name { font-weight:700;color:var(--palm); }
+.archetype-badge .archetype-comps { color:var(--muted); }
+.archetype-badge a { color:var(--accent);text-decoration:none;font-weight:700; }
+.archetype-badge a:hover { text-decoration:underline; }
+
+.archetype-badge.confidence-borderline {
+  background:rgba(var(--accent-rgb),0.03);
+  border-style:dashed;
+}
+.archetype-badge.confidence-borderline .archetype-name::after {
+  content:' (leans)';font-weight:400;font-style:italic;color:var(--muted);
+}
+.archetype-badge.confidence-poor_fit {
+  background:transparent;border-style:dotted;opacity:0.85;
+}
+.archetype-badge.confidence-poor_fit .archetype-name::before {
+  content:'Closest match: ';font-weight:400;font-style:italic;color:var(--muted);
+}
+
 .rank-blurb {
   display:none;font-size:0.83rem;line-height:1.7;color:var(--text-mid);
   margin-top:0.65rem;padding-top:0.65rem;max-width:52ch;
@@ -199,6 +230,61 @@
 
 @media(max-width:768px) {
   .rank-blurb { max-width:none; }
+}
+
+/* ── BLURB SCREENSHOT (roster/IR grab shown with the look-back write-up) ── */
+.rank-blurb-screenshot {
+  display:block;max-width:100%;width:100%;max-width:420px;
+  border-radius:var(--radius-sm);margin-bottom:0.75rem;
+  border:1px solid rgba(var(--accent-rgb),0.18);
+  box-shadow:0 4px 18px rgba(0,0,0,0.08);
+  cursor:zoom-in;
+}
+.rank-blurb-caption {
+  font-size:0.68rem;color:var(--muted);font-style:italic;
+  margin:-0.55rem 0 0.75rem;max-width:420px;
+}
+
+/* Lightbox for tapping/clicking a blurb screenshot to view full-size */
+.screenshot-lightbox {
+  display:none;position:fixed;inset:0;z-index:999;
+  background:rgba(20,16,14,0.86);
+  align-items:center;justify-content:center;padding:2rem;cursor:zoom-out;
+}
+.screenshot-lightbox.open { display:flex; }
+.screenshot-lightbox img {
+  max-width:min(92vw,900px);max-height:88vh;
+  border-radius:var(--radius-sm);box-shadow:0 12px 48px rgba(0,0,0,0.4);
+}
+
+/* ══════════════════════════════════════
+   DRAFT INSIGHTS -- tabbed chart explorer showing ADP value, projected
+   PPG, and position spend for any week whose teams carry that data
+   (typically Week 1, right after the draft). Independent of the normal
+   trajectory/playoff-odds charts, which still run every week as usual.
+   Mirrors the Metric Explorer tab pattern from draft-fingerprints.html
+   so the two analytical pages feel like the same product.
+   ══════════════════════════════════════ */
+.draft-insights-tabs {
+  display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem;
+}
+.draft-insights-tab {
+  font-family:var(--font);font-size:0.78rem;font-weight:700;
+  color:var(--muted);background:rgba(var(--accent-rgb),0.06);
+  border:1px solid rgba(var(--accent-rgb),0.18);
+  border-radius:20px;padding:0.45rem 1rem;cursor:pointer;
+  transition:all 0.2s;
+}
+.draft-insights-tab:hover { color:var(--palm); border-color:rgba(var(--accent-rgb),0.35); }
+.draft-insights-tab.active {
+  background:var(--accent);color:#fff;border-color:var(--accent);
+}
+.draft-insights-desc {
+  font-size:0.78rem;color:var(--muted);line-height:1.6;margin:0 0 1.25rem;
+}
+
+@media(max-width:768px) {
+  .rank-blurb-screenshot, .rank-blurb-caption { max-width:none; }
 }
 
 /* ══════════════════════════════════════
@@ -452,6 +538,19 @@
     </div>
   </div>
 
+  <!-- DRAFT INSIGHTS -- shown whenever a week's teams carry ADP/proj/
+       position-spend data, typically Week 1 -->
+  <div id="draft-insights-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#127919; Draft Insights</div>
+    <div class="glass" style="padding:1.5rem;">
+      <div class="draft-insights-tabs" id="draft-insights-tabs"></div>
+      <p class="draft-insights-desc" id="draft-insights-desc"></p>
+      <div style="position:relative;height:440px;">
+        <canvas id="chart-draft-insights"></canvas>
+      </div>
+    </div>
+  </div>
+
   <!-- TRAJECTORY CHART -- below cards so it doesn't spoil the reveal -->
   <div id="trajectory-wrap" style="display:none;margin-bottom:2rem;">
     <div class="rankings-label" style="margin-top:0.5rem;">&#128200; Season Ranking Trajectory</div>
@@ -477,6 +576,11 @@
     <p>Preach Fantasy · Est. 2020 · Built by <a href="https://radeckiethan.github.io" target="_blank">Ethan Radecki</a></p>
   </footer>
 
+</div>
+
+<!-- Lightbox for full-size blurb screenshots -->
+<div class="screenshot-lightbox" id="screenshot-lightbox" onclick="closeScreenshotLightbox()">
+  <img id="screenshot-lightbox-img" src="" alt="">
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -603,8 +707,14 @@ function renderRankings(data) {
   var container = document.getElementById('rankings-content');
   var html = '';
 
-  var periodLabel = data.label ? data.label : ('Week ' + data.week);
-  html += '<div class="rankings-label">&#128202; Power Rankings &mdash; ' + data.season + ' ' + periodLabel + '</div>';
+  // Preseason snapshots (draft just happened, no games played yet) skip
+  // anything that assumes real game data -- record/PF/G/last-score stats
+  // and the week-over-week look-back label don't mean anything yet.
+  var isPreseason = !!data.is_preseason;
+
+  var periodLabel = data.label ? data.label : (isPreseason ? 'Preseason' : ('Week ' + data.week));
+  var headerVerb  = isPreseason ? 'Preseason Power Rankings' : 'Power Rankings';
+  html += '<div class="rankings-label">&#128202; ' + headerVerb + ' &mdash; ' + data.season + ' ' + periodLabel + '</div>';
   html += '<div class="rankings-list">';
 
   // Sort worst to best (14 first) for suspense reveal
@@ -614,8 +724,9 @@ function renderRankings(data) {
   // attached to (this file's "Week N" text describes performance through
   // the prior week), so label the look-back toggle with that earlier week.
   // A file can override this with blurb_label (e.g. "End of Season") when
-  // the write-up isn't tied to a single specific week.
-  var blurbLabel = data.blurb_label ? data.blurb_label : ('Week ' + (data.week - 1));
+  // the write-up isn't tied to a single specific week. Preseason has no
+  // prior week at all, so it defaults to a draft-recap label instead.
+  var blurbLabel = data.blurb_label ? data.blurb_label : (isPreseason ? 'Draft Recap' : ('Week ' + (data.week - 1)));
 
   teams.forEach(function(t) {
     var tier     = getTierClass(t.rank);
@@ -625,20 +736,32 @@ function renderRankings(data) {
 
     // Sub-line: avg rank + streak
     var subParts = [];
-    if (t.avg_rank !== null)   subParts.push('Avg rank #' + t.avg_rank.toFixed(1));
+    if (t.avg_rank !== null && t.avg_rank !== undefined) subParts.push('Avg rank #' + t.avg_rank.toFixed(1));
     if (t.streak)              subParts.push(streakHtml(t.streak));
     var subHtml = subParts.join(' &middot; ');
 
-    // Stats column
+    // Stats column -- preseason shows draft-derived numbers instead of
+    // game results, since there's no record/PF/G/last-score yet.
     var statsHtml = '';
-    if (t.record_to_date) {
-      statsHtml += '<div class="rank-record">' + t.record_to_date + '</div>';
-    }
-    if (t.ppg_to_date !== null) {
-      statsHtml += '<div class="rank-stat-line"><strong>' + t.ppg_to_date.toFixed(1) + '</strong> PF/G</div>';
-    }
-    if (t.last_score !== null) {
-      statsHtml += '<div class="rank-stat-line">Last: <strong>' + t.last_score + '</strong></div>';
+    if (isPreseason) {
+      if (t.proj_ppg !== null && t.proj_ppg !== undefined) {
+        statsHtml += '<div class="rank-record">' + t.proj_ppg.toFixed(1) + '</div>'
+                   + '<div class="rank-stat-line">Proj. PPG</div>';
+      }
+      if (t.adp_value !== null && t.adp_value !== undefined) {
+        var sign = t.adp_value > 0 ? '+' : '';
+        statsHtml += '<div class="rank-stat-line">ADP Value: <strong>' + sign + t.adp_value.toFixed(1) + '</strong></div>';
+      }
+    } else {
+      if (t.record_to_date) {
+        statsHtml += '<div class="rank-record">' + t.record_to_date + '</div>';
+      }
+      if (t.ppg_to_date !== null && t.ppg_to_date !== undefined) {
+        statsHtml += '<div class="rank-stat-line"><strong>' + t.ppg_to_date.toFixed(1) + '</strong> PF/G</div>';
+      }
+      if (t.last_score !== null && t.last_score !== undefined) {
+        statsHtml += '<div class="rank-stat-line">Last: <strong>' + t.last_score + '</strong></div>';
+      }
     }
 
     html += '<div class="rank-card glass ' + tier + '">';
@@ -652,15 +775,41 @@ function renderRankings(data) {
     // Logo
     html += '<img class="rank-logo" src="' + logo + '" alt="">';
 
-    // Look-back toggle + full historical write-up (blurbWeek's text, if we have it)
+    // Look-back toggle + full historical write-up (blurbWeek's text, if we have it),
+    // with an optional screenshot (roster/IR grab, etc.) shown above the text.
     var blurbHtml = '';
-    if (t.blurb) {
+    if (t.blurb || t.screenshot) {
+      var screenshotHtml = '';
+      if (t.screenshot) {
+        screenshotHtml += '<img class="rank-blurb-screenshot" src="' + t.screenshot + '" '
+                        + 'alt="' + t.manager + ' roster screenshot" '
+                        + 'onclick="openScreenshotLightbox(event,\'' + t.screenshot + '\')">';
+        if (t.screenshot_caption) {
+          screenshotHtml += '<div class="rank-blurb-caption">' + t.screenshot_caption + '</div>';
+        }
+      }
       blurbHtml = '<button class="rank-blurb-toggle" id="blurb-btn-' + slug + '" '
                 + 'onclick="toggleBlurb(\'' + slug + '\',\'' + blurbLabel + '\')">'
                 + '<span class="chevron">&#9656;</span>'
                 + '<span class="toggle-label">Read the ' + blurbLabel + ' take</span>'
                 + '</button>'
-                + '<div class="rank-blurb" id="blurb-' + slug + '">' + t.blurb + '</div>';
+                + '<div class="rank-blurb" id="blurb-' + slug + '">' + screenshotHtml + (t.blurb || '') + '</div>';
+    }
+
+    // Draft archetype badge -- links this manager's current draft to its
+    // nearest historical archetype from Draft Fingerprints, when present.
+    var archetypeHtml = '';
+    if (t.draft_archetype) {
+      var arch = t.draft_archetype;
+      var comps = (arch.comparisons || []).slice(0, 2)
+        .map(function(c){ return c.manager.replace(' Jr.','') + ' \u2019' + String(c.season).slice(2); })
+        .join(', ');
+      archetypeHtml = '<div class="archetype-badge confidence-' + arch.confidence + '">'
+        + '<span class="archetype-icon">&#129516;</span>'
+        + '<span class="archetype-name">' + arch.name + '</span>'
+        + (comps ? '<span class="archetype-comps">&middot; like ' + comps + '</span>' : '')
+        + ' <a href="draft-fingerprints.html">see cluster &rarr;</a>'
+        + '</div>';
     }
 
     // Info
@@ -668,6 +817,7 @@ function renderRankings(data) {
           + '<div class="rank-manager">' + t.manager + '</div>'
           + (subHtml ? '<div class="rank-sub">' + subHtml + '</div>' : '')
           + (t.synopsis ? '<div class="rank-synopsis">&ldquo;' + t.synopsis + '&rdquo;</div>' : '')
+          + archetypeHtml
           + blurbHtml
           + '</div>';
 
@@ -679,6 +829,18 @@ function renderRankings(data) {
 
   html += '</div>';
   container.innerHTML = html;
+}
+
+/* ── Blurb screenshot lightbox ───────────────────────────────────── */
+function openScreenshotLightbox(evt, src) {
+  evt.stopPropagation();
+  var box = document.getElementById('screenshot-lightbox');
+  var img = document.getElementById('screenshot-lightbox-img');
+  img.src = src;
+  box.classList.add('open');
+}
+function closeScreenshotLightbox() {
+  document.getElementById('screenshot-lightbox').classList.remove('open');
 }
 
 /* ── Look-back blurb expand/collapse ─────────────────────────────
@@ -739,6 +901,171 @@ var playoffThresholdPlugin = {
     ctx.restore();
   }
 };
+
+/* ══════════════════════════════════════
+   DRAFT INSIGHTS CHART
+   Tabbed horizontal-bar explorer, shown whenever the loaded week's
+   teams carry draft-derived data. Reads whichever of adp_value /
+   proj_ppg / position_spend each team object has -- a tab is only
+   offered if at least one team has that field.
+   ══════════════════════════════════════ */
+var draftInsightsChart = null;
+var draftInsightsTeams = null; // cached team list for the currently loaded week
+
+var DRAFT_METRICS = {
+  adp_value: {
+    label: 'ADP Value',
+    desc: 'How far each manager\u2019s draft picks ran from consensus ADP, positive means they reached, negative means they let a player fall to them.',
+    getValue: function(t){ return t.adp_value; },
+    format: function(v){ return (v > 0 ? '+' : '') + v.toFixed(1); },
+    diverging: true
+  },
+  proj_ppg: {
+    label: 'Projected PPG',
+    desc: 'Projected points per game for each roster, based on the draft that just wrapped.',
+    getValue: function(t){ return t.proj_ppg; },
+    format: function(v){ return v.toFixed(1); },
+    diverging: false
+  },
+  position_spend: {
+    label: 'Position Spend',
+    desc: 'Share of each manager\u2019s draft capital spent at QB, RB, WR, and TE.',
+    getValue: function(t){ return t.position_spend ? 1 : null; }, // presence check only, stacked render is separate
+    format: function(v){ return v.toFixed(0) + '%'; },
+    diverging: false,
+    stacked: true
+  }
+};
+
+var POSITION_SPEND_COLORS = { QB:'#7f6647', RB:'#28843a', WR:'#416cab', TE:'#ba4b15' };
+
+function availableDraftMetrics(teams) {
+  return Object.keys(DRAFT_METRICS).filter(function(key) {
+    var m = DRAFT_METRICS[key];
+    return teams.some(function(t){ return m.getValue(t) !== null && m.getValue(t) !== undefined; });
+  });
+}
+
+function renderDraftInsights(data) {
+  var wrap = document.getElementById('draft-insights-wrap');
+  draftInsightsTeams = data.teams;
+  var keys = availableDraftMetrics(draftInsightsTeams);
+  if (!keys.length) { wrap.style.display = 'none'; return; }
+
+  var tabsEl = document.getElementById('draft-insights-tabs');
+  tabsEl.innerHTML = keys.map(function(key, i) {
+    return '<button class="draft-insights-tab' + (i === 0 ? ' active' : '') + '" '
+         + 'id="draft-insights-tab-' + key + '" onclick="selectDraftMetric(\'' + key + '\')">'
+         + DRAFT_METRICS[key].label + '</button>';
+  }).join('');
+
+  wrap.style.display = 'block';
+  selectDraftMetric(keys[0]);
+}
+
+function selectDraftMetric(key) {
+  var keys = availableDraftMetrics(draftInsightsTeams || []);
+  keys.forEach(function(k) {
+    var tab = document.getElementById('draft-insights-tab-' + k);
+    if (tab) tab.classList.toggle('active', k === key);
+  });
+  document.getElementById('draft-insights-desc').textContent = DRAFT_METRICS[key].desc;
+  drawDraftChart(key);
+}
+
+function drawDraftChart(key) {
+  var metric = DRAFT_METRICS[key];
+  if (draftInsightsChart) { draftInsightsChart.destroy(); draftInsightsChart = null; }
+
+  Chart.defaults.font.family = "'Outfit', sans-serif";
+  Chart.defaults.color       = '#5a5550';
+  var ctx = document.getElementById('chart-draft-insights').getContext('2d');
+
+  if (metric.stacked) {
+    // Position Spend: one stacked bar per manager, sorted by RB share so
+    // similar roster-construction philosophies cluster visually.
+    var withSpend = draftInsightsTeams.filter(function(t){ return !!t.position_spend; });
+    withSpend.sort(function(a, b){ return (b.position_spend.RB||0) - (a.position_spend.RB||0); });
+    var labels = withSpend.map(function(t){ return t.manager.replace(' Jr.','').replace('Ryan P ','Ryan '); });
+    var posKeys = ['QB','RB','WR','TE'];
+    var datasets = posKeys.map(function(pos) {
+      return {
+        label: pos,
+        data: withSpend.map(function(t){ return t.position_spend[pos] || 0; }),
+        backgroundColor: POSITION_SPEND_COLORS[pos],
+        borderRadius: 3,
+        barThickness: 18
+      };
+    });
+
+    draftInsightsChart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top', labels: { boxWidth: 10, color: '#5a5550', font: { size: 11 } } },
+          tooltip: { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + ctx.parsed.x.toFixed(0) + '%'; } } }
+        },
+        scales: {
+          x: { stacked: true, min: 0, max: 100, grid: { color: 'rgba(156,148,156,0.15)', drawBorder: false }, ticks: { color: '#8a8480', callback: function(v){ return v + '%'; } } },
+          y: { stacked: true, grid: { display: false }, ticks: { color: '#5a5550', font: { size: 11, weight: '600' } } }
+        }
+      }
+    });
+    return;
+  }
+
+  var rows = draftInsightsTeams
+    .map(function(t) {
+      var v = metric.getValue(t);
+      return (v === null || v === undefined) ? null : { manager: t.manager, value: v };
+    })
+    .filter(Boolean)
+    .sort(function(a, b){ return b.value - a.value; });
+
+  var labels = rows.map(function(r){ return r.manager.replace(' Jr.','').replace('Ryan P ','Ryan '); });
+  var values = rows.map(function(r){ return r.value; });
+  var colors = rows.map(function(r){ return MANAGER_COLORS[r.manager] || '#9c949c'; });
+
+  draftInsightsChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: values,
+        backgroundColor: colors,
+        borderRadius: 4,
+        barThickness: 18
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) { return metric.format(ctx.parsed.x); }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid:  { color: 'rgba(156,148,156,0.15)', drawBorder: false },
+          ticks: { color: '#8a8480', callback: function(v){ return metric.diverging && v > 0 ? '+' + v : v; } }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { color: '#5a5550', font: { size: 11, weight: '600' } }
+        }
+      }
+    }
+  });
+}
 
 /* ── Trajectory chart ─────────────────────────────────────────── */
 function renderTrajectoryChart(season, upToWeek, weeksData) {
@@ -1153,6 +1480,7 @@ function loadRankings() {
   container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#9203;</span><p>Loading...</p></div>';
   document.getElementById('trajectory-wrap').style.display = 'none';
   document.getElementById('playoff-odds-wrap').style.display = 'none';
+  document.getElementById('draft-insights-wrap').style.display = 'none';
 
   // Playoff round slugs are non-numeric (e.g. "quarterfinals") -- they get
   // their own render path and skip the regular-season trajectory/odds
@@ -1173,6 +1501,11 @@ function loadRankings() {
   fetchWeek(season, week)
     .then(function(data) {
       renderRankings(data);
+
+      // Draft-derived charts (ADP value, projected PPG, position spend) show
+      // whenever a week's teams carry that data -- most useful on Week 1,
+      // but not tied to any special "preseason" mode, so this runs every week.
+      renderDraftInsights(data);
 
       // Fetch all weeks up to and including selected week for trajectory
       var entry    = manifest.find(function(m){ return m.season === season; });
