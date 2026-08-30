@@ -1,0 +1,622 @@
+{
+  "season": 2026,
+  "week": 1,
+  "teams": [
+    {
+      "manager": "Ethan Radecki",
+      "rank": 1,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 119.7,
+      "adp_value": 5.06,
+      "position_spend": {
+        "QB": 14.5,
+        "RB": 38.7,
+        "WR": 36.7,
+        "TE": 10.1
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 2.53,
+        "margin_over_2nd": 1.52
+      }
+    },
+    {
+      "manager": "Charlie Gorman",
+      "rank": 2,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 115.8,
+      "adp_value": -8.06,
+      "position_spend": {
+        "QB": 8.3,
+        "RB": 45.1,
+        "WR": 40.0,
+        "TE": 6.6
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 4.76,
+        "margin_over_2nd": 1.04
+      }
+    },
+    {
+      "manager": "Aidan Quigley",
+      "rank": 3,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 115.8,
+      "adp_value": 3.25,
+      "position_spend": {
+        "QB": 8.1,
+        "RB": 33.9,
+        "WR": 49.8,
+        "TE": 8.1
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 4.05,
+        "margin_over_2nd": 2.32
+      }
+    },
+    {
+      "manager": "Carmine Pittelli Jr.",
+      "rank": 4,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 115.6,
+      "adp_value": -12.38,
+      "position_spend": {
+        "QB": 15.5,
+        "RB": 34.4,
+        "WR": 43.2,
+        "TE": 7.0
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 1,
+        "name": "Patient Value Hunters",
+        "confidence": "borderline",
+        "comparisons": [
+          {
+            "manager": "Deniz Bileydi",
+            "season": 2025
+          },
+          {
+            "manager": "Ben Castaldo",
+            "season": 2025
+          },
+          {
+            "manager": "Ben Castaldo",
+            "season": 2022
+          }
+        ],
+        "dist_to_nearest": 5.18,
+        "margin_over_2nd": 0.91
+      }
+    },
+    {
+      "manager": "Ben Castaldo",
+      "rank": 5,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 116.7,
+      "adp_value": -3.0,
+      "position_spend": {
+        "QB": 13.7,
+        "RB": 31.4,
+        "WR": 45.6,
+        "TE": 9.2
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "borderline",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 4.52,
+        "margin_over_2nd": 0.82
+      }
+    },
+    {
+      "manager": "Deniz Bileydi",
+      "rank": 6,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 115.2,
+      "adp_value": -1.69,
+      "position_spend": {
+        "QB": 9.1,
+        "RB": 41.4,
+        "WR": 37.6,
+        "TE": 11.9
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 3.93,
+        "margin_over_2nd": 1.49
+      }
+    },
+    {
+      "manager": "Brandon Hancock",
+      "rank": 7,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 115.1,
+      "adp_value": 10.75,
+      "position_spend": {
+        "QB": 9.9,
+        "RB": 42.6,
+        "WR": 40.9,
+        "TE": 6.5
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 5.01,
+        "margin_over_2nd": 2.03
+      }
+    },
+    {
+      "manager": "Quin Gegwich",
+      "rank": 8,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 115.0,
+      "adp_value": 6.62,
+      "position_spend": {
+        "QB": 8.9,
+        "RB": 35.7,
+        "WR": 44.1,
+        "TE": 11.3
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 3.99,
+        "margin_over_2nd": 2.16
+      }
+    },
+    {
+      "manager": "Cole Maney",
+      "rank": 9,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 113.9,
+      "adp_value": 3.81,
+      "position_spend": {
+        "QB": 10.4,
+        "RB": 29.2,
+        "WR": 48.7,
+        "TE": 11.8
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 5.36,
+        "margin_over_2nd": 1.63
+      }
+    },
+    {
+      "manager": "Andrew Root",
+      "rank": 10,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 114.2,
+      "adp_value": -2.12,
+      "position_spend": {
+        "QB": 9.7,
+        "RB": 26.1,
+        "WR": 48.5,
+        "TE": 15.7
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 5.85,
+        "margin_over_2nd": 1.12
+      }
+    },
+    {
+      "manager": "Max Malich",
+      "rank": 11,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 112.1,
+      "adp_value": 22.94,
+      "position_spend": {
+        "QB": 8.9,
+        "RB": 31.1,
+        "WR": 42.3,
+        "TE": 17.7
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 0,
+        "name": "High-Conviction Board-Breakers",
+        "confidence": "poor_fit",
+        "comparisons": [
+          {
+            "manager": "Deniz Bileydi",
+            "season": 2022
+          },
+          {
+            "manager": "Ethan Radecki",
+            "season": 2020
+          },
+          {
+            "manager": "Max Malich",
+            "season": 2022
+          }
+        ],
+        "dist_to_nearest": 7.54,
+        "margin_over_2nd": 0.25
+      }
+    },
+    {
+      "manager": "Baylen Slansky",
+      "rank": 12,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 111.6,
+      "adp_value": -0.81,
+      "position_spend": {
+        "QB": 10.7,
+        "RB": 31.5,
+        "WR": 35.7,
+        "TE": 22.0
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 3.87,
+        "margin_over_2nd": 1.62
+      }
+    },
+    {
+      "manager": "Ryan P McQuaid",
+      "rank": 13,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 109.6,
+      "adp_value": -0.75,
+      "position_spend": {
+        "QB": 14.5,
+        "RB": 30.2,
+        "WR": 43.6,
+        "TE": 11.7
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "borderline",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 3.68,
+        "margin_over_2nd": 0.46
+      }
+    },
+    {
+      "manager": "Anthony Kelly",
+      "rank": 14,
+      "prev_rank": null,
+      "rank_change": null,
+      "avg_rank": null,
+      "ppg_to_date": null,
+      "record_to_date": "0-0",
+      "last_score": null,
+      "streak": null,
+      "proj_ppg": 109.3,
+      "adp_value": 5.0,
+      "position_spend": {
+        "QB": 10.7,
+        "RB": 46.0,
+        "WR": 36.4,
+        "TE": 7.0
+      },
+      "synopsis": "",
+      "blurb": "",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "draft_archetype": {
+        "cluster_id": 3,
+        "name": "Balanced Board-Followers",
+        "confidence": "clear",
+        "comparisons": [
+          {
+            "manager": "Cole Maney",
+            "season": 2025
+          },
+          {
+            "manager": "Charlie Gorman",
+            "season": 2025
+          },
+          {
+            "manager": "Baylen Slansky",
+            "season": 2024
+          }
+        ],
+        "dist_to_nearest": 3.15,
+        "margin_over_2nd": 2.48
+      }
+    }
+  ]
+}
