@@ -12,7 +12,7 @@
       "record_to_date": "0-0",
       "last_score": null,
       "streak": null,
-      "proj_ppg": 119.3,
+      "proj_ppg": 119.2,
       "adp_value": 6.21,
       "position_spend": {
         "QB": 10.2,
@@ -215,7 +215,9 @@
           "espn_adp": 223.0,
           "adp_deviation": 12.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 110.8,
+      "sos_rank": 12
     },
     {
       "manager": "Charlie Gorman",
@@ -227,7 +229,7 @@
       "record_to_date": "0-0",
       "last_score": null,
       "streak": null,
-      "proj_ppg": 116.2,
+      "proj_ppg": 116.3,
       "adp_value": -9.21,
       "position_spend": {
         "QB": 5.5,
@@ -430,7 +432,9 @@
           "espn_adp": 202.0,
           "adp_deviation": -22.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 110.4,
+      "sos_rank": 13
     },
     {
       "manager": "Aidan Quigley",
@@ -645,7 +649,9 @@
           "espn_adp": 238.0,
           "adp_deviation": 16.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 112.1,
+      "sos_rank": 7
     },
     {
       "manager": "Carmine Pittelli Jr.",
@@ -860,7 +866,9 @@
           "espn_adp": 196.0,
           "adp_deviation": -27.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 111.9,
+      "sos_rank": 8
     },
     {
       "manager": "Ben Castaldo",
@@ -1075,7 +1083,9 @@
           "espn_adp": 203.0,
           "adp_deviation": -11.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 111.9,
+      "sos_rank": 9
     },
     {
       "manager": "Deniz Bileydi",
@@ -1087,7 +1097,7 @@
       "record_to_date": "0-0",
       "last_score": null,
       "streak": null,
-      "proj_ppg": 109.5,
+      "proj_ppg": 109.4,
       "adp_value": -3.0,
       "position_spend": {
         "QB": 7.5,
@@ -1290,7 +1300,9 @@
           "espn_adp": 201.0,
           "adp_deviation": -16.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 113.0,
+      "sos_rank": 3
     },
     {
       "manager": "Brandon Hancock",
@@ -1505,7 +1517,9 @@
           "espn_adp": 281.0,
           "adp_deviation": 60.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 112.6,
+      "sos_rank": 4
     },
     {
       "manager": "Quin Gegwich",
@@ -1720,7 +1734,9 @@
           "espn_adp": 216.0,
           "adp_deviation": 0.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 112.1,
+      "sos_rank": 6
     },
     {
       "manager": "Cole Maney",
@@ -1732,7 +1748,7 @@
       "record_to_date": "0-0",
       "last_score": null,
       "streak": null,
-      "proj_ppg": 113.9,
+      "proj_ppg": 113.8,
       "adp_value": -3.64,
       "position_spend": {
         "QB": 11.0,
@@ -1935,7 +1951,9 @@
           "espn_adp": 221.0,
           "adp_deviation": 2.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 112.5,
+      "sos_rank": 5
     },
     {
       "manager": "Andrew Root",
@@ -2150,7 +2168,9 @@
           "espn_adp": 195.0,
           "adp_deviation": -17.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 113.2,
+      "sos_rank": 2
     },
     {
       "manager": "Max Malich",
@@ -2365,7 +2385,9 @@
           "espn_adp": 287.0,
           "adp_deviation": 74.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 110.0,
+      "sos_rank": 14
     },
     {
       "manager": "Baylen Slansky",
@@ -2580,7 +2602,9 @@
           "espn_adp": 232.0,
           "adp_deviation": 14.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 113.9,
+      "sos_rank": 1
     },
     {
       "manager": "Ryan P McQuaid",
@@ -2592,7 +2616,7 @@
       "record_to_date": "0-0",
       "last_score": null,
       "streak": null,
-      "proj_ppg": 109.3,
+      "proj_ppg": 114.4,
       "adp_value": -1.29,
       "position_spend": {
         "QB": 10.9,
@@ -2795,7 +2819,9 @@
           "espn_adp": 249.0,
           "adp_deviation": 29.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 111.4,
+      "sos_rank": 11
     },
     {
       "manager": "Anthony Kelly",
@@ -3010,7 +3036,9 @@
           "espn_adp": 237.0,
           "adp_deviation": 22.0
         }
-      ]
+      ],
+      "sos_avg_opp_ppg": 111.5,
+      "sos_rank": 10
     }
   ]
 }
