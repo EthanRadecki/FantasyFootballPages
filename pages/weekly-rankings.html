@@ -111,6 +111,16 @@
 .rank-stat-line { font-size:0.7rem;color:var(--muted);margin-top:0.15rem; }
 .rank-stat-line strong { color:var(--text-mid);font-weight:700; }
 
+/* SOS badge -- small pill on the stats column, color-coded red (hard
+   schedule) to green (easy schedule) using the same gradient as the
+   Draft Insights "Projected SOS" chart, so the two stay visually
+   consistent wherever a person sees them. */
+.sos-badge {
+  display:inline-block;font-size:0.62rem;font-weight:800;
+  padding:0.15rem 0.5rem;border-radius:20px;margin-top:0.35rem;
+  white-space:nowrap;
+}
+
 /* Streak badge */
 .streak-badge {
   display:inline-block;font-size:0.62rem;font-weight:800;
@@ -814,6 +824,26 @@ function renderRankings(data) {
       }
     }
 
+    // SOS badge -- shown regardless of preseason/in-season, since it's a
+    // schedule fact rather than a results fact. Color-coded against this
+    // week's own min/max spread of opponent PPG across all 14 managers
+    // (same approach as the Projected SOS chart tab).
+    if (t.sos_avg_opp_ppg !== null && t.sos_avg_opp_ppg !== undefined) {
+      var allSos = data.teams
+        .map(function(tt){ return tt.sos_avg_opp_ppg; })
+        .filter(function(v){ return v !== null && v !== undefined; });
+      var sosMin = Math.min.apply(null, allSos), sosMax = Math.max.apply(null, allSos);
+      var sosRange = Math.max(sosMax - sosMin, 0.1);
+      var sosT = 1 - (t.sos_avg_opp_ppg - sosMin) / sosRange; // 1 = easiest (green), 0 = hardest (red)
+      var sosFg = gradientColor(sosT);
+      var sosBg = rgbaFromRgbString(sosFg, 0.14);
+      var sosLabel = (t.sos_rank === 1) ? 'Hardest' : (t.sos_rank === allSos.length) ? 'Easiest' : ('#' + t.sos_rank + ' Hardest');
+      statsHtml += '<div class="sos-badge" style="color:' + sosFg + ';background:' + sosBg + ';" '
+                 + 'title="Projected Strength of Schedule: ' + t.sos_avg_opp_ppg.toFixed(1) + ' avg opponent PPG">'
+                 + 'SOS ' + t.sos_avg_opp_ppg.toFixed(1) + ' &middot; ' + sosLabel
+                 + '</div>';
+    }
+
     html += '<div class="rank-card glass ' + tier + '">';
 
     // Rank + change
@@ -973,13 +1003,6 @@ var DRAFT_METRICS = {
     format: function(v){ return (v > 0 ? '+' : '') + v.toFixed(1); },
     diverging: true
   },
-  proj_ppg: {
-    label: 'Projected PPG',
-    desc: 'Projected points per game for each roster, based on the draft that just wrapped.',
-    getValue: function(t){ return t.proj_ppg; },
-    format: function(v){ return v.toFixed(1); },
-    diverging: false
-  },
   position_spend: {
     label: 'Position Spend',
     desc: 'Share of each manager\u2019s draft capital spent at QB, RB, WR, and TE.',
@@ -987,6 +1010,23 @@ var DRAFT_METRICS = {
     format: function(v){ return v.toFixed(0) + '%'; },
     diverging: false,
     stacked: true
+  },
+  proj_ppg: {
+    // Label is rewritten per-week in renderDraftInsights() to "Week N
+    // Projected Points" since this reflects that week's starter total,
+    // not a season-long per-game average.
+    label: 'Projected Points',
+    desc: 'Projected starter total for each roster this week.',
+    getValue: function(t){ return t.proj_ppg; },
+    format: function(v){ return v.toFixed(1); },
+    diverging: false
+  },
+  projected_sos: {
+    label: 'Projected SOS',
+    desc: 'Average projected points of each manager\u2019s opponents across the full regular-season schedule. Higher means a tougher slate of matchups.',
+    getValue: function(t){ return t.sos_avg_opp_ppg; },
+    format: function(v){ return v.toFixed(1) + ' PPG'; },
+    diverging: false
   }
 };
 
@@ -1012,6 +1052,11 @@ function gradientColor(t) {
   var bl = Math.round(a[2] + (b[2]-a[2])*k);
   return 'rgb(' + r + ',' + g + ',' + bl + ')';
 }
+function rgbaFromRgbString(rgbStr, alpha) {
+  var m = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/.exec(rgbStr);
+  if (!m) return rgbStr;
+  return 'rgba(' + m[1] + ',' + m[2] + ',' + m[3] + ',' + alpha + ')';
+}
 
 function availableDraftMetrics(teams) {
   return Object.keys(DRAFT_METRICS).filter(function(key) {
@@ -1023,6 +1068,13 @@ function availableDraftMetrics(teams) {
 function renderDraftInsights(data) {
   var wrap = document.getElementById('draft-insights-wrap');
   draftInsightsTeams = data.teams;
+
+  // "Projected Points" reflects a single week's starter total, so its tab
+  // label carries the actual week number rather than reading as a
+  // season-long per-game average.
+  var wkLabel = data.label ? data.label : ('Week ' + data.week);
+  DRAFT_METRICS.proj_ppg.label = wkLabel + ' Projected Points';
+
   var keys = availableDraftMetrics(draftInsightsTeams);
   if (!keys.length) { wrap.style.display = 'none'; return; }
 
@@ -1056,7 +1108,8 @@ function drawDraftChart(key) {
   Chart.defaults.color       = '#5a5550';
   var ctx = document.getElementById('chart-draft-insights').getContext('2d');
   var hintEl = document.getElementById('draft-insights-hint');
-  hintEl.style.display = (key === 'proj_ppg') ? 'none' : 'block';
+  var noDrilldown = (key === 'proj_ppg' || key === 'projected_sos');
+  hintEl.style.display = noDrilldown ? 'none' : 'block';
 
   if (metric.stacked) {
     // Position Spend: one stacked bar per manager, sorted by RB share so
@@ -1127,6 +1180,13 @@ function drawDraftChart(key) {
   } else if (key === 'adp_value') {
     var extent = Math.max.apply(null, values.map(Math.abs).concat([5]));
     barColors = values.map(function(v){ return gradientColor((extent - v) / (2 * extent)); });
+  } else if (key === 'projected_sos') {
+    // Lower opponent PPG = easier schedule = green; higher = red. Scored
+    // against this week's own min/max spread since the gap between hardest
+    // and easiest schedule is usually just a few points.
+    var minV = Math.min.apply(null, values), maxV = Math.max.apply(null, values);
+    var range = Math.max(maxV - minV, 0.1);
+    barColors = values.map(function(v){ return gradientColor(1 - (v - minV) / range); });
   } else {
     barColors = values.map(function(){ return '#9c949c'; });
   }
@@ -1147,13 +1207,13 @@ function drawDraftChart(key) {
       responsive: true,
       maintainAspectRatio: false,
       onClick: function(evt, elements) {
-        if (!elements.length || key === 'proj_ppg') return;
+        if (!elements.length || noDrilldown) return;
         var mgr  = rows[elements[0].index].manager;
         var team = draftInsightsTeams.filter(function(t){ return t.manager === mgr; })[0];
         if (key === 'adp_value') showAdpValueDetail(team);
       },
       onHover: function(evt, elements) {
-        evt.native.target.style.cursor = (elements.length && key !== 'proj_ppg') ? 'pointer' : 'default';
+        evt.native.target.style.cursor = (elements.length && !noDrilldown) ? 'pointer' : 'default';
       },
       plugins: {
         legend: { display: false },
