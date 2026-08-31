@@ -1192,7 +1192,7 @@ function draftDetailPosChip(pos) {
 
 function draftDetailDevCell(dev) {
   if (dev === null || dev === undefined) return '<span style="color:var(--muted);">N/A</span>';
-  var cls = dev >= 0 ? 'draft-detail-dev-pos' : 'draft-detail-dev-neg';
+  var cls = dev >= 0 ? 'draft-detail-dev-neg' : 'draft-detail-dev-pos';
   return '<span class="' + cls + '">' + (dev > 0 ? '+' : '') + dev.toFixed(1) + '</span>';
 }
 
