@@ -13,12 +13,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 119.7,
-      "adp_value": 5.06,
+      "adp_value": 6.21,
       "position_spend": {
-        "QB": 14.5,
-        "RB": 38.7,
-        "WR": 36.7,
-        "TE": 10.1
+        "QB": 10.2,
+        "RB": 45.9,
+        "WR": 37.2,
+        "TE": 6.7
       },
       "synopsis": "",
       "blurb": "",
@@ -53,7 +53,169 @@
         ],
         "dist_to_nearest": 2.53,
         "margin_over_2nd": 1.52
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Omarion Hampton",
+          "nfl_team": "LAC",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 14,
+          "overall": 14,
+          "espn_adp": 14.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Ashton Jeanty",
+          "nfl_team": "LV",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 1,
+          "overall": 15,
+          "espn_adp": 18.0,
+          "adp_deviation": 3.0
+        },
+        {
+          "player": "Zay Flowers",
+          "nfl_team": "BAL",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 14,
+          "overall": 42,
+          "espn_adp": 37.0,
+          "adp_deviation": -5.0
+        },
+        {
+          "player": "Jaylen Waddle",
+          "nfl_team": "DEN",
+          "pos": "WR",
+          "round": 4,
+          "pick_in_round": 1,
+          "overall": 43,
+          "espn_adp": 45.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Parker Washington",
+          "nfl_team": "JAX",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 14,
+          "overall": 70,
+          "espn_adp": 76.0,
+          "adp_deviation": 6.0
+        },
+        {
+          "player": "Jaxson Dart",
+          "nfl_team": "NYG",
+          "pos": "QB",
+          "round": 6,
+          "pick_in_round": 1,
+          "overall": 71,
+          "espn_adp": 85.0,
+          "adp_deviation": 14.0
+        },
+        {
+          "player": "Tucker Kraft",
+          "nfl_team": "GB",
+          "pos": "TE",
+          "round": 7,
+          "pick_in_round": 8,
+          "overall": 92,
+          "espn_adp": 104.0,
+          "adp_deviation": 12.0
+        },
+        {
+          "player": "De'Zhaun Stribling",
+          "nfl_team": "SF",
+          "pos": "WR",
+          "round": 8,
+          "pick_in_round": 7,
+          "overall": 105,
+          "espn_adp": 123.0,
+          "adp_deviation": 18.0
+        },
+        {
+          "player": "Bo Nix",
+          "nfl_team": "DEN",
+          "pos": "QB",
+          "round": 9,
+          "pick_in_round": 14,
+          "overall": 126,
+          "espn_adp": 113.0,
+          "adp_deviation": -13.0
+        },
+        {
+          "player": "Chris Rodriguez Jr.",
+          "nfl_team": "JAX",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 1,
+          "overall": 127,
+          "espn_adp": 144.0,
+          "adp_deviation": 17.0
+        },
+        {
+          "player": "Tank Bigsby",
+          "nfl_team": "PHI",
+          "pos": "RB",
+          "round": 11,
+          "pick_in_round": 14,
+          "overall": 154,
+          "espn_adp": 179.0,
+          "adp_deviation": 25.0
+        },
+        {
+          "player": "Jonah Coleman",
+          "nfl_team": "DEN",
+          "pos": "RB",
+          "round": 12,
+          "pick_in_round": 1,
+          "overall": 155,
+          "espn_adp": 173.0,
+          "adp_deviation": 18.0
+        },
+        {
+          "player": "Brenton Strange",
+          "nfl_team": "JAX",
+          "pos": "TE",
+          "round": 13,
+          "pick_in_round": 14,
+          "overall": 182,
+          "espn_adp": 160.0,
+          "adp_deviation": -22.0
+        },
+        {
+          "player": "Chargers D/ST",
+          "nfl_team": "LAC",
+          "pos": "D/ST",
+          "round": 14,
+          "pick_in_round": 1,
+          "overall": 183,
+          "espn_adp": 190.0,
+          "adp_deviation": 7.0
+        },
+        {
+          "player": "Will Reichard",
+          "nfl_team": "MIN",
+          "pos": "K",
+          "round": 15,
+          "pick_in_round": 14,
+          "overall": 210,
+          "espn_adp": 197.0,
+          "adp_deviation": -13.0
+        },
+        {
+          "player": "Samaje Perine",
+          "nfl_team": "CIN",
+          "pos": "RB",
+          "round": 16,
+          "pick_in_round": 1,
+          "overall": 211,
+          "espn_adp": 223.0,
+          "adp_deviation": 12.0
+        }
+      ]
     },
     {
       "manager": "Charlie Gorman",
@@ -66,12 +228,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 115.8,
-      "adp_value": -8.06,
+      "adp_value": -9.21,
       "position_spend": {
-        "QB": 8.3,
-        "RB": 45.1,
-        "WR": 40.0,
-        "TE": 6.6
+        "QB": 5.5,
+        "RB": 47.7,
+        "WR": 43.4,
+        "TE": 3.4
       },
       "synopsis": "",
       "blurb": "",
@@ -106,7 +268,169 @@
         ],
         "dist_to_nearest": 4.76,
         "margin_over_2nd": 1.04
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Jahmyr Gibbs",
+          "nfl_team": "DET",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 1,
+          "overall": 1,
+          "espn_adp": 1.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Drake London",
+          "nfl_team": "ATL",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 14,
+          "overall": 28,
+          "espn_adp": 17.0,
+          "adp_deviation": -11.0
+        },
+        {
+          "player": "George Pickens",
+          "nfl_team": "DAL",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 1,
+          "overall": 29,
+          "espn_adp": 28.0,
+          "adp_deviation": -1.0
+        },
+        {
+          "player": "David Montgomery",
+          "nfl_team": "HOU",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 14,
+          "overall": 56,
+          "espn_adp": 53.0,
+          "adp_deviation": -3.0
+        },
+        {
+          "player": "Terry McLaurin",
+          "nfl_team": "WSH",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 1,
+          "overall": 57,
+          "espn_adp": 51.0,
+          "adp_deviation": -6.0
+        },
+        {
+          "player": "Rico Dowdle",
+          "nfl_team": "PIT",
+          "pos": "RB",
+          "round": 6,
+          "pick_in_round": 14,
+          "overall": 84,
+          "espn_adp": 82.0,
+          "adp_deviation": -2.0
+        },
+        {
+          "player": "Trevor Lawrence",
+          "nfl_team": "JAX",
+          "pos": "QB",
+          "round": 7,
+          "pick_in_round": 1,
+          "overall": 85,
+          "espn_adp": 89.0,
+          "adp_deviation": 4.0
+        },
+        {
+          "player": "Chuba Hubbard",
+          "nfl_team": "CAR",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 14,
+          "overall": 112,
+          "espn_adp": 83.0,
+          "adp_deviation": -29.0
+        },
+        {
+          "player": "Dalton Kincaid",
+          "nfl_team": "BUF",
+          "pos": "TE",
+          "round": 9,
+          "pick_in_round": 1,
+          "overall": 113,
+          "espn_adp": 127.0,
+          "adp_deviation": 14.0
+        },
+        {
+          "player": "Isiah Pacheco",
+          "nfl_team": "DET",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 14,
+          "overall": 140,
+          "espn_adp": 135.0,
+          "adp_deviation": -5.0
+        },
+        {
+          "player": "Romeo Doubs",
+          "nfl_team": "NE",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 1,
+          "overall": 141,
+          "espn_adp": 125.0,
+          "adp_deviation": -16.0
+        },
+        {
+          "player": "Eddy Pineiro",
+          "nfl_team": "SF",
+          "pos": "K",
+          "round": 12,
+          "pick_in_round": 14,
+          "overall": 168,
+          "espn_adp": 152.0,
+          "adp_deviation": -16.0
+        },
+        {
+          "player": "Eagles D/ST",
+          "nfl_team": "PHI",
+          "pos": "D/ST",
+          "round": 13,
+          "pick_in_round": 1,
+          "overall": 169,
+          "espn_adp": 185.0,
+          "adp_deviation": 16.0
+        },
+        {
+          "player": "Brian Robinson Jr.",
+          "nfl_team": "ATL",
+          "pos": "RB",
+          "round": 14,
+          "pick_in_round": 14,
+          "overall": 196,
+          "espn_adp": 164.0,
+          "adp_deviation": -32.0
+        },
+        {
+          "player": "Dontayvion Wicks",
+          "nfl_team": "PHI",
+          "pos": "WR",
+          "round": 15,
+          "pick_in_round": 1,
+          "overall": 197,
+          "espn_adp": 177.0,
+          "adp_deviation": -20.0
+        },
+        {
+          "player": "Jauan Jennings",
+          "nfl_team": "MIN",
+          "pos": "WR",
+          "round": 16,
+          "pick_in_round": 14,
+          "overall": 224,
+          "espn_adp": 202.0,
+          "adp_deviation": -22.0
+        }
+      ]
     },
     {
       "manager": "Aidan Quigley",
@@ -119,12 +443,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 115.8,
-      "adp_value": 3.25,
+      "adp_value": 1.29,
       "position_spend": {
-        "QB": 8.1,
-        "RB": 33.9,
-        "WR": 49.8,
-        "TE": 8.1
+        "QB": 4.5,
+        "RB": 32.6,
+        "WR": 57.8,
+        "TE": 5.2
       },
       "synopsis": "",
       "blurb": "",
@@ -159,7 +483,169 @@
         ],
         "dist_to_nearest": 4.05,
         "margin_over_2nd": 2.32
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Ja'Marr Chase",
+          "nfl_team": "CIN",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 3,
+          "overall": 3,
+          "espn_adp": 3.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Chris Olave",
+          "nfl_team": "NO",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 12,
+          "overall": 26,
+          "espn_adp": 24.0,
+          "adp_deviation": -2.0
+        },
+        {
+          "player": "Javonte Williams",
+          "nfl_team": "DAL",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 3,
+          "overall": 31,
+          "espn_adp": 32.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Bhayshul Tuten",
+          "nfl_team": "JAX",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 12,
+          "overall": 54,
+          "espn_adp": 49.0,
+          "adp_deviation": -5.0
+        },
+        {
+          "player": "Jameson Williams",
+          "nfl_team": "DET",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 3,
+          "overall": 59,
+          "espn_adp": 52.0,
+          "adp_deviation": -7.0
+        },
+        {
+          "player": "Mike Evans",
+          "nfl_team": "SF",
+          "pos": "WR",
+          "round": 6,
+          "pick_in_round": 12,
+          "overall": 82,
+          "espn_adp": 65.0,
+          "adp_deviation": -17.0
+        },
+        {
+          "player": "Jonathon Brooks",
+          "nfl_team": "CAR",
+          "pos": "RB",
+          "round": 7,
+          "pick_in_round": 3,
+          "overall": 87,
+          "espn_adp": 87.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Juwan Johnson",
+          "nfl_team": "NO",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 12,
+          "overall": 110,
+          "espn_adp": 149.0,
+          "adp_deviation": 39.0
+        },
+        {
+          "player": "Matthew Stafford",
+          "nfl_team": "LAR",
+          "pos": "QB",
+          "round": 9,
+          "pick_in_round": 3,
+          "overall": 115,
+          "espn_adp": 115.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Keaton Mitchell",
+          "nfl_team": "LAC",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 12,
+          "overall": 138,
+          "espn_adp": 159.0,
+          "adp_deviation": 21.0
+        },
+        {
+          "player": "Adonai Mitchell",
+          "nfl_team": "NYJ",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 3,
+          "overall": 143,
+          "espn_adp": 167.0,
+          "adp_deviation": 24.0
+        },
+        {
+          "player": "Ravens D/ST",
+          "nfl_team": "BAL",
+          "pos": "D/ST",
+          "round": 12,
+          "pick_in_round": 12,
+          "overall": 166,
+          "espn_adp": 184.0,
+          "adp_deviation": 18.0
+        },
+        {
+          "player": "Denzel Boston",
+          "nfl_team": "CLE",
+          "pos": "WR",
+          "round": 13,
+          "pick_in_round": 3,
+          "overall": 171,
+          "espn_adp": 165.0,
+          "adp_deviation": -6.0
+        },
+        {
+          "player": "Jordan Love",
+          "nfl_team": "GB",
+          "pos": "QB",
+          "round": 14,
+          "pick_in_round": 12,
+          "overall": 194,
+          "espn_adp": 156.0,
+          "adp_deviation": -38.0
+        },
+        {
+          "player": "Dalton Schultz",
+          "nfl_team": "HOU",
+          "pos": "TE",
+          "round": 15,
+          "pick_in_round": 3,
+          "overall": 199,
+          "espn_adp": 207.0,
+          "adp_deviation": 8.0
+        },
+        {
+          "player": "Chase McLaughlin",
+          "nfl_team": "TB",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 12,
+          "overall": 222,
+          "espn_adp": 238.0,
+          "adp_deviation": 16.0
+        }
+      ]
     },
     {
       "manager": "Carmine Pittelli Jr.",
@@ -172,12 +658,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 115.6,
-      "adp_value": -12.38,
+      "adp_value": -13.46,
       "position_spend": {
-        "QB": 15.5,
-        "RB": 34.4,
-        "WR": 43.2,
-        "TE": 7.0
+        "QB": 13.5,
+        "RB": 45.7,
+        "WR": 36.4,
+        "TE": 4.4
       },
       "synopsis": "",
       "blurb": "",
@@ -212,7 +698,169 @@
         ],
         "dist_to_nearest": 5.18,
         "margin_over_2nd": 0.91
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Bijan Robinson",
+          "nfl_team": "ATL",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 2,
+          "overall": 2,
+          "espn_adp": 2.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Breece Hall",
+          "nfl_team": "NYJ",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 13,
+          "overall": 27,
+          "espn_adp": 30.0,
+          "adp_deviation": 3.0
+        },
+        {
+          "player": "Nico Collins",
+          "nfl_team": "HOU",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 2,
+          "overall": 30,
+          "espn_adp": 23.0,
+          "adp_deviation": -7.0
+        },
+        {
+          "player": "Drake Maye",
+          "nfl_team": "NE",
+          "pos": "QB",
+          "round": 4,
+          "pick_in_round": 13,
+          "overall": 55,
+          "espn_adp": 58.0,
+          "adp_deviation": 3.0
+        },
+        {
+          "player": "DJ Moore",
+          "nfl_team": "BUF",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 2,
+          "overall": 58,
+          "espn_adp": 56.0,
+          "adp_deviation": -2.0
+        },
+        {
+          "player": "Wan'Dale Robinson",
+          "nfl_team": "TEN",
+          "pos": "WR",
+          "round": 6,
+          "pick_in_round": 13,
+          "overall": 83,
+          "espn_adp": 88.0,
+          "adp_deviation": 5.0
+        },
+        {
+          "player": "Rachaad White",
+          "nfl_team": "WSH",
+          "pos": "RB",
+          "round": 7,
+          "pick_in_round": 2,
+          "overall": 86,
+          "espn_adp": 92.0,
+          "adp_deviation": 6.0
+        },
+        {
+          "player": "Mark Andrews",
+          "nfl_team": "BAL",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 13,
+          "overall": 111,
+          "espn_adp": 124.0,
+          "adp_deviation": 13.0
+        },
+        {
+          "player": "Jordan Addison",
+          "nfl_team": "MIN",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 2,
+          "overall": 114,
+          "espn_adp": 98.0,
+          "adp_deviation": -16.0
+        },
+        {
+          "player": "Cameron Dicker",
+          "nfl_team": "LAC",
+          "pos": "K",
+          "round": 10,
+          "pick_in_round": 13,
+          "overall": 139,
+          "espn_adp": 142.0,
+          "adp_deviation": 3.0
+        },
+        {
+          "player": "Broncos D/ST",
+          "nfl_team": "DEN",
+          "pos": "D/ST",
+          "round": 11,
+          "pick_in_round": 2,
+          "overall": 142,
+          "espn_adp": 143.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Travis Hunter",
+          "nfl_team": "JAX",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 13,
+          "overall": 167,
+          "espn_adp": 91.0,
+          "adp_deviation": -76.0
+        },
+        {
+          "player": "Jared Goff",
+          "nfl_team": "DET",
+          "pos": "QB",
+          "round": 13,
+          "pick_in_round": 2,
+          "overall": 170,
+          "espn_adp": 129.0,
+          "adp_deviation": -41.0
+        },
+        {
+          "player": "Jaylin Noel",
+          "nfl_team": "HOU",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 13,
+          "overall": 195,
+          "espn_adp": 161.0,
+          "adp_deviation": -34.0
+        },
+        {
+          "player": "Malik Willis",
+          "nfl_team": "MIA",
+          "pos": "QB",
+          "round": 15,
+          "pick_in_round": 2,
+          "overall": 198,
+          "espn_adp": 169.0,
+          "adp_deviation": -29.0
+        },
+        {
+          "player": "Cairo Santos",
+          "nfl_team": "CHI",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 13,
+          "overall": 223,
+          "espn_adp": 196.0,
+          "adp_deviation": -27.0
+        }
+      ]
     },
     {
       "manager": "Ben Castaldo",
@@ -225,12 +873,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 116.7,
-      "adp_value": -3.0,
+      "adp_value": -4.23,
       "position_spend": {
-        "QB": 13.7,
-        "RB": 31.4,
-        "WR": 45.6,
-        "TE": 9.2
+        "QB": 12.5,
+        "RB": 36.0,
+        "WR": 44.6,
+        "TE": 7.0
       },
       "synopsis": "",
       "blurb": "",
@@ -265,7 +913,169 @@
         ],
         "dist_to_nearest": 4.52,
         "margin_over_2nd": 0.82
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "CeeDee Lamb",
+          "nfl_team": "DAL",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 11,
+          "overall": 11,
+          "espn_adp": 11.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Kenneth Walker III",
+          "nfl_team": "KC",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 4,
+          "overall": 18,
+          "espn_adp": 25.0,
+          "adp_deviation": 7.0
+        },
+        {
+          "player": "Travis Etienne Jr.",
+          "nfl_team": "NO",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 11,
+          "overall": 39,
+          "espn_adp": 39.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Lamar Jackson",
+          "nfl_team": "BAL",
+          "pos": "QB",
+          "round": 4,
+          "pick_in_round": 4,
+          "overall": 46,
+          "espn_adp": 48.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "DK Metcalf",
+          "nfl_team": "PIT",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 11,
+          "overall": 67,
+          "espn_adp": 68.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Kyle Pitts Sr.",
+          "nfl_team": "ATL",
+          "pos": "TE",
+          "round": 6,
+          "pick_in_round": 4,
+          "overall": 74,
+          "espn_adp": 72.0,
+          "adp_deviation": -2.0
+        },
+        {
+          "player": "Jakobi Meyers",
+          "nfl_team": "JAX",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 11,
+          "overall": 95,
+          "espn_adp": 95.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Kyle Monangai",
+          "nfl_team": "CHI",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 4,
+          "overall": 102,
+          "espn_adp": 100.0,
+          "adp_deviation": -2.0
+        },
+        {
+          "player": "Khalil Shakir",
+          "nfl_team": "BUF",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 11,
+          "overall": 123,
+          "espn_adp": 120.0,
+          "adp_deviation": -3.0
+        },
+        {
+          "player": "Deebo Samuel Sr.",
+          "nfl_team": "SF",
+          "pos": "WR",
+          "round": 10,
+          "pick_in_round": 4,
+          "overall": 130,
+          "espn_adp": 132.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Ka'imi Fairbairn",
+          "nfl_team": "HOU",
+          "pos": "K",
+          "round": 11,
+          "pick_in_round": 11,
+          "overall": 151,
+          "espn_adp": 148.0,
+          "adp_deviation": -3.0
+        },
+        {
+          "player": "Steelers D/ST",
+          "nfl_team": "PIT",
+          "pos": "D/ST",
+          "round": 12,
+          "pick_in_round": 4,
+          "overall": 158,
+          "espn_adp": 181.0,
+          "adp_deviation": 23.0
+        },
+        {
+          "player": "Daniel Jones",
+          "nfl_team": "IND",
+          "pos": "QB",
+          "round": 13,
+          "pick_in_round": 11,
+          "overall": 179,
+          "espn_adp": 140.0,
+          "adp_deviation": -39.0
+        },
+        {
+          "player": "Rashod Bateman",
+          "nfl_team": "BAL",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 4,
+          "overall": 186,
+          "espn_adp": 176.0,
+          "adp_deviation": -10.0
+        },
+        {
+          "player": "Jake Bates",
+          "nfl_team": "DET",
+          "pos": "K",
+          "round": 15,
+          "pick_in_round": 11,
+          "overall": 207,
+          "espn_adp": 194.0,
+          "adp_deviation": -13.0
+        },
+        {
+          "player": "Germie Bernard",
+          "nfl_team": "PIT",
+          "pos": "WR",
+          "round": 16,
+          "pick_in_round": 4,
+          "overall": 214,
+          "espn_adp": 203.0,
+          "adp_deviation": -11.0
+        }
+      ]
     },
     {
       "manager": "Deniz Bileydi",
@@ -278,12 +1088,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 115.2,
-      "adp_value": -1.69,
+      "adp_value": -3.0,
       "position_spend": {
-        "QB": 9.1,
-        "RB": 41.4,
-        "WR": 37.6,
-        "TE": 11.9
+        "QB": 7.5,
+        "RB": 36.2,
+        "WR": 39.1,
+        "TE": 17.2
       },
       "synopsis": "",
       "blurb": "",
@@ -318,7 +1128,169 @@
         ],
         "dist_to_nearest": 3.93,
         "margin_over_2nd": 1.49
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Amon-Ra St. Brown",
+          "nfl_team": "DET",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 8,
+          "overall": 8,
+          "espn_adp": 8.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Trey McBride",
+          "nfl_team": "ARI",
+          "pos": "TE",
+          "round": 2,
+          "pick_in_round": 7,
+          "overall": 21,
+          "espn_adp": 20.0,
+          "adp_deviation": -1.0
+        },
+        {
+          "player": "Josh Jacobs",
+          "nfl_team": "GB",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 8,
+          "overall": 36,
+          "espn_adp": 31.0,
+          "adp_deviation": -5.0
+        },
+        {
+          "player": "Bucky Irving",
+          "nfl_team": "TB",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 7,
+          "overall": 49,
+          "espn_adp": 50.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Carnell Tate",
+          "nfl_team": "TEN",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 8,
+          "overall": 64,
+          "espn_adp": 61.0,
+          "adp_deviation": -3.0
+        },
+        {
+          "player": "Dak Prescott",
+          "nfl_team": "DAL",
+          "pos": "QB",
+          "round": 6,
+          "pick_in_round": 7,
+          "overall": 77,
+          "espn_adp": 73.0,
+          "adp_deviation": -4.0
+        },
+        {
+          "player": "Kenny Gainwell",
+          "nfl_team": "TB",
+          "pos": "RB",
+          "round": 7,
+          "pick_in_round": 14,
+          "overall": 98,
+          "espn_adp": 79.0,
+          "adp_deviation": -19.0
+        },
+        {
+          "player": "Makai Lemon",
+          "nfl_team": "PHI",
+          "pos": "WR",
+          "round": 8,
+          "pick_in_round": 1,
+          "overall": 99,
+          "espn_adp": 111.0,
+          "adp_deviation": 12.0
+        },
+        {
+          "player": "Xavier Worthy",
+          "nfl_team": "KC",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 8,
+          "overall": 120,
+          "espn_adp": 122.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Alvin Kamara",
+          "nfl_team": "NO",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 7,
+          "overall": 133,
+          "espn_adp": 137.0,
+          "adp_deviation": 4.0
+        },
+        {
+          "player": "Tyler Allgeier",
+          "nfl_team": "ARI",
+          "pos": "RB",
+          "round": 11,
+          "pick_in_round": 8,
+          "overall": 148,
+          "espn_adp": 145.0,
+          "adp_deviation": -3.0
+        },
+        {
+          "player": "Harrison Mevis",
+          "nfl_team": "LAR",
+          "pos": "K",
+          "round": 12,
+          "pick_in_round": 7,
+          "overall": 161,
+          "espn_adp": 191.0,
+          "adp_deviation": 30.0
+        },
+        {
+          "player": "Justice Hill",
+          "nfl_team": "BAL",
+          "pos": "RB",
+          "round": 13,
+          "pick_in_round": 8,
+          "overall": 176,
+          "espn_adp": 151.0,
+          "adp_deviation": -25.0
+        },
+        {
+          "player": "Tre' Harris",
+          "nfl_team": "LAC",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 7,
+          "overall": 189,
+          "espn_adp": 204.0,
+          "adp_deviation": 15.0
+        },
+        {
+          "player": "Chiefs D/ST",
+          "nfl_team": "KC",
+          "pos": "D/ST",
+          "round": 15,
+          "pick_in_round": 8,
+          "overall": 204,
+          "espn_adp": 189.0,
+          "adp_deviation": -15.0
+        },
+        {
+          "player": "Sam Darnold",
+          "nfl_team": "SEA",
+          "pos": "QB",
+          "round": 16,
+          "pick_in_round": 7,
+          "overall": 217,
+          "espn_adp": 201.0,
+          "adp_deviation": -16.0
+        }
+      ]
     },
     {
       "manager": "Brandon Hancock",
@@ -331,12 +1303,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 115.1,
-      "adp_value": 10.75,
+      "adp_value": 11.07,
       "position_spend": {
-        "QB": 9.9,
-        "RB": 42.6,
-        "WR": 40.9,
-        "TE": 6.5
+        "QB": 8.7,
+        "RB": 48.7,
+        "WR": 39.1,
+        "TE": 3.4
       },
       "synopsis": "",
       "blurb": "",
@@ -371,7 +1343,169 @@
         ],
         "dist_to_nearest": 5.01,
         "margin_over_2nd": 2.03
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Jonathan Taylor",
+          "nfl_team": "IND",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 4,
+          "overall": 4,
+          "espn_adp": 5.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Rashee Rice",
+          "nfl_team": "KC",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 11,
+          "overall": 25,
+          "espn_adp": 27.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Kyren Williams",
+          "nfl_team": "LAR",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 4,
+          "overall": 32,
+          "espn_adp": 34.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Rome Odunze",
+          "nfl_team": "CHI",
+          "pos": "WR",
+          "round": 4,
+          "pick_in_round": 11,
+          "overall": 53,
+          "espn_adp": 54.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Jalen Hurts",
+          "nfl_team": "PHI",
+          "pos": "QB",
+          "round": 5,
+          "pick_in_round": 4,
+          "overall": 60,
+          "espn_adp": 69.0,
+          "adp_deviation": 9.0
+        },
+        {
+          "player": "Jaylen Warren",
+          "nfl_team": "PIT",
+          "pos": "RB",
+          "round": 6,
+          "pick_in_round": 11,
+          "overall": 81,
+          "espn_adp": 77.0,
+          "adp_deviation": -4.0
+        },
+        {
+          "player": "Alec Pierce",
+          "nfl_team": "IND",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 4,
+          "overall": 88,
+          "espn_adp": 93.0,
+          "adp_deviation": 5.0
+        },
+        {
+          "player": "Jacory Croskey-Merritt",
+          "nfl_team": "WSH",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 11,
+          "overall": 109,
+          "espn_adp": 117.0,
+          "adp_deviation": 8.0
+        },
+        {
+          "player": "T.J. Hockenson",
+          "nfl_team": "MIN",
+          "pos": "TE",
+          "round": 9,
+          "pick_in_round": 4,
+          "overall": 116,
+          "espn_adp": 150.0,
+          "adp_deviation": 34.0
+        },
+        {
+          "player": "Tank Dell",
+          "nfl_team": "HOU",
+          "pos": "WR",
+          "round": 10,
+          "pick_in_round": 11,
+          "overall": 137,
+          "espn_adp": 139.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Jason Myers",
+          "nfl_team": "SEA",
+          "pos": "K",
+          "round": 11,
+          "pick_in_round": 4,
+          "overall": 144,
+          "espn_adp": 146.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Jalen Nailor",
+          "nfl_team": "LV",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 11,
+          "overall": 165,
+          "espn_adp": 172.0,
+          "adp_deviation": 7.0
+        },
+        {
+          "player": "Patriots D/ST",
+          "nfl_team": "NE",
+          "pos": "D/ST",
+          "round": 13,
+          "pick_in_round": 4,
+          "overall": 172,
+          "espn_adp": 187.0,
+          "adp_deviation": 15.0
+        },
+        {
+          "player": "Kaelon Black",
+          "nfl_team": "SF",
+          "pos": "RB",
+          "round": 14,
+          "pick_in_round": 11,
+          "overall": 193,
+          "espn_adp": 213.0,
+          "adp_deviation": 20.0
+        },
+        {
+          "player": "Zachariah Branch",
+          "nfl_team": "ATL",
+          "pos": "WR",
+          "round": 15,
+          "pick_in_round": 4,
+          "overall": 200,
+          "espn_adp": 208.0,
+          "adp_deviation": 8.0
+        },
+        {
+          "player": "DJ Giddens",
+          "nfl_team": "IND",
+          "pos": "RB",
+          "round": 16,
+          "pick_in_round": 11,
+          "overall": 221,
+          "espn_adp": 281.0,
+          "adp_deviation": 60.0
+        }
+      ]
     },
     {
       "manager": "Quin Gegwich",
@@ -384,12 +1518,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 115.0,
-      "adp_value": 6.62,
+      "adp_value": 5.57,
       "position_spend": {
-        "QB": 8.9,
-        "RB": 35.7,
-        "WR": 44.1,
-        "TE": 11.3
+        "QB": 7.0,
+        "RB": 39.2,
+        "WR": 46.3,
+        "TE": 7.6
       },
       "synopsis": "",
       "blurb": "",
@@ -424,7 +1558,169 @@
         ],
         "dist_to_nearest": 3.99,
         "margin_over_2nd": 2.16
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Chase Brown",
+          "nfl_team": "CIN",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 9,
+          "overall": 9,
+          "espn_adp": 13.0,
+          "adp_deviation": 4.0
+        },
+        {
+          "player": "Malik Nabers",
+          "nfl_team": "NYG",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 6,
+          "overall": 20,
+          "espn_adp": 33.0,
+          "adp_deviation": 13.0
+        },
+        {
+          "player": "DeVonta Smith",
+          "nfl_team": "PHI",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 9,
+          "overall": 37,
+          "espn_adp": 36.0,
+          "adp_deviation": -1.0
+        },
+        {
+          "player": "Quinshon Judkins",
+          "nfl_team": "CLE",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 6,
+          "overall": 48,
+          "espn_adp": 41.0,
+          "adp_deviation": -7.0
+        },
+        {
+          "player": "Michael Pittman Jr.",
+          "nfl_team": "PIT",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 9,
+          "overall": 65,
+          "espn_adp": 66.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Justin Herbert",
+          "nfl_team": "LAC",
+          "pos": "QB",
+          "round": 6,
+          "pick_in_round": 6,
+          "overall": 76,
+          "espn_adp": 86.0,
+          "adp_deviation": 10.0
+        },
+        {
+          "player": "Isaiah Likely",
+          "nfl_team": "NYG",
+          "pos": "TE",
+          "round": 7,
+          "pick_in_round": 9,
+          "overall": 93,
+          "espn_adp": 119.0,
+          "adp_deviation": 26.0
+        },
+        {
+          "player": "Quentin Johnston",
+          "nfl_team": "LAC",
+          "pos": "WR",
+          "round": 8,
+          "pick_in_round": 6,
+          "overall": 104,
+          "espn_adp": 106.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Brandon Aubrey",
+          "nfl_team": "DAL",
+          "pos": "K",
+          "round": 9,
+          "pick_in_round": 9,
+          "overall": 121,
+          "espn_adp": 118.0,
+          "adp_deviation": -3.0
+        },
+        {
+          "player": "Woody Marks",
+          "nfl_team": "HOU",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 6,
+          "overall": 132,
+          "espn_adp": 134.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Mike Washington Jr.",
+          "nfl_team": "LV",
+          "pos": "RB",
+          "round": 11,
+          "pick_in_round": 9,
+          "overall": 149,
+          "espn_adp": 174.0,
+          "adp_deviation": 25.0
+        },
+        {
+          "player": "Caleb Douglas",
+          "nfl_team": "MIA",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 6,
+          "overall": 160,
+          "espn_adp": 168.0,
+          "adp_deviation": 8.0
+        },
+        {
+          "player": "Terrance Ferguson",
+          "nfl_team": "LAR",
+          "pos": "TE",
+          "round": 13,
+          "pick_in_round": 9,
+          "overall": 177,
+          "espn_adp": 162.0,
+          "adp_deviation": -15.0
+        },
+        {
+          "player": "Najee Harris",
+          "nfl_team": "NYG",
+          "pos": "RB",
+          "round": 14,
+          "pick_in_round": 6,
+          "overall": 188,
+          "espn_adp": 198.0,
+          "adp_deviation": 10.0
+        },
+        {
+          "player": "Packers D/ST",
+          "nfl_team": "GB",
+          "pos": "D/ST",
+          "round": 15,
+          "pick_in_round": 9,
+          "overall": 205,
+          "espn_adp": 236.0,
+          "adp_deviation": 31.0
+        },
+        {
+          "player": "Chig Okonkwo",
+          "nfl_team": "WSH",
+          "pos": "TE",
+          "round": 16,
+          "pick_in_round": 6,
+          "overall": 216,
+          "espn_adp": 216.0,
+          "adp_deviation": 0.0
+        }
+      ]
     },
     {
       "manager": "Cole Maney",
@@ -437,12 +1733,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 113.9,
-      "adp_value": 3.81,
+      "adp_value": -3.64,
       "position_spend": {
-        "QB": 10.4,
-        "RB": 29.2,
-        "WR": 48.7,
-        "TE": 11.8
+        "QB": 11.0,
+        "RB": 31.2,
+        "WR": 49.5,
+        "TE": 8.3
       },
       "synopsis": "",
       "blurb": "",
@@ -477,7 +1773,169 @@
         ],
         "dist_to_nearest": 5.36,
         "margin_over_2nd": 1.63
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Puka Nacua",
+          "nfl_team": "LAR",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 6,
+          "overall": 6,
+          "espn_adp": 4.0,
+          "adp_deviation": -2.0
+        },
+        {
+          "player": "Jeremiyah Love",
+          "nfl_team": "ARI",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 9,
+          "overall": 23,
+          "espn_adp": 21.0,
+          "adp_deviation": -2.0
+        },
+        {
+          "player": "Ladd McConkey",
+          "nfl_team": "LAC",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 6,
+          "overall": 34,
+          "espn_adp": 40.0,
+          "adp_deviation": 6.0
+        },
+        {
+          "player": "Jayden Daniels",
+          "nfl_team": "WSH",
+          "pos": "QB",
+          "round": 4,
+          "pick_in_round": 9,
+          "overall": 51,
+          "espn_adp": 57.0,
+          "adp_deviation": 6.0
+        },
+        {
+          "player": "TreVeyon Henderson",
+          "nfl_team": "NE",
+          "pos": "RB",
+          "round": 5,
+          "pick_in_round": 6,
+          "overall": 62,
+          "espn_adp": 63.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Sam LaPorta",
+          "nfl_team": "DET",
+          "pos": "TE",
+          "round": 6,
+          "pick_in_round": 9,
+          "overall": 79,
+          "espn_adp": 78.0,
+          "adp_deviation": -1.0
+        },
+        {
+          "player": "Stefon Diggs",
+          "nfl_team": "WSH",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 6,
+          "overall": 90,
+          "espn_adp": 84.0,
+          "adp_deviation": -6.0
+        },
+        {
+          "player": "J.K. Dobbins",
+          "nfl_team": "DEN",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 9,
+          "overall": 107,
+          "espn_adp": 101.0,
+          "adp_deviation": -6.0
+        },
+        {
+          "player": "Josh Downs",
+          "nfl_team": "IND",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 6,
+          "overall": 118,
+          "espn_adp": 105.0,
+          "adp_deviation": -13.0
+        },
+        {
+          "player": "Seahawks D/ST",
+          "nfl_team": "SEA",
+          "pos": "D/ST",
+          "round": 10,
+          "pick_in_round": 9,
+          "overall": 135,
+          "espn_adp": 182.0,
+          "adp_deviation": 47.0
+        },
+        {
+          "player": "Keenan Allen",
+          "nfl_team": "IND",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 6,
+          "overall": 146,
+          "espn_adp": 155.0,
+          "adp_deviation": 9.0
+        },
+        {
+          "player": "Rashid Shaheed",
+          "nfl_team": "SEA",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 9,
+          "overall": 163,
+          "espn_adp": 163.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Hunter Henry",
+          "nfl_team": "NE",
+          "pos": "TE",
+          "round": 13,
+          "pick_in_round": 6,
+          "overall": 174,
+          "espn_adp": 153.0,
+          "adp_deviation": -21.0
+        },
+        {
+          "player": "Evan McPherson",
+          "nfl_team": "CIN",
+          "pos": "K",
+          "round": 14,
+          "pick_in_round": 9,
+          "overall": 191,
+          "espn_adp": 256.0,
+          "adp_deviation": 65.0
+        },
+        {
+          "player": "Devaughn Vele",
+          "nfl_team": "NO",
+          "pos": "WR",
+          "round": 15,
+          "pick_in_round": 6,
+          "overall": 202,
+          "espn_adp": 178.0,
+          "adp_deviation": -24.0
+        },
+        {
+          "player": "Jaylen Wright",
+          "nfl_team": "MIA",
+          "pos": "RB",
+          "round": 16,
+          "pick_in_round": 9,
+          "overall": 219,
+          "espn_adp": 221.0,
+          "adp_deviation": 2.0
+        }
+      ]
     },
     {
       "manager": "Andrew Root",
@@ -490,12 +1948,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 117.5,
-      "adp_value": -2.12,
+      "adp_value": -7.57,
       "position_spend": {
-        "QB": 9.7,
-        "RB": 26.1,
-        "WR": 48.5,
-        "TE": 15.7
+        "QB": 6.7,
+        "RB": 28.3,
+        "WR": 54.0,
+        "TE": 11.0
       },
       "synopsis": "",
       "blurb": "",
@@ -530,7 +1988,169 @@
         ],
         "dist_to_nearest": 5.85,
         "margin_over_2nd": 1.12
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Justin Jefferson",
+          "nfl_team": "MIN",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 13,
+          "overall": 13,
+          "espn_adp": 12.0,
+          "adp_deviation": -1.0
+        },
+        {
+          "player": "De'Von Achane",
+          "nfl_team": "MIA",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 2,
+          "overall": 16,
+          "espn_adp": 10.0,
+          "adp_deviation": -6.0
+        },
+        {
+          "player": "Davante Adams",
+          "nfl_team": "LAR",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 13,
+          "overall": 41,
+          "espn_adp": 44.0,
+          "adp_deviation": 3.0
+        },
+        {
+          "player": "Tetairoa McMillan",
+          "nfl_team": "CAR",
+          "pos": "WR",
+          "round": 4,
+          "pick_in_round": 2,
+          "overall": 44,
+          "espn_adp": 35.0,
+          "adp_deviation": -9.0
+        },
+        {
+          "player": "Rhamondre Stevenson",
+          "nfl_team": "NE",
+          "pos": "RB",
+          "round": 5,
+          "pick_in_round": 13,
+          "overall": 69,
+          "espn_adp": 67.0,
+          "adp_deviation": -2.0
+        },
+        {
+          "player": "Harold Fannin Jr.",
+          "nfl_team": "CLE",
+          "pos": "TE",
+          "round": 6,
+          "pick_in_round": 2,
+          "overall": 72,
+          "espn_adp": 70.0,
+          "adp_deviation": -2.0
+        },
+        {
+          "player": "Patrick Mahomes",
+          "nfl_team": "KC",
+          "pos": "QB",
+          "round": 7,
+          "pick_in_round": 13,
+          "overall": 97,
+          "espn_adp": 108.0,
+          "adp_deviation": 11.0
+        },
+        {
+          "player": "Travis Kelce",
+          "nfl_team": "KC",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 2,
+          "overall": 100,
+          "espn_adp": 107.0,
+          "adp_deviation": 7.0
+        },
+        {
+          "player": "Jayden Reed",
+          "nfl_team": "GB",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 13,
+          "overall": 125,
+          "espn_adp": 121.0,
+          "adp_deviation": -4.0
+        },
+        {
+          "player": "Tyjae Spears",
+          "nfl_team": "TEN",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 2,
+          "overall": 128,
+          "espn_adp": 112.0,
+          "adp_deviation": -16.0
+        },
+        {
+          "player": "Jerry Jeudy",
+          "nfl_team": "CLE",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 13,
+          "overall": 153,
+          "espn_adp": 166.0,
+          "adp_deviation": 13.0
+        },
+        {
+          "player": "Jalen Coker",
+          "nfl_team": "CAR",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 2,
+          "overall": 156,
+          "espn_adp": 126.0,
+          "adp_deviation": -30.0
+        },
+        {
+          "player": "Baker Mayfield",
+          "nfl_team": "TB",
+          "pos": "QB",
+          "round": 13,
+          "pick_in_round": 13,
+          "overall": 181,
+          "espn_adp": 138.0,
+          "adp_deviation": -43.0
+        },
+        {
+          "player": "Calvin Ridley",
+          "nfl_team": "TEN",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 2,
+          "overall": 184,
+          "espn_adp": 157.0,
+          "adp_deviation": -27.0
+        },
+        {
+          "player": "Cowboys D/ST",
+          "nfl_team": "DAL",
+          "pos": "D/ST",
+          "round": 15,
+          "pick_in_round": 13,
+          "overall": 209,
+          "espn_adp": 298.0,
+          "adp_deviation": 89.0
+        },
+        {
+          "player": "Tyler Loop",
+          "nfl_team": "BAL",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 2,
+          "overall": 212,
+          "espn_adp": 195.0,
+          "adp_deviation": -17.0
+        }
+      ]
     },
     {
       "manager": "Max Malich",
@@ -543,12 +2163,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 112.1,
-      "adp_value": 22.94,
+      "adp_value": 18.71,
       "position_spend": {
-        "QB": 8.9,
-        "RB": 31.1,
-        "WR": 42.3,
-        "TE": 17.7
+        "QB": 6.9,
+        "RB": 42.6,
+        "WR": 35.4,
+        "TE": 15.2
       },
       "synopsis": "",
       "blurb": "",
@@ -583,7 +2203,169 @@
         ],
         "dist_to_nearest": 7.54,
         "margin_over_2nd": 0.25
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Saquon Barkley",
+          "nfl_team": "PHI",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 12,
+          "overall": 12,
+          "espn_adp": 15.0,
+          "adp_deviation": 3.0
+        },
+        {
+          "player": "Derrick Henry",
+          "nfl_team": "BAL",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 3,
+          "overall": 17,
+          "espn_adp": 16.0,
+          "adp_deviation": -1.0
+        },
+        {
+          "player": "Tee Higgins",
+          "nfl_team": "CIN",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 12,
+          "overall": 40,
+          "espn_adp": 43.0,
+          "adp_deviation": 3.0
+        },
+        {
+          "player": "Colston Loveland",
+          "nfl_team": "CHI",
+          "pos": "TE",
+          "round": 4,
+          "pick_in_round": 3,
+          "overall": 45,
+          "espn_adp": 42.0,
+          "adp_deviation": -3.0
+        },
+        {
+          "player": "Marvin Harrison Jr.",
+          "nfl_team": "ARI",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 12,
+          "overall": 68,
+          "espn_adp": 62.0,
+          "adp_deviation": -6.0
+        },
+        {
+          "player": "Caleb Williams",
+          "nfl_team": "CHI",
+          "pos": "QB",
+          "round": 6,
+          "pick_in_round": 3,
+          "overall": 73,
+          "espn_adp": 99.0,
+          "adp_deviation": 26.0
+        },
+        {
+          "player": "Matthew Golden",
+          "nfl_team": "GB",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 12,
+          "overall": 96,
+          "espn_adp": 96.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Dallas Goedert",
+          "nfl_team": "PHI",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 3,
+          "overall": 101,
+          "espn_adp": 114.0,
+          "adp_deviation": 13.0
+        },
+        {
+          "player": "KC Concepcion",
+          "nfl_team": "CLE",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 12,
+          "overall": 124,
+          "espn_adp": 133.0,
+          "adp_deviation": 9.0
+        },
+        {
+          "player": "MarShawn Lloyd",
+          "nfl_team": "GB",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 3,
+          "overall": 129,
+          "espn_adp": 158.0,
+          "adp_deviation": 29.0
+        },
+        {
+          "player": "Rams D/ST",
+          "nfl_team": "LAR",
+          "pos": "D/ST",
+          "round": 11,
+          "pick_in_round": 12,
+          "overall": 152,
+          "espn_adp": 183.0,
+          "adp_deviation": 31.0
+        },
+        {
+          "player": "Cyrus Allen",
+          "nfl_team": "KC",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 3,
+          "overall": 157,
+          "espn_adp": 295.0,
+          "adp_deviation": 138.0
+        },
+        {
+          "player": "Ja'Kobi Lane",
+          "nfl_team": "BAL",
+          "pos": "WR",
+          "round": 13,
+          "pick_in_round": 12,
+          "overall": 180,
+          "espn_adp": 199.0,
+          "adp_deviation": 19.0
+        },
+        {
+          "player": "Malik Washington",
+          "nfl_team": "MIA",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 3,
+          "overall": 185,
+          "espn_adp": 211.0,
+          "adp_deviation": 26.0
+        },
+        {
+          "player": "Kimani Vidal",
+          "nfl_team": "LAC",
+          "pos": "RB",
+          "round": 15,
+          "pick_in_round": 12,
+          "overall": 208,
+          "espn_adp": 214.0,
+          "adp_deviation": 6.0
+        },
+        {
+          "player": "Trey Smack",
+          "nfl_team": "GB",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 3,
+          "overall": 213,
+          "espn_adp": 287.0,
+          "adp_deviation": 74.0
+        }
+      ]
     },
     {
       "manager": "Baylen Slansky",
@@ -596,12 +2378,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 111.6,
-      "adp_value": -0.81,
+      "adp_value": -1.86,
       "position_spend": {
-        "QB": 10.7,
-        "RB": 31.5,
-        "WR": 35.7,
-        "TE": 22.0
+        "QB": 5.6,
+        "RB": 27.3,
+        "WR": 39.1,
+        "TE": 28.0
       },
       "synopsis": "",
       "blurb": "",
@@ -636,7 +2418,169 @@
         ],
         "dist_to_nearest": 3.87,
         "margin_over_2nd": 1.62
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Jaxon Smith-Njigba",
+          "nfl_team": "SEA",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 7,
+          "overall": 7,
+          "espn_adp": 6.0,
+          "adp_deviation": -1.0
+        },
+        {
+          "player": "Brock Bowers",
+          "nfl_team": "LV",
+          "pos": "TE",
+          "round": 2,
+          "pick_in_round": 8,
+          "overall": 22,
+          "espn_adp": 22.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Cam Skattebo",
+          "nfl_team": "NYG",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 7,
+          "overall": 35,
+          "espn_adp": 46.0,
+          "adp_deviation": 11.0
+        },
+        {
+          "player": "Tyler Warren",
+          "nfl_team": "IND",
+          "pos": "TE",
+          "round": 4,
+          "pick_in_round": 8,
+          "overall": 50,
+          "espn_adp": 55.0,
+          "adp_deviation": 5.0
+        },
+        {
+          "player": "Luther Burden III",
+          "nfl_team": "CHI",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 7,
+          "overall": 63,
+          "espn_adp": 60.0,
+          "adp_deviation": -3.0
+        },
+        {
+          "player": "Tony Pollard",
+          "nfl_team": "TEN",
+          "pos": "RB",
+          "round": 6,
+          "pick_in_round": 8,
+          "overall": 78,
+          "espn_adp": 74.0,
+          "adp_deviation": -4.0
+        },
+        {
+          "player": "Michael Wilson",
+          "nfl_team": "ARI",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 7,
+          "overall": 91,
+          "espn_adp": 80.0,
+          "adp_deviation": -11.0
+        },
+        {
+          "player": "Blake Corum",
+          "nfl_team": "LAR",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 8,
+          "overall": 106,
+          "espn_adp": 109.0,
+          "adp_deviation": 3.0
+        },
+        {
+          "player": "Tyler Shough",
+          "nfl_team": "NO",
+          "pos": "QB",
+          "round": 9,
+          "pick_in_round": 7,
+          "overall": 119,
+          "espn_adp": 128.0,
+          "adp_deviation": 9.0
+        },
+        {
+          "player": "Jalen McMillan",
+          "nfl_team": "TB",
+          "pos": "WR",
+          "round": 10,
+          "pick_in_round": 8,
+          "overall": 134,
+          "espn_adp": 136.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Brock Purdy",
+          "nfl_team": "SF",
+          "pos": "QB",
+          "round": 11,
+          "pick_in_round": 7,
+          "overall": 147,
+          "espn_adp": 102.0,
+          "adp_deviation": -45.0
+        },
+        {
+          "player": "Dylan Sampson",
+          "nfl_team": "CLE",
+          "pos": "RB",
+          "round": 12,
+          "pick_in_round": 8,
+          "overall": 162,
+          "espn_adp": 147.0,
+          "adp_deviation": -15.0
+        },
+        {
+          "player": "Harrison Butker",
+          "nfl_team": "KC",
+          "pos": "K",
+          "round": 13,
+          "pick_in_round": 7,
+          "overall": 175,
+          "espn_adp": 192.0,
+          "adp_deviation": 17.0
+        },
+        {
+          "player": "Browns D/ST",
+          "nfl_team": "CLE",
+          "pos": "D/ST",
+          "round": 14,
+          "pick_in_round": 8,
+          "overall": 190,
+          "espn_adp": 186.0,
+          "adp_deviation": -4.0
+        },
+        {
+          "player": "Jordan James",
+          "nfl_team": "SF",
+          "pos": "RB",
+          "round": 15,
+          "pick_in_round": 7,
+          "overall": 203,
+          "espn_adp": 212.0,
+          "adp_deviation": 9.0
+        },
+        {
+          "player": "Chris Bell",
+          "nfl_team": "MIA",
+          "pos": "WR",
+          "round": 16,
+          "pick_in_round": 8,
+          "overall": 218,
+          "espn_adp": 232.0,
+          "adp_deviation": 14.0
+        }
+      ]
     },
     {
       "manager": "Ryan P McQuaid",
@@ -649,12 +2593,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 109.6,
-      "adp_value": -0.75,
+      "adp_value": -1.29,
       "position_spend": {
-        "QB": 14.5,
-        "RB": 30.2,
-        "WR": 43.6,
-        "TE": 11.7
+        "QB": 10.9,
+        "RB": 37.1,
+        "WR": 43.7,
+        "TE": 8.3
       },
       "synopsis": "",
       "blurb": "",
@@ -689,7 +2633,169 @@
         ],
         "dist_to_nearest": 3.68,
         "margin_over_2nd": 0.46
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "Christian McCaffrey",
+          "nfl_team": "SF",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 5,
+          "overall": 5,
+          "espn_adp": 7.0,
+          "adp_deviation": 2.0
+        },
+        {
+          "player": "Garrett Wilson",
+          "nfl_team": "NYJ",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 10,
+          "overall": 24,
+          "espn_adp": 29.0,
+          "adp_deviation": 5.0
+        },
+        {
+          "player": "Emeka Egbuka",
+          "nfl_team": "TB",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 5,
+          "overall": 33,
+          "espn_adp": 38.0,
+          "adp_deviation": 5.0
+        },
+        {
+          "player": "Jadarian Price",
+          "nfl_team": "SEA",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 10,
+          "overall": 52,
+          "espn_adp": 59.0,
+          "adp_deviation": 7.0
+        },
+        {
+          "player": "Joe Burrow",
+          "nfl_team": "CIN",
+          "pos": "QB",
+          "round": 5,
+          "pick_in_round": 5,
+          "overall": 61,
+          "espn_adp": 64.0,
+          "adp_deviation": 3.0
+        },
+        {
+          "player": "George Kittle",
+          "nfl_team": "SF",
+          "pos": "TE",
+          "round": 6,
+          "pick_in_round": 10,
+          "overall": 80,
+          "espn_adp": 81.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Brian Thomas Jr.",
+          "nfl_team": "JAX",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 5,
+          "overall": 89,
+          "espn_adp": 94.0,
+          "adp_deviation": 5.0
+        },
+        {
+          "player": "Chris Godwin Jr.",
+          "nfl_team": "TB",
+          "pos": "WR",
+          "round": 8,
+          "pick_in_round": 10,
+          "overall": 108,
+          "espn_adp": 97.0,
+          "adp_deviation": -11.0
+        },
+        {
+          "player": "Aaron Jones Sr.",
+          "nfl_team": "MIN",
+          "pos": "RB",
+          "round": 9,
+          "pick_in_round": 5,
+          "overall": 117,
+          "espn_adp": 90.0,
+          "adp_deviation": -27.0
+        },
+        {
+          "player": "Texans D/ST",
+          "nfl_team": "HOU",
+          "pos": "D/ST",
+          "round": 10,
+          "pick_in_round": 10,
+          "overall": 136,
+          "espn_adp": 141.0,
+          "adp_deviation": 5.0
+        },
+        {
+          "player": "Kyler Murray",
+          "nfl_team": "MIN",
+          "pos": "QB",
+          "round": 11,
+          "pick_in_round": 5,
+          "overall": 145,
+          "espn_adp": 116.0,
+          "adp_deviation": -29.0
+        },
+        {
+          "player": "Tre Tucker",
+          "nfl_team": "LV",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 10,
+          "overall": 164,
+          "espn_adp": 171.0,
+          "adp_deviation": 7.0
+        },
+        {
+          "player": "Kenyon Sadiq",
+          "nfl_team": "NYJ",
+          "pos": "TE",
+          "round": 13,
+          "pick_in_round": 5,
+          "overall": 173,
+          "espn_adp": 154.0,
+          "adp_deviation": -19.0
+        },
+        {
+          "player": "Cam Little",
+          "nfl_team": "JAX",
+          "pos": "K",
+          "round": 14,
+          "pick_in_round": 10,
+          "overall": 192,
+          "espn_adp": 193.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Ryan Flournoy",
+          "nfl_team": "DAL",
+          "pos": "WR",
+          "round": 15,
+          "pick_in_round": 5,
+          "overall": 201,
+          "espn_adp": 205.0,
+          "adp_deviation": 4.0
+        },
+        {
+          "player": "James Conner",
+          "nfl_team": "ARI",
+          "pos": "RB",
+          "round": 16,
+          "pick_in_round": 10,
+          "overall": 220,
+          "espn_adp": 249.0,
+          "adp_deviation": 29.0
+        }
+      ]
     },
     {
       "manager": "Anthony Kelly",
@@ -702,12 +2808,12 @@
       "last_score": null,
       "streak": null,
       "proj_ppg": 109.3,
-      "adp_value": 5.0,
+      "adp_value": 4.07,
       "position_spend": {
-        "QB": 10.7,
-        "RB": 46.0,
-        "WR": 36.4,
-        "TE": 7.0
+        "QB": 13.6,
+        "RB": 46.3,
+        "WR": 35.9,
+        "TE": 4.3
       },
       "synopsis": "",
       "blurb": "",
@@ -742,7 +2848,169 @@
         ],
         "dist_to_nearest": 3.15,
         "margin_over_2nd": 2.48
-      }
+      },
+      "draft_picks": [
+        {
+          "player": "James Cook III",
+          "nfl_team": "BUF",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 10,
+          "overall": 10,
+          "espn_adp": 9.0,
+          "adp_deviation": -1.0
+        },
+        {
+          "player": "A.J. Brown",
+          "nfl_team": "NE",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 5,
+          "overall": 19,
+          "espn_adp": 19.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Josh Allen",
+          "nfl_team": "BUF",
+          "pos": "QB",
+          "round": 3,
+          "pick_in_round": 10,
+          "overall": 38,
+          "espn_adp": 26.0,
+          "adp_deviation": -12.0
+        },
+        {
+          "player": "D'Andre Swift",
+          "nfl_team": "CHI",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 5,
+          "overall": 47,
+          "espn_adp": 47.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Christian Watson",
+          "nfl_team": "GB",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 10,
+          "overall": 66,
+          "espn_adp": 75.0,
+          "adp_deviation": 9.0
+        },
+        {
+          "player": "Courtland Sutton",
+          "nfl_team": "DEN",
+          "pos": "WR",
+          "round": 6,
+          "pick_in_round": 5,
+          "overall": 75,
+          "espn_adp": 71.0,
+          "adp_deviation": -4.0
+        },
+        {
+          "player": "RJ Harvey",
+          "nfl_team": "DEN",
+          "pos": "RB",
+          "round": 7,
+          "pick_in_round": 10,
+          "overall": 94,
+          "espn_adp": 103.0,
+          "adp_deviation": 9.0
+        },
+        {
+          "player": "Jake Ferguson",
+          "nfl_team": "DAL",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 5,
+          "overall": 103,
+          "espn_adp": 110.0,
+          "adp_deviation": 7.0
+        },
+        {
+          "player": "Jordan Mason",
+          "nfl_team": "MIN",
+          "pos": "RB",
+          "round": 9,
+          "pick_in_round": 10,
+          "overall": 122,
+          "espn_adp": 130.0,
+          "adp_deviation": 8.0
+        },
+        {
+          "player": "Zach Charbonnet",
+          "nfl_team": "SEA",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 5,
+          "overall": 131,
+          "espn_adp": 131.0,
+          "adp_deviation": 0.0
+        },
+        {
+          "player": "Jordyn Tyson",
+          "nfl_team": "NO",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 10,
+          "overall": 150,
+          "espn_adp": 170.0,
+          "adp_deviation": 20.0
+        },
+        {
+          "player": "Braelon Allen",
+          "nfl_team": "NYJ",
+          "pos": "RB",
+          "round": 12,
+          "pick_in_round": 5,
+          "overall": 159,
+          "espn_adp": 175.0,
+          "adp_deviation": 16.0
+        },
+        {
+          "player": "Omar Cooper Jr.",
+          "nfl_team": "NYJ",
+          "pos": "WR",
+          "round": 13,
+          "pick_in_round": 10,
+          "overall": 178,
+          "espn_adp": 209.0,
+          "adp_deviation": 31.0
+        },
+        {
+          "player": "Lions D/ST",
+          "nfl_team": "DET",
+          "pos": "D/ST",
+          "round": 14,
+          "pick_in_round": 5,
+          "overall": 187,
+          "espn_adp": 188.0,
+          "adp_deviation": 1.0
+        },
+        {
+          "player": "Ray Davis",
+          "nfl_team": "BUF",
+          "pos": "RB",
+          "round": 15,
+          "pick_in_round": 10,
+          "overall": 206,
+          "espn_adp": 180.0,
+          "adp_deviation": -26.0
+        },
+        {
+          "player": "Chris Boswell",
+          "nfl_team": "PIT",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 5,
+          "overall": 215,
+          "espn_adp": 237.0,
+          "adp_deviation": 22.0
+        }
+      ]
     }
   ]
 }
