@@ -30,16 +30,25 @@
         "confidence": "clear",
         "comparisons": [
           {
-            "manager": "Cole Maney",
-            "season": 2025
-          },
-          {
             "manager": "Charlie Gorman",
-            "season": 2025
+            "season": 2025,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 109.0,
+            "dist": 2.92
           },
           {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Andrew Root",
+            "season": 2024,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 113.4,
+            "dist": 3.54
+          },
+          {
+            "manager": "Thomas Sullivan",
+            "season": 2020,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 105.7,
+            "dist": 3.91
           }
         ],
         "dist_to_nearest": 2.53,
@@ -74,16 +83,25 @@
         "confidence": "clear",
         "comparisons": [
           {
+            "manager": "Charlie Gorman",
+            "season": 2023,
+            "archetype": "Patient Value Hunters",
+            "ppg": 131.9,
+            "dist": 4.64
+          },
+          {
             "manager": "Cole Maney",
-            "season": 2025
+            "season": 2025,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 129.6,
+            "dist": 4.69
           },
           {
             "manager": "Charlie Gorman",
-            "season": 2025
-          },
-          {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "season": 2025,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 109.0,
+            "dist": 4.84
           }
         ],
         "dist_to_nearest": 4.76,
@@ -118,16 +136,25 @@
         "confidence": "clear",
         "comparisons": [
           {
-            "manager": "Cole Maney",
-            "season": 2025
+            "manager": "Anthony Kelly",
+            "season": 2024,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 110.4,
+            "dist": 3.21
           },
           {
-            "manager": "Charlie Gorman",
-            "season": 2025
+            "manager": "Anthony Kelly",
+            "season": 2025,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 115.3,
+            "dist": 3.27
           },
           {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Quin Gegwich",
+            "season": 2021,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 110.4,
+            "dist": 3.85
           }
         ],
         "dist_to_nearest": 4.05,
@@ -162,16 +189,25 @@
         "confidence": "borderline",
         "comparisons": [
           {
-            "manager": "Deniz Bileydi",
-            "season": 2025
+            "manager": "Ben Castaldo",
+            "season": 2021,
+            "archetype": "Patient Value Hunters",
+            "ppg": 120.1,
+            "dist": 4.83
           },
           {
-            "manager": "Ben Castaldo",
-            "season": 2025
+            "manager": "Aidan Quigley",
+            "season": 2025,
+            "archetype": "Patient Value Hunters",
+            "ppg": 96.1,
+            "dist": 5.17
           },
           {
-            "manager": "Ben Castaldo",
-            "season": 2022
+            "manager": "Andrew Root",
+            "season": 2022,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 118.8,
+            "dist": 5.17
           }
         ],
         "dist_to_nearest": 5.18,
@@ -206,16 +242,25 @@
         "confidence": "borderline",
         "comparisons": [
           {
+            "manager": "Ethan Radecki",
+            "season": 2021,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 116.2,
+            "dist": 3.41
+          },
+          {
             "manager": "Cole Maney",
-            "season": 2025
+            "season": 2025,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 129.6,
+            "dist": 4.33
           },
           {
-            "manager": "Charlie Gorman",
-            "season": 2025
-          },
-          {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Deniz Bileydi",
+            "season": 2020,
+            "archetype": "Patient Value Hunters",
+            "ppg": 120.0,
+            "dist": 4.39
           }
         ],
         "dist_to_nearest": 4.52,
@@ -250,16 +295,25 @@
         "confidence": "clear",
         "comparisons": [
           {
-            "manager": "Cole Maney",
-            "season": 2025
+            "manager": "Ethan Radecki",
+            "season": 2021,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 116.2,
+            "dist": 3.01
           },
           {
-            "manager": "Charlie Gorman",
-            "season": 2025
+            "manager": "Ethan Radecki",
+            "season": 2023,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 125.3,
+            "dist": 3.48
           },
           {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Andrew Root",
+            "season": 2020,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 110.1,
+            "dist": 3.83
           }
         ],
         "dist_to_nearest": 3.93,
@@ -294,16 +348,25 @@
         "confidence": "clear",
         "comparisons": [
           {
-            "manager": "Cole Maney",
-            "season": 2025
+            "manager": "Quin Gegwich",
+            "season": 2020,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 97.5,
+            "dist": 3.59
           },
           {
             "manager": "Charlie Gorman",
-            "season": 2025
+            "season": 2020,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 109.5,
+            "dist": 4.49
           },
           {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Thomas Sullivan",
+            "season": 2020,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 105.7,
+            "dist": 4.93
           }
         ],
         "dist_to_nearest": 5.01,
@@ -338,16 +401,25 @@
         "confidence": "clear",
         "comparisons": [
           {
-            "manager": "Cole Maney",
-            "season": 2025
+            "manager": "Quin Gegwich",
+            "season": 2024,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 119.2,
+            "dist": 3.71
           },
           {
-            "manager": "Charlie Gorman",
-            "season": 2025
+            "manager": "Carmine Pittelli",
+            "season": 2023,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 133.9,
+            "dist": 3.76
           },
           {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Brandon Hancock",
+            "season": 2021,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 120.0,
+            "dist": 4.06
           }
         ],
         "dist_to_nearest": 3.99,
@@ -382,16 +454,25 @@
         "confidence": "clear",
         "comparisons": [
           {
-            "manager": "Cole Maney",
-            "season": 2025
+            "manager": "Andrew Root",
+            "season": 2020,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 110.1,
+            "dist": 4.29
+          },
+          {
+            "manager": "Quin Gegwich",
+            "season": 2021,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 110.4,
+            "dist": 4.64
           },
           {
             "manager": "Charlie Gorman",
-            "season": 2025
-          },
-          {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "season": 2020,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 109.5,
+            "dist": 4.91
           }
         ],
         "dist_to_nearest": 5.36,
@@ -408,7 +489,7 @@
       "record_to_date": "0-0",
       "last_score": null,
       "streak": null,
-      "proj_ppg": 114.2,
+      "proj_ppg": 117.5,
       "adp_value": -2.12,
       "position_spend": {
         "QB": 9.7,
@@ -426,16 +507,25 @@
         "confidence": "clear",
         "comparisons": [
           {
-            "manager": "Cole Maney",
-            "season": 2025
+            "manager": "Quin Gegwich",
+            "season": 2021,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 110.4,
+            "dist": 4.59
           },
           {
-            "manager": "Charlie Gorman",
-            "season": 2025
+            "manager": "Anthony Kelly",
+            "season": 2022,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 111.4,
+            "dist": 5.48
           },
           {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Quin Gegwich",
+            "season": 2024,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 119.2,
+            "dist": 5.67
           }
         ],
         "dist_to_nearest": 5.85,
@@ -470,16 +560,25 @@
         "confidence": "poor_fit",
         "comparisons": [
           {
-            "manager": "Deniz Bileydi",
-            "season": 2022
+            "manager": "Charlie Gorman",
+            "season": 2020,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 109.5,
+            "dist": 6.24
           },
           {
-            "manager": "Ethan Radecki",
-            "season": 2020
+            "manager": "Ryan McQuaid",
+            "season": 2024,
+            "archetype": "High-Conviction Board-Breakers",
+            "ppg": 106.6,
+            "dist": 6.59
           },
           {
-            "manager": "Max Malich",
-            "season": 2022
+            "manager": "Baylen Slansky",
+            "season": 2022,
+            "archetype": "High-Conviction Board-Breakers",
+            "ppg": 111.4,
+            "dist": 6.6
           }
         ],
         "dist_to_nearest": 7.54,
@@ -514,16 +613,25 @@
         "confidence": "clear",
         "comparisons": [
           {
+            "manager": "Ethan Radecki",
+            "season": 2021,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 116.2,
+            "dist": 3.73
+          },
+          {
             "manager": "Cole Maney",
-            "season": 2025
+            "season": 2025,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 129.6,
+            "dist": 3.96
           },
           {
-            "manager": "Charlie Gorman",
-            "season": 2025
-          },
-          {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Carmine Pittelli",
+            "season": 2020,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 119.8,
+            "dist": 4.11
           }
         ],
         "dist_to_nearest": 3.87,
@@ -559,15 +667,24 @@
         "comparisons": [
           {
             "manager": "Cole Maney",
-            "season": 2025
+            "season": 2025,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 129.6,
+            "dist": 3.55
           },
           {
-            "manager": "Charlie Gorman",
-            "season": 2025
+            "manager": "Deniz Bileydi",
+            "season": 2020,
+            "archetype": "Patient Value Hunters",
+            "ppg": 120.0,
+            "dist": 3.72
           },
           {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Ethan Radecki",
+            "season": 2023,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 125.3,
+            "dist": 3.76
           }
         ],
         "dist_to_nearest": 3.68,
@@ -602,16 +719,25 @@
         "confidence": "clear",
         "comparisons": [
           {
+            "manager": "Anthony Kelly",
+            "season": 2023,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 95.0,
+            "dist": 2.46
+          },
+          {
             "manager": "Cole Maney",
-            "season": 2025
+            "season": 2025,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 129.6,
+            "dist": 3.57
           },
           {
-            "manager": "Charlie Gorman",
-            "season": 2025
-          },
-          {
-            "manager": "Baylen Slansky",
-            "season": 2024
+            "manager": "Brandon Hancock",
+            "season": 2021,
+            "archetype": "Balanced Board-Followers",
+            "ppg": 120.0,
+            "dist": 3.95
           }
         ],
         "dist_to_nearest": 3.15,
