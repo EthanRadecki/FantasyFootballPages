@@ -433,6 +433,12 @@ var RADAR_DIMS         = DATA.RADAR_DIMS;
 var RADAR_LABELS       = DATA.RADAR_LABELS;
 var POSDEV_DIMS        = DATA.POSDEV_DIMS;
 var POSDEV_LABELS      = DATA.POSDEV_LABELS;
+var POSITION_COLORS = {
+  QB: '#983a3a', RB: '#4a7a4a', WR: '#3a6f98',
+  TE: '#a07010', K: '#6a6460', 'D/ST': '#504840'
+};
+// posdev labels use "DST" (no slash); map to the same color as "D/ST"
+var POSITION_COLOR_BY_LABEL = { QB:'#983a3a', RB:'#4a7a4a', WR:'#3a6f98', TE:'#a07010', K:'#6a6460', DST:'#504840' };
 var EXPLORER_GROUPS    = DATA.EXPLORER_GROUPS;
 var CAREER_EXTRAS_GROUP= DATA.CAREER_EXTRAS_GROUP;
 var METRIC_META        = DATA.METRIC_META;
@@ -603,14 +609,15 @@ function renderPosdevStrip(){
     var cells = POSDEV_DIMS.map(function(d, idx){
       var v = entry.posdev[d];
       var lbl = POSDEV_LABELS[idx];
+      var posColor = POSITION_COLOR_BY_LABEL[lbl] || color;
       var rng = ranges[d] || [-1,1];
       var extent = Math.max(Math.abs(rng[0]), Math.abs(rng[1]), 0.001);
       var pct = (v===null || v===undefined) ? 0 : Math.max(-100, Math.min(100, (v/extent)*100));
       var leftPct, widthPct;
       if(pct>=0){ leftPct=50; widthPct=pct/2; } else { leftPct=50+pct/2; widthPct=-pct/2; }
       return '<div class="posdev-cell">'
-        +'<div class="posdev-cell-label">'+lbl+'</div>'
-        +'<div class="posdev-track"><div class="posdev-fill" style="left:'+leftPct+'%;width:'+widthPct+'%;background:'+color+';"></div></div>'
+        +'<div class="posdev-cell-label" style="color:'+posColor+';">'+lbl+'</div>'
+        +'<div class="posdev-track"><div class="posdev-fill" style="left:'+leftPct+'%;width:'+widthPct+'%;background:'+posColor+';"></div></div>'
         +'<div class="posdev-val">'+((v===null||v===undefined)?'N/A':fmtVal(d,v))+'</div>'
         +'</div>';
     }).join('');

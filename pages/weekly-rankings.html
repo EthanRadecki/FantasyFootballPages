@@ -802,7 +802,10 @@ function renderRankings(data) {
     if (t.draft_archetype) {
       var arch = t.draft_archetype;
       var comps = (arch.comparisons || []).slice(0, 2)
-        .map(function(c){ return c.manager.replace(' Jr.','') + ' \u2019' + String(c.season).slice(2); })
+        .map(function(c){
+          var label = c.manager.replace(' Jr.','') + ' \u2019' + String(c.season).slice(2);
+          return c.ppg != null ? label + ' (' + c.ppg.toFixed(0) + ' PPG)' : label;
+        })
         .join(', ');
       archetypeHtml = '<div class="archetype-badge confidence-' + arch.confidence + '">'
         + '<span class="archetype-icon">&#129516;</span>'
@@ -937,7 +940,28 @@ var DRAFT_METRICS = {
   }
 };
 
-var POSITION_SPEND_COLORS = { QB:'#7f6647', RB:'#28843a', WR:'#416cab', TE:'#ba4b15' };
+var POSITION_COLORS = {
+  QB: '#983a3a', RB: '#4a7a4a', WR: '#3a6f98',
+  TE: '#a07010', K: '#6a6460', 'D/ST': '#504840'
+};
+var POSITION_SPEND_COLORS = { QB: POSITION_COLORS.QB, RB: POSITION_COLORS.RB, WR: POSITION_COLORS.WR, TE: POSITION_COLORS.TE };
+
+// Red -> yellow -> green gradient, reused for any "how good is this number"
+// bar chart (ADP Value, Projected PPG). t=0 worst (red), t=1 best (green).
+var GRADIENT_STOPS = [
+  [168, 90, 90],   // red   -- matches the Early-RB Rushers archetype red on Draft Fingerprints
+  [201, 162, 77],  // yellow/gold
+  [90, 138, 90]    // green -- matches the Balanced Board-Followers archetype green
+];
+function gradientColor(t) {
+  t = Math.max(0, Math.min(1, t));
+  var seg = t < 0.5 ? [GRADIENT_STOPS[0], GRADIENT_STOPS[1], t/0.5] : [GRADIENT_STOPS[1], GRADIENT_STOPS[2], (t-0.5)/0.5];
+  var a = seg[0], b = seg[1], k = seg[2];
+  var r = Math.round(a[0] + (b[0]-a[0])*k);
+  var g = Math.round(a[1] + (b[1]-a[1])*k);
+  var bl = Math.round(a[2] + (b[2]-a[2])*k);
+  return 'rgb(' + r + ',' + g + ',' + bl + ')';
+}
 
 function availableDraftMetrics(teams) {
   return Object.keys(DRAFT_METRICS).filter(function(key) {
@@ -1028,7 +1052,23 @@ function drawDraftChart(key) {
 
   var labels = rows.map(function(r){ return r.manager.replace(' Jr.','').replace('Ryan P ','Ryan '); });
   var values = rows.map(function(r){ return r.value; });
-  var colors = rows.map(function(r){ return MANAGER_COLORS[r.manager] || '#9c949c'; });
+  var labelColors = rows.map(function(r){ return MANAGER_COLORS[r.manager] || '#5a5550'; });
+
+  // Bar fill: red (bad) -> yellow -> green (good), not manager color, so the
+  // color itself carries meaning. "Good" direction differs by metric:
+  // Projected PPG is scored against a fixed 100-130 band (matches the x-axis
+  // range below); ADP Value is scored symmetrically around 0 (reaching is
+  // bad/red, letting a player fall is good/green), using this week's own
+  // spread since reach magnitude varies a lot week to week.
+  var barColors;
+  if (key === 'proj_ppg') {
+    barColors = values.map(function(v){ return gradientColor((v - 100) / 30); });
+  } else if (key === 'adp_value') {
+    var extent = Math.max.apply(null, values.map(Math.abs).concat([5]));
+    barColors = values.map(function(v){ return gradientColor((extent - v) / (2 * extent)); });
+  } else {
+    barColors = values.map(function(){ return '#9c949c'; });
+  }
 
   draftInsightsChart = new Chart(ctx, {
     type: 'bar',
@@ -1036,7 +1076,7 @@ function drawDraftChart(key) {
       labels: labels,
       datasets: [{
         data: values,
-        backgroundColor: colors,
+        backgroundColor: barColors,
         borderRadius: 4,
         barThickness: 18
       }]
@@ -1054,13 +1094,16 @@ function drawDraftChart(key) {
         }
       },
       scales: {
-        x: {
+        x: Object.assign({
           grid:  { color: 'rgba(156,148,156,0.15)', drawBorder: false },
           ticks: { color: '#8a8480', callback: function(v){ return metric.diverging && v > 0 ? '+' + v : v; } }
-        },
+        }, key === 'proj_ppg' ? { min: 100, max: 130 } : {}),
         y: {
           grid: { display: false },
-          ticks: { color: '#5a5550', font: { size: 11, weight: '600' } }
+          ticks: {
+            color: function(ctx) { return labelColors[ctx.index] || '#5a5550'; },
+            font: { size: 11, weight: '700' }
+          }
         }
       }
     }
