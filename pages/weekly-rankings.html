@@ -283,6 +283,48 @@
   font-size:0.78rem;color:var(--muted);line-height:1.6;margin:0 0 1.25rem;
 }
 
+/* ── Draft Insights click-to-expand detail card (shown below the chart
+   when a bar/segment is clicked -- picks for a manager, or a manager's
+   picks at one position for the Position Spend chart) ── */
+.draft-detail-card {
+  display:none;margin-top:1.25rem;padding-top:1.25rem;
+  border-top:1px dashed rgba(var(--accent-rgb),0.2);
+}
+.draft-detail-card.open { display:block; }
+.draft-detail-header {
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:0.75rem;
+}
+.draft-detail-title {
+  font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--palm);
+  display:flex;align-items:center;gap:0.5rem;
+}
+.draft-detail-title .dot { width:10px;height:10px;border-radius:50%;display:inline-block; }
+.draft-detail-close {
+  background:none;border:none;cursor:pointer;color:var(--muted);
+  font-size:1.1rem;line-height:1;padding:0.2rem 0.5rem;
+}
+.draft-detail-close:hover { color:var(--palm); }
+.draft-detail-table { width:100%;border-collapse:collapse;font-size:0.8rem; }
+.draft-detail-table th {
+  text-align:left;font-weight:700;color:var(--muted);font-size:0.68rem;
+  text-transform:uppercase;letter-spacing:0.04em;
+  padding:0.4rem 0.6rem;border-bottom:1px solid rgba(var(--accent-rgb),0.15);
+}
+.draft-detail-table td {
+  padding:0.45rem 0.6rem;border-bottom:1px solid rgba(var(--accent-rgb),0.08);
+}
+.draft-detail-table tr:last-child td { border-bottom:none; }
+.draft-detail-pos-chip {
+  display:inline-block;font-size:0.65rem;font-weight:700;color:#fff;
+  padding:0.1rem 0.45rem;border-radius:10px;
+}
+.draft-detail-dev-pos { color:#5a8a5a;font-weight:700; }
+.draft-detail-dev-neg { color:#a85a5a;font-weight:700; }
+.draft-detail-hint {
+  font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.6rem;
+}
+
 @media(max-width:768px) {
   .rank-blurb-screenshot, .rank-blurb-caption { max-width:none; }
 }
@@ -547,6 +589,14 @@
       <p class="draft-insights-desc" id="draft-insights-desc"></p>
       <div style="position:relative;height:440px;">
         <canvas id="chart-draft-insights"></canvas>
+      </div>
+      <p class="draft-detail-hint" id="draft-insights-hint">Click a bar to see the picks behind it.</p>
+      <div class="draft-detail-card" id="draft-detail-card">
+        <div class="draft-detail-header">
+          <div class="draft-detail-title" id="draft-detail-title"></div>
+          <button class="draft-detail-close" onclick="closeDraftDetail()">&#10005;</button>
+        </div>
+        <div id="draft-detail-body"></div>
       </div>
     </div>
   </div>
@@ -918,7 +968,7 @@ var draftInsightsTeams = null; // cached team list for the currently loaded week
 var DRAFT_METRICS = {
   adp_value: {
     label: 'ADP Value',
-    desc: 'How far each manager\u2019s draft picks ran from consensus ADP, positive means they reached, negative means they let a player fall to them.',
+    desc: 'How far each manager\u2019s QB/RB/WR/TE picks ran from consensus ADP (K and D/ST excluded), positive means they reached, negative means they let a player fall to them.',
     getValue: function(t){ return t.adp_value; },
     format: function(v){ return (v > 0 ? '+' : '') + v.toFixed(1); },
     diverging: true
@@ -1000,10 +1050,13 @@ function selectDraftMetric(key) {
 function drawDraftChart(key) {
   var metric = DRAFT_METRICS[key];
   if (draftInsightsChart) { draftInsightsChart.destroy(); draftInsightsChart = null; }
+  closeDraftDetail();
 
   Chart.defaults.font.family = "'Outfit', sans-serif";
   Chart.defaults.color       = '#5a5550';
   var ctx = document.getElementById('chart-draft-insights').getContext('2d');
+  var hintEl = document.getElementById('draft-insights-hint');
+  hintEl.style.display = (key === 'proj_ppg') ? 'none' : 'block';
 
   if (metric.stacked) {
     // Position Spend: one stacked bar per manager, sorted by RB share so
@@ -1029,6 +1082,14 @@ function drawDraftChart(key) {
         indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
+        onClick: function(evt, elements) {
+          if (!elements.length) return;
+          var el = elements[0];
+          var team = withSpend[el.index];
+          var pos  = posKeys[el.datasetIndex];
+          showPositionSpendDetail(team, pos);
+        },
+        onHover: function(evt, elements) { evt.native.target.style.cursor = elements.length ? 'pointer' : 'default'; },
         plugins: {
           legend: { position: 'top', labels: { boxWidth: 10, color: '#5a5550', font: { size: 11 } } },
           tooltip: { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + ctx.parsed.x.toFixed(0) + '%'; } } }
@@ -1085,6 +1146,15 @@ function drawDraftChart(key) {
       indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
+      onClick: function(evt, elements) {
+        if (!elements.length || key === 'proj_ppg') return;
+        var mgr  = rows[elements[0].index].manager;
+        var team = draftInsightsTeams.filter(function(t){ return t.manager === mgr; })[0];
+        if (key === 'adp_value') showAdpValueDetail(team);
+      },
+      onHover: function(evt, elements) {
+        evt.native.target.style.cursor = (elements.length && key !== 'proj_ppg') ? 'pointer' : 'default';
+      },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -1108,6 +1178,87 @@ function drawDraftChart(key) {
       }
     }
   });
+}
+
+/* ── Draft Insights click-to-expand detail cards ─────────────────── */
+function closeDraftDetail() {
+  document.getElementById('draft-detail-card').classList.remove('open');
+}
+
+function draftDetailPosChip(pos) {
+  var color = POSITION_COLORS[pos] || '#6a6460';
+  return '<span class="draft-detail-pos-chip" style="background:' + color + ';">' + pos + '</span>';
+}
+
+function draftDetailDevCell(dev) {
+  if (dev === null || dev === undefined) return '<span style="color:var(--muted);">N/A</span>';
+  var cls = dev >= 0 ? 'draft-detail-dev-pos' : 'draft-detail-dev-neg';
+  return '<span class="' + cls + '">' + (dev > 0 ? '+' : '') + dev.toFixed(1) + '</span>';
+}
+
+// ADP Value card: every pick, sorted by round. Chart's own average only
+// used QB/RB/WR/TE, so K/DST rows are dimmed and flagged rather than
+// hidden -- easier to audit that way than to just disappear them.
+function showAdpValueDetail(team) {
+  var color = MANAGER_COLORS[team.manager] || '#5a5550';
+  document.getElementById('draft-detail-title').innerHTML =
+    '<span class="dot" style="background:' + color + ';"></span>' + team.manager + '\u2019s picks';
+
+  var picks = (team.draft_picks || []).slice().sort(function(a,b){ return a.overall - b.overall; });
+  var rowsHtml = picks.map(function(p) {
+    var isSkill = ['QB','RB','WR','TE'].indexOf(p.pos) !== -1;
+    var style = isSkill ? '' : ' style="opacity:0.5;"';
+    return '<tr' + style + '>'
+      + '<td>' + draftDetailPosChip(p.pos) + '</td>'
+      + '<td>' + p.player + ' <span style="color:var(--muted);font-size:0.75em;">' + p.nfl_team + '</span></td>'
+      + '<td>Rd ' + p.round + '.' + p.pick_in_round + ' (#' + p.overall + ')</td>'
+      + '<td>' + (p.espn_adp !== null ? p.espn_adp.toFixed(1) : 'N/A') + '</td>'
+      + '<td>' + draftDetailDevCell(p.adp_deviation) + '</td>'
+      + '</tr>';
+  }).join('');
+
+  document.getElementById('draft-detail-body').innerHTML =
+    '<table class="draft-detail-table"><thead><tr>'
+    + '<th>Pos</th><th>Player</th><th>Pick</th><th>ESPN ADP</th><th>Deviation</th>'
+    + '</tr></thead><tbody>' + rowsHtml + '</tbody></table>'
+    + '<p class="draft-detail-hint">K and D/ST picks (dimmed) aren\u2019t counted in the ADP Value average above.</p>';
+
+  document.getElementById('draft-detail-card').classList.add('open');
+}
+
+// Position Spend card: just that manager's picks at the clicked position,
+// showing the round-based draft capital that fed the stacked bar.
+function showPositionSpendDetail(team, pos) {
+  var color = POSITION_COLORS[pos] || '#5a5550';
+  document.getElementById('draft-detail-title').innerHTML =
+    '<span class="dot" style="background:' + color + ';"></span>' + team.manager + '\u2019s ' + pos + 's';
+
+  var picks = (team.draft_picks || [])
+    .filter(function(p){ return p.pos === pos; })
+    .sort(function(a,b){ return a.overall - b.overall; });
+
+  if (!picks.length) {
+    document.getElementById('draft-detail-body').innerHTML = '<p class="draft-detail-hint">No ' + pos + ' picks this draft.</p>';
+    document.getElementById('draft-detail-card').classList.add('open');
+    return;
+  }
+
+  var rowsHtml = picks.map(function(p) {
+    return '<tr>'
+      + '<td>' + p.player + ' <span style="color:var(--muted);font-size:0.75em;">' + p.nfl_team + '</span></td>'
+      + '<td>Round ' + p.round + ', Pick ' + p.pick_in_round + '</td>'
+      + '<td>Overall #' + p.overall + '</td>'
+      + '<td>' + (p.espn_adp !== null ? p.espn_adp.toFixed(1) : 'N/A') + '</td>'
+      + '</tr>';
+  }).join('');
+
+  document.getElementById('draft-detail-body').innerHTML =
+    '<table class="draft-detail-table"><thead><tr>'
+    + '<th>Player</th><th>Draft Capital</th><th>Overall</th><th>ESPN ADP</th>'
+    + '</tr></thead><tbody>' + rowsHtml + '</tbody></table>'
+    + '<p class="draft-detail-hint">Position Spend weights early rounds exponentially heavier (halves every 3 rounds), not by a flat per-pick step.</p>';
+
+  document.getElementById('draft-detail-card').classList.add('open');
 }
 
 /* ── Trajectory chart ─────────────────────────────────────────── */
