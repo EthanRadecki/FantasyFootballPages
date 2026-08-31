@@ -1227,7 +1227,7 @@ function drawDraftChart(key) {
         x: Object.assign({
           grid:  { color: 'rgba(156,148,156,0.15)', drawBorder: false },
           ticks: { color: '#8a8480', callback: function(v){ return metric.diverging && v > 0 ? '+' + v : v; } }
-        }, key === 'proj_ppg' ? { min: 100, max: 130 } : {}),
+        }, (key === 'proj_ppg' || key === 'projected_sos') ? { min: 100, max: 130 } : {}),
         y: {
           grid: { display: false },
           ticks: {
