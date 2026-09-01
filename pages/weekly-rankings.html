@@ -784,15 +784,6 @@
        (before any games are played) ranks by draft order; once real
        weekly scoring exists the same section re-ranks by cumulative
        fantasy points, recomputed fresh each week. -->
-  <div id="koth-wrap" style="display:none;margin-bottom:2rem;">
-    <div class="rankings-label" style="margin-top:0.5rem;">&#9968; King of the Hill</div>
-    <div class="glass" style="padding:1.5rem;">
-      <div class="draft-insights-tabs" id="koth-tabs"></div>
-      <p class="koth-desc" id="koth-desc"></p>
-      <div class="koth-pyramid" id="koth-pyramid"></div>
-    </div>
-  </div>
-
   <!-- TRAJECTORY CHART -- below cards so it doesn't spoil the reveal -->
   <div id="trajectory-wrap" style="display:none;margin-bottom:2rem;">
     <div class="rankings-label" style="margin-top:0.5rem;">&#128200; Season Ranking Trajectory</div>
@@ -811,6 +802,20 @@
       <div style="position:relative;height:400px;">
         <canvas id="chart-playoff-odds"></canvas>
       </div>
+    </div>
+  </div>
+
+  <!-- KING OF THE HILL -- top 20 players overall + by position. Week 1
+       (before any games are played) ranks by draft order; once real
+       weekly scoring exists the same section re-ranks by cumulative
+       fantasy points, recomputed fresh each week. Deliberately the last
+       graphic on the page, below Trajectory and Playoff Odds. -->
+  <div id="koth-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#9968; King of the Hill</div>
+    <div class="glass" style="padding:1.5rem;">
+      <div class="draft-insights-tabs" id="koth-tabs"></div>
+      <p class="koth-desc" id="koth-desc"></p>
+      <div class="koth-pyramid" id="koth-pyramid"></div>
     </div>
   </div>
 
@@ -2205,21 +2210,23 @@ function loadRankings() {
       // but not tied to any special "preseason" mode, so this runs every week.
       renderDraftInsights(data);
 
-      // King of the Hill -- top players overall + by position, ranked by
-      // draft order pre-season or by cumulative points once available.
-      renderTopPlayers(data);
-
       // Fetch all weeks up to and including selected week for trajectory
       var entry    = manifest.find(function(m){ return m.season === season; });
       var allWeeks = entry ? entry.weeks.filter(function(w){ return w <= week; }) : [];
       var fetches  = allWeeks.map(function(w){ return fetchWeek(season, w); });
 
-      return Promise.all(fetches);
+      return Promise.all(fetches).then(function(weeksData) { return { data: data, weeksData: weeksData }; });
     })
-    .then(function(weeksData) {
-      var sorted = weeksData.slice().sort(function(a, b){ return a.week - b.week; });
+    .then(function(result) {
+      var data = result.data;
+      var sorted = result.weeksData.slice().sort(function(a, b){ return a.week - b.week; });
       renderTrajectoryChart(season, week, sorted);
       renderPlayoffOddsChart(season, week);
+
+      // King of the Hill -- top players overall + by position, ranked by
+      // draft order pre-season or by cumulative points once available.
+      // Deliberately rendered last, below Trajectory/Playoff Odds.
+      renderTopPlayers(data);
     })
     .catch(function() {
       container.innerHTML = '<div class="empty-state glass"><span class="empty-icon">&#128203;</span><p>No rankings available for this week yet.</p></div>';
