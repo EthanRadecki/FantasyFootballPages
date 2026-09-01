@@ -855,25 +855,19 @@ function renderRankings(data) {
     // Logo
     html += '<img class="rank-logo" src="' + logo + '" alt="">';
 
-    // Look-back toggle + full historical write-up (blurbWeek's text, if we have it),
-    // with an optional screenshot (roster/IR grab, etc.) shown above the text.
+    // Look-back toggle + full historical write-up (blurbWeek's text, if we have it).
+    // Blurb text can contain [[img:some_id]] markers, each resolved against
+    // t.screenshots (an array of {id, file, caption}) and rendered inline at
+    // that exact point in the prose, rather than stacked above the text --
+    // this keeps each chart next to the specific claim it illustrates.
     var blurbHtml = '';
-    if (t.blurb || t.screenshot) {
-      var screenshotHtml = '';
-      if (t.screenshot) {
-        screenshotHtml += '<img class="rank-blurb-screenshot" src="' + t.screenshot + '" '
-                        + 'alt="' + t.manager + ' roster screenshot" '
-                        + 'onclick="openScreenshotLightbox(event,\'' + t.screenshot + '\')">';
-        if (t.screenshot_caption) {
-          screenshotHtml += '<div class="rank-blurb-caption">' + t.screenshot_caption + '</div>';
-        }
-      }
+    if (t.blurb) {
       blurbHtml = '<button class="rank-blurb-toggle" id="blurb-btn-' + slug + '" '
                 + 'onclick="toggleBlurb(\'' + slug + '\',\'' + blurbLabel + '\')">'
                 + '<span class="chevron">&#9656;</span>'
                 + '<span class="toggle-label">Read the ' + blurbLabel + ' take</span>'
                 + '</button>'
-                + '<div class="rank-blurb" id="blurb-' + slug + '">' + screenshotHtml + (t.blurb || '') + '</div>';
+                + '<div class="rank-blurb" id="blurb-' + slug + '">' + renderBlurbWithImages(t.blurb, t.screenshots, t.manager) + '</div>';
     }
 
     // Draft archetype badge -- links this manager's current draft to its
@@ -912,6 +906,38 @@ function renderRankings(data) {
 
   html += '</div>';
   container.innerHTML = html;
+}
+
+// Splits blurb text on [[img:some_id]] markers and interleaves the matching
+// screenshot (by id) inline at that point, wrapped in a paragraph so text
+// before/after each image still reads as normal flowing prose. If a
+// screenshot's file hasn't been supplied yet, its marker is simply dropped
+// (no broken image, no placeholder box) so half-finished blurbs still render
+// cleanly while screenshots are being captured separately.
+function renderBlurbWithImages(text, screenshots, managerName) {
+  if (!text) return '';
+  var byId = {};
+  (screenshots || []).forEach(function(s){ byId[s.id] = s; });
+  var parts = text.split(/\[\[img:([\w-]+)\]\]/g);
+  var html = '<p>';
+  for (var i = 0; i < parts.length; i++) {
+    if (i % 2 === 0) {
+      html += parts[i];
+    } else {
+      var s = byId[parts[i]];
+      if (s && s.file) {
+        html += '</p>'
+              + '<img class="rank-blurb-screenshot" src="' + s.file + '" '
+              + 'alt="' + managerName + ' stat screenshot" '
+              + 'onclick="openScreenshotLightbox(event,\'' + s.file + '\')">'
+              + (s.caption ? '<div class="rank-blurb-caption">' + s.caption + '</div>' : '')
+              + '<p>';
+      }
+      // no file yet -- marker is silently dropped, prose reads through cleanly
+    }
+  }
+  html += '</p>';
+  return html;
 }
 
 /* ── Blurb screenshot lightbox ───────────────────────────────────── */
