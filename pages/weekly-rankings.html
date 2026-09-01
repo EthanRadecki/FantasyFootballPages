@@ -338,6 +338,71 @@
   .motw-slot-label { min-width:32px;font-size:0.58rem; }
 }
 
+/* ── KING OF THE HILL (top players leaderboard) ──────────────────────
+   A pyramid of tiers, narrowest (1 card) at the summit for rank #1,
+   widening as rank descends -- 1,2,3,4,5,5 = 20 cards total. Cards
+   shrink tier-over-tier so the "climb to the top" reads visually
+   without needing rank numbers to carry all the weight. */
+.koth-desc { font-size:0.78rem;color:var(--muted);margin:0 0 1rem;line-height:1.5; }
+.koth-pyramid { display:flex;flex-direction:column;align-items:center;gap:0.9rem; }
+.koth-tier { display:flex;justify-content:center;gap:0.7rem;flex-wrap:wrap;width:100%; }
+.koth-card {
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  gap:0.3rem;transition:transform 0.15s ease;
+}
+.koth-card:hover { transform:translateY(-3px); }
+.koth-headshot-wrap { position:relative; }
+.koth-headshot {
+  border-radius:50%;object-fit:cover;background:rgba(var(--accent-rgb),0.08);
+  border:2px solid rgba(var(--accent-rgb),0.25);display:block;
+}
+.koth-headshot-fallback {
+  border-radius:50%;background:rgba(var(--accent-rgb),0.12);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-weight:800;
+  border:2px solid rgba(var(--accent-rgb),0.25);
+}
+.koth-rank-badge {
+  position:absolute;top:-6px;right:-6px;background:var(--accent);color:#fff;
+  font-size:0.62rem;font-weight:800;border-radius:50%;width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 5px rgba(0,0,0,0.25);
+}
+.koth-tier-1 .koth-headshot, .koth-tier-1 .koth-headshot-fallback { width:84px;height:84px;font-size:1.6rem; }
+.koth-tier-2 .koth-headshot, .koth-tier-2 .koth-headshot-fallback { width:68px;height:68px;font-size:1.3rem; }
+.koth-tier-3 .koth-headshot, .koth-tier-3 .koth-headshot-fallback { width:58px;height:58px;font-size:1.1rem; }
+.koth-tier-4 .koth-headshot, .koth-tier-4 .koth-headshot-fallback { width:52px;height:52px;font-size:1rem; }
+.koth-tier-5 .koth-headshot, .koth-tier-5 .koth-headshot-fallback,
+.koth-tier-6 .koth-headshot, .koth-tier-6 .koth-headshot-fallback { width:44px;height:44px;font-size:0.85rem; }
+.koth-name { font-weight:700;color:var(--ink);line-height:1.2; }
+.koth-tier-1 .koth-name { font-size:0.85rem; }
+.koth-tier-2 .koth-name { font-size:0.78rem; }
+.koth-tier-3 .koth-name, .koth-tier-4 .koth-name { font-size:0.72rem; }
+.koth-tier-5 .koth-name, .koth-tier-6 .koth-name { font-size:0.66rem; }
+.koth-meta { font-size:0.62rem;color:var(--muted);line-height:1.3; }
+.koth-metric {
+  font-size:0.68rem;font-weight:800;color:var(--accent);
+}
+.koth-pos-chip {
+  display:inline-block;font-size:0.58rem;font-weight:800;padding:0.02rem 0.32rem;
+  border-radius:3px;margin-left:0.2rem;
+}
+.koth-pos-QB { background:rgba(152,58,58,0.14);color:#983a3a; }
+.koth-pos-RB { background:rgba(74,122,74,0.14);color:#4a7a4a; }
+.koth-pos-WR { background:rgba(58,111,152,0.14);color:#3a6f98; }
+.koth-pos-TE { background:rgba(160,112,16,0.14);color:#a07010; }
+
+@media(max-width:640px) {
+  .koth-tier { gap:0.4rem; }
+  .koth-tier-1 .koth-headshot, .koth-tier-1 .koth-headshot-fallback { width:62px;height:62px;font-size:1.2rem; }
+  .koth-tier-2 .koth-headshot, .koth-tier-2 .koth-headshot-fallback { width:52px;height:52px;font-size:1rem; }
+  .koth-tier-3 .koth-headshot, .koth-tier-3 .koth-headshot-fallback,
+  .koth-tier-4 .koth-headshot, .koth-tier-4 .koth-headshot-fallback { width:44px;height:44px;font-size:0.85rem; }
+  .koth-tier-5 .koth-headshot, .koth-tier-5 .koth-headshot-fallback,
+  .koth-tier-6 .koth-headshot, .koth-tier-6 .koth-headshot-fallback { width:36px;height:36px;font-size:0.7rem; }
+  .koth-name { font-size:0.6rem !important; }
+  .koth-meta, .koth-metric { font-size:0.55rem; }
+}
+
 /* ── BLURB SCREENSHOT (roster/IR grab shown with the look-back write-up) ── */
 .rank-blurb-screenshot {
   display:block;max-width:100%;width:100%;max-width:420px;
@@ -715,6 +780,19 @@
     </div>
   </div>
 
+  <!-- KING OF THE HILL -- top 20 players overall + by position. Week 1
+       (before any games are played) ranks by draft order; once real
+       weekly scoring exists the same section re-ranks by cumulative
+       fantasy points, recomputed fresh each week. -->
+  <div id="koth-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#9968; King of the Hill</div>
+    <div class="glass" style="padding:1.5rem;">
+      <div class="draft-insights-tabs" id="koth-tabs"></div>
+      <p class="koth-desc" id="koth-desc"></p>
+      <div class="koth-pyramid" id="koth-pyramid"></div>
+    </div>
+  </div>
+
   <!-- TRAJECTORY CHART -- below cards so it doesn't spoil the reveal -->
   <div id="trajectory-wrap" style="display:none;margin-bottom:2rem;">
     <div class="rankings-label" style="margin-top:0.5rem;">&#128200; Season Ranking Trajectory</div>
@@ -942,6 +1020,140 @@ function renderMatchupOfWeek(data) {
 
   document.getElementById('motw-content').innerHTML = html;
   wrap.style.display = 'block';
+}
+
+/* ── King of the Hill ─────────────────────────────────────────────
+   Data source: draft_picks already embedded in each week's JSON (no
+   new file needed for the draft-order mode). Ranking mode:
+     - Draft order (this week's default): sort all picks by overall
+       ascending -- earliest pick = "best" -- since no games have been
+       played yet to rank by production.
+     - Points mode (future): if a week's JSON carries
+       data.player_season_totals (an object mapping "Name|POS" to
+       cumulative fantasy points through that week), rank by that
+       instead, descending. The pool is recomputed fresh from
+       whatever's in that week's data -- nothing here assumes a fixed
+       list of players carries over week to week.
+   K and D/ST are excluded throughout (same convention as ADP Value)
+   since fewer than 20 of either are ever drafted league-wide. */
+var kothHeadshots = null;
+var kothPlayersByPos = null;
+var kothActiveKey = 'overall';
+
+function fetchHeadshots() {
+  if (kothHeadshots) return Promise.resolve(kothHeadshots);
+  return fetch('../data/player_headshots.json')
+    .then(function(r){ if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(data){ kothHeadshots = data; return data; })
+    .catch(function(){ kothHeadshots = {}; return {}; });
+}
+
+function kothInitials(name) {
+  var parts = name.replace(/[^A-Za-z' \.]/g, '').split(' ').filter(Boolean);
+  return (parts[0] ? parts[0][0] : '') + (parts.length > 1 ? parts[parts.length - 1][0] : '');
+}
+
+// Builds { overall: [...], QB: [...], RB: [...], WR: [...], TE: [...] },
+// each a list of up to 20 { player, nfl_team, pos, manager, metric,
+// metricLabel } entries, already sorted best-first for that group.
+function buildKothPools(data) {
+  var pointsMode = !!(data.player_season_totals && Object.keys(data.player_season_totals).length);
+  var all = [];
+  (data.teams || []).forEach(function(t) {
+    (t.draft_picks || []).forEach(function(p) {
+      if (p.pos === 'K' || p.pos === 'D/ST') return;
+      var key = p.player + '|' + p.pos;
+      var metric = pointsMode ? (data.player_season_totals[key] != null ? data.player_season_totals[key] : null) : p.overall;
+      all.push({
+        player: p.player, nfl_team: p.nfl_team, pos: p.pos,
+        manager: t.manager, metric: metric, headshotKey: key
+      });
+    });
+  });
+  // draft-order mode: lower overall = better, so ascending sort.
+  // points mode: higher points = better, so descending sort.
+  all.sort(function(a, b) {
+    if (a.metric == null) return 1;
+    if (b.metric == null) return -1;
+    return pointsMode ? (b.metric - a.metric) : (a.metric - b.metric);
+  });
+
+  var pools = { overall: all.slice(0, 20) };
+  ['QB', 'RB', 'WR', 'TE'].forEach(function(pos) {
+    pools[pos] = all.filter(function(p){ return p.pos === pos; }).slice(0, 20);
+  });
+  pools._pointsMode = pointsMode;
+  return pools;
+}
+
+// Tier sizes for the pyramid, narrowest at the top (rank 1).
+var KOTH_TIERS = [1, 2, 3, 4, 5, 5];
+
+function renderKothPyramid(key) {
+  var pool = kothPlayersByPos[key] || [];
+  var pointsMode = kothPlayersByPos._pointsMode;
+  var html = '';
+  var idx = 0;
+  KOTH_TIERS.forEach(function(size, tierIdx) {
+    var tierPlayers = pool.slice(idx, idx + size);
+    if (!tierPlayers.length) return;
+    html += '<div class="koth-tier koth-tier-' + (tierIdx + 1) + '">';
+    tierPlayers.forEach(function(p, i) {
+      var rank = idx + i + 1;
+      var headshotUrl = (kothHeadshots && kothHeadshots[p.headshotKey]) || '';
+      var metricLabel = p.metric == null ? '' : (pointsMode ? p.metric.toFixed(1) + ' pts' : 'Pick #' + p.metric);
+      html += '<div class="koth-card">'
+            + '<div class="koth-headshot-wrap">'
+            + (headshotUrl
+                ? '<img class="koth-headshot" src="' + headshotUrl + '" alt="' + p.player + '" onerror="this.outerHTML=\'<div class=&quot;koth-headshot-fallback&quot;>' + kothInitials(p.player) + '</div>\'">'
+                : '<div class="koth-headshot-fallback">' + kothInitials(p.player) + '</div>')
+            + '<span class="koth-rank-badge">' + rank + '</span>'
+            + '</div>'
+            + '<div class="koth-name">' + p.player + '<span class="koth-pos-chip koth-pos-' + p.pos + '">' + p.pos + '</span></div>'
+            + '<div class="koth-meta">' + p.nfl_team + ' &middot; ' + p.manager.replace(' Jr.', '') + '</div>'
+            + (metricLabel ? '<div class="koth-metric">' + metricLabel + '</div>' : '')
+            + '</div>';
+    });
+    html += '</div>';
+    idx += size;
+  });
+  document.getElementById('koth-pyramid').innerHTML = html;
+}
+
+function selectKothTab(key) {
+  kothActiveKey = key;
+  ['overall', 'QB', 'RB', 'WR', 'TE'].forEach(function(k) {
+    var tab = document.getElementById('koth-tab-' + k.replace('/', '')); 
+    if (tab) tab.classList.toggle('active', k === key);
+  });
+  renderKothPyramid(key);
+}
+
+function renderTopPlayers(data) {
+  var wrap = document.getElementById('koth-wrap');
+  if (!data.teams || !data.teams.some(function(t){ return t.draft_picks && t.draft_picks.length; })) {
+    wrap.style.display = 'none';
+    return;
+  }
+  fetchHeadshots().then(function() {
+    kothPlayersByPos = buildKothPools(data);
+    var pointsMode = kothPlayersByPos._pointsMode;
+    document.getElementById('koth-desc').textContent = pointsMode
+      ? 'Top 20 by cumulative fantasy points through ' + (data.label || ('Week ' + data.week)) + ', recomputed fresh each week.'
+      : 'No games played yet, so this ranks by where each player came off the board -- earliest pick first. Switches to real fantasy points once the season starts.';
+
+    var tabDefs = [['overall', 'Overall'], ['QB', 'QB'], ['RB', 'RB'], ['WR', 'WR'], ['TE', 'TE']];
+    var tabsEl = document.getElementById('koth-tabs');
+    tabsEl.innerHTML = tabDefs.map(function(pair, i) {
+      var key = pair[0], label = pair[1];
+      return '<button class="draft-insights-tab' + (i === 0 ? ' active' : '') + '" '
+           + 'id="koth-tab-' + key.replace('/', '') + '" onclick="selectKothTab(\'' + key + '\')">' + label + '</button>';
+    }).join('');
+
+    kothActiveKey = 'overall';
+    renderKothPyramid('overall');
+    wrap.style.display = 'block';
+  });
 }
 
 /* ── Rank change HTML ─────────────────────────────────────────── */
@@ -1962,6 +2174,7 @@ function loadRankings() {
   document.getElementById('playoff-odds-wrap').style.display = 'none';
   document.getElementById('draft-insights-wrap').style.display = 'none';
   document.getElementById('motw-wrap').style.display = 'none';
+  document.getElementById('koth-wrap').style.display = 'none';
 
   // Playoff round slugs are non-numeric (e.g. "quarterfinals") -- they get
   // their own render path and skip the regular-season trajectory/odds
@@ -1991,6 +2204,10 @@ function loadRankings() {
       // whenever a week's teams carry that data -- most useful on Week 1,
       // but not tied to any special "preseason" mode, so this runs every week.
       renderDraftInsights(data);
+
+      // King of the Hill -- top players overall + by position, ranked by
+      // draft order pre-season or by cumulative points once available.
+      renderTopPlayers(data);
 
       // Fetch all weeks up to and including selected week for trajectory
       var entry    = manifest.find(function(m){ return m.season === season; });
