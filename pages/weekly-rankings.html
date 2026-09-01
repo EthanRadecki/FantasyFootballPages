@@ -221,10 +221,31 @@
   font-weight:700;font-style:normal;padding:0.02rem 0.32rem;
   border-radius:3px;white-space:nowrap;
 }
+/* Manager name mentions -- no pill background (visually distinct from
+   player pills), bold with a dotted underline in that manager's own
+   accent color, set inline per-mention via style="" at render time. */
+.rank-blurb mark.hl-manager,
+.matchup-pick-text mark.hl-manager {
+  background:none;font-weight:800;font-style:normal;
+  border-bottom:2px dotted currentColor;padding:0 0.05rem;
+  white-space:nowrap;
+}
+/* Position mentions (QB/RB/WR/TE, singular/plural, with or without a
+   trailing depth number like RB1/WR2) -- colored to match the position
+   color coding used across Draft Insights / Position Spend. */
+.rank-blurb mark.hl-pos-QB, .matchup-pick-text mark.hl-pos-QB { background:rgba(152,58,58,0.14); color:#983a3a; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
+.rank-blurb mark.hl-pos-RB, .matchup-pick-text mark.hl-pos-RB { background:rgba(74,122,74,0.14); color:#4a7a4a; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
+.rank-blurb mark.hl-pos-WR, .matchup-pick-text mark.hl-pos-WR { background:rgba(58,111,152,0.14); color:#3a6f98; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
+.rank-blurb mark.hl-pos-TE, .matchup-pick-text mark.hl-pos-TE { background:rgba(160,112,16,0.14); color:#a07010; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
 .rank-blurb strong.hl-stat,
-.matchup-pick-text strong.hl-stat { color:var(--accent);font-weight:800; }
+.matchup-pick-text strong.hl-stat { color:var(--accent);font-weight:800;font-style:italic; }
 .rank-blurb em.hl-team,
 .matchup-pick-text em.hl-team { color:var(--muted);font-style:italic;font-weight:600; }
+/* Important phrases -- plain bold emphasis, no color shift, so it reads
+   as "the writer leaned on this" without competing against the
+   player/manager/position/stat color coding above. */
+.rank-blurb strong.hl-key,
+.matchup-pick-text strong.hl-key { font-weight:800;color:inherit; }
 
 .rank-blurb ul.rank-blurb-specs {
   list-style:none;margin:0 0 0.55rem 0;padding:0;
@@ -872,6 +893,9 @@ function renderRankings(data) {
 
     // Draft archetype badge -- links this manager's current draft to its
     // nearest historical archetype from Draft Fingerprints, when present.
+    // The "see cluster" link out is suppressed when the week's data sets
+    // hide_archetype_link (e.g. Week 1, where the point is to sit with this
+    // week's rankings rather than immediately pivot to draft history).
     var archetypeHtml = '';
     if (t.draft_archetype) {
       var arch = t.draft_archetype;
@@ -885,7 +909,7 @@ function renderRankings(data) {
         + '<span class="archetype-icon">&#129516;</span>'
         + '<span class="archetype-name">' + arch.name + '</span>'
         + (comps ? '<span class="archetype-comps">&middot; like ' + comps + '</span>' : '')
-        + ' <a href="draft-fingerprints.html">see cluster &rarr;</a>'
+        + (data.hide_archetype_link ? '' : ' <a href="draft-fingerprints.html">see cluster &rarr;</a>')
         + '</div>';
     }
 
