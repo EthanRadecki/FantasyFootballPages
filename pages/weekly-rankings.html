@@ -216,6 +216,7 @@
 /* Inline tag styles -- reset <mark>'s default yellow, keep everything
    tied to the page's season-themed accent so it retints automatically */
 .rank-blurb mark.hl-player,
+.motw-blurb mark.hl-player,
 .matchup-pick-text mark.hl-player {
   background:rgba(var(--accent-rgb),0.12);color:var(--palm);
   font-weight:700;font-style:normal;padding:0.02rem 0.32rem;
@@ -225,6 +226,7 @@
    player pills), bold with a dotted underline in that manager's own
    accent color, set inline per-mention via style="" at render time. */
 .rank-blurb mark.hl-manager,
+.motw-blurb mark.hl-manager,
 .matchup-pick-text mark.hl-manager {
   background:none;font-weight:800;font-style:normal;
   border-bottom:2px dotted currentColor;padding:0 0.05rem;
@@ -233,19 +235,24 @@
 /* Position mentions (QB/RB/WR/TE, singular/plural, with or without a
    trailing depth number like RB1/WR2) -- colored to match the position
    color coding used across Draft Insights / Position Spend. */
-.rank-blurb mark.hl-pos-QB, .matchup-pick-text mark.hl-pos-QB { background:rgba(152,58,58,0.14); color:#983a3a; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
-.rank-blurb mark.hl-pos-RB, .matchup-pick-text mark.hl-pos-RB { background:rgba(74,122,74,0.14); color:#4a7a4a; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
-.rank-blurb mark.hl-pos-WR, .matchup-pick-text mark.hl-pos-WR { background:rgba(58,111,152,0.14); color:#3a6f98; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
-.rank-blurb mark.hl-pos-TE, .matchup-pick-text mark.hl-pos-TE { background:rgba(160,112,16,0.14); color:#a07010; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
+.rank-blurb mark.hl-pos-QB, .motw-blurb mark.hl-pos-QB, .matchup-pick-text mark.hl-pos-QB { background:rgba(152,58,58,0.14); color:#983a3a; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
+.rank-blurb mark.hl-pos-RB, .motw-blurb mark.hl-pos-RB, .matchup-pick-text mark.hl-pos-RB { background:rgba(74,122,74,0.14); color:#4a7a4a; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
+.rank-blurb mark.hl-pos-WR, .motw-blurb mark.hl-pos-WR, .matchup-pick-text mark.hl-pos-WR { background:rgba(58,111,152,0.14); color:#3a6f98; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
+.rank-blurb mark.hl-pos-TE, .motw-blurb mark.hl-pos-TE, .matchup-pick-text mark.hl-pos-TE { background:rgba(160,112,16,0.14); color:#a07010; font-weight:800; padding:0.02rem 0.28rem; border-radius:3px; }
 .rank-blurb strong.hl-stat,
+.motw-blurb strong.hl-stat,
 .matchup-pick-text strong.hl-stat { color:var(--accent);font-weight:800;font-style:italic; }
 .rank-blurb em.hl-team,
+.motw-blurb em.hl-team,
 .matchup-pick-text em.hl-team { color:var(--muted);font-style:italic;font-weight:600; }
 /* Important phrases -- plain bold emphasis, no color shift, so it reads
    as "the writer leaned on this" without competing against the
    player/manager/position/stat color coding above. */
 .rank-blurb strong.hl-key,
+.motw-blurb strong.hl-key,
 .matchup-pick-text strong.hl-key { font-weight:800;color:inherit; }
+
+
 
 .rank-blurb ul.rank-blurb-specs {
   list-style:none;margin:0 0 0.55rem 0;padding:0;
@@ -261,6 +268,74 @@
 
 @media(max-width:768px) {
   .rank-blurb { max-width:none; }
+}
+
+/* ── MATCHUP OF THE WEEK ──────────────────────────────────────────── */
+.motw-card { padding:1.5rem; }
+.motw-header {
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  gap:1rem;margin-bottom:1.25rem;
+}
+.motw-team { display:flex;flex-direction:column;align-items:center;gap:0.4rem;text-align:center; }
+.motw-team.away { align-items:flex-start;text-align:left; }
+.motw-team.home { align-items:flex-end;text-align:right; }
+.motw-team-top { display:flex;align-items:center;gap:0.6rem; }
+.motw-team.home .motw-team-top { flex-direction:row-reverse; }
+.motw-logo { width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid rgba(var(--accent-rgb),0.2); }
+.motw-manager { font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--ink); }
+.motw-rank-badge {
+  display:inline-block;font-size:0.7rem;font-weight:800;color:var(--accent);
+  background:rgba(var(--accent-rgb),0.12);border-radius:20px;padding:0.1rem 0.55rem;
+  margin-top:0.15rem;
+}
+.motw-record { font-size:0.75rem;color:var(--muted);margin-top:0.1rem; }
+.motw-vs { font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--muted);font-style:italic; }
+
+.motw-slots { display:flex;flex-direction:column;gap:0.35rem;margin-bottom:1.25rem; }
+.motw-slot-row {
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  gap:0.6rem;padding:0.4rem 0;border-bottom:1px dashed rgba(var(--accent-rgb),0.12);
+}
+.motw-slot-row:last-child { border-bottom:none; }
+.motw-player-cell { display:flex;align-items:center;gap:0.5rem;font-size:0.8rem; }
+.motw-player-cell.home { flex-direction:row-reverse;text-align:right; }
+.motw-player-name { color:var(--text-mid);font-weight:600; }
+.motw-player-proj { font-weight:800;color:var(--muted);white-space:nowrap; }
+.motw-player-proj.adv { color:var(--accent); }
+.motw-slot-label {
+  font-size:0.65rem;font-weight:800;text-align:center;min-width:44px;
+  padding:0.1rem 0;border-radius:3px;
+}
+.motw-pos-QB  { background:rgba(152,58,58,0.14);color:#983a3a; }
+.motw-pos-RB  { background:rgba(74,122,74,0.14);color:#4a7a4a; }
+.motw-pos-WR  { background:rgba(58,111,152,0.14);color:#3a6f98; }
+.motw-pos-TE  { background:rgba(160,112,16,0.14);color:#a07010; }
+.motw-pos-K, .motw-pos-DST { background:rgba(106,100,96,0.14);color:#6a6460; }
+
+.motw-totals {
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  gap:0.6rem;padding-top:0.9rem;border-top:2px solid rgba(var(--accent-rgb),0.18);
+  margin-bottom:1rem;
+}
+.motw-total-val { font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700; }
+.motw-total-val.away { text-align:left; }
+.motw-total-val.home { text-align:right; }
+.motw-total-val.win { color:var(--accent); }
+.motw-total-val.lose { color:var(--muted);opacity:0.75; }
+.motw-total-label { font-size:0.7rem;color:var(--muted);text-align:center;line-height:1.3; }
+
+.motw-blurb {
+  font-size:0.83rem;line-height:1.7;color:var(--text-mid);
+  padding-top:0.9rem;border-top:1px solid rgba(var(--accent-rgb),0.15);
+}
+.motw-blurb p { margin:0; }
+
+@media(max-width:640px) {
+  .motw-header { grid-template-columns:1fr auto 1fr;gap:0.4rem; }
+  .motw-logo { width:40px;height:40px; }
+  .motw-manager { font-size:0.85rem; }
+  .motw-player-cell { font-size:0.7rem;gap:0.3rem; }
+  .motw-slot-label { min-width:32px;font-size:0.58rem; }
 }
 
 /* ── BLURB SCREENSHOT (roster/IR grab shown with the look-back write-up) ── */
@@ -611,6 +686,14 @@
     </div>
   </div>
 
+  <!-- MATCHUP OF THE WEEK -- sits right below the rankings cards, above
+       Draft Insights/Trajectory/Playoff Odds, so it reads as part of "this
+       week" rather than the season-long historical sections below it -->
+  <div id="motw-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#127942; Matchup of the Week</div>
+    <div class="glass motw-card" id="motw-content"></div>
+  </div>
+
   <!-- DRAFT INSIGHTS -- shown whenever a week's teams carry ADP/proj/
        position-spend data, typically Week 1 -->
   <div id="draft-insights-wrap" style="display:none;margin-bottom:2rem;">
@@ -766,6 +849,99 @@ function getTierClass(rank) {
   if (rank === 4)  return 'tier-contender';
   if (rank <= 8)   return 'tier-mid';
   return 'tier-bottom';
+}
+
+/* ── Matchup of the Week ──────────────────────────────────────────
+   Reads data.matchup_of_the_week (added per-week in the JSON, only
+   present when Ethan has picked one). Not derived from the ranking
+   cards -- team_a/team_b each carry their own snapshot of rank, record,
+   and starting lineup so this section is self-contained and won't shift
+   if the main rankings render differently later. */
+function motwPosClass(pos) {
+  if (pos === 'D/ST') return 'motw-pos-DST';
+  if (pos === 'K') return 'motw-pos-K';
+  return 'motw-pos-' + pos;
+}
+
+function renderMatchupOfWeek(data) {
+  var wrap = document.getElementById('motw-wrap');
+  var motw = data.matchup_of_the_week;
+  if (!motw || !motw.team_a || !motw.team_b) { wrap.style.display = 'none'; return; }
+
+  var a = motw.team_a, b = motw.team_b;
+  var aLast = LASTNAME_MAP[a.manager] || '';
+  var bLast = LASTNAME_MAP[b.manager] || '';
+  var aLogo = '../images/logos/' + aLast + '.png';
+  var bLogo = '../images/logos/' + bLast + '.png';
+
+  var html = '';
+
+  // Header: logo + manager + rank badge + record on each side, "vs" between
+  html += '<div class="motw-header">'
+        + '<div class="motw-team away">'
+        +   '<div class="motw-team-top">'
+        +     '<img class="motw-logo" src="' + aLogo + '" alt="" onerror="this.style.display=\'none\'">'
+        +     '<div><div class="motw-manager">' + a.manager + '</div>'
+        +     (a.rank ? '<div class="motw-rank-badge">Week ' + data.week + ' Rank #' + a.rank + '</div>' : '')
+        +     '</div></div>'
+        +   (a.record ? '<div class="motw-record">' + a.record + '</div>' : '')
+        + '</div>'
+        + '<div class="motw-vs">vs</div>'
+        + '<div class="motw-team home">'
+        +   '<div class="motw-team-top">'
+        +     '<img class="motw-logo" src="' + bLogo + '" alt="" onerror="this.style.display=\'none\'">'
+        +     '<div><div class="motw-manager">' + b.manager + '</div>'
+        +     (b.rank ? '<div class="motw-rank-badge">Week ' + data.week + ' Rank #' + b.rank + '</div>' : '')
+        +     '</div></div>'
+        +   (b.record ? '<div class="motw-record">' + b.record + '</div>' : '')
+        + '</div>'
+        + '</div>';
+
+  // Slot-by-slot: each row shows both players at that lineup slot with
+  // their projection; whichever side is higher at that slot gets its
+  // projection bolded in the accent color so the positional edge is
+  // visible at a glance without a separate "advantage" column.
+  html += '<div class="motw-slots">';
+  var slots = a.starters || [];
+  slots.forEach(function(aPlayer, i) {
+    var bPlayer = (b.starters || [])[i];
+    if (!bPlayer) return;
+    var aProj = aPlayer.proj, bProj = bPlayer.proj;
+    var aAdv = (aProj != null && bProj != null && aProj > bProj);
+    var bAdv = (aProj != null && bProj != null && bProj > aProj);
+    var posLabel = aPlayer.slot || aPlayer.pos;
+    html += '<div class="motw-slot-row">'
+          + '<div class="motw-player-cell">'
+          +   '<span class="motw-player-name">' + aPlayer.player + '</span>'
+          +   '<span class="motw-player-proj' + (aAdv ? ' adv' : '') + '">' + (aProj != null ? aProj.toFixed(1) : '--') + '</span>'
+          + '</div>'
+          + '<div class="motw-slot-label ' + motwPosClass(aPlayer.pos) + '">' + posLabel + '</div>'
+          + '<div class="motw-player-cell home">'
+          +   '<span class="motw-player-name">' + bPlayer.player + '</span>'
+          +   '<span class="motw-player-proj' + (bAdv ? ' adv' : '') + '">' + (bProj != null ? bProj.toFixed(1) : '--') + '</span>'
+          + '</div>'
+          + '</div>';
+  });
+  html += '</div>';
+
+  // Overall projected total -- the higher side is called out in accent
+  // color so the top-line projected winner is clear alongside the
+  // slot-by-slot positional breakdown above.
+  var aTotal = a.proj_total, bTotal = b.proj_total;
+  var aWins = (aTotal != null && bTotal != null && aTotal > bTotal);
+  var bWins = (aTotal != null && bTotal != null && bTotal > aTotal);
+  html += '<div class="motw-totals">'
+        + '<div class="motw-total-val away' + (aWins ? ' win' : bWins ? ' lose' : '') + '">' + (aTotal != null ? aTotal.toFixed(1) : '--') + '</div>'
+        + '<div class="motw-total-label">Projected<br>Total</div>'
+        + '<div class="motw-total-val home' + (bWins ? ' win' : aWins ? ' lose' : '') + '">' + (bTotal != null ? bTotal.toFixed(1) : '--') + '</div>'
+        + '</div>';
+
+  if (motw.blurb) {
+    html += '<div class="motw-blurb"><p>' + motw.blurb + '</p></div>';
+  }
+
+  document.getElementById('motw-content').innerHTML = html;
+  wrap.style.display = 'block';
 }
 
 /* ── Rank change HTML ─────────────────────────────────────────── */
@@ -1785,6 +1961,7 @@ function loadRankings() {
   document.getElementById('trajectory-wrap').style.display = 'none';
   document.getElementById('playoff-odds-wrap').style.display = 'none';
   document.getElementById('draft-insights-wrap').style.display = 'none';
+  document.getElementById('motw-wrap').style.display = 'none';
 
   // Playoff round slugs are non-numeric (e.g. "quarterfinals") -- they get
   // their own render path and skip the regular-season trajectory/odds
@@ -1805,6 +1982,10 @@ function loadRankings() {
   fetchWeek(season, week)
     .then(function(data) {
       renderRankings(data);
+
+      // Matchup of the Week -- self-contained, only renders when this
+      // week's data includes a matchup_of_the_week block.
+      renderMatchupOfWeek(data);
 
       // Draft-derived charts (ADP value, projected PPG, position spend) show
       // whenever a week's teams carry that data -- most useful on Week 1,
