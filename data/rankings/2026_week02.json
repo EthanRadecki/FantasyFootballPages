@@ -35,36 +35,6 @@
       "sos_rank": 10,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Charlie Gorman",
-            "season": 2025,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 109.0,
-            "dist": 2.92
-          },
-          {
-            "manager": "Andrew Root",
-            "season": 2024,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 113.4,
-            "dist": 3.54
-          },
-          {
-            "manager": "Thomas Sullivan",
-            "season": 2020,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 105.7,
-            "dist": 3.91
-          }
-        ],
-        "dist_to_nearest": 2.53,
-        "margin_over_2nd": 1.52
-      },
       "draft_grade": -22.77,
       "draft_surplus_total": -22.77,
       "draft_picks": [
@@ -279,36 +249,6 @@
       "sos_rank": 13,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Charlie Gorman",
-            "season": 2023,
-            "archetype": "Patient Value Hunters",
-            "ppg": 131.9,
-            "dist": 4.64
-          },
-          {
-            "manager": "Cole Maney",
-            "season": 2025,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 129.6,
-            "dist": 4.69
-          },
-          {
-            "manager": "Charlie Gorman",
-            "season": 2025,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 109.0,
-            "dist": 4.84
-          }
-        ],
-        "dist_to_nearest": 4.76,
-        "margin_over_2nd": 1.04
-      },
       "draft_grade": -8.14,
       "draft_surplus_total": -8.14,
       "draft_picks": [
@@ -523,36 +463,6 @@
       "sos_rank": 4,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Anthony Kelly",
-            "season": 2024,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 110.4,
-            "dist": 3.21
-          },
-          {
-            "manager": "Anthony Kelly",
-            "season": 2025,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 115.3,
-            "dist": 3.27
-          },
-          {
-            "manager": "Quin Gegwich",
-            "season": 2021,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 110.4,
-            "dist": 3.85
-          }
-        ],
-        "dist_to_nearest": 4.05,
-        "margin_over_2nd": 2.32
-      },
       "draft_grade": -34.72,
       "draft_surplus_total": -34.72,
       "draft_picks": [
@@ -767,36 +677,6 @@
       "sos_rank": 6,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 1,
-        "name": "Patient Value Hunters",
-        "confidence": "borderline",
-        "comparisons": [
-          {
-            "manager": "Ben Castaldo",
-            "season": 2021,
-            "archetype": "Patient Value Hunters",
-            "ppg": 120.1,
-            "dist": 4.83
-          },
-          {
-            "manager": "Aidan Quigley",
-            "season": 2025,
-            "archetype": "Patient Value Hunters",
-            "ppg": 96.1,
-            "dist": 5.17
-          },
-          {
-            "manager": "Andrew Root",
-            "season": 2022,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 118.8,
-            "dist": 5.17
-          }
-        ],
-        "dist_to_nearest": 5.18,
-        "margin_over_2nd": 0.91
-      },
       "draft_grade": -15.52,
       "draft_surplus_total": -15.52,
       "draft_picks": [
@@ -1011,36 +891,6 @@
       "sos_rank": 9,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "borderline",
-        "comparisons": [
-          {
-            "manager": "Ethan Radecki",
-            "season": 2021,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 116.2,
-            "dist": 3.41
-          },
-          {
-            "manager": "Cole Maney",
-            "season": 2025,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 129.6,
-            "dist": 4.33
-          },
-          {
-            "manager": "Deniz Bileydi",
-            "season": 2020,
-            "archetype": "Patient Value Hunters",
-            "ppg": 120.0,
-            "dist": 4.39
-          }
-        ],
-        "dist_to_nearest": 4.52,
-        "margin_over_2nd": 0.82
-      },
       "draft_grade": 3.75,
       "draft_surplus_total": 3.75,
       "draft_picks": [
@@ -1255,36 +1105,6 @@
       "sos_rank": 12,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Ethan Radecki",
-            "season": 2021,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 116.2,
-            "dist": 3.01
-          },
-          {
-            "manager": "Ethan Radecki",
-            "season": 2023,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 125.3,
-            "dist": 3.48
-          },
-          {
-            "manager": "Andrew Root",
-            "season": 2020,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 110.1,
-            "dist": 3.83
-          }
-        ],
-        "dist_to_nearest": 3.93,
-        "margin_over_2nd": 1.49
-      },
       "draft_grade": -36.41,
       "draft_surplus_total": -36.41,
       "draft_picks": [
@@ -1499,36 +1319,6 @@
       "sos_rank": 11,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Quin Gegwich",
-            "season": 2020,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 97.5,
-            "dist": 3.59
-          },
-          {
-            "manager": "Charlie Gorman",
-            "season": 2020,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 109.5,
-            "dist": 4.49
-          },
-          {
-            "manager": "Thomas Sullivan",
-            "season": 2020,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 105.7,
-            "dist": 4.93
-          }
-        ],
-        "dist_to_nearest": 5.01,
-        "margin_over_2nd": 2.03
-      },
       "draft_grade": -25.92,
       "draft_surplus_total": -25.92,
       "draft_picks": [
@@ -1743,36 +1533,6 @@
       "sos_rank": 14,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Quin Gegwich",
-            "season": 2024,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 119.2,
-            "dist": 3.71
-          },
-          {
-            "manager": "Carmine Pittelli",
-            "season": 2023,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 133.9,
-            "dist": 3.76
-          },
-          {
-            "manager": "Brandon Hancock",
-            "season": 2021,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 120.0,
-            "dist": 4.06
-          }
-        ],
-        "dist_to_nearest": 3.99,
-        "margin_over_2nd": 2.16
-      },
       "draft_grade": -46.67,
       "draft_surplus_total": -46.67,
       "draft_picks": [
@@ -1987,36 +1747,6 @@
       "sos_rank": 3,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Andrew Root",
-            "season": 2020,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 110.1,
-            "dist": 4.29
-          },
-          {
-            "manager": "Quin Gegwich",
-            "season": 2021,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 110.4,
-            "dist": 4.64
-          },
-          {
-            "manager": "Charlie Gorman",
-            "season": 2020,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 109.5,
-            "dist": 4.91
-          }
-        ],
-        "dist_to_nearest": 5.36,
-        "margin_over_2nd": 1.63
-      },
       "draft_grade": -36.41,
       "draft_surplus_total": -36.41,
       "draft_picks": [
@@ -2231,36 +1961,6 @@
       "sos_rank": 7,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Quin Gegwich",
-            "season": 2021,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 110.4,
-            "dist": 4.59
-          },
-          {
-            "manager": "Anthony Kelly",
-            "season": 2022,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 111.4,
-            "dist": 5.48
-          },
-          {
-            "manager": "Quin Gegwich",
-            "season": 2024,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 119.2,
-            "dist": 5.67
-          }
-        ],
-        "dist_to_nearest": 5.85,
-        "margin_over_2nd": 1.12
-      },
       "draft_grade": -26.78,
       "draft_surplus_total": -26.78,
       "draft_picks": [
@@ -2475,36 +2175,6 @@
       "sos_rank": 5,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 0,
-        "name": "High-Conviction Board-Breakers",
-        "confidence": "poor_fit",
-        "comparisons": [
-          {
-            "manager": "Charlie Gorman",
-            "season": 2020,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 109.5,
-            "dist": 6.24
-          },
-          {
-            "manager": "Ryan McQuaid",
-            "season": 2024,
-            "archetype": "High-Conviction Board-Breakers",
-            "ppg": 106.6,
-            "dist": 6.59
-          },
-          {
-            "manager": "Baylen Slansky",
-            "season": 2022,
-            "archetype": "High-Conviction Board-Breakers",
-            "ppg": 111.4,
-            "dist": 6.6
-          }
-        ],
-        "dist_to_nearest": 7.54,
-        "margin_over_2nd": 0.25
-      },
       "draft_grade": -7.56,
       "draft_surplus_total": -7.56,
       "draft_picks": [
@@ -2719,36 +2389,6 @@
       "sos_rank": 1,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Ethan Radecki",
-            "season": 2021,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 116.2,
-            "dist": 3.73
-          },
-          {
-            "manager": "Cole Maney",
-            "season": 2025,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 129.6,
-            "dist": 3.96
-          },
-          {
-            "manager": "Carmine Pittelli",
-            "season": 2020,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 119.8,
-            "dist": 4.11
-          }
-        ],
-        "dist_to_nearest": 3.87,
-        "margin_over_2nd": 1.62
-      },
       "draft_grade": -25.57,
       "draft_surplus_total": -25.57,
       "draft_picks": [
@@ -2963,36 +2603,6 @@
       "sos_rank": 8,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "borderline",
-        "comparisons": [
-          {
-            "manager": "Cole Maney",
-            "season": 2025,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 129.6,
-            "dist": 3.55
-          },
-          {
-            "manager": "Deniz Bileydi",
-            "season": 2020,
-            "archetype": "Patient Value Hunters",
-            "ppg": 120.0,
-            "dist": 3.72
-          },
-          {
-            "manager": "Ethan Radecki",
-            "season": 2023,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 125.3,
-            "dist": 3.76
-          }
-        ],
-        "dist_to_nearest": 3.68,
-        "margin_over_2nd": 0.46
-      },
       "draft_grade": -61.53,
       "draft_surplus_total": -61.53,
       "draft_picks": [
@@ -3207,36 +2817,6 @@
       "sos_rank": 2,
       "synopsis": "",
       "blurb": "",
-      "draft_archetype": {
-        "cluster_id": 3,
-        "name": "Balanced Board-Followers",
-        "confidence": "clear",
-        "comparisons": [
-          {
-            "manager": "Anthony Kelly",
-            "season": 2023,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 95.0,
-            "dist": 2.46
-          },
-          {
-            "manager": "Cole Maney",
-            "season": 2025,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 129.6,
-            "dist": 3.57
-          },
-          {
-            "manager": "Brandon Hancock",
-            "season": 2021,
-            "archetype": "Balanced Board-Followers",
-            "ppg": 120.0,
-            "dist": 3.95
-          }
-        ],
-        "dist_to_nearest": 3.15,
-        "margin_over_2nd": 2.48
-      },
       "draft_grade": -16.05,
       "draft_surplus_total": -16.05,
       "draft_picks": [
