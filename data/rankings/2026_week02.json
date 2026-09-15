@@ -3716,5 +3716,471 @@
     "Xavier Hutchinson|WR": 6.2,
     "Xavier Worthy|WR": 4.8,
     "Zay Flowers|WR": 26.0
-  }
+  },
+  "undrafted_players": [
+    {
+      "player": "AJ Barner",
+      "pos": "TE"
+    },
+    {
+      "player": "AJ Dillon",
+      "pos": "RB"
+    },
+    {
+      "player": "Aaron Rodgers",
+      "pos": "QB"
+    },
+    {
+      "player": "Adam Trautman",
+      "pos": "TE"
+    },
+    {
+      "player": "Ameer Abdullah",
+      "pos": "RB"
+    },
+    {
+      "player": "Andrei Iosivas",
+      "pos": "WR"
+    },
+    {
+      "player": "Antonio Williams",
+      "pos": "WR"
+    },
+    {
+      "player": "Barion Brown",
+      "pos": "WR"
+    },
+    {
+      "player": "Blake Whiteheart",
+      "pos": "TE"
+    },
+    {
+      "player": "Bo Melton",
+      "pos": "WR"
+    },
+    {
+      "player": "Brady Russell",
+      "pos": "RB"
+    },
+    {
+      "player": "Brevyn Spann-Ford",
+      "pos": "TE"
+    },
+    {
+      "player": "Brock Wright",
+      "pos": "TE"
+    },
+    {
+      "player": "Bryce Lance",
+      "pos": "WR"
+    },
+    {
+      "player": "Bryce Young",
+      "pos": "QB"
+    },
+    {
+      "player": "C.J. Stroud",
+      "pos": "QB"
+    },
+    {
+      "player": "Cade Otton",
+      "pos": "TE"
+    },
+    {
+      "player": "Cade Stover",
+      "pos": "TE"
+    },
+    {
+      "player": "Cam Ward",
+      "pos": "QB"
+    },
+    {
+      "player": "Carson Wentz",
+      "pos": "QB"
+    },
+    {
+      "player": "Chris Brooks",
+      "pos": "RB"
+    },
+    {
+      "player": "Chris Moore",
+      "pos": "WR"
+    },
+    {
+      "player": "Colby Parkinson",
+      "pos": "TE"
+    },
+    {
+      "player": "Cole Kmet",
+      "pos": "TE"
+    },
+    {
+      "player": "Connor Heyward",
+      "pos": "RB"
+    },
+    {
+      "player": "Cooper Kupp",
+      "pos": "WR"
+    },
+    {
+      "player": "Cooper Rush",
+      "pos": "QB"
+    },
+    {
+      "player": "Corey Kiner",
+      "pos": "RB"
+    },
+    {
+      "player": "Daniel Bellinger",
+      "pos": "TE"
+    },
+    {
+      "player": "Darnell Mooney",
+      "pos": "WR"
+    },
+    {
+      "player": "Darnell Washington",
+      "pos": "TE"
+    },
+    {
+      "player": "Darren Waller",
+      "pos": "TE"
+    },
+    {
+      "player": "David Njoku",
+      "pos": "TE"
+    },
+    {
+      "player": "Davis Allen",
+      "pos": "TE"
+    },
+    {
+      "player": "Dawson Knox",
+      "pos": "TE"
+    },
+    {
+      "player": "DeMario Douglas",
+      "pos": "WR"
+    },
+    {
+      "player": "DeeJay Dallas",
+      "pos": "RB"
+    },
+    {
+      "player": "Demarcus Robinson",
+      "pos": "WR"
+    },
+    {
+      "player": "Deshaun Watson",
+      "pos": "QB"
+    },
+    {
+      "player": "Devin Singletary",
+      "pos": "RB"
+    },
+    {
+      "player": "Dohnte Meyers",
+      "pos": "WR"
+    },
+    {
+      "player": "Drew Lock",
+      "pos": "QB"
+    },
+    {
+      "player": "Drew Sample",
+      "pos": "TE"
+    },
+    {
+      "player": "Durham Smythe",
+      "pos": "TE"
+    },
+    {
+      "player": "Eli Raridon",
+      "pos": "TE"
+    },
+    {
+      "player": "Elic Ayomanor",
+      "pos": "WR"
+    },
+    {
+      "player": "Emanuel Wilson",
+      "pos": "RB"
+    },
+    {
+      "player": "Emari Demercado",
+      "pos": "RB"
+    },
+    {
+      "player": "Emmett Johnson",
+      "pos": "RB"
+    },
+    {
+      "player": "Evan Engram",
+      "pos": "TE"
+    },
+    {
+      "player": "Foster Moreau",
+      "pos": "TE"
+    },
+    {
+      "player": "Frank Gore Jr.",
+      "pos": "RB"
+    },
+    {
+      "player": "Geno Smith",
+      "pos": "QB"
+    },
+    {
+      "player": "George Holani",
+      "pos": "RB"
+    },
+    {
+      "player": "Greg Dulcich",
+      "pos": "TE"
+    },
+    {
+      "player": "Gunnar Helm",
+      "pos": "TE"
+    },
+    {
+      "player": "Hunter Luepke",
+      "pos": "RB"
+    },
+    {
+      "player": "Isaiah Williams",
+      "pos": "WR"
+    },
+    {
+      "player": "Jack Bech",
+      "pos": "WR"
+    },
+    {
+      "player": "Jacoby Brissett",
+      "pos": "QB"
+    },
+    {
+      "player": "Jahan Dotson",
+      "pos": "WR"
+    },
+    {
+      "player": "Jahdae Walker",
+      "pos": "WR"
+    },
+    {
+      "player": "James Cook III",
+      "pos": "RB"
+    },
+    {
+      "player": "Jared Wayne",
+      "pos": "WR"
+    },
+    {
+      "player": "Jaylin Lane",
+      "pos": "WR"
+    },
+    {
+      "player": "Jeremy Ruckert",
+      "pos": "TE"
+    },
+    {
+      "player": "John Bates",
+      "pos": "TE"
+    },
+    {
+      "player": "Jonathan Mingo",
+      "pos": "WR"
+    },
+    {
+      "player": "Jonnu Smith",
+      "pos": "TE"
+    },
+    {
+      "player": "Jordan Whittington",
+      "pos": "WR"
+    },
+    {
+      "player": "Josh Cameron",
+      "pos": "WR"
+    },
+    {
+      "player": "Josh Oliver",
+      "pos": "TE"
+    },
+    {
+      "player": "Joshua Palmer",
+      "pos": "WR"
+    },
+    {
+      "player": "KaVontae Turpin",
+      "pos": "WR"
+    },
+    {
+      "player": "Kalif Raymond",
+      "pos": "WR"
+    },
+    {
+      "player": "Kayshon Boutte",
+      "pos": "WR"
+    },
+    {
+      "player": "Kaytron Allen",
+      "pos": "RB"
+    },
+    {
+      "player": "Kendre Miller",
+      "pos": "RB"
+    },
+    {
+      "player": "Kendrick Bourne",
+      "pos": "WR"
+    },
+    {
+      "player": "Kenny Pickett",
+      "pos": "QB"
+    },
+    {
+      "player": "Keon Coleman",
+      "pos": "WR"
+    },
+    {
+      "player": "Kirk Cousins",
+      "pos": "QB"
+    },
+    {
+      "player": "LaJohntay Wester",
+      "pos": "WR"
+    },
+    {
+      "player": "Lan Larison",
+      "pos": "RB"
+    },
+    {
+      "player": "Luke Farrell",
+      "pos": "TE"
+    },
+    {
+      "player": "Luke Schoonmaker",
+      "pos": "TE"
+    },
+    {
+      "player": "Mack Hollins",
+      "pos": "WR"
+    },
+    {
+      "player": "Malachi Fields",
+      "pos": "WR"
+    },
+    {
+      "player": "Malik Benson",
+      "pos": "WR"
+    },
+    {
+      "player": "Marlin Klein",
+      "pos": "TE"
+    },
+    {
+      "player": "Mason Taylor",
+      "pos": "TE"
+    },
+    {
+      "player": "Matthew Hibner",
+      "pos": "TE"
+    },
+    {
+      "player": "Michael Mayer",
+      "pos": "TE"
+    },
+    {
+      "player": "Mike Gesicki",
+      "pos": "TE"
+    },
+    {
+      "player": "Mitchell Evans",
+      "pos": "TE"
+    },
+    {
+      "player": "Nate Boerkircher",
+      "pos": "TE"
+    },
+    {
+      "player": "Noah Fant",
+      "pos": "TE"
+    },
+    {
+      "player": "Noah Gray",
+      "pos": "TE"
+    },
+    {
+      "player": "Olamide Zaccheaus",
+      "pos": "WR"
+    },
+    {
+      "player": "Oronde Gadsden",
+      "pos": "TE"
+    },
+    {
+      "player": "Pat Bryant",
+      "pos": "WR"
+    },
+    {
+      "player": "Pat Freiermuth",
+      "pos": "TE"
+    },
+    {
+      "player": "Raheim Sanders",
+      "pos": "RB"
+    },
+    {
+      "player": "Roman Wilson",
+      "pos": "WR"
+    },
+    {
+      "player": "Ronnie Rivers",
+      "pos": "RB"
+    },
+    {
+      "player": "Seth McGowan",
+      "pos": "RB"
+    },
+    {
+      "player": "Sione Vaki",
+      "pos": "RB"
+    },
+    {
+      "player": "Stetson Bennett IV",
+      "pos": "QB"
+    },
+    {
+      "player": "Ted Hurst III",
+      "pos": "WR"
+    },
+    {
+      "player": "Theo Johnson",
+      "pos": "TE"
+    },
+    {
+      "player": "Tommy Tremble",
+      "pos": "TE"
+    },
+    {
+      "player": "Travis Etienne Jr.",
+      "pos": "RB"
+    },
+    {
+      "player": "Troy Franklin",
+      "pos": "WR"
+    },
+    {
+      "player": "Tyler Higbee",
+      "pos": "TE"
+    },
+    {
+      "player": "Will Shipley",
+      "pos": "RB"
+    },
+    {
+      "player": "Xavier Hutchinson",
+      "pos": "WR"
+    }
+  ]
 }
