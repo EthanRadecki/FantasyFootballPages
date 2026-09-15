@@ -1075,6 +1075,24 @@ function buildKothPools(data) {
       });
     });
   });
+
+  // Undrafted players (free agents / waiver pickups) only make sense once
+  // real scoring exists -- draft-order mode ranks by overall pick, which
+  // an undrafted player doesn't have, so they're left out until pointsMode
+  // kicks in. Same pool as drafted players from there, just tagged "Free
+  // Agent" instead of a manager.
+  if (pointsMode && data.undrafted_players) {
+    data.undrafted_players.forEach(function(p) {
+      if (p.pos === 'K' || p.pos === 'D/ST') return;
+      var key = p.player + '|' + p.pos;
+      var metric = data.player_season_totals[key] != null ? data.player_season_totals[key] : null;
+      if (metric == null) return;
+      all.push({
+        player: p.player, nfl_team: p.nfl_team || '', pos: p.pos,
+        manager: 'Free Agent', metric: metric, headshotKey: key
+      });
+    });
+  }
   // draft-order mode: lower overall = better, so ascending sort.
   // points mode: higher points = better, so descending sort.
   all.sort(function(a, b) {
@@ -1115,7 +1133,7 @@ function renderKothPyramid(key) {
             + '<span class="koth-rank-badge">' + rank + '</span>'
             + '</div>'
             + '<div class="koth-name">' + p.player + '<span class="koth-pos-chip koth-pos-' + p.pos + '">' + p.pos + '</span></div>'
-            + '<div class="koth-meta">' + p.nfl_team + ' &middot; ' + p.manager.replace(' Jr.', '') + '</div>'
+            + '<div class="koth-meta">' + (p.nfl_team ? p.nfl_team + ' &middot; ' : '') + p.manager.replace(' Jr.', '') + '</div>'
             + (metricLabel ? '<div class="koth-metric">' + metricLabel + '</div>' : '')
             + '</div>';
     });
@@ -1144,7 +1162,7 @@ function renderTopPlayers(data) {
     kothPlayersByPos = buildKothPools(data);
     var pointsMode = kothPlayersByPos._pointsMode;
     document.getElementById('koth-desc').textContent = pointsMode
-      ? 'Top 20 by cumulative fantasy points through ' + (data.label || ('Week ' + (data.week - 1))) + ', recomputed fresh each week.'
+      ? 'Top 20 by cumulative fantasy points through ' + (data.label || ('Week ' + (data.week - 1))) + ', recomputed fresh each week. Drafted and free-agent players alike.'
       : 'No games played yet, so this ranks by where each player came off the board -- earliest pick first. Switches to real fantasy points once the season starts.';
 
     var tabDefs = [['overall', 'Overall'], ['QB', 'QB'], ['RB', 'RB'], ['WR', 'WR'], ['TE', 'TE']];
