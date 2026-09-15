@@ -1089,7 +1089,7 @@ function buildKothPools(data) {
       if (metric == null) return;
       all.push({
         player: p.player, nfl_team: p.nfl_team || '', pos: p.pos,
-        manager: 'Free Agent', metric: metric, headshotKey: key
+        manager: p.manager || 'Free Agent', metric: metric, headshotKey: key
       });
     });
   }
