@@ -3720,467 +3720,596 @@
   "undrafted_players": [
     {
       "player": "AJ Barner",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "SEA"
     },
     {
       "player": "AJ Dillon",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "CAR"
     },
     {
       "player": "Aaron Rodgers",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "PIT"
     },
     {
       "player": "Adam Trautman",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "DEN"
     },
     {
       "player": "Ameer Abdullah",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "JAX"
     },
     {
       "player": "Andrei Iosivas",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "CIN"
     },
     {
       "player": "Antonio Williams",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "WSH"
     },
     {
       "player": "Barion Brown",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "NO"
     },
     {
       "player": "Blake Whiteheart",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "CLE"
     },
     {
       "player": "Bo Melton",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "GB"
     },
     {
       "player": "Brady Russell",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "SEA"
     },
     {
       "player": "Brevyn Spann-Ford",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "DAL"
     },
     {
       "player": "Brock Wright",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "DET"
     },
     {
       "player": "Bryce Lance",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "NO"
     },
     {
       "player": "Bryce Young",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "CAR"
     },
     {
       "player": "C.J. Stroud",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "HOU"
     },
     {
       "player": "Cade Otton",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "TB",
+      "manager": "Tee'd up"
     },
     {
       "player": "Cade Stover",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "HOU"
     },
     {
       "player": "Cam Ward",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "TEN"
     },
     {
       "player": "Carson Wentz",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "MIN"
     },
     {
       "player": "Chris Brooks",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "GB",
+      "manager": "Deniz Bileydi"
     },
     {
       "player": "Chris Moore",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "BAL"
     },
     {
       "player": "Colby Parkinson",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "LAR"
     },
     {
       "player": "Cole Kmet",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "CHI"
     },
     {
       "player": "Connor Heyward",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "LV"
     },
     {
       "player": "Cooper Kupp",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "SEA"
     },
     {
       "player": "Cooper Rush",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "ATL"
     },
     {
       "player": "Corey Kiner",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "NE"
     },
     {
       "player": "Daniel Bellinger",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "TEN"
     },
     {
       "player": "Darnell Mooney",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "NYG",
+      "manager": "Quin Gegwich"
     },
     {
       "player": "Darnell Washington",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "PIT"
     },
     {
       "player": "Darren Waller",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "CAR",
+      "manager": "Ryan McQuaid"
     },
     {
       "player": "David Njoku",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "LAC"
     },
     {
       "player": "Davis Allen",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "LAR"
     },
     {
       "player": "Dawson Knox",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "BUF"
     },
     {
       "player": "DeMario Douglas",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "NE"
     },
     {
       "player": "DeeJay Dallas",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "MIN"
     },
     {
       "player": "Demarcus Robinson",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "SF"
     },
     {
       "player": "Deshaun Watson",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "CLE"
     },
     {
       "player": "Devin Singletary",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "NYG"
     },
     {
       "player": "Dohnte Meyers",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "CIN"
     },
     {
       "player": "Drew Lock",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "SEA"
     },
     {
       "player": "Drew Sample",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "CIN"
     },
     {
       "player": "Durham Smythe",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "BAL"
     },
     {
       "player": "Eli Raridon",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "NE"
     },
     {
       "player": "Elic Ayomanor",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "TEN"
     },
     {
       "player": "Emanuel Wilson",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "SEA"
     },
     {
       "player": "Emari Demercado",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "DAL"
     },
     {
       "player": "Emmett Johnson",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "KC",
+      "manager": "Baylen Slansky"
     },
     {
       "player": "Evan Engram",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "DEN"
     },
     {
       "player": "Foster Moreau",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "HOU"
     },
     {
       "player": "Frank Gore Jr.",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "BUF"
     },
     {
       "player": "Geno Smith",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "NYJ"
     },
     {
       "player": "George Holani",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "SEA",
+      "manager": "Anthony Kelly"
     },
     {
       "player": "Greg Dulcich",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "MIA"
     },
     {
       "player": "Gunnar Helm",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "TEN"
     },
     {
       "player": "Hunter Luepke",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "DAL"
     },
     {
       "player": "Isaiah Williams",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "NYJ"
     },
     {
       "player": "Jack Bech",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "LV"
     },
     {
       "player": "Jacoby Brissett",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "ARI"
     },
     {
       "player": "Jahan Dotson",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "ATL"
     },
     {
       "player": "Jahdae Walker",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "CHI"
     },
     {
       "player": "James Cook III",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "BUF",
+      "manager": "Anthony Kelly"
     },
     {
       "player": "Jared Wayne",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "HOU"
     },
     {
       "player": "Jaylin Lane",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "WSH"
     },
     {
       "player": "Jeremy Ruckert",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "NYJ"
     },
     {
       "player": "John Bates",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "WSH"
     },
     {
       "player": "Jonathan Mingo",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "DAL"
     },
     {
       "player": "Jonnu Smith",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "GB"
     },
     {
       "player": "Jordan Whittington",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "LAR"
     },
     {
       "player": "Josh Cameron",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "JAX"
     },
     {
       "player": "Josh Oliver",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "MIN"
     },
     {
       "player": "Joshua Palmer",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "BUF"
     },
     {
       "player": "KaVontae Turpin",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "DAL"
     },
     {
       "player": "Kalif Raymond",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "CHI"
     },
     {
       "player": "Kayshon Boutte",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "HOU",
+      "manager": "Deniz Bileydi"
     },
     {
       "player": "Kaytron Allen",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "WSH"
     },
     {
       "player": "Kendre Miller",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "NO"
     },
     {
       "player": "Kendrick Bourne",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "ARI"
     },
     {
       "player": "Kenny Pickett",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "CAR"
     },
     {
       "player": "Keon Coleman",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "BUF"
     },
     {
       "player": "Kirk Cousins",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "LV"
     },
     {
       "player": "LaJohntay Wester",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "BAL"
     },
     {
       "player": "Lan Larison",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "NE"
     },
     {
       "player": "Luke Farrell",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "SF"
     },
     {
       "player": "Luke Schoonmaker",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "DAL"
     },
     {
       "player": "Mack Hollins",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "NE"
     },
     {
       "player": "Malachi Fields",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "NYG",
+      "manager": "Brandon Hancock"
     },
     {
       "player": "Malik Benson",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "LV"
     },
     {
       "player": "Marlin Klein",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "HOU"
     },
     {
       "player": "Mason Taylor",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "NYJ"
     },
     {
       "player": "Matthew Hibner",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "BAL"
     },
     {
       "player": "Michael Mayer",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "LV",
+      "manager": "Anthony Kelly"
     },
     {
       "player": "Mike Gesicki",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "CIN"
     },
     {
       "player": "Mitchell Evans",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "CAR"
     },
     {
       "player": "Nate Boerkircher",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "JAX"
     },
     {
       "player": "Noah Fant",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "NO"
     },
     {
       "player": "Noah Gray",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "KC"
     },
     {
       "player": "Olamide Zaccheaus",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "ATL"
     },
     {
       "player": "Oronde Gadsden",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "LAC"
     },
     {
       "player": "Pat Bryant",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "DEN"
     },
     {
       "player": "Pat Freiermuth",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "PIT",
+      "manager": "Charlie Gorman"
     },
     {
       "player": "Raheim Sanders",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "CLE"
     },
     {
       "player": "Roman Wilson",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "PIT"
     },
     {
       "player": "Ronnie Rivers",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "LAR"
     },
     {
       "player": "Seth McGowan",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "IND",
+      "manager": "Tee'd up"
     },
     {
       "player": "Sione Vaki",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "DET"
     },
     {
       "player": "Stetson Bennett IV",
-      "pos": "QB"
+      "pos": "QB",
+      "nfl_team": "LAR"
     },
     {
       "player": "Ted Hurst III",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "TB"
     },
     {
       "player": "Theo Johnson",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "NYG"
     },
     {
       "player": "Tommy Tremble",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "CAR"
     },
     {
       "player": "Travis Etienne Jr.",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "NO",
+      "manager": "Ben Castaldo"
     },
     {
       "player": "Troy Franklin",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "DEN"
     },
     {
       "player": "Tyler Higbee",
-      "pos": "TE"
+      "pos": "TE",
+      "nfl_team": "LAR"
     },
     {
       "player": "Will Shipley",
-      "pos": "RB"
+      "pos": "RB",
+      "nfl_team": "PHI"
     },
     {
       "player": "Xavier Hutchinson",
-      "pos": "WR"
+      "pos": "WR",
+      "nfl_team": "HOU"
     }
   ]
 }
