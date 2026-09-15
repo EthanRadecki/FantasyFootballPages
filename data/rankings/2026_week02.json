@@ -261,7 +261,8 @@
           "surplus_value": -2.6543
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 111.42
     },
     {
       "manager": "Charlie Gorman",
@@ -504,7 +505,8 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 121.32
     },
     {
       "manager": "Aidan Quigley",
@@ -747,7 +749,8 @@
           "surplus_value": null
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 111.25
     },
     {
       "manager": "Carmine Pittelli Jr.",
@@ -990,7 +993,8 @@
           "surplus_value": null
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 116.99
     },
     {
       "manager": "Ben Castaldo",
@@ -1233,7 +1237,8 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 113.93
     },
     {
       "manager": "Deniz Bileydi",
@@ -1476,7 +1481,8 @@
           "surplus_value": -14.7954
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 111.69
     },
     {
       "manager": "Brandon Hancock",
@@ -1719,7 +1725,8 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 112.16
     },
     {
       "manager": "Quin Gegwich",
@@ -1962,7 +1969,8 @@
           "surplus_value": -3.0698
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 108.51
     },
     {
       "manager": "Cole Maney",
@@ -2205,7 +2213,8 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 112.1
     },
     {
       "manager": "Andrew Root",
@@ -2448,7 +2457,8 @@
           "surplus_value": null
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 114.24
     },
     {
       "manager": "Max Malich",
@@ -2691,7 +2701,8 @@
           "surplus_value": null
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 108.93
     },
     {
       "manager": "Baylen Slansky",
@@ -2934,7 +2945,8 @@
           "surplus_value": -6.8303
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 106.19
     },
     {
       "manager": "Ryan P McQuaid",
@@ -3177,7 +3189,8 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 111.91
     },
     {
       "manager": "Anthony Kelly",
@@ -3420,7 +3433,288 @@
           "surplus_value": null
         }
       ],
-      "screenshots": []
+      "screenshots": [],
+      "proj_ppg_ros": 104.61
     }
-  ]
+  ],
+  "player_season_totals": {
+    "A.J. Brown|WR": 5.6,
+    "AJ Barner|TE": 3.3,
+    "AJ Dillon|RB": 2.8,
+    "Aaron Jones Sr.|RB": 10.0,
+    "Aaron Rodgers|QB": 12.54,
+    "Adam Trautman|TE": 3.0,
+    "Adonai Mitchell|WR": 9.0,
+    "Alec Pierce|WR": 10.1,
+    "Ameer Abdullah|RB": 4.2,
+    "Amon-Ra St. Brown|WR": 28.7,
+    "Andrei Iosivas|WR": 3.2,
+    "Antonio Williams|WR": 16.4,
+    "Ashton Jeanty|RB": 32.7,
+    "Baker Mayfield|QB": 11.64,
+    "Barion Brown|WR": 0.3,
+    "Bhayshul Tuten|RB": 9.8,
+    "Bijan Robinson|RB": 31.3,
+    "Blake Corum|RB": 5.4,
+    "Blake Whiteheart|TE": 2.4,
+    "Bo Melton|WR": 2.0,
+    "Bo Nix|QB": 5.44,
+    "Brady Russell|RB": 4.0,
+    "Braelon Allen|RB": 4.0,
+    "Breece Hall|RB": 19.8,
+    "Brenton Strange|TE": 10.3,
+    "Brevyn Spann-Ford|TE": 3.4,
+    "Brian Robinson Jr.|RB": 3.1,
+    "Brian Thomas Jr.|WR": 7.0,
+    "Brock Purdy|QB": 21.1,
+    "Brock Wright|TE": 1.5,
+    "Bryce Lance|WR": 7.2,
+    "Bryce Young|QB": 31.44,
+    "Bucky Irving|RB": 20.3,
+    "C.J. Stroud|QB": 16.46,
+    "Cade Otton|TE": 5.6,
+    "Cade Stover|TE": 0.8,
+    "Caleb Douglas|WR": 14.4,
+    "Caleb Williams|QB": 37.26,
+    "Cam Skattebo|RB": 14.1,
+    "Cam Ward|QB": 11.7,
+    "Carnell Tate|WR": 7.8,
+    "Carson Wentz|QB": 19.22,
+    "CeeDee Lamb|WR": 15.4,
+    "Chase Brown|RB": 18.8,
+    "Chig Okonkwo|TE": 3.6,
+    "Chris Bell|WR": 3.5,
+    "Chris Brooks|RB": 2.9,
+    "Chris Godwin Jr.|WR": 8.3,
+    "Chris Moore|WR": 6.3,
+    "Chris Olave|WR": 28.2,
+    "Chris Rodriguez Jr.|RB": 2.3,
+    "Christian McCaffrey|RB": 13.8,
+    "Christian Watson|WR": 32.7,
+    "Chuba Hubbard|RB": 23.7,
+    "Colby Parkinson|TE": 1.6,
+    "Cole Kmet|TE": 11.5,
+    "Connor Heyward|RB": 0.1,
+    "Cooper Kupp|WR": 5.5,
+    "Cooper Rush|QB": 5.72,
+    "Corey Kiner|RB": 1.1,
+    "Courtland Sutton|WR": 3.1,
+    "D'Andre Swift|RB": 32.4,
+    "DJ Moore|WR": 21.0,
+    "DK Metcalf|WR": 8.0,
+    "Dak Prescott|QB": 14.4,
+    "Dallas Goedert|TE": 23.7,
+    "Dalton Kincaid|TE": 18.0,
+    "Dalton Schultz|TE": 7.5,
+    "Daniel Bellinger|TE": 1.7,
+    "Daniel Jones|QB": 9.04,
+    "Darnell Mooney|WR": 4.7,
+    "Darnell Washington|TE": 3.8,
+    "Darren Waller|TE": 4.8,
+    "Davante Adams|WR": 5.6,
+    "David Montgomery|RB": 28.9,
+    "David Njoku|TE": 10.8,
+    "Davis Allen|TE": 2.3,
+    "Dawson Knox|TE": 1.7,
+    "De'Von Achane|RB": 10.6,
+    "DeMario Douglas|WR": 7.0,
+    "DeVonta Smith|WR": 8.3,
+    "DeeJay Dallas|RB": 1.1,
+    "Deebo Samuel Sr.|WR": 18.0,
+    "Demarcus Robinson|WR": 13.0,
+    "Denzel Boston|WR": 13.9,
+    "Derrick Henry|RB": 35.3,
+    "Deshaun Watson|QB": 14.0,
+    "Devaughn Vele|WR": 19.9,
+    "Devin Singletary|RB": 13.8,
+    "Dohnte Meyers|WR": 3.8,
+    "Dontayvion Wicks|WR": 15.3,
+    "Drake London|WR": 5.5,
+    "Drake Maye|QB": 9.82,
+    "Drew Lock|QB": 12.78,
+    "Drew Sample|TE": 4.9,
+    "Durham Smythe|TE": 1.4,
+    "Eli Raridon|TE": 7.2,
+    "Elic Ayomanor|WR": 8.1,
+    "Emanuel Wilson|RB": 0.3,
+    "Emari Demercado|RB": 0.7,
+    "Emeka Egbuka|WR": 11.3,
+    "Emmett Johnson|RB": 8.8,
+    "Evan Engram|TE": 14.3,
+    "Foster Moreau|TE": 3.5,
+    "Frank Gore Jr.|RB": 0.3,
+    "Garrett Wilson|WR": 13.9,
+    "Geno Smith|QB": 9.3,
+    "George Holani|RB": 2.9,
+    "George Kittle|TE": 3.2,
+    "George Pickens|WR": 5.8,
+    "Greg Dulcich|TE": 3.8,
+    "Gunnar Helm|TE": 6.8,
+    "Harold Fannin Jr.|TE": 4.1,
+    "Hunter Henry|TE": 5.6,
+    "Hunter Luepke|RB": 0.7,
+    "Isaiah Likely|TE": 27.8,
+    "Isaiah Williams|WR": 1.7,
+    "J.K. Dobbins|RB": 3.6,
+    "Ja'Kobi Lane|WR": 2.1,
+    "Ja'Marr Chase|WR": 3.2,
+    "Jack Bech|WR": 11.3,
+    "Jacoby Brissett|QB": 16.48,
+    "Jacory Croskey-Merritt|RB": 12.6,
+    "Jadarian Price|RB": 7.8,
+    "Jahan Dotson|WR": 2.9,
+    "Jahdae Walker|WR": 7.1,
+    "Jahmyr Gibbs|RB": 33.6,
+    "Jake Ferguson|TE": 2.6,
+    "Jakobi Meyers|WR": 12.2,
+    "Jalen Coker|WR": 33.8,
+    "Jalen Hurts|QB": 24.72,
+    "Jalen Nailor|WR": 5.7,
+    "James Cook III|RB": 9.9,
+    "Jameson Williams|WR": 8.5,
+    "Jared Goff|QB": 16.44,
+    "Jared Wayne|WR": 2.2,
+    "Javonte Williams|RB": 24.2,
+    "Jaxon Smith-Njigba|WR": 26.2,
+    "Jaxson Dart|QB": 26.6,
+    "Jayden Daniels|QB": 17.66,
+    "Jayden Reed|WR": 5.0,
+    "Jaylen Waddle|WR": 1.2,
+    "Jaylen Warren|RB": 10.3,
+    "Jaylin Lane|WR": 1.4,
+    "Jaylin Noel|WR": 7.3,
+    "Jeremiyah Love|RB": 13.0,
+    "Jeremy Ruckert|TE": 1.4,
+    "Jerry Jeudy|WR": 4.6,
+    "Joe Burrow|QB": 14.16,
+    "John Bates|TE": 3.3,
+    "Jonathan Mingo|WR": 2.0,
+    "Jonathan Taylor|RB": 25.1,
+    "Jonathon Brooks|RB": 7.2,
+    "Jonnu Smith|TE": 7.0,
+    "Jordan Love|QB": 19.48,
+    "Jordan Mason|RB": 11.9,
+    "Jordan Whittington|WR": 1.8,
+    "Josh Allen|QB": 35.66,
+    "Josh Cameron|WR": 10.0,
+    "Josh Downs|WR": 5.7,
+    "Josh Oliver|TE": 4.2,
+    "Joshua Palmer|WR": 10.4,
+    "Justice Hill|RB": 3.8,
+    "Justin Herbert|QB": 13.26,
+    "Justin Jefferson|WR": 31.2,
+    "Juwan Johnson|TE": 14.4,
+    "KC Concepcion|WR": 7.8,
+    "KaVontae Turpin|WR": 1.8,
+    "Kaelon Black|RB": 8.0,
+    "Kalif Raymond|WR": 16.4,
+    "Kayshon Boutte|WR": 3.1,
+    "Kaytron Allen|RB": 1.6,
+    "Keaton Mitchell|RB": 0.9,
+    "Keenan Allen|WR": 9.2,
+    "Kendre Miller|RB": 9.0,
+    "Kendrick Bourne|WR": 15.5,
+    "Kenneth Walker III|RB": 34.1,
+    "Kenny Gainwell|RB": 2.8,
+    "Kenny Pickett|QB": 2.4,
+    "Kenyon Sadiq|TE": 11.4,
+    "Keon Coleman|WR": 1.1,
+    "Khalil Shakir|WR": 9.0,
+    "Kirk Cousins|QB": 13.8,
+    "Kyle Monangai|RB": 20.4,
+    "Kyren Williams|RB": 15.5,
+    "LaJohntay Wester|WR": 3.5,
+    "Ladd McConkey|WR": 19.2,
+    "Lamar Jackson|QB": 24.96,
+    "Lan Larison|RB": 2.9,
+    "Luke Farrell|TE": 3.9,
+    "Luke Schoonmaker|TE": 2.2,
+    "Luther Burden III|WR": 9.5,
+    "Mack Hollins|WR": 9.1,
+    "Makai Lemon|WR": 2.5,
+    "Malachi Fields|WR": 4.5,
+    "Malik Benson|WR": 0.8,
+    "Malik Nabers|WR": 12.9,
+    "Malik Washington|WR": 6.3,
+    "Malik Willis|QB": 16.7,
+    "MarShawn Lloyd|RB": 3.7,
+    "Mark Andrews|TE": 8.9,
+    "Marlin Klein|TE": 2.6,
+    "Marvin Harrison Jr.|WR": 4.3,
+    "Mason Taylor|TE": 1.8,
+    "Matthew Golden|WR": 15.5,
+    "Matthew Hibner|TE": 2.3,
+    "Matthew Stafford|QB": 4.1,
+    "Michael Mayer|TE": 9.2,
+    "Michael Pittman Jr.|WR": 8.8,
+    "Michael Wilson|WR": 10.6,
+    "Mike Evans|WR": 16.9,
+    "Mike Gesicki|TE": 18.8,
+    "Mike Washington Jr.|RB": 4.1,
+    "Mitchell Evans|TE": 1.9,
+    "Nate Boerkircher|TE": 1.9,
+    "Nico Collins|WR": 21.2,
+    "Noah Fant|TE": 13.3,
+    "Noah Gray|TE": 1.5,
+    "Olamide Zaccheaus|WR": 1.5,
+    "Omar Cooper Jr.|WR": 4.0,
+    "Omarion Hampton|RB": 8.3,
+    "Oronde Gadsden|TE": 5.2,
+    "Parker Washington|WR": 19.3,
+    "Pat Bryant|WR": 8.2,
+    "Pat Freiermuth|TE": 15.6,
+    "Patrick Mahomes|QB": 21.66,
+    "Puka Nacua|WR": 12.4,
+    "Quentin Johnston|WR": 3.7,
+    "Quinshon Judkins|RB": 7.0,
+    "RJ Harvey|RB": 8.1,
+    "Rachaad White|RB": 4.7,
+    "Raheim Sanders|RB": 5.6,
+    "Rashee Rice|WR": 9.9,
+    "Rashid Shaheed|WR": 1.4,
+    "Ray Davis|RB": 0.3,
+    "Rhamondre Stevenson|RB": 14.5,
+    "Rico Dowdle|RB": 4.1,
+    "Roman Wilson|WR": 5.6,
+    "Rome Odunze|WR": 7.2,
+    "Ronnie Rivers|RB": 3.4,
+    "Ryan Flournoy|WR": 4.2,
+    "Sam Darnold|QB": 0.52,
+    "Sam LaPorta|TE": 9.8,
+    "Samaje Perine|RB": 8.0,
+    "Saquon Barkley|RB": 9.0,
+    "Seth McGowan|RB": 1.0,
+    "Sione Vaki|RB": 2.8,
+    "Stefon Diggs|WR": 15.5,
+    "Stetson Bennett IV|QB": 1.42,
+    "T.J. Hockenson|TE": 13.6,
+    "Tank Bigsby|RB": 0.3,
+    "Ted Hurst III|WR": 6.6,
+    "Tee Higgins|WR": 8.9,
+    "Terry McLaurin|WR": 3.4,
+    "Tetairoa McMillan|WR": 10.5,
+    "Theo Johnson|TE": 1.9,
+    "Tommy Tremble|TE": 5.5,
+    "Tony Pollard|RB": 4.4,
+    "Travis Etienne Jr.|RB": 14.8,
+    "Travis Hunter|WR": 2.1,
+    "Travis Kelce|TE": 10.1,
+    "Tre Tucker|WR": 4.7,
+    "Tre' Harris|WR": 5.0,
+    "Trevor Lawrence|QB": 26.1,
+    "Trey McBride|TE": 24.5,
+    "Troy Franklin|WR": 0.5,
+    "Tucker Kraft|TE": 9.5,
+    "Tyjae Spears|RB": 4.4,
+    "Tyler Allgeier|RB": 9.0,
+    "Tyler Higbee|TE": 1.2,
+    "Tyler Shough|QB": 23.2,
+    "Tyler Warren|TE": 10.3,
+    "Wan'Dale Robinson|WR": 8.8,
+    "Will Shipley|RB": 2.2,
+    "Woody Marks|RB": 5.0,
+    "Xavier Hutchinson|WR": 6.2,
+    "Xavier Worthy|WR": 4.8,
+    "Zay Flowers|WR": 26.0
+  }
 }
