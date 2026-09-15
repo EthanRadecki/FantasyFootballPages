@@ -762,7 +762,7 @@
   <!-- DRAFT INSIGHTS -- shown whenever a week's teams carry ADP/proj/
        position-spend data, typically Week 1 -->
   <div id="draft-insights-wrap" style="display:none;margin-bottom:2rem;">
-    <div class="rankings-label" style="margin-top:0.5rem;">&#127919; Draft Insights</div>
+    <div class="rankings-label" style="margin-top:0.5rem;" id="draft-insights-label">&#127919; Draft Insights</div>
     <div class="glass" style="padding:1.5rem;">
       <div class="draft-insights-tabs" id="draft-insights-tabs"></div>
       <p class="draft-insights-desc" id="draft-insights-desc"></p>
@@ -1144,7 +1144,7 @@ function renderTopPlayers(data) {
     kothPlayersByPos = buildKothPools(data);
     var pointsMode = kothPlayersByPos._pointsMode;
     document.getElementById('koth-desc').textContent = pointsMode
-      ? 'Top 20 by cumulative fantasy points through ' + (data.label || ('Week ' + data.week)) + ', recomputed fresh each week.'
+      ? 'Top 20 by cumulative fantasy points through ' + (data.label || ('Week ' + (data.week - 1))) + ', recomputed fresh each week.'
       : 'No games played yet, so this ranks by where each player came off the board -- earliest pick first. Switches to real fantasy points once the season starts.';
 
     var tabDefs = [['overall', 'Overall'], ['QB', 'QB'], ['RB', 'RB'], ['WR', 'WR'], ['TE', 'TE']];
@@ -1470,6 +1470,13 @@ var DRAFT_METRICS = {
     getValue: function(t){ return t.sos_avg_opp_ppg; },
     format: function(v){ return v.toFixed(1) + ' PPG'; },
     diverging: false
+  },
+  draft_grade: {
+    label: 'Surplus Value',
+    desc: 'Weighted draft surplus so far this season -- actual production vs. expected for that draft slot, compared against every pick from 2020-2026 taken within 3 spots of it. Positive means the pick is outperforming its slot.',
+    getValue: function(t){ return t.draft_grade; },
+    format: function(v){ return (v > 0 ? '+' : '') + v.toFixed(1); },
+    diverging: true
   }
 };
 
@@ -1511,6 +1518,14 @@ function availableDraftMetrics(teams) {
 function renderDraftInsights(data) {
   var wrap = document.getElementById('draft-insights-wrap');
   draftInsightsTeams = data.teams;
+
+  // Week 1 is the draft recap, so "Draft Insights" fits; from Week 2 on the
+  // section carries season-relative stuff (surplus, SOS, weekly projections)
+  // so the label switches to "Season Insights" instead.
+  var labelEl = document.getElementById('draft-insights-label');
+  if (labelEl) {
+    labelEl.innerHTML = (data.week <= 1) ? '&#127919; Draft Insights' : '&#127919; Season Insights';
+  }
 
   // "Projected Points" reflects a single week's starter total, so its tab
   // label carries the actual week number rather than reading as a
@@ -1630,6 +1645,11 @@ function drawDraftChart(key) {
     var minV = Math.min.apply(null, values), maxV = Math.max.apply(null, values);
     var range = Math.max(maxV - minV, 0.1);
     barColors = values.map(function(v){ return gradientColor(1 - (v - minV) / range); });
+  } else if (key === 'draft_grade') {
+    // Surplus is symmetric around 0 like ADP Value, but the polarity is
+    // flipped: positive surplus is good (green), negative is bad (red).
+    var extent = Math.max.apply(null, values.map(Math.abs).concat([5]));
+    barColors = values.map(function(v){ return gradientColor((v + extent) / (2 * extent)); });
   } else {
     barColors = values.map(function(){ return '#9c949c'; });
   }
@@ -1654,6 +1674,7 @@ function drawDraftChart(key) {
         var mgr  = rows[elements[0].index].manager;
         var team = draftInsightsTeams.filter(function(t){ return t.manager === mgr; })[0];
         if (key === 'adp_value') showAdpValueDetail(team);
+        else if (key === 'draft_grade') showSurplusDetail(team);
       },
       onHover: function(evt, elements) {
         evt.native.target.style.cursor = (elements.length && !noDrilldown) ? 'pointer' : 'default';
@@ -1760,6 +1781,42 @@ function showPositionSpendDetail(team, pos) {
     + '<th>Player</th><th>Draft Capital</th><th>Overall</th><th>ESPN ADP</th>'
     + '</tr></thead><tbody>' + rowsHtml + '</tbody></table>'
     + '<p class="draft-detail-hint">Position Spend weights early rounds exponentially heavier (halves every 3 rounds), not by a flat per-pick step.</p>';
+
+  document.getElementById('draft-detail-card').classList.add('open');
+}
+
+// Surplus Value card: every pick, sorted by round. Positive surplus is
+// good (green), negative is bad (red) -- opposite polarity from ADP
+// deviation, so this gets its own color helper rather than reusing
+// draftDetailDevCell.
+function draftDetailSurplusCell(sv) {
+  if (sv === null || sv === undefined) return '<span style="color:var(--muted);">N/A</span>';
+  var cls = sv >= 0 ? 'draft-detail-dev-pos' : 'draft-detail-dev-neg';
+  return '<span class="' + cls + '">' + (sv > 0 ? '+' : '') + sv.toFixed(1) + '</span>';
+}
+
+function showSurplusDetail(team) {
+  var color = MANAGER_COLORS[team.manager] || '#5a5550';
+  document.getElementById('draft-detail-title').innerHTML =
+    '<span class="dot" style="background:' + color + ';"></span>' + team.manager + '\u2019s picks';
+
+  var picks = (team.draft_picks || []).slice().sort(function(a,b){ return a.overall - b.overall; });
+  var rowsHtml = picks.map(function(p) {
+    var isSkill = ['QB','RB','WR','TE'].indexOf(p.pos) !== -1;
+    var style = isSkill ? '' : ' style="opacity:0.5;"';
+    return '<tr' + style + '>'
+      + '<td>' + draftDetailPosChip(p.pos) + '</td>'
+      + '<td>' + p.player + ' <span style="color:var(--muted);font-size:0.75em;">' + p.nfl_team + '</span></td>'
+      + '<td>Rd ' + p.round + '.' + p.pick_in_round + ' (#' + p.overall + ')</td>'
+      + '<td>' + draftDetailSurplusCell(p.surplus_value) + '</td>'
+      + '</tr>';
+  }).join('');
+
+  document.getElementById('draft-detail-body').innerHTML =
+    '<table class="draft-detail-table"><thead><tr>'
+    + '<th>Pos</th><th>Player</th><th>Pick</th><th>Surplus</th>'
+    + '</tr></thead><tbody>' + rowsHtml + '</tbody></table>'
+    + '<p class="draft-detail-hint">K and D/ST picks (dimmed) aren\u2019t graded -- surplus is skill positions only, and updates as more of the season plays out.</p>';
 
   document.getElementById('draft-detail-card').classList.add('open');
 }
