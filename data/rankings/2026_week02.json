@@ -22,19 +22,19 @@
   "teams": [
     {
       "manager": "Ethan Radecki",
-      "rank": null,
+      "rank": 4,
       "prev_rank": 5,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": 1,
+      "avg_rank": 4.5,
       "ppg_to_date": 130.6,
       "record_to_date": "1-0",
       "last_score": 130.6,
-      "streak": null,
+      "streak": "W1",
       "proj_ppg": 116.7,
       "sos_avg_opp_ppg": 111.37,
       "sos_rank": 10,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "The Zay Flowers injury could suck but we shall see.",
+      "blurb": "The Zay Flowers injury could suck but we shall see. Four key players earned Ethan his first win of the season in Week 1, those being Ashton Jeanty, Jaxson Dart, Zay Flowers, and Parker Washington, but it will require more from the rest of the roster and even the D/ST and Kicker to continue to win. The injury to De’Zhaun Stribling, which placed him on injury reserve, leaves this team without a single bench WR to replace Zay Flowers in the case that he misses time with the hamstring injury, so finding WR depth will be the key for Ethan in coming days/weeks. Even against an “easier” opponent in Week 2, Ethan has had trouble with this matchup in years past, in fact, Deniz is Ethan’s hardest matchup in league history as he is 2-6 all-time against him. [[img:ethan_01]] All eyes will be on Jaylen Waddle and Omarion Hampton this week as they were both top four picks for the team this season and disappointed greatly in Week 1. Zay Flowers injury news and WR depth, those are things to keep an eye on for Ethan as we enter Week 2.",
       "draft_grade": -22.77,
       "draft_surplus_total": -22.77,
       "draft_picks": [
@@ -231,24 +231,30 @@
           "surplus_value": -2.6543
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "ethan_01",
+          "file": "images/rankings/week_02/ethan_01.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 111.42
     },
     {
       "manager": "Charlie Gorman",
-      "rank": null,
+      "rank": 1,
       "prev_rank": 1,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": 0,
+      "avg_rank": 1.0,
       "ppg_to_date": 135.1,
       "record_to_date": "1-0",
       "last_score": 135.1,
-      "streak": null,
+      "streak": "W1",
       "proj_ppg": 123.9,
       "sos_avg_opp_ppg": 109.89,
       "sos_rank": 13,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "Staying at the top spot for the 2nd week in a row, this team should unanimously be everyone’s #1.",
+      "blurb": "Staying at the top spot for the 2nd week in a row, this team should unanimously be everyone’s #1. Charlie put up the 2nd most points in Week 1, trailing only Anthony, but unlike the latter, Charlie’s team is healthy and there appears to be a high-level of production that is achievable at least in my eyes. [[img:charlie_01]] Jahmyr Gibbs looks like he was well worth the 1.01 and David Montgomery looks to be well positioned for a high-end RB2 season in Houston. Trevor Lawrence and Dalton Kincaid look like top seven options at their respective positions and even though the WR duo of Drake London and George Pickens were underwhelming in Week 1, I still think they will be low-end WR1s this season. The only issues I can see Charlie having are with his FLEX but here’s the thing, he has plenty of options depending on the matchup. Whether it be Terry McLaurin, Chuba Hubbard, Rico Dowdle, or one of the other wild cards on his bench, the team has options and depth and maybe that depth gets utilized for a more consistent FLEX option down the line. Charlie is projected to score the most points in Week 2 by a wide margin, and combined with the 2nd easiest projected remaining strength of schedule, I think we see this team reach levels that only a handful of Preach Fantasy teams have reach before. [[img:charlie_02]] [[img:charlie_03]]",
       "draft_grade": -8.14,
       "draft_surplus_total": -8.14,
       "draft_picks": [
@@ -445,24 +451,40 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "charlie_01",
+          "file": "images/rankings/week_02/charlie_01.png",
+          "caption": ""
+        },
+        {
+          "id": "charlie_02",
+          "file": "images/rankings/week_02/charlie_02.png",
+          "caption": ""
+        },
+        {
+          "id": "charlie_03",
+          "file": "images/rankings/week_02/charlie_03.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 121.32
     },
     {
       "manager": "Aidan Quigley",
-      "rank": null,
+      "rank": 8,
       "prev_rank": 4,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": -4,
+      "avg_rank": 6.0,
       "ppg_to_date": 109.4,
       "record_to_date": "0-1",
       "last_score": 109.4,
-      "streak": null,
+      "streak": "L1",
       "proj_ppg": 114.1,
       "sos_avg_opp_ppg": 112.77,
       "sos_rank": 4,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "Maybe my biggest surprise from Week 1.",
+      "blurb": "Maybe my biggest surprise from Week 1, after I ranked Aidan as a top team in the league prior to the first week the team didn’t show up outside of a few players leading to the team putting up the 4th least number of points in Week 1. Still, even with the loss and the disappointing performance, I have the team ranked above teams with wins and those that scored more, you may be asking why? Well, first you have to remember the rankings are subjective while slightly being guided by stats, but when you breakdown what went wrong with this team in Week 1 you may realize why I still have the team ranked as a playoff team. I believe the QB play was very unlucky for Aidan in Week 1, with 4.1 points being the lowest scored by any of the 14 started quarterbacks by over 5 points, there’s no shot that doesn’t regress back to the upper teens. Also, even though Jameson Williams had a poor performance from a points standpoint, he still had 9 targets, so the volume will be there for some great weeks and even if it’s not then Mike Evans looks like he could be a steal of the draft if he stays healthy. And let’s be honest, Ja’Marr Chase does this every year, he’ll be back to his usual self in no time. The Week 2 matchup may be a tough one given N.Y. Routensss being favored and kind of “owning” Aidan historically. [[img:aidan_01]] But in my opinion I think this team’s outlook hasn’t changed much since the Week 1 rankings, they just need to get a win. This ranking is most likely the outlier for the week since it’s more subjective and may upset people ranked below (Brandon) but who cares. Also a fun note depending on who’s reading this, Aidan has only ever lost his Week 1 matchup once since 2021, that being his 2022 season where he went on to start the season with 4 straight losses. [[img:aidan_02]]",
       "draft_grade": -34.72,
       "draft_surplus_total": -34.72,
       "draft_picks": [
@@ -659,24 +681,35 @@
           "surplus_value": null
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "aidan_01",
+          "file": "images/rankings/week_02/aidan_01.png",
+          "caption": ""
+        },
+        {
+          "id": "aidan_02",
+          "file": "images/rankings/week_02/aidan_02.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 111.25
     },
     {
       "manager": "Carmine Pittelli Jr.",
-      "rank": null,
+      "rank": 2,
       "prev_rank": 3,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": 1,
+      "avg_rank": 2.5,
       "ppg_to_date": 124.3,
       "record_to_date": "1-0",
       "last_score": 124.3,
-      "streak": null,
+      "streak": "W1",
       "proj_ppg": 119.9,
       "sos_avg_opp_ppg": 112.52,
       "sos_rank": 6,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "Top three for the 2nd week in a row.",
+      "blurb": "Top three for the 2nd week in a row. Despite scoring the 5th most points in Week 1, I’m moving Carmine up a spot in the rankings to #2. The reasoning? I simply look at the roster, specifically the starting lineup, and see results that are replicable and think this squad could have no trouble averaging 124 points a week, a feat that has only been done 9 times across the 6 seasons. Is Bijan Robinson going to give you 31 each week while Breece Hall gives you 20? Definitely not, but a combined 40 seems possible. Are Nico Collins and DJ Moore going to produce 21 points each? Probably not, but 35 combined each week is plausible if the usage we saw in Week 1 continues. The rest of the lineup was disappointing or just not worthy of mentioning, but if there’s one thing I know it’s that the D/ST and Kicker will combine for more than 3.5 points most, if not all, weeks. [[img:carmine_01]] Carmine faces an “easier” opponent than he had in Week 1, projected to be one of the top scorers in Week 2, but even across history Carmine has had an easy time getting a win against Quin Gegwich. This team will most likely be very good in 2026, as Carmine’s teams typically are, but I won’t rank them any higher until we see it. [[img:carmine_02]] [[img:carmine_03]]",
       "draft_grade": -15.52,
       "draft_surplus_total": -15.52,
       "draft_picks": [
@@ -873,24 +906,40 @@
           "surplus_value": null
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "carmine_01",
+          "file": "images/rankings/week_02/carmine_01.png",
+          "caption": ""
+        },
+        {
+          "id": "carmine_02",
+          "file": "images/rankings/week_02/carmine_02.png",
+          "caption": ""
+        },
+        {
+          "id": "carmine_03",
+          "file": "images/rankings/week_02/carmine_03.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 116.99
     },
     {
       "manager": "Ben Castaldo",
-      "rank": null,
+      "rank": 5,
       "prev_rank": 8,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": 3,
+      "avg_rank": 6.5,
       "ppg_to_date": 132.7,
       "record_to_date": "1-0",
       "last_score": 132.7,
-      "streak": null,
+      "streak": "W1",
       "proj_ppg": 116.6,
       "sos_avg_opp_ppg": 111.47,
       "sos_rank": 9,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "I think we could be in store for another great season from Ben.",
+      "blurb": "I think we could be in store for another great season from Ben. A monster win in Week 1 against The Gegwich Effect has pushed A$AP Monke into the top 5 for Week 2. Led by Kenneth Walker III and Lamar Jackson, this team looks like it may steadily be a top team for the 2026 season. Sure, most of the players in the starting lineup had non-exciting performances, none less exciting than Kyle Pitts’ donut, but as of Week 2 this team appears to have depth at both WR and RB that I don’t think they have any glaring holes. Now, it’s only Week 2 and Ben has a super tough matchup against No Fox Gibbs’en, but I see promise and a team that won’t give up many easy wins this season. [[img:ben_01]] My concerns from Week 1 are still there, those being focused on the WR room and the consistency of their play, so Week 2 will be a big test and indicator to me whether this team has the tools and players to compete for the franchise’s 2nd championship.",
       "draft_grade": 3.75,
       "draft_surplus_total": 3.75,
       "draft_picks": [
@@ -1087,24 +1136,30 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "ben_01",
+          "file": "images/rankings/week_02/ben_01.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 113.93
     },
     {
       "manager": "Deniz Bileydi",
-      "rank": null,
+      "rank": 13,
       "prev_rank": 14,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": 1,
+      "avg_rank": 13.5,
       "ppg_to_date": 114.8,
       "record_to_date": "0-1",
       "last_score": 114.8,
-      "streak": null,
+      "streak": "L1",
       "proj_ppg": 114.7,
       "sos_avg_opp_ppg": 110.31,
       "sos_rank": 12,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "Moving up the rankings, even if it is only one spot, Deniz fell to 0-1 after putting up middle of the pack numbers in Week 1.",
+      "blurb": "Moving up the rankings, even if it is only one spot, Deniz fell to 0-1 after putting up middle of the pack numbers in Week 1. Most of those points came from his core of Amon-Ra St.Brown, Trey McBride, and Bucky Irving, while the rest of his lineup and even his bench disappointed. Week 2 is projected to be an easier matchup than the prior one, depending on opponent health, but for the long-term outlook I think it’s worrisome that Jacobs is still out indefinitely and there doesn’t appear to be an every-week FLEX option or even an RB2 on the current roster. [[img:deniz_01]] The team is projected to have a top 3 easiest strength of schedule for the rest of the season, and even though that could change in an instant, it should be comforting to Deniz to know that his schedule is more likely to be with him than against him this season, he just has to put together a competent squad which may require some trades or waiver wire gems. [[img:deniz_02]] A Week 2 win isn’t necessarily needed, but a loss would set this team back further than it may be able to deal with given the current talent on the roster.",
       "draft_grade": -36.41,
       "draft_surplus_total": -36.41,
       "draft_picks": [
@@ -1301,24 +1356,35 @@
           "surplus_value": -14.7954
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "deniz_01",
+          "file": "images/rankings/week_02/deniz_01.png",
+          "caption": ""
+        },
+        {
+          "id": "deniz_02",
+          "file": "images/rankings/week_02/deniz_02.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 111.69
     },
     {
       "manager": "Brandon Hancock",
-      "rank": null,
+      "rank": 9,
       "prev_rank": 6,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": -3,
+      "avg_rank": 7.5,
       "ppg_to_date": 118.6,
       "record_to_date": "1-0",
       "last_score": 118.6,
-      "streak": null,
+      "streak": "W1",
       "proj_ppg": 114.5,
       "sos_avg_opp_ppg": 110.65,
       "sos_rank": 11,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "It was a stress-free win in Week 1 for The Minutemen as they defeated Station Grits by 16 points.",
+      "blurb": "It was a stress-free win in Week 1 for The Minutemen as they defeated Station Grits by 16 points, led by the RB duo of Jonathan Taylor and Kyren Williams and also some great play  from Jalen Hurts. The Colts got smacked and Jonathan Taylor was still able to finish as the RB8, so that stat about only producing in Colts wins looks like it won’t matter in 2026. Now, usually putting up 118 points and winning would mean not moving down in the rankings so the fall to #9 might come as a surprise, but I would be lying if I said I wasn’t concerned about Rome Odunze, Rashee Rice, and the team’s WR production as a whole for 2026. It’s only been one week, but Rome Odunze only putting up 7.2 points in a 59 point effort from the Bears is worrisome and Rashee Rice only getting 2 targets and simply not looking great is uncharacteristic. There’s no need to panic obviously as the team is 1-0 and they are projected to have the 4th easiest remaining strength of schedule, but I’m going to need to see more outside of QB and RB for me to comfortably rank this team higher. [[img:brandon_01]] It’s projected to be a tight one in Week 2 against Make Fantasy Great Again, but if I were to make a prediction I say Brandon takes down the 14th ranked team in the league and will likely move back up the rankings in due time.",
       "draft_grade": -25.92,
       "draft_surplus_total": -25.92,
       "draft_picks": [
@@ -1515,24 +1581,35 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "brandon_01",
+          "file": "images/rankings/week_02/brandon_01.png",
+          "caption": ""
+        },
+        {
+          "id": "brandon_02",
+          "file": "images/rankings/week_02/brandon_02.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 112.16
     },
     {
       "manager": "Quin Gegwich",
-      "rank": null,
+      "rank": 11,
       "prev_rank": 9,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": -2,
+      "avg_rank": 10.0,
       "ppg_to_date": 107.1,
       "record_to_date": "0-1",
       "last_score": 107.1,
-      "streak": null,
+      "streak": "L1",
       "proj_ppg": 110.8,
       "sos_avg_opp_ppg": 109.74,
       "sos_rank": 14,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "You can’t really be happy if you’re Gegwich, can you?",
+      "blurb": "You can’t really be happy if you’re Gegwich, can you? I’ll start with the good, Isaiah Likely looks like one of the best draft picks, given the price, from this year’s draft. [[img:quin_01]] The ceiling for Malik Nabers looks super high, Chase Brown is the guy that Quin drafted him to be, and Caleb Douglas may have some FLEX appeal this season… that’s about all the good. Now for the bad, Justin Herbert and the Chargers’ offense looked bad which also isn’t great for Quentin Johnston, the Brown’s offense looked like one of the worst I’ve seen since I started watching football which is bad for Quinshon Judkins, the WR duo of Devonta Smith and Michael Pittman Jr. showed nothing and honestly got outshined by multiple pass catchers in their respective offenses, and to make matters worse Brandon Aubrey looked human. I think better days are ahead for The Gegwich Effect, especially since the projected strength of schedule for Weeks 2-14 is the easiest in the league, but this week’s matchup won’t be easy as seen in the spread being the largest across all Week 2 matchups. [[img:quin_02]] [[img:quin_03]]",
       "draft_grade": -46.67,
       "draft_surplus_total": -46.67,
       "draft_picks": [
@@ -1729,24 +1806,40 @@
           "surplus_value": -3.0698
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "quin_01",
+          "file": "images/rankings/week_02/quin_01.png",
+          "caption": ""
+        },
+        {
+          "id": "quin_02",
+          "file": "images/rankings/week_02/quin_02.png",
+          "caption": ""
+        },
+        {
+          "id": "quin_03",
+          "file": "images/rankings/week_02/quin_03.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 108.51
     },
     {
       "manager": "Cole Maney",
-      "rank": null,
+      "rank": 10,
       "prev_rank": 11,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": 1,
+      "avg_rank": 10.5,
       "ppg_to_date": 120.7,
       "record_to_date": "0-1",
       "last_score": 120.7,
-      "streak": null,
+      "streak": "L1",
       "proj_ppg": 114.8,
       "sos_avg_opp_ppg": 112.99,
       "sos_rank": 3,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "The names just don’t get any better, do they?",
+      "blurb": "The names just don’t get any better, do they? Despite Seahawks D/ST and Evan McPherson trying their best to get Cole the win in Week 1, the team lost a close one to Breece’s Pieces thanks to Puka Nacua and J.K. Dobbins underperforming. [[img:cole_01]] I don’t know how to feel about the team’s long-term outlook just yet, they have the 2nd hardest remaining strength of schedule but are favored against the injury-riddled Rolls With Butter in Week 2. If I had to guess I’d say the team wins in Week 2 but may have trouble from week-to-week unless TreVeyon Henderson can get healthy and provided some low-end RB2 production. [[img:cole_02]] One bright spot on the roster could be Devaughn Vele, at least until Jordyn Tyson comes off injury reserve, he could be a spot play guy if Ladd McConkey’s injury is serious or just some WR value if Cole decides to shake up the roster, which I doubt he will given his history of not trading. [[img:cole_03]]",
       "draft_grade": -36.41,
       "draft_surplus_total": -36.41,
       "draft_picks": [
@@ -1943,24 +2036,40 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "cole_01",
+          "file": "images/rankings/week_02/cole_01.png",
+          "caption": ""
+        },
+        {
+          "id": "cole_02",
+          "file": "images/rankings/week_02/cole_02.png",
+          "caption": ""
+        },
+        {
+          "id": "cole_03",
+          "file": "images/rankings/week_02/cole_03.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 112.1
     },
     {
       "manager": "Andrew Root",
-      "rank": null,
+      "rank": 7,
       "prev_rank": 7,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": 0,
+      "avg_rank": 7.0,
       "ppg_to_date": 122.7,
       "record_to_date": "0-1",
       "last_score": 122.7,
-      "streak": null,
+      "streak": "L1",
       "proj_ppg": 116.3,
       "sos_avg_opp_ppg": 111.95,
       "sos_rank": 7,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "No ranking change for Andrew after one week.",
+      "blurb": "No ranking change for Andrew after one week. It looks like Justin Jefferson is back to his old self, while the rest of the team’s first 6 picks (aside from Rhamondre Stevenson) underperformed. However, Andrew appears to have selected one of the biggest draft day steals across the league with Jalen Coker, which is actually a little bittersweet since he also has Tetairoa McMillan. [[img:andrew_01]] Still, it’s only been one week so things can change very quickly. Patrick Mahomes also looks like his early-2025 self as he was able to finish as the QB9 against one of the most formidable defenses in the league. The team is favored to win its Week 2 matchup and move to 1-1, but I’m going to need to see more from the rest of Andrew’s top picks to move him higher up the rankings.",
       "draft_grade": -26.78,
       "draft_surplus_total": -26.78,
       "draft_picks": [
@@ -2157,24 +2266,30 @@
           "surplus_value": null
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "andrew_01",
+          "file": "images/rankings/week_02/andrew_01.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 114.24
     },
     {
       "manager": "Max Malich",
-      "rank": null,
+      "rank": 6,
       "prev_rank": 2,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": -4,
+      "avg_rank": 4.0,
       "ppg_to_date": 116.3,
       "record_to_date": "1-0",
       "last_score": 116.3,
-      "streak": null,
+      "streak": "W1",
       "proj_ppg": 111.2,
       "sos_avg_opp_ppg": 112.68,
       "sos_rank": 5,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "Max squeaked away from Week 1 with a 1.5-point win over Leased to Jetty, which is the franchise’s 3rd closest game of all time, including regular and post-season games.",
+      "blurb": "Another big fall in the rankings like Aidan and Ryan, Max squeaked away from Week 1 with a 1.5-point win over Leased to Jetty which is the franchise’s 3rd closest game of all time, including regular and post-season games. [[img:max_01]] It was mostly a carry-job in Week 1 from Caleb Williams and Derrick Henry, both combining for 62% of the team’s total points which isn’t  generally the recipe for success in fantasy. The WR duo of Tee Higgins and Marvin Harrison Jr. combined for less than what Matthew Golden produced, someone who sat on Max’s bench in Week 1, but I think that’ll change going forward. The team is in a good place, like let’s say Max played Matthew Golden and Dallas Goedert at his FLEX and TE spots instead of KC Conception and Colston Loveland in Week 1, we’d be looking at the highest scoring team in Week 1. We can’t sit here saying “what if” or “could’ve”, but that value on roster on top of the 1-0 record indicates to me that good times are ahead for Max. A couple fun things to note for Max, his teams have made the playoffs every other season since the beginning of the league in 2020 so if history repeats itself then we should be in for a Tee’d Up playoff run in 2026. Also, with his 35 point week in Week 1, Derrick Henry now becomes the 10th player in Preach Fantasy history to score at least 450 points for a single franchise and the 1st running back to do so, he joins Josh Allen and Davante Adams with Ben, Ja’Marr Chase and Patrick Mahomes with Cole, Garrett Wilson with Carmine, A.J. Brown and Trey McBride with Ethan, and Puka Nacua and Justin Herbert with Baylen. [[img:max_02]] [[img:max_03]]",
       "draft_grade": -7.56,
       "draft_surplus_total": -7.56,
       "draft_picks": [
@@ -2371,24 +2486,40 @@
           "surplus_value": null
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "max_01",
+          "file": "images/rankings/week_02/max_01.png",
+          "caption": ""
+        },
+        {
+          "id": "max_02",
+          "file": "images/rankings/week_02/max_02.png",
+          "caption": ""
+        },
+        {
+          "id": "max_03",
+          "file": "images/rankings/week_02/max_03.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 108.93
     },
     {
       "manager": "Baylen Slansky",
-      "rank": null,
+      "rank": 12,
       "prev_rank": 13,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": 1,
+      "avg_rank": 12.5,
       "ppg_to_date": 102.5,
       "record_to_date": "0-1",
       "last_score": 102.5,
-      "streak": null,
+      "streak": "L1",
       "proj_ppg": 109.0,
       "sos_avg_opp_ppg": 114.27,
       "sos_rank": 1,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "Like Leased to Jetty, Baylen finds himself moving up the rankings after a Week 1 loss, even if it is only up one spot.",
+      "blurb": "Like Leased to Jetty, Baylen finds himself moving up the rankings after a Week 1 loss, even if it is only up one spot. Station Grits put up the 2nd lowest number of points across the league in Week 1, only ahead of Make Fantasy Great Again, and on one hand I think there’s room for improvement from both Tyler Warren and Luther Burden but on the contrary Jaxon Smith-Njigba and Brock Purdy did exactly what Baylen needed them to do and the team still barely broke 100 points. It also doesn’t help that Baylen’s D/ST and Kicker combined for 6.25 points, which is the 2nd least out of all teams in Week 1, but that should change from week-to-week. [[img:baylen_02]] Going forward, it will be crucial for this team’s success for both Brock Bowers to get healthy and for the RB2 spot to be consistent and productive, especially if that hardest projected strength of schedule turns out to be true. [[img:baylen_02]] Fun little note, Baylen has only lost his Week 1 matchup two times in league history (2021 and 2023), in both those seasons Baylen went on to make the playoffs but not before losing again in Week 2. Will history repeat itself? [[img:baylen_03]]",
       "draft_grade": -25.57,
       "draft_surplus_total": -25.57,
       "draft_picks": [
@@ -2585,24 +2716,40 @@
           "surplus_value": -6.8303
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "baylen_01",
+          "file": "images/rankings/week_02/baylen_01.png",
+          "caption": ""
+        },
+        {
+          "id": "baylen_02",
+          "file": "images/rankings/week_02/baylen_02.png",
+          "caption": ""
+        },
+        {
+          "id": "baylen_03",
+          "file": "images/rankings/week_02/baylen_03.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 106.19
     },
     {
       "manager": "Ryan P McQuaid",
-      "rank": null,
+      "rank": 14,
       "prev_rank": 10,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": -4,
+      "avg_rank": 12.0,
       "ppg_to_date": 80.2,
       "record_to_date": "0-1",
       "last_score": 80.2,
-      "streak": null,
+      "streak": "L1",
       "proj_ppg": 114.8,
       "sos_avg_opp_ppg": 111.65,
       "sos_rank": 8,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "Commish falls 4 spots after a brutal Week 1 where he was the only team to not reach at least 102 points, finishing with over 20 points less than the 2nd lowest scoring team.",
+      "blurb": "Commish falls 4 spots after a brutal Week 1 where he was the only team to not reach at least 102 points, finishing with over 20 points less than the 2nd lowest scoring team. Week 1 was actually McQuaid’s 8th lowest scoring performance in franchise history out of 82 weeks regular season weeks, not the greatest way to open a season but hopefully it’s only up from here. [[img:ryan_01]] In last week’s rankings, I said this team was best classified as “fun”, but I don’t think Ryan had much fun on in Week 1. Christian McCaffrey started slow with Kaelon Black having a bigger role than anticipated, George Kittle didn’t look like his pre-injury self, Emeka Egbuka wasn’t the alpha that we expect him to be in that offense, and Jadarian Price had a typical rookie debut. I don’t expect all of these to flip or get better in the coming weeks, but I do think at least a couple of them will. After one week, Ryan has the “worst” surplus value from the draft out of all 14 managers, but that stat is extremely volatile after just a single week and I don’t think it should really be taken seriously yet, just funny how that shaped up after the pre-season talk with the “Quad Files”. [[img:ryan_02]] The defense should also go positive in Week 2, or maybe he’ll be cursed for 2026 as the spokesperson for anti-defense, but that shouldn’t alter the course of his 2026 campaign. It’s projected to be a close matchup with The Minutemen in Week 2, so let’s see if RPM can get his 1st win of 2026 against a solid opponent. [[img:ryan_03]]",
       "draft_grade": -61.53,
       "draft_surplus_total": -61.53,
       "draft_picks": [
@@ -2799,24 +2946,40 @@
           "surplus_value": 0.0
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "ryan_01",
+          "file": "images/rankings/week_02/ryan_01.png",
+          "caption": ""
+        },
+        {
+          "id": "ryan_02",
+          "file": "images/rankings/week_02/ryan_02.png",
+          "caption": ""
+        },
+        {
+          "id": "ryan_03",
+          "file": "images/rankings/week_02/ryan_03.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 111.91
     },
     {
       "manager": "Anthony Kelly",
-      "rank": null,
+      "rank": 3,
       "prev_rank": 12,
-      "rank_change": null,
-      "avg_rank": null,
+      "rank_change": 9,
+      "avg_rank": 7.5,
       "ppg_to_date": 140.3,
       "record_to_date": "1-0",
       "last_score": 140.3,
-      "streak": null,
+      "streak": "W1",
       "proj_ppg": 108.4,
       "sos_avg_opp_ppg": 112.99,
       "sos_rank": 2,
-      "synopsis": "",
-      "blurb": "",
+      "synopsis": "The biggest mover in rankings this week, Anthony jumps from #12 to #3 with a single performance where he put up the most points in Week 1.",
+      "blurb": "The biggest mover in rankings this week, Anthony jumps from #12 to #3 with a single performance where he put up the most points in Week 1. His league-high 140-point performance was led by a three headed monster of Josh Allen, D’Andre Swift, and Christian Watson, those three combined for 72% of the team’s total points. In fact, those three finished within the top 10 of all players for Week 1. [[img:anthony_01]] The team is the real deal, I mean they led the league in points, putting them this high is only right. However, I don’t see this ranking lasting. Anthony is going to get more out of James Cook, sure, but don’t expect Christian Watson and D’Andre Swift to be top options at their position each week, and with the injury to A.J. Brown and Courtland Sutton looking almost “dried up” I think times could get scary for Rolls With Butter in the coming weeks. The team is projected to score very few points in Week 2, and from that point onward they are projected to have one of the hardest strength of schedules. I just don’t see this high ranking lasting very long but respect was earned after that great Week 1 performance. [[img:anthony_02]] [[img:anthony_03]]",
       "draft_grade": -16.05,
       "draft_surplus_total": -16.05,
       "draft_picks": [
@@ -3013,7 +3176,18 @@
           "surplus_value": null
         }
       ],
-      "screenshots": [],
+      "screenshots": [
+        {
+          "id": "anthony_01",
+          "file": "images/rankings/week_02/anthony_01.png",
+          "caption": ""
+        },
+        {
+          "id": "anthony_02",
+          "file": "images/rankings/week_02/anthony_02.png",
+          "caption": ""
+        }
+      ],
       "proj_ppg_ros": 104.61
     }
   ],
