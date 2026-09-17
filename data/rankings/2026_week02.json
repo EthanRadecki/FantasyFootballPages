@@ -1,0 +1,4212 @@
+{
+  "season": 2026,
+  "week": 2,
+  "hide_archetype_link": true,
+  "matchup_of_the_week": {
+    "team_a": {
+      "manager": "Aidan Quigley",
+      "rank": 8,
+      "record": "0-1",
+      "proj_total": 114.8,
+      "starters": [
+        {
+          "player": "Matthew Stafford",
+          "nfl_team": "LAR",
+          "pos": "QB",
+          "slot": "QB",
+          "opp": "NYG",
+          "proj": 18.3
+        },
+        {
+          "player": "Javonte Williams",
+          "nfl_team": "DAL",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "WSH",
+          "proj": 16.7
+        },
+        {
+          "player": "Bhayshul Tuten",
+          "nfl_team": "JAX",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "@DEN",
+          "proj": 10.0
+        },
+        {
+          "player": "Ja'Marr Chase",
+          "nfl_team": "CIN",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "@HOU",
+          "proj": 19.0
+        },
+        {
+          "player": "Chris Olave",
+          "nfl_team": "NO",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "@BAL",
+          "proj": 15.8
+        },
+        {
+          "player": "Juwan Johnson",
+          "nfl_team": "NO",
+          "pos": "TE",
+          "slot": "TE",
+          "opp": "@BAL",
+          "proj": 8.9
+        },
+        {
+          "player": "Jameson Williams",
+          "nfl_team": "DET",
+          "pos": "WR",
+          "slot": "FLEX",
+          "opp": "@BUF",
+          "proj": 12.3
+        },
+        {
+          "player": "Ravens D/ST",
+          "nfl_team": "BAL",
+          "pos": "D/ST",
+          "slot": "D/ST",
+          "opp": "NO",
+          "proj": 5.1
+        },
+        {
+          "player": "Chase McLaughlin",
+          "nfl_team": "TB",
+          "pos": "K",
+          "slot": "K",
+          "opp": "CLE",
+          "proj": 8.8
+        }
+      ]
+    },
+    "team_b": {
+      "manager": "Andrew Root",
+      "rank": 7,
+      "record": "0-1",
+      "proj_total": 116.9,
+      "starters": [
+        {
+          "player": "Patrick Mahomes",
+          "nfl_team": "KC",
+          "pos": "QB",
+          "slot": "QB",
+          "opp": "IND",
+          "proj": 18.2
+        },
+        {
+          "player": "De'Von Achane",
+          "nfl_team": "MIA",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "@SF",
+          "proj": 17.2
+        },
+        {
+          "player": "Rhamondre Stevenson",
+          "nfl_team": "NE",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "PIT",
+          "proj": 12.9
+        },
+        {
+          "player": "Justin Jefferson",
+          "nfl_team": "MIN",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "@CHI",
+          "proj": 18.4
+        },
+        {
+          "player": "Davante Adams",
+          "nfl_team": "LAR",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "NYG",
+          "proj": 13.7
+        },
+        {
+          "player": "Travis Kelce",
+          "nfl_team": "KC",
+          "pos": "TE",
+          "slot": "TE",
+          "opp": "IND",
+          "proj": 10.6
+        },
+        {
+          "player": "Tetairoa McMillan",
+          "nfl_team": "CAR",
+          "pos": "WR",
+          "slot": "FLEX",
+          "opp": "@ATL",
+          "proj": 13.7
+        },
+        {
+          "player": "Jaguars D/ST",
+          "nfl_team": "JAX",
+          "pos": "D/ST",
+          "slot": "D/ST",
+          "opp": "@DEN",
+          "proj": 3.2
+        },
+        {
+          "player": "Tyler Loop",
+          "nfl_team": "BAL",
+          "pos": "K",
+          "slot": "K",
+          "opp": "NO",
+          "proj": 9.1
+        }
+      ]
+    },
+    "blurb": "Last week’s Matchup of the Week was a little anti-climatic thanks to <mark class=\"hl-player\">Ja’Marr Chase</mark> being nonexistent but I’ve decided to give <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> a <strong class=\"hl-stat\">2nd</strong> chance to get a prime time win against what should be an easier opponent. However, <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> is favored in this meeting and has the upper hand all-time with a record of <strong class=\"hl-stat\">5</strong>-<strong class=\"hl-stat\">1</strong> against <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark>. These rosters are eerily similar but <strong class=\"hl-key\">the key to this matchup in my eyes is the <mark class=\"hl-pos-WR\">WR</mark> production, specifically who will get more out of their alpha <mark class=\"hl-pos-WR\">WR</mark></strong>? Arguably the two best wide receivers in the game go toe-to-toe in Week <strong class=\"hl-stat\">2</strong>, it should be a fun one. Also, this is the only matchup this week between two teams without a win so there’s heightened stakes on the line."
+  },
+  "teams": [
+    {
+      "manager": "Ethan Radecki",
+      "rank": 4,
+      "prev_rank": 5,
+      "rank_change": 1,
+      "avg_rank": 4.5,
+      "ppg_to_date": 130.6,
+      "record_to_date": "1-0",
+      "last_score": 130.6,
+      "streak": "W1",
+      "proj_ppg": 108.9,
+      "sos_avg_opp_ppg": 111.37,
+      "sos_rank": 10,
+      "synopsis": "The Zay Flowers injury could suck but we shall see.",
+      "blurb": "The <mark class=\"hl-player\">Zay Flowers</mark> injury could suck but we shall see. Four key players earned <mark class=\"hl-manager\" style=\"color:#985e0f;\">Ethan</mark> his first win of the season in Week <strong class=\"hl-stat\">1</strong>, those being <mark class=\"hl-player\">Ashton Jeanty</mark>, <mark class=\"hl-player\">Jaxson Dart</mark>, <mark class=\"hl-player\">Zay Flowers</mark>, and <mark class=\"hl-player\">Parker Washington</mark>, but it will require more from the rest of the roster and even the D/ST and Kicker to continue to win. The injury to <mark class=\"hl-player\">De’Zhaun Stribling</mark>, which placed him on injury reserve, leaves this team without a single bench <mark class=\"hl-pos-WR\">WR</mark> to replace <mark class=\"hl-player\">Zay Flowers</mark> in the case that he misses time with the hamstring injury, so finding <mark class=\"hl-pos-WR\">WR</mark> depth will be the key for <mark class=\"hl-manager\" style=\"color:#985e0f;\">Ethan</mark> in coming days/weeks. Even against an “easier” opponent in Week <strong class=\"hl-stat\">2</strong>, <mark class=\"hl-manager\" style=\"color:#985e0f;\">Ethan</mark> has had trouble with this matchup in years past, in fact, <strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> is <mark class=\"hl-manager\" style=\"color:#985e0f;\">Ethan</mark>’s hardest matchup in league history as he is <strong class=\"hl-stat\">2</strong>-<strong class=\"hl-stat\">6</strong> all-time against him</strong>. [[img:ethan_01]] All eyes will be on <mark class=\"hl-player\">Jaylen Waddle</mark> and <mark class=\"hl-player\">Omarion Hampton</mark> this week as they were both top four picks for the team this season and disappointed greatly in Week <strong class=\"hl-stat\">1</strong>. <mark class=\"hl-player\">Zay Flowers</mark> injury news and <mark class=\"hl-pos-WR\">WR</mark> depth, those are things to keep an eye on for <mark class=\"hl-manager\" style=\"color:#985e0f;\">Ethan</mark> as we enter Week <strong class=\"hl-stat\">2</strong>.",
+      "draft_grade": -22.77,
+      "draft_surplus_total": -22.77,
+      "draft_picks": [
+        {
+          "player": "Omarion Hampton",
+          "nfl_team": "LAC",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 14,
+          "overall": 14,
+          "espn_adp": 14.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": -12.2675
+        },
+        {
+          "player": "Ashton Jeanty",
+          "nfl_team": "LV",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 1,
+          "overall": 15,
+          "espn_adp": 18.0,
+          "adp_deviation": 3.0,
+          "grade": null,
+          "surplus_value": 11.8625
+        },
+        {
+          "player": "Zay Flowers",
+          "nfl_team": "BAL",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 14,
+          "overall": 42,
+          "espn_adp": 37.0,
+          "adp_deviation": -5.0,
+          "grade": null,
+          "surplus_value": 9.4351
+        },
+        {
+          "player": "Jaylen Waddle",
+          "nfl_team": "DEN",
+          "pos": "WR",
+          "round": 4,
+          "pick_in_round": 1,
+          "overall": 43,
+          "espn_adp": 45.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": -16.1692
+        },
+        {
+          "player": "Parker Washington",
+          "nfl_team": "JAX",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 14,
+          "overall": 70,
+          "espn_adp": 76.0,
+          "adp_deviation": 6.0,
+          "grade": null,
+          "surplus_value": 3.529
+        },
+        {
+          "player": "Jaxson Dart",
+          "nfl_team": "NYG",
+          "pos": "QB",
+          "round": 6,
+          "pick_in_round": 1,
+          "overall": 71,
+          "espn_adp": 85.0,
+          "adp_deviation": 14.0,
+          "grade": null,
+          "surplus_value": 5.5516
+        },
+        {
+          "player": "Tucker Kraft",
+          "nfl_team": "GB",
+          "pos": "TE",
+          "round": 7,
+          "pick_in_round": 8,
+          "overall": 92,
+          "espn_adp": 104.0,
+          "adp_deviation": 12.0,
+          "grade": null,
+          "surplus_value": -3.2081
+        },
+        {
+          "player": "De'Zhaun Stribling",
+          "nfl_team": "SF",
+          "pos": "WR",
+          "round": 8,
+          "pick_in_round": 7,
+          "overall": 105,
+          "espn_adp": 123.0,
+          "adp_deviation": 18.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Bo Nix",
+          "nfl_team": "DEN",
+          "pos": "QB",
+          "round": 9,
+          "pick_in_round": 14,
+          "overall": 126,
+          "espn_adp": 113.0,
+          "adp_deviation": -13.0,
+          "grade": null,
+          "surplus_value": -11.2402
+        },
+        {
+          "player": "Chris Rodriguez Jr.",
+          "nfl_team": "JAX",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 1,
+          "overall": 127,
+          "espn_adp": 144.0,
+          "adp_deviation": 17.0,
+          "grade": null,
+          "surplus_value": -9.4228
+        },
+        {
+          "player": "Tank Bigsby",
+          "nfl_team": "PHI",
+          "pos": "RB",
+          "round": 11,
+          "pick_in_round": 14,
+          "overall": 154,
+          "espn_adp": 179.0,
+          "adp_deviation": 25.0,
+          "grade": null,
+          "surplus_value": -11.8214
+        },
+        {
+          "player": "Jonah Coleman",
+          "nfl_team": "DEN",
+          "pos": "RB",
+          "round": 12,
+          "pick_in_round": 1,
+          "overall": 155,
+          "espn_adp": 173.0,
+          "adp_deviation": 18.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Brenton Strange",
+          "nfl_team": "JAX",
+          "pos": "TE",
+          "round": 13,
+          "pick_in_round": 14,
+          "overall": 182,
+          "espn_adp": 160.0,
+          "adp_deviation": -22.0,
+          "grade": null,
+          "surplus_value": 2.0842
+        },
+        {
+          "player": "Chargers D/ST",
+          "nfl_team": "LAC",
+          "pos": "D/ST",
+          "round": 14,
+          "pick_in_round": 1,
+          "overall": 183,
+          "espn_adp": 190.0,
+          "adp_deviation": 7.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Will Reichard",
+          "nfl_team": "MIN",
+          "pos": "K",
+          "round": 15,
+          "pick_in_round": 14,
+          "overall": 210,
+          "espn_adp": 197.0,
+          "adp_deviation": -13.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Samaje Perine",
+          "nfl_team": "CIN",
+          "pos": "RB",
+          "round": 16,
+          "pick_in_round": 1,
+          "overall": 211,
+          "espn_adp": 223.0,
+          "adp_deviation": 12.0,
+          "grade": null,
+          "surplus_value": -2.6543
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "ethan_01",
+          "file": "images/rankings/week_02/ethan_01.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 111.42
+    },
+    {
+      "manager": "Charlie Gorman",
+      "rank": 1,
+      "prev_rank": 1,
+      "rank_change": 0,
+      "avg_rank": 1.0,
+      "ppg_to_date": 135.1,
+      "record_to_date": "1-0",
+      "last_score": 135.1,
+      "streak": "W1",
+      "proj_ppg": 123.9,
+      "sos_avg_opp_ppg": 109.89,
+      "sos_rank": 13,
+      "synopsis": "Staying at the top spot for the 2nd week in a row, this team should unanimously be everyone’s #1.",
+      "blurb": "Staying at the top spot for the <strong class=\"hl-stat\">2nd</strong> week in a row, this team should unanimously be everyone’s #<strong class=\"hl-stat\">1</strong>. <mark class=\"hl-manager\" style=\"color:#28843a;\">Charlie</mark> put up the <strong class=\"hl-stat\">2nd</strong> most points in Week <strong class=\"hl-stat\">1</strong>, trailing only <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark>, but unlike the latter, <mark class=\"hl-manager\" style=\"color:#28843a;\">Charlie</mark>’s team is healthy and there appears to be a high-level of production that is achievable at least in my eyes. [[img:charlie_01]] <mark class=\"hl-player\">Jahmyr Gibbs</mark> looks like he was well worth the <strong class=\"hl-stat\">1.01</strong> and <mark class=\"hl-player\">David Montgomery</mark> looks to be well positioned for a high-end <mark class=\"hl-pos-RB\">RB</mark><strong class=\"hl-stat\">2</strong> season in Houston. <mark class=\"hl-player\">Trevor Lawrence</mark> and <mark class=\"hl-player\">Dalton Kincaid</mark> look like top seven options at their respective positions and even though the <mark class=\"hl-pos-WR\">WR</mark> duo of <mark class=\"hl-player\">Drake London</mark> and <mark class=\"hl-player\">George Pickens</mark> were underwhelming in Week <strong class=\"hl-stat\">1</strong>, I still think they will be low-end <mark class=\"hl-pos-WR\">WR</mark><strong class=\"hl-stat\">1</strong>s this season. The only issues I can see <mark class=\"hl-manager\" style=\"color:#28843a;\">Charlie</mark> having are with his FLEX but here’s the thing, he has plenty of options depending on the matchup. Whether it be <mark class=\"hl-player\">Terry McLaurin</mark>, <mark class=\"hl-player\">Chuba Hubbard</mark>, <mark class=\"hl-player\">Rico Dowdle</mark>, or one of the other wild cards on his bench, the team has options and depth and maybe that depth gets utilized for a more consistent FLEX option down the line. <mark class=\"hl-manager\" style=\"color:#28843a;\">Charlie</mark> is projected to score the most points in Week <strong class=\"hl-stat\">2</strong> by a wide margin, and combined with the <strong class=\"hl-stat\">2nd</strong> easiest projected remaining strength of schedule, <strong class=\"hl-key\">I think we see this team reach levels that only a handful of Preach Fantasy teams have reach before</strong>. [[img:charlie_02]] [[img:charlie_03]]",
+      "draft_grade": -8.14,
+      "draft_surplus_total": -8.14,
+      "draft_picks": [
+        {
+          "player": "Jahmyr Gibbs",
+          "nfl_team": "DET",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 1,
+          "overall": 1,
+          "espn_adp": 1.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": 11.1658
+        },
+        {
+          "player": "Drake London",
+          "nfl_team": "ATL",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 14,
+          "overall": 28,
+          "espn_adp": 17.0,
+          "adp_deviation": -11.0,
+          "grade": null,
+          "surplus_value": -13.114
+        },
+        {
+          "player": "George Pickens",
+          "nfl_team": "DAL",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 1,
+          "overall": 29,
+          "espn_adp": 28.0,
+          "adp_deviation": -1.0,
+          "grade": null,
+          "surplus_value": -12.7939
+        },
+        {
+          "player": "David Montgomery",
+          "nfl_team": "HOU",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 14,
+          "overall": 56,
+          "espn_adp": 53.0,
+          "adp_deviation": -3.0,
+          "grade": null,
+          "surplus_value": 12.9103
+        },
+        {
+          "player": "Terry McLaurin",
+          "nfl_team": "WSH",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 1,
+          "overall": 57,
+          "espn_adp": 51.0,
+          "adp_deviation": -6.0,
+          "grade": null,
+          "surplus_value": -13.0524
+        },
+        {
+          "player": "Rico Dowdle",
+          "nfl_team": "PIT",
+          "pos": "RB",
+          "round": 6,
+          "pick_in_round": 14,
+          "overall": 84,
+          "espn_adp": 82.0,
+          "adp_deviation": -2.0,
+          "grade": null,
+          "surplus_value": -10.0539
+        },
+        {
+          "player": "Trevor Lawrence",
+          "nfl_team": "JAX",
+          "pos": "QB",
+          "round": 7,
+          "pick_in_round": 1,
+          "overall": 85,
+          "espn_adp": 89.0,
+          "adp_deviation": 4.0,
+          "grade": null,
+          "surplus_value": 7.3914
+        },
+        {
+          "player": "Chuba Hubbard",
+          "nfl_team": "CAR",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 14,
+          "overall": 112,
+          "espn_adp": 83.0,
+          "adp_deviation": -29.0,
+          "grade": null,
+          "surplus_value": 9.8538
+        },
+        {
+          "player": "Dalton Kincaid",
+          "nfl_team": "BUF",
+          "pos": "TE",
+          "round": 9,
+          "pick_in_round": 1,
+          "overall": 113,
+          "espn_adp": 127.0,
+          "adp_deviation": 14.0,
+          "grade": null,
+          "surplus_value": 6.8199
+        },
+        {
+          "player": "Isiah Pacheco",
+          "nfl_team": "DET",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 14,
+          "overall": 140,
+          "espn_adp": 135.0,
+          "adp_deviation": -5.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Romeo Doubs",
+          "nfl_team": "NE",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 1,
+          "overall": 141,
+          "espn_adp": 125.0,
+          "adp_deviation": -16.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Eddy Pineiro",
+          "nfl_team": "SF",
+          "pos": "K",
+          "round": 12,
+          "pick_in_round": 14,
+          "overall": 168,
+          "espn_adp": 152.0,
+          "adp_deviation": -16.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Eagles D/ST",
+          "nfl_team": "PHI",
+          "pos": "D/ST",
+          "round": 13,
+          "pick_in_round": 1,
+          "overall": 169,
+          "espn_adp": 185.0,
+          "adp_deviation": 16.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Brian Robinson Jr.",
+          "nfl_team": "ATL",
+          "pos": "RB",
+          "round": 14,
+          "pick_in_round": 14,
+          "overall": 196,
+          "espn_adp": 164.0,
+          "adp_deviation": -32.0,
+          "grade": null,
+          "surplus_value": -8.9853
+        },
+        {
+          "player": "Dontayvion Wicks",
+          "nfl_team": "PHI",
+          "pos": "WR",
+          "round": 15,
+          "pick_in_round": 1,
+          "overall": 197,
+          "espn_adp": 177.0,
+          "adp_deviation": -20.0,
+          "grade": null,
+          "surplus_value": 4.0979
+        },
+        {
+          "player": "Jauan Jennings",
+          "nfl_team": "MIN",
+          "pos": "WR",
+          "round": 16,
+          "pick_in_round": 14,
+          "overall": 224,
+          "espn_adp": 202.0,
+          "adp_deviation": -22.0,
+          "grade": null,
+          "surplus_value": 0.0
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "charlie_01",
+          "file": "images/rankings/week_02/charlie_01.png",
+          "caption": ""
+        },
+        {
+          "id": "charlie_02",
+          "file": "images/rankings/week_02/charlie_02.png",
+          "caption": ""
+        },
+        {
+          "id": "charlie_03",
+          "file": "images/rankings/week_02/charlie_03.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 121.32
+    },
+    {
+      "manager": "Aidan Quigley",
+      "rank": 8,
+      "prev_rank": 4,
+      "rank_change": -4,
+      "avg_rank": 6.0,
+      "ppg_to_date": 109.4,
+      "record_to_date": "0-1",
+      "last_score": 109.4,
+      "streak": "L1",
+      "proj_ppg": 114.8,
+      "sos_avg_opp_ppg": 112.77,
+      "sos_rank": 4,
+      "synopsis": "Maybe my biggest surprise from Week 1.",
+      "blurb": "Maybe my biggest surprise from Week <strong class=\"hl-stat\">1</strong>, after I ranked <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> as a top team in the league prior to the first week the team didn’t show up outside of a few players leading to the team putting up the <strong class=\"hl-stat\">4th</strong> least number of points in Week <strong class=\"hl-stat\">1</strong>. Still, even with the loss and the disappointing performance, I have the team ranked above teams with wins and those that scored more, you may be asking why? Well, first you have to remember the rankings are subjective while slightly being guided by stats, but when you breakdown what went wrong with this team in Week <strong class=\"hl-stat\">1</strong> you may realize why I still have the team ranked as a playoff team. I believe <strong class=\"hl-key\">the <mark class=\"hl-pos-QB\">QB</mark> play was very unlucky for <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> in Week <strong class=\"hl-stat\">1</strong>, with <strong class=\"hl-stat\">4.1</strong> points being the lowest scored by any of the <strong class=\"hl-stat\">14</strong> started quarterbacks by over <strong class=\"hl-stat\">5</strong> points</strong>, there’s no shot that doesn’t regress back to the upper teens. Also, even though <mark class=\"hl-player\">Jameson Williams</mark> had a poor performance from a points standpoint, he still had <strong class=\"hl-stat\">9</strong> targets, so the volume will be there for some great weeks and even if it’s not then <mark class=\"hl-player\">Mike Evans</mark> looks like he could be a steal of the draft if he stays healthy. And let’s be honest, <mark class=\"hl-player\">Ja’Marr Chase</mark> does this every year, he’ll be back to his usual self in no time. The Week <strong class=\"hl-stat\">2</strong> matchup may be a tough one given <em class=\"hl-team\">N.Y. Routensss</em> being favored and kind of “owning” <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> historically. [[img:aidan_01]] But in my opinion I think this team’s outlook hasn’t changed much since the Week <strong class=\"hl-stat\">1</strong> rankings, they just need to get a win. This ranking is most likely the outlier for the week since it’s more subjective and may upset people ranked below (<mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark>) but who cares. Also a fun note depending on who’s reading this, <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> has only ever lost his Week <strong class=\"hl-stat\">1</strong> matchup once since <strong class=\"hl-stat\">2021</strong>, that being his <strong class=\"hl-stat\">2022</strong> season where he went on to start the season with <strong class=\"hl-stat\">4</strong> straight losses. [[img:aidan_02]]",
+      "draft_grade": -34.72,
+      "draft_surplus_total": -34.72,
+      "draft_picks": [
+        {
+          "player": "Ja'Marr Chase",
+          "nfl_team": "CIN",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 3,
+          "overall": 3,
+          "espn_adp": 3.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": -19.2002
+        },
+        {
+          "player": "Chris Olave",
+          "nfl_team": "NO",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 12,
+          "overall": 26,
+          "espn_adp": 24.0,
+          "adp_deviation": -2.0,
+          "grade": null,
+          "surplus_value": 10.1174
+        },
+        {
+          "player": "Javonte Williams",
+          "nfl_team": "DAL",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 3,
+          "overall": 31,
+          "espn_adp": 32.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": 6.5036
+        },
+        {
+          "player": "Bhayshul Tuten",
+          "nfl_team": "JAX",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 12,
+          "overall": 54,
+          "espn_adp": 49.0,
+          "adp_deviation": -5.0,
+          "grade": null,
+          "surplus_value": -6.0763
+        },
+        {
+          "player": "Jameson Williams",
+          "nfl_team": "DET",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 3,
+          "overall": 59,
+          "espn_adp": 52.0,
+          "adp_deviation": -7.0,
+          "grade": null,
+          "surplus_value": -8.3488
+        },
+        {
+          "player": "Mike Evans",
+          "nfl_team": "SF",
+          "pos": "WR",
+          "round": 6,
+          "pick_in_round": 12,
+          "overall": 82,
+          "espn_adp": 65.0,
+          "adp_deviation": -17.0,
+          "grade": null,
+          "surplus_value": 3.0265
+        },
+        {
+          "player": "Jonathon Brooks",
+          "nfl_team": "CAR",
+          "pos": "RB",
+          "round": 7,
+          "pick_in_round": 3,
+          "overall": 87,
+          "espn_adp": 87.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": -7.4737
+        },
+        {
+          "player": "Juwan Johnson",
+          "nfl_team": "NO",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 12,
+          "overall": 110,
+          "espn_adp": 149.0,
+          "adp_deviation": 39.0,
+          "grade": null,
+          "surplus_value": 4.3152
+        },
+        {
+          "player": "Matthew Stafford",
+          "nfl_team": "LAR",
+          "pos": "QB",
+          "round": 9,
+          "pick_in_round": 3,
+          "overall": 115,
+          "espn_adp": 115.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": -15.5309
+        },
+        {
+          "player": "Keaton Mitchell",
+          "nfl_team": "LAC",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 12,
+          "overall": 138,
+          "espn_adp": 159.0,
+          "adp_deviation": 21.0,
+          "grade": null,
+          "surplus_value": -11.6392
+        },
+        {
+          "player": "Adonai Mitchell",
+          "nfl_team": "NYJ",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 3,
+          "overall": 143,
+          "espn_adp": 167.0,
+          "adp_deviation": 24.0,
+          "grade": null,
+          "surplus_value": -2.7032
+        },
+        {
+          "player": "Ravens D/ST",
+          "nfl_team": "BAL",
+          "pos": "D/ST",
+          "round": 12,
+          "pick_in_round": 12,
+          "overall": 166,
+          "espn_adp": 184.0,
+          "adp_deviation": 18.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Denzel Boston",
+          "nfl_team": "CLE",
+          "pos": "WR",
+          "round": 13,
+          "pick_in_round": 3,
+          "overall": 171,
+          "espn_adp": 165.0,
+          "adp_deviation": -6.0,
+          "grade": null,
+          "surplus_value": 1.1936
+        },
+        {
+          "player": "Jordan Love",
+          "nfl_team": "GB",
+          "pos": "QB",
+          "round": 14,
+          "pick_in_round": 12,
+          "overall": 194,
+          "espn_adp": 156.0,
+          "adp_deviation": -38.0,
+          "grade": null,
+          "surplus_value": 3.3915
+        },
+        {
+          "player": "Dalton Schultz",
+          "nfl_team": "HOU",
+          "pos": "TE",
+          "round": 15,
+          "pick_in_round": 3,
+          "overall": 199,
+          "espn_adp": 207.0,
+          "adp_deviation": 8.0,
+          "grade": null,
+          "surplus_value": -1.3262
+        },
+        {
+          "player": "Chase McLaughlin",
+          "nfl_team": "TB",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 12,
+          "overall": 222,
+          "espn_adp": 238.0,
+          "adp_deviation": 16.0,
+          "grade": null,
+          "surplus_value": null
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "aidan_01",
+          "file": "images/rankings/week_02/aidan_01.png",
+          "caption": ""
+        },
+        {
+          "id": "aidan_02",
+          "file": "images/rankings/week_02/aidan_02.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 111.25
+    },
+    {
+      "manager": "Carmine Pittelli Jr.",
+      "rank": 2,
+      "prev_rank": 3,
+      "rank_change": 1,
+      "avg_rank": 2.5,
+      "ppg_to_date": 124.3,
+      "record_to_date": "1-0",
+      "last_score": 124.3,
+      "streak": "W1",
+      "proj_ppg": 119.4,
+      "sos_avg_opp_ppg": 112.52,
+      "sos_rank": 6,
+      "synopsis": "Top three for the 2nd week in a row.",
+      "blurb": "Top three for the <strong class=\"hl-stat\">2nd</strong> week in a row. Despite scoring the <strong class=\"hl-stat\">5th</strong> most points in Week <strong class=\"hl-stat\">1</strong>, I’m moving <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark> up a spot in the rankings to #<strong class=\"hl-stat\">2</strong>. The reasoning? I simply look at the roster, specifically the starting lineup, and see results that are replicable and think <strong class=\"hl-key\">this squad could have no trouble averaging <strong class=\"hl-stat\">124</strong> points a week, a feat that has only been done <strong class=\"hl-stat\">9</strong> times across the <strong class=\"hl-stat\">6</strong> seasons</strong>. Is <mark class=\"hl-player\">Bijan Robinson</mark> going to give you <strong class=\"hl-stat\">31</strong> each week while <mark class=\"hl-player\">Breece Hall</mark> gives you <strong class=\"hl-stat\">20</strong>? Definitely not, but a combined <strong class=\"hl-stat\">40</strong> seems possible. Are <mark class=\"hl-player\">Nico Collins</mark> and <mark class=\"hl-player\">DJ Moore</mark> going to produce <strong class=\"hl-stat\">21</strong> points each? Probably not, but <strong class=\"hl-stat\">35</strong> combined each week is plausible if the usage we saw in Week <strong class=\"hl-stat\">1</strong> continues. The rest of the lineup was disappointing or just not worthy of mentioning, but if there’s one thing I know it’s that the D/ST and Kicker will combine for more than <strong class=\"hl-stat\">3.5</strong> points most, if not all, weeks. [[img:carmine_01]] <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark> faces an “easier” opponent than he had in Week <strong class=\"hl-stat\">1</strong>, projected to be one of the top scorers in Week <strong class=\"hl-stat\">2</strong>, but even across history <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark> has had an easy time getting a win against <mark class=\"hl-manager\" style=\"color:#131313;\">Quin Gegwich</mark>. This team will most likely be very good in <strong class=\"hl-stat\">2026</strong>, as <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark>’s teams typically are, but I won’t rank them any higher until we see it. [[img:carmine_02]] [[img:carmine_03]]",
+      "draft_grade": -15.52,
+      "draft_surplus_total": -15.52,
+      "draft_picks": [
+        {
+          "player": "Bijan Robinson",
+          "nfl_team": "ATL",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 2,
+          "overall": 2,
+          "espn_adp": 2.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": 8.9674
+        },
+        {
+          "player": "Breece Hall",
+          "nfl_team": "NYJ",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 13,
+          "overall": 27,
+          "espn_adp": 30.0,
+          "adp_deviation": 3.0,
+          "grade": null,
+          "surplus_value": 1.4135
+        },
+        {
+          "player": "Nico Collins",
+          "nfl_team": "HOU",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 2,
+          "overall": 30,
+          "espn_adp": 23.0,
+          "adp_deviation": -7.0,
+          "grade": null,
+          "surplus_value": 3.683
+        },
+        {
+          "player": "Drake Maye",
+          "nfl_team": "NE",
+          "pos": "QB",
+          "round": 4,
+          "pick_in_round": 13,
+          "overall": 55,
+          "espn_adp": 58.0,
+          "adp_deviation": 3.0,
+          "grade": null,
+          "surplus_value": -11.6103
+        },
+        {
+          "player": "DJ Moore",
+          "nfl_team": "BUF",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 2,
+          "overall": 58,
+          "espn_adp": 56.0,
+          "adp_deviation": -2.0,
+          "grade": null,
+          "surplus_value": 5.0927
+        },
+        {
+          "player": "Wan'Dale Robinson",
+          "nfl_team": "TEN",
+          "pos": "WR",
+          "round": 6,
+          "pick_in_round": 13,
+          "overall": 83,
+          "espn_adp": 88.0,
+          "adp_deviation": 5.0,
+          "grade": null,
+          "surplus_value": -4.8478
+        },
+        {
+          "player": "Rachaad White",
+          "nfl_team": "WSH",
+          "pos": "RB",
+          "round": 7,
+          "pick_in_round": 2,
+          "overall": 86,
+          "espn_adp": 92.0,
+          "adp_deviation": 6.0,
+          "grade": null,
+          "surplus_value": -9.5196
+        },
+        {
+          "player": "Mark Andrews",
+          "nfl_team": "BAL",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 13,
+          "overall": 111,
+          "espn_adp": 124.0,
+          "adp_deviation": 13.0,
+          "grade": null,
+          "surplus_value": -1.8794
+        },
+        {
+          "player": "Jordan Addison",
+          "nfl_team": "MIN",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 2,
+          "overall": 114,
+          "espn_adp": 98.0,
+          "adp_deviation": -16.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Cameron Dicker",
+          "nfl_team": "LAC",
+          "pos": "K",
+          "round": 10,
+          "pick_in_round": 13,
+          "overall": 139,
+          "espn_adp": 142.0,
+          "adp_deviation": 3.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Broncos D/ST",
+          "nfl_team": "DEN",
+          "pos": "D/ST",
+          "round": 11,
+          "pick_in_round": 2,
+          "overall": 142,
+          "espn_adp": 143.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Travis Hunter",
+          "nfl_team": "JAX",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 13,
+          "overall": 167,
+          "espn_adp": 91.0,
+          "adp_deviation": -76.0,
+          "grade": null,
+          "surplus_value": -11.1805
+        },
+        {
+          "player": "Jared Goff",
+          "nfl_team": "DET",
+          "pos": "QB",
+          "round": 13,
+          "pick_in_round": 2,
+          "overall": 170,
+          "espn_adp": 129.0,
+          "adp_deviation": -41.0,
+          "grade": null,
+          "surplus_value": -1.0965
+        },
+        {
+          "player": "Jaylin Noel",
+          "nfl_team": "HOU",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 13,
+          "overall": 195,
+          "espn_adp": 161.0,
+          "adp_deviation": -34.0,
+          "grade": null,
+          "surplus_value": -4.036
+        },
+        {
+          "player": "Cairo Santos",
+          "nfl_team": "CHI",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 13,
+          "overall": 223,
+          "espn_adp": 196.0,
+          "adp_deviation": -27.0,
+          "grade": null,
+          "surplus_value": null
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "carmine_01",
+          "file": "images/rankings/week_02/carmine_01.png",
+          "caption": ""
+        },
+        {
+          "id": "carmine_02",
+          "file": "images/rankings/week_02/carmine_02.png",
+          "caption": ""
+        },
+        {
+          "id": "carmine_03",
+          "file": "images/rankings/week_02/carmine_03.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 116.99
+    },
+    {
+      "manager": "Ben Castaldo",
+      "rank": 5,
+      "prev_rank": 8,
+      "rank_change": 3,
+      "avg_rank": 6.5,
+      "ppg_to_date": 132.7,
+      "record_to_date": "1-0",
+      "last_score": 132.7,
+      "streak": "W1",
+      "proj_ppg": 117.7,
+      "sos_avg_opp_ppg": 111.47,
+      "sos_rank": 9,
+      "synopsis": "I think we could be in store for another great season from Ben.",
+      "blurb": "I think we could be in store for another great season from <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark>. A monster win in Week <strong class=\"hl-stat\">1</strong> against <em class=\"hl-team\">The Gegwich Effect</em> has pushed <em class=\"hl-team\">A$AP Monke</em> into the top <strong class=\"hl-stat\">5</strong> for Week <strong class=\"hl-stat\">2</strong>. Led by <mark class=\"hl-player\">Kenneth Walker III</mark> and <mark class=\"hl-player\">Lamar Jackson</mark>, this team looks like it may steadily be a top team for the <strong class=\"hl-stat\">2026</strong> season. Sure, most of the players in the starting lineup had non-exciting performances, none less exciting than <mark class=\"hl-player\">Kyle Pitts</mark>’ donut, but as of Week <strong class=\"hl-stat\">2</strong> <strong class=\"hl-key\">this team appears to have depth at both <mark class=\"hl-pos-WR\">WR</mark> and <mark class=\"hl-pos-RB\">RB</mark> that I don’t think they have any glaring holes</strong>. Now, it’s only Week <strong class=\"hl-stat\">2</strong> and <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> has a super tough matchup against <em class=\"hl-team\">No Fox Gibbs’en</em>, but I see promise and a team that won’t give up many easy wins this season. [[img:ben_01]] My concerns from Week <strong class=\"hl-stat\">1</strong> are still there, those being focused on the <mark class=\"hl-pos-WR\">WR</mark> room and the consistency of their play, so Week <strong class=\"hl-stat\">2</strong> will be a big test and indicator to me whether this team has the tools and players to compete for the franchise’s <strong class=\"hl-stat\">2nd</strong> championship.",
+      "draft_grade": 3.75,
+      "draft_surplus_total": 3.75,
+      "draft_picks": [
+        {
+          "player": "CeeDee Lamb",
+          "nfl_team": "DAL",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 11,
+          "overall": 11,
+          "espn_adp": 11.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": -5.1502
+        },
+        {
+          "player": "Kenneth Walker III",
+          "nfl_team": "KC",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 4,
+          "overall": 18,
+          "espn_adp": 25.0,
+          "adp_deviation": 7.0,
+          "grade": null,
+          "surplus_value": 14.2778
+        },
+        {
+          "player": "Travis Etienne",
+          "nfl_team": "NO",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 11,
+          "overall": 39,
+          "espn_adp": 39.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Lamar Jackson",
+          "nfl_team": "BAL",
+          "pos": "QB",
+          "round": 4,
+          "pick_in_round": 4,
+          "overall": 46,
+          "espn_adp": 48.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": 1.939
+        },
+        {
+          "player": "DK Metcalf",
+          "nfl_team": "PIT",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 11,
+          "overall": 67,
+          "espn_adp": 68.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": -8.4351
+        },
+        {
+          "player": "Kyle Pitts",
+          "nfl_team": "ATL",
+          "pos": "TE",
+          "round": 6,
+          "pick_in_round": 4,
+          "overall": 74,
+          "espn_adp": 72.0,
+          "adp_deviation": -2.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Jakobi Meyers",
+          "nfl_team": "JAX",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 11,
+          "overall": 95,
+          "espn_adp": 95.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": -2.6105
+        },
+        {
+          "player": "Kyle Monangai",
+          "nfl_team": "CHI",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 4,
+          "overall": 102,
+          "espn_adp": 100.0,
+          "adp_deviation": -2.0,
+          "grade": null,
+          "surplus_value": 6.0068
+        },
+        {
+          "player": "Khalil Shakir",
+          "nfl_team": "BUF",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 11,
+          "overall": 123,
+          "espn_adp": 120.0,
+          "adp_deviation": -3.0,
+          "grade": null,
+          "surplus_value": -3.6634
+        },
+        {
+          "player": "Deebo Samuel Sr.",
+          "nfl_team": "SF",
+          "pos": "WR",
+          "round": 10,
+          "pick_in_round": 4,
+          "overall": 130,
+          "espn_adp": 132.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": 6.536
+        },
+        {
+          "player": "Ka'imi Fairbairn",
+          "nfl_team": "HOU",
+          "pos": "K",
+          "round": 11,
+          "pick_in_round": 11,
+          "overall": 151,
+          "espn_adp": 148.0,
+          "adp_deviation": -3.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Steelers D/ST",
+          "nfl_team": "PIT",
+          "pos": "D/ST",
+          "round": 12,
+          "pick_in_round": 4,
+          "overall": 158,
+          "espn_adp": 181.0,
+          "adp_deviation": 23.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Daniel Jones",
+          "nfl_team": "IND",
+          "pos": "QB",
+          "round": 13,
+          "pick_in_round": 11,
+          "overall": 179,
+          "espn_adp": 140.0,
+          "adp_deviation": -39.0,
+          "grade": null,
+          "surplus_value": -7.0063
+        },
+        {
+          "player": "Rashod Bateman",
+          "nfl_team": "BAL",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 4,
+          "overall": 186,
+          "espn_adp": 176.0,
+          "adp_deviation": -10.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Jake Bates",
+          "nfl_team": "DET",
+          "pos": "K",
+          "round": 15,
+          "pick_in_round": 11,
+          "overall": 207,
+          "espn_adp": 194.0,
+          "adp_deviation": -13.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Germie Bernard",
+          "nfl_team": "PIT",
+          "pos": "WR",
+          "round": 16,
+          "pick_in_round": 4,
+          "overall": 214,
+          "espn_adp": 203.0,
+          "adp_deviation": -11.0,
+          "grade": null,
+          "surplus_value": 0.0
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "ben_01",
+          "file": "images/rankings/week_02/ben_01.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 113.93
+    },
+    {
+      "manager": "Deniz Bileydi",
+      "rank": 13,
+      "prev_rank": 14,
+      "rank_change": 1,
+      "avg_rank": 13.5,
+      "ppg_to_date": 114.8,
+      "record_to_date": "0-1",
+      "last_score": 114.8,
+      "streak": "L1",
+      "proj_ppg": 113.8,
+      "sos_avg_opp_ppg": 110.31,
+      "sos_rank": 12,
+      "synopsis": "Moving up the rankings, even if it is only one spot, Deniz fell to 0-1 after putting up middle of the pack numbers in Week 1.",
+      "blurb": "Moving up the rankings, even if it is only one spot, <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> fell to <strong class=\"hl-stat\">0</strong>-<strong class=\"hl-stat\">1</strong> after putting up middle of the pack numbers in Week <strong class=\"hl-stat\">1</strong>. Most of those points came from his core of <mark class=\"hl-player\">Amon-Ra St.Brown</mark>, <mark class=\"hl-player\">Trey McBride</mark>, and <mark class=\"hl-player\">Bucky Irving</mark>, while the rest of his lineup and even his bench disappointed. Week <strong class=\"hl-stat\">2</strong> is projected to be an easier matchup than the prior one, depending on opponent health, but for the long-term outlook I think it’s worrisome that Jacobs is still out indefinitely and <strong class=\"hl-key\">there doesn’t appear to be an every-week FLEX option or even an <mark class=\"hl-pos-RB\">RB</mark><strong class=\"hl-stat\">2</strong> on the current roster</strong>. [[img:deniz_01]] The team is projected to have a top <strong class=\"hl-stat\">3</strong> easiest strength of schedule for the rest of the season, and even though that could change in an instant, it should be comforting to <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> to know that his schedule is more likely to be with him than against him this season, he just has to put together a competent squad which may require some trades or waiver wire gems. [[img:deniz_02]] A Week <strong class=\"hl-stat\">2</strong> win isn’t necessarily needed, but a loss would set this team back further than it may be able to deal with given the current talent on the roster.",
+      "draft_grade": -36.41,
+      "draft_surplus_total": -36.41,
+      "draft_picks": [
+        {
+          "player": "Amon-Ra St. Brown",
+          "nfl_team": "DET",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 8,
+          "overall": 8,
+          "espn_adp": 8.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": 8.0017
+        },
+        {
+          "player": "Trey McBride",
+          "nfl_team": "ARI",
+          "pos": "TE",
+          "round": 2,
+          "pick_in_round": 7,
+          "overall": 21,
+          "espn_adp": 20.0,
+          "adp_deviation": -1.0,
+          "grade": null,
+          "surplus_value": 8.5709
+        },
+        {
+          "player": "Josh Jacobs",
+          "nfl_team": "GB",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 8,
+          "overall": 36,
+          "espn_adp": 31.0,
+          "adp_deviation": -5.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Bucky Irving",
+          "nfl_team": "TB",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 7,
+          "overall": 49,
+          "espn_adp": 50.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": 2.9396
+        },
+        {
+          "player": "Carnell Tate",
+          "nfl_team": "TEN",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 8,
+          "overall": 64,
+          "espn_adp": 61.0,
+          "adp_deviation": -3.0,
+          "grade": null,
+          "surplus_value": -9.3239
+        },
+        {
+          "player": "Dak Prescott",
+          "nfl_team": "DAL",
+          "pos": "QB",
+          "round": 6,
+          "pick_in_round": 7,
+          "overall": 77,
+          "espn_adp": 73.0,
+          "adp_deviation": -4.0,
+          "grade": null,
+          "surplus_value": -5.5082
+        },
+        {
+          "player": "Kenny Gainwell",
+          "nfl_team": "TB",
+          "pos": "RB",
+          "round": 7,
+          "pick_in_round": 14,
+          "overall": 98,
+          "espn_adp": 79.0,
+          "adp_deviation": -19.0,
+          "grade": null,
+          "surplus_value": -12.0275
+        },
+        {
+          "player": "Makai Lemon",
+          "nfl_team": "PHI",
+          "pos": "WR",
+          "round": 8,
+          "pick_in_round": 1,
+          "overall": 99,
+          "espn_adp": 111.0,
+          "adp_deviation": 12.0,
+          "grade": null,
+          "surplus_value": -11.917
+        },
+        {
+          "player": "Xavier Worthy",
+          "nfl_team": "KC",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 8,
+          "overall": 120,
+          "espn_adp": 122.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": -8.4744
+        },
+        {
+          "player": "Alvin Kamara",
+          "nfl_team": "NO",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 7,
+          "overall": 133,
+          "espn_adp": 137.0,
+          "adp_deviation": 4.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Tyler Allgeier",
+          "nfl_team": "ARI",
+          "pos": "RB",
+          "round": 11,
+          "pick_in_round": 8,
+          "overall": 148,
+          "espn_adp": 145.0,
+          "adp_deviation": -3.0,
+          "grade": null,
+          "surplus_value": -2.7195
+        },
+        {
+          "player": "Harrison Mevis",
+          "nfl_team": "LAR",
+          "pos": "K",
+          "round": 12,
+          "pick_in_round": 7,
+          "overall": 161,
+          "espn_adp": 191.0,
+          "adp_deviation": 30.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Justice Hill",
+          "nfl_team": "BAL",
+          "pos": "RB",
+          "round": 13,
+          "pick_in_round": 8,
+          "overall": 176,
+          "espn_adp": 151.0,
+          "adp_deviation": -25.0,
+          "grade": null,
+          "surplus_value": -7.9244
+        },
+        {
+          "player": "Tre' Harris",
+          "nfl_team": "LAC",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 7,
+          "overall": 189,
+          "espn_adp": 204.0,
+          "adp_deviation": 15.0,
+          "grade": null,
+          "surplus_value": -7.2335
+        },
+        {
+          "player": "Chiefs D/ST",
+          "nfl_team": "KC",
+          "pos": "D/ST",
+          "round": 15,
+          "pick_in_round": 8,
+          "overall": 204,
+          "espn_adp": 189.0,
+          "adp_deviation": -15.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Sam Darnold",
+          "nfl_team": "SEA",
+          "pos": "QB",
+          "round": 16,
+          "pick_in_round": 7,
+          "overall": 217,
+          "espn_adp": 201.0,
+          "adp_deviation": -16.0,
+          "grade": null,
+          "surplus_value": -14.7954
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "deniz_01",
+          "file": "images/rankings/week_02/deniz_01.png",
+          "caption": ""
+        },
+        {
+          "id": "deniz_02",
+          "file": "images/rankings/week_02/deniz_02.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 111.69
+    },
+    {
+      "manager": "Brandon Hancock",
+      "rank": 9,
+      "prev_rank": 6,
+      "rank_change": -3,
+      "avg_rank": 7.5,
+      "ppg_to_date": 118.6,
+      "record_to_date": "1-0",
+      "last_score": 118.6,
+      "streak": "W1",
+      "proj_ppg": 115.5,
+      "sos_avg_opp_ppg": 110.65,
+      "sos_rank": 11,
+      "synopsis": "It was a stress-free win in Week 1 for The Minutemen as they defeated Station Grits by 16 points.",
+      "blurb": "It was a stress-free win in Week <strong class=\"hl-stat\">1</strong> for <em class=\"hl-team\">The Minutemen</em> as they defeated <em class=\"hl-team\">Station Grits</em> by <strong class=\"hl-stat\">16</strong> points, led by the <mark class=\"hl-pos-RB\">RB</mark> duo of <mark class=\"hl-player\">Jonathan Taylor</mark> and <mark class=\"hl-player\">Kyren Williams</mark> and also some great play  from <mark class=\"hl-player\">Jalen Hurts</mark>. The Colts got smacked and <mark class=\"hl-player\">Jonathan Taylor</mark> was still able to finish as the <mark class=\"hl-pos-RB\">RB</mark><strong class=\"hl-stat\">8</strong>, so that stat about only producing in Colts wins looks like it won’t matter in <strong class=\"hl-stat\">2026</strong>. Now, usually putting up <strong class=\"hl-stat\">118</strong> points and winning would mean not moving down in the rankings so the fall to #<strong class=\"hl-stat\">9</strong> might come as a surprise, but I would be lying if I said I wasn’t concerned about <mark class=\"hl-player\">Rome Odunze</mark>, <mark class=\"hl-player\">Rashee Rice</mark>, and the team’s <mark class=\"hl-pos-WR\">WR</mark> production as a whole for <strong class=\"hl-stat\">2026</strong>. It’s only been one week, but <strong class=\"hl-key\"><mark class=\"hl-player\">Rome Odunze</mark> only putting up <strong class=\"hl-stat\">7.2</strong> points in a <strong class=\"hl-stat\">59</strong> point effort from the Bears is worrisome and <mark class=\"hl-player\">Rashee Rice</mark> only getting <strong class=\"hl-stat\">2</strong> targets and simply not looking great is uncharacteristic</strong>. There’s no need to panic obviously as the team is <strong class=\"hl-stat\">1</strong>-<strong class=\"hl-stat\">0</strong> and they are projected to have the <strong class=\"hl-stat\">4th</strong> easiest remaining strength of schedule, but I’m going to need to see more outside of <mark class=\"hl-pos-QB\">QB</mark> and <mark class=\"hl-pos-RB\">RB</mark> for me to comfortably rank this team higher. [[img:brandon_01]] It’s projected to be a tight one in Week <strong class=\"hl-stat\">2</strong> against <em class=\"hl-team\">Make Fantasy Great Again</em>, but if I were to make a prediction I say <mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark> takes down the <strong class=\"hl-stat\">14th</strong> ranked team in the league and will likely move back up the rankings in due time.",
+      "draft_grade": -25.92,
+      "draft_surplus_total": -25.92,
+      "draft_picks": [
+        {
+          "player": "Jonathan Taylor",
+          "nfl_team": "IND",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 4,
+          "overall": 4,
+          "espn_adp": 5.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": 2.889
+        },
+        {
+          "player": "Rashee Rice",
+          "nfl_team": "KC",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 11,
+          "overall": 25,
+          "espn_adp": 27.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": -9.4085
+        },
+        {
+          "player": "Kyren Williams",
+          "nfl_team": "LAR",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 4,
+          "overall": 32,
+          "espn_adp": 34.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": -2.4352
+        },
+        {
+          "player": "Rome Odunze",
+          "nfl_team": "CHI",
+          "pos": "WR",
+          "round": 4,
+          "pick_in_round": 11,
+          "overall": 53,
+          "espn_adp": 54.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": -8.5212
+        },
+        {
+          "player": "Jalen Hurts",
+          "nfl_team": "PHI",
+          "pos": "QB",
+          "round": 5,
+          "pick_in_round": 4,
+          "overall": 60,
+          "espn_adp": 69.0,
+          "adp_deviation": 9.0,
+          "grade": null,
+          "surplus_value": 3.1347
+        },
+        {
+          "player": "Jaylen Warren",
+          "nfl_team": "PIT",
+          "pos": "RB",
+          "round": 6,
+          "pick_in_round": 11,
+          "overall": 81,
+          "espn_adp": 77.0,
+          "adp_deviation": -4.0,
+          "grade": null,
+          "surplus_value": -4.3772
+        },
+        {
+          "player": "Alec Pierce",
+          "nfl_team": "IND",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 4,
+          "overall": 88,
+          "espn_adp": 93.0,
+          "adp_deviation": 5.0,
+          "grade": null,
+          "surplus_value": -4.6203
+        },
+        {
+          "player": "Jacory Croskey-Merritt",
+          "nfl_team": "WSH",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 11,
+          "overall": 109,
+          "espn_adp": 117.0,
+          "adp_deviation": 8.0,
+          "grade": null,
+          "surplus_value": -0.9053
+        },
+        {
+          "player": "T.J. Hockenson",
+          "nfl_team": "MIN",
+          "pos": "TE",
+          "round": 9,
+          "pick_in_round": 4,
+          "overall": 116,
+          "espn_adp": 150.0,
+          "adp_deviation": 34.0,
+          "grade": null,
+          "surplus_value": 3.04
+        },
+        {
+          "player": "Tank Dell",
+          "nfl_team": "HOU",
+          "pos": "WR",
+          "round": 10,
+          "pick_in_round": 11,
+          "overall": 137,
+          "espn_adp": 139.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Jason Myers",
+          "nfl_team": "SEA",
+          "pos": "K",
+          "round": 11,
+          "pick_in_round": 4,
+          "overall": 144,
+          "espn_adp": 146.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Jalen Nailor",
+          "nfl_team": "LV",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 11,
+          "overall": 165,
+          "espn_adp": 172.0,
+          "adp_deviation": 7.0,
+          "grade": null,
+          "surplus_value": -6.0967
+        },
+        {
+          "player": "Patriots D/ST",
+          "nfl_team": "NE",
+          "pos": "D/ST",
+          "round": 13,
+          "pick_in_round": 4,
+          "overall": 172,
+          "espn_adp": 187.0,
+          "adp_deviation": 15.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Kaelon Black",
+          "nfl_team": "SF",
+          "pos": "RB",
+          "round": 14,
+          "pick_in_round": 11,
+          "overall": 193,
+          "espn_adp": 213.0,
+          "adp_deviation": 20.0,
+          "grade": null,
+          "surplus_value": -3.569
+        },
+        {
+          "player": "Zachariah Branch",
+          "nfl_team": "ATL",
+          "pos": "WR",
+          "round": 15,
+          "pick_in_round": 4,
+          "overall": 200,
+          "espn_adp": 208.0,
+          "adp_deviation": 8.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "DJ Giddens",
+          "nfl_team": "IND",
+          "pos": "RB",
+          "round": 16,
+          "pick_in_round": 11,
+          "overall": 221,
+          "espn_adp": 281.0,
+          "adp_deviation": 60.0,
+          "grade": null,
+          "surplus_value": 0.0
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "brandon_01",
+          "file": "images/rankings/week_02/brandon_01.png",
+          "caption": ""
+        },
+        {
+          "id": "brandon_02",
+          "file": "images/rankings/week_02/brandon_02.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 112.16
+    },
+    {
+      "manager": "Quin Gegwich",
+      "rank": 11,
+      "prev_rank": 9,
+      "rank_change": -2,
+      "avg_rank": 10.0,
+      "ppg_to_date": 107.1,
+      "record_to_date": "0-1",
+      "last_score": 107.1,
+      "streak": "L1",
+      "proj_ppg": 111.6,
+      "sos_avg_opp_ppg": 109.74,
+      "sos_rank": 14,
+      "synopsis": "You can’t really be happy if you’re Gegwich, can you?",
+      "blurb": "You can’t really be happy if you’re <mark class=\"hl-manager\" style=\"color:#131313;\">Gegwich</mark>, can you? I’ll start with the good, <mark class=\"hl-player\">Isaiah Likely</mark> looks like one of the best draft picks, given the price, from this year’s draft. [[img:quin_01]] The ceiling for <mark class=\"hl-player\">Malik Nabers</mark> looks super high, <mark class=\"hl-player\">Chase Brown</mark> is the guy that <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark> drafted him to be, and <mark class=\"hl-player\">Caleb Douglas</mark> may have some FLEX appeal this season… that’s about all the good. Now for the bad, <mark class=\"hl-player\">Justin Herbert</mark> and the Chargers’ offense looked bad which also isn’t great for <mark class=\"hl-player\">Quentin Johnston</mark>, the Brown’s offense looked like one of the worst I’ve seen since I started watching football which is bad for <mark class=\"hl-player\">Quinshon Judkins</mark>, the <mark class=\"hl-pos-WR\">WR</mark> duo of <mark class=\"hl-player\">Devonta Smith</mark> and <mark class=\"hl-player\">Michael Pittman Jr.</mark> showed nothing and honestly got outshined by multiple pass catchers in their respective offenses, and to make matters worse <mark class=\"hl-player\">Brandon Aubrey</mark> looked human. <strong class=\"hl-key\">I think better days are ahead for The <mark class=\"hl-manager\" style=\"color:#131313;\">Gegwich</mark> Effect, especially since the projected strength of schedule for Weeks <strong class=\"hl-stat\">2</strong>-<strong class=\"hl-stat\">14</strong> is the easiest in the league</strong>, but this week’s matchup won’t be easy as seen in the spread being the largest across all Week <strong class=\"hl-stat\">2</strong> matchups. [[img:quin_02]] [[img:quin_03]]",
+      "draft_grade": -46.67,
+      "draft_surplus_total": -46.67,
+      "draft_picks": [
+        {
+          "player": "Chase Brown",
+          "nfl_team": "CIN",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 9,
+          "overall": 9,
+          "espn_adp": 13.0,
+          "adp_deviation": 4.0,
+          "grade": null,
+          "surplus_value": -2.2021
+        },
+        {
+          "player": "Malik Nabers",
+          "nfl_team": "NYG",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 6,
+          "overall": 20,
+          "espn_adp": 33.0,
+          "adp_deviation": 13.0,
+          "grade": null,
+          "surplus_value": -7.1982
+        },
+        {
+          "player": "DeVonta Smith",
+          "nfl_team": "PHI",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 9,
+          "overall": 37,
+          "espn_adp": 36.0,
+          "adp_deviation": -1.0,
+          "grade": null,
+          "surplus_value": -9.6691
+        },
+        {
+          "player": "Quinshon Judkins",
+          "nfl_team": "CLE",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 6,
+          "overall": 48,
+          "espn_adp": 41.0,
+          "adp_deviation": -7.0,
+          "grade": null,
+          "surplus_value": -11.2609
+        },
+        {
+          "player": "Michael Pittman Jr.",
+          "nfl_team": "PIT",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 9,
+          "overall": 65,
+          "espn_adp": 66.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": -7.928
+        },
+        {
+          "player": "Justin Herbert",
+          "nfl_team": "LAC",
+          "pos": "QB",
+          "round": 6,
+          "pick_in_round": 6,
+          "overall": 76,
+          "espn_adp": 86.0,
+          "adp_deviation": 10.0,
+          "grade": null,
+          "surplus_value": -7.8449
+        },
+        {
+          "player": "Isaiah Likely",
+          "nfl_team": "NYG",
+          "pos": "TE",
+          "round": 7,
+          "pick_in_round": 9,
+          "overall": 93,
+          "espn_adp": 119.0,
+          "adp_deviation": 26.0,
+          "grade": null,
+          "surplus_value": 15.9898
+        },
+        {
+          "player": "Quentin Johnston",
+          "nfl_team": "LAC",
+          "pos": "WR",
+          "round": 8,
+          "pick_in_round": 6,
+          "overall": 104,
+          "espn_adp": 106.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": -10.4117
+        },
+        {
+          "player": "Brandon Aubrey",
+          "nfl_team": "DAL",
+          "pos": "K",
+          "round": 9,
+          "pick_in_round": 9,
+          "overall": 121,
+          "espn_adp": 118.0,
+          "adp_deviation": -3.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Woody Marks",
+          "nfl_team": "HOU",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 6,
+          "overall": 132,
+          "espn_adp": 134.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": -7.8855
+        },
+        {
+          "player": "Mike Washington Jr.",
+          "nfl_team": "LV",
+          "pos": "RB",
+          "round": 11,
+          "pick_in_round": 9,
+          "overall": 149,
+          "espn_adp": 174.0,
+          "adp_deviation": 25.0,
+          "grade": null,
+          "surplus_value": -7.6796
+        },
+        {
+          "player": "Caleb Douglas",
+          "nfl_team": "MIA",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 6,
+          "overall": 160,
+          "espn_adp": 168.0,
+          "adp_deviation": 8.0,
+          "grade": null,
+          "surplus_value": 2.3702
+        },
+        {
+          "player": "Terrance Ferguson",
+          "nfl_team": "LAR",
+          "pos": "TE",
+          "round": 13,
+          "pick_in_round": 9,
+          "overall": 177,
+          "espn_adp": 162.0,
+          "adp_deviation": -15.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Najee Harris",
+          "nfl_team": "NYG",
+          "pos": "RB",
+          "round": 14,
+          "pick_in_round": 6,
+          "overall": 188,
+          "espn_adp": 198.0,
+          "adp_deviation": 10.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Packers D/ST",
+          "nfl_team": "GB",
+          "pos": "D/ST",
+          "round": 15,
+          "pick_in_round": 9,
+          "overall": 205,
+          "espn_adp": 236.0,
+          "adp_deviation": 31.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Chig Okonkwo",
+          "nfl_team": "WSH",
+          "pos": "TE",
+          "round": 16,
+          "pick_in_round": 6,
+          "overall": 216,
+          "espn_adp": 216.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": -3.0698
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "quin_01",
+          "file": "images/rankings/week_02/quin_01.png",
+          "caption": ""
+        },
+        {
+          "id": "quin_02",
+          "file": "images/rankings/week_02/quin_02.png",
+          "caption": ""
+        },
+        {
+          "id": "quin_03",
+          "file": "images/rankings/week_02/quin_03.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 108.51
+    },
+    {
+      "manager": "Cole Maney",
+      "rank": 10,
+      "prev_rank": 11,
+      "rank_change": 1,
+      "avg_rank": 10.5,
+      "ppg_to_date": 120.7,
+      "record_to_date": "0-1",
+      "last_score": 120.7,
+      "streak": "L1",
+      "proj_ppg": 115.2,
+      "sos_avg_opp_ppg": 112.99,
+      "sos_rank": 3,
+      "synopsis": "The names just don’t get any better, do they?",
+      "blurb": "The names just don’t get any better, do they? Despite <mark class=\"hl-player\">Seahawks D/ST</mark> and <mark class=\"hl-player\">Evan McPherson</mark> trying their best to get <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> the win in Week <strong class=\"hl-stat\">1</strong>, the team lost a close one to <em class=\"hl-team\">Breece’s Pieces</em> thanks to <mark class=\"hl-player\">Puka Nacua</mark> and <mark class=\"hl-player\">J.K. Dobbins</mark> underperforming. [[img:cole_01]] I don’t know how to feel about the team’s long-term outlook just yet, <strong class=\"hl-key\">they have the <strong class=\"hl-stat\">2nd</strong> hardest remaining strength of schedule but are favored against the injury-riddled <em class=\"hl-team\">Rolls With Butter</em> in Week <strong class=\"hl-stat\">2</strong></strong>. If I had to guess I’d say the team wins in Week <strong class=\"hl-stat\">2</strong> but may have trouble from week-to-week unless <mark class=\"hl-player\">TreVeyon Henderson</mark> can get healthy and provided some low-end <mark class=\"hl-pos-RB\">RB</mark><strong class=\"hl-stat\">2</strong> production. [[img:cole_02]] One bright spot on the roster could be <mark class=\"hl-player\">Devaughn Vele</mark>, at least until <mark class=\"hl-player\">Jordyn Tyson</mark> comes off injury reserve, he could be a spot play guy if <mark class=\"hl-player\">Ladd McConkey</mark>’s injury is serious or just some <mark class=\"hl-pos-WR\">WR</mark> value if <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> decides to shake up the roster, which I doubt he will given his history of not trading. [[img:cole_03]]",
+      "draft_grade": -36.41,
+      "draft_surplus_total": -36.41,
+      "draft_picks": [
+        {
+          "player": "Puka Nacua",
+          "nfl_team": "LAR",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 6,
+          "overall": 6,
+          "espn_adp": 4.0,
+          "adp_deviation": -2.0,
+          "grade": null,
+          "surplus_value": -8.864
+        },
+        {
+          "player": "Jeremiyah Love",
+          "nfl_team": "ARI",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 9,
+          "overall": 23,
+          "espn_adp": 21.0,
+          "adp_deviation": -2.0,
+          "grade": null,
+          "surplus_value": -6.4887
+        },
+        {
+          "player": "Ladd McConkey",
+          "nfl_team": "LAC",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 6,
+          "overall": 34,
+          "espn_adp": 40.0,
+          "adp_deviation": 6.0,
+          "grade": null,
+          "surplus_value": 1.4826
+        },
+        {
+          "player": "Jayden Daniels",
+          "nfl_team": "WSH",
+          "pos": "QB",
+          "round": 4,
+          "pick_in_round": 9,
+          "overall": 51,
+          "espn_adp": 57.0,
+          "adp_deviation": 6.0,
+          "grade": null,
+          "surplus_value": -3.6089
+        },
+        {
+          "player": "TreVeyon Henderson",
+          "nfl_team": "NE",
+          "pos": "RB",
+          "round": 5,
+          "pick_in_round": 6,
+          "overall": 62,
+          "espn_adp": 63.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Sam LaPorta",
+          "nfl_team": "DET",
+          "pos": "TE",
+          "round": 6,
+          "pick_in_round": 9,
+          "overall": 79,
+          "espn_adp": 78.0,
+          "adp_deviation": -1.0,
+          "grade": null,
+          "surplus_value": -1.8848
+        },
+        {
+          "player": "Stefon Diggs",
+          "nfl_team": "WSH",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 6,
+          "overall": 90,
+          "espn_adp": 84.0,
+          "adp_deviation": -6.0,
+          "grade": null,
+          "surplus_value": -0.0158
+        },
+        {
+          "player": "J.K. Dobbins",
+          "nfl_team": "DEN",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 9,
+          "overall": 107,
+          "espn_adp": 101.0,
+          "adp_deviation": -6.0,
+          "grade": null,
+          "surplus_value": -9.8472
+        },
+        {
+          "player": "Josh Downs",
+          "nfl_team": "IND",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 6,
+          "overall": 118,
+          "espn_adp": 105.0,
+          "adp_deviation": -13.0,
+          "grade": null,
+          "surplus_value": -7.5417
+        },
+        {
+          "player": "Seahawks D/ST",
+          "nfl_team": "SEA",
+          "pos": "D/ST",
+          "round": 10,
+          "pick_in_round": 9,
+          "overall": 135,
+          "espn_adp": 182.0,
+          "adp_deviation": 47.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Keenan Allen",
+          "nfl_team": "IND",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 6,
+          "overall": 146,
+          "espn_adp": 155.0,
+          "adp_deviation": 9.0,
+          "grade": null,
+          "surplus_value": -2.0438
+        },
+        {
+          "player": "Rashid Shaheed",
+          "nfl_team": "SEA",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 9,
+          "overall": 163,
+          "espn_adp": 163.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": -10.2506
+        },
+        {
+          "player": "Hunter Henry",
+          "nfl_team": "NE",
+          "pos": "TE",
+          "round": 13,
+          "pick_in_round": 6,
+          "overall": 174,
+          "espn_adp": 153.0,
+          "adp_deviation": -21.0,
+          "grade": null,
+          "surplus_value": -3.0134
+        },
+        {
+          "player": "Evan McPherson",
+          "nfl_team": "CIN",
+          "pos": "K",
+          "round": 14,
+          "pick_in_round": 9,
+          "overall": 191,
+          "espn_adp": 256.0,
+          "adp_deviation": 65.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Devaughn Vele",
+          "nfl_team": "NO",
+          "pos": "WR",
+          "round": 15,
+          "pick_in_round": 6,
+          "overall": 202,
+          "espn_adp": 178.0,
+          "adp_deviation": -24.0,
+          "grade": null,
+          "surplus_value": 8.328
+        },
+        {
+          "player": "Jaylen Wright",
+          "nfl_team": "MIA",
+          "pos": "RB",
+          "round": 16,
+          "pick_in_round": 9,
+          "overall": 219,
+          "espn_adp": 221.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": 0.0
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "cole_01",
+          "file": "images/rankings/week_02/cole_01.png",
+          "caption": ""
+        },
+        {
+          "id": "cole_02",
+          "file": "images/rankings/week_02/cole_02.png",
+          "caption": ""
+        },
+        {
+          "id": "cole_03",
+          "file": "images/rankings/week_02/cole_03.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 112.1
+    },
+    {
+      "manager": "Andrew Root",
+      "rank": 7,
+      "prev_rank": 7,
+      "rank_change": 0,
+      "avg_rank": 7.0,
+      "ppg_to_date": 122.7,
+      "record_to_date": "0-1",
+      "last_score": 122.7,
+      "streak": "L1",
+      "proj_ppg": 116.9,
+      "sos_avg_opp_ppg": 111.95,
+      "sos_rank": 7,
+      "synopsis": "No ranking change for Andrew after one week.",
+      "blurb": "No ranking change for <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> after one week. It looks like <mark class=\"hl-player\">Justin Jefferson</mark> is back to his old self, while the rest of the team’s first <strong class=\"hl-stat\">6</strong> picks (aside from <mark class=\"hl-player\">Rhamondre Stevenson</mark>) underperformed. However, <strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> appears to have selected one of the biggest draft day steals across the league with <mark class=\"hl-player\">Jalen Coker</mark></strong>, which is actually a little bittersweet since he also has <mark class=\"hl-player\">Tetairoa McMillan</mark>. [[img:andrew_01]] Still, it’s only been one week so things can change very quickly. <mark class=\"hl-player\">Patrick Mahomes</mark> also looks like his early-<strong class=\"hl-stat\">2025</strong> self as he was able to finish as the <mark class=\"hl-pos-QB\">QB</mark><strong class=\"hl-stat\">9</strong> against one of the most formidable defenses in the league. The team is favored to win its Week <strong class=\"hl-stat\">2</strong> matchup and move to <strong class=\"hl-stat\">1</strong>-<strong class=\"hl-stat\">1</strong>, but I’m going to need to see more from the rest of <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark>’s top picks to move him higher up the rankings.",
+      "draft_grade": -26.78,
+      "draft_surplus_total": -26.78,
+      "draft_picks": [
+        {
+          "player": "Justin Jefferson",
+          "nfl_team": "MIN",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 13,
+          "overall": 13,
+          "espn_adp": 12.0,
+          "adp_deviation": -1.0,
+          "grade": null,
+          "surplus_value": 11.4936
+        },
+        {
+          "player": "De'Von Achane",
+          "nfl_team": "MIA",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 2,
+          "overall": 16,
+          "espn_adp": 10.0,
+          "adp_deviation": -6.0,
+          "grade": null,
+          "surplus_value": -10.4506
+        },
+        {
+          "player": "Davante Adams",
+          "nfl_team": "LAR",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 13,
+          "overall": 41,
+          "espn_adp": 44.0,
+          "adp_deviation": 3.0,
+          "grade": null,
+          "surplus_value": -11.5673
+        },
+        {
+          "player": "Tetairoa McMillan",
+          "nfl_team": "CAR",
+          "pos": "WR",
+          "round": 4,
+          "pick_in_round": 2,
+          "overall": 44,
+          "espn_adp": 35.0,
+          "adp_deviation": -9.0,
+          "grade": null,
+          "surplus_value": -7.4572
+        },
+        {
+          "player": "Rhamondre Stevenson",
+          "nfl_team": "NE",
+          "pos": "RB",
+          "round": 5,
+          "pick_in_round": 13,
+          "overall": 69,
+          "espn_adp": 67.0,
+          "adp_deviation": -2.0,
+          "grade": null,
+          "surplus_value": -1.7549
+        },
+        {
+          "player": "Harold Fannin Jr.",
+          "nfl_team": "CLE",
+          "pos": "TE",
+          "round": 6,
+          "pick_in_round": 2,
+          "overall": 72,
+          "espn_adp": 70.0,
+          "adp_deviation": -2.0,
+          "grade": null,
+          "surplus_value": -9.0722
+        },
+        {
+          "player": "Patrick Mahomes",
+          "nfl_team": "KC",
+          "pos": "QB",
+          "round": 7,
+          "pick_in_round": 13,
+          "overall": 97,
+          "espn_adp": 108.0,
+          "adp_deviation": 11.0,
+          "grade": null,
+          "surplus_value": 2.6708
+        },
+        {
+          "player": "Travis Kelce",
+          "nfl_team": "KC",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 2,
+          "overall": 100,
+          "espn_adp": 107.0,
+          "adp_deviation": 7.0,
+          "grade": null,
+          "surplus_value": -0.9476
+        },
+        {
+          "player": "Jayden Reed",
+          "nfl_team": "GB",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 13,
+          "overall": 125,
+          "espn_adp": 121.0,
+          "adp_deviation": -4.0,
+          "grade": null,
+          "surplus_value": -6.813
+        },
+        {
+          "player": "Tyjae Spears",
+          "nfl_team": "TEN",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 2,
+          "overall": 128,
+          "espn_adp": 112.0,
+          "adp_deviation": -16.0,
+          "grade": null,
+          "surplus_value": -7.3134
+        },
+        {
+          "player": "Jerry Jeudy",
+          "nfl_team": "CLE",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 13,
+          "overall": 153,
+          "espn_adp": 166.0,
+          "adp_deviation": 13.0,
+          "grade": null,
+          "surplus_value": -7.4629
+        },
+        {
+          "player": "Jalen Coker",
+          "nfl_team": "CAR",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 2,
+          "overall": 156,
+          "espn_adp": 126.0,
+          "adp_deviation": -30.0,
+          "grade": null,
+          "surplus_value": 21.7821
+        },
+        {
+          "player": "Baker Mayfield",
+          "nfl_team": "TB",
+          "pos": "QB",
+          "round": 13,
+          "pick_in_round": 13,
+          "overall": 181,
+          "espn_adp": 138.0,
+          "adp_deviation": -43.0,
+          "grade": null,
+          "surplus_value": -4.4602
+        },
+        {
+          "player": "Calvin Ridley",
+          "nfl_team": "TEN",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 2,
+          "overall": 184,
+          "espn_adp": 157.0,
+          "adp_deviation": -27.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Cowboys D/ST",
+          "nfl_team": "DAL",
+          "pos": "D/ST",
+          "round": 15,
+          "pick_in_round": 13,
+          "overall": 209,
+          "espn_adp": 298.0,
+          "adp_deviation": 89.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Tyler Loop",
+          "nfl_team": "BAL",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 2,
+          "overall": 212,
+          "espn_adp": 195.0,
+          "adp_deviation": -17.0,
+          "grade": null,
+          "surplus_value": null
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "andrew_01",
+          "file": "images/rankings/week_02/andrew_01.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 114.24
+    },
+    {
+      "manager": "Max Malich",
+      "rank": 6,
+      "prev_rank": 2,
+      "rank_change": -4,
+      "avg_rank": 4.0,
+      "ppg_to_date": 116.3,
+      "record_to_date": "1-0",
+      "last_score": 116.3,
+      "streak": "W1",
+      "proj_ppg": 113.0,
+      "sos_avg_opp_ppg": 112.68,
+      "sos_rank": 5,
+      "synopsis": "Max squeaked away from Week 1 with a 1.5-point win over Leased to Jetty, which is the franchise’s 3rd closest game of all time, including regular and post-season games.",
+      "blurb": "Another big fall in the rankings like <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> and <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark>, <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> squeaked away from Week <strong class=\"hl-stat\">1</strong> with a <strong class=\"hl-stat\">1.5</strong>-point win over <em class=\"hl-team\">Leased to Jetty</em> which is the franchise’s <strong class=\"hl-stat\">3rd</strong> closest game of all time, including regular and post-season games. [[img:max_01]] It was mostly a carry-job in Week <strong class=\"hl-stat\">1</strong> from <mark class=\"hl-player\">Caleb Williams</mark> and <mark class=\"hl-player\">Derrick Henry</mark>, both combining for <strong class=\"hl-stat\">62</strong>% of the team’s total points which isn’t  generally the recipe for success in fantasy. The <mark class=\"hl-pos-WR\">WR</mark> duo of <mark class=\"hl-player\">Tee Higgins</mark> and <mark class=\"hl-player\">Marvin Harrison Jr.</mark> combined for less than what <mark class=\"hl-player\">Matthew Golden</mark> produced, someone who sat on <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark>’s bench in Week <strong class=\"hl-stat\">1</strong>, but I think that’ll change going forward. The team is in a good place, like let’s say <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> played <mark class=\"hl-player\">Matthew Golden</mark> and <mark class=\"hl-player\">Dallas Goedert</mark> at his FLEX and <mark class=\"hl-pos-TE\">TE</mark> spots instead of <mark class=\"hl-player\">KC Conception</mark> and <mark class=\"hl-player\">Colston Loveland</mark> in Week <strong class=\"hl-stat\">1</strong>, we’d be looking at the highest scoring team in Week <strong class=\"hl-stat\">1</strong>. We can’t sit here saying “what if” or “could’ve”, but <strong class=\"hl-key\">that value on roster on top of the <strong class=\"hl-stat\">1</strong>-<strong class=\"hl-stat\">0</strong> record indicates to me that good times are ahead for <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark></strong>. A couple fun things to note for <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark>, his teams have made the playoffs every other season since the beginning of the league in <strong class=\"hl-stat\">2020</strong> so if history repeats itself then we should be in for a <em class=\"hl-team\">Tee’d Up</em> playoff run in <strong class=\"hl-stat\">2026</strong>. Also, with his <strong class=\"hl-stat\">35</strong> point week in Week <strong class=\"hl-stat\">1</strong>, <mark class=\"hl-player\">Derrick Henry</mark> now becomes the <strong class=\"hl-stat\">10th</strong> player in Preach Fantasy history to score at least <strong class=\"hl-stat\">450</strong> points for a single franchise and the <strong class=\"hl-stat\">1st</strong> running back to do so, he joins <mark class=\"hl-player\">Josh Allen</mark> and <mark class=\"hl-player\">Davante Adams</mark> with <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark>, <mark class=\"hl-player\">Ja’Marr Chase</mark> and <mark class=\"hl-player\">Patrick Mahomes</mark> with <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark>, <mark class=\"hl-player\">Garrett Wilson</mark> with <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark>, <mark class=\"hl-player\">A.J. Brown</mark> and <mark class=\"hl-player\">Trey McBride</mark> with <mark class=\"hl-manager\" style=\"color:#985e0f;\">Ethan</mark>, and <mark class=\"hl-player\">Puka Nacua</mark> and <mark class=\"hl-player\">Justin Herbert</mark> with <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark>. [[img:max_02]] [[img:max_03]]",
+      "draft_grade": -7.56,
+      "draft_surplus_total": -7.56,
+      "draft_picks": [
+        {
+          "player": "Saquon Barkley",
+          "nfl_team": "PHI",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 12,
+          "overall": 12,
+          "espn_adp": 15.0,
+          "adp_deviation": 3.0,
+          "grade": null,
+          "surplus_value": -12.0448
+        },
+        {
+          "player": "Derrick Henry",
+          "nfl_team": "BAL",
+          "pos": "RB",
+          "round": 2,
+          "pick_in_round": 3,
+          "overall": 17,
+          "espn_adp": 16.0,
+          "adp_deviation": -1.0,
+          "grade": null,
+          "surplus_value": 16.041
+        },
+        {
+          "player": "Tee Higgins",
+          "nfl_team": "CIN",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 12,
+          "overall": 40,
+          "espn_adp": 43.0,
+          "adp_deviation": 3.0,
+          "grade": null,
+          "surplus_value": -8.25
+        },
+        {
+          "player": "Colston Loveland",
+          "nfl_team": "CHI",
+          "pos": "TE",
+          "round": 4,
+          "pick_in_round": 3,
+          "overall": 45,
+          "espn_adp": 42.0,
+          "adp_deviation": -3.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Marvin Harrison Jr.",
+          "nfl_team": "ARI",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 12,
+          "overall": 68,
+          "espn_adp": 62.0,
+          "adp_deviation": -6.0,
+          "grade": null,
+          "surplus_value": -12.0138
+        },
+        {
+          "player": "Caleb Williams",
+          "nfl_team": "CHI",
+          "pos": "QB",
+          "round": 6,
+          "pick_in_round": 3,
+          "overall": 73,
+          "espn_adp": 99.0,
+          "adp_deviation": 26.0,
+          "grade": null,
+          "surplus_value": 16.2558
+        },
+        {
+          "player": "Matthew Golden",
+          "nfl_team": "GB",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 12,
+          "overall": 96,
+          "espn_adp": 96.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": 1.3454
+        },
+        {
+          "player": "Dallas Goedert",
+          "nfl_team": "PHI",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 3,
+          "overall": 101,
+          "espn_adp": 114.0,
+          "adp_deviation": 13.0,
+          "grade": null,
+          "surplus_value": 13.2235
+        },
+        {
+          "player": "KC Concepcion",
+          "nfl_team": "CLE",
+          "pos": "WR",
+          "round": 9,
+          "pick_in_round": 12,
+          "overall": 124,
+          "espn_adp": 133.0,
+          "adp_deviation": 9.0,
+          "grade": null,
+          "surplus_value": -4.4364
+        },
+        {
+          "player": "MarShawn Lloyd",
+          "nfl_team": "GB",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 3,
+          "overall": 129,
+          "espn_adp": 158.0,
+          "adp_deviation": 29.0,
+          "grade": null,
+          "surplus_value": -8.0946
+        },
+        {
+          "player": "Rams D/ST",
+          "nfl_team": "LAR",
+          "pos": "D/ST",
+          "round": 11,
+          "pick_in_round": 12,
+          "overall": 152,
+          "espn_adp": 183.0,
+          "adp_deviation": 31.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Cyrus Allen",
+          "nfl_team": "KC",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 3,
+          "overall": 157,
+          "espn_adp": 295.0,
+          "adp_deviation": 138.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Ja'Kobi Lane",
+          "nfl_team": "BAL",
+          "pos": "WR",
+          "round": 13,
+          "pick_in_round": 12,
+          "overall": 180,
+          "espn_adp": 199.0,
+          "adp_deviation": 19.0,
+          "grade": null,
+          "surplus_value": -9.6118
+        },
+        {
+          "player": "Malik Washington",
+          "nfl_team": "MIA",
+          "pos": "WR",
+          "round": 14,
+          "pick_in_round": 3,
+          "overall": 185,
+          "espn_adp": 211.0,
+          "adp_deviation": 26.0,
+          "grade": null,
+          "surplus_value": -5.9213
+        },
+        {
+          "player": "Kimani Vidal",
+          "nfl_team": "LAC",
+          "pos": "RB",
+          "round": 15,
+          "pick_in_round": 12,
+          "overall": 208,
+          "espn_adp": 214.0,
+          "adp_deviation": 6.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Trey Smack",
+          "nfl_team": "GB",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 3,
+          "overall": 213,
+          "espn_adp": 287.0,
+          "adp_deviation": 74.0,
+          "grade": null,
+          "surplus_value": null
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "max_01",
+          "file": "images/rankings/week_02/max_01.png",
+          "caption": ""
+        },
+        {
+          "id": "max_02",
+          "file": "images/rankings/week_02/max_02.png",
+          "caption": ""
+        },
+        {
+          "id": "max_03",
+          "file": "images/rankings/week_02/max_03.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 108.93
+    },
+    {
+      "manager": "Baylen Slansky",
+      "rank": 12,
+      "prev_rank": 13,
+      "rank_change": 1,
+      "avg_rank": 12.5,
+      "ppg_to_date": 102.5,
+      "record_to_date": "0-1",
+      "last_score": 102.5,
+      "streak": "L1",
+      "proj_ppg": 109.2,
+      "sos_avg_opp_ppg": 114.27,
+      "sos_rank": 1,
+      "synopsis": "Like Leased to Jetty, Baylen finds himself moving up the rankings after a Week 1 loss, even if it is only up one spot.",
+      "blurb": "Like <em class=\"hl-team\">Leased to Jetty</em>, <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark> finds himself moving up the rankings after a Week <strong class=\"hl-stat\">1</strong> loss, even if it is only up one spot. <em class=\"hl-team\">Station Grits</em> put up the <strong class=\"hl-stat\">2nd</strong> lowest number of points across the league in Week <strong class=\"hl-stat\">1</strong>, only ahead of <em class=\"hl-team\">Make Fantasy Great Again</em>, and on one hand I think there’s room for improvement from both <mark class=\"hl-player\">Tyler Warren</mark> and <mark class=\"hl-player\">Luther Burden</mark> but on the contrary <mark class=\"hl-player\">Jaxon Smith-Njigba</mark> and <mark class=\"hl-player\">Brock Purdy</mark> did exactly what <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark> needed them to do and the team still barely broke <strong class=\"hl-stat\">100</strong> points. It also doesn’t help that <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark>’s D/ST and Kicker combined for <strong class=\"hl-stat\">6.25</strong> points, which is the <strong class=\"hl-stat\">2nd</strong> least out of all teams in Week <strong class=\"hl-stat\">1</strong>, but that should change from week-to-week. [[img:baylen_02]] Going forward, <strong class=\"hl-key\">it will be crucial for this team’s success for both <mark class=\"hl-player\">Brock Bowers</mark> to get healthy and for the <mark class=\"hl-pos-RB\">RB</mark><strong class=\"hl-stat\">2</strong> spot to be consistent and productive</strong>, especially if that hardest projected strength of schedule turns out to be true. [[img:baylen_02]] Fun little note, <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark> has only lost his Week <strong class=\"hl-stat\">1</strong> matchup two times in league history (<strong class=\"hl-stat\">2021</strong> and <strong class=\"hl-stat\">2023</strong>), in both those seasons <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark> went on to make the playoffs but not before losing again in Week <strong class=\"hl-stat\">2</strong>. Will history repeat itself? [[img:baylen_03]]",
+      "draft_grade": -25.57,
+      "draft_surplus_total": -25.57,
+      "draft_picks": [
+        {
+          "player": "Jaxon Smith-Njigba",
+          "nfl_team": "SEA",
+          "pos": "WR",
+          "round": 1,
+          "pick_in_round": 7,
+          "overall": 7,
+          "espn_adp": 6.0,
+          "adp_deviation": -1.0,
+          "grade": null,
+          "surplus_value": 4.5623
+        },
+        {
+          "player": "Brock Bowers",
+          "nfl_team": "LV",
+          "pos": "TE",
+          "round": 2,
+          "pick_in_round": 8,
+          "overall": 22,
+          "espn_adp": 22.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Cam Skattebo",
+          "nfl_team": "NYG",
+          "pos": "RB",
+          "round": 3,
+          "pick_in_round": 7,
+          "overall": 35,
+          "espn_adp": 46.0,
+          "adp_deviation": 11.0,
+          "grade": null,
+          "surplus_value": -4.0892
+        },
+        {
+          "player": "Tyler Warren",
+          "nfl_team": "IND",
+          "pos": "TE",
+          "round": 4,
+          "pick_in_round": 8,
+          "overall": 50,
+          "espn_adp": 55.0,
+          "adp_deviation": 5.0,
+          "grade": null,
+          "surplus_value": -3.1411
+        },
+        {
+          "player": "Luther Burden III",
+          "nfl_team": "CHI",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 7,
+          "overall": 63,
+          "espn_adp": 60.0,
+          "adp_deviation": -3.0,
+          "grade": null,
+          "surplus_value": -7.8148
+        },
+        {
+          "player": "Tony Pollard",
+          "nfl_team": "TEN",
+          "pos": "RB",
+          "round": 6,
+          "pick_in_round": 8,
+          "overall": 78,
+          "espn_adp": 74.0,
+          "adp_deviation": -4.0,
+          "grade": null,
+          "surplus_value": -10.7379
+        },
+        {
+          "player": "Michael Wilson",
+          "nfl_team": "ARI",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 7,
+          "overall": 91,
+          "espn_adp": 80.0,
+          "adp_deviation": -11.0,
+          "grade": null,
+          "surplus_value": -5.3021
+        },
+        {
+          "player": "Blake Corum",
+          "nfl_team": "LAR",
+          "pos": "RB",
+          "round": 8,
+          "pick_in_round": 8,
+          "overall": 106,
+          "espn_adp": 109.0,
+          "adp_deviation": 3.0,
+          "grade": null,
+          "surplus_value": -7.7212
+        },
+        {
+          "player": "Tyler Shough",
+          "nfl_team": "NO",
+          "pos": "QB",
+          "round": 9,
+          "pick_in_round": 7,
+          "overall": 119,
+          "espn_adp": 128.0,
+          "adp_deviation": 9.0,
+          "grade": null,
+          "surplus_value": 4.3946
+        },
+        {
+          "player": "Jalen McMillan",
+          "nfl_team": "TB",
+          "pos": "WR",
+          "round": 10,
+          "pick_in_round": 8,
+          "overall": 134,
+          "espn_adp": 136.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Brock Purdy",
+          "nfl_team": "SF",
+          "pos": "QB",
+          "round": 11,
+          "pick_in_round": 7,
+          "overall": 147,
+          "espn_adp": 102.0,
+          "adp_deviation": -45.0,
+          "grade": null,
+          "surplus_value": 4.2767
+        },
+        {
+          "player": "Dylan Sampson",
+          "nfl_team": "CLE",
+          "pos": "RB",
+          "round": 12,
+          "pick_in_round": 8,
+          "overall": 162,
+          "espn_adp": 147.0,
+          "adp_deviation": -15.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Harrison Butker",
+          "nfl_team": "KC",
+          "pos": "K",
+          "round": 13,
+          "pick_in_round": 7,
+          "overall": 175,
+          "espn_adp": 192.0,
+          "adp_deviation": 17.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Browns D/ST",
+          "nfl_team": "CLE",
+          "pos": "D/ST",
+          "round": 14,
+          "pick_in_round": 8,
+          "overall": 190,
+          "espn_adp": 186.0,
+          "adp_deviation": -4.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Jordan James",
+          "nfl_team": "SF",
+          "pos": "RB",
+          "round": 15,
+          "pick_in_round": 7,
+          "overall": 203,
+          "espn_adp": 212.0,
+          "adp_deviation": 9.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Chris Bell",
+          "nfl_team": "MIA",
+          "pos": "WR",
+          "round": 16,
+          "pick_in_round": 8,
+          "overall": 218,
+          "espn_adp": 232.0,
+          "adp_deviation": 14.0,
+          "grade": null,
+          "surplus_value": -6.8303
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "baylen_01",
+          "file": "images/rankings/week_02/baylen_01.png",
+          "caption": ""
+        },
+        {
+          "id": "baylen_02",
+          "file": "images/rankings/week_02/baylen_02.png",
+          "caption": ""
+        },
+        {
+          "id": "baylen_03",
+          "file": "images/rankings/week_02/baylen_03.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 106.19
+    },
+    {
+      "manager": "Ryan P McQuaid",
+      "rank": 14,
+      "prev_rank": 10,
+      "rank_change": -4,
+      "avg_rank": 12.0,
+      "ppg_to_date": 80.2,
+      "record_to_date": "0-1",
+      "last_score": 80.2,
+      "streak": "L1",
+      "proj_ppg": 118.5,
+      "sos_avg_opp_ppg": 111.65,
+      "sos_rank": 8,
+      "synopsis": "Commish falls 4 spots after a brutal Week 1 where he was the only team to not reach at least 102 points, finishing with over 20 points less than the 2nd lowest scoring team.",
+      "blurb": "<mark class=\"hl-manager\" style=\"color:#bd0517;\">Commish</mark> falls <strong class=\"hl-stat\">4</strong> spots after a brutal Week <strong class=\"hl-stat\">1</strong> where he was the only team to not reach at least <strong class=\"hl-stat\">102</strong> points, finishing with over <strong class=\"hl-stat\">20</strong> points less than the <strong class=\"hl-stat\">2nd</strong> lowest scoring team. <strong class=\"hl-key\">Week <strong class=\"hl-stat\">1</strong> was actually <mark class=\"hl-manager\" style=\"color:#bd0517;\">McQuaid</mark>’s <strong class=\"hl-stat\">8th</strong> lowest scoring performance in franchise history out of <strong class=\"hl-stat\">82</strong> regular season weeks</strong>, not the greatest way to open a season but hopefully it’s only up from here. [[img:ryan_01]] In last week’s rankings, I said this team was best classified as “fun”, but I don’t think <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> had much fun in Week <strong class=\"hl-stat\">1</strong>. <mark class=\"hl-player\">Christian McCaffrey</mark> started slow with <mark class=\"hl-player\">Kaelon Black</mark> having a bigger role than anticipated, <mark class=\"hl-player\">George Kittle</mark> didn’t look like his pre-injury self, <mark class=\"hl-player\">Emeka Egbuka</mark> wasn’t the alpha that we expect him to be in that offense, and <mark class=\"hl-player\">Jadarian Price</mark> had a typical rookie debut. I don’t expect all of these to flip or get better in the coming weeks, but I do think at least a couple of them will. After one week, <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> has the “worst” surplus value from the draft out of all <strong class=\"hl-stat\">14</strong> managers, but that stat is extremely volatile after just a single week and I don’t think it should really be taken seriously yet, just funny how that shaped up after the pre-season talk with the “Quad Files”. [[img:ryan_02]] The defense should also go positive in Week <strong class=\"hl-stat\">2</strong>, or maybe he’ll be cursed for <strong class=\"hl-stat\">2026</strong> as the spokesperson for anti-defense, but that shouldn’t alter the course of his <strong class=\"hl-stat\">2026</strong> campaign. It’s projected to be a close matchup with <em class=\"hl-team\">The Minutemen</em> in Week <strong class=\"hl-stat\">2</strong>, so let’s see if <mark class=\"hl-manager\" style=\"color:#bd0517;\">RPM</mark> can get his <strong class=\"hl-stat\">1st</strong> win of <strong class=\"hl-stat\">2026</strong> against a solid opponent. [[img:ryan_03]]",
+      "draft_grade": -61.53,
+      "draft_surplus_total": -61.53,
+      "draft_picks": [
+        {
+          "player": "Christian McCaffrey",
+          "nfl_team": "SF",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 5,
+          "overall": 5,
+          "espn_adp": 7.0,
+          "adp_deviation": 2.0,
+          "grade": null,
+          "surplus_value": -8.5233
+        },
+        {
+          "player": "Garrett Wilson",
+          "nfl_team": "NYJ",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 10,
+          "overall": 24,
+          "espn_adp": 29.0,
+          "adp_deviation": 5.0,
+          "grade": null,
+          "surplus_value": -5.7782
+        },
+        {
+          "player": "Emeka Egbuka",
+          "nfl_team": "TB",
+          "pos": "WR",
+          "round": 3,
+          "pick_in_round": 5,
+          "overall": 33,
+          "espn_adp": 38.0,
+          "adp_deviation": 5.0,
+          "grade": null,
+          "surplus_value": -6.7546
+        },
+        {
+          "player": "Jadarian Price",
+          "nfl_team": "SEA",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 10,
+          "overall": 52,
+          "espn_adp": 59.0,
+          "adp_deviation": 7.0,
+          "grade": null,
+          "surplus_value": -8.3538
+        },
+        {
+          "player": "Joe Burrow",
+          "nfl_team": "CIN",
+          "pos": "QB",
+          "round": 5,
+          "pick_in_round": 5,
+          "overall": 61,
+          "espn_adp": 64.0,
+          "adp_deviation": 3.0,
+          "grade": null,
+          "surplus_value": -7.7489
+        },
+        {
+          "player": "George Kittle",
+          "nfl_team": "SF",
+          "pos": "TE",
+          "round": 6,
+          "pick_in_round": 10,
+          "overall": 80,
+          "espn_adp": 81.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": -8.0415
+        },
+        {
+          "player": "Brian Thomas Jr.",
+          "nfl_team": "JAX",
+          "pos": "WR",
+          "round": 7,
+          "pick_in_round": 5,
+          "overall": 89,
+          "espn_adp": 94.0,
+          "adp_deviation": 5.0,
+          "grade": null,
+          "surplus_value": -8.0348
+        },
+        {
+          "player": "Chris Godwin Jr.",
+          "nfl_team": "TB",
+          "pos": "WR",
+          "round": 8,
+          "pick_in_round": 10,
+          "overall": 108,
+          "espn_adp": 97.0,
+          "adp_deviation": -11.0,
+          "grade": null,
+          "surplus_value": -4.839
+        },
+        {
+          "player": "Aaron Jones Sr.",
+          "nfl_team": "MIN",
+          "pos": "RB",
+          "round": 9,
+          "pick_in_round": 5,
+          "overall": 117,
+          "espn_adp": 90.0,
+          "adp_deviation": -27.0,
+          "grade": null,
+          "surplus_value": -3.9086
+        },
+        {
+          "player": "Texans D/ST",
+          "nfl_team": "HOU",
+          "pos": "D/ST",
+          "round": 10,
+          "pick_in_round": 10,
+          "overall": 136,
+          "espn_adp": 141.0,
+          "adp_deviation": 5.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Kyler Murray",
+          "nfl_team": "MIN",
+          "pos": "QB",
+          "round": 11,
+          "pick_in_round": 5,
+          "overall": 145,
+          "espn_adp": 116.0,
+          "adp_deviation": -29.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Tre Tucker",
+          "nfl_team": "LV",
+          "pos": "WR",
+          "round": 12,
+          "pick_in_round": 10,
+          "overall": 164,
+          "espn_adp": 171.0,
+          "adp_deviation": 7.0,
+          "grade": null,
+          "surplus_value": -6.2447
+        },
+        {
+          "player": "Kenyon Sadiq",
+          "nfl_team": "NYJ",
+          "pos": "TE",
+          "round": 13,
+          "pick_in_round": 5,
+          "overall": 173,
+          "espn_adp": 154.0,
+          "adp_deviation": -19.0,
+          "grade": null,
+          "surplus_value": 3.0835
+        },
+        {
+          "player": "Cam Little",
+          "nfl_team": "JAX",
+          "pos": "K",
+          "round": 14,
+          "pick_in_round": 10,
+          "overall": 192,
+          "espn_adp": 193.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Ryan Flournoy",
+          "nfl_team": "DAL",
+          "pos": "WR",
+          "round": 15,
+          "pick_in_round": 5,
+          "overall": 201,
+          "espn_adp": 205.0,
+          "adp_deviation": 4.0,
+          "grade": null,
+          "surplus_value": -7.8655
+        },
+        {
+          "player": "James Conner",
+          "nfl_team": "ARI",
+          "pos": "RB",
+          "round": 16,
+          "pick_in_round": 10,
+          "overall": 220,
+          "espn_adp": 249.0,
+          "adp_deviation": 29.0,
+          "grade": null,
+          "surplus_value": 0.0
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "ryan_01",
+          "file": "images/rankings/week_02/ryan_01.png",
+          "caption": ""
+        },
+        {
+          "id": "ryan_02",
+          "file": "images/rankings/week_02/ryan_02.png",
+          "caption": ""
+        },
+        {
+          "id": "ryan_03",
+          "file": "images/rankings/week_02/ryan_03.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 111.91
+    },
+    {
+      "manager": "Anthony Kelly",
+      "rank": 3,
+      "prev_rank": 12,
+      "rank_change": 9,
+      "avg_rank": 7.5,
+      "ppg_to_date": 140.3,
+      "record_to_date": "1-0",
+      "last_score": 140.3,
+      "streak": "W1",
+      "proj_ppg": 109.1,
+      "sos_avg_opp_ppg": 112.99,
+      "sos_rank": 2,
+      "synopsis": "The biggest mover in rankings this week, Anthony jumps from #12 to #3 with a single performance where he put up the most points in Week 1.",
+      "blurb": "The biggest mover in rankings this week, <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> jumps from #<strong class=\"hl-stat\">12</strong> to #<strong class=\"hl-stat\">3</strong> with a single performance where he put up the most points in Week <strong class=\"hl-stat\">1</strong>. His league-high <strong class=\"hl-stat\">140</strong>-point performance was led by a three headed monster of <mark class=\"hl-player\">Josh Allen</mark>, <mark class=\"hl-player\">D’Andre Swift</mark>, and <mark class=\"hl-player\">Christian Watson</mark>, those three combined for <strong class=\"hl-stat\">72</strong>% of the team’s total points. In fact, those three finished within the top <strong class=\"hl-stat\">10</strong> of all players for Week <strong class=\"hl-stat\">1</strong>. [[img:anthony_01]] <strong class=\"hl-key\">The team is the real deal, I mean they led the league in points, putting them this high is only right</strong>. However, I don’t see this ranking lasting. <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> is going to get more out of <mark class=\"hl-player\">James Cook</mark>, sure, but don’t expect <mark class=\"hl-player\">Christian Watson</mark> and <mark class=\"hl-player\">D’Andre Swift</mark> to be top options at their position each week, and with the injury to <mark class=\"hl-player\">A.J. Brown</mark> and <mark class=\"hl-player\">Courtland Sutton</mark> looking almost “dried up” I think times could get scary for <em class=\"hl-team\">Rolls With Butter</em> in the coming weeks. The team is projected to score very few points in Week <strong class=\"hl-stat\">2</strong>, and from that point onward they are projected to have one of the hardest strength of schedules. I just don’t see this high ranking lasting very long but respect was earned after that great Week <strong class=\"hl-stat\">1</strong> performance. [[img:anthony_02]] [[img:anthony_03]]",
+      "draft_grade": -16.05,
+      "draft_surplus_total": -16.05,
+      "draft_picks": [
+        {
+          "player": "James Cook",
+          "nfl_team": "BUF",
+          "pos": "RB",
+          "round": 1,
+          "pick_in_round": 10,
+          "overall": 10,
+          "espn_adp": 9.0,
+          "adp_deviation": -1.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "A.J. Brown",
+          "nfl_team": "NE",
+          "pos": "WR",
+          "round": 2,
+          "pick_in_round": 5,
+          "overall": 19,
+          "espn_adp": 19.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": -14.1962
+        },
+        {
+          "player": "Josh Allen",
+          "nfl_team": "BUF",
+          "pos": "QB",
+          "round": 3,
+          "pick_in_round": 10,
+          "overall": 38,
+          "espn_adp": 26.0,
+          "adp_deviation": -12.0,
+          "grade": null,
+          "surplus_value": 13.688
+        },
+        {
+          "player": "D'Andre Swift",
+          "nfl_team": "CHI",
+          "pos": "RB",
+          "round": 4,
+          "pick_in_round": 5,
+          "overall": 47,
+          "espn_adp": 47.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": 14.281
+        },
+        {
+          "player": "Christian Watson",
+          "nfl_team": "GB",
+          "pos": "WR",
+          "round": 5,
+          "pick_in_round": 10,
+          "overall": 66,
+          "espn_adp": 75.0,
+          "adp_deviation": 9.0,
+          "grade": null,
+          "surplus_value": 16.8696
+        },
+        {
+          "player": "Courtland Sutton",
+          "nfl_team": "DEN",
+          "pos": "WR",
+          "round": 6,
+          "pick_in_round": 5,
+          "overall": 75,
+          "espn_adp": 71.0,
+          "adp_deviation": -4.0,
+          "grade": null,
+          "surplus_value": -12.8988
+        },
+        {
+          "player": "RJ Harvey",
+          "nfl_team": "DEN",
+          "pos": "RB",
+          "round": 7,
+          "pick_in_round": 10,
+          "overall": 94,
+          "espn_adp": 103.0,
+          "adp_deviation": 9.0,
+          "grade": null,
+          "surplus_value": -7.7443
+        },
+        {
+          "player": "Jake Ferguson",
+          "nfl_team": "DAL",
+          "pos": "TE",
+          "round": 8,
+          "pick_in_round": 5,
+          "overall": 103,
+          "espn_adp": 110.0,
+          "adp_deviation": 7.0,
+          "grade": null,
+          "surplus_value": -8.7888
+        },
+        {
+          "player": "Jordan Mason",
+          "nfl_team": "MIN",
+          "pos": "RB",
+          "round": 9,
+          "pick_in_round": 10,
+          "overall": 122,
+          "espn_adp": 130.0,
+          "adp_deviation": 8.0,
+          "grade": null,
+          "surplus_value": -1.5587
+        },
+        {
+          "player": "Zach Charbonnet",
+          "nfl_team": "SEA",
+          "pos": "RB",
+          "round": 10,
+          "pick_in_round": 5,
+          "overall": 131,
+          "espn_adp": 131.0,
+          "adp_deviation": 0.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Jordyn Tyson",
+          "nfl_team": "NO",
+          "pos": "WR",
+          "round": 11,
+          "pick_in_round": 10,
+          "overall": 150,
+          "espn_adp": 170.0,
+          "adp_deviation": 20.0,
+          "grade": null,
+          "surplus_value": 0.0
+        },
+        {
+          "player": "Braelon Allen",
+          "nfl_team": "NYJ",
+          "pos": "RB",
+          "round": 12,
+          "pick_in_round": 5,
+          "overall": 159,
+          "espn_adp": 175.0,
+          "adp_deviation": 16.0,
+          "grade": null,
+          "surplus_value": -10.518
+        },
+        {
+          "player": "Omar Cooper Jr.",
+          "nfl_team": "NYJ",
+          "pos": "WR",
+          "round": 13,
+          "pick_in_round": 10,
+          "overall": 178,
+          "espn_adp": 209.0,
+          "adp_deviation": 31.0,
+          "grade": null,
+          "surplus_value": -6.6242
+        },
+        {
+          "player": "Lions D/ST",
+          "nfl_team": "DET",
+          "pos": "D/ST",
+          "round": 14,
+          "pick_in_round": 5,
+          "overall": 187,
+          "espn_adp": 188.0,
+          "adp_deviation": 1.0,
+          "grade": null,
+          "surplus_value": null
+        },
+        {
+          "player": "Ray Davis",
+          "nfl_team": "BUF",
+          "pos": "RB",
+          "round": 15,
+          "pick_in_round": 10,
+          "overall": 206,
+          "espn_adp": 180.0,
+          "adp_deviation": -26.0,
+          "grade": null,
+          "surplus_value": -11.3249
+        },
+        {
+          "player": "Chris Boswell",
+          "nfl_team": "PIT",
+          "pos": "K",
+          "round": 16,
+          "pick_in_round": 5,
+          "overall": 215,
+          "espn_adp": 237.0,
+          "adp_deviation": 22.0,
+          "grade": null,
+          "surplus_value": null
+        }
+      ],
+      "screenshots": [
+        {
+          "id": "anthony_01",
+          "file": "images/rankings/week_02/anthony_01.png",
+          "caption": ""
+        },
+        {
+          "id": "anthony_02",
+          "file": "images/rankings/week_02/anthony_02.png",
+          "caption": ""
+        }
+      ],
+      "proj_ppg_ros": 104.61
+    }
+  ],
+  "player_season_totals": {
+    "A.J. Brown|WR": 5.6,
+    "AJ Barner|TE": 3.3,
+    "AJ Dillon|RB": 2.8,
+    "Aaron Jones Sr.|RB": 10.0,
+    "Aaron Rodgers|QB": 12.54,
+    "Adam Trautman|TE": 3.0,
+    "Adonai Mitchell|WR": 9.0,
+    "Alec Pierce|WR": 10.1,
+    "Ameer Abdullah|RB": 4.2,
+    "Amon-Ra St. Brown|WR": 28.7,
+    "Andrei Iosivas|WR": 3.2,
+    "Antonio Williams|WR": 16.4,
+    "Ashton Jeanty|RB": 32.7,
+    "Baker Mayfield|QB": 11.64,
+    "Barion Brown|WR": 0.3,
+    "Bhayshul Tuten|RB": 9.8,
+    "Bijan Robinson|RB": 31.3,
+    "Blake Corum|RB": 5.4,
+    "Blake Whiteheart|TE": 2.4,
+    "Bo Melton|WR": 2.0,
+    "Bo Nix|QB": 5.44,
+    "Brady Russell|RB": 4.0,
+    "Braelon Allen|RB": 4.0,
+    "Breece Hall|RB": 19.8,
+    "Brenton Strange|TE": 10.3,
+    "Brevyn Spann-Ford|TE": 3.4,
+    "Brian Robinson Jr.|RB": 3.1,
+    "Brian Thomas Jr.|WR": 7.0,
+    "Brock Purdy|QB": 21.1,
+    "Brock Wright|TE": 1.5,
+    "Bryce Lance|WR": 7.2,
+    "Bryce Young|QB": 31.44,
+    "Bucky Irving|RB": 20.3,
+    "C.J. Stroud|QB": 16.46,
+    "Cade Otton|TE": 5.6,
+    "Cade Stover|TE": 0.8,
+    "Caleb Douglas|WR": 14.4,
+    "Caleb Williams|QB": 37.26,
+    "Cam Skattebo|RB": 14.1,
+    "Cam Ward|QB": 11.7,
+    "Carnell Tate|WR": 7.8,
+    "Carson Wentz|QB": 19.22,
+    "CeeDee Lamb|WR": 15.4,
+    "Chase Brown|RB": 18.8,
+    "Chig Okonkwo|TE": 3.6,
+    "Chris Bell|WR": 3.5,
+    "Chris Brooks|RB": 2.9,
+    "Chris Godwin Jr.|WR": 8.3,
+    "Chris Moore|WR": 6.3,
+    "Chris Olave|WR": 28.2,
+    "Chris Rodriguez Jr.|RB": 2.3,
+    "Christian McCaffrey|RB": 13.8,
+    "Christian Watson|WR": 32.7,
+    "Chuba Hubbard|RB": 23.7,
+    "Colby Parkinson|TE": 1.6,
+    "Cole Kmet|TE": 11.5,
+    "Connor Heyward|RB": 0.1,
+    "Cooper Kupp|WR": 5.5,
+    "Cooper Rush|QB": 5.72,
+    "Corey Kiner|RB": 1.1,
+    "Courtland Sutton|WR": 3.1,
+    "D'Andre Swift|RB": 32.4,
+    "DJ Moore|WR": 21.0,
+    "DK Metcalf|WR": 8.0,
+    "Dak Prescott|QB": 14.4,
+    "Dallas Goedert|TE": 23.7,
+    "Dalton Kincaid|TE": 18.0,
+    "Dalton Schultz|TE": 7.5,
+    "Daniel Bellinger|TE": 1.7,
+    "Daniel Jones|QB": 9.04,
+    "Darnell Mooney|WR": 4.7,
+    "Darnell Washington|TE": 3.8,
+    "Darren Waller|TE": 4.8,
+    "Davante Adams|WR": 5.6,
+    "David Montgomery|RB": 28.9,
+    "David Njoku|TE": 10.8,
+    "Davis Allen|TE": 2.3,
+    "Dawson Knox|TE": 1.7,
+    "De'Von Achane|RB": 10.6,
+    "DeMario Douglas|WR": 7.0,
+    "DeVonta Smith|WR": 8.3,
+    "DeeJay Dallas|RB": 1.1,
+    "Deebo Samuel Sr.|WR": 18.0,
+    "Demarcus Robinson|WR": 13.0,
+    "Denzel Boston|WR": 13.9,
+    "Derrick Henry|RB": 35.3,
+    "Deshaun Watson|QB": 14.0,
+    "Devaughn Vele|WR": 19.9,
+    "Devin Singletary|RB": 13.8,
+    "Dohnte Meyers|WR": 3.8,
+    "Dontayvion Wicks|WR": 15.3,
+    "Drake London|WR": 5.5,
+    "Drake Maye|QB": 9.82,
+    "Drew Lock|QB": 12.78,
+    "Drew Sample|TE": 4.9,
+    "Durham Smythe|TE": 1.4,
+    "Eli Raridon|TE": 7.2,
+    "Elic Ayomanor|WR": 8.1,
+    "Emanuel Wilson|RB": 0.3,
+    "Emari Demercado|RB": 0.7,
+    "Emeka Egbuka|WR": 11.3,
+    "Emmett Johnson|RB": 8.8,
+    "Evan Engram|TE": 14.3,
+    "Foster Moreau|TE": 3.5,
+    "Frank Gore Jr.|RB": 0.3,
+    "Garrett Wilson|WR": 13.9,
+    "Geno Smith|QB": 9.3,
+    "George Holani|RB": 2.9,
+    "George Kittle|TE": 3.2,
+    "George Pickens|WR": 5.8,
+    "Greg Dulcich|TE": 3.8,
+    "Gunnar Helm|TE": 6.8,
+    "Harold Fannin Jr.|TE": 4.1,
+    "Hunter Henry|TE": 5.6,
+    "Hunter Luepke|RB": 0.7,
+    "Isaiah Likely|TE": 27.8,
+    "Isaiah Williams|WR": 1.7,
+    "J.K. Dobbins|RB": 3.6,
+    "Ja'Kobi Lane|WR": 2.1,
+    "Ja'Marr Chase|WR": 3.2,
+    "Jack Bech|WR": 11.3,
+    "Jacoby Brissett|QB": 16.48,
+    "Jacory Croskey-Merritt|RB": 12.6,
+    "Jadarian Price|RB": 7.8,
+    "Jahan Dotson|WR": 2.9,
+    "Jahdae Walker|WR": 7.1,
+    "Jahmyr Gibbs|RB": 33.6,
+    "Jake Ferguson|TE": 2.6,
+    "Jakobi Meyers|WR": 12.2,
+    "Jalen Coker|WR": 33.8,
+    "Jalen Hurts|QB": 24.72,
+    "Jalen Nailor|WR": 5.7,
+    "James Cook III|RB": 9.9,
+    "Jameson Williams|WR": 8.5,
+    "Jared Goff|QB": 16.44,
+    "Jared Wayne|WR": 2.2,
+    "Javonte Williams|RB": 24.2,
+    "Jaxon Smith-Njigba|WR": 26.2,
+    "Jaxson Dart|QB": 26.6,
+    "Jayden Daniels|QB": 17.66,
+    "Jayden Reed|WR": 5.0,
+    "Jaylen Waddle|WR": 1.2,
+    "Jaylen Warren|RB": 10.3,
+    "Jaylin Lane|WR": 1.4,
+    "Jaylin Noel|WR": 7.3,
+    "Jeremiyah Love|RB": 13.0,
+    "Jeremy Ruckert|TE": 1.4,
+    "Jerry Jeudy|WR": 4.6,
+    "Joe Burrow|QB": 14.16,
+    "John Bates|TE": 3.3,
+    "Jonathan Mingo|WR": 2.0,
+    "Jonathan Taylor|RB": 25.1,
+    "Jonathon Brooks|RB": 7.2,
+    "Jonnu Smith|TE": 7.0,
+    "Jordan Love|QB": 19.48,
+    "Jordan Mason|RB": 11.9,
+    "Jordan Whittington|WR": 1.8,
+    "Josh Allen|QB": 35.66,
+    "Josh Cameron|WR": 10.0,
+    "Josh Downs|WR": 5.7,
+    "Josh Oliver|TE": 4.2,
+    "Joshua Palmer|WR": 10.4,
+    "Justice Hill|RB": 3.8,
+    "Justin Herbert|QB": 13.26,
+    "Justin Jefferson|WR": 31.2,
+    "Juwan Johnson|TE": 14.4,
+    "KC Concepcion|WR": 7.8,
+    "KaVontae Turpin|WR": 1.8,
+    "Kaelon Black|RB": 8.0,
+    "Kalif Raymond|WR": 16.4,
+    "Kayshon Boutte|WR": 3.1,
+    "Kaytron Allen|RB": 1.6,
+    "Keaton Mitchell|RB": 0.9,
+    "Keenan Allen|WR": 9.2,
+    "Kendre Miller|RB": 9.0,
+    "Kendrick Bourne|WR": 15.5,
+    "Kenneth Walker III|RB": 34.1,
+    "Kenny Gainwell|RB": 2.8,
+    "Kenny Pickett|QB": 2.4,
+    "Kenyon Sadiq|TE": 11.4,
+    "Keon Coleman|WR": 1.1,
+    "Khalil Shakir|WR": 9.0,
+    "Kirk Cousins|QB": 13.8,
+    "Kyle Monangai|RB": 20.4,
+    "Kyren Williams|RB": 15.5,
+    "LaJohntay Wester|WR": 3.5,
+    "Ladd McConkey|WR": 19.2,
+    "Lamar Jackson|QB": 24.96,
+    "Lan Larison|RB": 2.9,
+    "Luke Farrell|TE": 3.9,
+    "Luke Schoonmaker|TE": 2.2,
+    "Luther Burden III|WR": 9.5,
+    "Mack Hollins|WR": 9.1,
+    "Makai Lemon|WR": 2.5,
+    "Malachi Fields|WR": 4.5,
+    "Malik Benson|WR": 0.8,
+    "Malik Nabers|WR": 12.9,
+    "Malik Washington|WR": 6.3,
+    "Malik Willis|QB": 16.7,
+    "MarShawn Lloyd|RB": 3.7,
+    "Mark Andrews|TE": 8.9,
+    "Marlin Klein|TE": 2.6,
+    "Marvin Harrison Jr.|WR": 4.3,
+    "Mason Taylor|TE": 1.8,
+    "Matthew Golden|WR": 15.5,
+    "Matthew Hibner|TE": 2.3,
+    "Matthew Stafford|QB": 4.1,
+    "Michael Mayer|TE": 9.2,
+    "Michael Pittman Jr.|WR": 8.8,
+    "Michael Wilson|WR": 10.6,
+    "Mike Evans|WR": 16.9,
+    "Mike Gesicki|TE": 18.8,
+    "Mike Washington Jr.|RB": 4.1,
+    "Mitchell Evans|TE": 1.9,
+    "Nate Boerkircher|TE": 1.9,
+    "Nico Collins|WR": 21.2,
+    "Noah Fant|TE": 13.3,
+    "Noah Gray|TE": 1.5,
+    "Olamide Zaccheaus|WR": 1.5,
+    "Omar Cooper Jr.|WR": 4.0,
+    "Omarion Hampton|RB": 8.3,
+    "Oronde Gadsden|TE": 5.2,
+    "Parker Washington|WR": 19.3,
+    "Pat Bryant|WR": 8.2,
+    "Pat Freiermuth|TE": 15.6,
+    "Patrick Mahomes|QB": 21.66,
+    "Puka Nacua|WR": 12.4,
+    "Quentin Johnston|WR": 3.7,
+    "Quinshon Judkins|RB": 7.0,
+    "RJ Harvey|RB": 8.1,
+    "Rachaad White|RB": 4.7,
+    "Raheim Sanders|RB": 5.6,
+    "Rashee Rice|WR": 9.9,
+    "Rashid Shaheed|WR": 1.4,
+    "Ray Davis|RB": 0.3,
+    "Rhamondre Stevenson|RB": 14.5,
+    "Rico Dowdle|RB": 4.1,
+    "Roman Wilson|WR": 5.6,
+    "Rome Odunze|WR": 7.2,
+    "Ronnie Rivers|RB": 3.4,
+    "Ryan Flournoy|WR": 4.2,
+    "Sam Darnold|QB": 0.52,
+    "Sam LaPorta|TE": 9.8,
+    "Samaje Perine|RB": 8.0,
+    "Saquon Barkley|RB": 9.0,
+    "Seth McGowan|RB": 1.0,
+    "Sione Vaki|RB": 2.8,
+    "Stefon Diggs|WR": 15.5,
+    "Stetson Bennett IV|QB": 1.42,
+    "T.J. Hockenson|TE": 13.6,
+    "Tank Bigsby|RB": 0.3,
+    "Ted Hurst III|WR": 6.6,
+    "Tee Higgins|WR": 8.9,
+    "Terry McLaurin|WR": 3.4,
+    "Tetairoa McMillan|WR": 10.5,
+    "Theo Johnson|TE": 1.9,
+    "Tommy Tremble|TE": 5.5,
+    "Tony Pollard|RB": 4.4,
+    "Travis Etienne Jr.|RB": 14.8,
+    "Travis Hunter|WR": 2.1,
+    "Travis Kelce|TE": 10.1,
+    "Tre Tucker|WR": 4.7,
+    "Tre' Harris|WR": 5.0,
+    "Trevor Lawrence|QB": 26.1,
+    "Trey McBride|TE": 24.5,
+    "Troy Franklin|WR": 0.5,
+    "Tucker Kraft|TE": 9.5,
+    "Tyjae Spears|RB": 4.4,
+    "Tyler Allgeier|RB": 9.0,
+    "Tyler Higbee|TE": 1.2,
+    "Tyler Shough|QB": 23.2,
+    "Tyler Warren|TE": 10.3,
+    "Wan'Dale Robinson|WR": 8.8,
+    "Will Shipley|RB": 2.2,
+    "Woody Marks|RB": 5.0,
+    "Xavier Hutchinson|WR": 6.2,
+    "Xavier Worthy|WR": 4.8,
+    "Zay Flowers|WR": 26.0
+  },
+  "undrafted_players": [
+    {
+      "player": "AJ Barner",
+      "pos": "TE",
+      "nfl_team": "SEA"
+    },
+    {
+      "player": "AJ Dillon",
+      "pos": "RB",
+      "nfl_team": "CAR"
+    },
+    {
+      "player": "Aaron Rodgers",
+      "pos": "QB",
+      "nfl_team": "PIT"
+    },
+    {
+      "player": "Adam Trautman",
+      "pos": "TE",
+      "nfl_team": "DEN"
+    },
+    {
+      "player": "Ameer Abdullah",
+      "pos": "RB",
+      "nfl_team": "JAX"
+    },
+    {
+      "player": "Andrei Iosivas",
+      "pos": "WR",
+      "nfl_team": "CIN"
+    },
+    {
+      "player": "Antonio Williams",
+      "pos": "WR",
+      "nfl_team": "WSH",
+      "manager": "Deniz Bileydi"
+    },
+    {
+      "player": "Barion Brown",
+      "pos": "WR",
+      "nfl_team": "NO"
+    },
+    {
+      "player": "Blake Whiteheart",
+      "pos": "TE",
+      "nfl_team": "CLE"
+    },
+    {
+      "player": "Bo Melton",
+      "pos": "WR",
+      "nfl_team": "GB"
+    },
+    {
+      "player": "Brady Russell",
+      "pos": "RB",
+      "nfl_team": "SEA"
+    },
+    {
+      "player": "Brevyn Spann-Ford",
+      "pos": "TE",
+      "nfl_team": "DAL"
+    },
+    {
+      "player": "Brock Wright",
+      "pos": "TE",
+      "nfl_team": "DET"
+    },
+    {
+      "player": "Bryce Lance",
+      "pos": "WR",
+      "nfl_team": "NO"
+    },
+    {
+      "player": "Bryce Young",
+      "pos": "QB",
+      "nfl_team": "CAR",
+      "manager": "Max Malich"
+    },
+    {
+      "player": "C.J. Stroud",
+      "pos": "QB",
+      "nfl_team": "HOU"
+    },
+    {
+      "player": "Cade Otton",
+      "pos": "TE",
+      "nfl_team": "TB",
+      "manager": "Tee'd up"
+    },
+    {
+      "player": "Cade Stover",
+      "pos": "TE",
+      "nfl_team": "HOU"
+    },
+    {
+      "player": "Cam Ward",
+      "pos": "QB",
+      "nfl_team": "TEN"
+    },
+    {
+      "player": "Carson Wentz",
+      "pos": "QB",
+      "nfl_team": "MIN"
+    },
+    {
+      "player": "Chris Brooks",
+      "pos": "RB",
+      "nfl_team": "GB",
+      "manager": "Deniz Bileydi"
+    },
+    {
+      "player": "Chris Moore",
+      "pos": "WR",
+      "nfl_team": "BAL"
+    },
+    {
+      "player": "Colby Parkinson",
+      "pos": "TE",
+      "nfl_team": "LAR"
+    },
+    {
+      "player": "Cole Kmet",
+      "pos": "TE",
+      "nfl_team": "CHI"
+    },
+    {
+      "player": "Connor Heyward",
+      "pos": "RB",
+      "nfl_team": "LV"
+    },
+    {
+      "player": "Cooper Kupp",
+      "pos": "WR",
+      "nfl_team": "SEA"
+    },
+    {
+      "player": "Cooper Rush",
+      "pos": "QB",
+      "nfl_team": "ATL"
+    },
+    {
+      "player": "Corey Kiner",
+      "pos": "RB",
+      "nfl_team": "NE"
+    },
+    {
+      "player": "Daniel Bellinger",
+      "pos": "TE",
+      "nfl_team": "TEN"
+    },
+    {
+      "player": "Darnell Mooney",
+      "pos": "WR",
+      "nfl_team": "NYG",
+      "manager": "Quin Gegwich"
+    },
+    {
+      "player": "Darnell Washington",
+      "pos": "TE",
+      "nfl_team": "PIT"
+    },
+    {
+      "player": "Darren Waller",
+      "pos": "TE",
+      "nfl_team": "CAR",
+      "manager": "Ryan McQuaid"
+    },
+    {
+      "player": "David Njoku",
+      "pos": "TE",
+      "nfl_team": "LAC",
+      "manager": "Max Malich"
+    },
+    {
+      "player": "Davis Allen",
+      "pos": "TE",
+      "nfl_team": "LAR"
+    },
+    {
+      "player": "Dawson Knox",
+      "pos": "TE",
+      "nfl_team": "BUF"
+    },
+    {
+      "player": "DeMario Douglas",
+      "pos": "WR",
+      "nfl_team": "NE"
+    },
+    {
+      "player": "DeeJay Dallas",
+      "pos": "RB",
+      "nfl_team": "MIN"
+    },
+    {
+      "player": "Demarcus Robinson",
+      "pos": "WR",
+      "nfl_team": "SF"
+    },
+    {
+      "player": "Deshaun Watson",
+      "pos": "QB",
+      "nfl_team": "CLE"
+    },
+    {
+      "player": "Devin Singletary",
+      "pos": "RB",
+      "nfl_team": "NYG"
+    },
+    {
+      "player": "Dohnte Meyers",
+      "pos": "WR",
+      "nfl_team": "CIN"
+    },
+    {
+      "player": "Drew Lock",
+      "pos": "QB",
+      "nfl_team": "SEA"
+    },
+    {
+      "player": "Drew Sample",
+      "pos": "TE",
+      "nfl_team": "CIN"
+    },
+    {
+      "player": "Durham Smythe",
+      "pos": "TE",
+      "nfl_team": "BAL"
+    },
+    {
+      "player": "Eli Raridon",
+      "pos": "TE",
+      "nfl_team": "NE"
+    },
+    {
+      "player": "Elic Ayomanor",
+      "pos": "WR",
+      "nfl_team": "TEN"
+    },
+    {
+      "player": "Emanuel Wilson",
+      "pos": "RB",
+      "nfl_team": "SEA"
+    },
+    {
+      "player": "Emari Demercado",
+      "pos": "RB",
+      "nfl_team": "DAL"
+    },
+    {
+      "player": "Emmett Johnson",
+      "pos": "RB",
+      "nfl_team": "KC",
+      "manager": "Baylen Slansky"
+    },
+    {
+      "player": "Evan Engram",
+      "pos": "TE",
+      "nfl_team": "DEN"
+    },
+    {
+      "player": "Foster Moreau",
+      "pos": "TE",
+      "nfl_team": "HOU"
+    },
+    {
+      "player": "Frank Gore Jr.",
+      "pos": "RB",
+      "nfl_team": "BUF"
+    },
+    {
+      "player": "Geno Smith",
+      "pos": "QB",
+      "nfl_team": "NYJ"
+    },
+    {
+      "player": "George Holani",
+      "pos": "RB",
+      "nfl_team": "SEA",
+      "manager": "Anthony Kelly"
+    },
+    {
+      "player": "Greg Dulcich",
+      "pos": "TE",
+      "nfl_team": "MIA"
+    },
+    {
+      "player": "Gunnar Helm",
+      "pos": "TE",
+      "nfl_team": "TEN"
+    },
+    {
+      "player": "Hunter Luepke",
+      "pos": "RB",
+      "nfl_team": "DAL"
+    },
+    {
+      "player": "Isaiah Williams",
+      "pos": "WR",
+      "nfl_team": "NYJ"
+    },
+    {
+      "player": "Jack Bech",
+      "pos": "WR",
+      "nfl_team": "LV"
+    },
+    {
+      "player": "Jacoby Brissett",
+      "pos": "QB",
+      "nfl_team": "ARI"
+    },
+    {
+      "player": "Jahan Dotson",
+      "pos": "WR",
+      "nfl_team": "ATL"
+    },
+    {
+      "player": "Jahdae Walker",
+      "pos": "WR",
+      "nfl_team": "CHI"
+    },
+    {
+      "player": "James Cook III",
+      "pos": "RB",
+      "nfl_team": "BUF",
+      "manager": "Anthony Kelly"
+    },
+    {
+      "player": "Jared Wayne",
+      "pos": "WR",
+      "nfl_team": "HOU"
+    },
+    {
+      "player": "Jaylin Lane",
+      "pos": "WR",
+      "nfl_team": "WSH"
+    },
+    {
+      "player": "Jeremy Ruckert",
+      "pos": "TE",
+      "nfl_team": "NYJ"
+    },
+    {
+      "player": "John Bates",
+      "pos": "TE",
+      "nfl_team": "WSH"
+    },
+    {
+      "player": "Jonathan Mingo",
+      "pos": "WR",
+      "nfl_team": "DAL"
+    },
+    {
+      "player": "Jonnu Smith",
+      "pos": "TE",
+      "nfl_team": "GB"
+    },
+    {
+      "player": "Jordan Whittington",
+      "pos": "WR",
+      "nfl_team": "LAR"
+    },
+    {
+      "player": "Josh Cameron",
+      "pos": "WR",
+      "nfl_team": "JAX"
+    },
+    {
+      "player": "Josh Oliver",
+      "pos": "TE",
+      "nfl_team": "MIN"
+    },
+    {
+      "player": "Joshua Palmer",
+      "pos": "WR",
+      "nfl_team": "BUF"
+    },
+    {
+      "player": "KaVontae Turpin",
+      "pos": "WR",
+      "nfl_team": "DAL"
+    },
+    {
+      "player": "Kalif Raymond",
+      "pos": "WR",
+      "nfl_team": "CHI"
+    },
+    {
+      "player": "Kayshon Boutte",
+      "pos": "WR",
+      "nfl_team": "HOU",
+      "manager": "Deniz Bileydi"
+    },
+    {
+      "player": "Kaytron Allen",
+      "pos": "RB",
+      "nfl_team": "WSH"
+    },
+    {
+      "player": "Kendre Miller",
+      "pos": "RB",
+      "nfl_team": "NO"
+    },
+    {
+      "player": "Kendrick Bourne",
+      "pos": "WR",
+      "nfl_team": "ARI",
+      "manager": "Brandon Hancock"
+    },
+    {
+      "player": "Kenny Pickett",
+      "pos": "QB",
+      "nfl_team": "CAR"
+    },
+    {
+      "player": "Keon Coleman",
+      "pos": "WR",
+      "nfl_team": "BUF"
+    },
+    {
+      "player": "Kirk Cousins",
+      "pos": "QB",
+      "nfl_team": "LV"
+    },
+    {
+      "player": "LaJohntay Wester",
+      "pos": "WR",
+      "nfl_team": "BAL"
+    },
+    {
+      "player": "Lan Larison",
+      "pos": "RB",
+      "nfl_team": "NE"
+    },
+    {
+      "player": "Luke Farrell",
+      "pos": "TE",
+      "nfl_team": "SF"
+    },
+    {
+      "player": "Luke Schoonmaker",
+      "pos": "TE",
+      "nfl_team": "DAL"
+    },
+    {
+      "player": "Mack Hollins",
+      "pos": "WR",
+      "nfl_team": "NE"
+    },
+    {
+      "player": "Malachi Fields",
+      "pos": "WR",
+      "nfl_team": "NYG",
+      "manager": "Brandon Hancock"
+    },
+    {
+      "player": "Malik Benson",
+      "pos": "WR",
+      "nfl_team": "LV"
+    },
+    {
+      "player": "Marlin Klein",
+      "pos": "TE",
+      "nfl_team": "HOU"
+    },
+    {
+      "player": "Mason Taylor",
+      "pos": "TE",
+      "nfl_team": "NYJ"
+    },
+    {
+      "player": "Matthew Hibner",
+      "pos": "TE",
+      "nfl_team": "BAL"
+    },
+    {
+      "player": "Michael Mayer",
+      "pos": "TE",
+      "nfl_team": "LV",
+      "manager": "Anthony Kelly"
+    },
+    {
+      "player": "Mike Gesicki",
+      "pos": "TE",
+      "nfl_team": "CIN"
+    },
+    {
+      "player": "Mitchell Evans",
+      "pos": "TE",
+      "nfl_team": "CAR"
+    },
+    {
+      "player": "Nate Boerkircher",
+      "pos": "TE",
+      "nfl_team": "JAX"
+    },
+    {
+      "player": "Noah Fant",
+      "pos": "TE",
+      "nfl_team": "NO"
+    },
+    {
+      "player": "Noah Gray",
+      "pos": "TE",
+      "nfl_team": "KC"
+    },
+    {
+      "player": "Olamide Zaccheaus",
+      "pos": "WR",
+      "nfl_team": "ATL"
+    },
+    {
+      "player": "Oronde Gadsden",
+      "pos": "TE",
+      "nfl_team": "LAC"
+    },
+    {
+      "player": "Pat Bryant",
+      "pos": "WR",
+      "nfl_team": "DEN"
+    },
+    {
+      "player": "Pat Freiermuth",
+      "pos": "TE",
+      "nfl_team": "PIT",
+      "manager": "Charlie Gorman"
+    },
+    {
+      "player": "Raheim Sanders",
+      "pos": "RB",
+      "nfl_team": "CLE"
+    },
+    {
+      "player": "Roman Wilson",
+      "pos": "WR",
+      "nfl_team": "PIT"
+    },
+    {
+      "player": "Ronnie Rivers",
+      "pos": "RB",
+      "nfl_team": "LAR"
+    },
+    {
+      "player": "Seth McGowan",
+      "pos": "RB",
+      "nfl_team": "IND",
+      "manager": "Tee'd up"
+    },
+    {
+      "player": "Sione Vaki",
+      "pos": "RB",
+      "nfl_team": "DET"
+    },
+    {
+      "player": "Stetson Bennett IV",
+      "pos": "QB",
+      "nfl_team": "LAR"
+    },
+    {
+      "player": "Ted Hurst III",
+      "pos": "WR",
+      "nfl_team": "TB"
+    },
+    {
+      "player": "Theo Johnson",
+      "pos": "TE",
+      "nfl_team": "NYG"
+    },
+    {
+      "player": "Tommy Tremble",
+      "pos": "TE",
+      "nfl_team": "CAR"
+    },
+    {
+      "player": "Travis Etienne Jr.",
+      "pos": "RB",
+      "nfl_team": "NO",
+      "manager": "Ben Castaldo"
+    },
+    {
+      "player": "Troy Franklin",
+      "pos": "WR",
+      "nfl_team": "DEN"
+    },
+    {
+      "player": "Tyler Higbee",
+      "pos": "TE",
+      "nfl_team": "LAR"
+    },
+    {
+      "player": "Will Shipley",
+      "pos": "RB",
+      "nfl_team": "PHI"
+    },
+    {
+      "player": "Xavier Hutchinson",
+      "pos": "WR",
+      "nfl_team": "HOU"
+    },
+    {
+      "player": "Malik Willis",
+      "pos": "QB",
+      "nfl_team": "MIA"
+    }
+  ]
+}
