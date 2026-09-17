@@ -380,7 +380,7 @@
       "screenshots": [
         {
           "id": "ethan_01",
-          "file": "images/rankings/week_02/ethan_01.png",
+          "file": "../images/rankings/week_02/ethan_01.png",
           "caption": ""
         }
       ],
@@ -600,17 +600,17 @@
       "screenshots": [
         {
           "id": "charlie_01",
-          "file": "images/rankings/week_02/charlie_01.png",
+          "file": "../images/rankings/week_02/charlie_01.png",
           "caption": ""
         },
         {
           "id": "charlie_02",
-          "file": "images/rankings/week_02/charlie_02.png",
+          "file": "../images/rankings/week_02/charlie_02.png",
           "caption": ""
         },
         {
           "id": "charlie_03",
-          "file": "images/rankings/week_02/charlie_03.png",
+          "file": "../images/rankings/week_02/charlie_03.png",
           "caption": ""
         }
       ],
@@ -830,12 +830,12 @@
       "screenshots": [
         {
           "id": "aidan_01",
-          "file": "images/rankings/week_02/aidan_01.png",
+          "file": "../images/rankings/week_02/aidan_01.png",
           "caption": ""
         },
         {
           "id": "aidan_02",
-          "file": "images/rankings/week_02/aidan_02.png",
+          "file": "../images/rankings/week_02/aidan_02.png",
           "caption": ""
         }
       ],
@@ -1043,17 +1043,17 @@
       "screenshots": [
         {
           "id": "carmine_01",
-          "file": "images/rankings/week_02/carmine_01.png",
+          "file": "../images/rankings/week_02/carmine_01.png",
           "caption": ""
         },
         {
           "id": "carmine_02",
-          "file": "images/rankings/week_02/carmine_02.png",
+          "file": "../images/rankings/week_02/carmine_02.png",
           "caption": ""
         },
         {
           "id": "carmine_03",
-          "file": "images/rankings/week_02/carmine_03.png",
+          "file": "../images/rankings/week_02/carmine_03.png",
           "caption": ""
         }
       ],
@@ -1273,7 +1273,7 @@
       "screenshots": [
         {
           "id": "ben_01",
-          "file": "images/rankings/week_02/ben_01.png",
+          "file": "../images/rankings/week_02/ben_01.png",
           "caption": ""
         }
       ],
@@ -1493,12 +1493,12 @@
       "screenshots": [
         {
           "id": "deniz_01",
-          "file": "images/rankings/week_02/deniz_01.png",
+          "file": "../images/rankings/week_02/deniz_01.png",
           "caption": ""
         },
         {
           "id": "deniz_02",
-          "file": "images/rankings/week_02/deniz_02.png",
+          "file": "../images/rankings/week_02/deniz_02.png",
           "caption": ""
         }
       ],
@@ -1718,12 +1718,12 @@
       "screenshots": [
         {
           "id": "brandon_01",
-          "file": "images/rankings/week_02/brandon_01.png",
+          "file": "../images/rankings/week_02/brandon_01.png",
           "caption": ""
         },
         {
           "id": "brandon_02",
-          "file": "images/rankings/week_02/brandon_02.png",
+          "file": "../images/rankings/week_02/brandon_02.png",
           "caption": ""
         }
       ],
@@ -1943,17 +1943,17 @@
       "screenshots": [
         {
           "id": "quin_01",
-          "file": "images/rankings/week_02/quin_01.png",
+          "file": "../images/rankings/week_02/quin_01.png",
           "caption": ""
         },
         {
           "id": "quin_02",
-          "file": "images/rankings/week_02/quin_02.png",
+          "file": "../images/rankings/week_02/quin_02.png",
           "caption": ""
         },
         {
           "id": "quin_03",
-          "file": "images/rankings/week_02/quin_03.png",
+          "file": "../images/rankings/week_02/quin_03.png",
           "caption": ""
         }
       ],
@@ -2173,17 +2173,17 @@
       "screenshots": [
         {
           "id": "cole_01",
-          "file": "images/rankings/week_02/cole_01.png",
+          "file": "../images/rankings/week_02/cole_01.png",
           "caption": ""
         },
         {
           "id": "cole_02",
-          "file": "images/rankings/week_02/cole_02.png",
+          "file": "../images/rankings/week_02/cole_02.png",
           "caption": ""
         },
         {
           "id": "cole_03",
-          "file": "images/rankings/week_02/cole_03.png",
+          "file": "../images/rankings/week_02/cole_03.png",
           "caption": ""
         }
       ],
@@ -2403,7 +2403,7 @@
       "screenshots": [
         {
           "id": "andrew_01",
-          "file": "images/rankings/week_02/andrew_01.png",
+          "file": "../images/rankings/week_02/andrew_01.png",
           "caption": ""
         }
       ],
@@ -2623,17 +2623,17 @@
       "screenshots": [
         {
           "id": "max_01",
-          "file": "images/rankings/week_02/max_01.png",
+          "file": "../images/rankings/week_02/max_01.png",
           "caption": ""
         },
         {
           "id": "max_02",
-          "file": "images/rankings/week_02/max_02.png",
+          "file": "../images/rankings/week_02/max_02.png",
           "caption": ""
         },
         {
           "id": "max_03",
-          "file": "images/rankings/week_02/max_03.png",
+          "file": "../images/rankings/week_02/max_03.png",
           "caption": ""
         }
       ],
@@ -2853,17 +2853,17 @@
       "screenshots": [
         {
           "id": "baylen_01",
-          "file": "images/rankings/week_02/baylen_01.png",
+          "file": "../images/rankings/week_02/baylen_01.png",
           "caption": ""
         },
         {
           "id": "baylen_02",
-          "file": "images/rankings/week_02/baylen_02.png",
+          "file": "../images/rankings/week_02/baylen_02.png",
           "caption": ""
         },
         {
           "id": "baylen_03",
-          "file": "images/rankings/week_02/baylen_03.png",
+          "file": "../images/rankings/week_02/baylen_03.png",
           "caption": ""
         }
       ],
@@ -3083,17 +3083,17 @@
       "screenshots": [
         {
           "id": "ryan_01",
-          "file": "images/rankings/week_02/ryan_01.png",
+          "file": "../images/rankings/week_02/ryan_01.png",
           "caption": ""
         },
         {
           "id": "ryan_02",
-          "file": "images/rankings/week_02/ryan_02.png",
+          "file": "../images/rankings/week_02/ryan_02.png",
           "caption": ""
         },
         {
           "id": "ryan_03",
-          "file": "images/rankings/week_02/ryan_03.png",
+          "file": "../images/rankings/week_02/ryan_03.png",
           "caption": ""
         }
       ],
@@ -3313,17 +3313,12 @@
       "screenshots": [
         {
           "id": "anthony_01",
-          "file": "images/rankings/week_02/anthony_01.png",
+          "file": "../images/rankings/week_02/anthony_01.png",
           "caption": ""
         },
         {
           "id": "anthony_02",
-          "file": "images/rankings/week_02/anthony_02.png",
-          "caption": ""
-        },
-        {
-          "id": "anthony_03",
-          "file": "images/rankings/week_02/anthony_03.png",
+          "file": "../images/rankings/week_02/anthony_02.png",
           "caption": ""
         }
       ],
