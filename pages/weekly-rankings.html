@@ -1361,10 +1361,15 @@ function renderBlurbWithImages(text, screenshots, managerName) {
     } else {
       var s = byId[parts[i]];
       if (s && s.file) {
+        // s.file is stored repo-root-relative (e.g. "images/rankings/week_02/x.png"),
+        // but this page lives in /pages/, one level below the repo root, so it
+        // needs a "../" prefix to actually resolve to /images/... instead of
+        // the nonexistent /pages/images/...
+        var filePath = '../' + s.file;
         html += '</p>'
-              + '<img class="rank-blurb-screenshot" src="' + s.file + '" '
+              + '<img class="rank-blurb-screenshot" src="' + filePath + '" '
               + 'alt="' + managerName + ' stat screenshot" '
-              + 'onclick="openScreenshotLightbox(event,\'' + s.file + '\')">'
+              + 'onclick="openScreenshotLightbox(event,\'' + filePath + '\')">'
               + (s.caption ? '<div class="rank-blurb-caption">' + s.caption + '</div>' : '')
               + '<p>';
       }
