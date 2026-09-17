@@ -4,20 +4,166 @@
   "hide_archetype_link": true,
   "matchup_of_the_week": {
     "team_a": {
-      "manager": null,
-      "rank": null,
-      "record": null,
-      "proj_total": null,
-      "starters": []
+      "manager": "Aidan Quigley",
+      "rank": 8,
+      "record": "0-1",
+      "proj_total": 114.8,
+      "starters": [
+        {
+          "player": "Matthew Stafford",
+          "nfl_team": "LAR",
+          "pos": "QB",
+          "slot": "QB",
+          "opp": "NYG",
+          "proj": 18.3
+        },
+        {
+          "player": "Javonte Williams",
+          "nfl_team": "DAL",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "WSH",
+          "proj": 16.7
+        },
+        {
+          "player": "Bhayshul Tuten",
+          "nfl_team": "JAX",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "@DEN",
+          "proj": 10.0
+        },
+        {
+          "player": "Ja'Marr Chase",
+          "nfl_team": "CIN",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "@HOU",
+          "proj": 19.0
+        },
+        {
+          "player": "Chris Olave",
+          "nfl_team": "NO",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "@BAL",
+          "proj": 15.8
+        },
+        {
+          "player": "Juwan Johnson",
+          "nfl_team": "NO",
+          "pos": "TE",
+          "slot": "TE",
+          "opp": "@BAL",
+          "proj": 8.9
+        },
+        {
+          "player": "Jameson Williams",
+          "nfl_team": "DET",
+          "pos": "WR",
+          "slot": "FLEX",
+          "opp": "@BUF",
+          "proj": 12.3
+        },
+        {
+          "player": "Ravens D/ST",
+          "nfl_team": "BAL",
+          "pos": "D/ST",
+          "slot": "D/ST",
+          "opp": "NO",
+          "proj": 5.1
+        },
+        {
+          "player": "Chase McLaughlin",
+          "nfl_team": "TB",
+          "pos": "K",
+          "slot": "K",
+          "opp": "CLE",
+          "proj": 8.8
+        }
+      ]
     },
     "team_b": {
-      "manager": null,
-      "rank": null,
-      "record": null,
-      "proj_total": null,
-      "starters": []
+      "manager": "Andrew Root",
+      "rank": 7,
+      "record": "0-1",
+      "proj_total": 116.9,
+      "starters": [
+        {
+          "player": "Patrick Mahomes",
+          "nfl_team": "KC",
+          "pos": "QB",
+          "slot": "QB",
+          "opp": "IND",
+          "proj": 18.2
+        },
+        {
+          "player": "De'Von Achane",
+          "nfl_team": "MIA",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "@SF",
+          "proj": 17.2
+        },
+        {
+          "player": "Rhamondre Stevenson",
+          "nfl_team": "NE",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "PIT",
+          "proj": 12.9
+        },
+        {
+          "player": "Justin Jefferson",
+          "nfl_team": "MIN",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "@CHI",
+          "proj": 18.4
+        },
+        {
+          "player": "Davante Adams",
+          "nfl_team": "LAR",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "NYG",
+          "proj": 13.7
+        },
+        {
+          "player": "Travis Kelce",
+          "nfl_team": "KC",
+          "pos": "TE",
+          "slot": "TE",
+          "opp": "IND",
+          "proj": 10.6
+        },
+        {
+          "player": "Tetairoa McMillan",
+          "nfl_team": "CAR",
+          "pos": "WR",
+          "slot": "FLEX",
+          "opp": "@ATL",
+          "proj": 13.7
+        },
+        {
+          "player": "Jaguars D/ST",
+          "nfl_team": "JAX",
+          "pos": "D/ST",
+          "slot": "D/ST",
+          "opp": "@DEN",
+          "proj": 3.2
+        },
+        {
+          "player": "Tyler Loop",
+          "nfl_team": "BAL",
+          "pos": "K",
+          "slot": "K",
+          "opp": "NO",
+          "proj": 9.1
+        }
+      ]
     },
-    "blurb": ""
+    "blurb": "Last week’s Matchup of the Week was a little anti-climatic thanks to <mark class=\"hl-player\">Ja’Marr Chase</mark> being nonexistent but I’ve decided to give <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> a <strong class=\"hl-stat\">2nd</strong> chance to get a prime time win against what should be an easier opponent. However, <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> is favored in this meeting and has the upper hand all-time with a record of <strong class=\"hl-stat\">5</strong>-<strong class=\"hl-stat\">1</strong> against <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark>. These rosters are eerily but <strong class=\"hl-key\">the key to this matchup in my eyes is the <mark class=\"hl-pos-WR\">WR</mark> production, specifically who will get more out of their alpha <mark class=\"hl-pos-WR\">WR</mark></strong>? Arguably the two best wide receivers in the game go toe-to-toe in Week <strong class=\"hl-stat\">2</strong>, it should be a fun one. Also, this is the only matchup this week between two teams without a win so there’s heightened stakes on the line."
   },
   "teams": [
     {
@@ -30,7 +176,7 @@
       "record_to_date": "1-0",
       "last_score": 130.6,
       "streak": "W1",
-      "proj_ppg": 116.7,
+      "proj_ppg": 108.9,
       "sos_avg_opp_ppg": 111.37,
       "sos_rank": 10,
       "synopsis": "The Zay Flowers injury could suck but we shall see.",
@@ -480,7 +626,7 @@
       "record_to_date": "0-1",
       "last_score": 109.4,
       "streak": "L1",
-      "proj_ppg": 114.1,
+      "proj_ppg": 114.8,
       "sos_avg_opp_ppg": 112.77,
       "sos_rank": 4,
       "synopsis": "Maybe my biggest surprise from Week 1.",
@@ -705,7 +851,7 @@
       "record_to_date": "1-0",
       "last_score": 124.3,
       "streak": "W1",
-      "proj_ppg": 119.9,
+      "proj_ppg": 119.4,
       "sos_avg_opp_ppg": 112.52,
       "sos_rank": 6,
       "synopsis": "Top three for the 2nd week in a row.",
@@ -882,18 +1028,6 @@
           "surplus_value": -4.036
         },
         {
-          "player": "Malik Willis",
-          "nfl_team": "MIA",
-          "pos": "QB",
-          "round": 15,
-          "pick_in_round": 2,
-          "overall": 198,
-          "espn_adp": 169.0,
-          "adp_deviation": -29.0,
-          "grade": null,
-          "surplus_value": 0.2348
-        },
-        {
           "player": "Cairo Santos",
           "nfl_team": "CHI",
           "pos": "K",
@@ -935,7 +1069,7 @@
       "record_to_date": "1-0",
       "last_score": 132.7,
       "streak": "W1",
-      "proj_ppg": 116.6,
+      "proj_ppg": 117.7,
       "sos_avg_opp_ppg": 111.47,
       "sos_rank": 9,
       "synopsis": "I think we could be in store for another great season from Ben.",
@@ -1155,7 +1289,7 @@
       "record_to_date": "0-1",
       "last_score": 114.8,
       "streak": "L1",
-      "proj_ppg": 114.7,
+      "proj_ppg": 113.8,
       "sos_avg_opp_ppg": 110.31,
       "sos_rank": 12,
       "synopsis": "Moving up the rankings, even if it is only one spot, Deniz fell to 0-1 after putting up middle of the pack numbers in Week 1.",
@@ -1380,7 +1514,7 @@
       "record_to_date": "1-0",
       "last_score": 118.6,
       "streak": "W1",
-      "proj_ppg": 114.5,
+      "proj_ppg": 115.5,
       "sos_avg_opp_ppg": 110.65,
       "sos_rank": 11,
       "synopsis": "It was a stress-free win in Week 1 for The Minutemen as they defeated Station Grits by 16 points.",
@@ -1605,7 +1739,7 @@
       "record_to_date": "0-1",
       "last_score": 107.1,
       "streak": "L1",
-      "proj_ppg": 110.8,
+      "proj_ppg": 111.6,
       "sos_avg_opp_ppg": 109.74,
       "sos_rank": 14,
       "synopsis": "You can’t really be happy if you’re Gegwich, can you?",
@@ -1835,7 +1969,7 @@
       "record_to_date": "0-1",
       "last_score": 120.7,
       "streak": "L1",
-      "proj_ppg": 114.8,
+      "proj_ppg": 115.2,
       "sos_avg_opp_ppg": 112.99,
       "sos_rank": 3,
       "synopsis": "The names just don’t get any better, do they?",
@@ -2065,7 +2199,7 @@
       "record_to_date": "0-1",
       "last_score": 122.7,
       "streak": "L1",
-      "proj_ppg": 116.3,
+      "proj_ppg": 116.9,
       "sos_avg_opp_ppg": 111.95,
       "sos_rank": 7,
       "synopsis": "No ranking change for Andrew after one week.",
@@ -2285,7 +2419,7 @@
       "record_to_date": "1-0",
       "last_score": 116.3,
       "streak": "W1",
-      "proj_ppg": 111.2,
+      "proj_ppg": 113.0,
       "sos_avg_opp_ppg": 112.68,
       "sos_rank": 5,
       "synopsis": "Max squeaked away from Week 1 with a 1.5-point win over Leased to Jetty, which is the franchise’s 3rd closest game of all time, including regular and post-season games.",
@@ -2515,7 +2649,7 @@
       "record_to_date": "0-1",
       "last_score": 102.5,
       "streak": "L1",
-      "proj_ppg": 109.0,
+      "proj_ppg": 109.2,
       "sos_avg_opp_ppg": 114.27,
       "sos_rank": 1,
       "synopsis": "Like Leased to Jetty, Baylen finds himself moving up the rankings after a Week 1 loss, even if it is only up one spot.",
@@ -2745,7 +2879,7 @@
       "record_to_date": "0-1",
       "last_score": 80.2,
       "streak": "L1",
-      "proj_ppg": 114.8,
+      "proj_ppg": 118.5,
       "sos_avg_opp_ppg": 111.65,
       "sos_rank": 8,
       "synopsis": "Commish falls 4 spots after a brutal Week 1 where he was the only team to not reach at least 102 points, finishing with over 20 points less than the 2nd lowest scoring team.",
@@ -2975,7 +3109,7 @@
       "record_to_date": "1-0",
       "last_score": 140.3,
       "streak": "W1",
-      "proj_ppg": 108.4,
+      "proj_ppg": 109.1,
       "sos_avg_opp_ppg": 112.99,
       "sos_rank": 2,
       "synopsis": "The biggest mover in rankings this week, Anthony jumps from #12 to #3 with a single performance where he put up the most points in Week 1.",
@@ -3505,7 +3639,8 @@
     {
       "player": "Antonio Williams",
       "pos": "WR",
-      "nfl_team": "WSH"
+      "nfl_team": "WSH",
+      "manager": "Deniz Bileydi"
     },
     {
       "player": "Barion Brown",
@@ -3545,7 +3680,8 @@
     {
       "player": "Bryce Young",
       "pos": "QB",
-      "nfl_team": "CAR"
+      "nfl_team": "CAR",
+      "manager": "Max Malich"
     },
     {
       "player": "C.J. Stroud",
@@ -3639,7 +3775,8 @@
     {
       "player": "David Njoku",
       "pos": "TE",
-      "nfl_team": "LAC"
+      "nfl_team": "LAC",
+      "manager": "Max Malich"
     },
     {
       "player": "Davis Allen",
@@ -3873,7 +4010,8 @@
     {
       "player": "Kendrick Bourne",
       "pos": "WR",
-      "nfl_team": "ARI"
+      "nfl_team": "ARI",
+      "manager": "Brandon Hancock"
     },
     {
       "player": "Kenny Pickett",
@@ -4064,6 +4202,11 @@
       "player": "Xavier Hutchinson",
       "pos": "WR",
       "nfl_team": "HOU"
+    },
+    {
+      "player": "Malik Willis",
+      "pos": "QB",
+      "nfl_team": "MIA"
     }
   ]
 }
