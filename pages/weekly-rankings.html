@@ -1063,11 +1063,28 @@ function kothInitials(name) {
 // metricLabel } entries, already sorted best-first for that group.
 function buildKothPools(data) {
   var pointsMode = !!(data.player_season_totals && Object.keys(data.player_season_totals).length);
+
+  // draft_picks[] is the fixed draft-night record and stays intact there
+  // forever (draft recap tables need every pick under its original
+  // drafter, regardless of roster moves since). But a player who's since
+  // been dropped and picked up elsewhere shows up in undrafted_players[]
+  // with a manager field -- for KOTH ownership, that current-roster entry
+  // should win. Build that override set first so the draft_picks pass
+  // below can skip them and avoid showing the same player twice under two
+  // different managers.
+  var currentlyRosteredElsewhere = {};
+  if (pointsMode && data.undrafted_players) {
+    data.undrafted_players.forEach(function(p) {
+      if (p.manager) currentlyRosteredElsewhere[p.player + '|' + p.pos] = true;
+    });
+  }
+
   var all = [];
   (data.teams || []).forEach(function(t) {
     (t.draft_picks || []).forEach(function(p) {
       if (p.pos === 'K' || p.pos === 'D/ST') return;
       var key = p.player + '|' + p.pos;
+      if (currentlyRosteredElsewhere[key]) return; // superseded by undrafted_players entry below
       var metric = pointsMode ? (data.player_season_totals[key] != null ? data.player_season_totals[key] : null) : p.overall;
       all.push({
         player: p.player, nfl_team: p.nfl_team, pos: p.pos,
@@ -1076,11 +1093,12 @@ function buildKothPools(data) {
     });
   });
 
-  // Undrafted players (free agents / waiver pickups) only make sense once
-  // real scoring exists -- draft-order mode ranks by overall pick, which
-  // an undrafted player doesn't have, so they're left out until pointsMode
-  // kicks in. Same pool as drafted players from there, just tagged "Free
-  // Agent" instead of a manager.
+  // Undrafted players (free agents / waiver pickups, including anyone
+  // dropped-and-repicked-up per the override set above) only make sense
+  // once real scoring exists -- draft-order mode ranks by overall pick,
+  // which an undrafted player doesn't have, so they're left out until
+  // pointsMode kicks in. Same pool as drafted players from there, just
+  // tagged "Free Agent" instead of a manager.
   if (pointsMode && data.undrafted_players) {
     data.undrafted_players.forEach(function(p) {
       if (p.pos === 'K' || p.pos === 'D/ST') return;
