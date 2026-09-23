@@ -1464,6 +1464,61 @@ var playoffThresholdPlugin = {
   }
 };
 
+/* ── Playoff odds threshold overlay ────────────────────────────────
+   Same visual treatment as the trajectory chart's playoffThresholdPlugin
+   above: dashed line, red wash below (behind the pace), green wash above
+   (ahead of the pace). The Week 1 flat-odds baseline is CUTOFF/n_teams =
+   8/14 = 57.1%, so 57% is the "on pace for a playoff spot" reference line
+   here -- below it you're behind an average team's odds, above it you're
+   ahead. Update PLAYOFF_ODDS_THRESHOLD if CUTOFF or the team count ever
+   changes. ── */
+var PLAYOFF_ODDS_THRESHOLD = 57;
+var playoffOddsThresholdPlugin = {
+  id: 'playoffOddsThreshold',
+  beforeDraw: function(chart) {
+    if (chart.canvas.id !== 'chart-playoff-odds') return;
+    var yScale = chart.scales.y;
+    var area   = chart.chartArea;
+    var ctx    = chart.ctx;
+    var yPixel = yScale.getPixelForValue(PLAYOFF_ODDS_THRESHOLD);
+
+    ctx.save();
+
+    // Faint green wash above the line (ahead of playoff pace)
+    var topGrad = ctx.createLinearGradient(0, area.top, 0, yPixel);
+    topGrad.addColorStop(0, 'rgba(74,138,90,0.09)');
+    topGrad.addColorStop(1, 'rgba(74,138,90,0.015)');
+    ctx.fillStyle = topGrad;
+    ctx.fillRect(area.left, area.top, area.right - area.left, yPixel - area.top);
+
+    // Faint red wash below the line (behind playoff pace)
+    var botGrad = ctx.createLinearGradient(0, yPixel, 0, area.bottom);
+    botGrad.addColorStop(0, 'rgba(192,74,74,0.015)');
+    botGrad.addColorStop(1, 'rgba(192,74,74,0.09)');
+    ctx.fillStyle = botGrad;
+    ctx.fillRect(area.left, yPixel, area.right - area.left, area.bottom - yPixel);
+
+    // Dashed neutral threshold line (meaning doesn't rely on color alone)
+    ctx.beginPath();
+    ctx.setLineDash([6, 4]);
+    ctx.moveTo(area.left, yPixel);
+    ctx.lineTo(area.right, yPixel);
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(90,85,80,0.5)';
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Label
+    ctx.font = "600 10px 'Outfit', sans-serif";
+    ctx.fillStyle = 'rgba(90,85,80,0.8)';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(PLAYOFF_ODDS_THRESHOLD + '% \u00B7 Playoff pace', area.right - 4, yPixel - 3);
+
+    ctx.restore();
+  }
+};
+
 /* ══════════════════════════════════════
    DRAFT INSIGHTS CHART
    Tabbed horizontal-bar explorer, shown whenever the loaded week's
@@ -2011,6 +2066,7 @@ function renderPlayoffOddsChart(season, upToWeek) {
   playoffOddsChart = new Chart(ctx, {
     type: 'line',
     data: { labels: labels, datasets: datasets },
+    plugins: [playoffOddsThresholdPlugin],
     options: {
       responsive:          true,
       maintainAspectRatio: false,
