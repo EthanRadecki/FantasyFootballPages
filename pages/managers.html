@@ -682,6 +682,7 @@
           <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" data-year="2023" onclick="setBswYear(2023)">2023</button>
           <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#9aadae;" data-year="2024" onclick="setBswYear(2024)">2024</button>
           <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#a9b88b;" data-year="2025" onclick="setBswYear(2025)">2025</button>
+          <button class="fp-btn bsw-year-btn year-swatch-btn" style="--swatch-color:#c292b8;" data-year="2026" onclick="setBswYear(2026)">2026</button>
         </div>
         <div class="bsw-podium" id="bsw-podium"></div>
         <div class="table-wrap">
@@ -728,6 +729,7 @@
           <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" data-year="2023" onclick="setFlYear(2023)">2023</button>
           <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#9aadae;" data-year="2024" onclick="setFlYear(2024)">2024</button>
           <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#a9b88b;" data-year="2025" onclick="setFlYear(2025)">2025</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#c292b8;" data-year="2026" onclick="setFlYear(2026)">2026</button>
         </div>
         <div class="table-wrap">
           <table class="season-table fl-table" id="franchise-leaders-table">
@@ -779,6 +781,7 @@
           <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" data-year="2023" onclick="setFlYear(2023)">2023</button>
           <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#9aadae;" data-year="2024" onclick="setFlYear(2024)">2024</button>
           <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#a9b88b;" data-year="2025" onclick="setFlYear(2025)">2025</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#c292b8;" data-year="2026" onclick="setFlYear(2026)">2026</button>
         </div>
         <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0;">
           Top 50 players by total points. Bubble size is total points, ring color is position, and headshots fill in where a match exists.
@@ -820,6 +823,7 @@
           <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" data-year="2023" onclick="setFlYear(2023)">2023</button>
           <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#9aadae;" data-year="2024" onclick="setFlYear(2024)">2024</button>
           <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#a9b88b;" data-year="2025" onclick="setFlYear(2025)">2025</button>
+          <button class="fp-btn fl-year-btn year-swatch-btn" style="--swatch-color:#c292b8;" data-year="2026" onclick="setFlYear(2026)">2026</button>
         </div>
         <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0 0.9rem;">
           Top 20 players by total points. Solid segments are weeks started, faded segments are weeks benched or on IR. Dotted lines mark weeks 5/9/13; the dashed red line marks the start of that season's playoffs.
@@ -2445,8 +2449,8 @@ function renderFlScatterChart(items) {
   });
 }
 
-// Timeline layout constants: 6 seasons x 17 weeks each, laid out side by side
-var FL_TL_SEASONS = [2020, 2021, 2022, 2023, 2024, 2025];
+// Timeline layout constants: 7 seasons x 17 weeks each, laid out side by side
+var FL_TL_SEASONS = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
 var FL_TL_WEEKS_PER_SEASON = 17;
 
 // Playoff start week per season (matches the site-wide regular season/playoff
