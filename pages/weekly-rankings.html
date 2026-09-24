@@ -1588,7 +1588,7 @@ var draftProjRangePlugin = {
       if (!stats) return;
 
       var yCenter = bar.y;
-      var halfH   = (bar.height || 18) / 2 + 2;
+      var halfH   = (bar.height || 18) / 2 + 4;
       var marks   = [
         { v: stats.min,     bold: false },
         { v: stats.central, bold: true  },
@@ -1597,9 +1597,9 @@ var draftProjRangePlugin = {
       marks.forEach(function(m) {
         var x = Math.max(area.left, Math.min(area.right, xScale.getPixelForValue(m.v)));
         ctx.beginPath();
-        ctx.setLineDash(m.bold ? [5, 3] : [3, 3]);
-        ctx.strokeStyle = m.bold ? 'rgba(90,85,80,0.55)' : 'rgba(90,85,80,0.32)';
-        ctx.lineWidth   = m.bold ? 1.5 : 1;
+        ctx.setLineDash(m.bold ? [6, 3] : [4, 3]);
+        ctx.strokeStyle = m.bold ? 'rgba(40,36,33,0.9)' : 'rgba(40,36,33,0.6)';
+        ctx.lineWidth   = m.bold ? 2.5 : 2;
         ctx.moveTo(x, yCenter - halfH);
         ctx.lineTo(x, yCenter + halfH);
         ctx.stroke();
