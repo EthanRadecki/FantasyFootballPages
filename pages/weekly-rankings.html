@@ -1528,6 +1528,87 @@ var playoffOddsThresholdPlugin = {
    ══════════════════════════════════════ */
 var draftInsightsChart = null;
 var draftInsightsTeams = null; // cached team list for the currently loaded week
+var draftProjSeasonStats = null; // {manager: {min, central, max}}, proj_ppg tab only
+var draftProjRows = null; // rows currently plotted on the proj_ppg chart, for the reference-mark plugin
+var CURRENT_DRAFT_METRIC_KEY = null;
+
+// Central tendency for the season low/avg/high reference marks on the
+// Projected Points tab. With only a handful of weeks played so far, a
+// median just picks the middle value and isn't very meaningful -- the
+// mean gives a steadier "typical week" read. Worth revisiting once more
+// weeks accumulate and a median has enough points to resist a fluky week.
+var DRAFT_PROJ_CENTRAL_STAT = 'avg'; // 'avg' or 'median'
+
+function computeProjSeasonStats(weeksData) {
+  var byManager = {};
+  (weeksData || []).forEach(function(wk) {
+    (wk.teams || []).forEach(function(t) {
+      if (t.proj_ppg === null || t.proj_ppg === undefined) return;
+      if (!byManager[t.manager]) byManager[t.manager] = [];
+      byManager[t.manager].push(t.proj_ppg);
+    });
+  });
+  var stats = {};
+  Object.keys(byManager).forEach(function(mgr) {
+    var vals = byManager[mgr].slice().sort(function(a, b){ return a - b; });
+    var central;
+    if (DRAFT_PROJ_CENTRAL_STAT === 'median') {
+      var mid = Math.floor(vals.length / 2);
+      central = vals.length % 2 ? vals[mid] : (vals[mid - 1] + vals[mid]) / 2;
+    } else {
+      central = vals.reduce(function(a, b){ return a + b; }, 0) / vals.length;
+    }
+    stats[mgr] = { min: vals[0], max: vals[vals.length - 1], central: central };
+  });
+  return stats;
+}
+
+/* ── Season low/avg/high reference marks, Projected Points tab only ──
+   Three faded dashed vertical ticks per manager's bar, at that manager's
+   season-to-date proj_ppg low / DRAFT_PROJ_CENTRAL_STAT / high, so a
+   single week's projection can be read against their own season range
+   rather than in isolation. No-op on every other Draft/Season Insights
+   tab and when there isn't season history to draw from yet (e.g. Week 1). ── */
+var draftProjRangePlugin = {
+  id: 'draftProjRange',
+  afterDatasetsDraw: function(chart) {
+    if (chart.canvas.id !== 'chart-draft-insights') return;
+    if (CURRENT_DRAFT_METRIC_KEY !== 'proj_ppg') return;
+    if (!draftProjSeasonStats || !draftProjRows) return;
+
+    var meta   = chart.getDatasetMeta(0);
+    var xScale = chart.scales.x;
+    var area   = chart.chartArea;
+    var ctx    = chart.ctx;
+
+    ctx.save();
+    meta.data.forEach(function(bar, i) {
+      var row = draftProjRows[i];
+      var stats = row && draftProjSeasonStats[row.manager];
+      if (!stats) return;
+
+      var yCenter = bar.y;
+      var halfH   = (bar.height || 18) / 2 + 2;
+      var marks   = [
+        { v: stats.min,     bold: false },
+        { v: stats.central, bold: true  },
+        { v: stats.max,     bold: false },
+      ];
+      marks.forEach(function(m) {
+        var x = Math.max(area.left, Math.min(area.right, xScale.getPixelForValue(m.v)));
+        ctx.beginPath();
+        ctx.setLineDash(m.bold ? [5, 3] : [3, 3]);
+        ctx.strokeStyle = m.bold ? 'rgba(90,85,80,0.55)' : 'rgba(90,85,80,0.32)';
+        ctx.lineWidth   = m.bold ? 1.5 : 1;
+        ctx.moveTo(x, yCenter - halfH);
+        ctx.lineTo(x, yCenter + halfH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+    });
+    ctx.restore();
+  }
+};
 
 var DRAFT_METRICS = {
   adp_value: {
@@ -1550,7 +1631,7 @@ var DRAFT_METRICS = {
     // Projected Points" since this reflects that week's starter total,
     // not a season-long per-game average.
     label: 'Projected Points',
-    desc: 'Projected starter total for each roster this week.',
+    desc: 'Projected starter total for each roster this week. Faded dashed ticks mark each manager\u2019s season-to-date low, average, and high projection.',
     getValue: function(t){ return t.proj_ppg; },
     format: function(v){ return v.toFixed(1); },
     diverging: false
@@ -1606,9 +1687,10 @@ function availableDraftMetrics(teams) {
   });
 }
 
-function renderDraftInsights(data) {
+function renderDraftInsights(data, weeksData) {
   var wrap = document.getElementById('draft-insights-wrap');
   draftInsightsTeams = data.teams;
+  draftProjSeasonStats = computeProjSeasonStats(weeksData);
 
   // Week 1 is the draft recap, so "Draft Insights" fits; from Week 2 on the
   // section carries season-relative stuff (surplus, SOS, weekly projections)
@@ -1623,6 +1705,8 @@ function renderDraftInsights(data) {
   // season-long per-game average.
   var wkLabel = data.label ? data.label : ('Week ' + data.week);
   DRAFT_METRICS.proj_ppg.label = wkLabel + ' Projected Points';
+  DRAFT_METRICS.proj_ppg.desc = 'Projected starter total for each roster this week. Faded dashed ticks mark each '
+    + 'manager\u2019s season-to-date low, ' + (DRAFT_PROJ_CENTRAL_STAT === 'median' ? 'median' : 'average') + ', and high projection.';
 
   var keys = availableDraftMetrics(draftInsightsTeams);
   if (!keys.length) { wrap.style.display = 'none'; return; }
@@ -1650,6 +1734,7 @@ function selectDraftMetric(key) {
 
 function drawDraftChart(key) {
   var metric = DRAFT_METRICS[key];
+  CURRENT_DRAFT_METRIC_KEY = key;
   if (draftInsightsChart) { draftInsightsChart.destroy(); draftInsightsChart = null; }
   closeDraftDetail();
 
@@ -1716,6 +1801,7 @@ function drawDraftChart(key) {
   var labels = rows.map(function(r){ return r.manager.replace(' Jr.','').replace('Ryan P ','Ryan '); });
   var values = rows.map(function(r){ return r.value; });
   var labelColors = rows.map(function(r){ return MANAGER_COLORS[r.manager] || '#5a5550'; });
+  draftProjRows = rows;
 
   // Bar fill: red (bad) -> yellow -> green (good), not manager color, so the
   // color itself carries meaning. "Good" direction differs by metric:
@@ -1756,6 +1842,7 @@ function drawDraftChart(key) {
         barThickness: 18
       }]
     },
+    plugins: [draftProjRangePlugin],
     options: {
       indexAxis: 'y',
       responsive: true,
@@ -2354,12 +2441,11 @@ function loadRankings() {
       // week's data includes a matchup_of_the_week block.
       renderMatchupOfWeek(data);
 
-      // Draft-derived charts (ADP value, projected PPG, position spend) show
-      // whenever a week's teams carry that data -- most useful on Week 1,
-      // but not tied to any special "preseason" mode, so this runs every week.
-      renderDraftInsights(data);
-
       // Fetch all weeks up to and including selected week for trajectory
+      // (and for the Draft/Season Insights "Projected Points" tab, which
+      // needs each manager's proj_ppg history to draw season low/avg/high
+      // reference marks -- so Draft Insights renders here too, after this
+      // fetch, rather than immediately off just the current week's data).
       var entry    = manifest.find(function(m){ return m.season === season; });
       var allWeeks = entry ? entry.weeks.filter(function(w){ return w <= week; }) : [];
       var fetches  = allWeeks.map(function(w){ return fetchWeek(season, w); });
@@ -2369,6 +2455,7 @@ function loadRankings() {
     .then(function(result) {
       var data = result.data;
       var sorted = result.weeksData.slice().sort(function(a, b){ return a.week - b.week; });
+      renderDraftInsights(data, sorted);
       renderTrajectoryChart(season, week, sorted);
       renderPlayoffOddsChart(season, week);
 
