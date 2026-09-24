@@ -3,9 +3,167 @@
   "week": 3,
   "hide_archetype_link": true,
   "matchup_of_the_week": {
-    "team_a": null,
-    "team_b": null,
-    "blurb": null
+    "team_a": {
+      "manager": "Ben Castaldo",
+      "rank": 5,
+      "record": "2-0",
+      "proj_total": 111.6,
+      "starters": [
+        {
+          "player": "Lamar Jackson",
+          "nfl_team": "BAL",
+          "pos": "QB",
+          "slot": "QB",
+          "opp": "@DAL",
+          "proj": 21.1
+        },
+        {
+          "player": "Kenneth Walker III",
+          "nfl_team": "KC",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "@MIA",
+          "proj": 21.0
+        },
+        {
+          "player": "Travis Etienne Jr.",
+          "nfl_team": "NO",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "LV",
+          "proj": 11.9
+        },
+        {
+          "player": "CeeDee Lamb",
+          "nfl_team": "DAL",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "BAL",
+          "proj": 17.3
+        },
+        {
+          "player": "Deebo Samuel Sr.",
+          "nfl_team": "SF",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "ARI",
+          "proj": 12.3
+        },
+        {
+          "player": "Darren Waller",
+          "nfl_team": "CAR",
+          "pos": "TE",
+          "slot": "TE",
+          "opp": "@CLE",
+          "proj": 5.6
+        },
+        {
+          "player": "Kyle Monangai",
+          "nfl_team": "CHI",
+          "pos": "RB",
+          "slot": "FLEX",
+          "opp": "PHI",
+          "proj": 8.5
+        },
+        {
+          "player": "Steelers D/ST",
+          "nfl_team": "PIT",
+          "pos": "D/ST",
+          "slot": "D/ST",
+          "opp": "CIN",
+          "proj": 4.6
+        },
+        {
+          "player": "Ka'imi Fairbairn",
+          "nfl_team": "HOU",
+          "pos": "K",
+          "slot": "K",
+          "opp": "@IND",
+          "proj": 9.3
+        }
+      ]
+    },
+    "team_b": {
+      "manager": "Ryan P McQuaid",
+      "rank": 10,
+      "record": "0-2",
+      "proj_total": 116.3,
+      "starters": [
+        {
+          "player": "Joe Burrow",
+          "nfl_team": "CIN",
+          "pos": "QB",
+          "slot": "QB",
+          "opp": "@PIT",
+          "proj": 16.4
+        },
+        {
+          "player": "Christian McCaffrey",
+          "nfl_team": "SF",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "ARI",
+          "proj": 20.9
+        },
+        {
+          "player": "Jadarian Price",
+          "nfl_team": "SEA",
+          "pos": "RB",
+          "slot": "RB",
+          "opp": "@WSH",
+          "proj": 12.1
+        },
+        {
+          "player": "Garrett Wilson",
+          "nfl_team": "NYJ",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "@DET",
+          "proj": 14.7
+        },
+        {
+          "player": "Emeka Egbuka",
+          "nfl_team": "TB",
+          "pos": "WR",
+          "slot": "WR",
+          "opp": "MIN",
+          "proj": 12.4
+        },
+        {
+          "player": "George Kittle",
+          "nfl_team": "SF",
+          "pos": "TE",
+          "slot": "TE",
+          "opp": "ARI",
+          "proj": 12.7
+        },
+        {
+          "player": "Aaron Jones Sr.",
+          "nfl_team": "MIN",
+          "pos": "RB",
+          "slot": "FLEX",
+          "opp": "@TB",
+          "proj": 13.6
+        },
+        {
+          "player": "Texans D/ST",
+          "nfl_team": "HOU",
+          "pos": "D/ST",
+          "slot": "D/ST",
+          "opp": "@IND",
+          "proj": 4.9
+        },
+        {
+          "player": "Cam Little",
+          "nfl_team": "JAX",
+          "pos": "K",
+          "slot": "K",
+          "opp": "NE",
+          "proj": 8.7
+        }
+      ]
+    },
+    "blurb": "The Matchup of the Week from Week <strong class=\"hl-stat\">2</strong> did not disappoint with the two highest scoring team going against each other and <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> completing the crazy comeback on Monday night. For this week’s matchup I decided to choose the matchup between the <strong class=\"hl-stat\">10th</strong> and <strong class=\"hl-stat\">5th</strong> ranked teams in the Week <strong class=\"hl-stat\">3</strong> rankings. <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> and <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> have met six times in league history, with <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> coming out victorious five of those six times, and he’s favored to do it again. <strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark>’s dealing with some injuries that we’ll have to keep an eye on, but when healthy I think he has the balanced team here while <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> has more star power and a higher ceiling.</strong> Let’s hope for a repeat of last week’s prime time game!"
   },
   "teams": [
     {
@@ -18,7 +176,7 @@
       "record_to_date": "2-0",
       "last_score": 129.07,
       "streak": "W2",
-      "proj_ppg": null,
+      "proj_ppg": 108.5,
       "sos_avg_opp_ppg": 112.94,
       "sos_rank": 1,
       "synopsis": "I don’t know how sustainable this success is with the injuries and the WR2, TE, and FLEX being fluky, but it’s working for now and who says it won’t continue.",
@@ -243,7 +401,7 @@
       "record_to_date": "1-1",
       "last_score": 138.83,
       "streak": "W1",
-      "proj_ppg": null,
+      "proj_ppg": 124.1,
       "sos_avg_opp_ppg": 111.47,
       "sos_rank": 6,
       "synopsis": "Led by Davante Adams 39.5 points in Week 2, which is the franchise’s 6th most points scored by a player in a single game, N.Y. Routensss put the entire league on notice with their SNF and MNF comeback.",
@@ -473,7 +631,7 @@
       "record_to_date": "1-1",
       "last_score": 97.66,
       "streak": "L1",
-      "proj_ppg": null,
+      "proj_ppg": 125.8,
       "sos_avg_opp_ppg": 109.37,
       "sos_rank": 13,
       "synopsis": "The team is projected to score the most points in Week 3, alone with N.Y. Routensss as the only two teams to be projected to score over 120 points this week.",
@@ -698,7 +856,7 @@
       "record_to_date": "0-2",
       "last_score": 133.93,
       "streak": "L2",
-      "proj_ppg": null,
+      "proj_ppg": 110.2,
       "sos_avg_opp_ppg": 110.89,
       "sos_rank": 8,
       "synopsis": "Interestingly enough, this feeling isn’t new for Aidan as he came into 2026 with the worst schedule luck in league history, with 7 wins less than expected from 2021-2025.",
@@ -918,7 +1076,7 @@
       "record_to_date": "2-0",
       "last_score": 109.8,
       "streak": "W2",
-      "proj_ppg": null,
+      "proj_ppg": 111.6,
       "sos_avg_opp_ppg": 110.18,
       "sos_rank": 10,
       "synopsis": "I don’t really see any holes in the roster.",
@@ -1138,7 +1296,7 @@
       "record_to_date": "2-0",
       "last_score": 118.26,
       "streak": "W2",
-      "proj_ppg": null,
+      "proj_ppg": 113.0,
       "sos_avg_opp_ppg": 108.83,
       "sos_rank": 14,
       "synopsis": "We just haven’t seen anything from the WR duo of Rashee Rice and Rome Odunze and now I fear Kenneth Walker’s arrival may have dropped Rashee Rice to a top 20 WR at best and the Caleb Williams injury may handicap Rome Odunze in an already packed receiving corps.",
@@ -1363,7 +1521,7 @@
       "record_to_date": "1-1",
       "last_score": 132.13,
       "streak": "W1",
-      "proj_ppg": null,
+      "proj_ppg": 114.9,
       "sos_avg_opp_ppg": 112.61,
       "sos_rank": 4,
       "synopsis": "The main difference was that both the team’s stars were even better in Week 2 and Harrison Butker added some production for a change.",
@@ -1588,7 +1746,7 @@
       "record_to_date": "1-1",
       "last_score": 123.51,
       "streak": "W1",
-      "proj_ppg": null,
+      "proj_ppg": 115.6,
       "sos_avg_opp_ppg": 110.97,
       "sos_rank": 7,
       "synopsis": "The RB2 slot has yielded the team the lowest points from the slot out of all teams in the league through two weeks.",
@@ -1808,7 +1966,7 @@
       "record_to_date": "1-1",
       "last_score": 90.4,
       "streak": "L1",
-      "proj_ppg": null,
+      "proj_ppg": 117.5,
       "sos_avg_opp_ppg": 109.8,
       "sos_rank": 12,
       "synopsis": "Currently, I am projected to score the 3rd most points in Week 3 against a team I have yet to lose to in the league’s 7-year history.",
@@ -2033,7 +2191,7 @@
       "record_to_date": "0-2",
       "last_score": 111.53,
       "streak": "L2",
-      "proj_ppg": null,
+      "proj_ppg": 116.3,
       "sos_avg_opp_ppg": 110.23,
       "sos_rank": 9,
       "synopsis": "He’s projected to score above average compared to the rest of the league in Week 3 and I just think this roster as currently constructed can give people a run for their money each week.",
@@ -2253,7 +2411,7 @@
       "record_to_date": "1-1",
       "last_score": 91.38,
       "streak": "W1",
-      "proj_ppg": null,
+      "proj_ppg": 115.7,
       "sos_avg_opp_ppg": 110.09,
       "sos_rank": 11,
       "synopsis": "I actually shocked myself with this stat, but I thought Quin’s 91.38-point win had to be down there in terms of points scored in a win but actually it was only the 23rd lowest points scored in a win in league history, playoffs included, out of 624 matchups.",
@@ -2473,7 +2631,7 @@
       "record_to_date": "1-1",
       "last_score": 57.87,
       "streak": "L1",
-      "proj_ppg": null,
+      "proj_ppg": 115.4,
       "sos_avg_opp_ppg": 112.81,
       "sos_rank": 2,
       "synopsis": "The team’s 57.87-point performance in Week 2 was the franchise’s first time scoring less than 70 points in a single week, excluding playoff games.",
@@ -2698,7 +2856,7 @@
       "record_to_date": "1-1",
       "last_score": 70.17,
       "streak": "L1",
-      "proj_ppg": null,
+      "proj_ppg": 111.5,
       "sos_avg_opp_ppg": 111.49,
       "sos_rank": 5,
       "synopsis": "You have the two draft picks with the lowest surplus value in 2026, basically Colston Loveland and Marvin Harrison Jr. have been the worst picks given where Max took them compared to all picks from 2020-2026.",
@@ -2923,7 +3081,7 @@
       "record_to_date": "0-2",
       "last_score": 104.34,
       "streak": "L2",
-      "proj_ppg": null,
+      "proj_ppg": 108.8,
       "sos_avg_opp_ppg": 112.81,
       "sos_rank": 3,
       "synopsis": "The team is uninspiring and missing that superstar to get them 20+ points/week.",
