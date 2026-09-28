@@ -17,6 +17,7 @@ import yaml
 SUPPORTED_PROVIDERS = {"espn"}
 HEX_COLOR = re.compile(r"^#[0-9a-fA-F]{6}$")
 COLOR_ROLES = {"dark", "light"}
+RECORD_GAME_TYPES = {"regular_season", "winners_bracket", "consolation"}
 
 
 def slugify(name: str) -> str:
@@ -91,6 +92,9 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
                     errors.append(f"{where} ({name}): colors.{role} '{value}' is not #RRGGBB")
 
     analysis = cfg.get("analysis") or {}
+    bad_scope = set(analysis.get("record_games") or []) - RECORD_GAME_TYPES
+    if bad_scope:
+        errors.append(f"analysis.record_games: unknown {sorted(bad_scope)}; use {sorted(RECORD_GAME_TYPES)}")
     for slug in analysis.get("exclude_managers") or []:
         if slug not in slugs:
             errors.append(f"analysis.exclude_managers: '{slug}' is not a manager slug")

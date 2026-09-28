@@ -2,6 +2,7 @@
 
     engine config check leagues/preach/league.yaml
     engine pull leagues/preach/league.yaml [--seasons 2020-2026] [--refresh]
+    engine normalize leagues/preach/league.yaml [--verify]
 
 More commands (build, serve) arrive in later phases; see docs/ARCHITECTURE.md.
 """
@@ -58,6 +59,47 @@ def cmd_pull(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_normalize(args: argparse.Namespace) -> int:
+    import pandas as pd
+
+    from engine import legacy
+    from engine.normalize.espn import normalize_league
+    from engine.store import canonical_dir, write_tables
+
+    cfg = load_config(args.path)
+    league = cfg["league"]
+    raw_dir = Path(args.cache) / league["provider"] / str(league["league_id"])
+    if not raw_dir.exists():
+        print(f"error: no raw data at {raw_dir}. Run `engine pull {args.path}` first.")
+        return 1
+
+    tables = normalize_league(raw_dir)
+    out = canonical_dir(Path(args.cache), league["provider"], league["league_id"])
+    write_tables(tables, out)
+
+    print(f"Canonical tables written to {out}/")
+    for name, df in tables.items():
+        print(f"  {name:<12}{len(df):>8} rows")
+    per_season = (tables["matchups"].groupby("season").size().rename("matchup_rows").to_frame()
+                  .join(tables["lineups"].groupby("season").size().rename("lineup_rows")))
+    print(per_season.to_string())
+
+    for w in legacy.config_consistency(tables, cfg):
+        print(f"warning: {w}")
+
+    if not args.verify:
+        return 0
+    golden = Path(args.golden)
+    print("\nVerifying against legacy files:")
+    results = [
+        legacy.check_matchups(tables, pd.read_csv(golden / "matchup_data.csv.gz"), cfg),
+        legacy.check_rosters(tables, pd.read_csv(golden / "weekly_rosters_bracket_only.csv.gz"), cfg),
+    ]
+    for r in results:
+        print(r.render())
+    return 0 if all(r.ok for r in results) else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="engine")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -75,6 +117,13 @@ def main(argv: list[str] | None = None) -> int:
     pull.add_argument("--cache", default=".cache", help="cache root (default .cache)")
     pull.add_argument("--auth", help="JSON file with espn_s2 and swid (default: environment)")
     pull.set_defaults(func=cmd_pull)
+
+    norm = sub.add_parser("normalize", help="Build canonical tables from the raw cache")
+    norm.add_argument("path", help="league.yaml")
+    norm.add_argument("--cache", default=".cache", help="cache root (default .cache)")
+    norm.add_argument("--verify", action="store_true", help="compare with the legacy golden files")
+    norm.add_argument("--golden", default="engine/tests/golden", help="golden files directory")
+    norm.set_defaults(func=cmd_normalize)
 
     args = parser.parse_args(argv)
     return args.func(args)
