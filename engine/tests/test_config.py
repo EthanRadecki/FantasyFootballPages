@@ -54,3 +54,7 @@ def test_unknown_excluded_manager_fails():
 def test_unknown_color_role_fails():
     cfg = minimal(managers=[{"name": "A", "id": "1", "colors": {"neon": "#112233"}}])
     assert not validate_config(cfg).ok
+
+
+def test_unknown_record_game_type_fails():
+    assert not validate_config(minimal(analysis={"record_games": ["regular_season", "exhibition"]})).ok

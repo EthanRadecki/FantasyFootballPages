@@ -106,6 +106,7 @@ managers:
 # championship_logos: the alternate logo a manager earned by winning that season.
 
 analysis:
+  record_games: [regular_season, winners_bracket]   # consolation games never count toward records or stats
   exclude_managers: [thomas-sullivan, william-serafin]   # 2020-only, excluded from surplus analyses
   exclude_games:
     - { manager: ben-castaldo, season: 2024, week: 14, from: [ppg] }   # sat lineup; loss still counts
