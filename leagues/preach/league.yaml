@@ -3,7 +3,8 @@
 # Everything league-specific lives here, never in engine or web code.
 # Validate with:  engine config check leagues/preach/league.yaml
 #
-# Items marked TODO need filling in. Manager ids come from
+# Only facts ESPN cannot supply belong here (seasons played, team names, and
+# records come from ESPN). Items marked TODO need filling in. Manager ids come from
 # tools/espn_members.py (run locally; needs your ESPN cookies). They are
 # hashed keys, never raw ESPN member ids (see engine/identity.py).
 
@@ -29,71 +30,70 @@ rules:
 
 managers:
   - name: Ethan Radecki
-    id: TODO
+    id: m_75b9d7bd54e4
     color: "#ea9a2e"
     logo: { default: images/logos/Radecki.png, 2020: images/logos/Radecki2020.png }
   - name: Carmine Pittelli
-    id: TODO
+    id: m_38b34b353385
     aliases: ["Carmine Pittelli Jr."]
     color: "#541821"
     logo: { default: images/logos/Pittelli.png, 2023: images/logos/Pittelli2023.png }
   - name: Charlie Gorman
-    id: TODO
+    id: m_c4d1975f03ad
     color: "#28843a"
     logo: { default: images/logos/Gorman.png }
   - name: Aidan Quigley
-    id: TODO
+    id: m_51ea22569640
     color: "#eb644c"
     logo: { default: images/logos/Quigley.png }
   - name: Brandon Hancock
-    id: TODO
+    id: m_4a52e2a2e6e5
     color: "#4875b9"
     logo: { default: images/logos/Hancock.png }
   - name: Ryan McQuaid
-    id: TODO
+    id: m_a4c987aba844
     aliases: ["Ryan P McQuaid"]
     logo: { default: images/logos/McQuaid.png }
   - name: Cole Maney
-    id: TODO
+    id: m_22dd02175159
     color: "#f7cdb9"
     logo: { default: images/logos/Maney.png }
   - name: Baylen Slansky
-    id: TODO
+    id: m_a3c2ab27d35f
     color: "#776aad"
     logo: { default: images/logos/Slansky.png, 2024: images/logos/Slansky2024.png }
   - name: Deniz Bileydi
-    id: TODO
+    id: m_e81d820d1e00
     color: "#8d9b51"
     logo: { default: images/logos/Bileydi.png }
   - name: Quin Gegwich
-    id: TODO
+    id: m_7ed79619b0f3
     color: "#131313"
     logo: { default: images/logos/Gegwich.png }
   - name: Anthony Kelly
-    id: TODO
+    id: m_96ee73f629d3
     color: "#cdbca6"
     logo:
       default: images/logos/Kelly.png
       2022: images/logos/Kelly2022.png
       2025: images/logos/Kelly2025.png
   - name: Ben Castaldo
-    id: TODO
+    id: m_62a1c51cd79d
     color: "#404c5b"
     logo: { default: images/logos/Castaldo.png, 2021: images/logos/Castaldo2021.png }
   - name: Max Malich
-    id: TODO
+    id: m_1059f12c11ca
     color: "#888888"
     logo: { default: images/logos/Malich.png }
   - name: Andrew Root
-    id: TODO
+    id: m_290a0ee24b35
     color: "#4c82af"
     logo: { default: images/logos/Root.png }
   - name: Thomas Sullivan
-    id: TODO
-    seasons: [2020]
+    id: m_5279cf075c90
+    aliases: ["Michael Sullivan"]      # name on the ESPN account
   - name: William Serafin
-    id: TODO
-    seasons: [2020]
+    id: m_c94c4a7c87bf
 
 # TODO: Ryan McQuaid's color (not found by the first search).
 # TODO: confirm each year-suffixed logo covers only that season.
@@ -109,6 +109,11 @@ features:
 
 theme:
   fonts: { body: Outfit, display: Playfair Display }
-  season_colors:
+  season_colors:            # primary color per season; page-specific shades move here in phase 4
+    2020: "#a4969d"
+    2021: "#8a93ab"
+    2022: "#d8b28e"
+    2023: "#bf8f8f"
+    2024: "#9aadae"
+    2025: "#a9b88b"
     2026: "#c292b8"
-    # TODO: 2020-2025 season colors from the current site
