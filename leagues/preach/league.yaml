@@ -1,0 +1,103 @@
+# Preach Fantasy league config (DRAFT, phase 1)
+#
+# Everything league-specific lives here, never in engine or web code.
+# Validate with:  engine config check leagues/preach/league.yaml
+#
+# Items marked TODO need filling in. Manager ids come from
+# tools/espn_members.py (run locally; needs your ESPN cookies).
+
+league:
+  name: Preach Fantasy
+  provider: espn
+  league_id: 9954376
+  first_season: 2020
+  logo:
+    by_season: images/logos/league/preach_logo_{season}.png   # moves to leagues/preach/assets in phase 5
+
+rules:
+  regular_season_weeks:
+    default: 14
+    2020: 13
+    2021: 13
+  playoff_round_names:
+    2020: ["The Round of 15"]          # TODO: remaining 2020 round names, and 2021 if it differs
+    default: [Quarterfinals, Semifinals, Championship]
+  scoring_modifications:
+    dst_floor_zero: true               # negative D/ST scores floored at 0
+  faab_budget: 300                     # resets annually, tradeable
+
+managers:
+  - name: Ethan Radecki
+    id: TODO
+    color: "#ea9a2e"
+    logo: { default: images/logos/Radecki.png, 2020: images/logos/Radecki2020.png }
+  - name: Carmine Pittelli
+    id: TODO
+    aliases: ["Carmine Pittelli Jr."]
+    color: "#3a261d"
+    logo: { default: images/logos/Pittelli.png, 2023: images/logos/Pittelli2023.png }
+  - name: Charlie Gorman
+    id: TODO
+    logo: { default: images/logos/Gorman.png }
+  - name: Aidan Quigley
+    id: TODO
+    logo: { default: images/logos/Quigley.png }
+  - name: Brandon Hancock
+    id: TODO
+    logo: { default: images/logos/Hancock.png }
+  - name: Ryan McQuaid
+    id: TODO
+    aliases: ["Ryan P McQuaid"]
+    logo: { default: images/logos/McQuaid.png }
+  - name: Cole Maney
+    id: TODO
+    logo: { default: images/logos/Maney.png }
+  - name: Baylen Slansky
+    id: TODO
+    logo: { default: images/logos/Slansky.png, 2024: images/logos/Slansky2024.png }
+  - name: Deniz Bileydi
+    id: TODO
+    logo: { default: images/logos/Bileydi.png }
+  - name: Quin Gegwich
+    id: TODO
+    logo: { default: images/logos/Gegwich.png }
+  - name: Anthony Kelly
+    id: TODO
+    logo:
+      default: images/logos/Kelly.png
+      2022: images/logos/Kelly2022.png
+      2025: images/logos/Kelly2025.png
+  - name: Ben Castaldo
+    id: TODO
+    logo: { default: images/logos/Castaldo.png, 2021: images/logos/Castaldo2021.png }
+  - name: Max Malich
+    id: TODO
+    logo: { default: images/logos/Malich.png }
+  - name: Andrew Root
+    id: TODO
+    logo: { default: images/logos/Root.png }
+  - name: Thomas Sullivan
+    id: TODO
+    seasons: [2020]
+  - name: William Serafin
+    id: TODO
+    seasons: [2020]
+
+# TODO: colors for the other 12 active managers. Copy the hex values the site
+# already uses (they are in the page CSS/JS); the engine must not guess them.
+# TODO: confirm each year-suffixed logo covers only that season.
+
+analysis:
+  exclude_managers: [thomas-sullivan, william-serafin]   # 2020-only, excluded from surplus analyses
+  exclude_games:
+    - { manager: ben-castaldo, season: 2024, week: 14, from: [ppg] }   # sat lineup; loss still counts
+
+features:
+  weekly_rankings: true
+  champions_gallery: true
+
+theme:
+  fonts: { body: Outfit, display: Playfair Display }
+  season_colors:
+    2026: "#c292b8"
+    # TODO: 2020-2025 season colors from the current site

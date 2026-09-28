@@ -1,20 +1,54 @@
-# OS cruft
-.DS_Store
-Thumbs.db
+# ---------------------------------------------------------------
+# Secrets: never commit. ESPN cookies live in .env locally and in
+# repository secrets in CI.
+# ---------------------------------------------------------------
+.env
+*.env
+espn_auth.json
+**/espn_auth.json
+secrets/
 
-# Python (local data pipeline scripts/venvs, not currently committed here)
-__pycache__/
-*.pyc
+# ---------------------------------------------------------------
+# Python environments and caches
+# ---------------------------------------------------------------
+.conda/
 .venv/
 venv/
 env/
+__pycache__/
+*.py[cod]
 *.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.python-version
 
-# Editor/IDE
+# ---------------------------------------------------------------
+# Pipeline data: raw pulls and intermediate tables are rebuilt by
+# the engine, not versioned. Golden test fixtures live under
+# engine/tests/golden/ and ARE committed.
+# ---------------------------------------------------------------
+.cache/
+dist/
+GitHubRepoData/
+output/
+*.parquet
+
+# Legacy Flask app artifacts (archived, see docs/INVENTORY.md)
+static/manager_charts/
+
+# ---------------------------------------------------------------
+# Editorial drafts: only published JSON and images are committed
+# ---------------------------------------------------------------
+leagues/*/editorial/**/*.docx
+
+# ---------------------------------------------------------------
+# OS and editor
+# ---------------------------------------------------------------
+.DS_Store
+Thumbs.db
 .vscode/
 .idea/
 *.swp
-
-# Local scratch / temp exports
 *.tmp
 *.bak
