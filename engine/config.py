@@ -16,6 +16,7 @@ import yaml
 
 SUPPORTED_PROVIDERS = {"espn"}
 HEX_COLOR = re.compile(r"^#[0-9a-fA-F]{6}$")
+COLOR_ROLES = {"dark", "light"}
 
 
 def slugify(name: str) -> str:
@@ -79,11 +80,15 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
         else:
             ids.add(mid)
 
-        color = m.get("color")
-        if color is not None and not HEX_COLOR.match(str(color)):
-            errors.append(f"{where} ({name}): color '{color}' is not #RRGGBB")
-        if color is None:
-            warnings.append(f"{where} ({name}): no color set; a generated color will be used")
+        colors = m.get("colors")
+        if colors is None:
+            warnings.append(f"{where} ({name}): no colors set; generated colors will be used")
+        elif not isinstance(colors, dict) or set(colors) - COLOR_ROLES:
+            errors.append(f"{where} ({name}): colors must map {sorted(COLOR_ROLES)} to #RRGGBB")
+        else:
+            for role, value in colors.items():
+                if not HEX_COLOR.match(str(value)):
+                    errors.append(f"{where} ({name}): colors.{role} '{value}' is not #RRGGBB")
 
     analysis = cfg.get("analysis") or {}
     for slug in analysis.get("exclude_managers") or []:

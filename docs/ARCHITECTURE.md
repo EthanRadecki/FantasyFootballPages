@@ -137,12 +137,12 @@ rules:
 managers:
   - id: m_3fa91c07be21          # hashed member key, see Identity
     name: Ethan Radecki
-    color: "#ea9a2e"
+    colors: { dark: "#985e0f", light: "#ea9a2e" }
     logo: { default: assets/logos/radecki.png, 2020: assets/logos/radecki_2020.png }
   - id: m_8c02d5e4a917          # hashed member key, see Identity
     name: Carmine Pittelli
     aliases: ["Carmine Pittelli Jr."]
-    color: "#541821"
+    colors: { dark: "#3a261d", light: "#541821" }
 
 analysis:
   exclude_managers: [thomas-sullivan, william-serafin]
@@ -213,7 +213,7 @@ These do not block the cleanup but shape it, so they are recorded now.
 - **ESPN terms.** The ESPN fantasy API is unofficial and undocumented. It can change without notice, and commercial use carries terms-of-service risk that should be checked before charging money.
 - **Privacy.** A generated site publishes leaguemates' names and records. The product should support private or unlisted sites, and a public demo should use an anonymized league.
 - **Data availability.** How far back ESPN returns transactions and lineups for older seasons needs to be verified per season; features depending on it must degrade gracefully.
-- **League variety.** Analytics tuned on 14 teams (replacement levels, tier cutoffs, clustering k) must be parameterized and tested on other league sizes.
+- **League variety.** League size can change between seasons (Preach had 15 teams in 2020, 14 since), so team count always comes from the data, never config. Analytics tuned on 14 teams (replacement levels, tier cutoffs, clustering k) must be parameterized and tested on other league sizes.
 
 ## 11. Open decisions
 

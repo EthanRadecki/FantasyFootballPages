@@ -31,63 +31,64 @@ rules:
 managers:
   - name: Ethan Radecki
     id: m_75b9d7bd54e4
-    color: "#ea9a2e"
+    colors: { dark: "#985e0f", light: "#ea9a2e" }
     logo: { default: images/logos/Radecki.png, 2020: images/logos/Radecki2020.png }
   - name: Carmine Pittelli
     id: m_38b34b353385
     aliases: ["Carmine Pittelli Jr."]
-    color: "#541821"
+    colors: { dark: "#3a261d", light: "#541821" }
     logo: { default: images/logos/Pittelli.png, 2023: images/logos/Pittelli2023.png }
   - name: Charlie Gorman
     id: m_c4d1975f03ad
-    color: "#28843a"
+    colors: { dark: "#28843a", light: "#28843a" }
     logo: { default: images/logos/Gorman.png }
   - name: Aidan Quigley
     id: m_51ea22569640
-    color: "#eb644c"
+    colors: { dark: "#c53016", light: "#eb644c" }
     logo: { default: images/logos/Quigley.png }
   - name: Brandon Hancock
     id: m_4a52e2a2e6e5
-    color: "#4875b9"
+    colors: { dark: "#416cab", light: "#4875b9" }
     logo: { default: images/logos/Hancock.png }
   - name: Ryan McQuaid
     id: m_a4c987aba844
     aliases: ["Ryan P McQuaid"]
+    colors: { dark: "#bd0517", light: "#d76974" }
     logo: { default: images/logos/McQuaid.png }
   - name: Cole Maney
     id: m_22dd02175159
-    color: "#f7cdb9"
+    colors: { dark: "#ba4b15", light: "#f7cdb9" }
     logo: { default: images/logos/Maney.png }
   - name: Baylen Slansky
     id: m_a3c2ab27d35f
-    color: "#776aad"
+    colors: { dark: "#7269aa", light: "#776aad" }
     logo: { default: images/logos/Slansky.png, 2024: images/logos/Slansky2024.png }
   - name: Deniz Bileydi
     id: m_e81d820d1e00
-    color: "#8d9b51"
+    colors: { dark: "#68733c", light: "#8d9b51" }
     logo: { default: images/logos/Bileydi.png }
   - name: Quin Gegwich
     id: m_7ed79619b0f3
-    color: "#131313"
+    colors: { dark: "#131313", light: "#131313" }
     logo: { default: images/logos/Gegwich.png }
   - name: Anthony Kelly
     id: m_96ee73f629d3
-    color: "#cdbca6"
+    colors: { dark: "#7f6647", light: "#cdbca6" }
     logo:
       default: images/logos/Kelly.png
       2022: images/logos/Kelly2022.png
       2025: images/logos/Kelly2025.png
   - name: Ben Castaldo
     id: m_62a1c51cd79d
-    color: "#404c5b"
+    colors: { dark: "#404c5b", light: "#404c5b" }
     logo: { default: images/logos/Castaldo.png, 2021: images/logos/Castaldo2021.png }
   - name: Max Malich
     id: m_1059f12c11ca
-    color: "#888888"
+    colors: { dark: "#696969", light: "#888888" }
     logo: { default: images/logos/Malich.png }
   - name: Andrew Root
     id: m_290a0ee24b35
-    color: "#4c82af"
+    colors: { dark: "#2d5375", light: "#4c82af" }
     logo: { default: images/logos/Root.png }
   - name: Thomas Sullivan
     id: m_5279cf075c90
@@ -95,7 +96,10 @@ managers:
   - name: William Serafin
     id: m_c94c4a7c87bf
 
-# TODO: Ryan McQuaid's color (not found by the first search).
+# Colors: the site uses two palettes. "dark" is the one most pages use;
+# "light" is the full-name palette on index and managers. Three stray values
+# (Gorman #9f8bc2, Gegwich #ad1f15, McQuaid #dfc983) are page-level
+# inconsistencies, fixed in phase 4 when pages read colors from here.
 # TODO: confirm each year-suffixed logo covers only that season.
 
 analysis:

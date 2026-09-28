@@ -9,7 +9,7 @@ PREACH = REPO / "leagues" / "preach" / "league.yaml"
 def minimal(**overrides):
     cfg = {
         "league": {"name": "Test", "provider": "espn", "league_id": 1, "first_season": 2020},
-        "managers": [{"name": "A Person", "id": "x1", "color": "#112233"}],
+        "managers": [{"name": "A Person", "id": "x1", "colors": {"dark": "#112233", "light": "#445566"}}],
     }
     cfg.update(overrides)
     return cfg
@@ -37,7 +37,7 @@ def test_unsupported_provider_fails():
 
 
 def test_bad_color_fails():
-    cfg = minimal(managers=[{"name": "A", "id": "1", "color": "orange"}])
+    cfg = minimal(managers=[{"name": "A", "id": "1", "colors": {"dark": "orange"}}])
     assert not validate_config(cfg).ok
 
 
@@ -48,4 +48,9 @@ def test_duplicate_manager_fails():
 
 def test_unknown_excluded_manager_fails():
     cfg = minimal(analysis={"exclude_managers": ["nobody"]})
+    assert not validate_config(cfg).ok
+
+
+def test_unknown_color_role_fails():
+    cfg = minimal(managers=[{"name": "A", "id": "1", "colors": {"neon": "#112233"}}])
     assert not validate_config(cfg).ok
