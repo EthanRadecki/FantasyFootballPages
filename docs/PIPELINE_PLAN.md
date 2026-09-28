@@ -1,0 +1,29 @@
+# Pipeline consolidation plan
+
+Status: draft, 2026-09-28. How the 58 legacy scripts in `engine/_legacy/` collapse into about 15 engine modules.
+
+This first version is built from script names and the files each script reads and writes. Each group is confirmed by reading its scripts in full before porting, and a legacy script is deleted only when its replacement reproduces its output (golden tests).
+
+| New module | Replaces | Main simplification |
+|---|---|---|
+| `providers/espn.py` (done) | `pull_espn_inseason_data`, `pull_espn_stats`, `pull_espn_2026`, `pull_espn_stats_2026`, `pull_current_season_data`, `test_espn_*`, `test_kona_playercard` | One pull path for every season |
+| `normalize/espn.py` | `parse_draft_history`, `match_players`, `rename_players`, `detect_trade_reversals` | ESPN player and member ids replace name matching; draft picks come from ESPN |
+| `analytics/stints.py` | `compute_stints`, `rebuild_player_stints`, `generate_roster_stints`, `generate_waiver_stint_data` | One stint builder with the forfeit fix built in |
+| `analytics/trades.py` | `build_trade_universe`, `compute_metrics`, `compute_quad`, `build_trade_explorer_data`, trade parts of `regenerate_data_files` | A five-file relay becomes function calls |
+| `analytics/draft_value.py` | `surplus_value_index`, `surplus_value_index_2026_live`, `hit_rate_by_round`, `generate_draft_heatmap`, `generate_draft_board_data`, `export_draft_analysis` | Career and live become one function with a season filter |
+| `analytics/draft_profiles.py` | `draft_fingerprint`, `generate_fingerprints`, `generate_archetypes` | Three overlapping scripts become one |
+| `analytics/schedule.py` | `build_schedule_luck`, `build_schedule_swap`, `export_luck_analysis`, `export_h2h_matrix`, `build_projected_sos`, `build_position_sos_index`, `pull_nfl_schedule`, `pull_player_opponents` | |
+| `analytics/playoff_odds.py` | `generate_playoff_odds`, `generate_playoff_odds_2026_live`, `playoff_weights` | Historical and live become one simulation |
+| `analytics/position_impact.py` | `generate_position_impact`, `generate_dst_impact` | D/ST handled as a position |
+| `analytics/records.py`, `analytics/lineups.py` | `generate_franchise_leaders`, `generate_best_single_week`, `generate_blunder_rosters`, `generate_lineup_efficiency`, `build_matchups_json` | |
+| `analytics/attribution.py`, `analytics/similarity.py` | `build_attribution_model_final`, `build_win_attribution_final`, `recompute_weights2`, `export_quarterly_regression`, `historical_similarity`, `export_similarity_grid` | |
+| `publish/` | remaining `regenerate_data_files`, all `export_*` output code, `update_2026` | One JSON writer; no in-place patching |
+| (deleted) | `player_ppr_pullscript.R`, `build_cards.py` (confirm) | |
+
+## Shared rules, defined once
+
+- Regular season and playoff weeks: from `league.yaml` (`regular_season_weeks`, `playoff_rounds`).
+- Replacement level: only players with games > 0.
+- D/ST floor of 0: applied in normalize when `scoring_modifications.dst_floor_zero` is set.
+- Manager identity: hashed member keys (`engine/identity.py`); names only for display.
+- Exclusions: `analysis.exclude_managers` and `analysis.exclude_games` from config.
