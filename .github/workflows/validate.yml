@@ -1,0 +1,43 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  site-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: JSON files parse
+        run: python tools/check_json.py
+
+      - name: Referenced data and image paths exist
+        run: python tools/check_paths.py
+
+      - name: Style rules (no em dashes)
+        run: python tools/check_style.py
+
+  engine-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: pip install pyyaml pytest
+
+      - name: Unit tests
+        run: python -m pytest -q
+
+      - name: League config is valid
+        run: python -m engine.cli config check leagues/preach/league.yaml

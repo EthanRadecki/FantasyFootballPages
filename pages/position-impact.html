@@ -532,7 +532,7 @@ function renderDraftCapitalSummaryTable() {
     POS_ORDER.forEach(function(p) {
       var avg = PDATA.draft_capital[p][m] ? PDATA.draft_capital[p][m].career_avg_round : null;
       if (avg === null || avg === undefined) {
-        html += '<td class="dcap-streamed">&mdash;</td>';
+        html += '<td class="dcap-streamed">&ndash;</td>';
       } else {
         html += '<td style="' + roundColor(avg, 16) + 'font-weight:700;cursor:pointer;" onclick="selectPosition(\'' + p + '\', true)" title="Click to see ' + p + ' detail">' + avg.toFixed(1) + '</td>';
       }
@@ -945,14 +945,14 @@ function renderDraftCapitalTable() {
     years.forEach(function(y) {
       var rnd = d.by_year[y];
       if (rnd === 'not_in_league') {
-        html += '<td class="dcap-not-in-league">&mdash;</td>';
+        html += '<td class="dcap-not-in-league">&ndash;</td>';
       } else if (rnd === null) {
         html += '<td class="dcap-streamed">streamed</td>';
       } else {
         html += '<td style="' + roundColor(rnd) + 'font-weight:700;">Rd ' + rnd + '</td>';
       }
     });
-    var avgTxt = d.career_avg_round !== null ? 'Rd ' + d.career_avg_round.toFixed(1) : '&mdash;';
+    var avgTxt = d.career_avg_round !== null ? 'Rd ' + d.career_avg_round.toFixed(1) : '&ndash;';
     html += '<td class="dcap-avg-cell">' + avgTxt + '</td></tr>';
   });
 

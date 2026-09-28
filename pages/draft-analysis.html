@@ -658,7 +658,7 @@ var SLOT_DATA = {
       var manager=byYear[yr];
       var upcoming=yr===UPCOMING_YEAR;
       var borderStyle=upcoming?'border-left:2px dashed rgba(var(--accent-rgb),0.3);':'';
-      if(!manager){ html+='<td style="color:var(--muted);font-size:0.7rem;'+borderStyle+'">&mdash;</td>'; return; }
+      if(!manager){ html+='<td style="color:var(--muted);font-size:0.7rem;'+borderStyle+'">&ndash;</td>'; return; }
       var mc=MANAGER_COLORS[manager]||'var(--palm)';
       var isRepeat=counts[manager]>1;
       var tag=isRepeat?'<span class="slot-repeat-tag" style="background:'+mc+';">&times;'+counts[manager]+'</span>':'';

@@ -43,7 +43,7 @@ html { scroll-behavior:smooth; }
 .jump-nav-edge { display:none; }
 @media(max-width:768px) {
   /* Multi-row wrapping doesn't work pinned to the top on a short viewport,
-     so collapse to a single-row horizontally scrollable strip instead —
+     so collapse to a single-row horizontally scrollable strip instead - 
      stays sticky, only ever takes up one compact row. */
   .jump-nav {
     flex-wrap:nowrap;overflow-x:auto;top:0;border-radius:0;
@@ -917,15 +917,15 @@ html { scroll-behavior:smooth; }
     <div class="attr-summary-row">
       <div class="attr-stat-card glass">
         <div class="attr-stat-label">Actual Win%</div>
-        <div class="attr-stat-num" id="attr-actual">&mdash;</div>
+        <div class="attr-stat-num" id="attr-actual">&ndash;</div>
       </div>
       <div class="attr-stat-card glass">
         <div class="attr-stat-label">Model Predicts</div>
-        <div class="attr-stat-num" id="attr-predicted">&mdash;</div>
+        <div class="attr-stat-num" id="attr-predicted">&ndash;</div>
       </div>
       <div class="attr-stat-card glass">
         <div class="attr-stat-label">Unexplained</div>
-        <div class="attr-stat-num" id="attr-residual">&mdash;</div>
+        <div class="attr-stat-num" id="attr-residual">&ndash;</div>
       </div>
     </div>
 
@@ -934,7 +934,7 @@ html { scroll-behavior:smooth; }
         <canvas id="chart-waterfall"></canvas>
       </div>
     </div>
-    <p class="table-hint" style="margin-top:0.9rem;">Each step is that ingredient's real contribution, in percentage points, relative to a league-average manager. The last two bars show the model's full prediction against the manager's actual win% &mdash; the gap between them is what the five ingredients don't explain.</p>
+    <p class="table-hint" style="margin-top:0.9rem;">Each step is that ingredient's real contribution, in percentage points, relative to a league-average manager. The last two bars show the model's full prediction against the manager's actual win% - the gap between them is what the five ingredients don't explain.</p>
 
     <div class="chart-grid" style="margin-top:1.75rem;">
       <div class="chart-area-pad glass">
@@ -956,7 +956,7 @@ html { scroll-behavior:smooth; }
 <script src="../shared.js"></script>
 <script>
 /* ══════════════════════════════════════
-   Extra Analytics — all four sections
+   Extra Analytics - all four sections
    ══════════════════════════════════════ */
 
 Chart.defaults.font.family = "'Outfit', sans-serif";
@@ -1777,7 +1777,7 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
       var td = document.createElement('td');
       if (mgr === opp) {
         td.className = 'self';
-        td.textContent = '—';
+        td.textContent = '\u2013';
       } else {
         var rec = h2h[mgr] && h2h[mgr][opp];
         if (rec) {
@@ -1785,7 +1785,7 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
           td.textContent = rec.w + '-' + rec.l;
           td.title = shortName(mgr) + ' vs ' + shortName(opp) + ': ' + rec.w + '-' + rec.l + ' (' + Math.round(rec.pct*100) + '%)';
         } else {
-          td.textContent = '—';
+          td.textContent = '\u2013';
           td.style.color = 'var(--muted)';
         }
       }
@@ -2185,7 +2185,7 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
   }).filter(Boolean);
 
   function centerPillInStrip(pill) {
-    // Scrolls only the horizontal pill strip itself — never the page.
+    // Scrolls only the horizontal pill strip itself - never the page.
     if (!nav || !window.matchMedia('(max-width:768px)').matches) return;
     var target = (pill.offsetLeft + pill.offsetWidth / 2) - (nav.clientWidth / 2);
     nav.scrollTo({ left: target, behavior: 'smooth' });

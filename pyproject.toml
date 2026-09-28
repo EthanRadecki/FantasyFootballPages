@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "league-engine"          # placeholder until the product is named
+version = "0.1.0"
+description = "Builds a fantasy football league analytics site from a league config."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Ethan Radecki" }]
+dependencies = [
+    "pyyaml>=6.0",
+    "pandas>=2.1",
+    "espn-api>=0.39",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+engine = "engine.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["engine*"]
+
+[tool.pytest.ini_options]
+testpaths = ["engine/tests"]
