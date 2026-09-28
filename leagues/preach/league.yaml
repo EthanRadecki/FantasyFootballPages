@@ -4,7 +4,7 @@
 # Validate with:  engine config check leagues/preach/league.yaml
 #
 # Only facts ESPN cannot supply belong here (seasons played, team names, and
-# records come from ESPN). Items marked TODO need filling in. Manager ids come from
+# records come from ESPN). Manager ids come from
 # tools/espn_members.py (run locally; needs your ESPN cookies). They are
 # hashed keys, never raw ESPN member ids (see engine/identity.py).
 
@@ -21,9 +21,10 @@ rules:
     default: 14
     2020: 13
     2021: 13
-  playoff_round_names:
-    2020: ["The Round of 15"]          # TODO: remaining 2020 round names, and 2021 if it differs
-    default: [Quarterfinals, Semifinals, Championship]
+  playoff_rounds:                      # playoff week -> round name
+    2020: { 14: "The Round of 15", 15: Quarterfinals, 16: Semifinals, 17: Championship }
+    2021: { 14: Wild Card, 15: Quarterfinals, 16: Semifinals, 17: Championship }
+    default: [Quarterfinals, Semifinals, Championship]   # the weeks right after the regular season
   scoring_modifications:
     dst_floor_zero: true               # negative D/ST scores floored at 0
   faab_budget: 300                     # resets annually, tradeable
@@ -32,64 +33,66 @@ managers:
   - name: Ethan Radecki
     id: m_75b9d7bd54e4
     colors: { dark: "#985e0f", light: "#ea9a2e" }
-    logo: { default: images/logos/Radecki.png, 2020: images/logos/Radecki2020.png }
+    logo: images/logos/Radecki.png
+    championship_logos: { 2020: images/logos/Radecki2020.png }
   - name: Carmine Pittelli
     id: m_38b34b353385
     aliases: ["Carmine Pittelli Jr."]
     colors: { dark: "#3a261d", light: "#541821" }
-    logo: { default: images/logos/Pittelli.png, 2023: images/logos/Pittelli2023.png }
+    logo: images/logos/Pittelli.png
+    championship_logos: { 2023: images/logos/Pittelli2023.png }
   - name: Charlie Gorman
     id: m_c4d1975f03ad
     colors: { dark: "#28843a", light: "#28843a" }
-    logo: { default: images/logos/Gorman.png }
+    logo: images/logos/Gorman.png
   - name: Aidan Quigley
     id: m_51ea22569640
     colors: { dark: "#c53016", light: "#eb644c" }
-    logo: { default: images/logos/Quigley.png }
+    logo: images/logos/Quigley.png
   - name: Brandon Hancock
     id: m_4a52e2a2e6e5
     colors: { dark: "#416cab", light: "#4875b9" }
-    logo: { default: images/logos/Hancock.png }
+    logo: images/logos/Hancock.png
   - name: Ryan McQuaid
     id: m_a4c987aba844
     aliases: ["Ryan P McQuaid"]
     colors: { dark: "#bd0517", light: "#d76974" }
-    logo: { default: images/logos/McQuaid.png }
+    logo: images/logos/McQuaid.png
   - name: Cole Maney
     id: m_22dd02175159
     colors: { dark: "#ba4b15", light: "#f7cdb9" }
-    logo: { default: images/logos/Maney.png }
+    logo: images/logos/Maney.png
   - name: Baylen Slansky
     id: m_a3c2ab27d35f
     colors: { dark: "#7269aa", light: "#776aad" }
-    logo: { default: images/logos/Slansky.png, 2024: images/logos/Slansky2024.png }
+    logo: images/logos/Slansky.png
+    championship_logos: { 2024: images/logos/Slansky2024.png }
   - name: Deniz Bileydi
     id: m_e81d820d1e00
     colors: { dark: "#68733c", light: "#8d9b51" }
-    logo: { default: images/logos/Bileydi.png }
+    logo: images/logos/Bileydi.png
   - name: Quin Gegwich
     id: m_7ed79619b0f3
     colors: { dark: "#131313", light: "#131313" }
-    logo: { default: images/logos/Gegwich.png }
+    logo: images/logos/Gegwich.png
   - name: Anthony Kelly
     id: m_96ee73f629d3
     colors: { dark: "#7f6647", light: "#cdbca6" }
-    logo:
-      default: images/logos/Kelly.png
-      2022: images/logos/Kelly2022.png
-      2025: images/logos/Kelly2025.png
+    logo: images/logos/Kelly.png
+    championship_logos: { 2022: images/logos/Kelly2022.png, 2025: images/logos/Kelly2025.png }
   - name: Ben Castaldo
     id: m_62a1c51cd79d
     colors: { dark: "#404c5b", light: "#404c5b" }
-    logo: { default: images/logos/Castaldo.png, 2021: images/logos/Castaldo2021.png }
+    logo: images/logos/Castaldo.png
+    championship_logos: { 2021: images/logos/Castaldo2021.png }
   - name: Max Malich
     id: m_1059f12c11ca
     colors: { dark: "#696969", light: "#888888" }
-    logo: { default: images/logos/Malich.png }
+    logo: images/logos/Malich.png
   - name: Andrew Root
     id: m_290a0ee24b35
     colors: { dark: "#2d5375", light: "#4c82af" }
-    logo: { default: images/logos/Root.png }
+    logo: images/logos/Root.png
   - name: Thomas Sullivan
     id: m_5279cf075c90
     aliases: ["Michael Sullivan"]      # name on the ESPN account
@@ -100,7 +103,7 @@ managers:
 # "light" is the full-name palette on index and managers. Three stray values
 # (Gorman #9f8bc2, Gegwich #ad1f15, McQuaid #dfc983) are page-level
 # inconsistencies, fixed in phase 4 when pages read colors from here.
-# TODO: confirm each year-suffixed logo covers only that season.
+# championship_logos: the alternate logo a manager earned by winning that season.
 
 analysis:
   exclude_managers: [thomas-sullivan, william-serafin]   # 2020-only, excluded from surplus analyses

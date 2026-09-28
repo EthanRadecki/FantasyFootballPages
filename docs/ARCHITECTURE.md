@@ -127,8 +127,8 @@ league:
 
 rules:
   regular_season_weeks: { default: 14, 2020: 13, 2021: 13 }
-  playoff_round_names:
-    2020: ["The Round of 15", "..."]
+  playoff_rounds:
+    2020: { 14: "The Round of 15", 15: Quarterfinals, 16: Semifinals, 17: Championship }
     default: [Quarterfinals, Semifinals, Championship]
   scoring_modifications:
     dst_floor_zero: true
@@ -138,7 +138,8 @@ managers:
   - id: m_3fa91c07be21          # hashed member key, see Identity
     name: Ethan Radecki
     colors: { dark: "#985e0f", light: "#ea9a2e" }
-    logo: { default: assets/logos/radecki.png, 2020: assets/logos/radecki_2020.png }
+    logo: assets/logos/radecki.png
+    championship_logos: { 2020: assets/logos/radecki_2020.png }
   - id: m_8c02d5e4a917          # hashed member key, see Identity
     name: Carmine Pittelli
     aliases: ["Carmine Pittelli Jr."]
