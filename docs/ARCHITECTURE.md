@@ -113,6 +113,8 @@ Completed seasons are pulled once and cached; only the current season is refresh
 
 Managers are keyed by ESPN member ID. Display names, aliases ("Carmine Pittelli Jr.", "Ryan P McQuaid"), colors, and logos hang off that ID in config. Name-string joins go away.
 
+Raw member IDs are never stored: an ESPN member ID is also that person's SWID cookie. The engine hashes every provider ID to a short public key on ingest (`engine/identity.py`), and config refers to managers by that key.
+
 ## 5. League config (`league.yaml`) sketch
 
 ```yaml
@@ -133,14 +135,14 @@ rules:
   faab_budget: 300
 
 managers:
-  - id: "{ESPN member id}"
+  - id: m_3fa91c07be21          # hashed member key, see Identity
     name: Ethan Radecki
     color: "#ea9a2e"
     logo: { default: assets/logos/radecki.png, 2020: assets/logos/radecki_2020.png }
-  - id: "{ESPN member id}"
+  - id: m_8c02d5e4a917          # hashed member key, see Identity
     name: Carmine Pittelli
     aliases: ["Carmine Pittelli Jr."]
-    color: "#3a261d"
+    color: "#541821"
 
 analysis:
   exclude_managers: [thomas-sullivan, william-serafin]

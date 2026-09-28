@@ -4,7 +4,8 @@
 # Validate with:  engine config check leagues/preach/league.yaml
 #
 # Items marked TODO need filling in. Manager ids come from
-# tools/espn_members.py (run locally; needs your ESPN cookies).
+# tools/espn_members.py (run locally; needs your ESPN cookies). They are
+# hashed keys, never raw ESPN member ids (see engine/identity.py).
 
 league:
   name: Preach Fantasy
@@ -34,16 +35,19 @@ managers:
   - name: Carmine Pittelli
     id: TODO
     aliases: ["Carmine Pittelli Jr."]
-    color: "#3a261d"
+    color: "#541821"
     logo: { default: images/logos/Pittelli.png, 2023: images/logos/Pittelli2023.png }
   - name: Charlie Gorman
     id: TODO
+    color: "#28843a"
     logo: { default: images/logos/Gorman.png }
   - name: Aidan Quigley
     id: TODO
+    color: "#eb644c"
     logo: { default: images/logos/Quigley.png }
   - name: Brandon Hancock
     id: TODO
+    color: "#4875b9"
     logo: { default: images/logos/Hancock.png }
   - name: Ryan McQuaid
     id: TODO
@@ -51,30 +55,38 @@ managers:
     logo: { default: images/logos/McQuaid.png }
   - name: Cole Maney
     id: TODO
+    color: "#f7cdb9"
     logo: { default: images/logos/Maney.png }
   - name: Baylen Slansky
     id: TODO
+    color: "#776aad"
     logo: { default: images/logos/Slansky.png, 2024: images/logos/Slansky2024.png }
   - name: Deniz Bileydi
     id: TODO
+    color: "#8d9b51"
     logo: { default: images/logos/Bileydi.png }
   - name: Quin Gegwich
     id: TODO
+    color: "#131313"
     logo: { default: images/logos/Gegwich.png }
   - name: Anthony Kelly
     id: TODO
+    color: "#cdbca6"
     logo:
       default: images/logos/Kelly.png
       2022: images/logos/Kelly2022.png
       2025: images/logos/Kelly2025.png
   - name: Ben Castaldo
     id: TODO
+    color: "#404c5b"
     logo: { default: images/logos/Castaldo.png, 2021: images/logos/Castaldo2021.png }
   - name: Max Malich
     id: TODO
+    color: "#888888"
     logo: { default: images/logos/Malich.png }
   - name: Andrew Root
     id: TODO
+    color: "#4c82af"
     logo: { default: images/logos/Root.png }
   - name: Thomas Sullivan
     id: TODO
@@ -83,8 +95,7 @@ managers:
     id: TODO
     seasons: [2020]
 
-# TODO: colors for the other 12 active managers. Copy the hex values the site
-# already uses (they are in the page CSS/JS); the engine must not guess them.
+# TODO: Ryan McQuaid's color (not found by the first search).
 # TODO: confirm each year-suffixed logo covers only that season.
 
 analysis:
