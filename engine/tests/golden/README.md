@@ -34,4 +34,10 @@ Legacy site files for the records and lineups module, added 2026-09-29. Checked 
 | `records/best_single_week.json.gz` | `data/best_single_week.json` | top 25 started weeks per manager, position, season |
 | `records/lineup_blunders.csv.gz` | the `BLUNDERS` list in `generate_blunder_rosters.py` | the 10 biggest efficiency gaps, in order |
 
+## draft/
+
+| File | Source | Covers |
+|---|---|---|
+| `draft/espn_player_stats_season.csv.gz` | `pull_espn_stats.py`, rerun 2026-09-29 for 2020-2025 (reproduces every PPG, games, and position baseline in `draft_surplus_v2.csv`) | 3,814 player-seasons: every rostered player plus 500 free agents, skill positions |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.

@@ -12,8 +12,9 @@ class FakeClient:
 
     league_id = 123
 
-    def __init__(self, active=False, weeks=3):
+    def __init__(self, active=False, weeks=3, pool=3):
         self.requests = []
+        self.pool = pool
         self.active = active
         self.weeks = weeks
         self.calls = 0
@@ -38,6 +39,11 @@ class FakeClient:
             return {"transactions": [{"id": f"t{scoring_period}"}]}
         if "mDraftDetail" in views:
             return {"draftDetail": {"picks": [{"playerId": 7}, {"playerId": 8}, {"playerId": 9}]}}
+        if "kona_player_info" in views:
+            offset = fantasy_filter["players"]["offset"]
+            limit = fantasy_filter["players"]["limit"]
+            ids = list(range(100, 100 + self.pool))[offset:offset + limit]
+            return {"players": [{"id": i, "status": "FREEAGENT", "player": {"id": i}} for i in ids]}
         if "kona_playercard" in views:
             ids = fantasy_filter["players"]["filterIds"]["value"]
             return {"players": [{"player": {"id": i, "fullName": f"P{i}"}, "transactions": []} for i in ids]}
@@ -69,7 +75,8 @@ def test_pull_season_writes_cache_and_summary(tmp_path):
     (season, status, summary), = run_pull(provider, 123, [2024], tmp_path)
     assert status == "pulled"
     assert summary == {"teams": 2, "members": 2, "weeks": 3, "matchups": 3, "lineup_entries": 12,
-                       "transactions": 3, "draft_picks": 3, "player_cards": 3, "card_transactions": 0}
+                       "transactions": 3, "draft_picks": 3, "player_cards": 3, "card_transactions": 0,
+                       "pool_players": 3}
     season_dir = tmp_path / "espn" / "123" / "2024"
     assert (season_dir / "week_03_boxscore.json").exists()
     manifest = json.loads((season_dir / "manifest.json").read_text())
@@ -96,3 +103,14 @@ def test_boxscore_requests_filter_by_matchup_period(tmp_path):
     box = [r for r in client.requests if "mMatchupScore" in r[1]]
     assert [r[2] for r in box] == [1, 2]
     assert '"value": [2]' in box[1][3]
+
+
+def test_player_pool_is_paged_until_a_short_page(tmp_path):
+    from engine.providers import espn
+
+    client = FakeClient(weeks=1, pool=espn.POOL_PAGE + 20)
+    list(run_pull(EspnProvider(client), 123, [2024], tmp_path))
+    pool = [json.loads(r[3])["players"]["offset"] for r in client.requests if "kona_player_info" in r[1]]
+    assert pool == [0, espn.POOL_PAGE]
+    season_dir = tmp_path / "espn" / "123" / "2024"
+    assert sorted(p.name for p in season_dir.glob("players_*.json")) == ["players_000.json", "players_001.json"]
