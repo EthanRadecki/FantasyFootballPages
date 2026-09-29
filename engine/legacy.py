@@ -172,10 +172,9 @@ def check_rosters(tables: dict[str, pd.DataFrame], legacy: pd.DataFrame, cfg: di
         "started": legacy["Started"].astype(bool),
         "points": legacy["Points"].astype(float),
     })
-    m = tables["matchups"]
-    in_bracket = m[~m["is_playoff_week"] | (m["tier"].eq("WINNERS_BRACKET") & ~m["is_bye"])]
-    keep = in_bracket[["season", "week", "team_id"]].drop_duplicates()
-    lu = tables["lineups"].merge(keep, on=["season", "week", "team_id"])
+    from engine.analytics.weeks import bracket_lineups
+
+    lu = bracket_lineups(tables)
     lu = lu[lu["season"].isin(exp["season"].unique())]
 
     # Legacy bug: ESPN reclassified some players (e.g. WR -> RB); the legacy

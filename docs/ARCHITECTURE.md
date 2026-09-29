@@ -130,8 +130,6 @@ rules:
   playoff_rounds:
     2020: { 14: "The Round of 15", 15: Quarterfinals, 16: Semifinals, 17: Championship }
     default: [Quarterfinals, Semifinals, Championship]
-  scoring_modifications:
-    dst_floor_zero: true
   faab_budget: 300
 
 managers:
