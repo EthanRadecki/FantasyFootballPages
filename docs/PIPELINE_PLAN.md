@@ -9,7 +9,7 @@ This first version is built from script names and the files each script reads an
 | `providers/espn.py` (done) | `pull_espn_inseason_data`, `pull_espn_stats`, `pull_espn_2026`, `pull_espn_stats_2026`, `pull_current_season_data`, `test_espn_*`, `test_kona_playercard` | One pull path for every season |
 | `normalize/espn.py` | `parse_draft_history`, `match_players`, `rename_players` | ESPN player and member ids replace name matching; draft picks come from ESPN |
 | `analytics/stints.py` (trade stints built) | `compute_stints`, `rebuild_player_stints`, `generate_roster_stints`, `generate_waiver_stint_data` | One stint builder with the forfeit fix built in |
-| `analytics/trades.py` (built, verifying) | `detect_trade_reversals`, `build_trade_universe`, `compute_metrics`, `compute_quad`, `build_trade_explorer_data`, trade parts of `regenerate_data_files` | A five-file relay becomes function calls |
+| `analytics/trades.py` (built and verified, PR #6; trade explorer JSON pending) | `detect_trade_reversals`, `build_trade_universe`, `compute_metrics`, `compute_quad`, `build_trade_explorer_data`, trade parts of `regenerate_data_files` | A five-file relay becomes function calls |
 | `analytics/weeks.py` (built) | `playoff_weights`, position baseline (builder lost) | Bracket weeks, forfeits, playoff weights, position z-scores defined once |
 | `analytics/draft_value.py` | `surplus_value_index`, `surplus_value_index_2026_live`, `hit_rate_by_round`, `generate_draft_heatmap`, `generate_draft_board_data`, `export_draft_analysis` | Career and live become one function with a season filter |
 | `analytics/draft_profiles.py` | `draft_fingerprint`, `generate_fingerprints`, `generate_archetypes` | Three overlapping scripts become one |
