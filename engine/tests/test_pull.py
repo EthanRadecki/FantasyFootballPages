@@ -37,7 +37,10 @@ class FakeClient:
         if "mTransactions2" in views:
             return {"transactions": [{"id": f"t{scoring_period}"}]}
         if "mDraftDetail" in views:
-            return {"draftDetail": {"picks": [{}, {}, {}]}}
+            return {"draftDetail": {"picks": [{"playerId": 7}, {"playerId": 8}, {"playerId": 9}]}}
+        if "kona_playercard" in views:
+            ids = fantasy_filter["players"]["filterIds"]["value"]
+            return {"players": [{"player": {"id": i, "fullName": f"P{i}"}, "transactions": []} for i in ids]}
         raise AssertionError(views)
 
 
@@ -65,8 +68,8 @@ def test_pull_season_writes_cache_and_summary(tmp_path):
     provider = EspnProvider(FakeClient(weeks=3))
     (season, status, summary), = run_pull(provider, 123, [2024], tmp_path)
     assert status == "pulled"
-    assert summary == {"teams": 2, "members": 2, "weeks": 3, "matchups": 3,
-                       "lineup_entries": 12, "transactions": 3, "draft_picks": 3}
+    assert summary == {"teams": 2, "members": 2, "weeks": 3, "matchups": 3, "lineup_entries": 12,
+                       "transactions": 3, "draft_picks": 3, "player_cards": 3, "card_transactions": 0}
     season_dir = tmp_path / "espn" / "123" / "2024"
     assert (season_dir / "week_03_boxscore.json").exists()
     manifest = json.loads((season_dir / "manifest.json").read_text())

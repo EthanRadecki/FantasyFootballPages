@@ -29,6 +29,7 @@ class Comparison:
     mismatched: dict[str, int] = field(default_factory=dict)
     known: dict[str, int] = field(default_factory=dict)
     examples: list[str] = field(default_factory=list)
+    frames: dict[str, pd.DataFrame] = field(default_factory=dict)   # full detail, written by --verify
 
     @property
     def ok(self) -> bool:
@@ -90,6 +91,8 @@ def compare(name: str, expected: pd.DataFrame, actual: pd.DataFrame, keys: list[
     missing = merged[merged["_merge"] == "left_only"]
     extra = merged[merged["_merge"] == "right_only"]
     result.missing, result.extra = len(missing), len(extra)
+    result.frames["missing"] = missing.drop(columns="_merge")
+    result.frames["extra"] = extra.drop(columns="_merge")
     for _, row in missing.head(2).iterrows():
         result.examples.append("missing " + ", ".join(f"{k}={row[k]}" for k in keys))
     for _, row in extra.head(2).iterrows():
@@ -111,6 +114,8 @@ def compare(name: str, expected: pd.DataFrame, actual: pd.DataFrame, keys: list[
                     result.known[reason] = result.known.get(reason, 0) + int(n)
                 bad = bad & ~excused
         result.mismatched[col] = int(bad.sum())
+        if bad.any():
+            result.frames[f"mismatched_{col}"] = both[bad].drop(columns="_merge")
         room = max(0, max_examples - len(result.examples))
         for _, row in both[bad].head(room).iterrows():
             result.examples.append(
@@ -205,3 +210,121 @@ def config_consistency(tables: dict[str, pd.DataFrame], cfg: dict) -> list[str]:
     for k in sorted(set(tables["managers"]["manager_key"]) - known):
         warnings.append(f"ESPN member {k} is not in league.yaml")
     return warnings
+
+
+NAME_SUFFIXES = {"jr", "sr", "ii", "iii", "iv", "v"}
+
+
+def surname(name: str) -> str:
+    """Last name without punctuation or generational suffix: 'Aaron Jones Sr.' -> 'jones'."""
+    parts = [p for p in "".join(c for c in str(name).lower() if c.isalnum() or c.isspace()).split()
+             if p not in NAME_SUFFIXES]
+    return parts[-1] if parts else ""
+
+
+def check_draft(tables: dict[str, pd.DataFrame], legacy: pd.DataFrame, cfg: dict) -> Comparison:
+    """Legacy draft_history_all_positions.csv: one row per pick, K and D/ST included.
+
+    The legacy file numbers picks the way ESPN recorded them (before any
+    draft-order correction), so picks are matched on ESPN's numbering. Player
+    names come from ESPN's player data; spelling variants of the same surname
+    (Jr./Sr., Marquise vs Hollywood Brown) are reported as known differences.
+    """
+    lookup = name_to_key(cfg)
+    exp = pd.DataFrame({
+        "season": legacy["season"].astype(int),
+        "overall_pick": legacy["overall_pick"].astype(int),
+        "round": legacy["round"].astype(int),
+        "round_pick": legacy["pick_in_round"].astype(int),
+        "draft_slot": legacy["draft_slot"].astype(int),
+        "manager_key": resolve_names(legacy["manager"], lookup),
+        "player_name": legacy["player_name"],
+        "position": legacy["position"],
+    })
+    dp = tables["draft_picks"].copy()
+    for col in ("overall_pick", "round_pick"):
+        if f"espn_{col}" in dp:
+            dp[col] = dp[f"espn_{col}"].fillna(dp[col])
+    ps = tables["player_seasons"].rename(columns={"player_name": "ps_name", "position": "ps_position"})
+    season_pos = (tables["lineups"].groupby(["season", "player_id"])["position"].last()
+                  .rename("lineup_position").reset_index())
+    act = (dp.merge(ps, on=["season", "player_id"], how="left")
+             .merge(season_pos, on=["season", "player_id"], how="left"))
+    act["player_name"] = act["ps_name"]
+    act["position"] = act["lineup_position"].fillna(act["ps_position"])
+    act = act[act["season"].isin(exp["season"].unique())]
+
+    both = exp.merge(act[["season", "overall_pick", "player_name"]], on=["season", "overall_pick"],
+                     suffixes=("", "_engine"))
+    variant = both[(both["player_name"] != both["player_name_engine"])
+                   & (both["player_name"].map(surname) == both["player_name_engine"].map(surname))]
+    known = variant[["season", "overall_pick"]].assign(
+        column="player_name", reason="same player, different spelling (suffix or nickname)")
+    return compare("draft picks vs draft_history_all_positions.csv", exp, act,
+                   keys=["season", "overall_pick"],
+                   values=["round", "round_pick", "draft_slot", "manager_key", "player_name", "position"],
+                   known=known)
+
+
+def check_transactions(tables: dict[str, pd.DataFrame], legacy: pd.DataFrame, cfg: dict) -> Comparison:
+    """Legacy transactions_clean.csv: one row per transaction item.
+
+    Matched on ESPN transaction id + player id + item type. The legacy Player
+    column is not compared: it is scrambled in that file (one player id carries
+    several names), so names always come from ESPN's player data instead.
+    """
+    from engine.normalize.moves import executed_moves
+
+    lookup = name_to_key(cfg)
+    exp = pd.DataFrame({
+        "season": legacy["Season"].astype(int),
+        "transaction_id": legacy["Transaction_ID"],
+        "player_id": legacy["Player_ID"].astype(int),
+        "item_type": legacy["Move"],
+        "type": legacy["Type"],
+        "scoring_period": legacy["Scoring_Period"].astype(int),
+        "bid_amount": legacy["Bid_Amount"].astype(int),
+        "manager_key": resolve_names(legacy["Initiating_Manager"], lookup),
+    })
+    tx = tables["transactions"]
+    tx = tx[tx["season"].isin(exp["season"].unique())]
+    act = executed_moves(tx)
+    result = compare("transactions vs transactions_clean.csv", exp, act,
+                     keys=["transaction_id", "player_id", "item_type"],
+                     values=["season", "type", "scoring_period", "bid_amount", "manager_key"])
+
+    # Diagnostics: where the differences come from.
+    keys = ["transaction_id", "player_id", "item_type"]
+    counted = act[keys].assign(counted_by_engine=True)
+    all_rows = (tx.merge(exp[keys].assign(in_legacy=True), on=keys, how="left")
+                  .merge(counted, on=keys, how="left"))
+    for col in ("in_legacy", "counted_by_engine"):
+        all_rows[col] = all_rows[col].fillna(False).astype(bool)
+    grp = (all_rows.groupby(["type", "status", "item_type"], dropna=False)
+                   .agg(espn_rows=("in_legacy", "size"), in_legacy=("in_legacy", "sum"),
+                        counted_by_engine=("counted_by_engine", "sum"))
+                   .reset_index())
+    result.frames["by_espn_type_status"] = grp
+    for _, g in grp[grp["in_legacy"] != grp["counted_by_engine"]].iterrows():
+        result.examples.append(
+            f"{g['type']}/{g['status']}/{g['item_type']}: {g['espn_rows']} ESPN rows, "
+            f"legacy has {int(g['in_legacy'])}, engine counts {int(g['counted_by_engine'])}")
+
+    # Legacy rows with no ESPN row at all: is the transaction id known under another item?
+    missing = exp.merge(tx[keys], on=keys, how="left", indicator=True)
+    missing = missing[missing["_merge"] == "left_only"].drop(columns="_merge")
+    id_info = (tx.groupby("transaction_id")
+                 .agg(espn_type=("type", "first"), espn_status=("status", "first"),
+                      espn_items=("item_type", lambda x: ",".join(sorted(set(map(str, x))))))
+                 .reset_index())
+    missing = missing.merge(id_info, on="transaction_id", how="left")
+    result.frames["legacy_rows_not_in_espn"] = missing
+    summary = (missing.assign(id_in_espn=missing["espn_type"].notna())
+                      .groupby(["season", "type", "item_type", "id_in_espn"]).size()
+                      .rename("rows").reset_index())
+    result.frames["legacy_rows_not_in_espn_summary"] = summary
+    for _, g in summary.iterrows():
+        result.examples.append(
+            f"legacy-only {g['season']} {g['type']}/{g['item_type']}: {g['rows']} rows "
+            f"({'id exists in ESPN data' if g['id_in_espn'] else 'id not in ESPN data'})")
+    return result

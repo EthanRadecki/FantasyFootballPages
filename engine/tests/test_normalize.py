@@ -60,6 +60,20 @@ def write_league(tmp_path):
     ])
     (d / "week_01_boxscore.json").write_text(json.dumps(week1))
     (d / "week_02_boxscore.json").write_text(json.dumps(week2))
+    tx = {"transactions": [{"id": "tx-1", "type": "WAIVER", "status": "EXECUTED", "teamId": 3, "bidAmount": 12,
+                            "scoringPeriodId": 1, "items": [
+                                {"type": "ADD", "playerId": 40, "fromTeamId": 0, "toTeamId": 3},
+                                {"type": "DROP", "playerId": 30, "fromTeamId": 3, "toTeamId": 0}]}]}
+    (d / "week_01_transactions.json").write_text(json.dumps(tx))
+    (d / "week_02_transactions.json").write_text(json.dumps(tx))   # same transaction reported twice
+    cards = {"players": [
+        {"player": {"id": 99, "fullName": "Cut Before Week One", "defaultPositionId": 3}, "transactions": []},
+        {"player": {"id": 10, "fullName": "QB One", "defaultPositionId": 1}, "transactions": [
+            {"id": "trade-9", "type": "TRADE_ACCEPT", "teamId": 1, "scoringPeriodId": 2, "items": [
+                {"type": "TRADE", "playerId": 10, "fromTeamId": 1, "toTeamId": 2}]},
+            {"id": "tx-1", "type": "WAIVER", "status": "EXECUTED", "teamId": 3, "scoringPeriodId": 1, "items": [
+                {"type": "ADD", "playerId": 40, "fromTeamId": 0, "toTeamId": 3}]}]}]}
+    (d / "playercards_000.json").write_text(json.dumps(cards))
     (d / "draft.json").write_text(json.dumps({"draftDetail": {"picks": [
         {"overallPickNumber": 1, "roundId": 1, "roundPickNumber": 1, "teamId": 2, "playerId": 20}]}}))
     return tmp_path
@@ -92,7 +106,8 @@ def test_game_rows_results_byes_and_tiers():
 
 def test_normalize_league_end_to_end(tmp_path):
     t = normalize_league(write_league(tmp_path))
-    assert set(t) == {"seasons", "managers", "teams", "matchups", "lineups", "draft_picks", "players"}
+    assert set(t) == {"seasons", "managers", "teams", "matchups", "lineups", "draft_picks", "transactions",
+                      "player_seasons", "players"}
 
     s = t["seasons"].iloc[0]
     assert s["team_count"] == 3 and s["regular_season_periods"] == 1 and s["faab_budget"] == 300
@@ -108,6 +123,14 @@ def test_normalize_league_end_to_end(tmp_path):
     assert dst.points == -3.0 and dst.position == "D/ST"          # raw ESPN points, no floor
     assert not lu[lu.player_id == 11].iloc[0].started              # bench
     assert t["draft_picks"].iloc[0].manager_key == member_key(RAW_B)
+    tx = t["transactions"]
+    assert len(tx) == 3                                                   # deduplicated across weeks and cards
+    assert tx[tx.transaction_id == "tx-1"].source.eq("league").all()      # league feed wins duplicates
+    trade = tx[tx.transaction_id == "trade-9"].iloc[0]
+    assert trade.source == "playercard" and trade.item_type == "TRADE"   # trade only the card knew about
+    ps = t["player_seasons"]
+    assert ps[ps.player_id == 99].iloc[0].player_name == "Cut Before Week One"
+    assert (tx[tx.transaction_id == "tx-1"].bid_amount == 12).all()
     assert not any("{" in str(v) for v in t["managers"]["manager_key"])  # no raw ids anywhere
 
 
@@ -196,3 +219,87 @@ def test_reclassified_player_position_is_excused_only_when_espn_used_it_another_
     assert r.ok and sum(r.known.values()) == 1, r.render()
     bad = good.assign(Position="TE")          # TE was never his ESPN position: a real mismatch
     assert not legacy.check_rosters(t, bad, cfg).ok
+
+
+def test_executed_moves_drops_proposals_failures_and_lineup_noise():
+    from engine.normalize.moves import executed_moves
+    tx = pd.DataFrame([
+        {"type": "WAIVER", "status": "EXECUTED"},
+        {"type": "WAIVER", "status": "FAILED_ROSTERLIMIT"},
+        {"type": "WAIVER", "status": "CANCELED"},
+        {"type": "TRADE_PROPOSAL", "status": "PENDING"},
+        {"type": "TRADE_DECLINE", "status": "EXECUTED"},
+        {"type": "FUTURE_ROSTER", "status": "EXECUTED"},
+        {"type": "TRADE_ACCEPT", "status": None},
+        {"type": "FREEAGENT", "status": "EXECUTED"},
+    ])
+    tx["source"] = "league"
+    tx.loc[len(tx)] = {"type": "TRADE_ACCEPT", "status": None, "source": "playercard"}
+    kept = executed_moves(tx)
+    assert list(kept["type"]) == ["WAIVER", "FREEAGENT", "TRADE_ACCEPT"]
+    assert list(kept["source"]) == ["league", "league", "playercard"]
+
+
+def test_draft_check_matches_on_pick_and_derives_draft_slot():
+    a, b = "m_aaaaaaaaaaaa", "m_bbbbbbbbbbbb"
+    t = {
+        "draft_picks": pd.DataFrame([
+            dict(season=2024, overall_pick=1, round=1, round_pick=1, team_id=1, player_id=10, manager_key=a, draft_slot=1),
+            dict(season=2024, overall_pick=2, round=1, round_pick=2, team_id=2, player_id=20, manager_key=b, draft_slot=2),
+            dict(season=2024, overall_pick=3, round=2, round_pick=1, team_id=2, player_id=30, manager_key=b, draft_slot=2),
+        ]),
+        "player_seasons": pd.DataFrame([dict(season=2024, player_id=10, player_name="P Ten", position="RB"),
+                                        dict(season=2024, player_id=20, player_name="P Twenty", position="WR"),
+                                        dict(season=2024, player_id=30, player_name="Bears D/ST", position="D/ST")]),
+        "lineups": pd.DataFrame([dict(season=2024, player_id=10, position="RB")]),
+    }
+    cfg = {"managers": [{"name": "Ann A", "id": a}, {"name": "Bob B", "id": b}]}
+    legacy_df = pd.DataFrame([
+        dict(season=2024, round=1, draft_slot=1, overall_pick=1, pick_in_round=1, player_name="P Ten", position="RB", manager="Ann A"),
+        dict(season=2024, round=1, draft_slot=2, overall_pick=2, pick_in_round=2, player_name="P Twenty", position="WR", manager="Bob B"),
+        dict(season=2024, round=2, draft_slot=2, overall_pick=3, pick_in_round=1, player_name="Bears D/ST", position="D/ST", manager="Bob B"),
+    ])
+    r = legacy.check_draft(t, legacy_df, cfg)
+    assert r.ok, r.render()
+
+
+def test_draft_order_correction_renumbers_picks_and_keeps_espn_numbers():
+    from engine.normalize.corrections import apply_draft_order, snake_slot
+    assert [snake_slot(1, 2, 14), snake_slot(2, 1, 14), snake_slot(2, 13, 14)] == [2, 14, 2]
+    # ESPN put Kelly in slot 1 and Cook's drafter in slot 2; truly it was the other way round
+    picks = pd.DataFrame([
+        dict(season=2021, round=1, round_pick=1, overall_pick=1, manager_key="m_kelly"),
+        dict(season=2021, round=1, round_pick=2, overall_pick=2, manager_key="m_cook"),
+        dict(season=2021, round=2, round_pick=1, overall_pick=3, manager_key="m_cook"),
+        dict(season=2021, round=2, round_pick=2, overall_pick=4, manager_key="m_kelly"),
+    ])
+    out = apply_draft_order(picks, 2021, ["m_cook", "m_kelly"])
+    assert list(out.manager_key) == ["m_kelly", "m_cook", "m_cook", "m_kelly"]      # managers unchanged
+    assert list(out.overall_pick) == [2, 1, 4, 3] and list(out.espn_overall_pick) == [1, 2, 3, 4]
+
+
+def test_pick_owner_correction_and_draft_slots():
+    from engine.normalize.corrections import add_draft_slots, apply_pick_owners
+    picks = pd.DataFrame([
+        dict(season=2026, round=1, round_pick=1, overall_pick=1, manager_key="m_a"),
+        dict(season=2026, round=1, round_pick=2, overall_pick=2, manager_key="m_b"),
+        dict(season=2026, round=2, round_pick=1, overall_pick=3, manager_key="m_b"),
+        dict(season=2026, round=2, round_pick=2, overall_pick=4, manager_key="m_a"),
+    ])
+    out = add_draft_slots(apply_pick_owners(picks, 2026, {3: "m_a", 4: "m_b"}))
+    assert list(out.manager_key) == ["m_a", "m_b", "m_a", "m_b"]
+    assert list(out.espn_manager_key) == ["m_a", "m_b", "m_b", "m_a"]
+    assert list(out.draft_slot) == [1, 2, 1, 2]
+
+
+def test_surname_ignores_suffixes_and_punctuation():
+    assert legacy.surname("Aaron Jones Sr.") == legacy.surname("Aaron Jones") == "jones"
+    assert legacy.surname("Gardner Minshew II") == "minshew"
+
+
+def test_draft_order_correction_must_name_known_managers():
+    from engine.config import validate_config
+    cfg = {"league": {"name": "T", "provider": "espn", "league_id": 1, "first_season": 2020},
+           "managers": [{"name": "Ann A", "id": "m_1"}],
+           "corrections": {"draft_order": {2021: ["ann-a", "nobody"]}}}
+    assert not validate_config(cfg).ok
