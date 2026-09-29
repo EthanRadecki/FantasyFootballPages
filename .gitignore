@@ -52,3 +52,7 @@ Thumbs.db
 *.swp
 *.tmp
 *.bak
+
+# local verify output
+verify.txt
+verify_detail.zip
