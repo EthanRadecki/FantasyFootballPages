@@ -107,7 +107,7 @@ def test_game_rows_results_byes_and_tiers():
 def test_normalize_league_end_to_end(tmp_path):
     t = normalize_league(write_league(tmp_path))
     assert set(t) == {"seasons", "managers", "teams", "matchups", "lineups", "draft_picks", "transactions",
-                      "player_seasons", "players"}
+                      "player_seasons", "players", "player_stats"}
 
     s = t["seasons"].iloc[0]
     assert s["team_count"] == 3 and s["regular_season_periods"] == 1 and s["faab_budget"] == 300
@@ -303,3 +303,29 @@ def test_draft_order_correction_must_name_known_managers():
            "managers": [{"name": "Ann A", "id": "m_1"}],
            "corrections": {"draft_order": {2021: ["ann-a", "nobody"]}}}
     assert not validate_config(cfg).ok
+
+
+def test_pool_rows_take_the_actual_season_line_and_derive_games():
+    from engine.normalize.espn import pool_rows
+
+    page = {"players": [
+        {"id": 1, "status": "ONTEAM", "onTeamId": 4, "player": {
+            "id": 1, "fullName": "Starter", "defaultPositionId": 2, "proTeamId": 9, "ownership": {"percentOwned": 99.5},
+            "stats": [{"seasonId": 2024, "statSourceId": 1, "statSplitTypeId": 0, "scoringPeriodId": 0,
+                       "appliedTotal": 225.0, "appliedAverage": 16.0},      # projection: ignored
+                      {"seasonId": 2024, "statSourceId": 0, "statSplitTypeId": 0, "scoringPeriodId": 0,
+                       "appliedTotal": 336.4, "appliedAverage": 19.788235294117648}]}},
+        {"id": 2, "status": "FREEAGENT", "player": {"id": 2, "fullName": "Negative", "defaultPositionId": 3,
+            "stats": [{"seasonId": 2024, "statSourceId": 0, "statSplitTypeId": 0, "scoringPeriodId": 0,
+                       "appliedTotal": -0.3, "appliedAverage": -0.15}]}},
+    ]}
+    a, b = pool_rows(2024, page, start_rank=500)
+    assert (a["games"], a["total_points"], a["position"], a["pool_status"], a["pool_rank"]) == (17, 336.4, "RB", "ONTEAM", 500)
+    assert (b["games"], b["pool_rank"]) == (0, 501)
+
+
+def test_legacy_stats_universe_is_rostered_plus_500_free_agents():
+    ps = pd.DataFrame({"season": 2024, "player_id": range(600), "position": "WR",
+                       "pool_status": ["ONTEAM"] * 50 + ["FREEAGENT"] * 550, "pool_rank": range(600)})
+    u = legacy.legacy_stats_universe(ps)
+    assert len(u) == 550 and u["player_id"].max() == 549

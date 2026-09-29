@@ -354,3 +354,64 @@ def attach_player_ids(legacy: pd.DataFrame, lineups: pd.DataFrame, players: pd.D
         out.loc[todo, "player_id"] = found["player_id"].to_numpy()
         out.loc[todo & out["player_id"].notna().to_numpy(), "name_match"] = how
     return out
+
+
+SKILL_POSITIONS = {"QB", "RB", "WR", "TE"}
+LEGACY_FREE_AGENTS = 500
+
+
+def legacy_stats_universe(player_stats: pd.DataFrame) -> pd.DataFrame:
+    """The players the legacy stats pull saw: every rostered player plus the
+    first 500 free agents / waiver players by percent owned (espn-api
+    free_agents(size=500)), skill positions only."""
+    ps = player_stats.sort_values(["season", "pool_rank"], kind="stable")
+    rostered = ps[ps["pool_status"] == "ONTEAM"]
+    free = ps[ps["pool_status"] != "ONTEAM"].groupby("season", sort=False).head(LEGACY_FREE_AGENTS)
+    out = pd.concat([rostered, free])
+    return out[out["position"].isin(SKILL_POSITIONS)]
+
+
+def check_player_stats(tables: dict[str, pd.DataFrame], legacy: pd.DataFrame, cfg: dict) -> Comparison:
+    """Legacy espn_player_stats_season.csv (pull_espn_stats.py, rerun 2026-09-29
+    for 2020-2025): season fantasy totals per player.
+
+    Known legacy differences, excused by pattern:
+    - espn-api rounded the season average to 2 decimals before dividing, so
+      players averaging under about 0.1 points got a games count off by one or
+      more; excused where the legacy count equals total / rounded average
+    - averages are compared within half a cent (half-cent rounding ties)
+    - a later-season position, as in the lineups check
+    Players with no games at the edge of the 500-free-agent cutoff can differ
+    (ESPN breaks ownership ties its own way); they carry no stats and affect no
+    metric, so they are set aside and counted."""
+    exp = pd.DataFrame({
+        "season": legacy["season"].astype(int), "player_id": legacy["player_id"].astype(int),
+        "player_name": legacy["player_name"], "position": legacy["position"],
+        "total_points": legacy["total_ppr"].astype(float), "games": legacy["games_played"].astype(int),
+        "avg_points": legacy["ppr_per_game"].astype(float),
+    })
+    ps = tables["player_stats"]
+    act = legacy_stats_universe(ps[ps["season"].isin(exp["season"].unique())])
+    keys = ["season", "player_id"]
+    in_act = exp[keys].merge(act[keys].assign(_x=True), on=keys, how="left")["_x"].eq(True).to_numpy()
+    in_exp = act[keys].merge(exp[keys].assign(_x=True), on=keys, how="left")["_x"].eq(True).to_numpy()
+    edge_exp = ~in_act & (exp["games"] == 0).to_numpy()
+    edge_act = ~in_exp & (act["games"] == 0).to_numpy()
+    exp, act = exp[~edge_exp], act[~edge_act]
+
+    both = exp.merge(act, on=keys, suffixes=("", "_e"))
+    rounded = both["avg_points_e"].round(2)
+    legacy_games = (both["total_points_e"] / rounded).where(rounded > 0).round().fillna(0).astype(int)
+    games_known = both.loc[(both["games"] != both["games_e"]) & (both["games"] == legacy_games), keys].assign(
+        column="games", reason="espn-api divided by the average rounded to 2 decimals (tiny averages)")
+    other = ps[["season", "player_id", "position"]].rename(columns={"season": "other_season"})
+    pos = both[both["position"] != both["position_e"]][keys + ["position"]].merge(other, on=["player_id", "position"])
+    pos_known = pos[pos["other_season"] != pos["season"]][keys].drop_duplicates().assign(
+        column="position", reason="legacy used a later-season position; the engine keeps that season's ESPN position")
+    r = compare("player stats vs espn_player_stats_season.csv", exp, act, keys=keys,
+                values=["player_name", "position", "total_points", "games", "avg_points"], tolerance=0.0051,
+                known=pd.concat([games_known, pos_known], ignore_index=True))
+    n = int(edge_exp.sum() + edge_act.sum())
+    if n:
+        r.known["no-games players at the 500-free-agent cutoff (ESPN tie order); no effect on any metric"] = n
+    return r

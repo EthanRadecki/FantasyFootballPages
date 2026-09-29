@@ -47,7 +47,7 @@ def cmd_pull(args: argparse.Namespace) -> int:
     provider = make_provider(cfg, args.auth)
 
     cols = ["teams", "weeks", "matchups", "lineup_entries", "transactions", "draft_picks",
-            "player_cards", "card_transactions"]
+            "player_cards", "card_transactions", "pool_players"]
     print(f"{league['name']} ({league['provider']} {league['league_id']}), seasons {seasons[0]}-{seasons[-1]}")
     print(f"{'season':<8}{'status':<8}" + "".join(f"{c:>18}" for c in cols))
     try:
@@ -100,6 +100,11 @@ def cmd_normalize(args: argparse.Namespace) -> int:
         legacy.check_draft(tables, pd.read_csv(golden / "draft_history_all_positions.csv.gz"), cfg),
         legacy.check_transactions(tables, pd.read_csv(golden / "transactions_clean.csv.gz"), cfg),
     ]
+    if "player_stats" in tables and len(tables["player_stats"]):
+        results.append(legacy.check_player_stats(
+            tables, pd.read_csv(golden / "draft" / "espn_player_stats_season.csv.gz"), cfg))
+    else:
+        print("note: no player pool in the cache yet; run `engine pull --refresh` to add it")
     detail_dir = Path(args.cache) / "verify"
     detail_dir.mkdir(parents=True, exist_ok=True)
     for old in detail_dir.glob("*.csv"):

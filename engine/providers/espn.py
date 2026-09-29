@@ -9,6 +9,9 @@ JSON file per request, under .cache/espn/<league_id>/<season>/:
     week_NN_transactions.json    adds, drops, waivers, trades
     playercards_NNN.json         name, position, and full transaction history for
                                  every player seen that season (100 per file)
+    players_NNN.json             the whole player pool (rostered, free agents,
+                                 waivers) with season stats and ownership, most
+                                 owned first, 500 per file
     manifest.json                what was pulled, when, and summary counts
 
 Completed seasons are pulled once and reused; the active season is always
@@ -29,7 +32,7 @@ from typing import Any
 
 BASE_URL = "https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}"
 RETRY_STATUSES = {429, 500, 502, 503, 504}
-MANIFEST_VERSION = 2   # 2: adds player cards
+MANIFEST_VERSION = 3   # 2: adds player cards; 3: adds the player pool
 
 
 class EspnError(RuntimeError):
@@ -110,6 +113,20 @@ def _read(path: Path) -> Any:
 
 
 CARD_CHUNK = 100
+POOL_PAGE = 500
+POOL_MAX_PAGES = 20
+POOL_STATUSES = ["ONTEAM", "FREEAGENT", "WAIVERS"]
+
+
+def pool_filter(offset: int) -> dict:
+    """Every player, most owned first, then by ESPN's standard draft rank (the
+    order ESPN's own free-agent list uses)."""
+    return {"players": {
+        "filterStatus": {"value": POOL_STATUSES},
+        "limit": POOL_PAGE, "offset": offset,
+        "sortPercOwned": {"sortPriority": 1, "sortAsc": False},
+        "sortDraftRanks": {"sortPriority": 100, "sortAsc": True, "value": "STANDARD"},
+    }}
 
 
 def season_player_ids(season_dir: Path) -> list[int]:
@@ -147,6 +164,7 @@ def summarize(season_dir: Path) -> dict:
         transactions += len(_read(tx_path).get("transactions") or [])
     draft_path = season_dir / "draft.json"
     picks = len(((_read(draft_path).get("draftDetail") or {}).get("picks")) or []) if draft_path.exists() else 0
+    pool = sum(len(_read(p).get("players") or []) for p in season_dir.glob("players_*.json"))
     cards = card_tx = 0
     for card_path in season_dir.glob("playercards_*.json"):
         for entry in _read(card_path).get("players") or []:
@@ -162,6 +180,7 @@ def summarize(season_dir: Path) -> dict:
         "draft_picks": picks,
         "player_cards": cards,
         "card_transactions": card_tx,
+        "pool_players": pool,
     }
 
 
@@ -206,6 +225,22 @@ class EspnProvider:
                 "filterIds": {"value": chunk}, "limit": len(chunk),
                 "sortDraftRanks": {"sortPriority": 100, "sortAsc": True, "value": "STANDARD"}}})
             _write(out_dir / f"playercards_{n:03d}.json", cards)
+
+        # Player pool: season stats for every NFL player, rostered or not.
+        # Draft value needs players who never touched this league (position
+        # baselines, hit-rate cutoffs).
+        seen: set = set()
+        for n in range(POOL_MAX_PAGES):
+            page = c.get(season, ["kona_player_info"], scoring_period=last_week,
+                         fantasy_filter=pool_filter(n * POOL_PAGE))
+            players = page.get("players") or []
+            ids = {p.get("id") for p in players}
+            if not players or ids <= seen:
+                break
+            seen |= ids
+            _write(out_dir / f"players_{n:03d}.json", page)
+            if len(players) < POOL_PAGE:
+                break
 
         summary = summarize(out_dir)
         active = bool((league.get("status") or {}).get("isActive"))

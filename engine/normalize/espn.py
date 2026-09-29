@@ -12,6 +12,8 @@ Output: pandas DataFrames, one per canonical table (see docs/DATA_DICTIONARY.md)
     transactions  one row per transaction item (add, drop, trade leg, draft), every type and status
     player_seasons  season x player: name and position as ESPN lists them
     players       player id -> latest name and position
+    player_stats  season x player, whole NFL player pool: season fantasy points,
+                  average, games, pool status and ownership (pool order kept)
 
 Raw ESPN values are kept as-is (for example negative D/ST scores). Any league
 rule that adjusts values belongs in analytics, never here, so the canonical
@@ -40,6 +42,9 @@ NON_STARTING_SLOTS = {"BE", "IR"}
 # ESPN defaultPositionId -> position.
 POSITIONS = {1: "QB", 2: "RB", 3: "WR", 4: "TE", 5: "K", 7: "P", 9: "DT", 10: "DE",
              11: "LB", 12: "CB", 13: "S", 14: "HC", 16: "D/ST"}
+
+PLAYER_STATS_COLUMNS = ["season", "player_id", "player_name", "position", "pro_team_id", "pool_status",
+                        "on_team_id", "percent_owned", "pool_rank", "total_points", "avg_points", "games"]
 
 REGULAR = "REGULAR"
 WINNERS_BRACKET = "WINNERS_BRACKET"
@@ -224,6 +229,40 @@ def card_rows(season: int, cards: dict) -> tuple[list[dict], list[dict]]:
     return people, txs
 
 
+def season_totals(player: dict, season: int) -> tuple[float, float]:
+    """(total, average) of the player's actual fantasy points for the season:
+    ESPN's stat line with statSourceId 0 (actual), split 0, scoring period 0."""
+    for stat in player.get("stats") or []:
+        if (stat.get("statSourceId") == 0 and stat.get("statSplitTypeId") == 0
+                and stat.get("scoringPeriodId") == 0 and stat.get("seasonId", season) == season):
+            return float(stat.get("appliedTotal") or 0.0), float(stat.get("appliedAverage") or 0.0)
+    return 0.0, 0.0
+
+
+def pool_rows(season: int, page: dict, start_rank: int) -> list[dict]:
+    """One player-pool file -> player_stats rows. Games are total / average,
+    rounded, and 0 when the average is not positive (as ESPN's own client does)."""
+    rows = []
+    for i, entry in enumerate(page.get("players") or []):
+        player = entry.get("player") or {}
+        total, avg = season_totals(player, season)
+        rows.append({
+            "season": season,
+            "player_id": player.get("id", entry.get("id")),
+            "player_name": player.get("fullName"),
+            "position": position_label(player.get("defaultPositionId")),
+            "pro_team_id": player.get("proTeamId"),
+            "pool_status": entry.get("status"),
+            "on_team_id": entry.get("onTeamId"),
+            "percent_owned": ((player.get("ownership") or {}).get("percentOwned")),
+            "pool_rank": start_rank + i,
+            "total_points": round(total, 2),
+            "avg_points": avg,
+            "games": int(round(total / avg)) if avg > 0 else 0,
+        })
+    return rows
+
+
 def draft_rows(season: int, draft: dict) -> Iterable[dict]:
     for p in ((draft.get("draftDetail") or {}).get("picks")) or []:
         yield {
@@ -242,7 +281,7 @@ def draft_rows(season: int, draft: dict) -> Iterable[dict]:
 
 def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
     """Build every canonical table from a league's cache directory."""
-    seasons, managers, teams, matchups, lineups, picks, txs, people = [], [], [], [], [], [], [], []
+    seasons, managers, teams, matchups, lineups, picks, txs, people, pool = [], [], [], [], [], [], [], [], []
     for season_dir in sorted(p for p in league_dir.iterdir() if p.is_dir() and p.name.isdigit()):
         season = int(season_dir.name)
         league = _read(season_dir / "league.json")
@@ -261,6 +300,11 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
             p_rows, t_rows = card_rows(season, _read(card_path))
             people.extend(p_rows)
             txs.extend(t_rows)
+        rank = 0
+        for pool_path in sorted(season_dir.glob("players_*.json")):
+            rows = pool_rows(season, _read(pool_path), rank)
+            pool.extend(rows)
+            rank += len(rows)
         if (season_dir / "draft.json").exists():
             picks.extend(draft_rows(season, _read(season_dir / "draft.json")))
 
@@ -312,4 +356,6 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
         "transactions": tx,
         "player_seasons": ps,
         "players": players,
+        "player_stats": pd.DataFrame(pool, columns=PLAYER_STATS_COLUMNS).drop_duplicates(
+            ["season", "player_id"], keep="first").reset_index(drop=True),
     }
