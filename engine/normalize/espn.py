@@ -13,8 +13,8 @@ Output: pandas DataFrames, one per canonical table (see docs/DATA_DICTIONARY.md)
     player_seasons  season x player: name and position as ESPN lists them
     players       player id -> latest name and position
 
-Raw ESPN values are kept as-is (for example negative D/ST scores). League rules
-such as the D/ST floor are applied by analytics, never here, so the canonical
+Raw ESPN values are kept as-is (for example negative D/ST scores). Any league
+rule that adjusts values belongs in analytics, never here, so the canonical
 tables always match what ESPN recorded.
 """
 

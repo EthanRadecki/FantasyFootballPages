@@ -3,6 +3,7 @@
     engine config check leagues/preach/league.yaml
     engine pull leagues/preach/league.yaml [--seasons 2020-2026] [--refresh]
     engine normalize leagues/preach/league.yaml [--verify]
+    engine analyze leagues/preach/league.yaml [--verify]
 
 More commands (build, serve) arrive in later phases; see docs/ARCHITECTURE.md.
 """
@@ -113,6 +114,62 @@ def cmd_normalize(args: argparse.Namespace) -> int:
     return 0 if all(r.ok for r in results) else 1
 
 
+TRADE_GOLDENS = ["trades_mapped", "trades_mapped_clean", "trade_universe", "position_baseline",
+                 "player_stints_fixed", "metrics_final", "lineup_efficiency"]
+
+
+def cmd_analyze(args: argparse.Namespace) -> int:
+    import pandas as pd
+
+    from engine.analytics.trades import analyze_trades
+    from engine.store import canonical_dir, read_tables, write_tables
+
+    cfg = load_config(args.path)
+    league = cfg["league"]
+    src = canonical_dir(Path(args.cache), league["provider"], league["league_id"])
+    if not src.exists():
+        print(f"error: no canonical tables at {src}. Run `engine normalize {args.path}` first.")
+        return 1
+    tables = read_tables(src)
+
+    results = analyze_trades(tables)
+    out = Path(args.cache) / "analysis" / league["provider"] / str(league["league_id"])
+    write_tables(results, out)
+    print(f"Analysis tables written to {out}/")
+    for name, df in results.items():
+        print(f"  {name:<18}{len(df):>8} rows")
+    m = results["trade_metrics"]
+    if len(m):
+        print(m.groupby("season").agg(trade_groups=("group_id", "nunique"), trade_sides=("group_id", "size"),
+                                      low_stakes=("low_stakes", "sum")).to_string())
+
+    if not args.verify:
+        return 0
+    from engine.legacy_trades import verify_trades
+
+    golden_dir = Path(args.golden)
+    golden = {n: pd.read_csv(golden_dir / "trades" / f"{n}.csv.gz") for n in TRADE_GOLDENS}
+    golden["weekly_rosters_bracket_only"] = pd.read_csv(golden_dir / "weekly_rosters_bracket_only.csv.gz")
+    print("\nVerifying trades against the legacy pipeline:")
+    checks, info = verify_trades(tables, golden, cfg)
+    detail_dir = Path(args.cache) / "verify"
+    detail_dir.mkdir(parents=True, exist_ok=True)
+    for old in detail_dir.glob("trades__*.csv"):
+        old.unlink()
+    for line in info[:1]:
+        print(line)
+    for r in checks:
+        print(r.render())
+        slug = "trades__" + r.name.split(" vs ")[0].replace(" ", "_")
+        for part, frame in r.frames.items():
+            if len(frame):
+                frame.to_csv(detail_dir / f"{slug}__{part}.csv", index=False)
+    for line in info[1:]:
+        print(line)
+    print(f"\nFull detail: {detail_dir}/")
+    return 0 if all(r.ok for r in checks) else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="engine")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -137,6 +194,13 @@ def main(argv: list[str] | None = None) -> int:
     norm.add_argument("--verify", action="store_true", help="compare with the legacy golden files")
     norm.add_argument("--golden", default="engine/tests/golden", help="golden files directory")
     norm.set_defaults(func=cmd_normalize)
+
+    ana = sub.add_parser("analyze", help="Build analysis tables from the canonical tables")
+    ana.add_argument("path", help="league.yaml")
+    ana.add_argument("--cache", default=".cache", help="cache root (default .cache)")
+    ana.add_argument("--verify", action="store_true", help="compare with the legacy golden files")
+    ana.add_argument("--golden", default="engine/tests/golden", help="golden files directory")
+    ana.set_defaults(func=cmd_analyze)
 
     args = parser.parse_args(argv)
     return args.func(args)

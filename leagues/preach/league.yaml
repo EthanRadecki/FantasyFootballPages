@@ -25,8 +25,6 @@ rules:
     2020: { 14: "The Round of 15", 15: Quarterfinals, 16: Semifinals, 17: Championship }
     2021: { 14: Wild Card, 15: Quarterfinals, 16: Semifinals, 17: Championship }
     default: [Quarterfinals, Semifinals, Championship]   # the weeks right after the regular season
-  scoring_modifications:
-    dst_floor_zero: true               # negative D/ST scores floored at 0
   faab_budget: 300                     # resets annually, tradeable
 
 managers:
