@@ -23,4 +23,15 @@ Legacy trade pipeline outputs (`GitHubRepoData/`, local pipeline), added 2026-09
 | `trades/metrics_final.csv.gz` | `compute_metrics.py`, `compute_quad.py` | per-side metrics and QUAD |
 | `trades/lineup_efficiency.csv.gz` | `generate_lineup_efficiency.py` | used for the forfeit flag now; the lineups module later |
 
+## records/
+
+Legacy site files for the records and lineups module, added 2026-09-29. Checked by `engine analyze --verify`.
+
+| File | Source | Covers |
+|---|---|---|
+| `records/matchups.json.gz` | `data/matchups.json` (`build_matchups_json.py`, `update_2026.py`) | 638 games, 2020 through 2026 week 2 |
+| `records/franchise_leaders.json.gz` | `data/franchise_leaders.json` | manager x player x season, 2020 through 2026 week 2 |
+| `records/best_single_week.json.gz` | `data/best_single_week.json` | top 25 started weeks per manager, position, season |
+| `records/lineup_blunders.csv.gz` | the `BLUNDERS` list in `generate_blunder_rosters.py` | the 10 biggest efficiency gaps, in order |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.

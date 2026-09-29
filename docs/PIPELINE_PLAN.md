@@ -16,7 +16,7 @@ This first version is built from script names and the files each script reads an
 | `analytics/schedule.py` | `build_schedule_luck`, `build_schedule_swap`, `export_luck_analysis`, `export_h2h_matrix`, `build_projected_sos`, `build_position_sos_index`, `pull_nfl_schedule`, `pull_player_opponents` | |
 | `analytics/playoff_odds.py` | `generate_playoff_odds`, `generate_playoff_odds_2026_live`, `playoff_weights` | Historical and live become one simulation |
 | `analytics/position_impact.py` | `generate_position_impact`, `generate_dst_impact` | D/ST handled as a position |
-| `analytics/records.py`, `analytics/lineups.py` | `generate_franchise_leaders`, `generate_best_single_week`, `generate_blunder_rosters`, `generate_lineup_efficiency`, `build_matchups_json` | |
+| `analytics/records.py`, `analytics/lineups.py` (built and verified) | `generate_franchise_leaders`, `generate_best_single_week`, `generate_blunder_rosters`, `generate_lineup_efficiency`, `build_matchups_json`, their parts of `update_2026` | One code path for every season; finished weeks only; blunders and forfeits derived, not hardcoded |
 | `analytics/attribution.py`, `analytics/similarity.py` | `build_attribution_model_final`, `build_win_attribution_final`, `recompute_weights2`, `export_quarterly_regression`, `historical_similarity`, `export_similarity_grid` | |
 | `publish/` | remaining `regenerate_data_files`, all `export_*` output code, `update_2026` | One JSON writer; no in-place patching |
 | (deleted) | `player_ppr_pullscript.R`, `build_cards.py` (confirm) | |
@@ -27,6 +27,7 @@ This first version is built from script names and the files each script reads an
 - Replacement level: only players with games > 0.
 - D/ST scores: ESPN's raw points, negatives kept. A floor at 0 was considered and never adopted.
 - Position baseline (weekly mean and SD per position): starters and bench, IR excluded.
+- Finished weeks only: a week counts once every regular-season and winners-bracket game has a result.
 - Realized value counts started weeks only (bench and IR excluded); stints span every later week the acquiring manager rosters the player, gaps included.
 - Manager identity: hashed member keys (`engine/identity.py`); names only for display.
 - Exclusions: `analysis.exclude_managers` and `analysis.exclude_games` from config.

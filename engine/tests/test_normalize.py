@@ -209,7 +209,7 @@ def test_reclassified_player_position_is_excused_only_when_espn_used_it_another_
     row = dict(week=4, team_id=1, manager_key=a, player_id=15807, player_name="Flex Guy",
                slot="RB", started=True, points=10.0)
     t = _tables(
-        matchups=[dict(season=2020, week=4, team_id=1, is_playoff_week=False, tier="REGULAR", is_bye=False)],
+        matchups=[dict(season=2020, week=4, team_id=1, is_playoff_week=False, tier="REGULAR", is_bye=False, result="W")],
         lineups=[{**row, "season": 2020, "position": "WR"}, {**row, "season": 2021, "position": "RB"}],
     )
     cfg = {"managers": [{"name": "Ann A", "id": a}]}

@@ -327,3 +327,30 @@ def check_transactions(tables: dict[str, pd.DataFrame], legacy: pd.DataFrame, cf
             f"legacy-only {g['season']} {g['type']}/{g['item_type']}: {g['rows']} rows "
             f"({'id exists in ESPN data' if g['id_in_espn'] else 'id not in ESPN data'})")
     return result
+
+
+def _name_norm(name: str) -> str:
+    parts = "".join(c for c in str(name).lower() if c.isalnum() or c.isspace() or c == "/").split()
+    return " ".join(p for p in parts if p not in NAME_SUFFIXES)
+
+
+def attach_player_ids(legacy: pd.DataFrame, lineups: pd.DataFrame, players: pd.DataFrame,
+                      keys: list[str], name_col: str = "player") -> pd.DataFrame:
+    """Give legacy rows that only carry a player name a player_id, matching
+    within `keys` (for example manager and season) against every name ESPN used
+    for the players on those rosters: exact, then ignoring punctuation and
+    suffixes, then by surname. Adds player_id and name_match (how it matched)."""
+    cand = pd.concat([lineups[keys + ["player_id", "player_name"]],
+                      lineups[keys + ["player_id"]].drop_duplicates().merge(
+                          players[["player_id", "player_name"]], on="player_id")]).drop_duplicates()
+    out = legacy.copy()
+    out["player_id"] = pd.NA
+    out["name_match"] = None
+    for how, f in [("exact", lambda n: n), ("normalized", _name_norm), ("surname", surname)]:
+        todo = out["player_id"].isna().to_numpy()
+        c = cand.assign(_k=cand["player_name"].map(f))
+        uniq = c.groupby(keys + ["_k"])["player_id"].agg(lambda x: x.iloc[0] if x.nunique() == 1 else pd.NA).reset_index()
+        found = out.loc[todo, keys].assign(_k=out.loc[todo, name_col].map(f)).merge(uniq, on=keys + ["_k"], how="left")
+        out.loc[todo, "player_id"] = found["player_id"].to_numpy()
+        out.loc[todo & out["player_id"].notna().to_numpy(), "name_match"] = how
+    return out
