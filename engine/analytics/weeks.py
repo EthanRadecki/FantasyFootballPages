@@ -1,7 +1,7 @@
 """Week-level building blocks shared by every analysis.
 
-- which lineup weeks count (bracket weeks: the whole regular season, plus
-  winners-bracket games in the playoffs; consolation games never count)
+- which weeks and games count: finished weeks only; the whole regular season
+  plus winners-bracket games in the playoffs; consolation games never count
 - forfeited lineups (a team that scored 0 in a real game because nothing was
   started), excluded from anything that measures decisions
 - playoff week weights (a week matters more with the season on the line)
@@ -21,12 +21,37 @@ REGULAR_WEIGHT = 1.0
 ROUND_WEIGHTS_FROM_FINAL = [2.0, 1.6, 1.3, 1.15]   # Championship, Semifinal, Quarterfinal, First Round
 
 
-def bracket_lineups(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
-    """Lineup rows for weeks that count: every regular-season week (a bye team
-    included) and, in playoff weeks, only teams playing a winners-bracket game."""
+def completed_weeks(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """(season, week) where every regular-season or winners-bracket game has
+    a final result. A week in progress (ESPN winner UNDECIDED) is left out of
+    every analysis. Consolation games do not decide it."""
     m = tables["matchups"]
+    games = m[~m["is_bye"] & (~m["is_playoff_week"] | m["tier"].eq("WINNERS_BRACKET"))]
+    done = games.groupby(["season", "week"])["result"].apply(lambda r: r.isin(["W", "L", "T"]).all())
+    return done[done].reset_index()[["season", "week"]]
+
+
+def counted_games(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Matchup rows that count toward records and stats: finished regular
+    season games and winners-bracket games. No byes, no consolation games."""
+    m = tables["matchups"].merge(completed_weeks(tables), on=["season", "week"])
+    return m[~m["is_bye"] & (~m["is_playoff_week"] | m["tier"].eq("WINNERS_BRACKET"))]
+
+
+def bracket_lineups(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Lineup rows for weeks that count, as the trade analysis uses them: every
+    finished regular-season week (a bye team included) and, in playoff weeks,
+    only teams playing a winners-bracket game."""
+    m = tables["matchups"].merge(completed_weeks(tables), on=["season", "week"])
     keep = m[~m["is_playoff_week"] | (m["tier"].eq("WINNERS_BRACKET") & ~m["is_bye"])]
     keep = keep[["season", "week", "team_id"]].drop_duplicates()
+    return tables["lineups"].merge(keep, on=["season", "week", "team_id"])
+
+
+def game_lineups(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Lineup rows for teams that played a counted game that week (see
+    counted_games). Unlike bracket_lineups, a bye week is left out."""
+    keep = counted_games(tables)[["season", "week", "team_id"]].drop_duplicates()
     return tables["lineups"].merge(keep, on=["season", "week", "team_id"])
 
 

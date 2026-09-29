@@ -114,14 +114,48 @@ def cmd_normalize(args: argparse.Namespace) -> int:
     return 0 if all(r.ok for r in results) else 1
 
 
+RECORD_JSON_GOLDENS = ["matchups", "franchise_leaders", "best_single_week"]
 TRADE_GOLDENS = ["trades_mapped", "trades_mapped_clean", "trade_universe", "position_baseline",
                  "player_stints_fixed", "metrics_final", "lineup_efficiency"]
 
 
-def cmd_analyze(args: argparse.Namespace) -> int:
+def load_goldens(golden_dir: Path) -> dict:
+    """Every legacy golden file the analyze checks use."""
+    import gzip
+    import json
+
     import pandas as pd
 
+    golden = {n: pd.read_csv(golden_dir / "trades" / f"{n}.csv.gz") for n in TRADE_GOLDENS}
+    golden["weekly_rosters_bracket_only"] = pd.read_csv(golden_dir / "weekly_rosters_bracket_only.csv.gz")
+    golden["matchup_data"] = pd.read_csv(golden_dir / "matchup_data.csv.gz")
+    for n in RECORD_JSON_GOLDENS:
+        with gzip.open(golden_dir / "records" / f"{n}.json.gz", "rt", encoding="utf-8") as f:
+            golden[n] = json.load(f)
+    golden["lineup_blunders"] = pd.read_csv(golden_dir / "records" / "lineup_blunders.csv.gz")
+    return golden
+
+
+def _report(title: str, checks: list, info: list[str], detail_dir: Path, prefix: str) -> None:
+    print(f"\n{title}")
+    for old in detail_dir.glob(f"{prefix}__*.csv"):
+        old.unlink()
+    for line in info[:1]:
+        print(line)
+    for r in checks:
+        print(r.render())
+        slug = f"{prefix}__" + r.name.split(" vs ")[0].replace(" ", "_")
+        for part, frame in r.frames.items():
+            if len(frame):
+                frame.to_csv(detail_dir / f"{slug}__{part}.csv", index=False)
+    for line in info[1:]:
+        print(line)
+
+
+def cmd_analyze(args: argparse.Namespace) -> int:
+    from engine.analytics.records import analyze_records
     from engine.analytics.trades import analyze_trades
+    from engine.config import excluded_manager_keys
     from engine.store import canonical_dir, read_tables, write_tables
 
     cfg = load_config(args.path)
@@ -132,7 +166,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         return 1
     tables = read_tables(src)
 
-    results = analyze_trades(tables)
+    results = {**analyze_trades(tables), **analyze_records(tables, excluded_manager_keys(cfg))}
     out = Path(args.cache) / "analysis" / league["provider"] / str(league["league_id"])
     write_tables(results, out)
     print(f"Analysis tables written to {out}/")
@@ -145,29 +179,18 @@ def cmd_analyze(args: argparse.Namespace) -> int:
 
     if not args.verify:
         return 0
+    from engine.legacy_records import verify_records
     from engine.legacy_trades import verify_trades
 
-    golden_dir = Path(args.golden)
-    golden = {n: pd.read_csv(golden_dir / "trades" / f"{n}.csv.gz") for n in TRADE_GOLDENS}
-    golden["weekly_rosters_bracket_only"] = pd.read_csv(golden_dir / "weekly_rosters_bracket_only.csv.gz")
-    print("\nVerifying trades against the legacy pipeline:")
-    checks, info = verify_trades(tables, golden, cfg)
+    golden = load_goldens(Path(args.golden))
     detail_dir = Path(args.cache) / "verify"
     detail_dir.mkdir(parents=True, exist_ok=True)
-    for old in detail_dir.glob("trades__*.csv"):
-        old.unlink()
-    for line in info[:1]:
-        print(line)
-    for r in checks:
-        print(r.render())
-        slug = "trades__" + r.name.split(" vs ")[0].replace(" ", "_")
-        for part, frame in r.frames.items():
-            if len(frame):
-                frame.to_csv(detail_dir / f"{slug}__{part}.csv", index=False)
-    for line in info[1:]:
-        print(line)
+    trade_checks, info = verify_trades(tables, golden, cfg)
+    _report("Verifying trades against the legacy pipeline:", trade_checks, info, detail_dir, "trades")
+    record_checks = verify_records(tables, golden, cfg)
+    _report("Verifying records and lineups against the legacy site files:", record_checks, [], detail_dir, "records")
     print(f"\nFull detail: {detail_dir}/")
-    return 0 if all(r.ok for r in checks) else 1
+    return 0 if all(r.ok for r in trade_checks + record_checks) else 1
 
 
 def main(argv: list[str] | None = None) -> int:

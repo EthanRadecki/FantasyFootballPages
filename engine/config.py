@@ -24,6 +24,12 @@ def slugify(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
 
 
+def excluded_manager_keys(cfg: dict[str, Any]) -> set[str]:
+    """Member keys of analysis.exclude_managers (listed by name slug)."""
+    slugs = set((cfg.get("analysis") or {}).get("exclude_managers") or [])
+    return {m["id"] for m in cfg.get("managers") or [] if slugify(m["name"]) in slugs}
+
+
 @dataclass
 class ConfigReport:
     errors: list[str]
