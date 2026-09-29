@@ -9,6 +9,8 @@ Output: pandas DataFrames, one per canonical table (see docs/DATA_DICTIONARY.md)
     matchups      season x week x team: opponent, points, result, bracket tier (byes kept, flagged)
     lineups       season x week x team x player: slot, started, points (raw ESPN points)
     draft_picks   season x pick
+    transactions  one row per transaction item (add, drop, trade leg, draft), every type and status
+    player_seasons  season x player: name and position as ESPN lists them
     players       player id -> latest name and position
 
 Raw ESPN values are kept as-is (for example negative D/ST scores). League rules
@@ -174,6 +176,54 @@ def game_rows(season: int, week: int, box: dict, regular_periods: int | None) ->
     return matchups, lineups
 
 
+def transaction_rows(season: int, tx: dict, source: str = "league") -> Iterable[dict]:
+    """Every item of every transaction, with the transaction's type and status.
+
+    ESPN logs far more than completed moves (proposals, declines, vetoes, failed
+    and cancelled waiver bids, lineup changes). Nothing is filtered here;
+    engine.normalize.moves.executed_moves defines what counts as a real move.
+
+    Two sources feed this table: the weekly league feed ("league") and each
+    player's card ("playercard"), which also carries executed trades the weekly
+    feed leaves out.
+    """
+    for t in tx.get("transactions") or []:
+        for i, item in enumerate(t.get("items") or []):
+            yield {
+                "season": season,
+                "scoring_period": t.get("scoringPeriodId"),
+                "transaction_id": t.get("id"),
+                "item_index": i,
+                "type": t.get("type"),
+                "status": t.get("status"),
+                "item_type": item.get("type"),
+                "player_id": item.get("playerId"),
+                "from_team_id": item.get("fromTeamId"),
+                "to_team_id": item.get("toTeamId"),
+                "team_id": t.get("teamId"),
+                "bid_amount": t.get("bidAmount") or 0,
+                "proposed_at_ms": t.get("proposedDate"),
+                "related_transaction_id": t.get("relatedTransactionId"),
+                "source": source,
+            }
+
+
+def card_rows(season: int, cards: dict) -> tuple[list[dict], list[dict]]:
+    """One player-cards file -> (player-season rows, transaction rows)."""
+    people: list[dict] = []
+    txs: list[dict] = []
+    for entry in cards.get("players") or []:
+        player = entry.get("player") or {}
+        people.append({
+            "season": season,
+            "player_id": player.get("id", entry.get("id")),
+            "player_name": player.get("fullName"),
+            "position": position_label(player.get("defaultPositionId")),
+        })
+        txs.extend(transaction_rows(season, {"transactions": entry.get("transactions") or []}, "playercard"))
+    return people, txs
+
+
 def draft_rows(season: int, draft: dict) -> Iterable[dict]:
     for p in ((draft.get("draftDetail") or {}).get("picks")) or []:
         yield {
@@ -192,7 +242,7 @@ def draft_rows(season: int, draft: dict) -> Iterable[dict]:
 
 def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
     """Build every canonical table from a league's cache directory."""
-    seasons, managers, teams, matchups, lineups, picks = [], [], [], [], [], []
+    seasons, managers, teams, matchups, lineups, picks, txs, people = [], [], [], [], [], [], [], []
     for season_dir in sorted(p for p in league_dir.iterdir() if p.is_dir() and p.name.isdigit()):
         season = int(season_dir.name)
         league = _read(season_dir / "league.json")
@@ -205,6 +255,12 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
             m, l = game_rows(season, week, _read(box_path), srow["regular_season_periods"])
             matchups.extend(m)
             lineups.extend(l)
+        for tx_path in sorted(season_dir.glob("week_*_transactions.json")):
+            txs.extend(transaction_rows(season, _read(tx_path)))
+        for card_path in sorted(season_dir.glob("playercards_*.json")):
+            p_rows, t_rows = card_rows(season, _read(card_path))
+            people.extend(p_rows)
+            txs.extend(t_rows)
         if (season_dir / "draft.json").exists():
             picks.extend(draft_rows(season, _read(season_dir / "draft.json")))
 
@@ -222,9 +278,28 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
     m = with_owner(m, "opponent_team_id", "opponent_manager_key")
     lu = with_owner(pd.DataFrame(lineups))
     dp = with_owner(pd.DataFrame(picks))
+    tx = pd.DataFrame(txs)
+    if len(tx):
+        # The same item can arrive from several weekly responses and several
+        # player cards. Keep one copy, preferring the league feed (it has status).
+        tx["_pref"] = (tx["source"] != "league").astype(int)
+        tx = (tx.sort_values(["_pref"], kind="stable")
+                .drop_duplicates(["transaction_id", "player_id", "item_type", "from_team_id", "to_team_id"])
+                .drop(columns="_pref").sort_values(["season", "scoring_period", "proposed_at_ms"], kind="stable")
+                .reset_index(drop=True))
+        tx = with_owner(tx)
 
-    players = (lu.sort_values(["season", "week"])
-                 .groupby("player_id", as_index=False)
+    ps = pd.DataFrame(people, columns=["season", "player_id", "player_name", "position"])
+    ps = ps.dropna(subset=["player_id"]).drop_duplicates(["season", "player_id"], keep="last")
+
+    # Names: player cards cover everyone (including players drafted and cut before
+    # ever appearing in a lineup); lineups fill in anything the cards missed.
+    from_lineups = lu[["season", "player_id", "player_name", "position"]].drop_duplicates(["season", "player_id"], keep="last")
+    ps = (pd.concat([ps, from_lineups[~from_lineups.set_index(["season", "player_id"]).index.isin(
+                        ps.set_index(["season", "player_id"]).index)]])
+            .sort_values(["season", "player_id"]).reset_index(drop=True))
+    ps["player_id"] = ps["player_id"].astype(int)
+    players = (ps.groupby("player_id", as_index=False)
                  .agg(player_name=("player_name", "last"), position=("position", "last")))
 
     return {
@@ -234,5 +309,7 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
         "matchups": m,
         "lineups": lu,
         "draft_picks": dp,
+        "transactions": tx,
+        "player_seasons": ps,
         "players": players,
     }

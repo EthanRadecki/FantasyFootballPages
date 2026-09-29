@@ -45,13 +45,14 @@ def cmd_pull(args: argparse.Namespace) -> int:
     seasons = parse_seasons(args.seasons, league["first_season"])
     provider = make_provider(cfg, args.auth)
 
-    cols = ["teams", "members", "weeks", "matchups", "lineup_entries", "transactions", "draft_picks"]
+    cols = ["teams", "weeks", "matchups", "lineup_entries", "transactions", "draft_picks",
+            "player_cards", "card_transactions"]
     print(f"{league['name']} ({league['provider']} {league['league_id']}), seasons {seasons[0]}-{seasons[-1]}")
-    print(f"{'season':<8}{'status':<8}" + "".join(f"{c:>15}" for c in cols))
+    print(f"{'season':<8}{'status':<8}" + "".join(f"{c:>18}" for c in cols))
     try:
         for season, status, summary in run_pull(provider, league["league_id"], seasons,
                                                 Path(args.cache), refresh=args.refresh):
-            print(f"{season:<8}{status:<8}" + "".join(f"{summary.get(c, 0):>15}" for c in cols), flush=True)
+            print(f"{season:<8}{status:<8}" + "".join(f"{summary.get(c, 0):>18}" for c in cols), flush=True)
     except EspnError as exc:
         print(f"error: {exc}")
         return 1
@@ -63,6 +64,7 @@ def cmd_normalize(args: argparse.Namespace) -> int:
     import pandas as pd
 
     from engine import legacy
+    from engine.normalize.corrections import apply_corrections
     from engine.normalize.espn import normalize_league
     from engine.store import canonical_dir, write_tables
 
@@ -73,7 +75,7 @@ def cmd_normalize(args: argparse.Namespace) -> int:
         print(f"error: no raw data at {raw_dir}. Run `engine pull {args.path}` first.")
         return 1
 
-    tables = normalize_league(raw_dir)
+    tables = apply_corrections(normalize_league(raw_dir), cfg)
     out = canonical_dir(Path(args.cache), league["provider"], league["league_id"])
     write_tables(tables, out)
 
@@ -94,9 +96,20 @@ def cmd_normalize(args: argparse.Namespace) -> int:
     results = [
         legacy.check_matchups(tables, pd.read_csv(golden / "matchup_data.csv.gz"), cfg),
         legacy.check_rosters(tables, pd.read_csv(golden / "weekly_rosters_bracket_only.csv.gz"), cfg),
+        legacy.check_draft(tables, pd.read_csv(golden / "draft_history_all_positions.csv.gz"), cfg),
+        legacy.check_transactions(tables, pd.read_csv(golden / "transactions_clean.csv.gz"), cfg),
     ]
+    detail_dir = Path(args.cache) / "verify"
+    detail_dir.mkdir(parents=True, exist_ok=True)
+    for old in detail_dir.glob("*.csv"):
+        old.unlink()
     for r in results:
         print(r.render())
+        slug = r.name.split(" vs ")[0].replace(" ", "_")
+        for part, frame in r.frames.items():
+            if len(frame):
+                frame.to_csv(detail_dir / f"{slug}__{part}.csv", index=False)
+    print(f"\nFull detail: {detail_dir}/")
     return 0 if all(r.ok for r in results) else 1
 
 

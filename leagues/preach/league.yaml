@@ -105,6 +105,16 @@ managers:
 # inconsistencies, fixed in phase 4 when pages read colors from here.
 # championship_logos: the alternate logo a manager earned by winning that season.
 
+corrections:
+  draft_order:    # true draft order, slot 1 first, where ESPN's is wrong
+    2021: [andrew-root, deniz-bileydi, ben-castaldo, charlie-gorman, baylen-slansky, ryan-mcquaid, cole-maney,
+           ethan-radecki, carmine-pittelli, aidan-quigley, max-malich, brandon-hancock, quin-gegwich, anthony-kelly]
+           # drafted offline; ESPN has the right players on the right managers, but its pick
+           # numbers come from the wrong order (e.g. Kelce was Kelly's 14th pick, not 2nd)
+  draft_pick_owners:   # picks traded during the draft that ESPN still credits to the original owner
+    2026: { 92: ethan-radecki, 105: ethan-radecki, 98: deniz-bileydi, 99: deniz-bileydi }
+          # Radecki and Bileydi swapped their 7th and 8th round picks
+
 analysis:
   record_games: [regular_season, winners_bracket]   # consolation games never count toward records or stats
   exclude_managers: [thomas-sullivan, william-serafin]   # 2020-only, excluded from surplus analyses

@@ -102,6 +102,18 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
         if g.get("manager") not in slugs:
             errors.append(f"analysis.exclude_games[{i}]: unknown manager '{g.get('manager')}'")
 
+    corrections = cfg.get("corrections") or {}
+    for season, order in (corrections.get("draft_order") or {}).items():
+        unknown = [x for x in order if x not in slugs]
+        if unknown:
+            errors.append(f"corrections.draft_order.{season}: unknown managers {unknown}")
+        if len(set(order)) != len(order):
+            errors.append(f"corrections.draft_order.{season}: a manager appears twice")
+    for season, owners in (corrections.get("draft_pick_owners") or {}).items():
+        unknown = [x for x in (owners or {}).values() if x not in slugs]
+        if unknown:
+            errors.append(f"corrections.draft_pick_owners.{season}: unknown managers {unknown}")
+
     theme = cfg.get("theme") or {}
     for season, color in (theme.get("season_colors") or {}).items():
         if not HEX_COLOR.match(str(color)):

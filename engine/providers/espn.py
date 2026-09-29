@@ -7,6 +7,8 @@ JSON file per request, under .cache/espn/<league_id>/<season>/:
     draft.json                   draft picks
     week_NN_boxscore.json        matchups with each team's lineup and points
     week_NN_transactions.json    adds, drops, waivers, trades
+    playercards_NNN.json         name, position, and full transaction history for
+                                 every player seen that season (100 per file)
     manifest.json                what was pulled, when, and summary counts
 
 Completed seasons are pulled once and reused; the active season is always
@@ -27,7 +29,7 @@ from typing import Any
 
 BASE_URL = "https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}"
 RETRY_STATUSES = {429, 500, 502, 503, 504}
-MANIFEST_VERSION = 1
+MANIFEST_VERSION = 2   # 2: adds player cards
 
 
 class EspnError(RuntimeError):
@@ -107,6 +109,26 @@ def _read(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+CARD_CHUNK = 100
+
+
+def season_player_ids(season_dir: Path) -> list[int]:
+    """Every player id that appears in a season's lineups, transactions, or draft."""
+    ids: set[int] = set()
+    for box_path in season_dir.glob("week_*_boxscore.json"):
+        for game in _read(box_path).get("schedule") or []:
+            for side in ("home", "away"):
+                roster = (game.get(side) or {}).get("rosterForCurrentScoringPeriod") or {}
+                ids.update(e.get("playerId") for e in roster.get("entries") or [])
+    for tx_path in season_dir.glob("week_*_transactions.json"):
+        for t in _read(tx_path).get("transactions") or []:
+            ids.update(i.get("playerId") for i in t.get("items") or [])
+    draft_path = season_dir / "draft.json"
+    if draft_path.exists():
+        ids.update(p.get("playerId") for p in ((_read(draft_path).get("draftDetail") or {}).get("picks")) or [])
+    return sorted(i for i in ids if i is not None)
+
+
 def summarize(season_dir: Path) -> dict:
     """Counts from the cached files; used to sanity-check a pull."""
     league = _read(season_dir / "league.json")
@@ -125,6 +147,11 @@ def summarize(season_dir: Path) -> dict:
         transactions += len(_read(tx_path).get("transactions") or [])
     draft_path = season_dir / "draft.json"
     picks = len(((_read(draft_path).get("draftDetail") or {}).get("picks")) or []) if draft_path.exists() else 0
+    cards = card_tx = 0
+    for card_path in season_dir.glob("playercards_*.json"):
+        for entry in _read(card_path).get("players") or []:
+            cards += 1
+            card_tx += len(entry.get("transactions") or [])
     return {
         "teams": len(league.get("teams") or []),
         "members": len(league.get("members") or []),
@@ -133,6 +160,8 @@ def summarize(season_dir: Path) -> dict:
         "lineup_entries": lineup_entries,
         "transactions": transactions,
         "draft_picks": picks,
+        "player_cards": cards,
+        "card_transactions": card_tx,
     }
 
 
@@ -167,6 +196,16 @@ class EspnProvider:
             _write(out_dir / f"week_{week:02d}_transactions.json", tx)
 
         _write(out_dir / "draft.json", c.get(season, ["mDraftDetail"]))
+
+        # Player cards: names, positions, and each player's full transaction
+        # history, which includes executed trades the weekly feed leaves out.
+        ids = season_player_ids(out_dir)
+        for n, start in enumerate(range(0, len(ids), CARD_CHUNK)):
+            chunk = ids[start:start + CARD_CHUNK]
+            cards = c.get(season, ["kona_playercard"], fantasy_filter={"players": {
+                "filterIds": {"value": chunk}, "limit": len(chunk),
+                "sortDraftRanks": {"sortPriority": 100, "sortAsc": True, "value": "STANDARD"}}})
+            _write(out_dir / f"playercards_{n:03d}.json", cards)
 
         summary = summarize(out_dir)
         active = bool((league.get("status") or {}).get("isActive"))
