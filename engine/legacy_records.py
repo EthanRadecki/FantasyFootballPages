@@ -24,6 +24,7 @@ Known legacy differences, excused by pattern:
 - matchups.json lists late-2025 and 2026 games with the teams in a different
   order (team A is otherwise the away team); games are compared by manager
 - bench players tied on points can appear in either order
+The live season is compared only through the last week the site files cover.
 """
 
 from __future__ import annotations
@@ -225,10 +226,24 @@ def _note_names(r: Comparison, exp: pd.DataFrame) -> None:
         r.known["legacy name spelled differently (suffix, punctuation, or nickname); matched to the ESPN player"] = fuzzy
 
 
+def through_golden_weeks(tables: dict, games_json: list[dict]) -> dict:
+    """Cut each season's weeks at the last week the site files cover. The
+    live season keeps moving (the site files stop at the week they were last
+    updated), so later weeks would show up as rows the legacy files lack."""
+    last = pd.DataFrame([(g["season"], g["week"]) for g in games_json], columns=["season", "week"]).groupby("season")["week"].max()
+    out = dict(tables)
+    for name in ("matchups", "lineups"):
+        df = tables[name]
+        cap = df["season"].map(last)
+        out[name] = df[cap.isna() | (df["week"] <= cap)]
+    return out
+
+
 def verify_records(tables: dict, golden: dict, cfg: dict) -> list[Comparison]:
     from engine.legacy_trades import legacy_positions
 
     adjusted, _ = legacy_positions(tables, golden["weekly_rosters_bracket_only"], cfg)
+    adjusted = through_golden_weeks(adjusted, golden["matchups"])
     analysis = records_mod.analyze_records(adjusted, excluded_manager_keys(cfg))
     return [
         check_games(analysis, golden["matchups"], cfg),

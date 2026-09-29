@@ -39,5 +39,12 @@ Legacy site files for the records and lineups module, added 2026-09-29. Checked 
 | File | Source | Covers |
 |---|---|---|
 | `draft/espn_player_stats_season.csv.gz` | `pull_espn_stats.py`, rerun 2026-09-29 for 2020-2025 (reproduces every PPG, games, and position baseline in `draft_surplus_v2.csv`) | 3,814 player-seasons: every rostered player plus 500 free agents, skill positions |
+| `draft/espn_player_stats_2026.csv.gz` | `pull_espn_stats_2026.py`, at the last 2026 site update (weeks 1-2) | 2026 player universe used by the live grades |
+| `draft/draft_surplus_v2.csv.gz` | `surplus_value_index.py` | per-pick PRV, expected PRV, surplus, 2020-2025 |
+| `draft/surplus_value_data.json.gz` | `surplus_value_index.py` | career and season draft grades |
+| `draft/surplus_value_2026_live.csv.gz`, `.json.gz` | `surplus_value_index_2026_live.py` | 2026 live per-pick surplus and grades |
+| `draft/draft_heatmap.json.gz` | `generate_draft_heatmap.py` | per-manager board by round and slot |
+| `draft/hit_rate_data.json.gz` | `hit_rate_by_round.py` | hit rate by round and tier, steals |
+| `draft/draft_with_stats.csv.gz` | `match_players.py` | legacy pick-to-stats name matches, including the hand-kept `manual_zero` list |
 
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.
