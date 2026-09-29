@@ -120,6 +120,10 @@ def cmd_normalize(args: argparse.Namespace) -> int:
 
 
 RECORD_JSON_GOLDENS = ["matchups", "franchise_leaders", "best_single_week"]
+DRAFT_CSV_GOLDENS = ["espn_player_stats_season", "espn_player_stats_2026", "draft_surplus_v2",
+                     "surplus_value_2026_live", "draft_with_stats"]
+DRAFT_JSON_GOLDENS = {"surplus_value_data": "surplus_value_data", "surplus_value_2026_live_json": "surplus_value_2026_live",
+                      "draft_heatmap": "draft_heatmap", "hit_rate_data": "hit_rate_data"}
 TRADE_GOLDENS = ["trades_mapped", "trades_mapped_clean", "trade_universe", "position_baseline",
                  "player_stints_fixed", "metrics_final", "lineup_efficiency"]
 
@@ -138,6 +142,11 @@ def load_goldens(golden_dir: Path) -> dict:
         with gzip.open(golden_dir / "records" / f"{n}.json.gz", "rt", encoding="utf-8") as f:
             golden[n] = json.load(f)
     golden["lineup_blunders"] = pd.read_csv(golden_dir / "records" / "lineup_blunders.csv.gz")
+    for n in DRAFT_CSV_GOLDENS:
+        golden[n] = pd.read_csv(golden_dir / "draft" / f"{n}.csv.gz")
+    for key, n in DRAFT_JSON_GOLDENS.items():
+        with gzip.open(golden_dir / "draft" / f"{n}.json.gz", "rt", encoding="utf-8") as f:
+            golden[key] = json.load(f)
     return golden
 
 
@@ -158,6 +167,7 @@ def _report(title: str, checks: list, info: list[str], detail_dir: Path, prefix:
 
 
 def cmd_analyze(args: argparse.Namespace) -> int:
+    from engine.analytics.draft import analyze_draft
     from engine.analytics.records import analyze_records
     from engine.analytics.trades import analyze_trades
     from engine.config import excluded_manager_keys
@@ -171,7 +181,12 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         return 1
     tables = read_tables(src)
 
-    results = {**analyze_trades(tables), **analyze_records(tables, excluded_manager_keys(cfg))}
+    exclude = excluded_manager_keys(cfg)
+    results = {**analyze_trades(tables), **analyze_records(tables, exclude)}
+    if "player_stats" in tables and len(tables["player_stats"]):
+        results.update(analyze_draft(tables, exclude))
+    else:
+        print("note: no player pool yet (run `engine pull`); draft value skipped")
     out = Path(args.cache) / "analysis" / league["provider"] / str(league["league_id"])
     write_tables(results, out)
     print(f"Analysis tables written to {out}/")
@@ -184,6 +199,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
 
     if not args.verify:
         return 0
+    from engine.legacy_draft import verify_draft
     from engine.legacy_records import verify_records
     from engine.legacy_trades import verify_trades
 
@@ -194,8 +210,10 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     _report("Verifying trades against the legacy pipeline:", trade_checks, info, detail_dir, "trades")
     record_checks = verify_records(tables, golden, cfg)
     _report("Verifying records and lineups against the legacy site files:", record_checks, [], detail_dir, "records")
+    draft_checks, draft_info = verify_draft(tables, golden, cfg)
+    _report("Verifying draft value against the legacy draft files:", draft_checks, draft_info, detail_dir, "draft")
     print(f"\nFull detail: {detail_dir}/")
-    return 0 if all(r.ok for r in trade_checks + record_checks) else 1
+    return 0 if all(r.ok for r in trade_checks + record_checks + draft_checks) else 1
 
 
 def main(argv: list[str] | None = None) -> int:
