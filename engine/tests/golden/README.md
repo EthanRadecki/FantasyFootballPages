@@ -56,4 +56,15 @@ Added 2026-09-29. Checked by `engine analyze --verify` and by `engine/tests/test
 | `schedule/schedule_luck_season.csv.gz` | `build_schedule_luck.py` output | per manager and season, 2020-2025. Built from an older `matchup_data.csv`: two 2025 rows (Hancock, Bileydi) trade one expected win, excused by rerunning the legacy logic on the current file |
 | `schedule/schedule_swap.json.gz` | `build_schedule_swap.py` output | identical to `SCHEDULE_SWAP_DATA` inline in `extra-analytics.html` |
 
+## sos/
+
+Added 2026-09-29. Checked by `engine analyze --verify` and by `engine/tests/test_projected_sos.py`. ESPN projections change daily, so only the averaging and ranking step is checked, fed the legacy weekly totals.
+
+| File | Source | Covers |
+|---|---|---|
+| `sos/projected_sos_weekly_detail.csv.gz` | `build_projected_sos.py` weekly detail, `START_WEEK` 3 | each team's projected total, weeks 3-14 |
+| `sos/projected_sos_2026.csv.gz` | `build_projected_sos.py` output from those totals | own and opponent averages, rank |
+| `sos/schedule_2026.csv.gz` | the `schedule_2026.csv` next to the legacy script on the local pipeline | an early draft of the 2026 schedule; differs from ESPN's and from `data/schedule_2026.csv` from week 2 on, so the published week 1-3 SOS used the wrong opponents |
+| `sos/rankings_2026_week03.json.gz` | `data/rankings/2026_week03.json` | the SOS values copied onto the rankings page |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.

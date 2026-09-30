@@ -13,7 +13,8 @@ This first version is built from script names and the files each script reads an
 | `analytics/weeks.py` (built) | `playoff_weights`, position baseline (builder lost) | Bracket weeks, forfeits, playoff weights, position z-scores defined once |
 | `analytics/draft.py` (built and verified) | `surplus_value_index`, `surplus_value_index_2026_live`, `hit_rate_by_round`, `generate_draft_heatmap`, `match_players` (draft board data still to port: `generate_draft_board_data`) | Career and live are one function; stats by player id from the full player pool |
 | `analytics/draft_profiles.py` | `draft_fingerprint`, `generate_fingerprints`, `generate_archetypes` | Three overlapping scripts become one |
-| `analytics/schedule.py` (luck and swap built and verified; projected SOS next) | `build_schedule_luck`, `build_schedule_swap`, `build_projected_sos` | Luck and swap share one set of regular-season games; forfeits come from the data, not a hardcoded list |
+| `analytics/schedule.py` (built and verified) | `build_schedule_luck`, `build_schedule_swap` | Luck and swap share one set of regular-season games; forfeits come from the data, not a hardcoded list |
+| `analytics/projected_sos.py` (built and verified) | `build_projected_sos` | Start week, schedule, byes, and team names come from ESPN; best projected lineup from the whole roster |
 | `analytics/playoff_odds.py` | `generate_playoff_odds`, `generate_playoff_odds_2026_live`, `playoff_weights` | Historical and live become one simulation |
 | `analytics/position_impact.py` | `generate_position_impact`, `generate_dst_impact` | D/ST handled as a position |
 | `analytics/records.py`, `analytics/lineups.py` (built and verified) | `generate_franchise_leaders`, `generate_best_single_week`, `generate_blunder_rosters`, `generate_lineup_efficiency`, `build_matchups_json`, their parts of `update_2026` | One code path for every season; finished weeks only; blunders and forfeits derived, not hardcoded |
