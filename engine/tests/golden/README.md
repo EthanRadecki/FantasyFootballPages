@@ -108,4 +108,12 @@ Added 2026-09-30. Checked by `engine analyze --verify` and `engine/tests/test_at
 | `attribution/win_attribution_final.json.gz` | `build_win_attribution_final.py` output (`win_attribution_final.json`); its `DATA` is identical to the inline `DATA` on extra-analytics.html | the fit, standardized coefficients, p-values, and each manager's waterfall |
 | `attribution/attribution_season_data_final.csv.gz` | the factor table it fit | 83 manager-seasons, 2020-2025. Its luck column is newer than `schedule/schedule_luck_season.csv.gz` on two 2025 rows (Hancock, Bileydi), excused by rerunning the legacy luck logic |
 
+## gauntlet/
+
+Added 2026-09-30. Checked by `engine analyze --verify` and `engine/tests/test_gauntlet.py` (legacy files only, so CI runs the whole check).
+
+| File | Source | Covers |
+|---|---|---|
+| `gauntlet/extra_analytics_gauntlet.json.gz` | the inline `CHAMPION_RANKS`, `CHAMPIONS`, `HARDEST`, `EASIEST` blocks of extra-analytics.html, parsed to JSON | champions' ranks and the hardest and easiest lists reproduce exactly from `recompute_weights2.py` logic on `matchup_data.csv.gz` and the stats file, cut at 2025. The champion cards came from an earlier, lost variant (raw dominance, older league averages, different surges); their games and internal math are checked, their surges are not |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.
