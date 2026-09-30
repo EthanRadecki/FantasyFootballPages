@@ -4,8 +4,10 @@
     engine pull leagues/preach/league.yaml [--seasons 2020-2026] [--refresh]
     engine normalize leagues/preach/league.yaml [--verify]
     engine analyze leagues/preach/league.yaml [--verify]
+    engine build leagues/preach/league.yaml [--out dist] [--verify]
+    engine update leagues/preach/league.yaml [--verify]      pull, normalize, analyze, build
 
-More commands (build, serve) arrive in later phases; see docs/ARCHITECTURE.md.
+See docs/ARCHITECTURE.md and docs/PUBLISH_PLAN.md.
 """
 
 from __future__ import annotations
@@ -353,6 +355,71 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     return 0 if all(r.ok for r in checks) else 1
 
 
+def cmd_build(args: argparse.Namespace) -> int:
+    from engine.publish.build import BuildContext, run_build, verify_build
+    from engine.publish.writer import build_info
+    from engine.store import canonical_dir, read_tables
+
+    cfg = load_config(args.path)
+    report = validate_config(cfg)
+    if not report.ok:
+        for e in report.errors:
+            print(f"error: {e}")
+        return 1
+    league = cfg["league"]
+    src = canonical_dir(Path(args.cache), league["provider"], league["league_id"])
+    if not src.exists():
+        print(f"error: no canonical tables at {src}. Run `engine normalize {args.path}` first.")
+        return 1
+    ana = Path(args.cache) / "analysis" / league["provider"] / str(league["league_id"])
+    analysis = read_tables(ana) if ana.exists() else {}
+    if not analysis:
+        print(f"note: no analysis tables at {ana} (run `engine analyze`); pages that need them are skipped")
+    ctx = BuildContext(cfg=cfg, tables=read_tables(src), analysis=analysis, build=build_info(args.build_id),
+                       site_root=Path(args.site), golden_dir=Path(args.golden))
+    result = run_build(ctx, Path(args.out))
+    n_site = sum(1 for f in result.copied if f not in {o.path for o in result.generated})
+    print(f"Built {result.out}/ (build {ctx.build['id']}): {n_site} site files copied, "
+          f"{len(result.generated)} generated")
+    for o in result.generated:
+        kind = f"{o.schema} v{o.version}" if o.schema else "legacy view"
+        print(f"  {o.path:<40}{kind}")
+    cur = ctx.config["current"]
+    if cur:
+        live = " (live)" if ctx.config["live_season"] == cur["season"] else ""
+        print(f"Data through {cur['season']}{live} week {cur['last_completed_week']}")
+    if not args.verify:
+        return 0
+    checks = verify_build(ctx, result)
+    print("\nVerifying the build:")
+    for c in checks:
+        print(c.render())
+    return 0 if all(c.ok for c in checks) else 1
+
+
+def cmd_update(args: argparse.Namespace) -> int:
+    """The weekly update: pull, normalize, analyze, build. Stops at the first failure."""
+    common = {"path": args.path, "cache": args.cache, "golden": args.golden}
+    steps = []
+    if not args.skip_pull:
+        steps.append(("pull", cmd_pull, argparse.Namespace(**common, seasons=args.seasons, refresh=False,
+                                                            auth=args.auth)))
+    steps += [
+        ("normalize", cmd_normalize, argparse.Namespace(**common, verify=False)),
+        ("analyze", cmd_analyze, argparse.Namespace(**common, verify=False)),
+        ("build", cmd_build, argparse.Namespace(**common, out=args.out, site=args.site, build_id=args.build_id,
+                                                 verify=args.verify)),
+    ]
+    for name, fn, ns in steps:
+        print(f"\n=== engine {name} ===", flush=True)
+        rc = fn(ns)
+        if rc != 0:
+            print(f"\nFAIL: engine {name} returned {rc}; later steps not run.")
+            return rc
+    print("\nUpdate complete.")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="engine")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -384,6 +451,26 @@ def main(argv: list[str] | None = None) -> int:
     ana.add_argument("--verify", action="store_true", help="compare with the legacy golden files")
     ana.add_argument("--golden", default="engine/tests/golden", help="golden files directory")
     ana.set_defaults(func=cmd_analyze)
+
+    def build_args(p: argparse.ArgumentParser) -> None:
+        p.add_argument("path", help="league.yaml")
+        p.add_argument("--cache", default=".cache", help="cache root (default .cache)")
+        p.add_argument("--out", default="dist", help="output folder (default dist)")
+        p.add_argument("--site", default=".", help="folder holding the site template (default: repo root)")
+        p.add_argument("--build-id", dest="build_id", help="build id (default: UTC time plus git commit)")
+        p.add_argument("--verify", action="store_true", help="check the build (schemas, paths, goldens)")
+        p.add_argument("--golden", default="engine/tests/golden", help="golden files directory")
+
+    build = sub.add_parser("build", help="Assemble the site in dist/ from the analysis tables")
+    build_args(build)
+    build.set_defaults(func=cmd_build)
+
+    update = sub.add_parser("update", help="Weekly update: pull, normalize, analyze, build")
+    build_args(update)
+    update.add_argument("--seasons", help="seasons to pull (default: all; finished seasons come from the cache)")
+    update.add_argument("--auth", help="JSON file with espn_s2 and swid (default: environment)")
+    update.add_argument("--skip-pull", dest="skip_pull", action="store_true", help="use the cached raw data")
+    update.set_defaults(func=cmd_update)
 
     args = parser.parse_args(argv)
     return args.func(args)

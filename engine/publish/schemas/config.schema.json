@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "config",
+  "title": "config.json: league facts every page reads",
+  "type": "object",
+  "required": ["meta", "build", "league", "seasons", "finished_seasons", "live_season", "current", "managers",
+               "exclude_games", "theme", "features", "pages"],
+  "additionalProperties": false,
+  "$defs": {
+    "hex": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"},
+    "path": {"type": ["string", "null"]},
+    "season": {"type": "integer", "minimum": 1990, "maximum": 2200}
+  },
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["schema", "schema_version", "build_id", "generated_at"],
+      "properties": {
+        "schema": {"const": "config"},
+        "schema_version": {"const": 1},
+        "build_id": {"type": "string", "minLength": 1},
+        "generated_at": {"type": "string"}
+      }
+    },
+    "build": {
+      "type": "object",
+      "required": ["id", "generated_at"],
+      "properties": {"id": {"type": "string", "minLength": 1}, "generated_at": {"type": "string"}}
+    },
+    "league": {
+      "type": "object",
+      "required": ["name", "provider", "league_id", "first_season", "logo", "logos_by_season", "conference_labels"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "provider": {"type": "string"},
+        "league_id": {"type": "integer"},
+        "first_season": {"$ref": "#/$defs/season"},
+        "logo": {"$ref": "#/$defs/path"},
+        "logos_by_season": {"type": "object", "additionalProperties": {"$ref": "#/$defs/path"}},
+        "conference_labels": {"type": "object", "additionalProperties": {"type": "string"}}
+      }
+    },
+    "seasons": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["season", "team_count", "regular_season_weeks", "final_week", "playoff_team_count",
+                     "last_completed_week", "live", "rounds"],
+        "additionalProperties": false,
+        "properties": {
+          "season": {"$ref": "#/$defs/season"},
+          "team_count": {"type": "integer", "minimum": 2},
+          "regular_season_weeks": {"type": "integer", "minimum": 1},
+          "final_week": {"type": "integer", "minimum": 1},
+          "playoff_team_count": {"type": ["integer", "null"]},
+          "last_completed_week": {"type": ["integer", "null"], "minimum": 1},
+          "live": {"type": "boolean"},
+          "rounds": {"type": "object", "additionalProperties": {"type": "string"}}
+        }
+      }
+    },
+    "finished_seasons": {"type": "array", "items": {"$ref": "#/$defs/season"}},
+    "live_season": {"oneOf": [{"$ref": "#/$defs/season"}, {"type": "null"}]},
+    "current": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "object", "required": ["season", "last_completed_week"],
+         "properties": {"season": {"$ref": "#/$defs/season"}, "last_completed_week": {"type": ["integer", "null"]}}}
+      ]
+    },
+    "managers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["key", "slug", "name", "short", "aliases", "colors", "logo", "championship_logos", "hidden",
+                     "seasons"],
+        "additionalProperties": false,
+        "properties": {
+          "key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+          "slug": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "short": {"type": "string", "minLength": 1},
+          "aliases": {"type": "array", "items": {"type": "string"}},
+          "colors": {"type": "object", "required": ["dark", "light"],
+                     "properties": {"dark": {"$ref": "#/$defs/hex"}, "light": {"$ref": "#/$defs/hex"}}},
+          "logo": {"$ref": "#/$defs/path"},
+          "championship_logos": {"type": "object", "additionalProperties": {"type": "string"}},
+          "hidden": {"type": "boolean"},
+          "seasons": {"type": "array", "items": {"$ref": "#/$defs/season"}}
+        }
+      }
+    },
+    "exclude_games": {
+      "type": "array",
+      "items": {"type": "object", "required": ["season", "week", "manager_key", "from"]}
+    },
+    "theme": {
+      "type": "object",
+      "required": ["fonts", "season_colors"],
+      "properties": {
+        "fonts": {"type": "object", "additionalProperties": {"type": "string"}},
+        "season_colors": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hex"}}
+      }
+    },
+    "features": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "path", "parent", "feature", "nav"],
+        "properties": {
+          "id": {"type": "string"},
+          "title": {"type": "string"},
+          "path": {"type": "string"},
+          "parent": {"type": ["string", "null"]},
+          "feature": {"type": ["string", "null"]},
+          "nav": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}
