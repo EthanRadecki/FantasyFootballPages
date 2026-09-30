@@ -107,6 +107,9 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
     for i, g in enumerate(analysis.get("exclude_games") or []):
         if g.get("manager") not in slugs:
             errors.append(f"analysis.exclude_games[{i}]: unknown manager '{g.get('manager')}'")
+    cutoff = (analysis.get("playoff_odds") or {}).get("cutoff")
+    if cutoff is not None and (not isinstance(cutoff, int) or isinstance(cutoff, bool) or cutoff < 1):
+        errors.append(f"analysis.playoff_odds.cutoff: '{cutoff}' must be a positive whole number")
 
     corrections = cfg.get("corrections") or {}
     for season, order in (corrections.get("draft_order") or {}).items():

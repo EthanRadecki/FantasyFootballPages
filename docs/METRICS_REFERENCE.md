@@ -209,3 +209,21 @@ A forfeit still counts as the opponent's score: Slansky got the win against Cast
 **Limits:** rosters and availability are a snapshot from the latest pull. Pickups, drops, and trades after that are not known, and every pull refreshes the numbers.
 
 **Replaced method:** the first version used each team's current starters, swapped a bench player in for a starter on bye or projected at zero, and used a fixed number per position when no bench player fit. It missed benched or injured players returning later in the season, and its week 1 to 3 values used an early draft of the league schedule rather than the final one.
+
+---
+
+## Playoff Odds (weekly rankings)
+
+**What it measures:** each manager's chance of making the playoffs, as the league stood before that week was played. The rest of the regular season is simulated 50,000 times; the odds are the share of simulations in which the manager qualifies.
+
+**Scoring model:** each team's weekly score is drawn from a normal distribution.
+- **Mean, results side:** points scored so far, pulled toward the league average: (games x own average + 3 x league average) / (games + 3). One or two big weeks early do not dominate.
+- **Mean, forward-looking side (live season, current week):** the team's projected total for each remaining week (its best projected lineup, from the SOS module), blended in with weight 3 / (games + 3). Early in the season the projections lead; as games accumulate, real results take over. Before any games, projections alone.
+- **Spread:** the team's score variance so far, pulled toward the league's the same way.
+- A forfeit (a sat lineup scoring 0) keeps its loss but is not a scoring sample.
+
+**Who qualifies (from the league, nothing hardcoded):** the playoff spots are `analysis.playoff_odds.cutoff` in league.yaml (Preach: 8), else ESPN's playoff team count. When the league has divisions, each division's best team (wins, then points) qualifies, and the remaining spots go to the best other teams by wins, then points for. Season length comes from each season's settings.
+
+**Which weeks:** every finished week is computed from real results only, so every past week reproduces exactly. Week 1 of a finished season (no games yet) is a flat cutoff / teams for everyone. Only the live season's current week uses projections. Each week has its own random seed.
+
+**History:** 2020-2025 and the live 2026 week 3 were first built by two scripts; the engine reproduces them exactly in legacy mode. The published 2026 weeks 2 and 3 used an early draft of the schedule, so the engine's values for those weeks differ.
