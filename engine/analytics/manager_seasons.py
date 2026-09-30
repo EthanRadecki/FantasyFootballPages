@@ -59,8 +59,9 @@ from engine.analytics.weeks import counted_games, live_seasons
 ENGINE_CHANGES = {
     "per_game_diff": "point differential is per game played (legacy divided by the regular-season weeks played, "
                      "so 2020 teams with a bye week were divided by 13 for 12 games)",
-    "ppg_exclusions": "games in league.yaml analysis.exclude_games with from: [ppg] (the Castaldo 2024 week 14 "
-                      "forfeit) are left out of PF/G, and so of the dominance score; the loss still counts",
+    "ppg_exclusions": "a game in league.yaml analysis.exclude_games with from: [ppg] (the Castaldo 2024 week 14 "
+                      "forfeit): the forfeiter's 0 leaves his PF/G (and so the dominance score) and his "
+                      "opponent's PA/G; the opponent's points and the result still count",
     "visible_ranks": "PF/G and PA/G ranks, and the luck rating built from them, count visible managers only",
 }
 
@@ -96,19 +97,25 @@ def manager_seasons(tables: dict[str, pd.DataFrame], exclude_managers: set[str] 
     g["loss"] = g["result"].eq("L").astype(int)
     g["tie"] = g["result"].eq("T").astype(int)
     if "ppg_exclusions" in fx and ppg_exclusions:
+        # The forfeiter's own points leave their PF/G and their opponent's PA/G;
+        # the opponent's points and the result still count.
         idx = pd.MultiIndex.from_frame(g[["season", "week", "manager_key"]].astype({"season": int, "week": int}))
+        opp = pd.MultiIndex.from_frame(g[["season", "week", "opponent_manager_key"]].astype({"season": int, "week": int}))
         g["pf_counts"] = ~idx.isin(list(ppg_exclusions))
+        g["pa_counts"] = ~opp.isin(list(ppg_exclusions))
     else:
-        g["pf_counts"] = True
+        g["pf_counts"] = g["pa_counts"] = True
     g["pf_counted"] = g["points"].where(g["pf_counts"], 0.0)
+    g["pa_counted"] = g["opponent_points"].where(g["pa_counts"], 0.0)
 
     out = g.groupby(["season", "manager_key"]).agg(
         team_id=("team_id", "first"), wins=("win", "sum"), losses=("loss", "sum"), ties=("tie", "sum"),
         games=("week", "size"), points_for=("points", "sum"), points_against=("opponent_points", "sum"),
-        pf_games=("pf_counts", "sum"), pf_counted=("pf_counted", "sum")).reset_index()
+        pf_games=("pf_counts", "sum"), pf_counted=("pf_counted", "sum"),
+        pa_games=("pa_counts", "sum"), pa_counted=("pa_counted", "sum")).reset_index()
     out["win_pct"] = (out["wins"] + out["ties"] / 2) / out["games"]
     out["pf_per_game"] = out["pf_counted"] / out["pf_games"]
-    out["pa_per_game"] = out["points_against"] / out["games"]
+    out["pa_per_game"] = out["pa_counted"] / out["pa_games"]
     if "per_game_diff" in fx:
         out["point_diff_per_game"] = out["pf_per_game"] - out["pa_per_game"]
     else:

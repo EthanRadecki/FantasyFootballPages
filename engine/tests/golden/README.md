@@ -116,4 +116,12 @@ Added 2026-09-30. Checked by `engine analyze --verify` and `engine/tests/test_ga
 |---|---|---|
 | `gauntlet/extra_analytics_gauntlet.json.gz` | the inline `CHAMPION_RANKS`, `CHAMPIONS`, `HARDEST`, `EASIEST` blocks of extra-analytics.html, parsed to JSON | champions' ranks and the hardest and easiest lists reproduce exactly from `recompute_weights2.py` logic on `matchup_data.csv.gz` and the stats file, cut at 2025. The champion cards came from an earlier, lost variant (raw dominance, older league averages, different surges); their games and internal math are checked, their surges are not |
 
+## matchup_history/
+
+Added 2026-09-30. Checked by `engine analyze --verify` (needs the canonical tables).
+
+| File | Source | Covers |
+|---|---|---|
+| `matchup_history/extra_analytics_matchups.json.gz` | extra-analytics.html: the inline `managers`/`h2h` matrix and `CLOSEST` lists, and the Conference Analysis cards and tables parsed from the HTML | 2020-2025. The closest regular-season and playoff lists skip some games the all-games list includes; the conference average PF/game (111.9, 110.9) was typed by hand |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.

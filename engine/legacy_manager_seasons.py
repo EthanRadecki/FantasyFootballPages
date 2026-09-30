@@ -174,7 +174,7 @@ def check_live(tables: dict, legacy: pd.DataFrame, matchup_data: pd.DataFrame, c
 def _effect(leg: pd.DataFrame, eng: pd.DataFrame, names: dict) -> list[str]:
     b = leg.merge(eng[~eng["hidden"]], on=KEYS, suffixes=("_l", "_e"))
     out = []
-    for c, fmt in (("point_diff_per_game", "{:+.1f}"), ("pf_per_game", "{:.1f}"), ("dominance", "{:+.2f}"),
+    for c, fmt in (("point_diff_per_game", "{:+.1f}"), ("pf_per_game", "{:.1f}"), ("pa_per_game", "{:.1f}"), ("dominance", "{:+.2f}"),
                    ("pf_rank", "{}"), ("pa_rank", "{}"), ("luck_rating", "{:+}")):
         d = b[(b[f"{c}_l"].astype(float) - b[f"{c}_e"].astype(float)).abs() > 1e-9]
         if len(d):

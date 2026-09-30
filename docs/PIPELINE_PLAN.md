@@ -22,7 +22,8 @@ This first version is built from script names and the files each script reads an
 | `analytics/manager_seasons.py` (built and verified) | `data/preach_manager_stats.csv` (maintained by hand, no script) | Every column derived from the canonical tables; formulas recovered from the file |
 | `analytics/attribution.py` (built and verified) | `build_win_attribution_final` | Five factors from engine tables, not five hand-copied CSVs |
 | `analytics/gauntlet.py` (built and verified) | `recompute_weights2` | Champion runs found from the bracket, not a hardcoded list; one calculation for the cards, ranks, and lists |
-| `analytics/extra.py` (name to confirm) | `export_quarterly_regression` (numbers only), and the extra-analytics.html blocks with no script: position regression, head-to-head matrix, closest games | |
+| `analytics/matchup_history.py` (built and verified) | extra-analytics.html blocks with no script: head-to-head matrix (`export_h2h_matrix` logic), closest games, conference analysis | Every number from counted games; conference from ESPN's division id |
+| `analytics/regressions.py` (next) | `export_quarterly_regression` (numbers only), and the position regression on extra-analytics.html (no script) | |
 | `publish/` | remaining `regenerate_data_files`, all `export_*` output code, `update_2026` | One JSON writer; no in-place patching |
 | (deleted) | `player_ppr_pullscript.R`, `build_cards.py` (confirm) | |
 | (retired, not ported) | `export_luck_analysis`, `export_h2h_matrix`, `export_draft_analysis`, `export_similarity_grid` (one-off portfolio PNGs); `historical_similarity` (never on the site; Ethan, session 4); `build_attribution_model_final` (an earlier attribution model, superseded); `pull_nfl_schedule`, `pull_player_opponents`, `build_position_sos_index` (a different project) | |
