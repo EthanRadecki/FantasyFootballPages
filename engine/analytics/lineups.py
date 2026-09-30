@@ -40,21 +40,29 @@ def eligible(slot: str) -> set[str]:
     return {slot} if slot in POSITIONS.values() else set(slot.split("/"))
 
 
-def optimal_points(roster: pd.DataFrame, slots: list[str]) -> float:
-    """Best lineup score from this roster: fixed slots first, then flex slots
-    (fewest eligible positions first), each taking the best player left."""
-    pool = roster[roster["slot"] != IR_SLOT][["position", "points"]].sort_values("points", ascending=False,
-                                                                                   kind="stable")
-    left = list(zip(pool["position"], pool["points"]))
-    total = 0.0
+def best_lineup(pool: pd.DataFrame, slots: list[str], points: str = "points") -> list[tuple[str, object]]:
+    """Fill each slot from `pool` (columns position and `points`): fixed slots
+    first, then flex slots (fewest eligible positions first), each taking the
+    best player left. Returns (slot, pool index or None if nothing fits)."""
+    ranked = pool.sort_values(points, ascending=False, kind="stable")
+    left = list(zip(ranked.index, ranked["position"]))
+    out = []
     for slot in sorted(slots, key=lambda s: (len(eligible(s)), s)):
         ok = eligible(slot)
-        for i, (pos, pts) in enumerate(left):
+        pick = None
+        for i, (idx, pos) in enumerate(left):
             if pos in ok:
-                total += pts
+                pick = idx
                 del left[i]
                 break
-    return total
+        out.append((slot, pick))
+    return out
+
+
+def optimal_points(roster: pd.DataFrame, slots: list[str]) -> float:
+    """Best lineup score from this roster (IR players are not eligible)."""
+    pool = roster[roster["slot"] != IR_SLOT]
+    return float(sum(pool.loc[i, "points"] for _, i in best_lineup(pool, slots) if i is not None))
 
 
 def efficiency(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:

@@ -192,3 +192,20 @@ Both use finished regular-season games only. Playoff games of every tier are lef
 A forfeit still counts as the opponent's score: Slansky got the win against Castaldo's 0 in 2024 week 14, so every manager wearing Slansky's schedule gets that win too.
 
 **Excluded managers:** Sullivan and Serafin count in every calculation (their schedules are worn, their games stay in everyone else's schedule, and their rows feed each average) and are only hidden from view.
+
+---
+
+## Projected Strength of Schedule (weekly rankings)
+
+**What it measures:** how hard each manager's remaining regular-season schedule looks, from ESPN's weekly projections. Rest of season only: the weeks still to play, from the first week without a final result (no week number to bump by hand).
+
+**Each team's projected total for a week:** the best projected lineup the team could set that week from its whole roster, IR included, filled into the league's starting slots (fixed slots first, then flex). A player on bye or ruled out has no projection or a zero one and is never picked, so an injured player counts again from the week ESPN projects him back. If no one on the roster can fill a slot with a positive projection, the slot takes the best projected available player (free agent or waivers) at that position that week, which sizes itself to the league: in a deep league the best available player is weaker.
+
+**The numbers:**
+- **Own projected average:** the manager's own weekly totals, averaged.
+- **Opponent projected average (SOS):** the scheduled opponents' weekly totals, averaged. Higher is harder.
+- **SOS rank:** 1 is the hardest remaining schedule (ties broken on the unrounded average).
+
+**Limits:** rosters and availability are a snapshot from the latest pull. Pickups, drops, and trades after that are not known, and every pull refreshes the numbers.
+
+**Replaced method:** the first version used each team's current starters, swapped a bench player in for a starter on bye or projected at zero, and used a fixed number per position when no bench player fit. It missed benched or injured players returning later in the season, and its week 1 to 3 values used an early draft of the league schedule rather than the final one.
