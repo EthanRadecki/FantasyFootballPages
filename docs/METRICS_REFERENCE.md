@@ -268,6 +268,18 @@ All from counted games (finished regular-season and winners-bracket games). The 
 
 ---
 
+## Positional Production and the Quarterly Playoff Model (extra-analytics.html)
+
+**Positional production:** weekly started points per position (0 when a manager started no one there), over counted games (regular season and winners bracket). The manager table shows the career average and week-to-week SD per position and career regular-season win%. The season model is an ordinary least squares fit of each manager-season's regular-season win% on its six position averages: standardized coefficients (sample SDs), p-values, R2, and each position's correlation with win%.
+
+**Quarterly playoff model:** each manager-season's average regular-season score in weeks 1-3, 4-6, 7-9, and 10 to the end of that season's regular season, against whether they finished in the league's playoff field (division winners, then the best records up to the league's cutoff of 8, as on the D/ST page; the real brackets took all 15 teams in 2020 and 9 in 2021). A logistic regression on standardized quarter averages gives each quarter's coefficient, p-value, and odds ratio, plus AUC; each quarter's correlation with making the playoffs.
+
+**Both:** finished seasons; Sullivan and Serafin are data points (hidden from the table); the Castaldo 2024 week 14 forfeit week leaves the point averages (the result counts in win%).
+
+**Legacy differences:** the page's quarterly coefficients and p-values (all p = 0.000) could not be reproduced and are replaced by the correct fit; its last quarter stopped at week 13, leaving out week 14 of 14-week seasons, and it used the real brackets (every 2020 team made the playoffs).
+
+---
+
 ## Projected Strength of Schedule (weekly rankings)
 
 **What it measures:** how hard each manager's remaining regular-season schedule looks, from ESPN's weekly projections. Rest of season only: the weeks still to play, from the first week without a final result (no week number to bump by hand).

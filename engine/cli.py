@@ -168,6 +168,8 @@ def load_goldens(golden_dir: Path) -> dict:
         golden_dir / "attribution" / "attribution_season_data_final.csv.gz")
     with gzip.open(golden_dir / "attribution" / "win_attribution_final.json.gz", "rt", encoding="utf-8") as f:
         golden["win_attribution_final"] = json.load(f)
+    with gzip.open(golden_dir / "regressions" / "extra_analytics_regressions.json.gz", "rt", encoding="utf-8") as f:
+        golden["extra_analytics_regressions"] = json.load(f)
     with gzip.open(golden_dir / "matchup_history" / "extra_analytics_matchups.json.gz", "rt", encoding="utf-8") as f:
         golden["extra_analytics_matchups"] = json.load(f)
     with gzip.open(golden_dir / "gauntlet" / "extra_analytics_gauntlet.json.gz", "rt", encoding="utf-8") as f:
@@ -210,6 +212,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     from engine.analytics.playoff_odds import analyze_playoff_odds
     from engine.analytics.position_impact import analyze_position_impact
     from engine.analytics.projected_sos import analyze_projected_sos
+    from engine.analytics.regressions import analyze_regressions
     from engine.analytics.schedule import analyze_schedule
     from engine.analytics.trades import analyze_trades
     from engine.analytics.waivers import analyze_waivers
@@ -231,6 +234,8 @@ def cmd_analyze(args: argparse.Namespace) -> int:
                **analyze_matchup_history(tables, conference_labels(cfg), exclude, excluded_games(cfg, "ppg"))}
     results.update(analyze_gauntlet(tables, results["manager_seasons"], exclude))
     odds_cutoff = ((cfg.get("analysis") or {}).get("playoff_odds") or {}).get("cutoff")
+    results.update(analyze_regressions(tables, results["manager_seasons"], exclude, excluded_games(cfg, "ppg"),
+                                       odds_cutoff))
     results.update(analyze_playoff_odds({**tables, **results}, exclude, odds_cutoff))
     results.update(analyze_position_impact(tables, results, exclude, odds_cutoff))
     if "player_stats" in tables and len(tables["player_stats"]):
@@ -275,6 +280,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     from engine.legacy_matchup_history import verify_matchup_history
     from engine.legacy_records import verify_records
     from engine.legacy_playoff_odds import verify_playoff_odds
+    from engine.legacy_regressions import verify_regressions
     from engine.legacy_position_impact import verify_position_impact
     from engine.legacy_schedule import verify_schedule
     from engine.legacy_sos import verify_projected_sos
@@ -305,6 +311,9 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     gt_checks, gt_info = verify_gauntlet(tables, results, golden, cfg)
     _report("Verifying the schedule gauntlet against extra-analytics.html:", gt_checks, gt_info, detail_dir,
             "gauntlet")
+    rg_checks, rg_info = verify_regressions(tables, results, golden, cfg)
+    _report("Verifying positional production and the quarterly model against extra-analytics.html:", rg_checks,
+            rg_info, detail_dir, "regressions")
     mh_checks, mh_info = verify_matchup_history(tables, golden, cfg)
     _report("Verifying matchup history against extra-analytics.html:", mh_checks, mh_info, detail_dir, "matchups")
     ms_checks, ms_info = verify_manager_seasons(tables, golden, cfg)
@@ -317,7 +326,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
             detail_dir, "odds")
     print(f"\nFull detail: {detail_dir}/")
     checks = (trade_checks + record_checks + draft_checks + schedule_checks + sos_checks + waiver_checks + ms_checks
-              + attr_checks + gt_checks + mh_checks + pi_checks + odds_checks)
+              + attr_checks + gt_checks + mh_checks + rg_checks + pi_checks + odds_checks)
     return 0 if all(r.ok for r in checks) else 1
 
 

@@ -23,10 +23,10 @@ This first version is built from script names and the files each script reads an
 | `analytics/attribution.py` (built and verified) | `build_win_attribution_final` | Five factors from engine tables, not five hand-copied CSVs |
 | `analytics/gauntlet.py` (built and verified) | `recompute_weights2` | Champion runs found from the bracket, not a hardcoded list; one calculation for the cards, ranks, and lists |
 | `analytics/matchup_history.py` (built and verified) | extra-analytics.html blocks with no script: head-to-head matrix (`export_h2h_matrix` logic), closest games, conference analysis | Every number from counted games; conference from ESPN's division id |
-| `analytics/regressions.py` (next) | `export_quarterly_regression` (numbers only), and the position regression on extra-analytics.html (no script) | |
+| `analytics/regressions.py` (built and verified) | `export_quarterly_regression` (numbers only), and the positional production table and regression on extra-analytics.html (no script) | One fit for each model, from counted games; the page's unreproducible quarterly numbers replaced |
 | `publish/` | remaining `regenerate_data_files`, all `export_*` output code, `update_2026` | One JSON writer; no in-place patching |
 | (deleted) | `player_ppr_pullscript.R`, `build_cards.py` (confirm) | |
-| (retired, not ported) | `export_luck_analysis`, `export_h2h_matrix`, `export_draft_analysis`, `export_similarity_grid` (one-off portfolio PNGs); `historical_similarity` (never on the site; Ethan, session 4); `build_attribution_model_final` (an earlier attribution model, superseded); `pull_nfl_schedule`, `pull_player_opponents`, `build_position_sos_index` (a different project) | |
+| (retired, not ported) | `export_luck_analysis`, `export_h2h_matrix`, `export_draft_analysis`, `export_similarity_grid` (one-off portfolio PNGs; `export_quarterly_regression`'s numbers are ported, its PNG retired); `historical_similarity` (never on the site; Ethan, session 4); `build_attribution_model_final` (an earlier attribution model, superseded); `pull_nfl_schedule`, `pull_player_opponents`, `build_position_sos_index` (a different project) | |
 
 ## Shared rules, defined once
 
