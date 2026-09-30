@@ -118,6 +118,14 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
                 if not HEX_COLOR.match(str(value)):
                     errors.append(f"{where} ({name}): colors.{role} '{value}' is not #RRGGBB")
 
+        short = m.get("short")
+        if short is not None and not (isinstance(short, str) and short.strip()):
+            errors.append(f"{where} ({name}): short must be a non-empty name")
+
+    features = cfg.get("features") or {}
+    if not isinstance(features, dict) or not all(isinstance(v, bool) for v in features.values()):
+        errors.append("features must map feature names to true or false")
+
     analysis = cfg.get("analysis") or {}
     bad_scope = set(analysis.get("record_games") or []) - RECORD_GAME_TYPES
     if bad_scope:

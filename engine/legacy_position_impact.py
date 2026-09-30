@@ -28,6 +28,7 @@ import pandas as pd
 from engine.analytics import position_impact as pi
 from engine.config import excluded_manager_keys
 from engine.legacy import Comparison, name_to_key, resolve_names
+from engine.publish.diff import compare_json, diff, leaves
 
 LEGACY_NTH = {"QB": 1, "TE": 1, "K": 1, "D/ST": 1, "RB": 2, "WR": 2}
 LEGACY_SEASONS = [2020, 2021, 2022, 2023, 2024, 2025]
@@ -250,56 +251,9 @@ def build_payloads(games, lineups, picks, active, acquisition, names, nth, seaso
 
 # ---------------------------------------------------------------- compare
 
-def _diff(a, b, path="", out=None, tol=1e-9):
-    out = [] if out is None else out
-    if isinstance(b, dict):
-        if not isinstance(a, dict):
-            out.append((path, a, b))
-            return out
-        for k in set(a) | set(b):
-            if k not in a or k not in b:
-                out.append((f"{path}/{k}", a.get(k, "<missing>"), b.get(k, "<missing>")))
-            else:
-                _diff(a[k], b[k], f"{path}/{k}", out, tol)
-    elif isinstance(b, list):
-        if not isinstance(a, list) or len(a) != len(b):
-            out.append((path, f"list of {len(a) if isinstance(a, list) else a}", f"list of {len(b)}"))
-        else:
-            for i, (x, y) in enumerate(zip(a, b)):
-                _diff(x, y, f"{path}[{i}]", out, tol)
-    elif isinstance(b, (int, float)) and isinstance(a, (int, float)) and not isinstance(b, bool):
-        if abs(float(a) - float(b)) > tol:
-            out.append((path, a, b))
-    elif a != b:
-        out.append((path, a, b))
-    return out
-
-
-def _leaves(x) -> int:
-    if isinstance(x, dict):
-        return sum(_leaves(v) for v in x.values())
-    if isinstance(x, list):
-        return sum(_leaves(v) for v in x) or 1
-    return 1
-
-
-def compare_json(name: str, engine: dict, legacy: dict, known=None) -> list[Comparison]:
-    """One Comparison per top-level section. known(path, engine, legacy) -> reason or None."""
-    out = []
-    for section in legacy:
-        diffs = _diff(engine.get(section), legacy[section], f"/{section}")
-        c = Comparison(f"{name} {section} vs published", _leaves(legacy[section]), _leaves(engine.get(section, {})))
-        bad = []
-        for d in diffs:
-            reason = known(*d) if known else None
-            if reason:
-                c.known[reason] = c.known.get(reason, 0) + 1
-            else:
-                bad.append(d)
-        c.mismatched["values"] = len(bad)
-        c.examples = [f"{p}: legacy={lv!r} engine={ev!r}" for p, ev, lv in bad[:4]]
-        out.append(c)
-    return out
+# The JSON diff moved to engine/publish/diff.py (phase 4); the names stay here for callers.
+_diff = diff
+_leaves = leaves
 
 
 def _dst_known(path, engine_value, legacy_value):
