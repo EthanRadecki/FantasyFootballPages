@@ -47,7 +47,7 @@ def cmd_pull(args: argparse.Namespace) -> int:
     provider = make_provider(cfg, args.auth)
 
     cols = ["teams", "weeks", "matchups", "lineup_entries", "transactions", "draft_picks",
-            "player_cards", "card_transactions", "pool_players"]
+            "player_cards", "card_transactions", "pool_players", "projection_weeks"]
     print(f"{league['name']} ({league['provider']} {league['league_id']}), seasons {seasons[0]}-{seasons[-1]}")
     print(f"{'season':<8}{'status':<8}" + "".join(f"{c:>18}" for c in cols))
     try:
@@ -86,6 +86,13 @@ def cmd_normalize(args: argparse.Namespace) -> int:
     per_season = (tables["matchups"].groupby("season").size().rename("matchup_rows").to_frame()
                   .join(tables["lineups"].groupby("season").size().rename("lineup_rows")))
     print(per_season.to_string())
+    pr = tables.get("projections")
+    if pr is not None and len(pr):
+        has = pr["projected_points"].notna()
+        cov = pr.assign(has=has).groupby(["season", "week", "source"])["has"].agg(["size", "sum"]).unstack("source")
+        cov.columns = [f"{src}_{'rows' if stat == 'size' else 'projected'}" for stat, src in cov.columns]
+        print("Live projection snapshot (rows, and rows with a projection):")
+        print(cov.fillna(0).astype(int).to_string())
 
     for w in legacy.config_consistency(tables, cfg):
         print(f"warning: {w}")

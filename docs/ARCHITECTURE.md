@@ -103,7 +103,9 @@ Every analysis reads only these, never provider output directly. This is the sea
 | `transactions` | one row per add, drop, trade leg, with FAAB bid |
 | `draft_picks` | season x pick |
 | `player_stats` | player x week |
-| `nfl_schedule` | NFL team x week, opponent |
+| `future_matchups` | live season: team x remaining week, scheduled opponent |
+| `projections` | live season: player x remaining week, ESPN projection (rostered and available players) |
+| `pro_teams` | NFL team x season, bye week |
 
 ### Incremental builds, one code path
 
