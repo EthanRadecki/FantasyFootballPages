@@ -33,15 +33,17 @@ def write_league(tmp_path):
     d = tmp_path / "2024"
     d.mkdir()
     league = {
-        "settings": {"scheduleSettings": {"matchupPeriodCount": 1, "playoffTeamCount": 2},
+        "settings": {"scheduleSettings": {"matchupPeriodCount": 1, "playoffTeamCount": 2,
+                                          "divisions": [{"id": 0, "name": "East", "size": 2},
+                                                        {"id": 1, "name": "West", "size": 1}]},
                      "acquisitionSettings": {"isUsingAcquisitionBudget": True, "acquisitionBudget": 300}},
         "status": {"finalScoringPeriod": 2, "isActive": False},
         "members": [{"id": RAW_A, "firstName": "Ann", "lastName": "A"},
                     {"id": RAW_B, "firstName": "Bob", "lastName": "B"},
                     {"id": RAW_C, "firstName": "Cy", "lastName": "C"}],
-        "teams": [{"id": 1, "name": "Aces", "owners": [RAW_A], "primaryOwner": RAW_A},
-                  {"id": 2, "name": "Bees", "owners": [RAW_B], "primaryOwner": RAW_B},
-                  {"id": 3, "name": "Cats", "owners": [RAW_C], "primaryOwner": RAW_C}],
+        "teams": [{"id": 1, "name": "Aces", "owners": [RAW_A], "primaryOwner": RAW_A, "divisionId": 0},
+                  {"id": 2, "name": "Bees", "owners": [RAW_B], "primaryOwner": RAW_B, "divisionId": 0},
+                  {"id": 3, "name": "Cats", "owners": [RAW_C], "primaryOwner": RAW_C, "divisionId": 1}],
     }
     (d / "league.json").write_text(json.dumps(league))
     week1 = box(1, [
@@ -110,6 +112,8 @@ def test_normalize_league_end_to_end(tmp_path):
                       "player_seasons", "players", "player_stats", "future_matchups", "projections", "pro_teams"}
     assert len(t["projections"]) == 0 and len(t["future_matchups"]) == 0    # finished season: no snapshot
 
+    assert dict(zip(t["teams"]["team_name"], t["teams"]["division_name"])) == {"Aces": "East", "Bees": "East",
+                                                                                "Cats": "West"}
     s = t["seasons"].iloc[0]
     assert s["team_count"] == 3 and s["regular_season_periods"] == 1 and s["faab_budget"] == 300
 

@@ -19,10 +19,13 @@ This first version is built from script names and the files each script reads an
 | `analytics/playoff_odds.py` (built and verified) | `generate_playoff_odds`, `generate_playoff_odds_2026_live` | Historical and live are one simulation; cutoff, divisions, and season length from the league; live blends projections |
 | `analytics/position_impact.py` (built and verified) | `generate_position_impact`, `generate_dst_impact` | D/ST handled as a position; one calculation feeds both pages; Nth pick and playoff field from the league |
 | `analytics/records.py`, `analytics/lineups.py` (built and verified) | `generate_franchise_leaders`, `generate_best_single_week`, `generate_blunder_rosters`, `generate_lineup_efficiency`, `build_matchups_json`, their parts of `update_2026` | One code path for every season; finished weeks only; blunders and forfeits derived, not hardcoded |
-| `analytics/attribution.py`, `analytics/similarity.py` | `build_attribution_model_final`, `build_win_attribution_final`, `recompute_weights2`, `export_quarterly_regression`, `historical_similarity`, `export_similarity_grid` | |
+| `analytics/manager_seasons.py` (built and verified) | `data/preach_manager_stats.csv` (maintained by hand, no script) | Every column derived from the canonical tables; formulas recovered from the file |
+| `analytics/attribution.py` | `build_win_attribution_final` | Five factors from engine tables, not five hand-copied CSVs |
+| `analytics/gauntlet.py` | `recompute_weights2` | Champion runs found from the bracket, not a hardcoded list |
+| `analytics/extra.py` (name to confirm) | `export_quarterly_regression` (numbers only), and the extra-analytics.html blocks with no script: position regression, head-to-head matrix, closest games | |
 | `publish/` | remaining `regenerate_data_files`, all `export_*` output code, `update_2026` | One JSON writer; no in-place patching |
 | (deleted) | `player_ppr_pullscript.R`, `build_cards.py` (confirm) | |
-| (retired, not ported) | `export_luck_analysis`, `export_h2h_matrix`, `export_draft_analysis` (one-off portfolio PNGs); `pull_nfl_schedule`, `pull_player_opponents`, `build_position_sos_index` (a different project) | |
+| (retired, not ported) | `export_luck_analysis`, `export_h2h_matrix`, `export_draft_analysis`, `export_similarity_grid` (one-off portfolio PNGs); `historical_similarity` (never on the site; Ethan, session 4); `build_attribution_model_final` (an earlier attribution model, superseded); `pull_nfl_schedule`, `pull_player_opponents`, `build_position_sos_index` (a different project) | |
 
 ## Shared rules, defined once
 
@@ -34,4 +37,4 @@ This first version is built from script names and the files each script reads an
 - Consolation weeks never count. Counted games: regular season plus winners bracket, no byes. Bracket weeks: every finished regular-season week (byes included) plus a team's winners-bracket playoff weeks.
 - Realized value counts started weeks only (bench and IR excluded); stints span every later week the acquiring manager rosters the player, gaps included.
 - Manager identity: hashed member keys (`engine/identity.py`); names only for display.
-- Exclusions: `analysis.exclude_managers` from config are included in every calculation and hidden from view (`hidden` flag, visible-only ranks); `analysis.exclude_games` from config.
+- Exclusions: `analysis.exclude_managers` from config are included in every calculation and hidden from view (`hidden` flag, visible-only ranks); `analysis.exclude_games` from config (`from: [ppg]` leaves a game out of points per game; first used by manager season stats).
