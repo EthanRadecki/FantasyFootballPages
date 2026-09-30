@@ -44,6 +44,9 @@ legacy_mode=True reproduces the legacy file's formulas. The engine default
 applies every fix in ENGINE_CHANGES; `fixes` picks a subset, and
 `engine analyze --verify` prints the effect of each one alone.
 
+draft_slots() summarizes the seasons by draft slot for draft-analysis.html
+(tables draft_slot_results and draft_slot_managers).
+
 All functions are pure: canonical tables in, DataFrames out.
 """
 
@@ -159,8 +162,46 @@ def manager_seasons(tables: dict[str, pd.DataFrame], exclude_managers: set[str] 
     return out[COLUMNS].sort_values(["season", "manager_key"]).reset_index(drop=True)
 
 
+SLOT_COLUMNS = ["draft_slot", "seasons", "playoff_rate", "champion_rate", "pf_per_game", "dominance",
+                "expected_dominance", "over_under"]
+SLOT_MANAGER_COLUMNS = ["season", "draft_slot", "manager_key", "is_live", "hidden"]
+
+
+def draft_slots(ms: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Results by draft slot (draft-analysis.html), finished seasons only.
+
+    Per slot: seasons drafted from it, playoff and championship rates (0 to 1),
+    mean PF/G and mean dominance of those seasons. expected_dominance is the
+    mean, over the same seasons, of each manager's career dominance (the mean
+    over all their finished seasons), so over_under = dominance -
+    expected_dominance says whether a slot did better than the managers who
+    drafted from it usually do. Excluded managers count (hidden only).
+
+    Second table: who drafted from each slot, every season including the live one."""
+    has_slot = ms[ms["draft_slot"].notna()]
+    who = has_slot[SLOT_MANAGER_COLUMNS].sort_values(["draft_slot", "season"]).reset_index(drop=True)
+    done = ms[~ms["is_live"]]
+    career = done.groupby("manager_key")["dominance"].mean()
+    f = done[done["draft_slot"].notna()].assign(expected=lambda d: d["manager_key"].map(career))
+    if f.empty:
+        return pd.DataFrame(columns=SLOT_COLUMNS), who
+    g = f.groupby("draft_slot")
+    out = pd.DataFrame({
+        "seasons": g.size(),
+        "playoff_rate": g["made_playoffs"].apply(lambda s: s.astype(float).mean()),
+        "champion_rate": g["champion"].apply(lambda s: s.astype(float).mean()),
+        "pf_per_game": g["pf_per_game"].mean(),
+        "dominance": g["dominance"].mean(),
+        "expected_dominance": g["expected"].mean(),
+    }).reset_index()
+    out["over_under"] = out["dominance"] - out["expected_dominance"]
+    out["draft_slot"] = out["draft_slot"].astype(int)
+    return out[SLOT_COLUMNS], who
+
+
 def analyze_manager_seasons(tables: dict[str, pd.DataFrame], exclude_managers: set[str] = frozenset(),
                             ppg_exclusions: set[tuple[int, int, str]] = frozenset(),
                             conference_labels: dict[int, str] | None = None) -> dict[str, pd.DataFrame]:
-    return {"manager_seasons": manager_seasons(tables, exclude_managers, ppg_exclusions,
-                                               conference_labels=conference_labels)}
+    ms = manager_seasons(tables, exclude_managers, ppg_exclusions, conference_labels=conference_labels)
+    slots, who = draft_slots(ms)
+    return {"manager_seasons": ms, "draft_slot_results": slots, "draft_slot_managers": who}

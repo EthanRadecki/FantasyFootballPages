@@ -222,6 +222,17 @@ One row per manager and season, from finished regular-season games only (no byes
 
 **Legacy differences:** the file divided point differential by regular-season weeks played, a bye week included (2020 teams with a bye: 12 games over 13), ranked Sullivan and Serafin, and included the forfeit in PF/G. It also carried hand rounding (2021-2024), one mistyped PA (Maney 2025, 1609.20 vs 1608.20) and a few hand-entered ranks; its z-scores were computed from those typed values. The overall and weighted rank columns it had are not ported: no page reads them.
 
+### Draft Slot Results (draft-analysis.html)
+
+The finished seasons grouped by draft slot (tables `draft_slot_results` and `draft_slot_managers`).
+
+- **Per slot:** seasons drafted from it, playoff rate, championship rate, mean PF/G and mean dominance of those seasons.
+- **Expected dominance:** each manager's career dominance (mean over all their finished seasons), averaged over the slot's seasons. **Over/under** = dominance - expected: positive when managers did better from that slot than they usually do.
+- Sullivan and Serafin count. 2020 had 15 teams, so slot 15 has one season; the page shows slots 1-14.
+- **Who drafted from each slot:** every season, the live one included.
+
+**Legacy differences:** the builder is lost. Playoff %, dominance, expected and over/under are reproduced from the manager season file. The page's Champ % and Avg PF/G contradict that file (the page puts champions in slots 1, 2 and 7; they drafted from 3, 6 and 9) and are replaced with the real values. The manager season fixes (forfeit, per-game differential) carry over, e.g. slot 3's over/under -0.43 -> -0.36.
+
 ---
 
 ## Win% Attribution (extra-analytics.html)

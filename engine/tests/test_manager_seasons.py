@@ -5,7 +5,10 @@ import pandas as pd
 from engine.analytics import manager_seasons as ms
 from engine.config import conference_labels, excluded_games, load_config, validate_config
 from engine.legacy import name_to_key, resolve_names
-from engine.legacy_manager_seasons import check_finished
+import gzip
+import json
+
+from engine.legacy_manager_seasons import check_draft_slots, check_finished
 
 GOLDEN = Path(__file__).parent / "golden"
 A, B, C, D, X = "m_a", "m_b", "m_c", "m_d", "m_x"
@@ -160,3 +163,34 @@ def test_legacy_mode_reproduces_the_legacy_stats_file():
     result = check_finished(t, stats, md, cfg, live=set())   # conference compared via league.yaml labels
     assert result.ok, result.render()
     assert result.expected_rows == 85
+
+
+def test_draft_slots_compare_each_slot_with_its_managers_career_dominance():
+    ms_rows = pd.DataFrame([
+        # season, manager, slot, dominance, playoffs, champion, pf/g, live
+        (2023, "a", 1, 1.0, True, True, 120.0, False),
+        (2024, "a", 2, 0.0, True, False, 110.0, False),
+        (2023, "b", 2, -1.0, False, False, 100.0, False),
+        (2024, "b", 1, 0.0, False, False, 104.0, False),
+        (2025, "a", 1, 9.0, None, None, 150.0, True),     # live: grid only
+    ], columns=["season", "manager_key", "draft_slot", "dominance", "made_playoffs", "champion",
+                "pf_per_game", "is_live"]).assign(hidden=False)
+    ms_rows["draft_slot"] = ms_rows["draft_slot"].astype("Int64")
+    res, who = ms.draft_slots(ms_rows)
+    s1 = res.set_index("draft_slot").loc[1]
+    assert s1["seasons"] == 2 and s1["playoff_rate"] == 0.5 and s1["champion_rate"] == 0.5
+    assert s1["pf_per_game"] == 112.0 and s1["dominance"] == 0.5
+    # a's career 0.5, b's career -0.5: slot 1 expects 0.0, over/under +0.5
+    assert s1["expected_dominance"] == 0.0 and s1["over_under"] == 0.5
+    assert res.set_index("draft_slot").loc[2, "over_under"] == -0.5
+    assert len(who) == 5 and who["is_live"].sum() == 1
+
+
+def test_legacy_mode_reproduces_the_draft_analysis_slot_table():
+    t, md, stats, cfg = legacy_tables()
+    with gzip.open(GOLDEN / "manager_seasons" / "draft_slots_page.json.gz", "rt", encoding="utf-8") as f:
+        page = json.load(f)
+    table, grid = check_draft_slots(t, {"draft_slots_page": page, "preach_manager_stats": stats}, cfg, live=set())
+    assert table.ok, table.render()
+    assert table.expected_rows == 14
+    assert grid.expected_rows == 98 and grid.mismatched.get("manager_key", 0) == 0
