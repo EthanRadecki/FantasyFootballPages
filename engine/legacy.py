@@ -265,6 +265,35 @@ def check_draft(tables: dict[str, pd.DataFrame], legacy: pd.DataFrame, cfg: dict
                    known=known)
 
 
+def check_adp(tables: dict[str, pd.DataFrame], legacy: pd.DataFrame, cfg: dict) -> Comparison:
+    """Legacy draft_history_with_adp.csv (draft_fingerprint.py): every pick with
+    the ESPN column of that season's FantasyPros export, joined by name, and the
+    player's rank at his position by that ADP.
+
+    The engine joins by player id instead, so the check is per pick: same ADP
+    and same position order, and no pick with an ADP on one side only. Picks
+    are keyed on ESPN's numbering, as the legacy file is."""
+    from engine.normalize.adp import position_order
+
+    exp = pd.DataFrame({
+        "season": legacy["season"].astype(int),
+        "overall_pick": legacy["overall_pick"].astype(int),
+        "adp": legacy["adp"].fillna(-1.0),
+        "position_order": legacy["position_order"].fillna(-1.0),
+    })
+    adp = tables["adp"].copy()
+    adp["position_order"] = position_order(adp)
+    adp = adp.dropna(subset=["player_id"]).drop_duplicates(["season", "player_id"])
+    adp["player_id"] = adp["player_id"].astype(int)
+    dp = tables["draft_picks"].copy()
+    dp["overall_pick"] = dp["espn_overall_pick"].fillna(dp["overall_pick"]) if "espn_overall_pick" in dp else dp["overall_pick"]
+    act = dp[dp["season"].isin(exp["season"].unique())].merge(
+        adp[["season", "player_id", "adp", "position_order"]], on=["season", "player_id"], how="left")
+    act = act.assign(adp=act["adp"].fillna(-1.0), position_order=act["position_order"].fillna(-1.0))
+    return compare("draft ADP vs draft_history_with_adp.csv", exp, act, keys=["season", "overall_pick"],
+                   values=["adp", "position_order"], tolerance=1e-9)
+
+
 def check_transactions(tables: dict[str, pd.DataFrame], legacy: pd.DataFrame, cfg: dict) -> Comparison:
     """Legacy transactions_clean.csv: one row per transaction item.
 

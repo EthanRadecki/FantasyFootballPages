@@ -84,7 +84,7 @@ def test_pull_season_writes_cache_and_summary(tmp_path):
     assert status == "pulled"
     assert summary == {"teams": 2, "members": 2, "weeks": 3, "matchups": 3, "lineup_entries": 12,
                        "transactions": 3, "draft_picks": 3, "player_cards": 3, "card_transactions": 0,
-                       "pool_players": 3, "projection_weeks": 0}
+                       "pool_players": 3, "projection_weeks": 0, "adp_snapshot": False}
     season_dir = tmp_path / "espn" / "123" / "2024"
     assert (season_dir / "week_03_boxscore.json").exists()
     manifest = json.loads((season_dir / "manifest.json").read_text())

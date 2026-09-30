@@ -123,6 +123,9 @@ analysis:
     cutoff: 8     # top 8 count as making the playoffs (real brackets: 15 teams in 2020, 9 in 2021, 8 since)
   exclude_games:
     - { manager: ben-castaldo, season: 2024, week: 14, from: [ppg] }   # sat lineup; loss still counts
+  adp:
+    library: fantasypros_ppr    # engine/data/adp/: market ADP by season, PPR, for seasons without a draft-day ESPN copy
+    snapshot_max_days: 3        # ESPN's own ADP is used only if engine pull saved it within 3 days of the draft
 
 features:
   weekly_rankings: true

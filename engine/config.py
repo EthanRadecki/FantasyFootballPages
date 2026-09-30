@@ -131,6 +131,16 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
     cutoff = (analysis.get("playoff_odds") or {}).get("cutoff")
     if cutoff is not None and (not isinstance(cutoff, int) or isinstance(cutoff, bool) or cutoff < 1):
         errors.append(f"analysis.playoff_odds.cutoff: '{cutoff}' must be a positive whole number")
+    adp = analysis.get("adp") or {}
+    if adp:
+        from engine.normalize.adp import LIBRARY_ROOT
+        library = adp.get("library")
+        if library is not None and not (LIBRARY_ROOT / str(library)).is_dir():
+            available = sorted(p.name for p in LIBRARY_ROOT.iterdir() if p.is_dir()) if LIBRARY_ROOT.is_dir() else []
+            errors.append(f"analysis.adp.library: '{library}' is not an ADP library; available: {available}")
+        days = adp.get("snapshot_max_days")
+        if days is not None and (isinstance(days, bool) or not isinstance(days, (int, float)) or days < 0):
+            errors.append(f"analysis.adp.snapshot_max_days: '{days}' must be a number of days, 0 or more")
 
     corrections = cfg.get("corrections") or {}
     for season, order in (corrections.get("draft_order") or {}).items():
