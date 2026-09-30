@@ -8,7 +8,7 @@ A plain-language guide to every custom metric on the site: what it measures, how
 
 A few rules apply across multiple pages, not just one metric:
 
-- **Excluded managers:** Thomas Sullivan and William Serafin (2020-only participants) are excluded from all cross-season analysis.
+- **Excluded managers:** Thomas Sullivan and William Serafin (2020-only participants) count in every calculation (medians, baselines, comparison pools, schedules) but are never shown: schedule and draft rows carry a `hidden` flag, ranks count visible managers only, and publishing leaves hidden rows out. Per-manager record lists (franchise leaders, best weeks, blunders) simply leave them out, since nothing there is computed across managers.
 - **Valid games only:** a game counts if its week label starts with "Week" (real regular season) OR it's flagged as a real playoff bracket game. Consolation/loser-bracket games are excluded everywhere. They don't count toward efficiency, missed wins, depth, or trade value.
 - **Forfeited lineups:** a week where a manager never set a real lineup (scored 0 because nothing was started) is excluded from every calculation that measures decision quality, the same way a consolation week is. This came up directly in the trade pipeline: a forfeited week is technically still a "bracket" week, so a naive filter that only excludes consolation games can still let a forfeit's 0-point score contaminate other calculations.
 - **Playoff weighting** (used in trade value calculations): Regular Season 1.0x, First Round 1.15x, Quarterfinal 1.3x, Semifinal 1.6x, Championship 2.0x. A great or terrible week matters more if it happened with the season on the line.

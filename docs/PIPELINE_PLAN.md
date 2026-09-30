@@ -31,4 +31,4 @@ This first version is built from script names and the files each script reads an
 - Finished weeks only: a week counts once every regular-season and winners-bracket game has a result.
 - Realized value counts started weeks only (bench and IR excluded); stints span every later week the acquiring manager rosters the player, gaps included.
 - Manager identity: hashed member keys (`engine/identity.py`); names only for display.
-- Exclusions: `analysis.exclude_managers` and `analysis.exclude_games` from config.
+- Exclusions: `analysis.exclude_managers` from config are included in every calculation and hidden from view (`hidden` flag, visible-only ranks); `analysis.exclude_games` from config.
