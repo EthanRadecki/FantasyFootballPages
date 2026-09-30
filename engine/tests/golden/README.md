@@ -47,6 +47,7 @@ Legacy site files for the records and lineups module, added 2026-09-29. Checked 
 | `draft/hit_rate_data.json.gz` | `hit_rate_by_round.py` | hit rate by round and tier, steals |
 | `draft/draft_with_stats.csv.gz` | `match_players.py` | legacy pick-to-stats name matches, including the hand-kept `manual_zero` list |
 | `draft/draft_fingerprint_manager_season.csv.gz` | `draft_fingerprint.py`, rerun 2026-09-30 on its own inputs (its career and history outputs match Ethan's copies exactly) | 85 manager-seasons, 2020-2025, 33 metrics. Checked by `engine analyze --verify` and `engine/tests/test_draft_profiles.py` |
+| `draft/draft_fingerprints_page.json.gz` | the inline `DATA` of `pages/draft-fingerprints.html` (builder lost) | fingerprints, radar scaling, archetypes, stats and scales per manager, 2020-2026. 2026 was built from an ADP copy that no longer exists. Checked by `engine analyze --verify` and `engine/tests/test_draft_profiles.py` |
 | `draft/draft_fingerprint_career.csv.gz` | `draft_fingerprint.py` (Ethan's copy) | 16 managers, season means plus draft_adaptability |
 | `draft/draft_history_with_adp.csv.gz` | `draft_fingerprint.py`, rerun 2026-09-30 on its own inputs (reproduces this file exactly) | 2020-2025 picks with the FantasyPros ESPN ADP and position order, 1,186 of 1,360 matched. Checked by `engine normalize --verify` and by `engine/tests/test_adp.py` |
 

@@ -145,3 +145,105 @@ def test_adaptability_is_the_mean_season_to_season_sd():
     want = s[s["manager_key"] == "A"][cols].std().mean()
     got = res["draft_fingerprint_career"].set_index("manager_key").loc["A", "draft_adaptability"]
     assert np.isclose(got, want)
+
+
+# ---------------------------------------------------------------- the page layer
+
+import gzip
+import json
+
+from engine.analytics.draft_profiles import (MIN_CLUSTER_ROWS, fill_adp_deviation, minmax, profiles,
+                                             round_half_up, surplus_per_pick)
+
+PAGE = json.load(gzip.open(GOLDEN / "draft_fingerprints_page.json.gz", "rt", encoding="utf-8"))
+NAMES = {m["id"]: m["name"] for m in CFG["managers"]}
+
+
+def page_inputs():
+    """Legacy fingerprints, the page's own win% and PPG, and draft_surplus_v2."""
+    fp = fingerprints(legacy_tables(), legacy_mode=True, live=set())
+    keys = name_to_key(CFG)
+    out = pd.DataFrame([{"season": int(p), "manager_key": keys[n.lower()], "win_pct": e["all"]["Win_Pct"],
+                         "ppg": e["all"]["PPG"]} for n, per in PAGE["FINGERPRINTS"].items()
+                        for p, e in per.items() if p not in ("career", "2026")])
+    v2 = pd.read_csv(GOLDEN / "draft_surplus_v2.csv.gz")
+    v2["manager_key"] = resolve_names(v2["manager"], keys)
+    return fp, out, v2
+
+
+def test_reproduces_the_draft_fingerprints_page():
+    fp, out, v2 = page_inputs()
+    res = profiles(fp, out, v2, NAMES, legacy_mode=True, with_stability=False)
+    s, keys = res["draft_profile_seasons"], name_to_key(CFG)
+    assert len(s) == 85
+    for r in s.itertuples():
+        e = PAGE["FINGERPRINTS"][NAMES[r.manager_key]][str(r.season)]
+        assert r.cluster == e["cluster"]
+        for k, v in e["all"].items():
+            got = {"Win_Pct": r.win_pct, "PPG": r.ppg, "avg_surplus_per_pick": r.surplus}.get(k, getattr(r, k, None))
+            assert (pd.isna(got) and v is None) or abs(got - v) < 1e-9, (r.manager_key, r.season, k)
+        for d, v in e["normalized"].items():
+            assert abs(round(getattr(r, f"norm_{d}"), 1) - v) < 0.051, (r.season, d)
+    arch = res["draft_archetypes"].set_index("cluster")
+    for a in PAGE["ARCHETYPES"]["cluster_summary"]:
+        g = arch.loc[a["id"]]
+        assert g["n"] == a["n"]
+        assert all(abs(round(g[f"center_{d}"], 2) - v) < 1e-9 for d, v in a["center"].items())
+        assert abs(round(g["surplus"], 2) - a["outcomes"]["avg_surplus_per_pick"]) < 1e-9
+    st = res["draft_archetype_stats"].iloc[0]
+    want = PAGE["ARCHETYPES"]["stats"]
+    assert round(st["win_pct_p"], 3) == want["win_pct_p"] and round(st["ppg_p"], 3) == want["ppg_p"]
+    assert round(st["silhouette_pca"], 3) == want["silhouette_pca_k4"]
+    assert round(st["silhouette_raw"], 3) == want["silhouette_raw_k4"]
+    assert st["n_multi_cluster"] == PAGE["ARCHETYPES"]["n_multi_cluster"]
+    c = res["draft_profile_career"].set_index("manager_key")
+    for n, per in PAGE["FINGERPRINTS"].items():
+        k = keys[n.lower()]
+        sur = per["career"]["all"]["avg_surplus_per_pick"]
+        assert (sur is None and pd.isna(c.loc[k, "surplus"])) or round(c.loc[k, "surplus"], 4) == sur
+
+
+def test_engine_ids_are_stable_and_groups_unchanged():
+    fp, out, v2 = page_inputs()
+    leg = profiles(fp, out, v2, NAMES, legacy_mode=True, with_stability=False)["draft_profile_seasons"]
+    eng = profiles(fp, out, v2, NAMES, with_stability=False)["draft_profile_seasons"]
+    m = leg.merge(eng, on=["season", "manager_key"], suffixes=("_l", "_e"))
+    assert pd.crosstab(m["cluster_l"], m["cluster_e"]).gt(0).sum(axis=1).eq(1).all()   # same groups
+    sizes = eng.groupby("cluster").size()
+    assert sizes.is_monotonic_decreasing and sizes.index.tolist() == [0, 1, 2, 3]
+
+
+def frame(k_dev, k_pat, live=None):
+    n = len(k_dev)
+    return pd.DataFrame({"k_adp_deviation": k_dev, "k_patience": k_pat,
+                         "live": live if live is not None else [False] * n})
+
+
+def test_fill_in_fits_clips_and_falls_back():
+    obs = list(np.linspace(-20, 20, 12))
+    f, notes = fill_adp_deviation(frame(obs + [np.nan, np.nan], list(range(12)) + [100, -100]))
+    assert f["k_adp_deviation"].iloc[-2] == 20 and f["k_adp_deviation"].iloc[-1] == -20   # clipped to observed
+    assert f["k_adp_deviation_filled"].tolist() == [False] * 12 + [True, True] and "filled from" in notes[0]
+    f, notes = fill_adp_deviation(frame([1.0, 3.0, np.nan], [1, 2, 3]))
+    assert f["k_adp_deviation"].iloc[-1] == 2.0 and "mean" in notes[0]                     # too few to fit
+    f, notes = fill_adp_deviation(frame([np.nan, np.nan], [1, 2]))
+    assert f["k_adp_deviation"].isna().all() and "left blank" in notes[0]
+
+
+def test_small_league_gets_no_archetypes():
+    fp = fingerprints(draft(ROWS), live=set())
+    out = pd.DataFrame({"season": [2024, 2024], "manager_key": ["A", "B"], "win_pct": [0.5, 0.5], "ppg": [100, 110]})
+    sur = pd.DataFrame({"season": [2024] * 2, "manager_key": ["A", "B"], "surplus_wtd": [1.0, -1.0], "weight": [1.0, 1.0]})
+    res = profiles(fp, out, sur, {"A": "A", "B": "B"})
+    assert len(res["draft_profile_seasons"]) == 2 < MIN_CLUSTER_ROWS
+    assert res["draft_profile_seasons"]["cluster"].isna().all() and res["draft_archetypes"].empty
+    assert res["draft_archetype_stats"].iloc[0]["k"] == 0
+
+
+def test_helpers():
+    assert minmax(pd.Series([3.0, 3.0])).tolist() == [50.0, 50.0]
+    assert minmax(pd.Series([0.0, 5.0, 10.0])).tolist() == [0.0, 50.0, 100.0]
+    assert round_half_up([141.415, 89.275, 0.1234], 2).tolist() == [141.42, 89.28, 0.12]
+    sur = pd.DataFrame({"k": ["a", "a"], "surplus_wtd": [1.0, 0.55], "weight": [1.0, 0.55]})
+    assert surplus_per_pick(sur, True, ["k"])["a"] == 1.0
+    assert surplus_per_pick(sur, False, ["k"])["a"] == 0.775

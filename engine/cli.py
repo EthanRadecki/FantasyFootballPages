@@ -137,7 +137,8 @@ DRAFT_CSV_GOLDENS = ["espn_player_stats_season", "espn_player_stats_2026", "draf
                      "surplus_value_2026_live", "draft_with_stats", "draft_fingerprint_manager_season",
                      "draft_fingerprint_career"]
 DRAFT_JSON_GOLDENS = {"surplus_value_data": "surplus_value_data", "surplus_value_2026_live_json": "surplus_value_2026_live",
-                      "draft_heatmap": "draft_heatmap", "hit_rate_data": "hit_rate_data"}
+                      "draft_heatmap": "draft_heatmap", "hit_rate_data": "hit_rate_data",
+                      "draft_fingerprints_page": "draft_fingerprints_page"}
 TRADE_GOLDENS = ["trades_mapped", "trades_mapped_clean", "trade_universe", "position_baseline",
                  "player_stints_fixed", "metrics_final", "lineup_efficiency"]
 
@@ -252,7 +253,8 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     results.update(analyze_position_impact(tables, results, exclude, odds_cutoff))
     if "player_stats" in tables and len(tables["player_stats"]):
         results.update(analyze_draft(tables, exclude))
-        results.update(analyze_draft_profiles(tables, exclude))
+        results.update(analyze_draft_profiles(tables, results, exclude,
+                                              {m["id"]: m["name"] for m in cfg.get("managers") or []}))
         results.update(analyze_attribution(tables, results, exclude))
     else:
         print("note: no player pool yet (run `engine pull`); draft value and win% attribution skipped")
@@ -310,7 +312,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     _report("Verifying records and lineups against the legacy site files:", record_checks, [], detail_dir, "records")
     draft_checks, draft_info = verify_draft(tables, golden, cfg)
     _report("Verifying draft value against the legacy draft files:", draft_checks, draft_info, detail_dir, "draft")
-    profile_checks, profile_info = verify_draft_profiles(tables, golden, cfg)
+    profile_checks, profile_info = verify_draft_profiles(tables, golden, cfg, results)
     _report("Verifying draft profiles against draft_fingerprint.py's outputs:", profile_checks, profile_info,
             detail_dir, "profiles")
     schedule_checks, schedule_info = verify_schedule(tables, golden, cfg)
