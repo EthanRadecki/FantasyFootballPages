@@ -163,6 +163,10 @@ def load_goldens(golden_dir: Path) -> dict:
         golden["rankings_2026_week03"] = json.load(f)
     with gzip.open(golden_dir / "playoff_odds" / "playoff_odds.json.gz", "rt", encoding="utf-8") as f:
         golden["playoff_odds"] = json.load(f)
+    golden["waiver_stints_full"] = pd.read_csv(golden_dir / "waivers" / "waiver_stints_full.csv.gz")
+    for n in ("waiver_page", "roster_stints"):
+        with gzip.open(golden_dir / "waivers" / f"{n}.json.gz", "rt", encoding="utf-8") as f:
+            golden[n] = json.load(f)
     return golden
 
 
@@ -189,6 +193,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     from engine.analytics.projected_sos import analyze_projected_sos
     from engine.analytics.schedule import analyze_schedule
     from engine.analytics.trades import analyze_trades
+    from engine.analytics.waivers import analyze_waivers
     from engine.config import excluded_manager_keys
     from engine.store import canonical_dir, read_tables, write_tables
 
@@ -202,7 +207,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
 
     exclude = excluded_manager_keys(cfg)
     results = {**analyze_trades(tables), **analyze_records(tables, exclude), **analyze_schedule(tables, exclude),
-               **analyze_projected_sos(tables, exclude)}
+               **analyze_projected_sos(tables, exclude), **analyze_waivers(tables, exclude)}
     odds_cutoff = ((cfg.get("analysis") or {}).get("playoff_odds") or {}).get("cutoff")
     results.update(analyze_playoff_odds({**tables, **results}, exclude, odds_cutoff))
     if "player_stats" in tables and len(tables["player_stats"]):
@@ -245,6 +250,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     from engine.legacy_schedule import verify_schedule
     from engine.legacy_sos import verify_projected_sos
     from engine.legacy_trades import verify_trades
+    from engine.legacy_waivers import verify_waivers
 
     golden = load_goldens(Path(args.golden))
     detail_dir = Path(args.cache) / "verify"
@@ -261,11 +267,14 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     sos_checks, sos_info = verify_projected_sos(tables, golden, cfg)
     _report("Verifying projected strength of schedule against the legacy files:", sos_checks, sos_info,
             detail_dir, "sos")
+    waiver_checks, waiver_info = verify_waivers(tables, golden, cfg)
+    _report("Verifying waiver and roster stints against the legacy files:", waiver_checks, waiver_info,
+            detail_dir, "waivers")
     odds_checks, odds_info = verify_playoff_odds({**tables, **results}, golden, cfg)
     _report("Verifying playoff odds against the legacy files (about a minute):", odds_checks, odds_info,
             detail_dir, "odds")
     print(f"\nFull detail: {detail_dir}/")
-    checks = trade_checks + record_checks + draft_checks + schedule_checks + sos_checks + odds_checks
+    checks = trade_checks + record_checks + draft_checks + schedule_checks + sos_checks + waiver_checks + odds_checks
     return 0 if all(r.ok for r in checks) else 1
 
 

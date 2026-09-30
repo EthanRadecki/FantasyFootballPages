@@ -100,6 +100,14 @@ The Manager Leaderboard offers both, and they answer genuinely different questio
 
 **Why position-relative:** the same reasoning as trades. A streaming D/ST scoring 10 points and a WR2 scoring 10 points represent very different levels of "good," and z-scoring against the position's own weekly average puts them on a comparable scale.
 
+**What counts as a pickup (a waiver stint):** an executed waiver claim or free-agent add, running until the manager lets the player go (drop or trade) in a later week or later the same week, otherwise to the end of that team's season. Weeks counted are the team's real bracket weeks (regular season plus winners-bracket playoff games), bench weeks included; IR weeks are not counted (a stashed injured player is neither a hit nor a miss). Not a pickup:
+- a same-week drop and re-add of a player who came from the draft or a trade (a roster shuffle, not a find)
+- claiming a player your own trade dropped that same week
+
+A drop that ESPN records inside another manager's trade (a roster move forced when the trade is accepted, undone within minutes) does not end a stint.
+
+**Leaderboards:** points per week and z per week are weighted by weeks rostered (total points / total weeks, total z / total weeks), per career or season, position, and claim vs free agent. The best-pickups lists need a positive total z and at least 3 weeks rostered.
+
 **Trades by Week of the Season chart:** shows two things together: how many pickups happened each week (bars) and the average value of those pickups (line). This reveals *when* good pickups tend to happen (e.g., bye-week streaming spikes, injury-driven scrambles) separately from *how good* they tend to be.
 
 ---

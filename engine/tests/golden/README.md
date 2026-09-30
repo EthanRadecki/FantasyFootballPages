@@ -71,4 +71,14 @@ Added 2026-09-29. Checked by `engine analyze --verify` and by `engine/tests/test
 
 Added 2026-09-29. `playoff_odds/playoff_odds.json.gz` is `data/rankings/playoff_odds.json`: 2020-2025 from `generate_playoff_odds.py` (reproduced exactly from `matchup_data.csv.gz`), 2026 weeks 1-3 from `generate_playoff_odds_2026_live.py` (week 3 reproduced exactly from the `sos/` goldens and 2026 results in `records/matchups.json.gz`; week 2's projection input no longer exists). CI checks 2020 and 2026 week 3; `engine analyze --verify` checks every season.
 
+## waivers/
+
+Added 2026-09-29. Checked by `engine analyze --verify`.
+
+| File | Source | Covers |
+|---|---|---|
+| `waivers/waiver_stints_full.csv.gz` | `GitHubRepoData/waiver_stints_full.csv` (builder lost; identical to `WAIVER_STINTS` inline in waiver-value.html) | 1,757 pickups, 2020-2025 |
+| `waivers/waiver_page.json.gz` | `LEADERBOARD_FULL`, `CONTESTED_SPLIT`, `BEST_BY_MANAGER`, `BEST_PICKUPS_BY_FILTER` from waiver-value.html | the page's aggregates (computed from the file's rounded values) |
+| `waivers/roster_stints.json.gz` | `data/roster_stints.json` (managers page) | runs of counted game weeks per manager and player, 2020 through 2026 week 2 |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.
