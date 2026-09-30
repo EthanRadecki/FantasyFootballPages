@@ -30,6 +30,21 @@ def excluded_manager_keys(cfg: dict[str, Any]) -> set[str]:
     return {m["id"] for m in cfg.get("managers") or [] if slugify(m["name"]) in slugs}
 
 
+def conference_labels(cfg: dict[str, Any]) -> dict[int, str]:
+    """league.conference_labels: ESPN division id -> the league's conference
+    label, the same in every season whatever ESPN named the division."""
+    return {int(k): str(v) for k, v in ((cfg.get("league") or {}).get("conference_labels") or {}).items()}
+
+
+def excluded_games(cfg: dict[str, Any], scope: str) -> set[tuple[int, int, str]]:
+    """(season, week, member key) of analysis.exclude_games entries whose
+    `from` list names `scope` (for example "ppg")."""
+    keys = {slugify(m["name"]): m["id"] for m in cfg.get("managers") or []}
+    return {(int(g["season"]), int(g["week"]), keys[g["manager"]])
+            for g in (cfg.get("analysis") or {}).get("exclude_games") or []
+            if scope in (g.get("from") or []) and g.get("manager") in keys}
+
+
 @dataclass
 class ConfigReport:
     errors: list[str]
@@ -62,6 +77,12 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
         errors.append("league.league_id must be an integer")
     if "first_season" in league and not isinstance(league["first_season"], int):
         errors.append("league.first_season must be an integer")
+
+    labels = league.get("conference_labels")
+    if labels is not None and not (isinstance(labels, dict)
+                                   and all(isinstance(k, int) and not isinstance(k, bool) for k in labels)
+                                   and all(isinstance(v, str) and v for v in labels.values())):
+        errors.append("league.conference_labels must map ESPN division ids (whole numbers) to labels")
 
     managers = cfg.get("managers") or []
     if not managers:

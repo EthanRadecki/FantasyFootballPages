@@ -205,6 +205,21 @@ A forfeit still counts as the opponent's score: Slansky got the win against Cast
 
 ---
 
+## Manager Season Stats (index.html, managers.html)
+
+One row per manager and season, from finished regular-season games only (no byes, no playoff games of any tier), so every team's record covers the same weeks. The live season covers the weeks finished so far. Replaces `data/preach_manager_stats.csv`, which was kept by hand.
+
+- **Record:** wins, losses, ties, games; win% = (wins + ties / 2) / games.
+- **Per game:** PF/G and PA/G; point differential = PF/G - PA/G. The Castaldo 2024 week 14 forfeit (a sat lineup) is left out of PF/G only (league.yaml `exclude_games`, `from: [ppg]`); the loss and the opponent's points still count.
+- **Dominance:** PF/G as a z-score within the season (sample standard deviation). Sullivan and Serafin count in the average.
+- **PA z-score:** PA/G the same way (the legacy file called it `LR_zscore`).
+- **Ranks and luck rating:** PF/G rank (1 = most scored) and PA/G rank (1 = fewest allowed) within the season, visible managers only, tied values sharing the best rank. Luck rating = PF/G rank - PA/G rank: positive when a team allowed fewer points than its scoring would suggest.
+- **From ESPN:** final place, playoff seed, made the playoffs, reached and won the final, draft slot, division. Empty while the season is live. ESPN's division names changed over the years (2020 East/West, 2021-2022 West/East, 2023-2024 AFC/NFC, 2025 on Republicans/Democrats) but each division kept its ESPN id and its conference, so `division_name` is that season's name and `conference` is the stable label from `league.conference_labels` (id 0 REP, id 1 DEM), for anything that compares seasons.
+
+**Legacy differences:** the file divided point differential by regular-season weeks played, a bye week included (2020 teams with a bye: 12 games over 13), ranked Sullivan and Serafin, and included the forfeit in PF/G. It also carried hand rounding (2021-2024), one mistyped PA (Maney 2025, 1609.20 vs 1608.20) and a few hand-entered ranks; its z-scores were computed from those typed values. The overall and weighted rank columns it had are not ported: no page reads them.
+
+---
+
 ## Projected Strength of Schedule (weekly rankings)
 
 **What it measures:** how hard each manager's remaining regular-season schedule looks, from ESPN's weekly projections. Rest of season only: the weeks still to play, from the first week without a final result (no week number to bump by hand).

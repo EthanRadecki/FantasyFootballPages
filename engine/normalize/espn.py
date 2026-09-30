@@ -5,7 +5,7 @@ Output: pandas DataFrames, one per canonical table (see docs/DATA_DICTIONARY.md)
 
     seasons       one row per season: team count, regular-season length, playoffs, FAAB
     managers      one row per person, keyed by hashed member key
-    teams         season x team: owner, name, final rank, seed
+    teams         season x team: owner, name, final rank, seed, division
     matchups      season x week x team: opponent, points, result, bracket tier (byes kept, flagged)
     lineups       season x week x team x player: slot, started, points (raw ESPN points)
     draft_picks   season x pick
@@ -173,6 +173,8 @@ def manager_rows(league: dict) -> Iterable[dict]:
 
 
 def team_rows(season: int, league: dict) -> Iterable[dict]:
+    divisions = {d.get("id"): d.get("name") for d in
+                 ((league.get("settings") or {}).get("scheduleSettings") or {}).get("divisions") or []}
     for t in league.get("teams") or []:
         owners = [o for o in (t.get("owners") or []) if o]
         primary = t.get("primaryOwner") or (owners[0] if owners else None)
@@ -188,6 +190,7 @@ def team_rows(season: int, league: dict) -> Iterable[dict]:
             "final_rank": t.get("rankCalculatedFinal"),
             "playoff_seed": t.get("playoffSeed"),
             "division_id": t.get("divisionId"),
+            "division_name": divisions.get(t.get("divisionId")),
         }
 
 

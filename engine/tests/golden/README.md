@@ -91,4 +91,12 @@ Added 2026-09-29. Checked by `engine analyze --verify`, which rebuilds the scrip
 | `position_impact/dst_removed_data.json.gz` | `data/dst_removed_data.json` (`generate_dst_impact.py`) | built from an older `matchup_data.csv` (McQuaid 84.46 in 2025 week 14) |
 | `position_impact/player_stints.csv.gz` | `GitHubRepoData/player_stints.csv`, the trade stints both scripts read | differs from `trades/player_stints_fixed.csv.gz` on 56 stint lengths |
 
+## manager_seasons/
+
+Added 2026-09-30. Checked by `engine analyze --verify` (finished seasons, and the 2026 rows against the engine run on weeks 1-2) and by `engine/tests/test_manager_seasons.py`, which rebuilds matchups from `matchup_data.csv.gz` so CI covers the computed columns.
+
+| File | Source | Covers |
+|---|---|---|
+| `manager_seasons/preach_manager_stats.csv.gz` | `data/preach_manager_stats.csv`, maintained by hand (no script wrote it) | one row per manager and season, 2020-2025 plus a 2026 snapshot after week 2. 2021-2024 values typed rounded; one hand-entered PA (Maney 2025, 1609.20 vs 1608.20 in its own source); a few hand-entered ranks. All excused by pattern in `engine/legacy_manager_seasons.py` |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.

@@ -31,6 +31,13 @@ def completed_weeks(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     return done[done].reset_index()[["season", "week"]]
 
 
+def live_seasons(tables: dict[str, pd.DataFrame]) -> set[int]:
+    """Seasons whose final scoring period has not been completed."""
+    done = completed_weeks(tables).groupby("season")["week"].max()
+    final = tables["seasons"].set_index("season")["final_scoring_period"]
+    return {int(s) for s, f in final.items() if done.get(s, 0) < f}
+
+
 def counted_games(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     """Matchup rows that count toward records and stats: finished regular
     season games and winners-bracket games. No byes, no consolation games."""

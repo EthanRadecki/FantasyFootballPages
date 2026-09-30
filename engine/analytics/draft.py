@@ -31,6 +31,8 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from engine.analytics.weeks import live_seasons
+
 SKILL = ["RB", "WR", "QB", "TE"]
 STARTER_RANK = {"QB": 14, "TE": 14, "RB": 28, "WR": 28}
 MIN_GAMES = 8
@@ -248,15 +250,6 @@ def live_weeks_played(tables: dict[str, pd.DataFrame], live: set[int]) -> dict[i
 
     done = completed_weeks(tables).groupby("season")["week"].max()
     return {s: int(done.get(s, 0)) for s in live}
-
-
-def live_seasons(tables: dict[str, pd.DataFrame]) -> set[int]:
-    """Seasons whose final scoring period has not been completed."""
-    from engine.analytics.weeks import completed_weeks
-
-    done = completed_weeks(tables).groupby("season")["week"].max()
-    final = tables["seasons"].set_index("season")["final_scoring_period"]
-    return {int(s) for s, f in final.items() if done.get(s, 0) < f}
 
 
 def analyze_draft(tables: dict[str, pd.DataFrame], exclude: set[str] = frozenset(), legacy_mode: bool = False,
