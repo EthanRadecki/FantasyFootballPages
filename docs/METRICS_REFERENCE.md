@@ -94,6 +94,10 @@ The Manager Leaderboard offers both, and they answer genuinely different questio
 
 **Checked directly:** these two rankings agree most of the time (rank correlation ≈0.94 at the career level) but genuinely diverge in specific cases. The clearest example: one manager has the single best average QUAD in the league but only ~20 trades; another has a lower average but nearly 35 trades, and comes out on top by total. Neither ranking is "more correct." They're deliberately different lenses, which is why both are shown rather than picking one.
 
+### Trade Explorer
+
+One node per trade (a multi-team trade is one node), with each manager's players got and given and their Trade Grade, Realized Gains, Fit, Necessity per week, and QUAD. The positions on a node are every player moved, as ESPN listed him that season. Every manager is shown, the two excluded managers included: the explorer shows what happened in a trade, and hiding a participant would misstate it. Player names are ESPN's for that season, so a player ESPN has since renamed (Will/William Fuller V) shows his current name.
+
 ---
 
 ## Waiver Value (waiver-value.html)
@@ -330,6 +334,14 @@ All from counted games (finished regular-season and winners-bracket games). The 
 **Where production comes from:** every rostered week (bench included, IR not) is credited to how the player reached that roster: inside a waiver stint is waiver/free agent; otherwise the latest trade into the team is traded; otherwise drafted. The three parts add up exactly to the manager's points at the position.
 
 **Would the playoffs change without defense?** Per finished season: the playoff field under regular-season records with D/ST removed, using the league's real rule (league.yaml cutoff, division winners in first), versus the actual field; which real playoff games flip; and whether the champion's own run survives.
+
+---
+
+## Draft Board (draft-history.html)
+
+Every pick of every season in draft order (the corrected order for 2021), with the player's name and position as ESPN listed them that season, and his PPG and games that season from the full player pool. Every position gets its PPG, kickers and defenses included, and the live season shows the season so far.
+
+**Replaced method:** `generate_draft_board_data.py` showed PPG for skill positions only, none for the live season, and a hand-kept list of eight picks shown as 0 games (players it could not match by name); the engine matches by player id and shows their real stats.
 
 ---
 

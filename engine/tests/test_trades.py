@@ -186,7 +186,27 @@ def test_legacy_mode_reproduces_every_legacy_trade_file():
     tables, rosters, cfg = legacy_tables()
     golden = {n: pd.read_csv(GOLDEN / "trades" / f"{n}.csv.gz") for n in TRADE_GOLDENS}
     golden["weekly_rosters_bracket_only"] = rosters
+    import gzip
+    import json
+    with gzip.open(GOLDEN / "trades" / "trade_explorer_data.json.gz", "rt", encoding="utf-8") as f:
+        golden["trade_explorer_data"] = json.load(f)
     results, info = verify_trades(tables, golden, cfg)
+    assert any(r.name.startswith("trade explorer") for r in results)
     failed = [r.render() for r in results if not r.ok]
     assert not failed, "\n".join(failed)
     assert any("4 side(s) with different players" in line for line in info)
+
+
+def test_explorer_nodes_round_as_the_page_and_flag_multi_team_trades():
+    from engine.analytics.trades import explorer_nodes
+    table = pd.DataFrame([
+        {"group_id": 7, "season": 2024, "scoring_period": 3, "multi": True, "positions": '["QB", "WR"]',
+         "manager_key": k, "got": '["A"]', "gave": '["B"]', "trade_grade": 1.23456, "realized_gains": -0.005,
+         "fit_score": 0.12345, "necessity_per_week": nec, "QUAD": 0.5555}
+        for k, nec in (("x", float("nan")), ("y", 1.23456), ("z", 0.0))])
+    (node,) = explorer_nodes(table, {"x": "Xavier"})
+    assert node["gid"] == 7 and node["multi"] and node["positions"] == ["QB", "WR"]
+    assert [m["m"] for m in node["managers"]] == ["Xavier", "y", "z"]
+    first = node["managers"][0]
+    assert first["tg"] == 1.23 and first["fit"] == 0.123 and first["nec"] is None and first["quad"] == 0.56
+    assert node["managers"][1]["nec"] == 1.235

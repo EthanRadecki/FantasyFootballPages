@@ -212,6 +212,69 @@ def check_quad_math(legacy: pd.DataFrame) -> Comparison:
                    keys=["group_id", "manager"], values=QUAD_COLS, tolerance=1e-9)
 
 
+def explorer_frame(nodes: list[dict], lookup: dict) -> pd.DataFrame:
+    rows = []
+    for n in nodes:
+        for m in n["managers"]:
+            rows.append({"legacy_group_id": n["gid"], "season": n["season"], "scoring_period": n["sp"],
+                         "multi": n["multi"], "positions": json.dumps(sorted(n["positions"])),
+                         "manager_key": lookup[m["m"].strip().lower()], "got": json.dumps(m["got"]),
+                         "gave": json.dumps(m["gave"]), "tg": m["tg"], "rg": m["rg"], "fit": m["fit"],
+                         "nec": m["nec"], "quad": m["quad"]})
+    return pd.DataFrame(rows)
+
+
+EXPLORER_VALUES = ["multi", "positions", "got", "gave", "tg", "rg", "fit", "nec", "quad"]
+
+
+def check_trade_explorer(tables: dict, analysis: dict, legacy_nodes: list[dict], universe: pd.DataFrame,
+                         cfg: dict) -> Comparison:
+    """The site's trade_explorer_data.js (build_trade_explorer_data.py) from the
+    legacy-mode metrics. Known differences, by pattern:
+    - a player ESPN has renamed since (same player id, e.g. Will/William Fuller V)
+    - a group's position list where the legacy position is one ESPN gave that
+      player in another season (Taysom Hill: QB then, TE in 2023)"""
+    lookup = name_to_key(cfg)
+    gmap = _group_map(analysis, universe)
+    exp = explorer_frame(legacy_nodes, lookup).merge(gmap[["legacy_group_id", "group_id"]], on="legacy_group_id")
+    exp = exp.drop(columns=["legacy_group_id"])
+    act = pd.DataFrame({"group_id": [], "manager_key": []})
+    for n in trades_mod.explorer_nodes(analysis["trade_explorer"]):
+        for m in n["managers"]:
+            act = pd.concat([act, pd.DataFrame([{
+                "group_id": n["gid"], "season": n["season"], "scoring_period": n["sp"], "multi": n["multi"],
+                "positions": json.dumps(sorted(n["positions"])), "manager_key": m["m"], "got": json.dumps(m["got"]),
+                "gave": json.dumps(m["gave"]), "tg": m["tg"], "rg": m["rg"], "fit": m["fit"], "nec": m["nec"],
+                "quad": m["quad"]}])], ignore_index=True)
+    act["group_id"] = act["group_id"].astype(int)
+
+    sides = analysis["trade_explorer"].set_index(["group_id", "manager_key"])
+    ids = analysis["trade_sides"].set_index(["group_id", "manager_key"])
+    ever = tables["player_seasons"].groupby("player_id")["position"].agg(set).to_dict()
+    known = []
+    both = exp.merge(act, on=["group_id", "manager_key"], suffixes=("_l", "_e"))
+    for r in both.itertuples():
+        for col in ("got", "gave"):
+            a, b = sorted(json.loads(getattr(r, f"{col}_l"))), sorted(json.loads(getattr(r, f"{col}_e")))
+            if a != b and len(a) == len(b):
+                known.append({"group_id": r.group_id, "manager_key": r.manager_key, "column": col,
+                              "reason": "ESPN renamed the player since the trade (same player id)"})
+        pl, pe = set(json.loads(r.positions_l)), set(json.loads(r.positions_e))
+        if pl != pe:
+            moved = [p for side in analysis["trade_sides"][analysis["trade_sides"]["group_id"] == r.group_id]["got_player_ids"]
+                     for p in json.loads(side)]
+            if all(any(pos in ever.get(p, set()) for p in moved) for pos in pl - pe):
+                known.append({"group_id": r.group_id, "manager_key": r.manager_key, "column": "positions",
+                              "reason": "legacy used a position ESPN gave the player another season"})
+    exp = _metrics_frame(exp, ["tg", "rg", "fit", "nec", "quad"])
+    act = _metrics_frame(act, ["tg", "rg", "fit", "nec", "quad"])
+    for frame in (exp, act):      # the order players are listed in is not compared
+        for col in ("got", "gave"):
+            frame[col] = frame[col].map(lambda v: json.dumps(sorted(json.loads(v))))
+    return compare("trade explorer vs trade_explorer_data.js", exp, act, keys=["group_id", "manager_key"],
+                   values=EXPLORER_VALUES, tolerance=1e-9, known=pd.DataFrame(known))
+
+
 def engine_vs_legacy_mode(engine: dict, legacy: dict, cfg: dict) -> list[str]:
     """What the engine's two fixes change relative to legacy mode."""
     e, l = engine["trade_metrics"], legacy["trade_metrics"]
@@ -273,5 +336,12 @@ def verify_trades(tables: dict[str, pd.DataFrame], golden: dict[str, pd.DataFram
         check_trade_metrics(legacy_run, golden["metrics_final"], golden["trade_universe"], cfg),
         check_quad_math(golden["metrics_final"]),
     ]
+    if "trade_explorer_data" in golden:
+        results.append(check_trade_explorer(adjusted, legacy_run, golden["trade_explorer_data"],
+                                            golden["trade_universe"], cfg))
     info += engine_vs_legacy_mode(engine_run, legacy_run, cfg)
+    if "trade_explorer" in engine_run:
+        ne, nl = engine_run["trade_explorer"]["group_id"].nunique(), legacy_run["trade_explorer"]["group_id"].nunique()
+        info.append(f"INFO  trade explorer: {ne} trades in engine mode ({nl} in legacy mode); the metric "
+                    "changes above carry over to each trade's node")
     return results, info
