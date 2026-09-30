@@ -21,6 +21,7 @@ Legacy trade pipeline outputs (`GitHubRepoData/`, local pipeline), added 2026-09
 | `trades/position_baseline.csv.gz` | (builder lost) | weekly position mean and sample SD over all rostered players |
 | `trades/player_stints_fixed.csv.gz` | `rebuild_player_stints.py` | 639 received-player stints |
 | `trades/metrics_final.csv.gz` | `compute_metrics.py`, `compute_quad.py` | per-side metrics and QUAD |
+| `trades/trade_explorer_data.json.gz` | `data/trade_explorer_data.js` (`build_trade_explorer_data.py`, a version rounding necessity to 3 places) | 150 trade nodes, 333 sides, for the trade explorer on trade-value.html |
 | `trades/lineup_efficiency.csv.gz` | `generate_lineup_efficiency.py` | used for the forfeit flag now; the lineups module later |
 
 ## records/
@@ -47,6 +48,7 @@ Legacy site files for the records and lineups module, added 2026-09-29. Checked 
 | `draft/hit_rate_data.json.gz` | `hit_rate_by_round.py` | hit rate by round and tier, steals |
 | `draft/draft_with_stats.csv.gz` | `match_players.py` | legacy pick-to-stats name matches, including the hand-kept `manual_zero` list |
 | `draft/draft_fingerprint_manager_season.csv.gz` | `draft_fingerprint.py`, rerun 2026-09-30 on its own inputs (its career and history outputs match Ethan's copies exactly) | 85 manager-seasons, 2020-2025, 33 metrics. Checked by `engine analyze --verify` and `engine/tests/test_draft_profiles.py` |
+| `draft/draft_board_page.json.gz` | the inline `DRAFT` and `SLOT_ORDER` of `pages/draft-history.html` (`generate_draft_board_data.py`, run on a draft file already in the corrected 2021 order with ESPN's names) | every pick 2020-2026 with PPG and games; round-1 slot order. Checked by `engine analyze --verify` |
 | `draft/draft_fingerprints_page.json.gz` | the inline `DATA` of `pages/draft-fingerprints.html` (builder lost) | fingerprints, radar scaling, archetypes, stats and scales per manager, 2020-2026. 2026 was built from an ADP copy that no longer exists. Checked by `engine analyze --verify` and `engine/tests/test_draft_profiles.py` |
 | `draft/draft_fingerprint_career.csv.gz` | `draft_fingerprint.py` (Ethan's copy) | 16 managers, season means plus draft_adaptability |
 | `draft/draft_history_with_adp.csv.gz` | `draft_fingerprint.py`, rerun 2026-09-30 on its own inputs (reproduces this file exactly) | 2020-2025 picks with the FantasyPros ESPN ADP and position order, 1,186 of 1,360 matched. Checked by `engine normalize --verify` and by `engine/tests/test_adp.py` |

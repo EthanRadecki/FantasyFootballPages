@@ -17,6 +17,10 @@ Steps:
    cancels out)
 4. metrics per side: Trade Grade, Realized Gains, Necessity, Fit
 5. QUAD: the four metrics z-scored across all sides and combined
+6. trade explorer (trade-value.html): one row per side with the players by
+   name; explorer_nodes() nests them into one node per trade. Every manager
+   is shown, excluded ones included: the explorer shows what happened in a
+   trade, and hiding a participant would misstate it (legacy rule, kept).
 
 Player ids replace the legacy name matching throughout.
 """
@@ -366,6 +370,50 @@ def quad(metrics: pd.DataFrame) -> pd.DataFrame:
 
 # ---------------------------------------------------------------- pipeline
 
+# ----------------------------------------------------------------- 6. explorer
+
+EXPLORER_COLUMNS = ["group_id", "season", "scoring_period", "multi", "positions", "manager_key", "got", "gave",
+                    "trade_grade", "realized_gains", "fit_score", "necessity_per_week", "QUAD"]
+
+
+def explorer_table(metrics: pd.DataFrame, player_seasons: pd.DataFrame) -> pd.DataFrame:
+    """One row per trade side: the players each manager got and gave (names as
+    ESPN listed them that season, in the side's order), the group's positions
+    (every player moved, as ESPN listed him that season) and the side's metrics."""
+    ps = player_seasons.set_index(["season", "player_id"])
+    name, pos = ps["player_name"].to_dict(), ps["position"].to_dict()
+    out = metrics.copy()
+    ids = lambda s, col: [(s, p) for p in json.loads(col)]
+    out["got"] = [json.dumps([name.get(k, str(k[1])) for k in ids(s, g)]) for s, g in zip(out["season"], out["got_player_ids"])]
+    out["gave"] = [json.dumps([name.get(k, str(k[1])) for k in ids(s, g)]) for s, g in zip(out["season"], out["gave_player_ids"])]
+    group_pos = {}
+    for gid, g in out.groupby("group_id"):
+        found = {pos.get(k) for s, got in zip(g["season"], g["got_player_ids"]) for k in ids(s, got)}
+        group_pos[gid] = json.dumps(sorted(p for p in found if isinstance(p, str) and p))
+    out["positions"] = out["group_id"].map(group_pos)
+    out["multi"] = out["num_managers_in_group"] >= 3
+    return out[EXPLORER_COLUMNS].reset_index(drop=True)
+
+
+def explorer_nodes(table: pd.DataFrame, manager_names: dict[str, str] | None = None) -> list[dict]:
+    """The trade explorer's nodes (the site's TRADE_NODES), rounded as the page shows them."""
+    names = manager_names or {}
+    r = lambda v, d: None if pd.isna(v) else round(float(v), d)
+    nodes = []
+    for gid, g in table.groupby("group_id", sort=True):
+        first = g.iloc[0]
+        nodes.append({
+            "gid": int(gid), "season": int(first["season"]), "sp": int(first["scoring_period"]),
+            "multi": bool(first["multi"]),
+            "managers": [{"m": names.get(x["manager_key"], x["manager_key"]), "got": json.loads(x["got"]),
+                          "gave": json.loads(x["gave"]), "tg": r(x["trade_grade"], 2), "rg": r(x["realized_gains"], 2),
+                          "fit": r(x["fit_score"], 3), "nec": r(x["necessity_per_week"], 3), "quad": r(x["QUAD"], 2)}
+                         for _, x in g.iterrows()],
+            "positions": json.loads(first["positions"]),
+        })
+    return nodes
+
+
 def analyze_trades(tables: dict[str, pd.DataFrame], seasons: list[int] | None = None,
                    legacy_mode: bool = False) -> dict[str, pd.DataFrame]:
     """Every trade table, for the given seasons (default: all). QUAD is scored
@@ -411,4 +459,5 @@ def analyze_trades(tables: dict[str, pd.DataFrame], seasons: list[int] | None = 
         "trade_sides": sides,
         "trade_stints": stint_rows,
         "trade_metrics": metrics,
+        "trade_explorer": explorer_table(metrics, tables["player_seasons"]),
     }

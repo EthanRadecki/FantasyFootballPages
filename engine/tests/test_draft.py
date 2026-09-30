@@ -87,3 +87,27 @@ def test_hidden_managers_are_graded_but_not_ranked():
     assert career.loc["a", "rank"] == 1 and career.loc["b", "rank"] == 2 and pd.isna(career.loc["x", "rank"])
     season = draft.season_grades(sur).set_index("manager_key")
     assert season.loc["a", "season_rank"] == 1 and pd.isna(season.loc["x", "season_rank"])
+
+
+def test_board_orders_picks_and_applies_legacy_rules():
+    from engine.analytics.draft import board, board_data
+    t = {
+        "draft_picks": pd.DataFrame({"season": [2024] * 4, "overall_pick": [2, 1, 3, 4], "espn_overall_pick": [1, 2, 3, 4],
+                                     "round": [1, 1, 2, 2], "draft_slot": [2, 1, 2, 1], "player_id": [10, 11, 12, 13],
+                                     "manager_key": ["b", "a", "b", "a"]}),
+        "player_seasons": pd.DataFrame({"season": [2024] * 4, "player_id": [10, 11, 12, 13],
+                                        "player_name": ["RB Guy", "WR Guy", "K Guy", "QB Guy"],
+                                        "position": ["RB", "WR", "K", "QB"]}),
+    }
+    stats = pd.DataFrame({"season": [2024] * 4, "player_id": [10, 11, 12, 13], "ppg": [12.3, 15.0, 8.0, 20.1],
+                          "games": [16, 17, 17, 9]})
+    eng = board(t, stats)
+    assert eng["player_name"].tolist() == ["WR Guy", "RB Guy", "K Guy", "QB Guy"]      # draft order, not ESPN's numbers
+    assert eng.loc[eng["position"] == "K", "ppg"].item() == 8.0
+    leg = board(t, stats, all_positions=False, force_zero={(2024, 1)})                 # ESPN pick 1 = RB Guy
+    assert pd.isna(leg.loc[leg["position"] == "K", "ppg"].item())
+    assert leg.loc[leg["player_name"] == "RB Guy", ["ppg", "games"]].values.tolist() == [[0.0, 0]]
+    assert board(t, stats, live={2024}, live_stats=False)["ppg"].isna().all()
+    data = board_data(eng, {"a": "Ann", "b": "Bob"})
+    assert [p["p"] for p in data["DRAFT"]["2024"]["1"]] == ["WR Guy", "RB Guy"]
+    assert data["SLOT_ORDER"] == {"2024": ["Ann", "Bob"]}

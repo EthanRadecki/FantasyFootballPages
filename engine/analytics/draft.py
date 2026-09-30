@@ -244,6 +244,50 @@ def steals(h: pd.DataFrame, n: int = 10) -> pd.DataFrame:
 
 # ---------------------------------------------------------------- pipeline
 
+# ------------------------------------------------------------------ board
+
+BOARD_COLUMNS = ["season", "round", "overall_pick", "draft_slot", "manager_key", "player_id", "player_name",
+                 "position", "ppg", "games"]
+
+
+def board(tables: dict[str, pd.DataFrame], stats: pd.DataFrame, live: set[int] = frozenset(),
+          all_positions: bool = True, live_stats: bool = True,
+          force_zero: set[tuple[int, int]] = frozenset()) -> pd.DataFrame:
+    """The draft board (draft-history.html): every pick of every season in
+    draft order, with the player's PPG and games that season.
+
+    stats: season_stats() output. Legacy mode: PPG for skill positions only
+    (all_positions=False), none for a live season (live_stats=False), and the
+    hand-kept zero list, keyed by ESPN's pick numbers (force_zero)."""
+    dp = tables["draft_picks"].copy()
+    ps = tables["player_seasons"][["season", "player_id", "player_name", "position"]]
+    out = dp.merge(ps, on=["season", "player_id"], how="left").merge(
+        stats[["season", "player_id", "ppg", "games"]], on=["season", "player_id"], how="left")
+    if not all_positions:
+        out.loc[~out["position"].isin(SKILL), ["ppg", "games"]] = np.nan
+    if not live_stats:
+        out.loc[out["season"].isin(live), ["ppg", "games"]] = np.nan
+    if force_zero:
+        espn = out["espn_overall_pick"].fillna(out["overall_pick"]) if "espn_overall_pick" in out else out["overall_pick"]
+        zero = pd.Series([(s, int(p)) in force_zero for s, p in zip(out["season"], espn)], index=out.index)
+        out.loc[zero, ["ppg", "games"]] = [0.0, 0]
+    return out.sort_values(["season", "overall_pick"])[BOARD_COLUMNS].reset_index(drop=True)
+
+
+def board_data(board_df: pd.DataFrame, manager_names: dict[str, str] | None = None) -> dict:
+    """The page's DRAFT (season -> round -> picks) and SLOT_ORDER (season ->
+    managers by draft slot, from round 1)."""
+    names = manager_names or {}
+    draft: dict = {}
+    for (season, rnd), g in board_df.groupby(["season", "round"], sort=True):
+        draft.setdefault(str(int(season)), {})[str(int(rnd))] = [
+            {"p": r.player_name, "pos": r.position, "ppg": None if pd.isna(r.ppg) else round(float(r.ppg), 2),
+             "g": None if pd.isna(r.games) else int(r.games)} for r in g.itertuples()]
+    slots = {str(int(season)): [names.get(k, k) for k in g.sort_values("draft_slot")["manager_key"]]
+             for season, g in board_df[board_df["round"] == 1].groupby("season", sort=True)}
+    return {"DRAFT": draft, "SLOT_ORDER": slots}
+
+
 def live_weeks_played(tables: dict[str, pd.DataFrame], live: set[int]) -> dict[int, int]:
     """Live season -> weeks completed so far."""
     from engine.analytics.weeks import completed_weeks
@@ -286,4 +330,6 @@ def analyze_draft(tables: dict[str, pd.DataFrame], exclude: set[str] = frozenset
         "draft_heatmap": heatmap(sur[sur["season"].isin(finished)]),
         "draft_hit_thresholds": hit_thresholds(stats),
         "draft_hits": h,
+        "draft_board": board(tables, stats, live, all_positions=not legacy_mode, live_stats=not legacy_mode,
+                             force_zero=hit_force_zero if legacy_mode else frozenset()),
     }

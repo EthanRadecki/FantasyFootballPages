@@ -229,7 +229,48 @@ def verify_draft(tables: dict, golden: dict, cfg: dict) -> tuple[list[Comparison
         check_heatmap(legacy, golden["draft_heatmap"], cfg),
         check_hit_rate(legacy, golden["hit_rate_data"], tables, cfg),
     ]
+    if "draft_board_page" in golden:
+        results += check_board(legacy, golden["draft_board_page"], cfg)
+        info.append(board_changes(engine, legacy)[0])
     return results, info + engine_vs_legacy(engine, legacy, cfg) + hidden_effect(tables, engine, exclude, cfg)
+
+
+def board_frame(data: dict) -> pd.DataFrame:
+    rows = [{"season": int(s), "round": int(r), "pick_in_round": i + 1, "player_name": p["p"], "position": p["pos"],
+             "ppg": p["ppg"], "games": p["g"]}
+            for s, rounds in data["DRAFT"].items() for r, picks in rounds.items() for i, p in enumerate(picks)]
+    return pd.DataFrame(rows)
+
+
+def check_board(legacy: dict, page: dict, cfg: dict) -> list[Comparison]:
+    """draft-history.html's inline DRAFT and SLOT_ORDER (generate_draft_board_data.py,
+    run on a draft file already in the corrected 2021 order and with ESPN's names)."""
+    names = {m["id"]: m["name"] for m in cfg.get("managers") or []}
+    act_data = draft_mod.board_data(legacy["draft_board"], names)
+    keys = ["season", "round", "pick_in_round"]
+    exp, act = board_frame(page), board_frame(act_data)
+    exp, act = _num(exp, ["ppg", "games"]), _num(act, ["ppg", "games"])
+    board = compare("draft board vs draft-history.html", exp, act, keys=keys,
+                    values=["player_name", "position", "ppg", "games"], tolerance=1e-9)
+    so = lambda d: pd.DataFrame([{"season": int(s), "slot": i + 1, "manager": m}
+                                 for s, ms in d["SLOT_ORDER"].items() for i, m in enumerate(ms)])
+    slots = compare("draft slot order vs draft-history.html", so(page), so(act_data), keys=["season", "slot"],
+                    values=["manager"])
+    return [board, slots]
+
+
+def board_changes(engine: dict, legacy: dict) -> list[str]:
+    k = ["season", "overall_pick"]
+    m = legacy["draft_board"].merge(engine["draft_board"], on=k, suffixes=("_l", "_e"))
+    live = [s for s, g in m.groupby("season") if g["ppg_l"].isna().all()]
+    filled = m["ppg_l"].isna() & m["ppg_e"].notna()
+    by = m[filled].assign(what=m["position_e"].where(~m["season"].isin(live), "live season")).groupby("what").size()
+    zero = (m["games_l"] == 0) & (m["games_e"] > 0)
+    moved = m["ppg_l"].notna() & m["ppg_e"].notna() & ~zero & ((m["ppg_l"] - m["ppg_e"]).abs() > 1e-9)
+    return [f"INFO  engine draft board: PPG added for {int(filled.sum())} pick(s) ("
+            + ", ".join(f"{k_} {v}" for k_, v in by.items()) + "); "
+            f"{int(zero.sum())} hand-kept zero(s) replaced by the player's real stats; "
+            f"{int(moved.sum())} PPG value(s) 0.01 apart (ESPN's average at a rounding tie, e.g. 12.475)"]
 
 
 def hidden_effect(tables: dict, engine: dict, exclude: set[str], cfg: dict) -> list[str]:
