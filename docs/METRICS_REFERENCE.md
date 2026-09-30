@@ -9,7 +9,9 @@ A plain-language guide to every custom metric on the site: what it measures, how
 A few rules apply across multiple pages, not just one metric:
 
 - **Excluded managers:** Thomas Sullivan and William Serafin (2020-only participants) count in every calculation (medians, baselines, comparison pools, schedules) but are never shown: schedule and draft rows carry a `hidden` flag, ranks count visible managers only, and publishing leaves hidden rows out. Per-manager record lists (franchise leaders, best weeks, blunders) simply leave them out, since nothing there is computed across managers.
-- **Valid games only:** a game counts if its week label starts with "Week" (real regular season) OR it's flagged as a real playoff bracket game. Consolation/loser-bracket games are excluded everywhere. They don't count toward efficiency, missed wins, depth, or trade value.
+- **Consolation weeks never count, anywhere.** Only the regular season and winners-bracket playoff games matter.
+- **Counted games** (records, lineups, flip rates, standings): finished regular-season games and winners-bracket games. Bye weeks are not games.
+- **Bracket weeks** (trades, waivers, position production): every finished regular-season week, bye weeks included (the NFL player still played), plus the playoff weeks a team spent in the winners bracket.
 - **Forfeited lineups:** a week where a manager never set a real lineup (scored 0 because nothing was started) is excluded from every calculation that measures decision quality, the same way a consolation week is. This came up directly in the trade pipeline: a forfeited week is technically still a "bracket" week, so a naive filter that only excludes consolation games can still let a forfeit's 0-point score contaminate other calculations.
 - **Playoff weighting** (used in trade value calculations): Regular Season 1.0x, First Round 1.15x, Quarterfinal 1.3x, Semifinal 1.6x, Championship 2.0x. A great or terrible week matters more if it happened with the season on the line.
 - **Name aliases:** `Carmine Pittelli Jr.` and `Ryan P McQuaid` are the full names used internally in some files; other pages shorten these to `Carmine Pittelli` and `Ryan McQuaid`.
@@ -235,3 +237,21 @@ A forfeit still counts as the opponent's score: Slansky got the win against Cast
 **Which weeks:** every finished week is computed from real results only, so every past week reproduces exactly. Week 1 of a finished season (no games yet) is a flat cutoff / teams for everyone. Only the live season's current week uses projections. Each week has its own random seed.
 
 **History:** 2020-2025 and the live 2026 week 3 were first built by two scripts; the engine reproduces them exactly in legacy mode. The published 2026 weeks 2 and 3 used an early draft of the schedule, so the engine's values for those weeks differ.
+
+---
+
+## Position Impact and Life Without Defense (position-impact.html, dst-impact.html)
+
+**Flip rate:** remove one position's started points from both teams in every counted game and recheck the winner. A tie after removal counts as a flip (the win is gone). Net impact per manager is wins gained minus wins lost.
+
+**Nth pick:** for draft questions, each manager's Nth pick at a position, where N is the number of starting slots that position has in the league's lineup (Preach: the 1st QB, TE, K, and D/ST; the 2nd RB and WR, since nearly everyone takes an RB1 and WR1 early regardless of philosophy). It adapts to any lineup.
+
+**Draft vs waiver:** real-game PPG (started, not IR) of that Nth pick by the round it was taken, against the PPG of players the manager never drafted. **Draft order:** the same by league-wide order of that pick within a season. **Draft capital:** the round of the Nth pick each season (streamed when there was none). The D/ST page reads the D/ST slice of these same numbers.
+
+**Consistency:** each player-season's coefficient of variation (standard deviation / average) over at least 4 starts with a positive average.
+
+**Correlation:** a team's season PPG at the position, and its Nth-pick round, against regular-season win%.
+
+**Where production comes from:** every rostered week (bench included, IR not) is credited to how the player reached that roster: inside a waiver stint is waiver/free agent; otherwise the latest trade into the team is traded; otherwise drafted. The three parts add up exactly to the manager's points at the position.
+
+**Would the playoffs change without defense?** Per finished season: the playoff field under regular-season records with D/ST removed, using the league's real rule (league.yaml cutoff, division winners in first), versus the actual field; which real playoff games flip; and whether the champion's own run survives.

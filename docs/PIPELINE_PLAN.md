@@ -17,7 +17,7 @@ This first version is built from script names and the files each script reads an
 | `analytics/schedule.py` (built and verified) | `build_schedule_luck`, `build_schedule_swap` | Luck and swap share one set of regular-season games; forfeits come from the data, not a hardcoded list |
 | `analytics/projected_sos.py` (built and verified) | `build_projected_sos` | Start week, schedule, byes, and team names come from ESPN; best projected lineup from the whole roster |
 | `analytics/playoff_odds.py` (built and verified) | `generate_playoff_odds`, `generate_playoff_odds_2026_live` | Historical and live are one simulation; cutoff, divisions, and season length from the league; live blends projections |
-| `analytics/position_impact.py` | `generate_position_impact`, `generate_dst_impact` | D/ST handled as a position |
+| `analytics/position_impact.py` (built and verified) | `generate_position_impact`, `generate_dst_impact` | D/ST handled as a position; one calculation feeds both pages; Nth pick and playoff field from the league |
 | `analytics/records.py`, `analytics/lineups.py` (built and verified) | `generate_franchise_leaders`, `generate_best_single_week`, `generate_blunder_rosters`, `generate_lineup_efficiency`, `build_matchups_json`, their parts of `update_2026` | One code path for every season; finished weeks only; blunders and forfeits derived, not hardcoded |
 | `analytics/attribution.py`, `analytics/similarity.py` | `build_attribution_model_final`, `build_win_attribution_final`, `recompute_weights2`, `export_quarterly_regression`, `historical_similarity`, `export_similarity_grid` | |
 | `publish/` | remaining `regenerate_data_files`, all `export_*` output code, `update_2026` | One JSON writer; no in-place patching |
@@ -31,6 +31,7 @@ This first version is built from script names and the files each script reads an
 - D/ST scores: ESPN's raw points, negatives kept. A floor at 0 was considered and never adopted.
 - Position baseline (weekly mean and SD per position): starters and bench, IR excluded.
 - Finished weeks only: a week counts once every regular-season and winners-bracket game has a result.
+- Consolation weeks never count. Counted games: regular season plus winners bracket, no byes. Bracket weeks: every finished regular-season week (byes included) plus a team's winners-bracket playoff weeks.
 - Realized value counts started weeks only (bench and IR excluded); stints span every later week the acquiring manager rosters the player, gaps included.
 - Manager identity: hashed member keys (`engine/identity.py`); names only for display.
 - Exclusions: `analysis.exclude_managers` from config are included in every calculation and hidden from view (`hidden` flag, visible-only ranks); `analysis.exclude_games` from config.
