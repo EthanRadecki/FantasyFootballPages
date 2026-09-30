@@ -15,6 +15,13 @@ Output: pandas DataFrames, one per canonical table (see docs/DATA_DICTIONARY.md)
     player_stats  season x player, whole NFL player pool: season fantasy points,
                   average, games, pool status and ownership (pool order kept)
 
+Live season only (a snapshot from the last pull, for the weeks still to play):
+    future_matchups  season x week x team: the scheduled opponent
+    projections      season x week x player: ESPN's projection for the week, for
+                     every rostered player (source "roster", with team and slot)
+                     and every free agent or waiver player (source "available")
+    pro_teams        season x NFL team: abbreviation and bye week
+
 Raw ESPN values are kept as-is (for example negative D/ST scores). Any league
 rule that adjusts values belongs in analytics, never here, so the canonical
 tables always match what ESPN recorded.
@@ -42,6 +49,11 @@ NON_STARTING_SLOTS = {"BE", "IR"}
 # ESPN defaultPositionId -> position.
 POSITIONS = {1: "QB", 2: "RB", 3: "WR", 4: "TE", 5: "K", 7: "P", 9: "DT", 10: "DE",
              11: "LB", 12: "CB", 13: "S", 14: "HC", 16: "D/ST"}
+
+PROJECTION_COLUMNS = ["season", "week", "source", "team_id", "player_id", "player_name", "position",
+                      "pro_team_id", "slot", "pool_status", "percent_owned", "projected_points"]
+FUTURE_MATCHUP_COLUMNS = ["season", "week", "matchup_period", "game_id", "team_id", "opponent_team_id"]
+PRO_TEAM_COLUMNS = ["season", "pro_team_id", "abbrev", "bye_week"]
 
 PLAYER_STATS_COLUMNS = ["season", "player_id", "player_name", "position", "pro_team_id", "pool_status",
                         "on_team_id", "percent_owned", "pool_rank", "total_points", "avg_points", "games"]
@@ -82,6 +94,55 @@ def entry_points(entry: dict, season: int, week: int) -> float:
                 and stat.get("seasonId", season) == season):
             return round(float(stat.get("appliedTotal") or 0.0), 2)
     return round(float(ppe.get("appliedStatTotal") or 0.0), 2)
+
+
+def projected_points(player: dict, season: int, week: int) -> float | None:
+    """ESPN's projection for one week: the stat line with statSourceId 1 and
+    that scoringPeriodId. None when ESPN has no projection (for example a
+    player on bye)."""
+    for stat in player.get("stats") or []:
+        if (stat.get("statSourceId") == 1 and stat.get("scoringPeriodId") == week
+                and stat.get("seasonId", season) == season):
+            return round(float(stat.get("appliedTotal") or 0.0), 2)
+    return None
+
+
+def projection_rows(season: int, week: int, box: dict, available: dict | None) -> tuple[list[dict], list[dict]]:
+    """A live-season projection snapshot for one week -> (future matchup rows,
+    projection rows). Rosters are each team's roster at pull time; available
+    players are free agents and waiver players."""
+    games, rows = [], []
+    for game in box.get("schedule") or []:
+        home, away = game.get("home") or {}, game.get("away")
+        sides = [(home, away), (away, home)] if away else [(home, None)]
+        for side, opp in sides:
+            games.append({"season": season, "week": week, "matchup_period": game.get("matchupPeriodId"),
+                          "game_id": game.get("id"), "team_id": side.get("teamId"),
+                          "opponent_team_id": opp.get("teamId") if opp else None})
+            for entry in (side.get("rosterForCurrentScoringPeriod") or {}).get("entries") or []:
+                player = (entry.get("playerPoolEntry") or {}).get("player") or {}
+                rows.append({"season": season, "week": week, "source": "roster", "team_id": side.get("teamId"),
+                             "player_id": entry.get("playerId", player.get("id")),
+                             "player_name": player.get("fullName"),
+                             "position": position_label(player.get("defaultPositionId")),
+                             "pro_team_id": player.get("proTeamId"), "slot": slot_label(entry.get("lineupSlotId")),
+                             "pool_status": "ONTEAM",
+                             "percent_owned": (player.get("ownership") or {}).get("percentOwned"),
+                             "projected_points": projected_points(player, season, week)})
+    for entry in (available or {}).get("players") or []:
+        player = entry.get("player") or {}
+        rows.append({"season": season, "week": week, "source": "available", "team_id": None,
+                     "player_id": player.get("id", entry.get("id")), "player_name": player.get("fullName"),
+                     "position": position_label(player.get("defaultPositionId")),
+                     "pro_team_id": player.get("proTeamId"), "slot": None, "pool_status": entry.get("status"),
+                     "percent_owned": (player.get("ownership") or {}).get("percentOwned"),
+                     "projected_points": projected_points(player, season, week)})
+    return games, rows
+
+
+def pro_team_rows(season: int, data: dict) -> list[dict]:
+    return [{"season": season, "pro_team_id": t.get("id"), "abbrev": t.get("abbrev"), "bye_week": t.get("byeWeek")}
+            for t in ((data.get("settings") or {}).get("proTeams") or [])]
 
 
 # ---------------------------------------------------------------- per season
@@ -282,6 +343,7 @@ def draft_rows(season: int, draft: dict) -> Iterable[dict]:
 def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
     """Build every canonical table from a league's cache directory."""
     seasons, managers, teams, matchups, lineups, picks, txs, people, pool = [], [], [], [], [], [], [], [], []
+    future, projections, pro_teams = [], [], []
     for season_dir in sorted(p for p in league_dir.iterdir() if p.is_dir() and p.name.isdigit()):
         season = int(season_dir.name)
         league = _read(season_dir / "league.json")
@@ -307,6 +369,14 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
             rank += len(rows)
         if (season_dir / "draft.json").exists():
             picks.extend(draft_rows(season, _read(season_dir / "draft.json")))
+        for box_path in sorted(season_dir.glob("proj_week_*_boxscore.json")):
+            week = int(box_path.name.split("_")[2])
+            avail_path = season_dir / f"proj_week_{week:02d}_available.json"
+            g, r = projection_rows(season, week, _read(box_path), _read(avail_path) if avail_path.exists() else None)
+            future.extend(g)
+            projections.extend(r)
+        if (season_dir / "pro_teams.json").exists():
+            pro_teams.extend(pro_team_rows(season, _read(season_dir / "pro_teams.json")))
 
     t = pd.DataFrame(teams)
     owner = t.set_index(["season", "team_id"])["manager_key"]
@@ -346,7 +416,17 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
     players = (ps.groupby("player_id", as_index=False)
                  .agg(player_name=("player_name", "last"), position=("position", "last")))
 
+    fm = pd.DataFrame(future, columns=FUTURE_MATCHUP_COLUMNS)
+    fm["opponent_team_id"] = fm["opponent_team_id"].astype("Int64")
+    fm = with_owner(with_owner(fm), "opponent_team_id", "opponent_manager_key")
+    pr = pd.DataFrame(projections, columns=PROJECTION_COLUMNS)
+    pr["team_id"] = pr["team_id"].astype("Int64")
+    pr = with_owner(pr)
+
     return {
+        "future_matchups": fm,
+        "projections": pr,
+        "pro_teams": pd.DataFrame(pro_teams, columns=PRO_TEAM_COLUMNS),
         "seasons": pd.DataFrame(seasons),
         "managers": pd.DataFrame(managers).drop_duplicates("manager_key", keep="last").reset_index(drop=True),
         "teams": t,

@@ -107,7 +107,8 @@ def test_game_rows_results_byes_and_tiers():
 def test_normalize_league_end_to_end(tmp_path):
     t = normalize_league(write_league(tmp_path))
     assert set(t) == {"seasons", "managers", "teams", "matchups", "lineups", "draft_picks", "transactions",
-                      "player_seasons", "players", "player_stats"}
+                      "player_seasons", "players", "player_stats", "future_matchups", "projections", "pro_teams"}
+    assert len(t["projections"]) == 0 and len(t["future_matchups"]) == 0    # finished season: no snapshot
 
     s = t["seasons"].iloc[0]
     assert s["team_count"] == 3 and s["regular_season_periods"] == 1 and s["faab_budget"] == 300
@@ -329,3 +330,33 @@ def test_legacy_stats_universe_is_rostered_plus_500_free_agents():
                        "pool_status": ["ONTEAM"] * 50 + ["FREEAGENT"] * 550, "pool_rank": range(600)})
     u = legacy.legacy_stats_universe(ps)
     assert len(u) == 550 and u["player_id"].max() == 549
+
+
+def test_live_projection_snapshot(tmp_path):
+    d = write_league(tmp_path) / "2024"
+    proj = box(3, [{"id": 5, "matchupPeriodId": 3, "home": side(1, 0.0, [entry(10, "QB One", 1, 0, 3, 0.0, proj=21.7),
+                                                                         entry(11, "Bench Guy", 2, 20, 3, 0.0, proj=8.1)]),
+                    "away": side(2, 0.0, [entry(20, "D/ST Two", 16, 16, 3, 0.0, proj=6.0)])}])
+    (d / "proj_week_03_boxscore.json").write_text(json.dumps(proj))
+    avail = {"players": [
+        {"id": 50, "status": "FREEAGENT", "player": {"id": 50, "fullName": "Free QB", "defaultPositionId": 1,
+                                                      "proTeamId": 7, "ownership": {"percentOwned": 12.5}, "stats": [
+            {"statSourceId": 1, "scoringPeriodId": 3, "seasonId": 2024, "appliedTotal": 14.2}]}},
+        {"id": 51, "status": "WAIVERS", "player": {"id": 51, "fullName": "On Bye", "defaultPositionId": 3,
+                                                    "proTeamId": 8, "stats": []}}]}
+    (d / "proj_week_03_available.json").write_text(json.dumps(avail))
+    (d / "pro_teams.json").write_text(json.dumps({"settings": {"proTeams": [
+        {"id": 7, "abbrev": "KC", "byeWeek": 5}, {"id": 8, "abbrev": "CAR", "byeWeek": 3}]}}))
+    t = normalize_league(tmp_path)
+
+    fm = t["future_matchups"]
+    assert sorted(zip(fm["team_id"], fm["opponent_team_id"])) == [(1, 2), (2, 1)]
+    assert fm[fm.team_id == 1].iloc[0].opponent_manager_key == member_key(RAW_B)
+
+    pr = t["projections"].set_index("player_id")
+    assert pr.loc[10, "projected_points"] == 21.7 and pr.loc[10, "slot"] == "QB" and pr.loc[10, "source"] == "roster"
+    assert pr.loc[10, "manager_key"] == member_key(RAW_A)
+    assert pr.loc[50, "source"] == "available" and pr.loc[50, "pool_status"] == "FREEAGENT"
+    assert pr.loc[50, "projected_points"] == 14.2 and pd.isna(pr.loc[50, "team_id"])
+    assert pd.isna(pr.loc[51, "projected_points"])            # no projection line (on bye)
+    assert dict(zip(t["pro_teams"]["abbrev"], t["pro_teams"]["bye_week"])) == {"KC": 5, "CAR": 3}

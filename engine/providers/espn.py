@@ -14,8 +14,17 @@ JSON file per request, under .cache/espn/<league_id>/<season>/:
                                  owned first, 500 per file
     manifest.json                what was pulled, when, and summary counts
 
-Completed seasons are pulled once and reused; the active season is always
-refreshed. Credentials come from the caller (environment or auth file) and are
+Live season only, a snapshot taken at pull time for every regular-season week
+from the current one on:
+    proj_week_NN_boxscore.json   that week's matchups with each team's current
+                                 roster and ESPN's projection for the week
+    proj_week_NN_available.json  free agents and waiver players with their
+                                 projection for the week, most owned first
+    pro_teams.json               NFL teams with their bye weeks
+
+A season is complete once its final scoring period is finished (ESPN keeps
+status.isActive true for old seasons, so that flag is not used). Completed
+seasons are pulled once and reused; the live season is always refreshed. Credentials come from the caller (environment or auth file) and are
 never written to the cache.
 
 The ESPN API is unofficial and undocumented. Everything ESPN-shaped stays in
@@ -30,9 +39,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-BASE_URL = "https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/{season}/segments/0/leagues/{league_id}"
+SEASON_URL = "https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/{season}"
+BASE_URL = SEASON_URL + "/segments/0/leagues/{league_id}"
 RETRY_STATUSES = {429, 500, 502, 503, 504}
-MANIFEST_VERSION = 3   # 2: adds player cards; 3: adds the player pool
+MANIFEST_VERSION = 4   # 2: player cards; 3: player pool; 4: completeness by final period, live projections
 
 
 class EspnError(RuntimeError):
@@ -54,8 +64,10 @@ class EspnClient:
         self.calls = 0
 
     def get(self, season: int, views: list[str], scoring_period: int | None = None,
-            fantasy_filter: dict | None = None) -> dict[str, Any]:
-        url = BASE_URL.format(season=season, league_id=self.league_id)
+            fantasy_filter: dict | None = None, league_level: bool = True) -> dict[str, Any]:
+        """league_level=False asks the season endpoint (NFL data shared by
+        every league, such as pro team schedules)."""
+        url = (BASE_URL if league_level else SEASON_URL).format(season=season, league_id=self.league_id)
         params = [("view", v) for v in views]
         if scoring_period is not None:
             params.append(("scoringPeriodId", scoring_period))
@@ -104,6 +116,41 @@ def weeks_to_pull(league: dict) -> int:
     return min(final, latest)
 
 
+def regular_season_weeks(league: dict) -> list[int]:
+    """Scoring periods that belong to regular-season matchup periods."""
+    count = ((league.get("settings") or {}).get("scheduleSettings") or {}).get("matchupPeriodCount")
+    if not count:
+        return []
+    periods = matchup_period_map(league)
+    return sorted(w for w, mp in periods.items() if mp <= count) or list(range(1, count + 1))
+
+
+def season_complete(league: dict, final_box: dict | None) -> bool:
+    """True once the final scoring period is finished: ESPN has moved past it,
+    or it is the latest period and every game in it has a winner."""
+    status = league.get("status") or {}
+    final = status.get("finalScoringPeriod")
+    latest = status.get("latestScoringPeriod")
+    if not final or not latest:
+        return False
+    if latest > final:
+        return True
+    if latest < final or not final_box:
+        return False
+    games = final_box.get("schedule") or []
+    return bool(games) and all(g.get("winner") in ("HOME", "AWAY", "TIE") for g in games)
+
+
+def available_filter(limit: int) -> dict:
+    """Free agents and waiver players, most owned first."""
+    return {"players": {
+        "filterStatus": {"value": ["FREEAGENT", "WAIVERS"]},
+        "limit": limit, "offset": 0,
+        "sortPercOwned": {"sortPriority": 1, "sortAsc": False},
+        "sortDraftRanks": {"sortPriority": 100, "sortAsc": True, "value": "STANDARD"},
+    }}
+
+
 def _write(path: Path, data: Any) -> None:
     path.write_text(json.dumps(data, separators=(",", ":")), encoding="utf-8")
 
@@ -113,6 +160,7 @@ def _read(path: Path) -> Any:
 
 
 CARD_CHUNK = 100
+AVAILABLE_LIMIT = 300    # per week; plenty to find the best available player at every position
 POOL_PAGE = 500
 POOL_MAX_PAGES = 20
 POOL_STATUSES = ["ONTEAM", "FREEAGENT", "WAIVERS"]
@@ -181,6 +229,7 @@ def summarize(season_dir: Path) -> dict:
         "player_cards": cards,
         "card_transactions": card_tx,
         "pool_players": pool,
+        "projection_weeks": len(list(season_dir.glob("proj_week_*_boxscore.json"))),
     }
 
 
@@ -242,16 +291,41 @@ class EspnProvider:
             if len(players) < POOL_PAGE:
                 break
 
+        final_path = out_dir / f"week_{last_week:02d}_boxscore.json"
+        complete = season_complete(league, _read(final_path) if final_path.exists() else None)
+        for old in list(out_dir.glob("proj_week_*.json")) + list(out_dir.glob("pro_teams.json")):
+            old.unlink()
+        proj_weeks = [] if complete else self.pull_projections(season, league, out_dir)
+
         summary = summarize(out_dir)
-        active = bool((league.get("status") or {}).get("isActive"))
         _write(out_dir / "manifest.json", {
             "version": MANIFEST_VERSION,
             "provider": self.name,
             "league_id": c.league_id,
             "season": season,
             "pulled_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "active": active,
-            "complete": not active,
+            "complete": complete,
+            "projection_weeks": proj_weeks,
             "summary": summary,
         })
         return summary
+
+    def pull_projections(self, season: int, league: dict, out_dir: Path) -> list[int]:
+        """Live season: every regular-season week from the current one on, as
+        it stands now (rosters, projections, who is available), plus NFL byes."""
+        c = self.client
+        latest = (league.get("status") or {}).get("latestScoringPeriod") or 1
+        weeks = [w for w in regular_season_weeks(league) if w >= latest]
+        if not weeks:
+            return []
+        periods = matchup_period_map(league)
+        for week in weeks:
+            mp = periods.get(week, week)
+            box = c.get(season, ["mMatchupScore", "mScoreboard"], scoring_period=week,
+                        fantasy_filter={"schedule": {"filterMatchupPeriodIds": {"value": [mp]}}})
+            _write(out_dir / f"proj_week_{week:02d}_boxscore.json", box)
+            avail = c.get(season, ["kona_player_info"], scoring_period=week,
+                          fantasy_filter=available_filter(AVAILABLE_LIMIT))
+            _write(out_dir / f"proj_week_{week:02d}_available.json", avail)
+        _write(out_dir / "pro_teams.json", c.get(season, ["proTeamSchedules_wl"], league_level=False))
+        return weeks
