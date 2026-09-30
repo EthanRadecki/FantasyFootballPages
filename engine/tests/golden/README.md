@@ -104,6 +104,7 @@ Added 2026-09-30. Checked by `engine analyze --verify` (finished seasons, and th
 | File | Source | Covers |
 |---|---|---|
 | `manager_seasons/preach_manager_stats.csv.gz` | `data/preach_manager_stats.csv`, maintained by hand (no script wrote it) | one row per manager and season, 2020-2025 plus a 2026 snapshot after week 2. 2021-2024 values typed rounded; one hand-entered PA (Maney 2025, 1609.20 vs 1608.20 in its own source); a few hand-entered ranks. All excused by pattern in `engine/legacy_manager_seasons.py` |
+| `manager_seasons/draft_slots_page.json.gz` | `pages/draft-analysis.html` (Detailed Breakdown table, `OVERPERFS`, `SLOT_DATA`); builder lost | results by draft slot 1-14 for 2020-2025 and who drafted from each slot through 2026. Champ % and Avg PF/G contradict the manager season file and are excused by that pattern |
 
 ## attribution/
 

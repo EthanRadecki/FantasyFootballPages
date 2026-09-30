@@ -29,6 +29,22 @@ Legacy mode must reproduce it, with these patterns excused (never by name):
 - ranks: a tie in the file's values (ties were ordered by row), or a rank
   that contradicts the file's own PF/G or PA/G column (hand-entered); the
   luck rating follows an excused rank
+Golden file:
+    manager_seasons/draft_slots_page.json.gz      draft-analysis.html's slot
+                                                  table (Detailed Breakdown,
+                                                  OVERPERFS) and SLOT_DATA; its
+                                                  builder is lost
+
+The slot table is the file's finished seasons grouped by Draft_Slot (slots
+1-14 shown; 2020's slot 15 left off). Expected dominance is each manager's
+mean Dominance_Score over their finished seasons, averaged over the slot's
+seasons. Excused by pattern: a page Champ % or Avg PF/G that contradicts the
+file it was built from (the page's champions sit in slots 1, 2 and 7; the
+file's are in 3, 6 and 9; PF/G matches no grouping of the file), and
+dominance figures one unit of the page's last digit from the engine (the
+file's z-scores come from its hand-rounded PF/G; the lost builder's inputs
+differed from the file by up to 0.001).
+
 The 2026 rows are a snapshot after week 2: they are checked against the
 engine run on those weeks only, record columns only (the file showed the
 current standings as placement). Team names are display names edited by hand
@@ -171,6 +187,82 @@ def check_live(tables: dict, legacy: pd.DataFrame, matchup_data: pd.DataFrame, c
     return out
 
 
+SLOT_VALUES = ["seasons", "playoff_pct", "champ_pct", "pf_per_game", "dominance", "expected_dominance", "over_under"]
+SLOT_ROUND = {"playoff_pct": 1, "champ_pct": 1, "pf_per_game": 1, "dominance": 2, "expected_dominance": 2,
+              "over_under": 3}
+
+
+def slot_frame(results: pd.DataFrame) -> pd.DataFrame:
+    """draft_slot_results in the page's units and rounding."""
+    out = results.rename(columns={"draft_slot": "slot"}).copy()
+    out["playoff_pct"] = out["playoff_rate"] * 100
+    out["champ_pct"] = out["champion_rate"] * 100
+    for c, n in SLOT_ROUND.items():
+        out[c] = out[c].astype(float).round(n)
+    return out[["slot"] + SLOT_VALUES]
+
+
+def file_slots(legacy: pd.DataFrame, cfg: dict, live: set[int]) -> pd.DataFrame:
+    """The slot table computed straight from preach_manager_stats.csv."""
+    f = legacy_frame(legacy, cfg)
+    f = f[~f["season"].isin(live)]
+    f = f.assign(is_live=False, hidden=False)
+    res, _ = ms_mod.draft_slots(f)
+    return slot_frame(res)
+
+
+def check_draft_slots(tables: dict, golden: dict, cfg: dict, live: set[int]) -> list[Comparison]:
+    page = golden["draft_slots_page"]
+    exp = pd.DataFrame(page["table"])
+    ms = ms_mod.manager_seasons(tables, excluded_manager_keys(cfg), excluded_games(cfg, "ppg"), legacy_mode=True,
+                                conference_labels=conference_labels(cfg))
+    res, who = ms_mod.draft_slots(ms)
+    act = slot_frame(res)
+    act = act[act["slot"].isin(exp["slot"])]
+    src = file_slots(golden["preach_manager_stats"], cfg, live).set_index("slot")
+    both = exp.merge(act, on="slot", suffixes=("_p", "_e"))
+    known = []
+    for c, reason in (("champ_pct", "page Champ % contradicts its source file (champions' slots)"),
+                      ("pf_per_game", "page Avg PF/G contradicts its source file (matches no grouping of it)")):
+        f_val = both["slot"].map(src[c])
+        bad = (both[f"{c}_p"] != f_val) & ((both[f"{c}_e"] - f_val).abs() < 0.05 + 1e-9)
+        known.append(both.loc[bad, ["slot"]].assign(column=c, reason=reason))
+    for c in ("dominance", "expected_dominance", "over_under"):
+        unit = 10 ** -SLOT_ROUND[c]
+        bad = (both[f"{c}_p"] - both[f"{c}_e"]).abs() <= unit + 1e-9
+        known.append(both.loc[bad, ["slot"]].assign(column=c, reason="dominance from the file's rounded PF/G "
+                                                                        "(one unit of the last digit)"))
+    table = compare("draft slot table vs draft-analysis.html", exp, act, keys=["slot"], values=SLOT_VALUES,
+                    tolerance=1e-6, known=pd.concat(known, ignore_index=True))
+
+    lookup = name_to_key(cfg)
+    rows = [{"slot": int(s), "season": int(y), "name": n} for s, v in page["slot_data"].items() for n, y in v]
+    exp_who = pd.DataFrame(rows)
+    exp_who["manager_key"] = resolve_names(exp_who["name"], lookup)
+    act_who = who.rename(columns={"draft_slot": "slot"}).astype({"slot": int, "season": int})
+    act_who = act_who[act_who["slot"].isin(exp_who["slot"]) & act_who["season"].isin(exp_who["season"])]
+    grid = compare("draft slot managers vs draft-analysis.html", exp_who, act_who, keys=["slot", "season"],
+                   values=["manager_key"])
+    return [table, grid]
+
+
+def slot_changes(tables: dict, cfg: dict, names: dict) -> list[str]:
+    ex, ppg, labels = excluded_manager_keys(cfg), excluded_games(cfg, "ppg"), conference_labels(cfg)
+    leg = slot_frame(ms_mod.draft_slots(ms_mod.manager_seasons(tables, ex, ppg, legacy_mode=True,
+                                                                conference_labels=labels))[0])
+    eng = slot_frame(ms_mod.draft_slots(ms_mod.manager_seasons(tables, ex, ppg, conference_labels=labels))[0])
+    b = leg.merge(eng, on="slot", suffixes=("_l", "_e"))
+    d = b[(b["over_under_l"] - b["over_under_e"]).abs() > 0.0005]
+    ex_txt = ", ".join(f"slot {r.slot} {r.over_under_l:+.3f} -> {r.over_under_e:+.3f}" for r in d.head(5).itertuples())
+    lines = [f"INFO  draft slot table, engine vs legacy mode: over/under changes for {len(d)} of {len(b)} slot(s)"
+             + (f", e.g. {ex_txt}" if len(d) else "") + " (the manager season fixes above carry over)"]
+    extra = eng[eng["seasons"] < eng["seasons"].max()]
+    if len(extra):
+        lines.append("INFO  draft slots with fewer seasons: " + ", ".join(
+            f"slot {r.slot} ({r.seasons})" for r in extra.itertuples()) + "; the page shows slots 1-14")
+    return lines
+
+
 def _effect(leg: pd.DataFrame, eng: pd.DataFrame, names: dict) -> list[str]:
     b = leg.merge(eng[~eng["hidden"]], on=KEYS, suffixes=("_l", "_e"))
     out = []
@@ -202,6 +294,8 @@ def verify_manager_seasons(tables: dict, golden: dict, cfg: dict) -> tuple[list[
     legacy, md = golden["preach_manager_stats"], golden["matchup_data"]
     live = ms_mod.live_seasons(tables)
     checks = [check_finished(tables, legacy, md, cfg, live), *check_live(tables, legacy, md, cfg, live)]
+    if "draft_slots_page" in golden:
+        checks += check_draft_slots(tables, golden, cfg, live)
     exp = legacy_frame(legacy, cfg)
     act = ms_mod.manager_seasons(tables, excluded_manager_keys(cfg), legacy_mode=True,
                                  conference_labels=conference_labels(cfg))
@@ -217,4 +311,5 @@ def verify_manager_seasons(tables: dict, golden: dict, cfg: dict) -> tuple[list[
         names = by.agg(name=("division_name", "first"), conf=("conference", "first")).reset_index()
         info.append("INFO  ESPN division names by season (conference): " + "; ".join(
             f"{y} " + ", ".join(f"{r.name} ({r.conf})" for r in g.itertuples()) for y, g in names.groupby("season")))
-    return checks, info + engine_changes(tables, cfg)
+    slot_info = slot_changes(tables, cfg, {}) if "draft_slots_page" in golden else []
+    return checks, info + engine_changes(tables, cfg) + slot_info
