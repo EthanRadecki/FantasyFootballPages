@@ -134,7 +134,8 @@ def cmd_normalize(args: argparse.Namespace) -> int:
 
 RECORD_JSON_GOLDENS = ["matchups", "franchise_leaders", "best_single_week"]
 DRAFT_CSV_GOLDENS = ["espn_player_stats_season", "espn_player_stats_2026", "draft_surplus_v2",
-                     "surplus_value_2026_live", "draft_with_stats"]
+                     "surplus_value_2026_live", "draft_with_stats", "draft_fingerprint_manager_season",
+                     "draft_fingerprint_career"]
 DRAFT_JSON_GOLDENS = {"surplus_value_data": "surplus_value_data", "surplus_value_2026_live_json": "surplus_value_2026_live",
                       "draft_heatmap": "draft_heatmap", "hit_rate_data": "hit_rate_data"}
 TRADE_GOLDENS = ["trades_mapped", "trades_mapped_clean", "trade_universe", "position_baseline",
@@ -211,6 +212,8 @@ def _report(title: str, checks: list, info: list[str], detail_dir: Path, prefix:
 def cmd_analyze(args: argparse.Namespace) -> int:
     from engine.analytics.attribution import analyze_attribution
     from engine.analytics.draft import analyze_draft
+    from engine.analytics.draft_profiles import analyze_draft_profiles
+    from engine.normalize.adp import build_adp
     from engine.analytics.gauntlet import analyze_gauntlet
     from engine.analytics.manager_seasons import analyze_manager_seasons
     from engine.analytics.matchup_history import analyze_matchup_history
@@ -232,6 +235,9 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         print(f"error: no canonical tables at {src}. Run `engine normalize {args.path}` first.")
         return 1
     tables = read_tables(src)
+    if "adp" not in tables:
+        print("note: no adp table in the canonical tables (run `engine normalize`); using the ADP library")
+        tables["adp"], _ = build_adp(tables, {}, cfg)
 
     exclude = excluded_manager_keys(cfg)
     results = {**analyze_trades(tables), **analyze_records(tables, exclude), **analyze_schedule(tables, exclude),
@@ -246,6 +252,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     results.update(analyze_position_impact(tables, results, exclude, odds_cutoff))
     if "player_stats" in tables and len(tables["player_stats"]):
         results.update(analyze_draft(tables, exclude))
+        results.update(analyze_draft_profiles(tables, exclude))
         results.update(analyze_attribution(tables, results, exclude))
     else:
         print("note: no player pool yet (run `engine pull`); draft value and win% attribution skipped")
@@ -281,6 +288,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         return 0
     from engine.legacy_attribution import verify_attribution
     from engine.legacy_draft import verify_draft
+    from engine.legacy_draft_profiles import verify_draft_profiles
     from engine.legacy_gauntlet import verify_gauntlet
     from engine.legacy_manager_seasons import verify_manager_seasons
     from engine.legacy_matchup_history import verify_matchup_history
@@ -302,6 +310,9 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     _report("Verifying records and lineups against the legacy site files:", record_checks, [], detail_dir, "records")
     draft_checks, draft_info = verify_draft(tables, golden, cfg)
     _report("Verifying draft value against the legacy draft files:", draft_checks, draft_info, detail_dir, "draft")
+    profile_checks, profile_info = verify_draft_profiles(tables, golden, cfg)
+    _report("Verifying draft profiles against draft_fingerprint.py's outputs:", profile_checks, profile_info,
+            detail_dir, "profiles")
     schedule_checks, schedule_info = verify_schedule(tables, golden, cfg)
     _report("Verifying schedule luck and swap against the legacy files:", schedule_checks, schedule_info,
             detail_dir, "schedule")
@@ -331,7 +342,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     _report("Verifying playoff odds against the legacy files (about a minute):", odds_checks, odds_info,
             detail_dir, "odds")
     print(f"\nFull detail: {detail_dir}/")
-    checks = (trade_checks + record_checks + draft_checks + schedule_checks + sos_checks + waiver_checks + ms_checks
+    checks = (trade_checks + record_checks + draft_checks + profile_checks + schedule_checks + sos_checks + waiver_checks + ms_checks
               + attr_checks + gt_checks + mh_checks + rg_checks + pi_checks + odds_checks)
     return 0 if all(r.ok for r in checks) else 1
 

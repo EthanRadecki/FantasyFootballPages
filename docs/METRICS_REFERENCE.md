@@ -330,3 +330,33 @@ All from counted games (finished regular-season and winners-bracket games). The 
 **Where production comes from:** every rostered week (bench included, IR not) is credited to how the player reached that roster: inside a waiver stint is waiver/free agent; otherwise the latest trade into the team is traded; otherwise drafted. The three parts add up exactly to the manager's points at the position.
 
 **Would the playoffs change without defense?** Per finished season: the playoff field under regular-season records with D/ST removed, using the league's real rule (league.yaml cutoff, division winners in first), versus the actual field; which real playoff games flip; and whether the champion's own run survives.
+
+---
+
+## Draft Profiles (draft-fingerprints.html, managers.html)
+
+**What it measures:** how each manager drafts, not how well: when they take each position, how far they stray from the market, and how much their approach changes from year to year.
+
+**Data:** every pick, all positions, every manager (excluded managers count and are hidden). A season needs only its draft, so the live season is profiled once the draft is done; career covers finished seasons. ADP is the market's average draft position for that season (see ADP below).
+
+**Draft shape** (from the first picks, by overall pick):
+- **Early RB% / Early WR%:** share of the first 3 picks at RB, at WR.
+- **RB/WR balance:** 100 when those RB and WR picks split evenly, 0 when all one position.
+- **Positional diversity:** distinct positions in the first 6 picks, as a % of the league's positions (taken from its drafts, so a league without kickers has five).
+- **Positional concentration:** how bunched those 6 picks are (Herfindahl), 0 spread evenly to 100 all one position.
+- **Run rate:** % of back-to-back pairs in the first 10 picks at the same position.
+
+**Patience** (QB, TE, K, D/ST): the manager's first pick at the position, as a percentile of every pick at that position that season, measured two ways: overall pick, and position order (how many players at the position the market ranked above him). Combined 70/30 for QB and TE; 20/80 for K and D/ST, whose picks bunch at the end of every draft so position order carries the signal. Higher means waited longer.
+
+**ADP deviation** = ADP minus the pick number. Positive: taken before the market would have (a reach). Negative: fell to the manager (value).
+- **Avg ADP deviation**, and per position.
+- **Reach tendency:** average size of the reaches. **Value hunting:** average size of the values.
+- **Draft conviction:** average absolute deviation, reaches and values alike.
+- **ADP independence:** 100 x (1 - correlation between ADP and pick number).
+Picks without an ADP (usually late kickers and defenses) are left out of these.
+
+**Career:** the average of the manager's seasons (each season weighs the same), plus **draft adaptability**, the average across ten strategy measures (early RB/WR, the four patience scores, balance, diversity, concentration, run rate) of their season-to-season standard deviation.
+
+**ADP:** ESPN's own ADP when `engine pull` saved it within 3 days of the league's draft; otherwise the engine's shared library of FantasyPros PPR exports (ESPN column), one per season. ESPN's API only serves a live ADP that keeps changing through the season, so it cannot be looked up later (decision 0004).
+
+**Replaced method:** `draft_fingerprint.py` read the ADP exports by hand and joined them to the draft by name; the engine joins by player id (same result for every legacy pick). It numbered picks the way ESPN first recorded them; the engine uses the corrected draft order (2021), which moves K and D/ST patience for a few 2021 managers.
