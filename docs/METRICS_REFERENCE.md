@@ -210,7 +210,7 @@ A forfeit still counts as the opponent's score: Slansky got the win against Cast
 One row per manager and season, from finished regular-season games only (no byes, no playoff games of any tier), so every team's record covers the same weeks. The live season covers the weeks finished so far. Replaces `data/preach_manager_stats.csv`, which was kept by hand.
 
 - **Record:** wins, losses, ties, games; win% = (wins + ties / 2) / games.
-- **Per game:** PF/G and PA/G; point differential = PF/G - PA/G. The Castaldo 2024 week 14 forfeit (a sat lineup) is left out of PF/G only (league.yaml `exclude_games`, `from: [ppg]`); the loss and the opponent's points still count.
+- **Per game:** PF/G and PA/G; point differential = PF/G - PA/G. The Castaldo 2024 week 14 forfeit (a sat lineup, league.yaml `exclude_games`, `from: [ppg]`): Castaldo's 0 leaves his PF/G and Slansky's PA/G; Slansky's points still count for his PF/G and Castaldo's PA/G, and the result counts.
 - **Dominance:** PF/G as a z-score within the season (sample standard deviation). Sullivan and Serafin count in the average.
 - **PA z-score:** PA/G the same way (the legacy file called it `LR_zscore`).
 - **Ranks and luck rating:** PF/G rank (1 = most scored) and PA/G rank (1 = fewest allowed) within the season, visible managers only, tied values sharing the best rank. Luck rating = PF/G rank - PA/G rank: positive when a team allowed fewer points than its scoring would suggest.
@@ -247,6 +247,24 @@ One row per manager and season, from finished regular-season games only (no byes
 **Excluded managers:** Sullivan's and Serafin's games stay in (their opponents really played them), and their own windows are ranked but hidden from the lists. Legacy dropped every game they were in.
 
 **Legacy differences:** the page's champion cards came from an earlier variant (raw dominance, older league averages), so the card scores and ranks disagreed slightly (2024 Slansky 62.1 on the card, 62.2 in the rank). The engine computes cards, ranks, and lists once. It also ranks on the unrounded score, ties sharing a rank.
+
+---
+
+## Head-to-Head, Closest Games, Conference Analysis (extra-analytics.html)
+
+All from counted games (finished regular-season and winners-bracket games). The Castaldo 2024 week 14 forfeit is a real game: the loss counts in every record.
+
+**Head-to-head:** every manager's record against every other manager.
+
+**Closest games:** the smallest winning margins, for all counted games, the regular season, and the playoffs.
+
+**Conference analysis:** each manager's conference is the league's label for the division ESPN put their team in (`league.conference_labels`: id 0 REP, id 1 DEM; ESPN's division names changed over the years, the ids did not). Per manager: record, PF and PA per game against the other conference. Per season: each conference's record against the other. Totals per conference: titles, title-game trips, playoff trips, wins against the other conference (regular season, playoffs), points per game. Rivalries: every pair's meetings and record, ordered by meetings, then the closest record, then the names.
+
+**Forfeit in the averages:** under `exclude_games` (`from: [ppg]`), Castaldo's 0 leaves his PF/G and Slansky's PA/G; Slansky's points count for Slansky's PF/G and Castaldo's PA/G, and the result counts. The legacy page left the whole game out of both teams' averages.
+
+**Points per game by conference:** over all counted games (regular season and playoffs). The legacy cards (111.9, 110.9) were typed by hand.
+
+**Excluded managers:** games against Sullivan and Serafin count in their opponents' records and in the conference totals, and their own 2020 playoff trips count for their conferences; their rows are hidden. The legacy page dropped their games.
 
 ---
 

@@ -83,6 +83,8 @@ def test_ppg_exclusion_leaves_the_forfeit_out_of_pf_per_game_only():
     leg = ms.manager_seasons(t, ppg_exclusions={(2024, 2, A)}, legacy_mode=True).set_index("manager_key")
     assert eng.loc[A, "pf_per_game"] == 100 and leg.loc[A, "pf_per_game"] == 50
     assert eng.loc[A, "losses"] == 1 and eng.loc[A, "pa_per_game"] == 105
+    assert eng.loc[B, "pa_per_game"] == 100 and leg.loc[B, "pa_per_game"] == 50   # A's 0 is not B's PA
+    assert eng.loc[B, "pf_per_game"] == 105                                      # B's 120 still counts
 
 
 def test_legacy_differential_divides_by_weeks_played_including_a_bye():
