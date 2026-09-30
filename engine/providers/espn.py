@@ -13,6 +13,13 @@ JSON file per request, under .cache/espn/<league_id>/<season>/:
                                  waivers) with season stats and ownership, most
                                  owned first, 500 per file
     manifest.json                what was pulled, when, and summary counts
+    adp_snapshot.json            ESPN's ADP for every pool player, saved by the
+                                 first pull after the league's draft finished
+                                 (with the draft date), never overwritten.
+                                 ESPN only serves a live ADP that moves all
+                                 season, so this copy is the only record of
+                                 ADP at draft time; pull within a few days of
+                                 the draft (see engine.normalize.adp).
 
 Live season only, a snapshot taken at pull time for every regular-season week
 from the current one on:
@@ -160,6 +167,7 @@ def _read(path: Path) -> Any:
 
 
 CARD_CHUNK = 100
+ADP_SNAPSHOT = "adp_snapshot.json"
 AVAILABLE_LIMIT = 300    # per week; plenty to find the best available player at every position
 POOL_PAGE = 500
 POOL_MAX_PAGES = 20
@@ -192,6 +200,40 @@ def season_player_ids(season_dir: Path) -> list[int]:
     if draft_path.exists():
         ids.update(p.get("playerId") for p in ((_read(draft_path).get("draftDetail") or {}).get("picks")) or [])
     return sorted(i for i in ids if i is not None)
+
+
+def draft_finished(draft: dict) -> bool:
+    detail = draft.get("draftDetail") or {}
+    if "drafted" in detail:
+        return bool(detail["drafted"])
+    return bool(detail.get("picks")) and not detail.get("inProgress")
+
+
+def draft_date(league: dict, draft: dict) -> tuple[str | None, str | None]:
+    """(ISO date, where it came from): when the draft finished if ESPN says,
+    else when it was scheduled."""
+    detail = draft.get("draftDetail") or {}
+    scheduled = ((league.get("settings") or {}).get("draftSettings") or {}).get("date")
+    for source, ms in (("draftDetail.completeDate", detail.get("completeDate")),
+                       ("settings.draftSettings.date", scheduled)):
+        if ms:
+            return datetime.fromtimestamp(ms / 1000, timezone.utc).isoformat(timespec="seconds"), source
+    return None, None
+
+
+def adp_snapshot(season_dir: Path, league: dict, draft: dict, now: datetime | None = None) -> dict:
+    """ESPN's ADP for every player in the cached pool pages, as of now."""
+    rows = []
+    for path in sorted(season_dir.glob("players_*.json")):
+        for entry in _read(path).get("players") or []:
+            player = entry.get("player") or {}
+            adp = (player.get("ownership") or {}).get("averageDraftPosition")
+            if adp is not None:
+                rows.append({"player_id": player.get("id", entry.get("id")), "player_name": player.get("fullName"),
+                             "position_id": player.get("defaultPositionId"), "adp": adp})
+    date, source = draft_date(league, draft)
+    return {"pulled_at": (now or datetime.now(timezone.utc)).isoformat(timespec="seconds"),
+            "draft_date": date, "draft_date_source": source, "players": rows}
 
 
 def summarize(season_dir: Path) -> dict:
@@ -230,6 +272,7 @@ def summarize(season_dir: Path) -> dict:
         "card_transactions": card_tx,
         "pool_players": pool,
         "projection_weeks": len(list(season_dir.glob("proj_week_*_boxscore.json"))),
+        "adp_snapshot": (season_dir / ADP_SNAPSHOT).exists(),
     }
 
 
@@ -293,6 +336,9 @@ class EspnProvider:
 
         final_path = out_dir / f"week_{last_week:02d}_boxscore.json"
         complete = season_complete(league, _read(final_path) if final_path.exists() else None)
+        draft = _read(out_dir / "draft.json")
+        if not complete and draft_finished(draft) and not (out_dir / ADP_SNAPSHOT).exists():
+            _write(out_dir / ADP_SNAPSHOT, adp_snapshot(out_dir, league, draft))
         for old in list(out_dir.glob("proj_week_*.json")) + list(out_dir.glob("pro_teams.json")):
             old.unlink()
         proj_weeks = [] if complete else self.pull_projections(season, league, out_dir)

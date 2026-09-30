@@ -103,6 +103,7 @@ Every analysis reads only these, never provider output directly. This is the sea
 | `transactions` | one row per add, drop, trade leg, with FAAB bid |
 | `draft_picks` | season x pick |
 | `player_stats` | player x week |
+| `adp` | season x player as the ADP source lists them (draft-day provider copy, else the shared library in `engine/data/adp/`; decision 0004), with the league's player id where matched |
 | `future_matchups` | live season: team x remaining week, scheduled opponent |
 | `projections` | live season: player x remaining week, ESPN projection (rostered and available players) |
 | `pro_teams` | NFL team x season, bye week |

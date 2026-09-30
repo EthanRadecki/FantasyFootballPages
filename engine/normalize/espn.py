@@ -341,6 +341,24 @@ def draft_rows(season: int, draft: dict) -> Iterable[dict]:
         }
 
 
+def read_adp_snapshots(league_dir: Path) -> dict[int, dict]:
+    """{season: snapshot} for every season with an adp_snapshot.json (see
+    engine.providers.espn), rows shaped for engine.normalize.adp."""
+    out: dict[int, dict] = {}
+    for season_dir in sorted(p for p in league_dir.iterdir() if p.is_dir() and p.name.isdigit()):
+        path = season_dir / "adp_snapshot.json"
+        if not path.exists():
+            continue
+        raw = _read(path)
+        out[int(season_dir.name)] = {
+            "pulled_at": raw.get("pulled_at"), "draft_date": raw.get("draft_date"),
+            "rows": [{"player_id": r.get("player_id"), "player_name": r.get("player_name"),
+                      "position": position_label(r.get("position_id")), "adp": r.get("adp")}
+                     for r in raw.get("players") or []],
+        }
+    return out
+
+
 # ---------------------------------------------------------------- all seasons
 
 def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:

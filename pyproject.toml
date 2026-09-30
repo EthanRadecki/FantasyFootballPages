@@ -27,5 +27,8 @@ engine = "engine.cli:main"
 [tool.setuptools.packages.find]
 include = ["engine*"]
 
+[tool.setuptools.package-data]
+engine = ["data/adp/*/*"]
+
 [tool.pytest.ini_options]
 testpaths = ["engine/tests"]

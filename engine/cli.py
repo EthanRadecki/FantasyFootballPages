@@ -66,7 +66,8 @@ def cmd_normalize(args: argparse.Namespace) -> int:
 
     from engine import legacy
     from engine.normalize.corrections import apply_corrections
-    from engine.normalize.espn import normalize_league
+    from engine.normalize.adp import build_adp
+    from engine.normalize.espn import normalize_league, read_adp_snapshots
     from engine.store import canonical_dir, write_tables
 
     cfg = load_config(args.path)
@@ -77,6 +78,7 @@ def cmd_normalize(args: argparse.Namespace) -> int:
         return 1
 
     tables = apply_corrections(normalize_league(raw_dir), cfg)
+    tables["adp"], adp_report = build_adp(tables, read_adp_snapshots(raw_dir), cfg)
     out = canonical_dir(Path(args.cache), league["provider"], league["league_id"])
     write_tables(tables, out)
 
@@ -94,6 +96,9 @@ def cmd_normalize(args: argparse.Namespace) -> int:
         print("Live projection snapshot (rows, and rows with a projection):")
         print(cov.fillna(0).astype(int).to_string())
 
+    print("ADP by drafted season (source, and picks with an ADP):")
+    print(adp_report.to_string(index=False))
+
     for w in legacy.config_consistency(tables, cfg):
         print(f"warning: {w}")
 
@@ -106,6 +111,7 @@ def cmd_normalize(args: argparse.Namespace) -> int:
         legacy.check_rosters(tables, pd.read_csv(golden / "weekly_rosters_bracket_only.csv.gz"), cfg),
         legacy.check_draft(tables, pd.read_csv(golden / "draft_history_all_positions.csv.gz"), cfg),
         legacy.check_transactions(tables, pd.read_csv(golden / "transactions_clean.csv.gz"), cfg),
+        legacy.check_adp(tables, pd.read_csv(golden / "draft" / "draft_history_with_adp.csv.gz"), cfg),
     ]
     if "player_stats" in tables and len(tables["player_stats"]):
         results.append(legacy.check_player_stats(
