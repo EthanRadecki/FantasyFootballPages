@@ -236,6 +236,20 @@ One row per manager and season, from finished regular-season games only (no byes
 
 ---
 
+## Schedule Gauntlet (extra-analytics.html)
+
+**What it measures:** how hard a run of consecutive opponents was. The champions' cards score each title run; the hardest and easiest lists show the toughest and softest three-game stretches any manager faced.
+
+**Window:** n consecutive games of one manager (3, or 4 for the 2020 champion's four-round run), no earlier than their 6th game. Each opponent is scored three ways, each as a z-score against the league: the points they put up in that game, their season dominance (PF/G z-score), and their surge coming in (their average over the previous 5 games minus their regular-season average). The three averages are shrunk by n / (n + 1), mapped to 0-100 with a logistic curve, and weighted 70% points, 15% dominance, 15% surge.
+
+**Games:** finished regular-season and winners-bracket games. The Castaldo 2024 week 14 forfeit is left out for both teams, so no window runs through it. Champion runs come from the bracket (2021's first-round bye leaves a three-game run).
+
+**Excluded managers:** Sullivan's and Serafin's games stay in (their opponents really played them), and their own windows are ranked but hidden from the lists. Legacy dropped every game they were in.
+
+**Legacy differences:** the page's champion cards came from an earlier variant (raw dominance, older league averages), so the card scores and ranks disagreed slightly (2024 Slansky 62.1 on the card, 62.2 in the rank). The engine computes cards, ranks, and lists once. It also ranks on the unrounded score, ties sharing a rank.
+
+---
+
 ## Projected Strength of Schedule (weekly rankings)
 
 **What it measures:** how hard each manager's remaining regular-season schedule looks, from ESPN's weekly projections. Rest of season only: the weeks still to play, from the first week without a final result (no week number to bump by hand).

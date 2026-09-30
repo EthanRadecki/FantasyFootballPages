@@ -21,7 +21,7 @@ This first version is built from script names and the files each script reads an
 | `analytics/records.py`, `analytics/lineups.py` (built and verified) | `generate_franchise_leaders`, `generate_best_single_week`, `generate_blunder_rosters`, `generate_lineup_efficiency`, `build_matchups_json`, their parts of `update_2026` | One code path for every season; finished weeks only; blunders and forfeits derived, not hardcoded |
 | `analytics/manager_seasons.py` (built and verified) | `data/preach_manager_stats.csv` (maintained by hand, no script) | Every column derived from the canonical tables; formulas recovered from the file |
 | `analytics/attribution.py` (built and verified) | `build_win_attribution_final` | Five factors from engine tables, not five hand-copied CSVs |
-| `analytics/gauntlet.py` | `recompute_weights2` | Champion runs found from the bracket, not a hardcoded list |
+| `analytics/gauntlet.py` (built and verified) | `recompute_weights2` | Champion runs found from the bracket, not a hardcoded list; one calculation for the cards, ranks, and lists |
 | `analytics/extra.py` (name to confirm) | `export_quarterly_regression` (numbers only), and the extra-analytics.html blocks with no script: position regression, head-to-head matrix, closest games | |
 | `publish/` | remaining `regenerate_data_files`, all `export_*` output code, `update_2026` | One JSON writer; no in-place patching |
 | (deleted) | `player_ppr_pullscript.R`, `build_cards.py` (confirm) | |
