@@ -220,6 +220,22 @@ One row per manager and season, from finished regular-season games only (no byes
 
 ---
 
+## Win% Attribution (extra-analytics.html)
+
+**What it measures:** how much of each manager's win% comes from the draft, waivers, lineups, trades, and schedule luck.
+
+**Data:** one row per finished manager-season. Win% over counted games (regular season and winners bracket). Five factors: draft (sum of weighted draft surplus), waiver (sum of each waiver stint's total z, upside only: a bad pickup counts as 0, not a penalty), lineup (minus the missed wins), trade (sum of QUAD, 0 with no trades), luck (schedule luck).
+
+**Model:** an ordinary least squares fit of win% (points out of 100) on the five factors. Standardized coefficients (coefficient x SD of the factor / SD of win%, both sample SDs) rank the factors. Each manager's waterfall starts at the league intercept (the prediction at league-average inputs); each step is the coefficient times how far the manager's average for that factor sits from the league average; the residual is what the five factors do not explain.
+
+**Excluded managers:** Sullivan's and Serafin's 2020 seasons are data points in the fit and are only hidden from the waterfall.
+
+**Forfeits:** the Castaldo 2024 week 14 forfeit counts as a missed lineup win: a better lineup from the same roster would have won.
+
+**Legacy differences:** the legacy fit left Sullivan and Serafin out (n 83, now 85) and divided a sample SD by a population SD in the standardized coefficients.
+
+---
+
 ## Projected Strength of Schedule (weekly rankings)
 
 **What it measures:** how hard each manager's remaining regular-season schedule looks, from ESPN's weekly projections. Rest of season only: the weeks still to play, from the first week without a final result (no week number to bump by hand).

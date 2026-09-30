@@ -15,6 +15,7 @@ dependencies = [
     "espn-api>=0.39",
     "requests>=2.31",
     "pyarrow>=15",
+    "scipy>=1.11",
 ]
 
 [project.optional-dependencies]
