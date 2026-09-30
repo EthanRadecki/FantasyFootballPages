@@ -34,7 +34,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install test dependencies
-        run: pip install pyyaml pytest pandas pyarrow
+        run: pip install pyyaml pytest pandas pyarrow scipy
 
       - name: Unit tests
         run: python -m pytest -q

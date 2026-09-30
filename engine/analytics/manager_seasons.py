@@ -130,6 +130,7 @@ def manager_seasons(tables: dict[str, pd.DataFrame], exclude_managers: set[str] 
     teams = tables["teams"].copy()
     if "division_name" not in teams:
         teams["division_name"] = None
+    teams["division_name"] = teams["division_name"].map(lambda d: d.strip() if isinstance(d, str) else None)
     labels = conference_labels or {}
     teams["conference"] = teams["division_id"].map(lambda d: labels.get(int(d)) if pd.notna(d) else None)
     teams["team_name"] = teams["team_name"].map(lambda n: re.sub(r"\s+", " ", n).strip() if isinstance(n, str) else n)
