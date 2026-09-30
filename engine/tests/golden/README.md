@@ -124,4 +124,12 @@ Added 2026-09-30. Checked by `engine analyze --verify` (needs the canonical tabl
 |---|---|---|
 | `matchup_history/extra_analytics_matchups.json.gz` | extra-analytics.html: the inline `managers`/`h2h` matrix and `CLOSEST` lists, and the Conference Analysis cards and tables parsed from the HTML | 2020-2025. The closest regular-season and playoff lists skip some games the all-games list includes; the conference average PF/game (111.9, 110.9) was typed by hand |
 
+## regressions/
+
+Added 2026-09-30. Checked by `engine analyze --verify` and `engine/tests/test_regressions.py` (legacy files only, so CI runs the whole check).
+
+| File | Source | Covers |
+|---|---|---|
+| `regressions/extra_analytics_regressions.json.gz` | extra-analytics.html: positional `DATA`, `STD_COEF`, `COEF_PVAL`, `CORR_R`, the R2 in the methodology text, and the quarterly `coefs`, `corrs`, `pvals` | the positional table reproduces exactly from `weekly_rosters_bracket_only.csv.gz` (game weeks) and `matchup_data.csv.gz`; its regression is within 0.005 (0.012 for p-values) of that fit; the quarterly correlations reproduce exactly, its coefficients and p-values do not (replaced, Ethan's decision) |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.
