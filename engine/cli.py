@@ -147,6 +147,9 @@ def load_goldens(golden_dir: Path) -> dict:
     for key, n in DRAFT_JSON_GOLDENS.items():
         with gzip.open(golden_dir / "draft" / f"{n}.json.gz", "rt", encoding="utf-8") as f:
             golden[key] = json.load(f)
+    golden["schedule_luck_season"] = pd.read_csv(golden_dir / "schedule" / "schedule_luck_season.csv.gz")
+    with gzip.open(golden_dir / "schedule" / "schedule_swap.json.gz", "rt", encoding="utf-8") as f:
+        golden["schedule_swap"] = json.load(f)
     return golden
 
 
@@ -169,6 +172,7 @@ def _report(title: str, checks: list, info: list[str], detail_dir: Path, prefix:
 def cmd_analyze(args: argparse.Namespace) -> int:
     from engine.analytics.draft import analyze_draft
     from engine.analytics.records import analyze_records
+    from engine.analytics.schedule import analyze_schedule
     from engine.analytics.trades import analyze_trades
     from engine.config import excluded_manager_keys
     from engine.store import canonical_dir, read_tables, write_tables
@@ -182,7 +186,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     tables = read_tables(src)
 
     exclude = excluded_manager_keys(cfg)
-    results = {**analyze_trades(tables), **analyze_records(tables, exclude)}
+    results = {**analyze_trades(tables), **analyze_records(tables, exclude), **analyze_schedule(tables, exclude)}
     if "player_stats" in tables and len(tables["player_stats"]):
         results.update(analyze_draft(tables, exclude))
     else:
@@ -201,6 +205,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         return 0
     from engine.legacy_draft import verify_draft
     from engine.legacy_records import verify_records
+    from engine.legacy_schedule import verify_schedule
     from engine.legacy_trades import verify_trades
 
     golden = load_goldens(Path(args.golden))
@@ -212,8 +217,11 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     _report("Verifying records and lineups against the legacy site files:", record_checks, [], detail_dir, "records")
     draft_checks, draft_info = verify_draft(tables, golden, cfg)
     _report("Verifying draft value against the legacy draft files:", draft_checks, draft_info, detail_dir, "draft")
+    schedule_checks, schedule_info = verify_schedule(tables, golden, cfg)
+    _report("Verifying schedule luck and swap against the legacy files:", schedule_checks, schedule_info,
+            detail_dir, "schedule")
     print(f"\nFull detail: {detail_dir}/")
-    return 0 if all(r.ok for r in trade_checks + record_checks + draft_checks) else 1
+    return 0 if all(r.ok for r in trade_checks + record_checks + draft_checks + schedule_checks) else 1
 
 
 def main(argv: list[str] | None = None) -> int:
