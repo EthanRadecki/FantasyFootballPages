@@ -6,8 +6,8 @@ This first version is built from script names and the files each script reads an
 
 | New module | Replaces | Main simplification |
 |---|---|---|
-| `providers/espn.py` (done) | `pull_espn_inseason_data`, `pull_espn_stats`, `pull_espn_2026`, `pull_espn_stats_2026`, `pull_current_season_data`, `test_espn_*`, `test_kona_playercard` | One pull path for every season |
-| `normalize/espn.py` | `parse_draft_history`, `match_players`, `rename_players` | ESPN player and member ids replace name matching; draft picks come from ESPN |
+| `providers/espn.py` (done; legacy pulls and API tests deleted, PR #27) | `pull_espn_inseason_data`, `pull_espn_stats`, `pull_espn_2026`, `pull_espn_stats_2026`, `pull_current_season_data`, `test_espn_*`, `test_kona_playercard` | One pull path for every season |
+| `normalize/espn.py` (done; legacy scripts deleted, PR #27) | `parse_draft_history`, `match_players`, `rename_players` | ESPN player and member ids replace name matching; draft picks come from ESPN |
 | `analytics/stints.py` (trade stints built) | `compute_stints`, `rebuild_player_stints` | One stint builder with the forfeit fix built in |
 | `analytics/waivers.py` (built and verified) | `generate_roster_stints`, `generate_waiver_stint_data`, the lost `waiver_stints_full.csv` builder | Waiver stint rules recovered from the legacy file and written down; roster stints from counted games |
 | `analytics/trades.py` (built and verified, PR #6; trade explorer PR #26) | `detect_trade_reversals`, `build_trade_universe`, `compute_metrics`, `compute_quad`, `build_trade_explorer_data`, trade parts of `regenerate_data_files` | A five-file relay becomes function calls |
@@ -26,7 +26,7 @@ This first version is built from script names and the files each script reads an
 | `analytics/matchup_history.py` (built and verified) | extra-analytics.html blocks with no script: head-to-head matrix (`export_h2h_matrix` logic), closest games, conference analysis | Every number from counted games; conference from ESPN's division id |
 | `analytics/regressions.py` (built and verified) | `export_quarterly_regression` (numbers only), and the positional production table and regression on extra-analytics.html (no script) | One fit for each model, from counted games; the page's unreproducible quarterly numbers replaced |
 | `publish/` | remaining `regenerate_data_files`, all `export_*` output code, `update_2026` | One JSON writer; no in-place patching |
-| (deleted) | `player_ppr_pullscript.R`, `build_cards.py` (confirm) | |
+| (deleted, PR #27) | `player_ppr_pullscript.R` (old nflfastR stats pull); `build_cards.py` (schedule-reveal PNG experiment; Ethan, session 5. schedule_release.html stays and never read its output) | |
 | (retired, not ported) | `export_luck_analysis`, `export_h2h_matrix`, `export_draft_analysis`, `export_similarity_grid` (one-off portfolio PNGs; `export_quarterly_regression`'s numbers are ported, its PNG retired); `historical_similarity` (never on the site; Ethan, session 4); `build_attribution_model_final` (an earlier attribution model, superseded); `generate_archetypes` (fed no page; Ethan, session 5); `generate_fingerprints` (managers.html's 7-measure radar, reproduced in session 5 with the weighted surplus, then replaced by the 10-measure profile; Ethan, session 5); `pull_nfl_schedule`, `pull_player_opponents`, `build_position_sos_index` (a different project) | |
 
 ## Shared rules, defined once
