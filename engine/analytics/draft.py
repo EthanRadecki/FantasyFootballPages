@@ -169,22 +169,29 @@ def live_seasons_from(sur: pd.DataFrame) -> list[int]:
     return sorted(sur.loc[sur["live"], "season"].unique().tolist()) if "live" in sur else []
 
 
+def _visible_rank(values: pd.Series, hidden: pd.Series) -> pd.Series:
+    """Rank (1 = highest) among visible rows only; hidden rows get no rank."""
+    r = values.where(~hidden).rank(ascending=False, method="first")
+    return r.astype("Int64")
+
+
 def career_grades(sur: pd.DataFrame, seasons: list[int]) -> pd.DataFrame:
     s = sur[sur["season"].isin(seasons)]
     g = s.groupby("manager_key").agg(weighted_total=("surplus_wtd", "sum"), total_weight=("weight", "sum"),
-                                     total_picks=("player_id", "size"), seasons=("season", "nunique")).reset_index()
+                                     total_picks=("player_id", "size"), seasons=("season", "nunique"),
+                                     hidden=("hidden", "any")).reset_index()
     g["avg_surplus"] = (g["weighted_total"] / g["total_weight"]).round(4)
     g = g.sort_values("avg_surplus", ascending=False, kind="stable").reset_index(drop=True)
-    g["rank"] = g.index + 1
+    g["rank"] = _visible_rank(g["avg_surplus"], g["hidden"])
     return g
 
 
 def season_grades(sur: pd.DataFrame) -> pd.DataFrame:
     g = sur.groupby(["season", "manager_key"]).agg(
         draft_grade=("surplus_wtd", "sum"), total_weight=("weight", "sum"), total_picks=("player_id", "size"),
-        picks_with_data=("zeroed", lambda z: int((~z).sum()))).reset_index()
+        picks_with_data=("zeroed", lambda z: int((~z).sum())), hidden=("hidden", "any")).reset_index()
     g["draft_grade"] = g["draft_grade"].round(2)
-    g["season_rank"] = g.groupby("season")["draft_grade"].rank(ascending=False).astype(int)
+    g["season_rank"] = g["draft_grade"].where(~g["hidden"]).groupby(g["season"]).rank(ascending=False).astype("Int64")
     return g
 
 
@@ -192,7 +199,7 @@ def heatmap(sur: pd.DataFrame) -> pd.DataFrame:
     """Per manager, round, and draft slot: average surplus and the picks."""
     g = sur.groupby(["manager_key", "round", "draft_slot"]).agg(
         avg_surplus=("surplus", lambda s: round(float(np.mean([round(float(x), 2) for x in s])), 3)),
-        n_seasons=("surplus", "size")).reset_index()
+        n_seasons=("surplus", "size"), hidden=("hidden", "any")).reset_index()
     return g
 
 
@@ -261,16 +268,23 @@ def analyze_draft(tables: dict[str, pd.DataFrame], exclude: set[str] = frozenset
 
     legacy_mode reproduces the legacy files: ESPN's pick numbering, the legacy
     player universe (rostered plus 500 free agents), no games floor for the
-    baseline, and the hand-kept injury list. Hit rate keeps every manager, as the legacy file did.
+    baseline, the hand-kept injury list, and excluded managers' picks dropped
+    before surplus. Hit rate keeps every manager, as the legacy file did.
+
+    Engine mode: excluded managers' picks count in every calculation (the
+    expected-PRV comparison pool included) and are only hidden: every output
+    row carries `hidden`, and ranks count visible managers only.
     """
     live = live_seasons(tables)
     stats = season_stats(tables, legacy_universe if legacy_mode else None)
-    picks = skill_picks(tables, exclude, espn_numbering=legacy_mode)
+    picks = skill_picks(tables, exclude if legacy_mode else frozenset(), espn_numbering=legacy_mode)
+    picks["hidden"] = picks["manager_key"].isin(exclude)
     weeks_played = live_weeks_played(tables, live)
     sur = surplus(picks, stats, live, force_zero, no_stats, baseline_floor=not legacy_mode, live_weeks=weeks_played)
     finished = sorted(set(sur["season"]) - live)
     all_picks = skill_picks(tables, frozenset(), espn_numbering=legacy_mode)
     h = hits(all_picks[~all_picks["season"].isin(live)], stats, hit_force_zero)
+    h["hidden"] = h["manager_key"].isin(exclude)
     return {
         "draft_baselines": baselines(stats, weeks_played, min_games=not legacy_mode),
         "draft_surplus": sur,

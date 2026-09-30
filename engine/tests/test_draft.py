@@ -73,3 +73,17 @@ def test_hit_needs_the_top_n_cutoff_among_players_with_ten_games():
     # cutoff = 7th best of 1..10 = 4.0 (the 3-game player is not in the benchmark)
     assert h.at[4, "hit"] and not h.at[3, "hit"] and h.at[99, "hit"]
     assert h.at[4, "pts_above_avg"] == round(4.0 - 5.5, 2)
+
+
+def test_hidden_managers_are_graded_but_not_ranked():
+    import pandas as pd
+
+    from engine.analytics import draft
+
+    sur = pd.DataFrame({"season": 2020, "manager_key": ["a", "x", "b"], "player_id": [1, 2, 3],
+                        "surplus_wtd": [1.0, 5.0, -1.0], "weight": 1.0, "zeroed": False,
+                        "hidden": [False, True, False]})
+    career = draft.career_grades(sur, [2020]).set_index("manager_key")
+    assert career.loc["a", "rank"] == 1 and career.loc["b", "rank"] == 2 and pd.isna(career.loc["x", "rank"])
+    season = draft.season_grades(sur).set_index("manager_key")
+    assert season.loc["a", "season_rank"] == 1 and pd.isna(season.loc["x", "season_rank"])

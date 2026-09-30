@@ -229,4 +229,25 @@ def verify_draft(tables: dict, golden: dict, cfg: dict) -> tuple[list[Comparison
         check_heatmap(legacy, golden["draft_heatmap"], cfg),
         check_hit_rate(legacy, golden["hit_rate_data"], tables, cfg),
     ]
-    return results, info + engine_vs_legacy(engine, legacy, cfg)
+    return results, info + engine_vs_legacy(engine, legacy, cfg) + hidden_effect(tables, engine, exclude, cfg)
+
+
+def hidden_effect(tables: dict, engine: dict, exclude: set[str], cfg: dict) -> list[str]:
+    """INFO: the effect of counting excluded managers' picks (hidden) instead
+    of dropping them, measured against the engine with those picks dropped."""
+    dp = tables["draft_picks"]
+    dropped = draft_mod.analyze_draft({**tables, "draft_picks": dp[~dp["manager_key"].isin(exclude)]}, exclude)
+    k = ["season", "overall_pick"]
+    e, d = engine["draft_surplus"], dropped["draft_surplus"]
+    m = e[~e["hidden"]].merge(d, on=k, suffixes=("_e", "_d"))
+    moved = (m["surplus_e"] - m["surplus_d"]).abs()
+    lines = [f"INFO  excluded managers' picks count in every calculation, hidden from view: "
+             f"{int(e['hidden'].sum())} hidden pick(s); visible picks moving surplus: "
+             f"{int((moved > 0.5).sum())} by more than 0.5, {int(((moved > 0.005) & (moved <= 0.5)).sum())} by 0.005 to 0.5"]
+    who = {m_["id"]: m_["name"] for m_ in cfg.get("managers") or []}
+    c = engine["draft_career_grades"].merge(dropped["draft_career_grades"], on="manager_key", suffixes=("_e", "_d"))
+    c = c[c["rank_e"].notna() & (c["rank_e"] != c["rank_d"])]
+    if len(c):
+        lines.append("      career rank changes from this rule: " + ", ".join(
+            f"{who.get(r.manager_key, r.manager_key)} {r.rank_d} -> {r.rank_e}" for r in c.itertuples()))
+    return lines
