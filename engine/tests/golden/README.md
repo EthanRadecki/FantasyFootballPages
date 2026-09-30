@@ -47,4 +47,13 @@ Legacy site files for the records and lineups module, added 2026-09-29. Checked 
 | `draft/hit_rate_data.json.gz` | `hit_rate_by_round.py` | hit rate by round and tier, steals |
 | `draft/draft_with_stats.csv.gz` | `match_players.py` | legacy pick-to-stats name matches, including the hand-kept `manual_zero` list |
 
+## schedule/
+
+Added 2026-09-29. Checked by `engine analyze --verify` and by `engine/tests/test_schedule.py`, which rebuilds matchups from `matchup_data.csv.gz` so CI covers the port.
+
+| File | Source | Covers |
+|---|---|---|
+| `schedule/schedule_luck_season.csv.gz` | `build_schedule_luck.py` output | per manager and season, 2020-2025. Built from an older `matchup_data.csv`: two 2025 rows (Hancock, Bileydi) trade one expected win, excused by rerunning the legacy logic on the current file |
+| `schedule/schedule_swap.json.gz` | `build_schedule_swap.py` output | identical to `SCHEDULE_SWAP_DATA` inline in `extra-analytics.html` |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.

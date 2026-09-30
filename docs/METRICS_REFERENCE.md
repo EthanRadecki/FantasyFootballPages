@@ -163,3 +163,32 @@ The Manager Leaderboard offers both, and they answer genuinely different questio
 ### Biggest Lineup Blunders
 
 **What it is:** the single worst individual weeks in league history, ranked by raw Efficiency Gap. These are the actual instances behind the aggregate leaderboard numbers, with full roster detail (who was started, who was benched, and by how much) available per entry.
+
+---
+
+## Schedule Luck and Schedule Swap (extra-analytics.html)
+
+Both use finished regular-season games only. Playoff games of every tier are left out: once the field shrinks to 8, 4, then 2 teams, comparing a score with "the league" stops meaning anything. Bye weeks are not games and never count.
+
+### Schedule Luck
+
+**What it measures:** wins a manager got (or lost) because of who they happened to play. Each week, a score above the league median "should have" won regardless of the opponent. Luck = actual wins - expected wins, per season, summed for the career chart.
+
+**Ties and the median:** a tie counts as half a win, and a score exactly equal to the median is half an expected win. The second case is common, not a rounding curiosity: in a week with an odd number of teams (2020, 15 teams with rotating byes), the middle team's score *is* the median. The legacy version gave that team 0 expected wins.
+
+**Excluded managers:** Sullivan and Serafin count in every calculation (their scores set the weekly median, their games count) and are only hidden from view.
+
+### Schedule Swap
+
+**What it measures:** every manager's own weekly score, replayed against every other manager's real opponents and the scores those opponents put up. Each cell is "manager A wearing B's schedule"; the summary is A's average win% across all the other schedules, compared with A's real win%.
+
+**Why win% and not wins:** schedules are not all the same length (2020 had rotating byes, so managers played 9 to 11 games), so records compare as percentages. Wins gained converts the win% difference back into wins over that season's regular-season length (13 weeks in 2020 and 2021, 14 since).
+
+**Weeks left out of one pairing:**
+1. **B played A that week.** A cannot play itself, so that week drops from "A wearing B's schedule" only. Most pairs meet once a season; rivalry pairs meet twice.
+2. **A had no game that week** (a 2020 bye).
+3. **A forfeited that week** (Castaldo 2024 week 14, a sat lineup scoring 0). The loss stays in his real record, but the 0 is not a performance, so it is never used as his score on someone else's schedule.
+
+A forfeit still counts as the opponent's score: Slansky got the win against Castaldo's 0 in 2024 week 14, so every manager wearing Slansky's schedule gets that win too.
+
+**Excluded managers:** Sullivan and Serafin count in every calculation (their schedules are worn, their games stay in everyone else's schedule, and their rows feed each average) and are only hidden from view.
