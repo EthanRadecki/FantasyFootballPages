@@ -81,4 +81,14 @@ Added 2026-09-29. Checked by `engine analyze --verify`.
 | `waivers/waiver_page.json.gz` | `LEADERBOARD_FULL`, `CONTESTED_SPLIT`, `BEST_BY_MANAGER`, `BEST_PICKUPS_BY_FILTER` from waiver-value.html | the page's aggregates (computed from the file's rounded values) |
 | `waivers/roster_stints.json.gz` | `data/roster_stints.json` (managers page) | runs of counted game weeks per manager and player, 2020 through 2026 week 2 |
 
+## position_impact/
+
+Added 2026-09-29. Checked by `engine analyze --verify`, which rebuilds the scripts' inputs from the legacy files (games from `matchup_data.csv.gz` in file order, picks from `draft_history_all_positions.csv.gz`, players keyed by name) and compares every section of both pages.
+
+| File | Source | Covers |
+|---|---|---|
+| `position_impact/position_impact_data.json.gz` | `data/position_impact_data.json` (`generate_position_impact.py`) | 598 games, 2020-2025 |
+| `position_impact/dst_removed_data.json.gz` | `data/dst_removed_data.json` (`generate_dst_impact.py`) | built from an older `matchup_data.csv` (McQuaid 84.46 in 2025 week 14) |
+| `position_impact/player_stints.csv.gz` | `GitHubRepoData/player_stints.csv`, the trade stints both scripts read | differs from `trades/player_stints_fixed.csv.gz` on 56 stint lengths |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.
