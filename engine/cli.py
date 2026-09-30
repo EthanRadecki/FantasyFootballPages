@@ -161,6 +161,8 @@ def load_goldens(golden_dir: Path) -> dict:
         golden[n] = pd.read_csv(golden_dir / "sos" / f"{n}.csv.gz")
     with gzip.open(golden_dir / "sos" / "rankings_2026_week03.json.gz", "rt", encoding="utf-8") as f:
         golden["rankings_2026_week03"] = json.load(f)
+    with gzip.open(golden_dir / "playoff_odds" / "playoff_odds.json.gz", "rt", encoding="utf-8") as f:
+        golden["playoff_odds"] = json.load(f)
     return golden
 
 
@@ -183,6 +185,7 @@ def _report(title: str, checks: list, info: list[str], detail_dir: Path, prefix:
 def cmd_analyze(args: argparse.Namespace) -> int:
     from engine.analytics.draft import analyze_draft
     from engine.analytics.records import analyze_records
+    from engine.analytics.playoff_odds import analyze_playoff_odds
     from engine.analytics.projected_sos import analyze_projected_sos
     from engine.analytics.schedule import analyze_schedule
     from engine.analytics.trades import analyze_trades
@@ -200,6 +203,8 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     exclude = excluded_manager_keys(cfg)
     results = {**analyze_trades(tables), **analyze_records(tables, exclude), **analyze_schedule(tables, exclude),
                **analyze_projected_sos(tables, exclude)}
+    odds_cutoff = ((cfg.get("analysis") or {}).get("playoff_odds") or {}).get("cutoff")
+    results.update(analyze_playoff_odds({**tables, **results}, exclude, odds_cutoff))
     if "player_stats" in tables and len(tables["player_stats"]):
         results.update(analyze_draft(tables, exclude))
     else:
@@ -222,10 +227,21 @@ def cmd_analyze(args: argparse.Namespace) -> int:
         print(view[["manager", "own_avg_proj_ppg", "sos_avg_opp_ppg", "sos_rank", "weeks_counted"]]
               .to_string(index=False))
 
+    odds = results.get("playoff_odds")
+    if odds is not None and len(odds):
+        names = {m["id"]: m["name"] for m in cfg.get("managers") or []}
+        last = odds[odds["season"] == odds["season"].max()]
+        last = last[(last["week"] == last["week"].max()) & ~last["hidden"]]
+        print(f"\nPlayoff odds, {int(last['season'].iloc[0])} week {int(last['week'].iloc[0])} "
+              f"({last['method'].iloc[0]}, top {int(last['cutoff'].iloc[0])}):")
+        print(last.assign(manager=last["manager_key"].map(names)).sort_values("odds", ascending=False)[
+            ["manager", "odds"]].to_string(index=False))
+
     if not args.verify:
         return 0
     from engine.legacy_draft import verify_draft
     from engine.legacy_records import verify_records
+    from engine.legacy_playoff_odds import verify_playoff_odds
     from engine.legacy_schedule import verify_schedule
     from engine.legacy_sos import verify_projected_sos
     from engine.legacy_trades import verify_trades
@@ -245,8 +261,11 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     sos_checks, sos_info = verify_projected_sos(tables, golden, cfg)
     _report("Verifying projected strength of schedule against the legacy files:", sos_checks, sos_info,
             detail_dir, "sos")
+    odds_checks, odds_info = verify_playoff_odds({**tables, **results}, golden, cfg)
+    _report("Verifying playoff odds against the legacy files (about a minute):", odds_checks, odds_info,
+            detail_dir, "odds")
     print(f"\nFull detail: {detail_dir}/")
-    checks = trade_checks + record_checks + draft_checks + schedule_checks + sos_checks
+    checks = trade_checks + record_checks + draft_checks + schedule_checks + sos_checks + odds_checks
     return 0 if all(r.ok for r in checks) else 1
 
 

@@ -115,7 +115,9 @@ corrections:
 
 analysis:
   record_games: [regular_season, winners_bracket]   # consolation games never count toward records or stats
-  exclude_managers: [thomas-sullivan, william-serafin]   # 2020-only, excluded from surplus analyses
+  exclude_managers: [thomas-sullivan, william-serafin]   # 2020-only: counted in every calculation, hidden from view
+  playoff_odds:
+    cutoff: 8     # top 8 count as making the playoffs (real brackets: 15 teams in 2020, 9 in 2021, 8 since)
   exclude_games:
     - { manager: ben-castaldo, season: 2024, week: 14, from: [ppg] }   # sat lineup; loss still counts
 

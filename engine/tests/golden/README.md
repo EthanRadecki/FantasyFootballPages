@@ -67,4 +67,8 @@ Added 2026-09-29. Checked by `engine analyze --verify` and by `engine/tests/test
 | `sos/schedule_2026.csv.gz` | the `schedule_2026.csv` next to the legacy script on the local pipeline | an early draft of the 2026 schedule; differs from ESPN's and from `data/schedule_2026.csv` from week 2 on, so the published week 1-3 SOS used the wrong opponents |
 | `sos/rankings_2026_week03.json.gz` | `data/rankings/2026_week03.json` | the SOS values copied onto the rankings page |
 
+## playoff_odds/
+
+Added 2026-09-29. `playoff_odds/playoff_odds.json.gz` is `data/rankings/playoff_odds.json`: 2020-2025 from `generate_playoff_odds.py` (reproduced exactly from `matchup_data.csv.gz`), 2026 weeks 1-3 from `generate_playoff_odds_2026_live.py` (week 3 reproduced exactly from the `sos/` goldens and 2026 results in `records/matchups.json.gz`; week 2's projection input no longer exists). CI checks 2020 and 2026 week 3; `engine analyze --verify` checks every season.
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.
