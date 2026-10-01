@@ -110,6 +110,14 @@ Added 2026-09-29. Checked by `engine analyze --verify`.
 | `waivers/roster_stints.json.gz` | `data/roster_stints.json` (managers page) | runs of counted game weeks per manager and player, 2020 through 2026 week 2 |
 | `waivers/waiver_value_page.json.gz` | every inline data block of `pages/waiver-value.html`, frozen 2026-10-01 with `tools/freeze_golden.py` (PR A6a); its four aggregates equal `waiver_page.json.gz` and its `WAIVER_STINTS` the stint file | checked by `engine build --verify` (the legacy view built from legacy-mode stints) and `engine/tests/test_publish_transactions.py` (built from `waiver_stints_full.csv.gz`). 33 player names differ from ESPN's (Gabriel Davis, Gardner Minshew II): the same pickups, excused by that pattern |
 
+## lineups/
+
+Added 2026-10-01 (PR A6b). Checked by `engine build --verify` (the legacy view built from legacy-mode lineup efficiency) and `engine/tests/test_publish_transactions.py` (built from `trades/lineup_efficiency.csv.gz` and `weekly_rosters_bracket_only.csv.gz`).
+
+| File | Source | Covers |
+|---|---|---|
+| `lineups/lineup_efficiency_page.json.gz` | every inline data block of `pages/lineup-efficiency.html`, frozen with `tools/freeze_golden.py` (builders: `generate_lineup_efficiency.py`, `generate_blunder_rosters.py`, lost page steps) | efficiency, missed wins, blunders and their rosters, bench depth, depth-adjusted efficiency, season trend, depth vs win %, heatmap and career grid, 2020-2025. Means at a rounding tie (float noise; 8 values) excused by nudging every gap 1e-9 |
+
 ## position_impact/
 
 Added 2026-09-29. Checked by `engine analyze --verify`, which rebuilds the scripts' inputs from the legacy files (games from `matchup_data.csv.gz` in file order, picks from `draft_history_all_positions.csv.gz`, players keyed by name) and compares every section of both pages.

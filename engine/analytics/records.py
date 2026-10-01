@@ -88,8 +88,9 @@ def best_weeks(tables: dict[str, pd.DataFrame], per_group: int = BEST_WEEKS_PER_
     return top[["manager_key", "player_id", "player_name", "position", "season", "week", "points"]].reset_index(drop=True)
 
 
-def analyze_records(tables: dict[str, pd.DataFrame], exclude_managers: set[str] = frozenset()) -> dict[str, pd.DataFrame]:
-    eff = lineups_mod.efficiency(tables)
+def analyze_records(tables: dict[str, pd.DataFrame], exclude_managers: set[str] = frozenset(),
+                    legacy_mode: bool = False) -> dict[str, pd.DataFrame]:
+    eff = lineups_mod.efficiency(tables, exclude_managers, legacy_mode=legacy_mode)
     leaders = player_seasons_by_manager(tables)
     best = best_weeks(tables)
     return {
