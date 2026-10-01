@@ -182,8 +182,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -10.5,
-      "draft_surplus_total": -10.5,
+      "draft_grade": 0.25,
+      "draft_surplus_total": 0.25,
       "draft_picks": [
         {
           "player": "Jahmyr Gibbs",
@@ -195,7 +195,7 @@
           "espn_adp": 1.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": 8.7561
+          "surplus_value": 13.5135
         },
         {
           "player": "Drake London",
@@ -207,7 +207,7 @@
           "espn_adp": 17.0,
           "adp_deviation": -11.0,
           "grade": null,
-          "surplus_value": -10.2227
+          "surplus_value": -2.382
         },
         {
           "player": "George Pickens",
@@ -219,7 +219,7 @@
           "espn_adp": 28.0,
           "adp_deviation": -1.0,
           "grade": null,
-          "surplus_value": -9.5132
+          "surplus_value": -6.416
         },
         {
           "player": "David Montgomery",
@@ -231,7 +231,7 @@
           "espn_adp": 53.0,
           "adp_deviation": -3.0,
           "grade": null,
-          "surplus_value": 3.8611
+          "surplus_value": 0.9536
         },
         {
           "player": "Terry McLaurin",
@@ -243,7 +243,7 @@
           "espn_adp": 51.0,
           "adp_deviation": -6.0,
           "grade": null,
-          "surplus_value": -9.7279
+          "surplus_value": -4.0012
         },
         {
           "player": "Rico Dowdle",
@@ -255,7 +255,7 @@
           "espn_adp": 82.0,
           "adp_deviation": -2.0,
           "grade": null,
-          "surplus_value": -5.6429
+          "surplus_value": -5.3288
         },
         {
           "player": "Trevor Lawrence",
@@ -267,7 +267,7 @@
           "espn_adp": 89.0,
           "adp_deviation": 4.0,
           "grade": null,
-          "surplus_value": -0.4646
+          "surplus_value": 0.9629
         },
         {
           "player": "Chuba Hubbard",
@@ -279,7 +279,7 @@
           "espn_adp": 83.0,
           "adp_deviation": -29.0,
           "grade": null,
-          "surplus_value": 8.1743
+          "surplus_value": 7.3765
         },
         {
           "player": "Dalton Kincaid",
@@ -291,7 +291,7 @@
           "espn_adp": 127.0,
           "adp_deviation": 14.0,
           "grade": null,
-          "surplus_value": 11.0183
+          "surplus_value": 4.6188
         },
         {
           "player": "Isiah Pacheco",
@@ -315,7 +315,7 @@
           "espn_adp": 125.0,
           "adp_deviation": -16.0,
           "grade": null,
-          "surplus_value": -4.1617
+          "surplus_value": -2.9048
         },
         {
           "player": "Eddy Pineiro",
@@ -351,7 +351,7 @@
           "espn_adp": 164.0,
           "adp_deviation": -32.0,
           "grade": null,
-          "surplus_value": -3.3184
+          "surplus_value": -0.783
         },
         {
           "player": "Dontayvion Wicks",
@@ -363,7 +363,7 @@
           "espn_adp": 177.0,
           "adp_deviation": -20.0,
           "grade": null,
-          "surplus_value": 3.5682
+          "surplus_value": 1.6021
         },
         {
           "player": "Jauan Jennings",
@@ -375,7 +375,7 @@
           "espn_adp": 202.0,
           "adp_deviation": -22.0,
           "grade": null,
-          "surplus_value": 0.0
+          "surplus_value": -9.0453
         }
       ],
       "proj_ppg_ros": 111.57
@@ -396,8 +396,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -3.18,
-      "draft_surplus_total": -3.18,
+      "draft_grade": 8.7,
+      "draft_surplus_total": 8.7,
       "draft_picks": [
         {
           "player": "Ja'Marr Chase",
@@ -409,7 +409,7 @@
           "espn_adp": 3.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": -6.4859
+          "surplus_value": -2.4935
         },
         {
           "player": "Chris Olave",
@@ -421,7 +421,7 @@
           "espn_adp": 24.0,
           "adp_deviation": -2.0,
           "grade": null,
-          "surplus_value": 8.2535
+          "surplus_value": 6.7649
         },
         {
           "player": "Javonte Williams",
@@ -433,7 +433,7 @@
           "espn_adp": 32.0,
           "adp_deviation": 1.0,
           "grade": null,
-          "surplus_value": 1.493
+          "surplus_value": 2.4862
         },
         {
           "player": "Bhayshul Tuten",
@@ -445,7 +445,7 @@
           "espn_adp": 49.0,
           "adp_deviation": -5.0,
           "grade": null,
-          "surplus_value": -0.6272
+          "surplus_value": 1.616
         },
         {
           "player": "Jameson Williams",
@@ -457,7 +457,7 @@
           "espn_adp": 52.0,
           "adp_deviation": -7.0,
           "grade": null,
-          "surplus_value": -8.4131
+          "surplus_value": -6.887
         },
         {
           "player": "Mike Evans",
@@ -469,7 +469,7 @@
           "espn_adp": 65.0,
           "adp_deviation": -17.0,
           "grade": null,
-          "surplus_value": -0.3005
+          "surplus_value": 0.19
         },
         {
           "player": "Jonathon Brooks",
@@ -481,7 +481,7 @@
           "espn_adp": 87.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": -6.9655
+          "surplus_value": -6.36
         },
         {
           "player": "Juwan Johnson",
@@ -493,7 +493,7 @@
           "espn_adp": 149.0,
           "adp_deviation": 39.0,
           "grade": null,
-          "surplus_value": 4.1789
+          "surplus_value": 7.2145
         },
         {
           "player": "Matthew Stafford",
@@ -505,7 +505,7 @@
           "espn_adp": 115.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": -1.8346
+          "surplus_value": 0.3555
         },
         {
           "player": "Keaton Mitchell",
@@ -517,7 +517,7 @@
           "espn_adp": 159.0,
           "adp_deviation": 21.0,
           "grade": null,
-          "surplus_value": -6.2361
+          "surplus_value": -2.0702
         },
         {
           "player": "Adonai Mitchell",
@@ -529,7 +529,7 @@
           "espn_adp": 167.0,
           "adp_deviation": 24.0,
           "grade": null,
-          "surplus_value": 0.3662
+          "surplus_value": 1.3198
         },
         {
           "player": "Ravens D/ST",
@@ -553,7 +553,7 @@
           "espn_adp": 165.0,
           "adp_deviation": -6.0,
           "grade": null,
-          "surplus_value": 5.4102
+          "surplus_value": 3.2206
         },
         {
           "player": "Jordan Love",
@@ -565,7 +565,7 @@
           "espn_adp": 156.0,
           "adp_deviation": -38.0,
           "grade": null,
-          "surplus_value": 2.5258
+          "surplus_value": 3.5515
         },
         {
           "player": "Dalton Schultz",
@@ -577,7 +577,7 @@
           "espn_adp": 207.0,
           "adp_deviation": 8.0,
           "grade": null,
-          "surplus_value": 10.0498
+          "surplus_value": 5.7549
         },
         {
           "player": "Chase McLaughlin",
@@ -610,8 +610,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -6.55,
-      "draft_surplus_total": -6.55,
+      "draft_grade": 25.89,
+      "draft_surplus_total": 25.89,
       "draft_picks": [
         {
           "player": "Jaxon Smith-Njigba",
@@ -623,7 +623,7 @@
           "espn_adp": 6.0,
           "adp_deviation": -1.0,
           "grade": null,
-          "surplus_value": 13.5244
+          "surplus_value": 15.0016
         },
         {
           "player": "Brock Bowers",
@@ -635,7 +635,7 @@
           "espn_adp": 22.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": 0.0
+          "surplus_value": 13.3952
         },
         {
           "player": "Cam Skattebo",
@@ -647,7 +647,7 @@
           "espn_adp": 46.0,
           "adp_deviation": 11.0,
           "grade": null,
-          "surplus_value": -3.4912
+          "surplus_value": -2.3904
         },
         {
           "player": "Tyler Warren",
@@ -659,7 +659,7 @@
           "espn_adp": 55.0,
           "adp_deviation": 5.0,
           "grade": null,
-          "surplus_value": 0.8836
+          "surplus_value": 0.9959
         },
         {
           "player": "Luther Burden III",
@@ -671,7 +671,7 @@
           "espn_adp": 60.0,
           "adp_deviation": -3.0,
           "grade": null,
-          "surplus_value": -8.1166
+          "surplus_value": -3.2108
         },
         {
           "player": "Tony Pollard",
@@ -683,7 +683,7 @@
           "espn_adp": 74.0,
           "adp_deviation": -4.0,
           "grade": null,
-          "surplus_value": -6.6696
+          "surplus_value": -3.6982
         },
         {
           "player": "Michael Wilson",
@@ -695,7 +695,7 @@
           "espn_adp": 80.0,
           "adp_deviation": -11.0,
           "grade": null,
-          "surplus_value": -7.4268
+          "surplus_value": -0.1481
         },
         {
           "player": "Blake Corum",
@@ -707,7 +707,7 @@
           "espn_adp": 109.0,
           "adp_deviation": 3.0,
           "grade": null,
-          "surplus_value": -2.4705
+          "surplus_value": -3.3159
         },
         {
           "player": "Tyler Shough",
@@ -719,7 +719,7 @@
           "espn_adp": 128.0,
           "adp_deviation": 9.0,
           "grade": null,
-          "surplus_value": 5.8318
+          "surplus_value": 6.5756
         },
         {
           "player": "Jalen McMillan",
@@ -743,7 +743,7 @@
           "espn_adp": 102.0,
           "adp_deviation": -45.0,
           "grade": null,
-          "surplus_value": 10.2058
+          "surplus_value": 12.7891
         },
         {
           "player": "Dylan Sampson",
@@ -791,7 +791,7 @@
           "espn_adp": 212.0,
           "adp_deviation": 9.0,
           "grade": null,
-          "surplus_value": -7.1946
+          "surplus_value": -7.3186
         },
         {
           "player": "Chris Bell",
@@ -803,7 +803,7 @@
           "espn_adp": 232.0,
           "adp_deviation": 14.0,
           "grade": null,
-          "surplus_value": -7.2586
+          "surplus_value": -3.9507
         }
       ],
       "proj_ppg_ros": 119.23
@@ -824,8 +824,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -2.05,
-      "draft_surplus_total": -2.05,
+      "draft_grade": -7.5,
+      "draft_surplus_total": -7.5,
       "draft_picks": [
         {
           "player": "James Cook",
@@ -837,7 +837,7 @@
           "espn_adp": 9.0,
           "adp_deviation": -1.0,
           "grade": null,
-          "surplus_value": 0.0
+          "surplus_value": -1.0678
         },
         {
           "player": "A.J. Brown",
@@ -849,7 +849,7 @@
           "espn_adp": 19.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": -12.7678
+          "surplus_value": -12.0154
         },
         {
           "player": "Josh Allen",
@@ -861,7 +861,7 @@
           "espn_adp": 26.0,
           "adp_deviation": -12.0,
           "grade": null,
-          "surplus_value": 17.6837
+          "surplus_value": 11.1574
         },
         {
           "player": "D'Andre Swift",
@@ -873,7 +873,7 @@
           "espn_adp": 47.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": 7.8324
+          "surplus_value": 4.5331
         },
         {
           "player": "Christian Watson",
@@ -885,7 +885,7 @@
           "espn_adp": 75.0,
           "adp_deviation": 9.0,
           "grade": null,
-          "surplus_value": 8.8173
+          "surplus_value": 9.2046
         },
         {
           "player": "Courtland Sutton",
@@ -897,7 +897,7 @@
           "espn_adp": 71.0,
           "adp_deviation": -4.0,
           "grade": null,
-          "surplus_value": -10.6616
+          "surplus_value": -8.6431
         },
         {
           "player": "RJ Harvey",
@@ -909,7 +909,7 @@
           "espn_adp": 103.0,
           "adp_deviation": 9.0,
           "grade": null,
-          "surplus_value": -4.2784
+          "surplus_value": -2.5142
         },
         {
           "player": "Jake Ferguson",
@@ -921,7 +921,7 @@
           "espn_adp": 110.0,
           "adp_deviation": 7.0,
           "grade": null,
-          "surplus_value": 1.9906
+          "surplus_value": 0.6057
         },
         {
           "player": "Jordan Mason",
@@ -933,7 +933,7 @@
           "espn_adp": 130.0,
           "adp_deviation": 8.0,
           "grade": null,
-          "surplus_value": 1.4783
+          "surplus_value": 2.1253
         },
         {
           "player": "Zach Charbonnet",
@@ -969,7 +969,7 @@
           "espn_adp": 175.0,
           "adp_deviation": 16.0,
           "grade": null,
-          "surplus_value": -4.5199
+          "surplus_value": -4.2118
         },
         {
           "player": "Omar Cooper Jr.",
@@ -981,7 +981,7 @@
           "espn_adp": 209.0,
           "adp_deviation": 31.0,
           "grade": null,
-          "surplus_value": -5.9561
+          "surplus_value": -5.0005
         },
         {
           "player": "Lions D/ST",
@@ -1005,7 +1005,7 @@
           "espn_adp": 180.0,
           "adp_deviation": -26.0,
           "grade": null,
-          "surplus_value": -8.0147
+          "surplus_value": -7.2311
         },
         {
           "player": "Chris Boswell",
@@ -1038,8 +1038,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -27.81,
-      "draft_surplus_total": -27.81,
+      "draft_grade": -20.05,
+      "draft_surplus_total": -20.05,
       "draft_picks": [
         {
           "player": "Christian McCaffrey",
@@ -1051,7 +1051,7 @@
           "espn_adp": 7.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": -1.4776
+          "surplus_value": 0.2603
         },
         {
           "player": "Garrett Wilson",
@@ -1063,7 +1063,7 @@
           "espn_adp": 29.0,
           "adp_deviation": 5.0,
           "grade": null,
-          "surplus_value": -3.1784
+          "surplus_value": 1.1921
         },
         {
           "player": "Emeka Egbuka",
@@ -1075,7 +1075,7 @@
           "espn_adp": 38.0,
           "adp_deviation": 5.0,
           "grade": null,
-          "surplus_value": -5.9342
+          "surplus_value": -5.0672
         },
         {
           "player": "Jadarian Price",
@@ -1087,7 +1087,7 @@
           "espn_adp": 59.0,
           "adp_deviation": 7.0,
           "grade": null,
-          "surplus_value": -6.7995
+          "surplus_value": -7.9116
         },
         {
           "player": "Joe Burrow",
@@ -1099,7 +1099,7 @@
           "espn_adp": 64.0,
           "adp_deviation": 3.0,
           "grade": null,
-          "surplus_value": -4.2466
+          "surplus_value": -1.451
         },
         {
           "player": "George Kittle",
@@ -1111,7 +1111,7 @@
           "espn_adp": 81.0,
           "adp_deviation": 1.0,
           "grade": null,
-          "surplus_value": 0.968
+          "surplus_value": 5.1775
         },
         {
           "player": "Brian Thomas Jr.",
@@ -1123,7 +1123,7 @@
           "espn_adp": 94.0,
           "adp_deviation": 5.0,
           "grade": null,
-          "surplus_value": -6.9757
+          "surplus_value": -7.9577
         },
         {
           "player": "Chris Godwin Jr.",
@@ -1135,7 +1135,7 @@
           "espn_adp": 97.0,
           "adp_deviation": -11.0,
           "grade": null,
-          "surplus_value": -3.6512
+          "surplus_value": -3.8035
         },
         {
           "player": "Aaron Jones Sr.",
@@ -1147,7 +1147,7 @@
           "espn_adp": 90.0,
           "adp_deviation": -27.0,
           "grade": null,
-          "surplus_value": -0.7627
+          "surplus_value": 0.9941
         },
         {
           "player": "Texans D/ST",
@@ -1171,7 +1171,7 @@
           "espn_adp": 116.0,
           "adp_deviation": -29.0,
           "grade": null,
-          "surplus_value": 0.0
+          "surplus_value": -9.5904
         },
         {
           "player": "Tre Tucker",
@@ -1183,7 +1183,7 @@
           "espn_adp": 171.0,
           "adp_deviation": 7.0,
           "grade": null,
-          "surplus_value": 3.8959
+          "surplus_value": 2.8651
         },
         {
           "player": "Kenyon Sadiq",
@@ -1195,7 +1195,7 @@
           "espn_adp": 154.0,
           "adp_deviation": -19.0,
           "grade": null,
-          "surplus_value": 0.5276
+          "surplus_value": 5.2612
         },
         {
           "player": "Cam Little",
@@ -1219,7 +1219,7 @@
           "espn_adp": 205.0,
           "adp_deviation": 4.0,
           "grade": null,
-          "surplus_value": -4.8284
+          "surplus_value": -4.2492
         },
         {
           "player": "James Conner",
@@ -1252,8 +1252,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -5.19,
-      "draft_surplus_total": -5.19,
+      "draft_grade": -16.91,
+      "draft_surplus_total": -16.91,
       "draft_picks": [
         {
           "player": "Justin Jefferson",
@@ -1265,7 +1265,7 @@
           "espn_adp": 12.0,
           "adp_deviation": -1.0,
           "grade": null,
-          "surplus_value": 0.991
+          "surplus_value": -2.8687
         },
         {
           "player": "De'Von Achane",
@@ -1277,7 +1277,7 @@
           "espn_adp": 10.0,
           "adp_deviation": -6.0,
           "grade": null,
-          "surplus_value": -5.9665
+          "surplus_value": -8.3489
         },
         {
           "player": "Davante Adams",
@@ -1289,7 +1289,7 @@
           "espn_adp": 44.0,
           "adp_deviation": 3.0,
           "grade": null,
-          "surplus_value": 6.0257
+          "surplus_value": 6.5954
         },
         {
           "player": "Tetairoa McMillan",
@@ -1301,7 +1301,7 @@
           "espn_adp": 35.0,
           "adp_deviation": -9.0,
           "grade": null,
-          "surplus_value": -4.1684
+          "surplus_value": -6.1666
         },
         {
           "player": "Rhamondre Stevenson",
@@ -1313,7 +1313,7 @@
           "espn_adp": 67.0,
           "adp_deviation": -2.0,
           "grade": null,
-          "surplus_value": -3.656
+          "surplus_value": -4.0161
         },
         {
           "player": "Harold Fannin Jr.",
@@ -1325,7 +1325,7 @@
           "espn_adp": 70.0,
           "adp_deviation": -2.0,
           "grade": null,
-          "surplus_value": -3.349
+          "surplus_value": 1.6972
         },
         {
           "player": "Patrick Mahomes",
@@ -1337,7 +1337,7 @@
           "espn_adp": 108.0,
           "adp_deviation": 11.0,
           "grade": null,
-          "surplus_value": 8.2444
+          "surplus_value": 5.2743
         },
         {
           "player": "Travis Kelce",
@@ -1349,7 +1349,7 @@
           "espn_adp": 107.0,
           "adp_deviation": 7.0,
           "grade": null,
-          "surplus_value": 8.3603
+          "surplus_value": 6.4797
         },
         {
           "player": "Jayden Reed",
@@ -1361,7 +1361,7 @@
           "espn_adp": 121.0,
           "adp_deviation": -4.0,
           "grade": null,
-          "surplus_value": -7.8901
+          "surplus_value": -7.1483
         },
         {
           "player": "Tyjae Spears",
@@ -1373,7 +1373,7 @@
           "espn_adp": 112.0,
           "adp_deviation": -16.0,
           "grade": null,
-          "surplus_value": -2.0423
+          "surplus_value": -3.7863
         },
         {
           "player": "Jerry Jeudy",
@@ -1385,7 +1385,7 @@
           "espn_adp": 166.0,
           "adp_deviation": 13.0,
           "grade": null,
-          "surplus_value": -8.5058
+          "surplus_value": -8.1403
         },
         {
           "player": "Jalen Coker",
@@ -1397,7 +1397,7 @@
           "espn_adp": 126.0,
           "adp_deviation": -30.0,
           "grade": null,
-          "surplus_value": 12.9795
+          "surplus_value": 7.0872
         },
         {
           "player": "Baker Mayfield",
@@ -1409,7 +1409,7 @@
           "espn_adp": 138.0,
           "adp_deviation": -43.0,
           "grade": null,
-          "surplus_value": -1.883
+          "surplus_value": -1.6881
         },
         {
           "player": "Calvin Ridley",
@@ -1421,7 +1421,7 @@
           "espn_adp": 157.0,
           "adp_deviation": -27.0,
           "grade": null,
-          "surplus_value": -8.6241
+          "surplus_value": -8.6781
         },
         {
           "player": "Cowboys D/ST",
@@ -1466,8 +1466,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": 2.33,
-      "draft_surplus_total": 2.33,
+      "draft_grade": -8.48,
+      "draft_surplus_total": -8.48,
       "draft_picks": [
         {
           "player": "CeeDee Lamb",
@@ -1479,7 +1479,7 @@
           "espn_adp": 11.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": 5.9719
+          "surplus_value": 5.3894
         },
         {
           "player": "Kenneth Walker III",
@@ -1491,7 +1491,7 @@
           "espn_adp": 25.0,
           "adp_deviation": 7.0,
           "grade": null,
-          "surplus_value": 12.6944
+          "surplus_value": 10.915
         },
         {
           "player": "Travis Etienne",
@@ -1503,7 +1503,7 @@
           "espn_adp": 39.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": 0.0
+          "surplus_value": -4.2518
         },
         {
           "player": "Lamar Jackson",
@@ -1515,7 +1515,7 @@
           "espn_adp": 48.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": -0.9336
+          "surplus_value": -0.1812
         },
         {
           "player": "DK Metcalf",
@@ -1527,7 +1527,7 @@
           "espn_adp": 68.0,
           "adp_deviation": 1.0,
           "grade": null,
-          "surplus_value": -7.6618
+          "surplus_value": -5.2648
         },
         {
           "player": "Kyle Pitts",
@@ -1539,7 +1539,7 @@
           "espn_adp": 72.0,
           "adp_deviation": -2.0,
           "grade": null,
-          "surplus_value": 0.0
+          "surplus_value": -9.8244
         },
         {
           "player": "Jakobi Meyers",
@@ -1551,7 +1551,7 @@
           "espn_adp": 95.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": -5.667
+          "surplus_value": -0.9085
         },
         {
           "player": "Kyle Monangai",
@@ -1563,7 +1563,7 @@
           "espn_adp": 100.0,
           "adp_deviation": -2.0,
           "grade": null,
-          "surplus_value": 2.6484
+          "surplus_value": -0.4048
         },
         {
           "player": "Khalil Shakir",
@@ -1575,7 +1575,7 @@
           "espn_adp": 120.0,
           "adp_deviation": -3.0,
           "grade": null,
-          "surplus_value": -3.9273
+          "surplus_value": -5.2633
         },
         {
           "player": "Deebo Samuel Sr.",
@@ -1587,7 +1587,7 @@
           "espn_adp": 132.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": 1.4978
+          "surplus_value": 3.3549
         },
         {
           "player": "Ka'imi Fairbairn",
@@ -1623,7 +1623,7 @@
           "espn_adp": 140.0,
           "adp_deviation": -39.0,
           "grade": null,
-          "surplus_value": -3.9828
+          "surplus_value": -4.2726
         },
         {
           "player": "Rashod Bateman",
@@ -1635,7 +1635,7 @@
           "espn_adp": 176.0,
           "adp_deviation": -10.0,
           "grade": null,
-          "surplus_value": 0.5489
+          "surplus_value": -0.5925
         },
         {
           "player": "Jake Bates",
@@ -1659,7 +1659,7 @@
           "espn_adp": 203.0,
           "adp_deviation": -11.0,
           "grade": null,
-          "surplus_value": -4.5108
+          "surplus_value": -4.5197
         }
       ],
       "proj_ppg_ros": 109.93
@@ -1680,8 +1680,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -24.25,
-      "draft_surplus_total": -24.25,
+      "draft_grade": -25.13,
+      "draft_surplus_total": -25.13,
       "draft_picks": [
         {
           "player": "Jonathan Taylor",
@@ -1693,7 +1693,7 @@
           "espn_adp": 5.0,
           "adp_deviation": 1.0,
           "grade": null,
-          "surplus_value": 7.6389
+          "surplus_value": 1.8412
         },
         {
           "player": "Rashee Rice",
@@ -1705,7 +1705,7 @@
           "espn_adp": 27.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": -7.1087
+          "surplus_value": -5.2596
         },
         {
           "player": "Kyren Williams",
@@ -1717,7 +1717,7 @@
           "espn_adp": 34.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": 0.9824
+          "surplus_value": 3.4956
         },
         {
           "player": "Rome Odunze",
@@ -1729,7 +1729,7 @@
           "espn_adp": 54.0,
           "adp_deviation": 1.0,
           "grade": null,
-          "surplus_value": -7.3563
+          "surplus_value": -6.3724
         },
         {
           "player": "Jalen Hurts",
@@ -1741,7 +1741,7 @@
           "espn_adp": 69.0,
           "adp_deviation": 9.0,
           "grade": null,
-          "surplus_value": 1.1648
+          "surplus_value": -1.3046
         },
         {
           "player": "Jaylen Warren",
@@ -1753,7 +1753,7 @@
           "espn_adp": 77.0,
           "adp_deviation": -4.0,
           "grade": null,
-          "surplus_value": -1.8788
+          "surplus_value": 2.0068
         },
         {
           "player": "Alec Pierce",
@@ -1765,7 +1765,7 @@
           "espn_adp": 93.0,
           "adp_deviation": 5.0,
           "grade": null,
-          "surplus_value": -7.5034
+          "surplus_value": -6.7726
         },
         {
           "player": "Jacory Croskey-Merritt",
@@ -1777,7 +1777,7 @@
           "espn_adp": 117.0,
           "adp_deviation": 8.0,
           "grade": null,
-          "surplus_value": -1.3612
+          "surplus_value": -2.0526
         },
         {
           "player": "T.J. Hockenson",
@@ -1789,7 +1789,7 @@
           "espn_adp": 150.0,
           "adp_deviation": 34.0,
           "grade": null,
-          "surplus_value": 0.7672
+          "surplus_value": -2.3949
         },
         {
           "player": "Tank Dell",
@@ -1825,7 +1825,7 @@
           "espn_adp": 172.0,
           "adp_deviation": 7.0,
           "grade": null,
-          "surplus_value": -7.4119
+          "surplus_value": -6.9398
         },
         {
           "player": "Patriots D/ST",
@@ -1849,7 +1849,7 @@
           "espn_adp": 213.0,
           "adp_deviation": 20.0,
           "grade": null,
-          "surplus_value": -3.307
+          "surplus_value": -4.0074
         },
         {
           "player": "Zachariah Branch",
@@ -1861,7 +1861,7 @@
           "espn_adp": 208.0,
           "adp_deviation": 8.0,
           "grade": null,
-          "surplus_value": -9.2828
+          "surplus_value": -8.1024
         },
         {
           "player": "DJ Giddens",
@@ -1894,8 +1894,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -25.3,
-      "draft_surplus_total": -25.3,
+      "draft_grade": -14.25,
+      "draft_surplus_total": -14.25,
       "draft_picks": [
         {
           "player": "Bijan Robinson",
@@ -1907,7 +1907,7 @@
           "espn_adp": 2.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": 1.3027
+          "surplus_value": 6.4367
         },
         {
           "player": "Breece Hall",
@@ -1919,7 +1919,7 @@
           "espn_adp": 30.0,
           "adp_deviation": 3.0,
           "grade": null,
-          "surplus_value": 1.5967
+          "surplus_value": -1.03
         },
         {
           "player": "Nico Collins",
@@ -1931,7 +1931,7 @@
           "espn_adp": 23.0,
           "adp_deviation": -7.0,
           "grade": null,
-          "surplus_value": 4.7659
+          "surplus_value": 5.334
         },
         {
           "player": "Drake Maye",
@@ -1943,7 +1943,7 @@
           "espn_adp": 58.0,
           "adp_deviation": 3.0,
           "grade": null,
-          "surplus_value": -10.126
+          "surplus_value": -11.5875
         },
         {
           "player": "DJ Moore",
@@ -1955,7 +1955,7 @@
           "espn_adp": 56.0,
           "adp_deviation": -2.0,
           "grade": null,
-          "surplus_value": -4.1584
+          "surplus_value": -2.6157
         },
         {
           "player": "Wan'Dale Robinson",
@@ -1967,7 +1967,7 @@
           "espn_adp": 88.0,
           "adp_deviation": 5.0,
           "grade": null,
-          "surplus_value": -7.4028
+          "surplus_value": -2.3619
         },
         {
           "player": "Rachaad White",
@@ -1979,7 +1979,7 @@
           "espn_adp": 92.0,
           "adp_deviation": 6.0,
           "grade": null,
-          "surplus_value": -1.3448
+          "surplus_value": -0.3797
         },
         {
           "player": "Mark Andrews",
@@ -1991,7 +1991,7 @@
           "espn_adp": 124.0,
           "adp_deviation": 13.0,
           "grade": null,
-          "surplus_value": 1.2849
+          "surplus_value": -1.0281
         },
         {
           "player": "Jordan Addison",
@@ -2003,7 +2003,7 @@
           "espn_adp": 98.0,
           "adp_deviation": -16.0,
           "grade": null,
-          "surplus_value": -11.6195
+          "surplus_value": -4.5558
         },
         {
           "player": "Cameron Dicker",
@@ -2039,7 +2039,7 @@
           "espn_adp": 91.0,
           "adp_deviation": -76.0,
           "grade": null,
-          "surplus_value": -11.7039
+          "surplus_value": -11.1244
         },
         {
           "player": "Jared Goff",
@@ -2051,7 +2051,7 @@
           "espn_adp": 129.0,
           "adp_deviation": -41.0,
           "grade": null,
-          "surplus_value": 7.7077
+          "surplus_value": 6.7794
         },
         {
           "player": "Jaylin Noel",
@@ -2063,7 +2063,7 @@
           "espn_adp": 161.0,
           "adp_deviation": -34.0,
           "grade": null,
-          "surplus_value": -3.9797
+          "surplus_value": -3.7065
         },
         {
           "player": "Malik Willis",
@@ -2075,7 +2075,7 @@
           "espn_adp": 169.0,
           "adp_deviation": -29.0,
           "grade": null,
-          "surplus_value": -0.0169
+          "surplus_value": -1.0517
         },
         {
           "player": "Cairo Santos",
@@ -2108,8 +2108,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -15.63,
-      "draft_surplus_total": -15.63,
+      "draft_grade": -14.12,
+      "draft_surplus_total": -14.12,
       "draft_picks": [
         {
           "player": "Amon-Ra St. Brown",
@@ -2121,7 +2121,7 @@
           "espn_adp": 8.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": 11.8242
+          "surplus_value": 6.0153
         },
         {
           "player": "Trey McBride",
@@ -2133,7 +2133,7 @@
           "espn_adp": 20.0,
           "adp_deviation": -1.0,
           "grade": null,
-          "surplus_value": 7.4339
+          "surplus_value": 4.5732
         },
         {
           "player": "Josh Jacobs",
@@ -2157,7 +2157,7 @@
           "espn_adp": 50.0,
           "adp_deviation": 1.0,
           "grade": null,
-          "surplus_value": 2.4755
+          "surplus_value": 0.1969
         },
         {
           "player": "Carnell Tate",
@@ -2169,7 +2169,7 @@
           "espn_adp": 61.0,
           "adp_deviation": -3.0,
           "grade": null,
-          "surplus_value": -9.0707
+          "surplus_value": -6.6152
         },
         {
           "player": "Dak Prescott",
@@ -2181,7 +2181,7 @@
           "espn_adp": 73.0,
           "adp_deviation": -4.0,
           "grade": null,
-          "surplus_value": 3.8372
+          "surplus_value": 3.2427
         },
         {
           "player": "Kenny Gainwell",
@@ -2193,7 +2193,7 @@
           "espn_adp": 79.0,
           "adp_deviation": -19.0,
           "grade": null,
-          "surplus_value": -8.0063
+          "surplus_value": -7.7238
         },
         {
           "player": "Makai Lemon",
@@ -2205,7 +2205,7 @@
           "espn_adp": 111.0,
           "adp_deviation": 12.0,
           "grade": null,
-          "surplus_value": -11.1296
+          "surplus_value": -8.9188
         },
         {
           "player": "Xavier Worthy",
@@ -2217,7 +2217,7 @@
           "espn_adp": 122.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": -3.2324
+          "surplus_value": -4.1595
         },
         {
           "player": "Alvin Kamara",
@@ -2229,7 +2229,7 @@
           "espn_adp": 137.0,
           "adp_deviation": 4.0,
           "grade": null,
-          "surplus_value": -2.7495
+          "surplus_value": -3.2961
         },
         {
           "player": "Tyler Allgeier",
@@ -2241,7 +2241,7 @@
           "espn_adp": 145.0,
           "adp_deviation": -3.0,
           "grade": null,
-          "surplus_value": -2.2049
+          "surplus_value": -2.1835
         },
         {
           "player": "Harrison Mevis",
@@ -2265,7 +2265,7 @@
           "espn_adp": 151.0,
           "adp_deviation": -25.0,
           "grade": null,
-          "surplus_value": -5.0024
+          "surplus_value": -4.5416
         },
         {
           "player": "Tre' Harris",
@@ -2277,7 +2277,7 @@
           "espn_adp": 204.0,
           "adp_deviation": 15.0,
           "grade": null,
-          "surplus_value": -5.0155
+          "surplus_value": -1.5669
         },
         {
           "player": "Chiefs D/ST",
@@ -2301,7 +2301,7 @@
           "espn_adp": 201.0,
           "adp_deviation": -16.0,
           "grade": null,
-          "surplus_value": -12.1858
+          "surplus_value": 1.6471
         }
       ],
       "proj_ppg_ros": 114.0
@@ -2316,14 +2316,14 @@
       "record_to_date": "1-2",
       "last_score": 105.06,
       "streak": "W1",
-      "proj_ppg": 112.3,
+      "proj_ppg": 103.6,
       "sos_avg_opp_ppg": 112.62,
       "sos_rank": 3,
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -30.29,
-      "draft_surplus_total": -30.29,
+      "draft_grade": -29.77,
+      "draft_surplus_total": -29.77,
       "draft_picks": [
         {
           "player": "Puka Nacua",
@@ -2335,7 +2335,7 @@
           "espn_adp": 4.0,
           "adp_deviation": -2.0,
           "grade": null,
-          "surplus_value": -8.4999
+          "surplus_value": -7.5011
         },
         {
           "player": "Jeremiyah Love",
@@ -2347,7 +2347,7 @@
           "espn_adp": 21.0,
           "adp_deviation": -2.0,
           "grade": null,
-          "surplus_value": -5.9502
+          "surplus_value": -1.8655
         },
         {
           "player": "Ladd McConkey",
@@ -2359,7 +2359,7 @@
           "espn_adp": 40.0,
           "adp_deviation": 6.0,
           "grade": null,
-          "surplus_value": -3.9111
+          "surplus_value": -3.8987
         },
         {
           "player": "Jayden Daniels",
@@ -2371,7 +2371,7 @@
           "espn_adp": 57.0,
           "adp_deviation": 6.0,
           "grade": null,
-          "surplus_value": -3.2249
+          "surplus_value": -2.8291
         },
         {
           "player": "TreVeyon Henderson",
@@ -2383,7 +2383,7 @@
           "espn_adp": 63.0,
           "adp_deviation": 1.0,
           "grade": null,
-          "surplus_value": 0.0885
+          "surplus_value": -4.3124
         },
         {
           "player": "Sam LaPorta",
@@ -2395,7 +2395,7 @@
           "espn_adp": 78.0,
           "adp_deviation": -1.0,
           "grade": null,
-          "surplus_value": 3.2788
+          "surplus_value": 0.1773
         },
         {
           "player": "Stefon Diggs",
@@ -2407,7 +2407,7 @@
           "espn_adp": 84.0,
           "adp_deviation": -6.0,
           "grade": null,
-          "surplus_value": 4.5592
+          "surplus_value": 1.6409
         },
         {
           "player": "J.K. Dobbins",
@@ -2419,7 +2419,7 @@
           "espn_adp": 101.0,
           "adp_deviation": -6.0,
           "grade": null,
-          "surplus_value": -6.802
+          "surplus_value": -5.3668
         },
         {
           "player": "Josh Downs",
@@ -2431,7 +2431,7 @@
           "espn_adp": 105.0,
           "adp_deviation": -13.0,
           "grade": null,
-          "surplus_value": -2.6068
+          "surplus_value": -0.8304
         },
         {
           "player": "Seahawks D/ST",
@@ -2455,7 +2455,7 @@
           "espn_adp": 155.0,
           "adp_deviation": 9.0,
           "grade": null,
-          "surplus_value": -4.9952
+          "surplus_value": 0.2604
         },
         {
           "player": "Rashid Shaheed",
@@ -2467,7 +2467,7 @@
           "espn_adp": 163.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": -6.5821
+          "surplus_value": -5.9725
         },
         {
           "player": "Hunter Henry",
@@ -2479,7 +2479,7 @@
           "espn_adp": 153.0,
           "adp_deviation": -21.0,
           "grade": null,
-          "surplus_value": -0.6361
+          "surplus_value": -2.9962
         },
         {
           "player": "Evan McPherson",
@@ -2503,7 +2503,7 @@
           "espn_adp": 178.0,
           "adp_deviation": -24.0,
           "grade": null,
-          "surplus_value": 5.354
+          "surplus_value": 3.4271
         },
         {
           "player": "Jaylen Wright",
@@ -2515,7 +2515,7 @@
           "espn_adp": 221.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": -6.9661
+          "surplus_value": -7.0595
         }
       ],
       "proj_ppg_ros": 103.8
@@ -2536,8 +2536,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -10.77,
-      "draft_surplus_total": -10.77,
+      "draft_grade": -16.15,
+      "draft_surplus_total": -16.15,
       "draft_picks": [
         {
           "player": "Omarion Hampton",
@@ -2549,7 +2549,7 @@
           "espn_adp": 14.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": -4.2418
+          "surplus_value": -5.8342
         },
         {
           "player": "Ashton Jeanty",
@@ -2561,7 +2561,7 @@
           "espn_adp": 18.0,
           "adp_deviation": 3.0,
           "grade": null,
-          "surplus_value": 4.0267
+          "surplus_value": 1.8107
         },
         {
           "player": "Zay Flowers",
@@ -2573,7 +2573,7 @@
           "espn_adp": 37.0,
           "adp_deviation": -5.0,
           "grade": null,
-          "surplus_value": 10.0319
+          "surplus_value": 5.6301
         },
         {
           "player": "Jaylen Waddle",
@@ -2585,7 +2585,7 @@
           "espn_adp": 45.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": -4.9477
+          "surplus_value": -5.7585
         },
         {
           "player": "Parker Washington",
@@ -2597,7 +2597,7 @@
           "espn_adp": 76.0,
           "adp_deviation": 6.0,
           "grade": null,
-          "surplus_value": 3.9609
+          "surplus_value": 2.9233
         },
         {
           "player": "Jaxson Dart",
@@ -2609,7 +2609,7 @@
           "espn_adp": 85.0,
           "adp_deviation": 14.0,
           "grade": null,
-          "surplus_value": -4.8709
+          "surplus_value": -4.3853
         },
         {
           "player": "Tucker Kraft",
@@ -2621,7 +2621,7 @@
           "espn_adp": 104.0,
           "adp_deviation": 12.0,
           "grade": null,
-          "surplus_value": -4.0984
+          "surplus_value": -4.9383
         },
         {
           "player": "De'Zhaun Stribling",
@@ -2645,7 +2645,7 @@
           "espn_adp": 113.0,
           "adp_deviation": -13.0,
           "grade": null,
-          "surplus_value": -5.0465
+          "surplus_value": 0.148
         },
         {
           "player": "Chris Rodriguez Jr.",
@@ -2657,7 +2657,7 @@
           "espn_adp": 144.0,
           "adp_deviation": 17.0,
           "grade": null,
-          "surplus_value": -7.0625
+          "surplus_value": -3.9614
         },
         {
           "player": "Tank Bigsby",
@@ -2669,7 +2669,7 @@
           "espn_adp": 179.0,
           "adp_deviation": 25.0,
           "grade": null,
-          "surplus_value": -2.4192
+          "surplus_value": -3.7815
         },
         {
           "player": "Jonah Coleman",
@@ -2681,7 +2681,7 @@
           "espn_adp": 173.0,
           "adp_deviation": 18.0,
           "grade": null,
-          "surplus_value": -2.063
+          "surplus_value": -1.1613
         },
         {
           "player": "Brenton Strange",
@@ -2693,7 +2693,7 @@
           "espn_adp": 160.0,
           "adp_deviation": -22.0,
           "grade": null,
-          "surplus_value": 0.7251
+          "surplus_value": -0.4054
         },
         {
           "player": "Chargers D/ST",
@@ -2729,7 +2729,7 @@
           "espn_adp": 223.0,
           "adp_deviation": 12.0,
           "grade": null,
-          "surplus_value": -1.6574
+          "surplus_value": -1.9514
         }
       ],
       "proj_ppg_ros": 110.11
@@ -2750,8 +2750,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -33.0,
-      "draft_surplus_total": -33.0,
+      "draft_grade": -24.28,
+      "draft_surplus_total": -24.28,
       "draft_picks": [
         {
           "player": "Saquon Barkley",
@@ -2763,7 +2763,7 @@
           "espn_adp": 15.0,
           "adp_deviation": 3.0,
           "grade": null,
-          "surplus_value": -11.8217
+          "surplus_value": -9.9538
         },
         {
           "player": "Derrick Henry",
@@ -2775,7 +2775,7 @@
           "espn_adp": 16.0,
           "adp_deviation": -1.0,
           "grade": null,
-          "surplus_value": 10.5068
+          "surplus_value": 9.7625
         },
         {
           "player": "Tee Higgins",
@@ -2787,7 +2787,7 @@
           "espn_adp": 43.0,
           "adp_deviation": 3.0,
           "grade": null,
-          "surplus_value": -5.2732
+          "surplus_value": -0.9257
         },
         {
           "player": "Colston Loveland",
@@ -2799,7 +2799,7 @@
           "espn_adp": 42.0,
           "adp_deviation": -3.0,
           "grade": null,
-          "surplus_value": -12.4179
+          "surplus_value": -10.8217
         },
         {
           "player": "Marvin Harrison Jr.",
@@ -2811,7 +2811,7 @@
           "espn_adp": 62.0,
           "adp_deviation": -6.0,
           "grade": null,
-          "surplus_value": -12.533
+          "surplus_value": -10.0498
         },
         {
           "player": "Caleb Williams",
@@ -2823,7 +2823,7 @@
           "espn_adp": 99.0,
           "adp_deviation": 26.0,
           "grade": null,
-          "surplus_value": 3.8038
+          "surplus_value": 4.2787
         },
         {
           "player": "Matthew Golden",
@@ -2835,7 +2835,7 @@
           "espn_adp": 96.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": -0.3746
+          "surplus_value": 3.2695
         },
         {
           "player": "Dallas Goedert",
@@ -2847,7 +2847,7 @@
           "espn_adp": 114.0,
           "adp_deviation": 13.0,
           "grade": null,
-          "surplus_value": 3.5873
+          "surplus_value": 2.8591
         },
         {
           "player": "KC Concepcion",
@@ -2859,7 +2859,7 @@
           "espn_adp": 133.0,
           "adp_deviation": 9.0,
           "grade": null,
-          "surplus_value": -3.3179
+          "surplus_value": -4.3495
         },
         {
           "player": "MarShawn Lloyd",
@@ -2871,7 +2871,7 @@
           "espn_adp": 158.0,
           "adp_deviation": 29.0,
           "grade": null,
-          "surplus_value": -2.816
+          "surplus_value": -3.2497
         },
         {
           "player": "Rams D/ST",
@@ -2907,7 +2907,7 @@
           "espn_adp": 199.0,
           "adp_deviation": 19.0,
           "grade": null,
-          "surplus_value": -8.6851
+          "surplus_value": -7.6844
         },
         {
           "player": "Malik Washington",
@@ -2919,7 +2919,7 @@
           "espn_adp": 211.0,
           "adp_deviation": 26.0,
           "grade": null,
-          "surplus_value": -2.8268
+          "surplus_value": -0.7822
         },
         {
           "player": "Kimani Vidal",
@@ -2931,7 +2931,7 @@
           "espn_adp": 214.0,
           "adp_deviation": 6.0,
           "grade": null,
-          "surplus_value": 0.0
+          "surplus_value": -7.0264
         },
         {
           "player": "Trey Smack",
@@ -2964,8 +2964,8 @@
       "synopsis": "",
       "blurb": "",
       "screenshots": [],
-      "draft_grade": -43.82,
-      "draft_surplus_total": -43.82,
+      "draft_grade": -45.17,
+      "draft_surplus_total": -45.17,
       "draft_picks": [
         {
           "player": "Chase Brown",
@@ -2977,7 +2977,7 @@
           "espn_adp": 13.0,
           "adp_deviation": 4.0,
           "grade": null,
-          "surplus_value": -3.3591
+          "surplus_value": -4.6855
         },
         {
           "player": "Malik Nabers",
@@ -2989,7 +2989,7 @@
           "espn_adp": 33.0,
           "adp_deviation": 13.0,
           "grade": null,
-          "surplus_value": -11.7232
+          "surplus_value": -10.9203
         },
         {
           "player": "DeVonta Smith",
@@ -3001,7 +3001,7 @@
           "espn_adp": 36.0,
           "adp_deviation": -1.0,
           "grade": null,
-          "surplus_value": 1.1362
+          "surplus_value": 0.3165
         },
         {
           "player": "Quinshon Judkins",
@@ -3013,7 +3013,7 @@
           "espn_adp": 41.0,
           "adp_deviation": -7.0,
           "grade": null,
-          "surplus_value": -6.2346
+          "surplus_value": -5.0409
         },
         {
           "player": "Michael Pittman Jr.",
@@ -3025,7 +3025,7 @@
           "espn_adp": 66.0,
           "adp_deviation": 1.0,
           "grade": null,
-          "surplus_value": -6.524
+          "surplus_value": -8.4291
         },
         {
           "player": "Justin Herbert",
@@ -3037,7 +3037,7 @@
           "espn_adp": 86.0,
           "adp_deviation": 10.0,
           "grade": null,
-          "surplus_value": -8.5658
+          "surplus_value": -7.2284
         },
         {
           "player": "Isaiah Likely",
@@ -3049,7 +3049,7 @@
           "espn_adp": 119.0,
           "adp_deviation": 26.0,
           "grade": null,
-          "surplus_value": 8.2569
+          "surplus_value": 2.2254
         },
         {
           "player": "Quentin Johnston",
@@ -3061,7 +3061,7 @@
           "espn_adp": 106.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": -10.0281
+          "surplus_value": -7.7171
         },
         {
           "player": "Brandon Aubrey",
@@ -3085,7 +3085,7 @@
           "espn_adp": 134.0,
           "adp_deviation": 2.0,
           "grade": null,
-          "surplus_value": -2.8614
+          "surplus_value": -1.5078
         },
         {
           "player": "Mike Washington Jr.",
@@ -3097,7 +3097,7 @@
           "espn_adp": 174.0,
           "adp_deviation": 25.0,
           "grade": null,
-          "surplus_value": -6.2769
+          "surplus_value": -2.9127
         },
         {
           "player": "Caleb Douglas",
@@ -3109,7 +3109,7 @@
           "espn_adp": 168.0,
           "adp_deviation": 8.0,
           "grade": null,
-          "surplus_value": -2.0608
+          "surplus_value": -1.2098
         },
         {
           "player": "Terrance Ferguson",
@@ -3121,7 +3121,7 @@
           "espn_adp": 162.0,
           "adp_deviation": -15.0,
           "grade": null,
-          "surplus_value": 2.6329
+          "surplus_value": -0.3854
         },
         {
           "player": "Najee Harris",
@@ -3133,7 +3133,7 @@
           "espn_adp": 198.0,
           "adp_deviation": 10.0,
           "grade": null,
-          "surplus_value": -9.006
+          "surplus_value": -6.2642
         },
         {
           "player": "Packers D/ST",
@@ -3157,7 +3157,7 @@
           "espn_adp": 216.0,
           "adp_deviation": 0.0,
           "grade": null,
-          "surplus_value": -0.7253
+          "surplus_value": -2.1448
         }
       ],
       "proj_ppg_ros": 103.36
@@ -3928,8 +3928,7 @@
     {
       "player": "Chris Brooks",
       "pos": "RB",
-      "nfl_team": "GB",
-      "manager": "Deniz Bileydi"
+      "nfl_team": "GB"
     },
     {
       "player": "Chris Moore",
@@ -3997,8 +3996,7 @@
     {
       "player": "David Njoku",
       "pos": "TE",
-      "nfl_team": "LAC",
-      "manager": "Max Malich"
+      "nfl_team": "LAC"
     },
     {
       "player": "Davis Allen",
@@ -4009,6 +4007,12 @@
       "player": "Dawson Knox",
       "pos": "TE",
       "nfl_team": "BUF"
+    },
+    {
+      "player": "De'Zhaun Stribling",
+      "pos": "WR",
+      "nfl_team": "SF",
+      "manager": "Baylen Slansky"
     },
     {
       "player": "DeMario Douglas",
@@ -4075,8 +4079,7 @@
     {
       "player": "Emari Demercado",
       "pos": "RB",
-      "nfl_team": "DAL",
-      "manager": "Baylen Slansky"
+      "nfl_team": "DAL"
     },
     {
       "player": "Emmett Johnson",
@@ -4121,6 +4124,12 @@
       "nfl_team": "TEN"
     },
     {
+      "player": "Harold Fannin Jr.",
+      "pos": "TE",
+      "nfl_team": "CLE",
+      "manager": "Brandon Hancock"
+    },
+    {
       "player": "Hunter Luepke",
       "pos": "RB",
       "nfl_team": "DAL"
@@ -4157,6 +4166,12 @@
       "nfl_team": "CHI"
     },
     {
+      "player": "Jalen Coker",
+      "pos": "WR",
+      "nfl_team": "CAR",
+      "manager": "Brandon Hancock"
+    },
+    {
       "player": "James Cook III",
       "pos": "RB",
       "nfl_team": "BUF",
@@ -4166,6 +4181,12 @@
       "player": "Jared Wayne",
       "pos": "WR",
       "nfl_team": "HOU"
+    },
+    {
+      "player": "Jaylen Wright",
+      "pos": "RB",
+      "nfl_team": "MIA",
+      "manager": "Anthony Kelly"
     },
     {
       "player": "Jaylin Lane",
@@ -4226,13 +4247,18 @@
     {
       "player": "Kayshon Boutte",
       "pos": "WR",
-      "nfl_team": "HOU",
-      "manager": "Deniz Bileydi"
+      "nfl_team": "HOU"
     },
     {
       "player": "Kaytron Allen",
       "pos": "RB",
       "nfl_team": "WSH"
+    },
+    {
+      "player": "Keenan Allen",
+      "pos": "WR",
+      "nfl_team": "IND",
+      "manager": "Brandon Hancock"
     },
     {
       "player": "Kendre Miller",
@@ -4243,8 +4269,7 @@
     {
       "player": "Kendrick Bourne",
       "pos": "WR",
-      "nfl_team": "ARI",
-      "manager": "Brandon Hancock"
+      "nfl_team": "ARI"
     },
     {
       "player": "Kenny Pickett",
@@ -4260,6 +4285,12 @@
       "player": "Kirk Cousins",
       "pos": "QB",
       "nfl_team": "LV"
+    },
+    {
+      "player": "Kyren Williams",
+      "pos": "RB",
+      "nfl_team": "LAR",
+      "manager": "Andrew Root"
     },
     {
       "player": "LaJohntay Wester",
@@ -4307,8 +4338,7 @@
     {
       "player": "Malik Willis",
       "pos": "QB",
-      "nfl_team": "MIA",
-      "manager": "Quin Gegwich"
+      "nfl_team": "MIA"
     },
     {
       "player": "Marcus Mariota",
@@ -4320,6 +4350,12 @@
       "player": "Marlin Klein",
       "pos": "TE",
       "nfl_team": "HOU"
+    },
+    {
+      "player": "Marvin Harrison Jr.",
+      "pos": "WR",
+      "nfl_team": "ARI",
+      "manager": "Andrew Root"
     },
     {
       "player": "Mason Taylor",
@@ -4334,8 +4370,7 @@
     {
       "player": "Michael Mayer",
       "pos": "TE",
-      "nfl_team": "LV",
-      "manager": "Anthony Kelly"
+      "nfl_team": "LV"
     },
     {
       "player": "Mike Gesicki",
@@ -4346,6 +4381,12 @@
       "player": "Mitchell Evans",
       "pos": "TE",
       "nfl_team": "CAR"
+    },
+    {
+      "player": "Najee Harris",
+      "pos": "RB",
+      "nfl_team": "NYG",
+      "manager": "Andrew Root"
     },
     {
       "player": "Nate Boerkircher",
@@ -4377,14 +4418,12 @@
     {
       "player": "Oronde Gadsden",
       "pos": "TE",
-      "nfl_team": "LAC",
-      "manager": "Ethan Radecki"
+      "nfl_team": "LAC"
     },
     {
       "player": "Pat Bryant",
       "pos": "WR",
-      "nfl_team": "DEN",
-      "manager": "Brandon Hancock"
+      "nfl_team": "DEN"
     },
     {
       "player": "Pat Freiermuth",
@@ -4410,10 +4449,15 @@
       "nfl_team": "LAR"
     },
     {
+      "player": "Sam Darnold",
+      "pos": "QB",
+      "nfl_team": "SEA",
+      "manager": "Cole Maney"
+    },
+    {
       "player": "Samaje Perine",
       "pos": "RB",
-      "nfl_team": "CIN",
-      "manager": "Ryan P McQuaid"
+      "nfl_team": "CIN"
     },
     {
       "player": "Seth McGowan",
@@ -4439,8 +4483,7 @@
     {
       "player": "Terrance Ferguson",
       "pos": "TE",
-      "nfl_team": "LAR",
-      "manager": "Baylen Slansky"
+      "nfl_team": "LAR"
     },
     {
       "player": "Theo Johnson",
@@ -4457,6 +4500,12 @@
       "pos": "RB",
       "nfl_team": "NO",
       "manager": "Ben Castaldo"
+    },
+    {
+      "player": "Tre' Harris",
+      "pos": "WR",
+      "nfl_team": "LAC",
+      "manager": "Baylen Slansky"
     },
     {
       "player": "Troy Franklin",
