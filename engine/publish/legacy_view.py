@@ -167,20 +167,13 @@ def parse_js(text: str):
     return json.loads(js_to_json(text))
 
 
-def literal_span(text: str, name: str) -> tuple[int, int]:
-    """(start, end) of the literal (object, array or number) assigned by the
-    first `var|let|const <name> =` (or `var A = 1, <name> = 2`)."""
-    m = re.search(rf"\b(?:var|let|const)\s+{re.escape(name)}\s*=\s*", text)
-    if not m:       # a later name in one declaration: `var A = 1, B = 2;`
-        m = re.search(rf"\b(?:var|let|const)\s+[^;]*?,\s*{re.escape(name)}\s*=(?!=)\s*", text)
-    if not m:
-        raise KeyError(f"no `{name} = ...` in the page")
-    start = m.end()
-    num = re.compile(r"-?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?").match(text, start)
+_NUMBER = re.compile(r"-?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
+
+
+def _literal_end(text: str, start: int, name: str) -> int:
+    num = _NUMBER.match(text, start)
     if num:                                                    # a number constant (POP_SURPLUS_MIN = -11.61)
-        return start, num.end()
-    if text[start] not in "[{":
-        raise ValueError(f"{name} is not an object, array or number literal")
+        return num.end()
     depth, i, quote = 0, start, None
     while i < len(text):
         c = text[i]
@@ -197,9 +190,29 @@ def literal_span(text: str, name: str) -> tuple[int, int]:
         elif c in "]})":
             depth -= 1
             if depth == 0:
-                return start, i + 1
+                return i + 1
         i += 1
     raise ValueError(f"{name}: unterminated literal")
+
+
+def literal_span(text: str, name: str) -> tuple[int, int]:
+    """(start, end) of the literal (object, array or number) assigned by a
+    `var|let|const <name> =` (or `var A = 1, <name> = 2`). Declarations of the
+    name whose value is not a literal (`var labels = rows.map(...)`) are
+    skipped. `name#N` picks the Nth literal declaration (0-based), for a page
+    that declares the same name in two places (`DATA#1`)."""
+    base, _, nth = name.partition("#")
+    nth = int(nth) if nth else 0
+    pats = [rf"\b(?:var|let|const)\s+{re.escape(base)}\s*=\s*",
+            rf"\b(?:var|let|const)\s+[^;]*?,\s*{re.escape(base)}\s*=(?!=)\s*"]   # `var A = 1, B = 2;`
+    starts = sorted({m.end() for p in pats for m in re.finditer(p, text)})
+    literal = [s for s in starts if text[s] in "[{" or _NUMBER.match(text, s)]
+    if not starts:
+        raise KeyError(f"no `{base} = ...` in the page")
+    if len(literal) <= nth:
+        raise ValueError(f"{name} is not an object, array or number literal")
+    start = literal[nth]
+    return start, _literal_end(text, start, name)
 
 
 def read_literal(text: str, name: str):

@@ -194,6 +194,8 @@ def load_goldens(golden_dir: Path) -> dict:
         golden["extra_analytics_regressions"] = json.load(f)
     with gzip.open(golden_dir / "matchup_history" / "extra_analytics_matchups.json.gz", "rt", encoding="utf-8") as f:
         golden["extra_analytics_matchups"] = json.load(f)
+    with gzip.open(golden_dir / "matchup_history" / "extra_analytics_inline.json.gz", "rt", encoding="utf-8") as f:
+        golden["extra_analytics_inline"] = json.load(f)
     with gzip.open(golden_dir / "gauntlet" / "extra_analytics_gauntlet.json.gz", "rt", encoding="utf-8") as f:
         golden["extra_analytics_gauntlet"] = json.load(f)
     golden["preach_manager_stats"] = pd.read_csv(golden_dir / "manager_seasons" / "preach_manager_stats.csv.gz")

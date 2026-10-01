@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "extra-analytics",
+  "title": "data/v1/extra-analytics.json: head-to-head, closest games, schedule luck and swap, conference analysis (extra-analytics.html)",
+  "type": "object",
+  "required": ["meta", "seasons", "head_to_head", "closest", "schedule_luck", "schedule_swap", "conference"],
+  "additionalProperties": false,
+  "$defs": {"key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"}},
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "extra-analytics"}, "schema_version": {"const": 1}}},
+    "seasons": {"type": "array", "items": {"type": "integer"}},
+    "head_to_head": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["manager_key", "opponent_key", "wins", "losses", "ties", "win_pct"],
+      "properties": {"manager_key": {"$ref": "#/$defs/key"}, "opponent_key": {"$ref": "#/$defs/key"},
+                     "wins": {"type": "integer"}, "losses": {"type": "integer"}, "ties": {"type": "integer"},
+                     "win_pct": {"type": "number"}}}},
+    "closest": {"type": "object", "required": ["all", "regular", "playoff"],
+                "additionalProperties": {"type": "array", "items": {"type": "object", "required": ["w", "l", "m", "when"]}}},
+    "schedule_luck": {"type": "object", "required": ["career", "seasons"],
+                      "properties": {
+                        "career": {"type": "array", "items": {"type": "object", "required": ["name", "actual", "predicted", "luck"]}},
+                        "seasons": {"type": "array", "items": {
+                          "type": "object", "additionalProperties": false,
+                          "required": ["season", "manager_key", "games", "actual_wins", "expected_wins", "luck"],
+                          "properties": {"season": {"type": "integer"}, "manager_key": {"$ref": "#/$defs/key"},
+                                         "games": {"type": "integer"}, "actual_wins": {"type": "number"},
+                                         "expected_wins": {"type": "number"}, "luck": {"type": "number"}}}}}},
+    "schedule_swap": {"type": "object", "propertyNames": {"pattern": "^[0-9]{4}$"}},
+    "conference": {"type": "object", "required": ["summary", "managers", "seasons", "rivalries"]}
+  }
+}

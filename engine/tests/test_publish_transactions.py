@@ -122,3 +122,79 @@ def test_depth_adjusted_and_role_columns():
                         "is_playoff_week": [False, True, True, True, True, False, True, True, True]})
     assert lineup_pub.playoff_columns(eff, by_role=False).tolist() == [13, 14, 15, 16, 17, 14, 15, 16, 17]
     assert lineup_pub.playoff_columns(eff, by_role=True).tolist() == [13, 15, 16, 17, 18, 14, 16, 17, 18]
+
+
+# ---------------------------------------------------------------- extra-analytics, matchup sections (PR A7a)
+
+from engine.publish.pages import extra_analytics as extra_pub  # noqa: E402
+
+
+def test_extra_analytics_matchup_views_rebuild_the_page():
+    gold = _json("matchup_history/extra_analytics_inline.json.gz")
+    names = Names(_ctx(), gold["managers"])
+    h2h = pd.DataFrame([{"manager_key": _key(a), "opponent_key": _key(b), "wins": v["w"], "losses": v["l"],
+                         "win_pct": v["pct"], "hidden": False} for a, row in gold["h2h"].items() for b, v in row.items()])
+    assert extra_pub.h2h_view(h2h, names) == (gold["managers"], gold["h2h"])
+    rows, summ = [], []
+    for season, d in gold["SCHEDULE_SWAP_DATA"].items():
+        for m, x in d.items():
+            summ.append({"season": int(season), "manager_key": _key(m), "wins": x["actual"]["w"],
+                         "losses": x["actual"]["l"], "pct": x["actual"]["pct"], "avg_alt_pct": x["avg_pct"],
+                         "wins_gained": x["wins_gained"], "hidden": False})
+            rows += [{"season": int(season), "manager_key": _key(m), "schedule_key": _key(o), "wins": a["w"],
+                      "losses": a["l"], "games": a["games"], "pct": a["pct"], "hidden": False} for o, a in x["alt"].items()]
+    assert extra_pub.swap_view(pd.DataFrame(rows), pd.DataFrame(summ), names) == gold["SCHEDULE_SWAP_DATA"]
+    luck = pd.read_csv(GOLDEN / "schedule" / "schedule_luck_season.csv.gz")
+    luck = luck.assign(manager_key=luck["Manager"].map(_key), hidden=False)
+    view = {r["name"]: r for r in extra_pub.luck_view(luck, names)}
+    page = {r["name"]: r for r in gold["luckData"]}
+    differ = sorted(n for n in page if view[n] != page[n])
+    assert differ == ["Charlie Gorman"]            # the page typed 38 expected wins; its own source file sums to 39
+
+
+def test_closest_lists_from_the_games():
+    from engine.tests.test_publish_pages import _frames_from_matchups_json
+    gold = _json("matchup_history/extra_analytics_inline.json.gz")
+    games, _ = _frames_from_matchups_json(_json("records/matchups.json.gz"))
+    games = games[games["season"] <= 2025]
+    names = Names(_ctx(), gold["managers"])
+    hidden = {LOOKUP["thomas sullivan"], LOOKUP["william serafin"]}
+    view = extra_pub.closest_view(games, hidden, names)
+    assert view["all"] == gold["CLOSEST"]["all"]
+    full = {s: extra_pub.closest_view(games, hidden, names, k=len(games))[s] for s in ("regular", "playoff")}
+    for scope in ("regular", "playoff"):
+        order = [(r["w"], r["l"], r["when"]) for r in full[scope]]
+        pos = [order.index((r["w"], r["l"], r["when"])) for r in gold["CLOSEST"][scope]]
+        assert pos == sorted(pos) and all(full[scope][p] == r for p, r in zip(pos, gold["CLOSEST"][scope]))
+
+
+def test_conference_markup_round_trip():
+    gold = _json("matchup_history/extra_analytics_inline.json.gz")
+    want = extra_pub.parse_conference(gold)
+    names = Names(_ctx(), gold["managers"])
+    conf = {n: c for c, ns in want["teams"].items() for n in ns}
+    managers = pd.DataFrame([{"manager_key": _key(r[0]), "conference": r[1], "wins": int(r[2].split("-")[0]),
+                              "losses": int(r[2].split("-")[1]), "win_pct": float(r[3]), "pf_per_game": float(r[4]),
+                              "pa_per_game": float(r[5]), "margin": float(r[6]), "hidden": False}
+                             for r in want["conference_managers"][1:]])
+    seasons = pd.DataFrame([{"season": int(r[0]), "conference": "REP", "wins": int(r[1].split("-")[0]),
+                             "losses": int(r[1].split("-")[1]), "win_pct": float(r[2]), "games": int(r[3])}
+                            for r in want["conference_seasons"][1:]])
+    summary = pd.DataFrame([{"conference": c, **{col: want["conference_cards"][label][c]
+                                                 for label, col, _ in extra_pub.CARDS}} for c in ("DEM", "REP")])
+    riv = []
+    for r in want["rivalries"][1:]:
+        a, b = [x.strip() for x in r[0].split(" vs ")]
+        hi, lo = (int(x) for x in r[1].split()[0].split("-"))
+        lead = r[1].split()[1]
+        wa, wb = (hi, lo) if lead in ("Tied", a.split()[-1]) or lead == short_name(a) else (lo, hi)
+        riv.append({"manager_key": _key(a), "opponent_key": _key(b), "wins": wa, "losses": wb, "games": int(r[2]),
+                    "hidden": False})
+    res = {"conference_managers": managers, "conference_seasons": seasons, "conference_summary": summary,
+           "rivalries": pd.DataFrame(riv)}
+    cfg = {m["id"]: m for m in CFG["managers"]}
+    html = extra_pub.conference_html(res, names, lambda k: short_name(cfg[k]["name"]), lambda k: cfg[k]["logo"],
+                                     {"2020": "#a4969d", "2021": "#8a93ab", "2022": "#d8b28e", "2023": "#bf8f8f",
+                                      "2024": "#9aadae", "2025": "#a9b88b"}, ["DEM", "REP"])
+    assert extra_pub.parse_conference(html) == want
+    assert conf["Ryan P McQuaid"] == "REP"
