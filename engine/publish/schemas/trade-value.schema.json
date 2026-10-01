@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trade-value",
+  "title": "data/v1/trade-value.json: every trade side and the page's aggregates (trade-value.html)",
+  "type": "object",
+  "required": ["meta", "seasons", "sides", "leaderboard", "totals", "network", "win_pct", "most_traded", "scales"],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+    "player": {"type": "object", "required": ["player_id", "name", "position"], "additionalProperties": false,
+               "properties": {"player_id": {"type": "integer"}, "name": {"type": "string"},
+                              "position": {"type": "string"}}},
+    "by_filter": {"type": "object", "additionalProperties": {"type": "object"}}
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "trade-value"}, "schema_version": {"const": 1}}},
+    "seasons": {"type": "array", "items": {"type": "integer"}},
+    "sides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["group_id", "season", "week", "manager_key", "multi", "hidden", "got", "gave", "trade_grade",
+                     "realized_gains", "fit_score", "necessity_per_week", "quad"],
+        "additionalProperties": false,
+        "properties": {
+          "group_id": {"type": "integer"}, "season": {"type": "integer"}, "week": {"type": "integer"},
+          "manager_key": {"$ref": "#/$defs/key"}, "multi": {"type": "boolean"}, "hidden": {"type": "boolean"},
+          "got": {"type": "array", "items": {"$ref": "#/$defs/player"}},
+          "gave": {"type": "array", "items": {"$ref": "#/$defs/player"}},
+          "trade_grade": {"type": "number"}, "realized_gains": {"type": "number"}, "fit_score": {"type": "number"},
+          "necessity_per_week": {"type": ["number", "null"]}, "quad": {"type": "number"}
+        }
+      }
+    },
+    "leaderboard": {"$ref": "#/$defs/by_filter"},
+    "totals": {"$ref": "#/$defs/by_filter"},
+    "network": {"type": "object", "required": ["nodes", "edges"],
+                "properties": {"nodes": {"type": "array"}, "edges": {"type": "array"}}},
+    "win_pct": {"type": "array", "items": {"type": "object", "required": ["m", "winPct", "games", "trades", "avgQuad"]}},
+    "most_traded": {"type": "array",
+                    "items": {"type": "object", "required": ["player", "count", "seasons", "managers", "pos"]}},
+    "scales": {"type": "object", "additionalProperties": {"type": "object", "required": ["min", "max"]}}
+  }
+}

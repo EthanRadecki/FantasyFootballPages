@@ -12,12 +12,14 @@ from __future__ import annotations
 
 import io
 import json
+import re
 from pathlib import Path
 from typing import Iterable
 
 import pandas as pd
 
 from engine.legacy import name_to_key
+from engine.publish.writer import clean
 
 
 def site_json(ctx, rel: str):
@@ -87,3 +89,133 @@ def info_diff(name: str, live: pd.DataFrame, engine: pd.DataFrame, keys: list[st
     return (f"INFO  {name}, engine data vs the live file: {len(b)} rows in both, {int(changed.sum())} with a "
             f"different {'/'.join(values)}; {only_e} only in the engine, {only_l} only in the live file "
             f"(later weeks, or rows the live file keys differently)")
+
+
+# ---------------------------------------------------------------- JavaScript data (globals and inline blocks)
+
+_IDENT = re.compile(r"[A-Za-z_$][\w$]*")
+
+
+def js_to_json(text: str) -> str:
+    """A JavaScript data literal as JSON text: quotes bare and numeric object
+    keys, turns single-quoted strings into JSON strings, drops comments and
+    trailing commas. For the plain data the site's pages and .js files hold
+    (objects, arrays, strings, numbers, true, false, null), not general code."""
+    out, i, n = [], 0, len(text)
+    expect_key = False            # just after '{' or ',' inside an object
+    stack: list[str] = []
+    while i < n:
+        c = text[i]
+        if c in "\"'":
+            j, buf = i + 1, []
+            while j < n and text[j] != c:
+                if text[j] == "\\":
+                    nxt = text[j + 1]
+                    buf.append("'" if nxt == "'" else "\\" + nxt)
+                    j += 2
+                    continue
+                buf.append('\\"' if text[j] == '"' else text[j])
+                j += 1
+            out.append('"' + "".join(buf) + '"')
+            i, expect_key = j + 1, False
+            continue
+        if text.startswith("//", i):
+            i = text.find("\n", i) if text.find("\n", i) != -1 else n
+            continue
+        if text.startswith("/*", i):
+            i = text.find("*/", i) + 2
+            continue
+        if c in "{[":
+            stack.append(c)
+            expect_key = c == "{"
+            out.append(c)
+        elif c in "}]":
+            while out and out[-1].strip() == "":
+                out.pop()
+            if out and out[-1] == ",":
+                out.pop()                                  # trailing comma
+            stack.pop()
+            out.append(c)
+            expect_key = False
+        elif c == ",":
+            out.append(c)
+            expect_key = bool(stack) and stack[-1] == "{"
+        elif expect_key and (c.isalpha() or c in "_$" or c.isdigit() or c == "-"):
+            m = _IDENT.match(text, i) or re.compile(r"-?\d+(?:\.\d+)?").match(text, i)
+            key = m.group(0)
+            k = m.end()
+            while k < n and text[k].isspace():
+                k += 1
+            if k < n and text[k] == ":":
+                out.append(json.dumps(key))
+                i = m.end()
+                expect_key = False
+                continue
+            out.append(key)
+            i = m.end()
+            expect_key = False
+            continue
+        else:
+            if not c.isspace():
+                expect_key = False
+            out.append(c)
+        i += 1
+    return "".join(out)
+
+
+def parse_js(text: str):
+    return json.loads(js_to_json(text))
+
+
+def literal_span(text: str, name: str) -> tuple[int, int]:
+    """(start, end) of the literal assigned by the first `var|let|const <name> =`."""
+    m = re.search(rf"\b(?:var|let|const)\s+{re.escape(name)}\s*=\s*", text)
+    if not m:
+        raise KeyError(f"no `{name} = ...` in the page")
+    start = m.end()
+    if text[start] not in "[{":
+        raise ValueError(f"{name} is not an object or array literal")
+    depth, i, quote = 0, start, None
+    while i < len(text):
+        c = text[i]
+        if quote:
+            if c == "\\":
+                i += 2
+                continue
+            if c == quote:
+                quote = None
+        elif c in "\"'`":
+            quote = c
+        elif c in "[{(":
+            depth += 1
+        elif c in "]})":
+            depth -= 1
+            if depth == 0:
+                return start, i + 1
+        i += 1
+    raise ValueError(f"{name}: unterminated literal")
+
+
+def read_literal(text: str, name: str):
+    s, e = literal_span(text, name)
+    return parse_js(text[s:e])
+
+
+def replace_literal(text: str, name: str, value) -> str:
+    """The page with `name`'s literal replaced by `value` as JSON (valid JS)."""
+    s, e = literal_span(text, name)
+    return text[:s] + json.dumps(clean(value), ensure_ascii=False, separators=(",", ":")) + text[e:]
+
+
+def js_globals(values: dict) -> str:
+    """A legacy `data/*.js` file: one `var NAME = <json>;` line per global."""
+    return "".join(f"var {k} = {json.dumps(clean(v), ensure_ascii=False, separators=(',', ':'))};\n"
+                   for k, v in values.items())
+
+
+def read_js_globals(text: str) -> dict:
+    out = {}
+    for m in re.finditer(r"\bvar\s+(\w+)\s*=\s*", text):
+        s, e = literal_span(text[m.start():], m.group(1))
+        out[m.group(1)] = parse_js(text[m.start():][s:e])
+    return out

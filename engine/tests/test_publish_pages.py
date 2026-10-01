@@ -216,3 +216,68 @@ def test_rivals_break_ties_by_games_then_key():
 def test_flag_treats_unknown_as_no():
     s = pd.Series([True, None, False], dtype="boolean")
     assert mgr_pub.flag(s).tolist() == [True, False, False]
+
+
+# ---------------------------------------------------------------- JavaScript data helpers
+
+from engine.publish import legacy_view as lv  # noqa: E402
+from engine.publish.pages import trades as trades_pub  # noqa: E402
+
+
+def test_js_to_json_handles_page_literals():
+    text = """{career:[{m:"Andrew Root",g:16.71,w:88},], 2020: {'k': 'it\\'s', "q": "say \\"hi\\""},
+              neg: -1.5, ok: true, none: null, // a comment
+              list: [1, 2, /* inline */ 3,]}"""
+    assert lv.parse_js(text) == {"career": [{"m": "Andrew Root", "g": 16.71, "w": 88}],
+                                 "2020": {"k": "it's", "q": 'say "hi"'}, "neg": -1.5, "ok": True, "none": None,
+                                 "list": [1, 2, 3]}
+
+
+def test_replace_and_read_literals_and_globals():
+    page = "<script>\nvar A = {x:1, y:[1,2]};\nvar B = 'keep';\nfunction f(){ return A.x; }\n</script>"
+    new = lv.replace_literal(page, "A", {"x": 2, "y": []})
+    assert lv.read_literal(new, "A") == {"x": 2, "y": []}
+    assert "var B = 'keep';" in new and "function f(){ return A.x; }" in new
+    text = lv.js_globals({"ONE": [1, None], "TWO": {"a": 1.5}})
+    assert text == 'var ONE = [1,null];\nvar TWO = {"a":1.5};\n'
+    assert lv.read_js_globals(text) == {"ONE": [1, None], "TWO": {"a": 1.5}}
+
+
+# ---------------------------------------------------------------- trades
+
+def _golden_trade_inputs():
+    """The legacy trade pipeline's own outputs as the views' inputs."""
+    uni = pd.read_csv(GOLDEN / "trades" / "trade_universe.csv.gz")
+    mf = pd.read_csv(GOLDEN / "trades" / "metrics_final.csv.gz")
+    ids = uni.set_index(["group_id", "manager"])[["got_player_ids", "gave_player_ids"]]
+    metrics = mf.join(ids, on=["group_id", "manager"]).assign(manager_key=lambda d: d["manager"].str.strip().str.lower().map(LOOKUP))
+    names = {}
+    for r in uni.itertuples():
+        for i, n in ((r.got_player_ids, r.got_players), (r.gave_player_ids, r.gave_players)):
+            names.update(dict(zip(json.loads(i), json.loads(n))))
+    wr = pd.read_csv(GOLDEN / "weekly_rosters_bracket_only.csv.gz")
+    first = wr.drop_duplicates("Player_ID").set_index("Player_ID")["Position"].to_dict()
+    st = pd.read_csv(GOLDEN / "trades" / "player_stints_fixed.csv.gz")
+    stints = st.assign(manager_key=st["receiving_manager"].str.strip().str.lower().map(LOOKUP))
+    le = pd.read_csv(GOLDEN / "trades" / "lineup_efficiency.csv.gz")
+    results = pd.DataFrame({"manager_key": le["Manager"].str.strip().str.lower().map(LOOKUP),
+                            "result": le["Outcome"].map({"Win": "W", "Loss": "L", "Tie": "T"})})
+    return metrics, stints, results, (lambda p, s: names.get(p, str(p))), (lambda p, s: first.get(p, "UNK"))
+
+
+def test_trade_views_rebuild_the_site_files_from_legacy_outputs():
+    metrics, stints, results, name_of, pos_of = _golden_trade_inputs()
+    seasons = set(int(s) for s in metrics["season"].unique())
+    sides = trades_pub.sides_frame(metrics, name_of, pos_of, seasons)
+    g = lambda n: _json(f"trades/{n}.json.gz")
+    golden = {"page_data": g("page_data"), "network": g("network_data"), "winpct": g("winpct_data"),
+              "explorer": g("trade_explorer_data"), "trade_week": g("trade_week_data"),
+              "most_traded": g("most_traded_data"), "totals": g("trade_value_inline")["LEADERBOARD_TOTALS"]}
+    names = Names(_ctx(), list(golden["page_data"]["LEADERBOARD"]["career"])
+                  + [m["m"] for n in golden["explorer"] for m in n["managers"]])
+    from engine.config import excluded_manager_keys
+    views = trades_pub.legacy_views(sides, stints, results, excluded_manager_keys(CFG), names, name_of, pos_of, seasons)
+    checks = trades_pub.compare_views(views, golden)
+    bad = [c.render() for c in checks if not c.ok]
+    assert not bad, "\n".join(bad)
+    assert [c.name for c in checks][-1] == "legacy view trade-value.html LEADERBOARD_TOTALS vs published"
