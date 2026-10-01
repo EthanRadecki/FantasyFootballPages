@@ -47,7 +47,7 @@ PAGES = [
     {"id": "lineup-efficiency", "title": "Lineup Efficiency", "path": "pages/lineup-efficiency.html",
      "parent": "transaction-analysis", "feature": None, "nav": True},
     {"id": "waiver-value", "title": "Waiver Value", "path": "pages/waiver-value.html",
-     "parent": "transaction-analysis", "feature": None, "nav": True},
+     "parent": "transaction-analysis", "feature": None, "nav": True, "data": ["data/v1/waiver-value.json"]},
     {"id": "trade-value", "title": "Trade Value", "path": "pages/trade-value.html",
      "parent": "transaction-analysis", "feature": None, "nav": True, "data": ["data/v1/trade-value.json"]},
     {"id": "extra-analytics", "title": "Extra Analytics", "path": "pages/extra-analytics.html", "parent": None,

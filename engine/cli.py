@@ -202,7 +202,7 @@ def load_goldens(golden_dir: Path) -> dict:
     for n in ("position_impact_data", "dst_removed_data"):
         with gzip.open(golden_dir / "position_impact" / f"{n}.json.gz", "rt", encoding="utf-8") as f:
             golden[n] = json.load(f)
-    for n in ("waiver_page", "roster_stints"):
+    for n in ("waiver_page", "roster_stints", "waiver_value_page"):
         with gzip.open(golden_dir / "waivers" / f"{n}.json.gz", "rt", encoding="utf-8") as f:
             golden[n] = json.load(f)
     return golden

@@ -112,7 +112,9 @@ One node per trade (a multi-team trade is one node), with each manager's players
 
 A drop that ESPN records inside another manager's trade (a roster move forced when the trade is accepted, undone within minutes) does not end a stint.
 
-**Leaderboards:** points per week and z per week are weighted by weeks rostered (total points / total weeks, total z / total weeks), per career or season, position, and claim vs free agent. The best-pickups lists need a positive total z and at least 3 weeks rostered.
+**Leaderboards:** points per week and z per week are weighted by weeks rostered (total points / total weeks, total z / total weeks), per career or season, position, and claim vs free agent. The best-pickups lists need a positive total z and at least 3 weeks rostered. Each manager's best pickup is the highest total z in that scope and position. Excluded managers' pickups count in the position baselines and are left off every list and chart.
+
+**Color scales** (fixed across filters so a color means the same everywhere): per position, the range of points per week and z per week over every leaderboard of that position; the range of pickup total z; the upside chart from 0 to the largest sum of positive pickup z any manager has in any scope and position; the range of total and average z on the best-pickup lists.
 
 **Trades by Week of the Season chart:** shows two things together: how many pickups happened each week (bars) and the average value of those pickups (line). This reveals *when* good pickups tend to happen (e.g., bye-week streaming spikes, injury-driven scrambles) separately from *how good* they tend to be.
 
