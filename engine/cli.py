@@ -169,6 +169,8 @@ def load_goldens(golden_dir: Path) -> dict:
         with gzip.open(golden_dir / "records" / f"{n}.json.gz", "rt", encoding="utf-8") as f:
             golden[n] = json.load(f)
     golden["lineup_blunders"] = pd.read_csv(golden_dir / "records" / "lineup_blunders.csv.gz")
+    with gzip.open(golden_dir / "lineups" / "lineup_efficiency_page.json.gz", "rt", encoding="utf-8") as f:
+        golden["lineup_efficiency_page"] = json.load(f)
     for n in DRAFT_CSV_GOLDENS:
         golden[n] = pd.read_csv(golden_dir / "draft" / f"{n}.csv.gz")
     for key, n in DRAFT_JSON_GOLDENS.items():

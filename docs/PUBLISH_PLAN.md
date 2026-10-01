@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: A0-A5 merged (#29-#34); A6a (waiver-value) in review. Status columns below are as of A6a.
+Progress: A0-A5 merged (#29-#34), A6a (waiver-value) merged; A6b (lineup-efficiency) in review. Status columns below are as of A6b.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -53,7 +53,7 @@ Names: legacy data keys rows by manager display name, and the pages disagree on 
 | draft-analysis.html | ~14 KB inline + HTML | 8 | COVERED (A5: inline data and typed HTML replaced) |
 | draft-fingerprints.html | ~245 KB inline | 2 | data COVERED (A5); metadata TEMPLATE; archetype names EDITORIAL file |
 | draft-history.html | ~84 KB inline | 3 | COVERED (A5) |
-| lineup-efficiency.html | ~150 KB inline | 11 | blunders COVERED; aggregates NO GOLDEN; bench depth NO PRODUCER |
+| lineup-efficiency.html | ~150 KB inline | 11 | COVERED (A6b: bench depth ported, every inline block) |
 | waiver-value.html | ~284 KB inline | 6 | COVERED (A6a: every inline block, golden `waivers/waiver_value_page.json`) |
 | extra-analytics.html | ~90 KB inline + HTML | 13 | mostly COVERED; luck chart NO GOLDEN; R2 history EDITORIAL |
 | transaction-analysis.html | none | 0 | hub page; config only |
@@ -242,16 +242,18 @@ All five `regenerate_data_files.py` outputs and `most_traded_data.js` become one
 
 ### 4.14 lineup-efficiency.html
 
+Golden: `lineups/lineup_efficiency_page.json` (every inline block, A6b). Rules in METRICS_REFERENCE, Lineup Efficiency.
+
 | Element | Where | Shape | Producer | Golden / check | Status |
 |---|---|---|---|---|---|
-| `EFFICIENCY_BY_FILTER` | inline | {filter: [{m, g (avg gap), w}]} | `lineup_efficiency` | per-game rows PASS (`trades/lineup_efficiency.csv`); aggregate not frozen | NO GOLDEN |
-| `MISSED_WINS_BY_FILTER` | inline | {filter: [{manager, weeks, losses, n, rate, reg, po}]} | `lineup_efficiency` | same | NO GOLDEN |
-| `BLUNDERS_BY_FILTER` (top 10 career and per season) | inline | {filter: [{season, week, manager, actual, optimal, gap, outcome, missed}]} | `lineup_blunders` (career top 10 only) | career list PASS (`records/lineup_blunders.csv`) | PARTIAL: per-season lists |
-| `ROSTERS_BY_FILTER` (box score of each blunder) | inline (~93 KB) | {filter: [{season, week, manager, starters[], bench[]}]} | `box_scores` | none | NO GOLDEN |
-| `DEPTH_BY_FILTER`, `DEPTH_ADJUSTED_BY_FILTER`, `DEPTH_VS_WINS_DATA` | inline | {filter: [{m, d}]}, {filter: [{m, raw, depth, adj}]}, [{m, s, d, wr}] | none: bench depth and the depth-adjusted fit are documented in METRICS_REFERENCE but not ported | none | NO PRODUCER |
-| `SEASON_TREND_DATA` | inline | [{s, g}] | `lineup_efficiency` | none | NO GOLDEN |
-| `HEATMAP_DATA`, `CAREER_AVG_DATA`, `HEATMAP_MANAGERS` | inline | [[season, week, manager index, gap, flag]] x1222, [[manager index, week, avg, n]] | `lineup_efficiency` | none | NO GOLDEN |
-| `EFFICIENCY_GLOBAL_MIN/MAX`, `HEATMAP_GAP_MIN/MAX` | inline constants | numbers | derived | none | NO GOLDEN |
+| `EFFICIENCY_BY_FILTER` | inline | {filter: [{m, g (avg gap), w}]} | `lineup_efficiency` (averaged games: no forfeits, no neglected lineups) | page golden, PASS | COVERED (A6b) |
+| `MISSED_WINS_BY_FILTER` | inline | {filter: [{manager, weeks, losses, n, rate, reg, po}]} | `lineup_efficiency` | same (order of tied rates not reproducible; values checked by manager) | COVERED (A6b) |
+| `BLUNDERS_BY_FILTER` (top 10 career and per season) | inline | {filter: [{season, week, manager, actual, optimal, gap, outcome, missed}]} | `lineup_efficiency` | same | COVERED (A6b) |
+| `ROSTERS_BY_FILTER` (box score of each blunder) | inline (~93 KB) | {filter: [{season, week, manager, starters[], bench[]}]} | `lineups` (ESPN's roster order) | same | COVERED (A6b) |
+| `DEPTH_BY_FILTER`, `DEPTH_ADJUSTED_BY_FILTER`, `DEPTH_VS_WINS_DATA` | inline | {filter: [{m, d}]}, {filter: [{m, raw, depth, adj}]}, [{m, s, d, wr}] | `lineups.bench_depth`, `lineups.depth_adjusted` (ported in A6b, legacy mode first) | same | COVERED (A6b) |
+| `SEASON_TREND_DATA` | inline | [{s, g}] | `lineup_efficiency` | same | COVERED (A6b) |
+| `HEATMAP_DATA`, `CAREER_AVG_DATA`, `HEATMAP_MANAGERS` | inline | [[season, week, manager index, gap, flag]] x1222, [[manager index, column, avg, n]] | `lineup_efficiency` | same | COVERED (A6b); the career grid's playoff columns are a decision (A6b) |
+| `EFFICIENCY_GLOBAL_MIN/MAX`, `HEATMAP_GAP_MIN/MAX` | inline constants | numbers | derived | same | COVERED (A6b) |
 | Prose "r about 0.30", "2-12 playoff games" | HTML | text | derived | | TEMPLATE + data field |
 
 ### 4.15 waiver-value.html
@@ -296,7 +298,7 @@ Hub page with links to the three transaction pages. No data. Prose "six seasons 
 6. **Live season coverage differs by page.** index, managers, matchups, draft-history, weekly rankings, playoff odds show 2026; surplus-value, lineup-efficiency, waiver-value, trade-value and extra-analytics stop at 2025, while the engine tables include the live season's finished weeks. Stage A reproduces each page's current coverage; showing the live season elsewhere is decision 7.8.
 7. **Past rankings files cannot be regenerated.** Their projections were snapshots and are not retained anywhere. They stay as frozen editorial files; only the live season's computed fields are generated.
 8. **Headshots** use NFL.com image ids that cannot be derived from ESPN data, so the file cannot be produced for another league. See decision 7.5.
-9. **Two metrics documented in METRICS_REFERENCE have no engine producer**: Bench Depth and Depth-Adjusted Efficiency (lineup-efficiency.html). Porting them is analytics work inside phase 4, done the usual way (reproduce the page first).
+9. **Two metrics documented in METRICS_REFERENCE had no engine producer**: Bench Depth and Depth-Adjusted Efficiency (lineup-efficiency.html). Ported in A6b (`analytics/lineups.py`), legacy mode reproducing the page.
 10. **Sizes.** The largest page payloads today: matchups.json 1.5 MB, managers.html (~1.8 MB across its data files plus ~280 KB inline), waiver-value ~284 KB, draft-fingerprints ~245 KB.
 
 ## 6. Target output

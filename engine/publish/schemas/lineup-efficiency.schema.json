@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lineup-efficiency",
+  "title": "data/v1/lineup-efficiency.json: lineup decisions, missed wins, blunders and bench depth (lineup-efficiency.html)",
+  "type": "object",
+  "required": ["meta", "seasons", "games", "efficiency", "missed_wins", "blunders", "depth", "depth_adjusted",
+               "season_trend", "depth_vs_wins", "career_grid", "scales"],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+    "by_filter": {"type": "object", "additionalProperties": {"type": "array"}}
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "lineup-efficiency"}, "schema_version": {"const": 1}}},
+    "seasons": {"type": "array", "items": {"type": "integer"}},
+    "games": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["season", "week", "manager_key", "hidden", "playoff", "result", "points", "opponent_points",
+                   "actual_points", "optimal_points", "gap", "would_have_won", "missed_win", "forfeited", "neglected",
+                   "bench_depth"],
+      "properties": {"season": {"type": "integer"}, "week": {"type": "integer"}, "manager_key": {"$ref": "#/$defs/key"},
+                     "hidden": {"type": "boolean"}, "playoff": {"type": "boolean"}, "result": {"enum": ["W", "L", "T"]},
+                     "points": {"type": "number"}, "opponent_points": {"type": "number"},
+                     "actual_points": {"type": "number"}, "optimal_points": {"type": "number"}, "gap": {"type": "number"},
+                     "would_have_won": {"type": "boolean"}, "missed_win": {"type": "boolean"},
+                     "forfeited": {"type": "boolean"}, "neglected": {"type": "boolean"},
+                     "bench_depth": {"type": "number"}}}},
+    "efficiency": {"$ref": "#/$defs/by_filter"},
+    "missed_wins": {"$ref": "#/$defs/by_filter"},
+    "blunders": {"$ref": "#/$defs/by_filter"},
+    "depth": {"$ref": "#/$defs/by_filter"},
+    "depth_adjusted": {"$ref": "#/$defs/by_filter"},
+    "season_trend": {"type": "array", "items": {"type": "object", "required": ["s", "g"]}},
+    "depth_vs_wins": {"type": "array", "items": {"type": "object", "required": ["m", "s", "d", "wr"]}},
+    "career_grid": {"type": "object", "required": ["managers", "cells"],
+                    "properties": {"managers": {"type": "array", "items": {"$ref": "#/$defs/key"}},
+                                   "cells": {"type": "array", "items": {"type": "array", "minItems": 4, "maxItems": 4}}}},
+    "scales": {"type": "object", "required": ["gap", "heatmap_gap"]}
+  }
+}

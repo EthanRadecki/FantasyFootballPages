@@ -8,7 +8,14 @@ Replaces the legacy generate_lineup_efficiency.py and generate_blunder_rosters.p
   position), then flex slots from what is left. IR players are never eligible.
 - Only counted games (finished regular season and winners-bracket games).
 - A forfeited week (0 points in a finished game) keeps its missed win but is
-  left out of efficiency averages.
+  left out of efficiency averages. So is a neglected lineup: 2 or more
+  starting slots left empty while an active (non-zero) player who could fill
+  one of them sat on the bench (`excluded` = forfeited or neglected).
+- Bench depth (lineup-efficiency.html): each bench player's points minus the
+  league's average bench points at his position that week (every counted
+  team's bench, his own included), summed over the bench. legacy_mode leaves
+  excluded managers' benches out of that average, as the page did; the engine
+  counts them (they are only hidden).
 """
 
 from __future__ import annotations
@@ -65,13 +72,65 @@ def optimal_points(roster: pd.DataFrame, slots: list[str]) -> float:
     return float(sum(pool.loc[i, "points"] for _, i in best_lineup(pool, slots) if i is not None))
 
 
-def efficiency(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
+BENCH_SLOT = "BE"
+NEGLECT_EMPTY_SLOTS = 2
+
+
+def neglected(lu: pd.DataFrame, slots: dict[int, list[str]]) -> pd.DataFrame:
+    """(season, week, team_id, neglected): NEGLECT_EMPTY_SLOTS or more starting
+    slots empty while a bench player who could fill one of them scored (a
+    real, active alternative; a player on bye or out scores 0)."""
+    rows = []
+    for (season, week, team_id), roster in lu.groupby(["season", "week", "team_id"]):
+        empty = Counter(slots[int(season)]) - Counter(roster.loc[roster["started"], "slot"])
+        flag = False
+        if sum(empty.values()) >= NEGLECT_EMPTY_SLOTS:
+            bench = roster[roster["slot"] == BENCH_SLOT]
+            flag = any((bench["position"].isin(eligible(s)) & bench["points"].ne(0)).any() for s in empty)
+        rows.append({"season": season, "week": week, "team_id": team_id, "neglected": flag})
+    return pd.DataFrame(rows, columns=["season", "week", "team_id", "neglected"])
+
+
+def bench_depth(lu: pd.DataFrame, baseline_from: pd.DataFrame | None = None) -> pd.DataFrame:
+    """(season, week, team_id, bench_depth): each bench player's points minus the
+    average bench points at his position that week, summed over the bench (0 for
+    an empty bench). baseline_from: the lineup rows whose benches set the average
+    (default: all of lu)."""
+    base_rows = lu if baseline_from is None else baseline_from
+    bench = base_rows[base_rows["slot"] == BENCH_SLOT]
+    base = bench.groupby(["season", "week", "position"])["points"].mean().rename("bench_avg").reset_index()
+    mine = lu[lu["slot"] == BENCH_SLOT].merge(base, on=["season", "week", "position"], how="left")
+    mine["rel"] = mine["points"] - mine["bench_avg"]
+    teams = lu[["season", "week", "team_id"]].drop_duplicates()
+    out = teams.merge(mine.groupby(["season", "week", "team_id"])["rel"].sum().rename("bench_depth").reset_index(),
+                      on=["season", "week", "team_id"], how="left")
+    out["bench_depth"] = out["bench_depth"].fillna(0.0)
+    return out
+
+
+def depth_adjusted(gap: pd.Series, depth: pd.Series) -> pd.Series:
+    """Gap minus the gap a straight line through (depth, gap) predicts for that
+    depth (one row per manager); negative = better than the bench predicts."""
+    ok = gap.notna() & depth.notna()
+    if ok.sum() < 2 or depth[ok].nunique() < 2:
+        return pd.Series(float("nan"), index=gap.index)
+    import numpy as np
+
+    slope, intercept = np.polyfit(depth[ok].astype(float), gap[ok].astype(float), 1)
+    return gap - (intercept + slope * depth)
+
+
+def efficiency(tables: dict[str, pd.DataFrame], exclude: set[str] = frozenset(),
+               legacy_mode: bool = False) -> pd.DataFrame:
     """One row per manager per counted game: actual and optimal points, the
-    gap, and whether the best lineup would have won a game that was lost."""
+    gap, whether the best lineup would have won a game that was lost, the
+    forfeit and neglect flags, and bench depth. legacy_mode: excluded managers'
+    benches are left out of the bench average."""
     games = weeks.counted_games(tables)
     lu = weeks.game_lineups(tables)
     slots = lineup_slots(lu)
     forfeits = weeks.forfeited_weeks(tables).assign(forfeited=True)
+    depth = bench_depth(lu, lu[~lu["manager_key"].isin(exclude)] if legacy_mode else None)
 
     rows = []
     for (season, week, team_id), roster in lu.groupby(["season", "week", "team_id"]):
@@ -86,12 +145,16 @@ def efficiency(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     out["missed_win"] = out["result"].eq("L") & out["would_have_won"]
     out = out.merge(forfeits, on=["season", "week", "manager_key"], how="left")
     out["forfeited"] = out["forfeited"].eq(True)
+    out = out.merge(neglected(lu, slots), on=["season", "week", "team_id"], how="left").merge(
+        depth, on=["season", "week", "team_id"], how="left")
+    out["neglected"] = out["neglected"].eq(True)
+    out["excluded"] = out["forfeited"] | out["neglected"]
     return out.sort_values(["season", "week", "manager_key"]).reset_index(drop=True)
 
 
 def blunders(eff: pd.DataFrame, exclude: set[str] = frozenset(), n: int = 10) -> pd.DataFrame:
-    """The n largest efficiency gaps (forfeits and excluded managers left out)."""
-    e = eff[~eff["forfeited"] & ~eff["manager_key"].isin(exclude)]
+    """The n largest efficiency gaps (forfeits, neglected lineups and excluded managers left out)."""
+    e = eff[~eff["excluded"] & ~eff["manager_key"].isin(exclude)]
     return e.sort_values(["efficiency_gap", "season", "week"], ascending=[False, True, True]).head(n)
 
 

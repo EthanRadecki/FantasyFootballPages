@@ -130,7 +130,7 @@ A drop that ESPN records inside another manager's trade (a roster move forced wh
 
 **What gets excluded, and why:** IR players and bye weeks are excluded (they were never real, playable alternatives). Two specific exceptions get excluded from the *average* entirely (but still count toward Missed Wins if applicable, see below):
 1. **Full forfeits**: a lineup that was never set at all.
-2. **Partial lineup neglect**: 2 or more mandatory starting slots left completely empty despite a real, active (non-bye) alternative sitting on the bench for at least one of them. A *single* empty slot doesn't qualify; that's normal, everyday decision-making and stays in as real signal. This threshold (1 vs. 2+) was chosen specifically because it's the real dividing line found in the actual data between "a normal lapse" and "didn't really field a lineup that week."
+2. **Partial lineup neglect**: 2 or more mandatory starting slots left completely empty despite a real, active (non-bye) alternative sitting on the bench for at least one of them. "Active" means the bench player scored (a player on bye or ruled out scores 0). Three weeks qualify through 2025: Pittelli 2021 week 10, Castaldo 2022 week 12, and Castaldo 2024 week 14 (also the forfeit). A *single* empty slot doesn't qualify; that's normal, everyday decision-making and stays in as real signal. This threshold (1 vs. 2+) was chosen specifically because it's the real dividing line found in the actual data between "a normal lapse" and "didn't really field a lineup that week."
 
 ---
 
@@ -144,7 +144,7 @@ A drop that ESPN records inside another manager's trade (a roster move forced wh
 
 ### Bench Depth
 
-**What it measures:** how much talent sat on a manager's bench, independent of whether it ever got played. For each bench player each week, compute `their points − average points among all *other benches league-wide* at that position that week`, then sum across the whole bench that week, then average across the season or career.
+**What it measures:** how much talent sat on a manager's bench, independent of whether it ever got played. For each bench player each week, compute `their points − average points of every bench player league-wide at that position that week` (every counted team's bench, the manager's own included: that is how the page's numbers were computed, checked against every value), then sum across the whole bench that week (IR not included), then average over every counted game of the season or career (forfeits and neglected lineups included). Excluded managers' benches count in the league average (they are only hidden); the page as first built left them out (2020 only), so 11 managers' career depth moves slightly.
 
 **Why this specific design, and not simpler alternatives:**
 - **Baseline is other benches, not starters.** Comparing to starters would answer a different question, "how much unrealized *starter-caliber* value existed," which is what the Depth-Adjusted Efficiency metric below needs. Depth is meant to be a standalone, general measure of roster construction, so it's benchmarked against other benches instead.
@@ -162,7 +162,7 @@ A drop that ESPN records inside another manager's trade (a roster move forced wh
 
 **What it is:** because bench depth and raw Efficiency Gap are correlated (checked directly: about 81%), a manager with a weak bench will structurally post a lower average gap, since there's simply less good stuff to miss, regardless of how sharp their actual decisions are. Depth-Adjusted Efficiency corrects for this.
 
-**How it's calculated:** a straight line is fit through the data (each manager's depth score vs. their raw efficiency gap), producing a prediction: "given this depth score, here's the gap a typical manager would post." The adjusted number is `actual gap − predicted gap`.
+**How it's calculated:** a straight line is fit through the data (each manager's depth score vs. their raw efficiency gap), producing a prediction: "given this depth score, here's the gap a typical manager would post." The adjusted number is `actual gap − predicted gap`. The fit is per filter (career or one season), on the unrounded values, the gap averaged as in Efficiency Gap and depth over every counted game.
 
 **How to read it:** a negative (green) value means the manager beat what their own bench depth would predict: genuinely sharp decisions, not just a thin bench. A positive (red) value means they underperformed even what their depth predicted: worse than expected, even after accounting for how little (or how much) they had to work with.
 
@@ -173,6 +173,10 @@ A drop that ESPN records inside another manager's trade (a roster move forced wh
 ### League Trend by Season
 
 **What it is:** the league-wide average Efficiency Gap for each season, showing whether lineup-setting has gotten sharper or sloppier over time league-wide, independent of any one manager.
+
+### Week-by-Week Heatmap and Career Grid
+
+Every counted game's gap by week, forfeits and neglected lineups marked. The career grid averages each manager's gap by week of the season over averaged games. The page labels its last four columns as playoff roles (round 1, quarterfinal, semifinal, championship), but its data used the raw week number, so 2020-2021 playoff round 1 (week 14) shared a column with 2022-2025 regular-season week 14. The engine places playoff weeks by role, counted back from the final (pending Ethan's decision, PR A6b).
 
 ---
 
