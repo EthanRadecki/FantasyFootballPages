@@ -66,6 +66,15 @@ Legacy site files for the records and lineups module, added 2026-09-29. Checked 
 | `draft/draft_fingerprint_career.csv.gz` | `draft_fingerprint.py` (Ethan's copy) | 16 managers, season means plus draft_adaptability |
 | `draft/draft_history_with_adp.csv.gz` | `draft_fingerprint.py`, rerun 2026-09-30 on its own inputs (reproduces this file exactly) | 2020-2025 picks with the FantasyPros ESPN ADP and position order, 1,186 of 1,360 matched. Checked by `engine normalize --verify` and by `engine/tests/test_adp.py` |
 
+### draft/ page goldens (phase 4, PR A5)
+
+Frozen 2026-10-01 from the live site with `tools/freeze_golden.py`. Checked by `engine build --verify` (the draft page legacy views built from legacy-mode analysis) and by `engine/tests/test_publish_draft.py` (the same views built from the legacy pipeline's own outputs, so CI covers them). `draft_board_page`, `draft_fingerprints_page` and `draft_heatmap` (identical to managers.html's inline `HEATMAP_DATA`) above are the goldens of draft-history.html, draft-fingerprints.html and the managers.html board map.
+
+| File | Source | Covers |
+|---|---|---|
+| `draft/surplus_value_page.json.gz` | the inline blocks of `pages/surplus-value.html` (`--vars CAREER_GRADES SEASON_GRADES SEASONS HEATMAP_TIPS MANAGER_BW ALL_BEST_PICKS SEASON_BEST ALL_WORST_PICKS SEASON_WORST POP_SURPLUS_MIN POP_SURPLUS_MAX`); page step lost, rules recovered (every value reproduces from `draft_surplus_v2.csv`) | grades, draft tips, highs and lows, best and worst picks, color scale, 2020-2025 |
+| `draft/draft_analysis_page.json.gz` | the inline blocks of `pages/draft-analysis.html` (`--vars PLAYOFF_RATES OVERPERFS SLOT_DATA HR_BY_ROUND HR_BY_POS ALL_TIME_STEALS SEASON_STEALS CAREER_PREVIEW ABOVE_AVG_CEIL`) and its typed HTML (`--html 'slot_table::<table class="da-table">::<tbody>' 'tier_cards::<div class="hr-stat-row">'`) | slot table with its cell colors, slot charts, who drafted from each slot, hit rate, steals, surplus preview. The per-season steals contradict `hit_rate_data.json` on 89 values (retyped from another file); excused by that pattern |
+
 ## schedule/
 
 Added 2026-09-29. Checked by `engine analyze --verify` and by `engine/tests/test_schedule.py`, which rebuilds matchups from `matchup_data.csv.gz` so CI covers the port.

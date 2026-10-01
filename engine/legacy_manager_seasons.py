@@ -211,15 +211,14 @@ def file_slots(legacy: pd.DataFrame, cfg: dict, live: set[int]) -> pd.DataFrame:
     return slot_frame(res)
 
 
-def check_draft_slots(tables: dict, golden: dict, cfg: dict, live: set[int]) -> list[Comparison]:
-    page = golden["draft_slots_page"]
-    exp = pd.DataFrame(page["table"])
-    ms = ms_mod.manager_seasons(tables, excluded_manager_keys(cfg), excluded_games(cfg, "ppg"), legacy_mode=True,
-                                conference_labels=conference_labels(cfg))
-    res, who = ms_mod.draft_slots(ms)
-    act = slot_frame(res)
+def slot_table_check(name: str, exp: pd.DataFrame, act: pd.DataFrame, stats: pd.DataFrame, cfg: dict,
+                     live: set[int], units: dict | None = None) -> Comparison:
+    """The page's slot table (exp, page units) against slot_frame rows (act),
+    with the excuses for the page's hand-typed values (stats: the stats file).
+    units: the last digit's size per column where the table shows fewer places
+    than slot_frame (default one unit at SLOT_ROUND)."""
     act = act[act["slot"].isin(exp["slot"])]
-    src = file_slots(golden["preach_manager_stats"], cfg, live).set_index("slot")
+    src = file_slots(stats, cfg, live).set_index("slot")
     both = exp.merge(act, on="slot", suffixes=("_p", "_e"))
     known = []
     for c, reason in (("champ_pct", "page Champ % contradicts its source file (champions' slots)"),
@@ -228,21 +227,38 @@ def check_draft_slots(tables: dict, golden: dict, cfg: dict, live: set[int]) -> 
         bad = (both[f"{c}_p"] != f_val) & ((both[f"{c}_e"] - f_val).abs() < 0.05 + 1e-9)
         known.append(both.loc[bad, ["slot"]].assign(column=c, reason=reason))
     for c in ("dominance", "expected_dominance", "over_under"):
-        unit = 10 ** -SLOT_ROUND[c]
+        unit = (units or {}).get(c, 10 ** -SLOT_ROUND[c])
         bad = (both[f"{c}_p"] - both[f"{c}_e"]).abs() <= unit + 1e-9
         known.append(both.loc[bad, ["slot"]].assign(column=c, reason="dominance from the file's rounded PF/G "
                                                                         "(one unit of the last digit)"))
-    table = compare("draft slot table vs draft-analysis.html", exp, act, keys=["slot"], values=SLOT_VALUES,
-                    tolerance=1e-6, known=pd.concat(known, ignore_index=True))
+    return compare(name, exp, act, keys=["slot"], values=SLOT_VALUES, tolerance=1e-6,
+                   known=pd.concat(known, ignore_index=True))
 
+
+def slot_managers_check(name: str, slot_data: dict, act_who: pd.DataFrame, cfg: dict) -> Comparison:
+    """{slot: [[manager, season]]} (the page's SLOT_DATA) against draft_slot_managers rows."""
     lookup = name_to_key(cfg)
-    rows = [{"slot": int(s), "season": int(y), "name": n} for s, v in page["slot_data"].items() for n, y in v]
+    rows = [{"slot": int(s), "season": int(y), "name": n} for s, v in slot_data.items() for n, y in v]
     exp_who = pd.DataFrame(rows)
     exp_who["manager_key"] = resolve_names(exp_who["name"], lookup)
-    act_who = who.rename(columns={"draft_slot": "slot"}).astype({"slot": int, "season": int})
+    act_who = act_who.rename(columns={"draft_slot": "slot"}).astype({"slot": int, "season": int})
     act_who = act_who[act_who["slot"].isin(exp_who["slot"]) & act_who["season"].isin(exp_who["season"])]
-    grid = compare("draft slot managers vs draft-analysis.html", exp_who, act_who, keys=["slot", "season"],
-                   values=["manager_key"])
+    return compare(name, exp_who, act_who, keys=["slot", "season"], values=["manager_key"])
+
+
+def legacy_slots(tables: dict, cfg: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """draft_slots on manager seasons in legacy mode: (results, who drafted from each slot)."""
+    ms = ms_mod.manager_seasons(tables, excluded_manager_keys(cfg), excluded_games(cfg, "ppg"), legacy_mode=True,
+                                conference_labels=conference_labels(cfg))
+    return ms_mod.draft_slots(ms)
+
+
+def check_draft_slots(tables: dict, golden: dict, cfg: dict, live: set[int]) -> list[Comparison]:
+    page = golden["draft_slots_page"]
+    res, who = legacy_slots(tables, cfg)
+    table = slot_table_check("draft slot table vs draft-analysis.html", pd.DataFrame(page["table"]), slot_frame(res),
+                             golden["preach_manager_stats"], cfg, live)
+    grid = slot_managers_check("draft slot managers vs draft-analysis.html", page["slot_data"], who, cfg)
     return [table, grid]
 
 

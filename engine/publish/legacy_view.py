@@ -168,13 +168,17 @@ def parse_js(text: str):
 
 
 def literal_span(text: str, name: str) -> tuple[int, int]:
-    """(start, end) of the literal assigned by the first `var|let|const <name> =`."""
+    """(start, end) of the literal (object, array or number) assigned by the
+    first `var|let|const <name> =`."""
     m = re.search(rf"\b(?:var|let|const)\s+{re.escape(name)}\s*=\s*", text)
     if not m:
         raise KeyError(f"no `{name} = ...` in the page")
     start = m.end()
+    num = re.compile(r"-?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?").match(text, start)
+    if num:                                                    # a number constant (POP_SURPLUS_MIN = -11.61)
+        return start, num.end()
     if text[start] not in "[{":
-        raise ValueError(f"{name} is not an object or array literal")
+        raise ValueError(f"{name} is not an object, array or number literal")
     depth, i, quote = 0, start, None
     while i < len(text):
         c = text[i]
@@ -205,6 +209,53 @@ def replace_literal(text: str, name: str, value) -> str:
     """The page with `name`'s literal replaced by `value` as JSON (valid JS)."""
     s, e = literal_span(text, name)
     return text[:s] + json.dumps(clean(value), ensure_ascii=False, separators=(",", ":")) + text[e:]
+
+
+def page_roundtrip(text: str, values: dict) -> dict:
+    """Each inline literal written into the page and read back the way its
+    golden was frozen (tools/freeze_golden.py), so a Stage A check compares
+    exactly what the page will hold."""
+    for name, value in values.items():
+        text = replace_literal(text, name, value)
+    return {name: read_literal(text, name) for name in values}
+
+
+# ---------------------------------------------------------------- HTML typed into a page
+
+def html_span(text: str, opening: str, after: str | None = None) -> tuple[int, int]:
+    """(start, end) of the inner HTML of the element whose opening tag is the
+    literal `opening` (for example '<div class="hr-stat-row">'), searched from
+    the first `after` anchor when given. The opening tag must be unique in
+    that range, so a page edit cannot silently move the replacement."""
+    base = 0
+    if after is not None:
+        base = text.find(after)
+        if base == -1:
+            raise KeyError(f"anchor {after!r} not in the page")
+    i = text.find(opening, base)
+    if i == -1:
+        raise KeyError(f"{opening!r} not in the page")
+    if after is None and text.find(opening, i + 1) != -1:
+        raise ValueError(f"{opening!r} is not unique in the page; give an anchor")
+    tag = re.match(r"<([A-Za-z][\w-]*)", opening).group(1)
+    pat = re.compile(rf"<(/?){tag}\b[^>]*>", re.I)
+    depth, start = 0, i + len(opening)
+    for m in pat.finditer(text, i):
+        depth += -1 if m.group(1) else 1
+        if depth == 0:
+            return start, m.start()
+    raise ValueError(f"{opening!r}: no closing tag")
+
+
+def read_html(text: str, opening: str, after: str | None = None) -> str:
+    s, e = html_span(text, opening, after)
+    return text[s:e]
+
+
+def replace_html(text: str, opening: str, inner: str, after: str | None = None) -> str:
+    """The page with that element's inner HTML replaced."""
+    s, e = html_span(text, opening, after)
+    return text[:s] + inner + text[e:]
 
 
 def js_globals(values: dict) -> str:

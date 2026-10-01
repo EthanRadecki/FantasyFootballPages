@@ -140,7 +140,8 @@ DRAFT_CSV_GOLDENS = ["espn_player_stats_season", "espn_player_stats_2026", "draf
                      "draft_fingerprint_career"]
 DRAFT_JSON_GOLDENS = {"surplus_value_data": "surplus_value_data", "surplus_value_2026_live_json": "surplus_value_2026_live",
                       "draft_heatmap": "draft_heatmap", "hit_rate_data": "hit_rate_data",
-                      "draft_fingerprints_page": "draft_fingerprints_page", "draft_board_page": "draft_board_page"}
+                      "draft_fingerprints_page": "draft_fingerprints_page", "draft_board_page": "draft_board_page",
+                      "surplus_value_page": "surplus_value_page", "draft_analysis_page": "draft_analysis_page"}
 TRADE_PAGE_GOLDENS = ["page_data", "network_data", "winpct_data", "trade_week_data", "most_traded_data",
                       "trade_value_inline"]
 TRADE_GOLDENS = ["trades_mapped", "trades_mapped_clean", "trade_universe", "position_baseline",
@@ -383,7 +384,8 @@ def cmd_build(args: argparse.Namespace) -> int:
     if not analysis:
         print(f"note: no analysis tables at {ana} (run `engine analyze`); pages that need them are skipped")
     ctx = BuildContext(cfg=cfg, tables=read_tables(src), analysis=analysis, build=build_info(args.build_id),
-                       site_root=Path(args.site), golden_dir=Path(args.golden))
+                       site_root=Path(args.site), golden_dir=Path(args.golden),
+                       league_dir=Path(args.path).parent)
     result = run_build(ctx, Path(args.out))
     n_site = sum(1 for f in result.copied if f not in {o.path for o in result.generated})
     print(f"Built {result.out}/ (build {ctx.build['id']}): {n_site} site files copied, "

@@ -1,6 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
+Progress: A0-A4 merged (#29-#33); A5 (draft pages) in review. Status columns below are as of A5.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -40,7 +41,7 @@ Names: legacy data keys rows by manager display name, and the pages disagree on 
 | Page | Data today | Elements | Status in one line |
 |---|---|---|---|
 | index.html | file (stats CSV) + client | 3 | leaderboard COVERED via manager seasons; client math moves to publish |
-| managers.html | 5 files, rankings files, ~280 KB inline, client | 14 | mostly COVERED; heatmap summaries PARTIAL; headshots NO PRODUCER; client luck uses a legacy method |
+| managers.html | 5 files, rankings files, ~280 KB inline, client | 14 | mostly COVERED; draft board map COVERED (A5); headshots NO PRODUCER; client luck uses a legacy method |
 | matchups.html | file (matchups.json) | 4 | COVERED |
 | weekly-rankings.html | rankings files, playoff odds, headshots | 6 plus ~20 computed fields | odds COVERED; computed ranking fields NO PRODUCER (builder lost); rest EDITORIAL |
 | trade-value.html | 6 globals + inline | 8 | explorer COVERED; other globals NO GOLDEN; most traded NO PRODUCER |
@@ -48,10 +49,10 @@ Names: legacy data keys rows by manager display name, and the pages disagree on 
 | dst-impact.html | file | 1 (8 sections) | COVERED |
 | schedule_release.html | 2 files + inline | 4 | NO PRODUCER; schedule LEAGUE-AUTHORED |
 | champions.html | ~15 KB inline + headshots | 4 | NO PRODUCER, NO GOLDEN (hand-built) |
-| surplus-value.html | ~25 KB inline | 9 | grades COVERED; best/worst lists and tips NO GOLDEN |
-| draft-analysis.html | ~14 KB inline + HTML | 7 | COVERED (slot table, hit rate) |
-| draft-fingerprints.html | ~245 KB inline | 2 | data COVERED (8 page checks); metadata TEMPLATE |
-| draft-history.html | ~84 KB inline | 3 | COVERED |
+| surplus-value.html | ~25 KB inline | 9 | COVERED (A5: new golden for tips, highs and lows, best/worst lists, scale) |
+| draft-analysis.html | ~14 KB inline + HTML | 8 | COVERED (A5: inline data and typed HTML replaced) |
+| draft-fingerprints.html | ~245 KB inline | 2 | data COVERED (A5); metadata TEMPLATE; archetype names EDITORIAL file |
+| draft-history.html | ~84 KB inline | 3 | COVERED (A5) |
 | lineup-efficiency.html | ~150 KB inline | 11 | blunders COVERED; aggregates NO GOLDEN; bench depth NO PRODUCER |
 | waiver-value.html | ~284 KB inline | 6 | COVERED (5 checks); scale constants NO GOLDEN |
 | extra-analytics.html | ~90 KB inline + HTML | 13 | mostly COVERED; luck chart NO GOLDEN; R2 history EDITORIAL |
@@ -103,8 +104,8 @@ Note: the live season's rows (Playoffs 0, all-time ranks blank) are included in 
 | Seasonal scoring trends | client: weekly score vs league weekly average | per week | `games` | none | client -> publish |
 | Performance over time (league avg PF/G line) | client from stats CSV | per season | `ms` | as 4.1 | client -> publish |
 | Power ranking trajectory | rankings manifest + every weekly file | {manager: {season: {week: rank}}} | editorial rankings | none | EDITORIAL |
-| Draft fingerprint radar | inline `FINGERPRINTS` (7 measures, raw + normalized, 2021-2025 + career) | {name: {season: {raw, normalized}}} | replaced by 10-dim `draft_profile_seasons` / `draft_profile_career` (Ethan, session 5) | draft profile page checks | COVERED (replacement decided) |
-| Draft board performance map | inline `HEATMAP_DATA` (~250 KB) | {name: {board: {"r_s": {round, slot, avg_surplus, n_seasons, picks[]}}, tiers, positions, best_picks, worst_picks, career_wtd_avg, total_picks}} | `draft_heatmap` (board cells); tiers, positions, best/worst from `draft_surplus` + `draft_hits` | `draft/draft_heatmap.json`: board cells checked (950 rows) | PARTIAL: summaries not built or checked |
+| Draft fingerprint radar | inline `FINGERPRINTS` (7 measures, raw + normalized, 2021-2025 + career) | {name: {season: {raw, normalized}}} | replaced by 10-dim `draft_profile_seasons` / `draft_profile_career` (Ethan, session 5) | draft profile page checks | COVERED (replacement decided); Stage A leaves the inline literal as it is, the 10-dim profile is in `managers/<key>.json` (A5), Stage B rebuilds the radar |
+| Draft board performance map | inline `HEATMAP_DATA` (~250 KB) | {name: {board: {"r_s": {round, slot, avg_surplus, n_seasons, picks[]}}, tiers, positions, best_picks, worst_picks, career_wtd_avg, total_picks}} | `draft_heatmap` rules on `draft_surplus` + `draft_career_grades` (`publish/pages/board_map.py`; rules in METRICS_REFERENCE) | `draft/draft_heatmap.json` (identical to the page), every field checked | COVERED (A5) |
 | Franchise leaders table, scatter | file `franchise_leaders.json` | {name: [{player, position, season, weeks_rostered, games_played, total_points}]} | `franchise_leaders` | `records/franchise_leaders.json`, PASS | COVERED |
 | Roster timeline | file `roster_stints.json` | {name: {player: {position, stints: [{season, start, end, started[]}]}}} | `roster_stints` | `waivers/roster_stints.json`, PASS | COVERED |
 | Best single-week performances | file `best_single_week.json` | {name: [{player, position, season, week, points}]}, top 25 per position and season | `best_weeks` | `records/best_single_week.json`, PASS | COVERED |
@@ -205,10 +206,10 @@ All five `regenerate_data_files.py` outputs and `most_traded_data.js` become one
 |---|---|---|---|---|---|
 | `CAREER_GRADES` | inline | [{rank, manager, avg_surplus, total_surplus, total_picks, seasons}] | `draft_career_grades` | `draft/surplus_value_data.json`, PASS | COVERED |
 | `SEASON_GRADES` | inline | {season: {name: grade}} | `draft_season_grades` | same, PASS | COVERED |
-| `HEATMAP_TIPS` | inline (83) | {"season|name": {best, worst}} as text "Player RdN (+x.xx)" | `draft_surplus` | none | NO GOLDEN |
-| `MANAGER_BW` | inline (14) | [{manager, best, bestPos, bestSeason, bestRd, bestSurplus, worst...}] | `draft_surplus` | none | NO GOLDEN |
-| `ALL_BEST_PICKS` (15), `SEASON_BEST` (10 per season), `ALL_WORST_PICKS` (15), `SEASON_WORST` (5 per season) | inline | [{rank, player, pos, round, pick, season, actual, expected, surplus, manager}] | `draft_surplus` | rows exist in `draft/draft_surplus_v2.csv`; lists not frozen | NO GOLDEN |
-| `POP_SURPLUS_MIN`, `POP_SURPLUS_MAX` | inline constants | numbers | `draft_surplus` | none | NO GOLDEN |
+| `HEATMAP_TIPS` | inline (83) | {"season|name": {best, worst}} as text "Player RdN (+x.xx)" | `draft_surplus` (weighted surplus) | `draft/surplus_value_page.json` | COVERED (A5) |
+| `MANAGER_BW` | inline (14) | [{manager, best, bestPos, bestSeason, bestRd, bestSurplus, worst...}] | `draft_surplus` (weighted surplus) | same | COVERED (A5) |
+| `ALL_BEST_PICKS` (15), `SEASON_BEST` (10 per season), `ALL_WORST_PICKS` (15), `SEASON_WORST` (5 per season) | inline | [{rank, player, pos, round, pick, season, actual, expected, surplus, manager}] | `draft_surplus` (by weighted surplus; actual = PRV) | same | COVERED (A5) |
+| `POP_SURPLUS_MIN`, `POP_SURPLUS_MAX` | inline constants | numbers | `draft_surplus` (unweighted surplus, 2 places) | same | COVERED (A5) |
 | `SEASONS` [2020-2025] | inline | | config (finished seasons) | | CONFIG |
 
 ### 4.11 draft-analysis.html
@@ -218,25 +219,25 @@ All five `regenerate_data_files.py` outputs and `most_traded_data.js` become one
 | Slot table (14 rows: seasons, playoff %, champ %, PF/G, dominance, expected, over/under) | HTML | table | `draft_slot_results` (`manager_seasons.draft_slots`) | `manager_seasons/draft_slots_page.json`, PASS (Champ % and PF/G contradicted the source; engine uses real values) | COVERED |
 | `PLAYOFF_RATES`, `OVERPERFS` (slot charts) | inline | [num] x14 | `draft_slot_results` | same | COVERED |
 | `SLOT_DATA` (who drafted from each slot, through 2026) | inline | {slot: [[name, season]]} | `draft_slot_managers` | same, PASS | COVERED |
-| `HR_BY_ROUND`, `HR_BY_POS`, tier hit rates (76.9%, 38.8%, 9.9% in HTML) | inline + HTML | [{round, tier, hit_rate, total_picks, hits, rb..dst}], {pos: [early, middle, late]} | `draft_hits`, `draft_hit_thresholds` | `draft/hit_rate_data.json`, PASS | COVERED |
-| `ALL_TIME_STEALS` (10), `SEASON_STEALS` (10 per season) | inline | [{rank, player, pos, round, slot, season, ppg, above, games, manager}] | `draft.steals` | same, PASS | COVERED |
+| `HR_BY_ROUND`, `HR_BY_POS`, tier cards (76.9%, 38.8%, 9.9% in HTML) | inline + HTML | [{round, tier, hit_rate, total_picks, hits, rb..dst}], {pos: [early, middle, late]} | `draft_hits`, `draft_hit_thresholds` | `draft/draft_analysis_page.json` (A5; the page's own blocks) and `draft/hit_rate_data.json` | COVERED |
+| `ALL_TIME_STEALS` (10), `SEASON_STEALS` (10 per season) | inline | [{rank, player, pos, round, slot, season, ppg, above, games, manager}] | `draft.steals` | same; the page's season lists contradict their script on 89 values (retyped from another file), excused by that pattern | COVERED |
 | `CAREER_PREVIEW` | inline | [{manager, avg, rank, seasons}] | `draft_career_grades` | `draft/surplus_value_data.json`, PASS | COVERED |
-| `ABOVE_AVG_CEIL` 14.03 ("confirmed all-time high") | inline constant | number | `draft_hits.pts_above_avg` max | none | NO GOLDEN |
-| Slot 15 (2020 only) | not shown today | | exists in `draft_slot_results` (seasons 1, over/under 0 by construction) | | decision 7.4 |
+| `ABOVE_AVG_CEIL` 14.03 ("confirmed all-time high") | inline constant | number | the highest points above average on the all-time steals list | `draft/draft_analysis_page.json` | COVERED (A5) |
+| Slot 15 (2020 only) | not shown today | | exists in `draft_slot_results` (seasons 1, over/under 0 by construction) | | decision 7.4: in `SLOT_DATA` from A5; the results need 2 seasons |
 
 ### 4.12 draft-fingerprints.html
 
 | Element | Where | Shape | Producer | Golden / check | Status |
 |---|---|---|---|---|---|
-| `DATA` (~245 KB): FINGERPRINTS (16 managers incl. hidden, per season + career: raw, normalized, posdev, all, cluster, archetype, outcomes), RADAR/POSDEV dims and labels, EXPLORER_GROUPS, METRIC_META, GLOBAL_RANGES, CAREER_RANGES, ARCHETYPES {cluster_summary[4], assignments[85], k, n_*, stats}, MGR_COLORS, MANAGERS_ORDERED, SEASON_YEARS | inline | as listed | `draft_profile_seasons`, `draft_profile_career`, `draft_archetypes`, `draft_archetype_stats`, `draft_profiles.ranges` | `draft/draft_fingerprints_page.json`, 8 page checks PASS | COVERED (data); labels, groups, METRIC_META are TEMPLATE; archetype names and descriptions EDITORIAL |
+| `DATA` (~245 KB): FINGERPRINTS (16 managers incl. hidden, per season + career: raw, normalized, posdev, all, cluster, archetype, outcomes), RADAR/POSDEV dims and labels, EXPLORER_GROUPS, METRIC_META, GLOBAL_RANGES, CAREER_RANGES, ARCHETYPES {cluster_summary[4], assignments[85], k, n_*, stats}, MGR_COLORS, MANAGERS_ORDERED, SEASON_YEARS | inline | as listed | `draft_profile_seasons`, `draft_profile_career`, `draft_archetypes`, `draft_archetype_stats`, `draft_profiles.ranges` | `draft/draft_fingerprints_page.json`, 8 page checks PASS; A5: the data keys of `DATA` replaced, template and config keys kept | COVERED (data); labels, groups, METRIC_META are TEMPLATE; archetype names and descriptions EDITORIAL (`leagues/preach/editorial/archetypes.yaml`, decision 7.6) |
 | `GROUP_DESCRIPTIONS`, methodology prose with numbers (p=0.232, p=0.568, 85% variance, k=4, "7 and 2 of 85" imputed) | inline + HTML | text | numbers from `draft_archetype_stats` (incl. `fill_notes`) | covered by the stats check | TEMPLATE text + data fields |
 
 ### 4.13 draft-history.html
 
 | Element | Where | Shape | Producer | Golden / check | Status |
 |---|---|---|---|---|---|
-| `DRAFT` (every pick 2020-2026 with PPG, games) | inline (~83 KB) | {season: {round: [{p, pos, ppg, g}]}} | `draft_board` + `draft.board_data` | `draft/draft_board_page.json`, PASS | COVERED |
-| `SLOT_ORDER` (round-1 order per season, 15 in 2020) | inline | {season: [name]} | `draft.board_data` | same, PASS | COVERED |
+| `DRAFT` (every pick 2020-2026 with PPG, games) | inline (~83 KB) | {season: {round: [{p, pos, ppg, g}]}} | `draft_board` + `draft.board_data` | `draft/draft_board_page.json`, PASS | COVERED (A5 replaces it) |
+| `SLOT_ORDER` (round-1 order per season, 15 in 2020) | inline | {season: [name]} | `draft.board_data` | same, PASS | COVERED (A5 replaces it) |
 | `MANAGERS` | inline | [{name, logo, short}] | config | | CONFIG |
 
 ### 4.14 lineup-efficiency.html
@@ -337,7 +338,7 @@ CI: build `dist/` from fixtures, validate every file against its schema, run `to
 |---|---|---|
 | 7.1 | Parity strategy | Two stages. Stage A: publish builds one page model per page (keyed by manager key) plus a thin legacy view that reshapes it into today's files; the legacy view, fed legacy-mode analysis, must reproduce every current file and inline block (value-level diff at the page's rounding), then engine mode writes the new numbers and the differences are listed for review. Stage B: pages move into `web/` and read the page model directly; each page's legacy view is deleted when it moves. Rollout follows section 8. |
 | 7.2 | Output location during phase 4 | `dist/`, gitignored, built in the Codespace and in CI; published as a preview under `/next/` once Pages deploys from Actions (section 8). The live root is served byte-for-byte unchanged until cutover. |
-| 7.3 | Hidden managers at publish | Dropped from manager-level outputs (leaderboards, ranks, selectors, per-manager files, chart series). Kept, labelled, on event rows involving real games, trades or picks: matchups, trade explorer, trades by week, most traded, the 2020 draft board and slot order, archetype comparisons. |
+| 7.3 | Hidden managers at publish | Dropped from manager-level outputs (leaderboards, ranks, selectors, per-manager files, chart series). Kept, labelled, on event rows involving real games, trades or picks: matchups, trade explorer, trades by week, most traded, the 2020 draft board and slot order, archetype comparisons. A5 reads lists of picks (late-round steals, best and worst picks) as real picks: they keep excluded managers' picks, as the steals list on the page already does; grades, draft tips, highs and lows and the board map drop them. |
 | 7.4 | Slot 15 on draft-analysis.html | Not in the slot results table or charts (one season, over/under 0 by construction); kept in the "who drafted from each slot" list. Generic rule: a slot needs at least 2 seasons to appear in results. |
 | 7.5 | Headshots | Generated from ESPN player ids (ESPN image URL pattern), for any league; the NFL.com file is retired. Pages keep their missing-image fallback. |
 | 7.6 | Archetype names | Editorial file keyed by stable cluster id; leagues without one get a generated label from the cluster's defining traits. |
