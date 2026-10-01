@@ -19,17 +19,21 @@ from pathlib import Path
 LEGACY_SITE_FILES = ["index.html", "shared.js", "style.css", "data-engine.js", "preach_logo.png"]
 LEGACY_SITE_DIRS = ["pages", "data", "images"]
 
-# id, title, path, parent (for sub-pages), feature flag in league.yaml (None: always on), shown in the nav
+# id, title, path, parent (for sub-pages), feature flag in league.yaml (None: always on), shown in the nav,
+# and `data`: the page model files the page needs. A page whose data the build did not produce for this
+# league (a league that never starts a D/ST has no D/ST page) is left out of config.json's page list.
+# Pages not yet ported to publish declare no data and are always listed.
 PAGES = [
-    {"id": "home", "title": "Home", "path": "index.html", "parent": None, "feature": None, "nav": False},
+    {"id": "home", "title": "Home", "path": "index.html", "parent": None, "feature": None, "nav": False,
+     "data": ["data/v1/index.json"]},
     {"id": "weekly-rankings", "title": "Weekly Rankings", "path": "pages/weekly-rankings.html", "parent": None,
      "feature": "weekly_rankings", "nav": True},
     {"id": "managers", "title": "Managers", "path": "pages/managers.html", "parent": None, "feature": None,
-     "nav": True},
+     "nav": True, "data": ["data/v1/index.json"]},
     {"id": "champions", "title": "Champions", "path": "pages/champions.html", "parent": None,
      "feature": "champions_gallery", "nav": True},
     {"id": "matchups", "title": "Matchups", "path": "pages/matchups.html", "parent": None, "feature": None,
-     "nav": True},
+     "nav": True, "data": ["data/v1/matchups.json"]},
     {"id": "draft-analysis", "title": "Draft Analysis", "path": "pages/draft-analysis.html", "parent": None,
      "feature": None, "nav": True},
     {"id": "surplus-value", "title": "Surplus Value", "path": "pages/surplus-value.html",
@@ -45,23 +49,32 @@ PAGES = [
     {"id": "waiver-value", "title": "Waiver Value", "path": "pages/waiver-value.html",
      "parent": "transaction-analysis", "feature": None, "nav": True},
     {"id": "trade-value", "title": "Trade Value", "path": "pages/trade-value.html",
-     "parent": "transaction-analysis", "feature": None, "nav": True},
+     "parent": "transaction-analysis", "feature": None, "nav": True, "data": ["data/v1/trade-value.json"]},
     {"id": "extra-analytics", "title": "Extra Analytics", "path": "pages/extra-analytics.html", "parent": None,
      "feature": None, "nav": True},
-    {"id": "position-impact", "title": "Position Impact", "path": "pages/position-impact.html", "parent": None,
-     "feature": None, "nav": False},
-    {"id": "dst-impact", "title": "Life Without Defense", "path": "pages/dst-impact.html", "parent": None,
-     "feature": None, "nav": False},
+    {"id": "position-impact", "title": "Position Impact", "path": "pages/position-impact.html",
+     "parent": "extra-analytics", "feature": None, "nav": True, "data": ["data/v1/position-impact.json"]},
+    {"id": "dst-impact", "title": "Life Without Defense", "path": "pages/dst-impact.html",
+     "parent": "extra-analytics", "feature": None, "nav": True, "data": ["data/v1/dst-impact.json"]},
     {"id": "schedule-release", "title": "Schedule Release", "path": "pages/schedule_release.html", "parent": None,
      "feature": None, "nav": False},
 ]
 
 
-def pages_for(features: dict | None) -> list[dict]:
-    """The page list with pages whose feature is switched off removed.
-    A feature missing from league.yaml counts as on."""
+def pages_for(features: dict | None, produced: set[str] | None = None) -> list[dict]:
+    """The page list with pages whose feature is switched off removed (a
+    feature missing from league.yaml counts as on) and, once the build knows
+    what it produced, pages whose data is missing."""
     features = features or {}
-    return [dict(p) for p in PAGES if p["feature"] is None or features.get(p["feature"], True)]
+    out = []
+    for p in PAGES:
+        if p["feature"] is not None and not features.get(p["feature"], True):
+            continue
+        need = p.get("data") or []
+        if produced is not None and need and not all(d in produced for d in need):
+            continue
+        out.append({k: v for k, v in p.items()} | {"data": list(need)})
+    return out
 
 
 def site_files(root: Path) -> list[Path]:

@@ -11,7 +11,8 @@ Golden files:
 
 Layered check: the four inputs are rebuilt from the legacy files (games in
 file order, players keyed by name as the scripts did) and run through the
-engine's sections with the legacy settings, then compared field by field
+engine's sections with the legacy settings, shaped by the same code the
+build uses (engine/publish/pages/impact.py), then compared field by field
 with both published files.
 
 Known legacy differences, excused by pattern:
@@ -126,127 +127,32 @@ def _name(names: dict, mk: str) -> str:
 
 def build_payloads(games, lineups, picks, active, acquisition, names, nth, seasons, hidden, qualify,
                    dst_standings, dst_all_drafted: bool) -> tuple[dict, dict]:
-    """position_impact_data.json and dst_removed_data.json, in the published shape."""
+    """position_impact_data.json and dst_removed_data.json, in the published
+    shape: the frames are computed from these inputs with the legacy settings,
+    then shaped by the same code the build uses (engine/publish/pages/impact.py)."""
+    from engine.publish.pages.impact import shape_payloads
+
     started = pi.pos_started(lineups)
     rates, season_rates, net = pi.flip_summary(games, started)
-    cons = pi.consistency(lineups)
-    dvw = pi.draft_vs_waiver(lineups, picks, nth, hidden)
-    order, box = pi.draft_order(lineups, picks, nth, hidden)
     cap = pi.draft_capital(picks, active[~active["manager_key"].isin(hidden)], nth, seasons, hidden)
-    stand = pi.standings_from_games(games)
-    corr_pts, corr_stats = pi.correlation(stand, started, picks, nth)
-    acq = pi.acquisition_summary(acquisition, hidden=hidden)
-    visible = lambda mk: mk not in hidden
-
-    pos_json = {"positions": pi.POSITIONS, "nth_pick": nth, "total_games": int(len(games))}
-    pos_json["flip_rates"] = {r.position: {"flips": r.flips, "total": r.total, "pct": r.pct} for r in rates.itertuples()}
-    pos_json["net_impact"] = {p: {_name(names, r.manager_key): r.net for r in g.itertuples() if r.gained + r.lost > 0
-                                  and visible(r.manager_key)} for p, g in net.groupby("position", sort=False)}
-    pos_json["season_flip_rate"] = {p: {str(r.season): r.pct for r in g.itertuples()} for p, g in season_rates.groupby("position", sort=False)}
-    pos_json["consistency"] = {r.position: {"avg_cv": r.avg_cv, "sample": r.sample} for r in cons.itertuples()}
-    pos_json["draft_vs_waiver"] = {}
-    for p in pi.POSITIONS:
-        g = dvw[dvw["position"] == p]
-        pos_json["draft_vs_waiver"][p] = {
-            "nth_pick": nth[p], "overall_drafted_ppg": g["overall_drafted_ppg"].iloc[0] if len(g) else 0,
-            "waiver_ppg": g["waiver_ppg"].iloc[0] if len(g) else 0,
-            "by_round_ppg": {str(r.round): r.ppg for r in g.itertuples()},
-            "by_round_weeks": {str(r.round): r.weeks for r in g.itertuples()}}
-    pos_json["draft_capital"] = {p: {_name(names, m): {"by_year": {str(r.season): r.round for r in mg.itertuples()},
-                                                       "career_avg_round": mg["career_avg_round"].iloc[0]}
-                                     for m, mg in g.groupby("manager_key", sort=False)}
-                                 for p, g in cap.groupby("position", sort=False)}
-    pos_json["performance_correlation"] = {}
-    for p in pi.POSITIONS:
-        s = corr_stats[corr_stats["position"] == p].iloc[0]
-        pts = corr_pts[corr_pts["position"] == p]
-        pos_json["performance_correlation"][p] = {
-            "points": [{"season": r.season, "manager": _name(names, r.manager_key), "win_pct": round(r.win_pct, 4),
-                        "ppg": round(r.ppg, 2), "drafted_round": r.drafted_round} for r in pts.itertuples()],
-            "ppg_vs_winpct": {"r": s.ppg_r, "r2": s.ppg_r2, "slope": s.ppg_slope, "intercept": s.ppg_intercept, "n": int(s.ppg_n)},
-            "round_vs_winpct": {"r": s.round_r, "r2": s.round_r2, "slope": s.round_slope, "intercept": s.round_intercept,
-                                "n": int(s.round_n)}}
-    pos_json["acquisition_source"] = {}
-    for p in pi.POSITIONS:
-        g = acq[acq["position"] == p]
-        per = g[g["manager_key"].notna() & ~g["hidden"]]
-        lt = g[g["manager_key"].isna()]
-        pos_json["acquisition_source"][p] = {
-            "per_manager": {_name(names, r.manager_key): {"drafted": round(r.drafted, 1), "waiver": round(r.waiver, 1),
-                                                          "traded": round(r.traded, 1)} for r in per.itertuples()},
-            "league_total": {k: round(float(lt[k].iloc[0]), 1) if len(lt) else 0.0 for k in ("drafted", "waiver", "traded")}}
-    pos_json["draft_order"] = {}
-    for p in pi.POSITIONS:
-        g, b = order[order["position"] == p], box[box["position"] == p]
-        pos_json["draft_order"][p] = {
-            "by_order_ppg": {str(r.order): r.ppg for r in g.itertuples()},
-            "by_order_weeks": {str(r.order): r.weeks for r in g.itertuples()},
-            "by_order_boxplot": {str(r.order): {"min": r.min, "q1": r.q1, "median": r.median, "q3": r.q3, "max": r.max,
-                                                "n": r.n} for r in b.itertuples()}}
-
-    # ---- D/ST page
+    corr_pts, corr_stats = pi.correlation(pi.standings_from_games(games), started, picks, nth)
     labels = pi.playoff_labels(games)
     dg = pi.dst_games(games, started, labels)
     mstats, mflips = pi.dst_managers(dg, lineups)
-    playoffs = pi.season_playoffs(dg, qualify)
-    dst = {"league": {"total_games": int(len(dg)), "total_flips": int(dg["flipped"].sum()), "all_games": [
-        {"season": int(r.season), "label": r.label, "week_num": int(r.week), "team_a": _name(names, r.manager_a),
-         "team_b": _name(names, r.manager_b), "score_a": round(r.score_a, 2), "score_b": round(r.score_b, 2),
-         "dst_a": round(r.pos_a, 2), "dst_b": round(r.pos_b, 2), "adj_a": r.adj_a, "adj_b": r.adj_b,
-         "actual_winner": _name(names, r.actual_winner),
-         "adj_winner": "TIE" if r.adj_winner == "TIE" else _name(names, r.adj_winner), "flipped": bool(r.flipped)}
-        for r in dg.itertuples()]}}
-    dst["managers"] = {}
-    for r in mstats.itertuples():
-        if not visible(r.manager_key):
-            continue
-        fl = mflips[mflips["manager_key"] == r.manager_key] if len(mflips) else mflips
-        a = acq[(acq["position"] == "D/ST") & (acq["manager_key"] == r.manager_key)]
-        dst["managers"][_name(names, r.manager_key)] = {
-            "games": r.games, "actual_record": [r.actual_w, r.actual_l], "adj_record": [r.adj_w, r.adj_l],
-            "flipped_count": r.flipped,
-            "flipped_games": [{"season": int(f.season), "label": f.label, "opponent": _name(names, f.opponent),
-                               "my_score": f.my_score, "opp_score": f.opp_score, "my_adj": f.my_adj, "opp_adj": f.opp_adj,
-                               "direction": f.direction} for f in fl.itertuples()],
-            "acquisition": ({k: round(float(a[k].iloc[0]), 1) for k in ("drafted", "waiver", "traded")} if len(a)
-                            else {"drafted": 0, "waiver": 0, "traded": 0}),
-            "dst_ppg": r.dst_ppg}
-    dst["season_playoffs"] = {str(r.season): {
-        "actual_top8": [_name(names, m) for m in r.actual_field], "adj_top8": [_name(names, m) for m in r.adj_field],
-        "gained": [_name(names, m) for m in r.gained], "lost": [_name(names, m) for m in r.lost],
-        "playoff_flips": [{"label": f["label"], "team_a": _name(names, f["manager_a"]), "team_b": _name(names, f["manager_b"]),
-                           "score_a": round(f["score_a"], 2), "score_b": round(f["score_b"], 2), "adj_a": f["adj_a"],
-                           "adj_b": f["adj_b"], "actual_winner": _name(names, f["actual_winner"]),
-                           "adj_winner": "TIE" if f["adj_winner"] == "TIE" else _name(names, f["adj_winner"])}
-                          for f in r.playoff_flips],
-        "champion_changed": r.champion_changed, "actual_champion": _name(names, r.actual_champion) if r.actual_champion else None,
-        "champion_eliminated_round": r.champion_eliminated_round} for r in playoffs.itertuples()}
-    dst["position_flip_rates"] = pos_json["flip_rates"]
-    dvw_d = pi.draft_vs_waiver(lineups, picks, {"D/ST": 1}, frozenset() if dst_all_drafted else hidden,
-                               all_drafted=dst_all_drafted)
-    dst["draft_vs_waiver"] = {
-        "overall_drafted_ppg": dvw_d["overall_drafted_ppg"].iloc[0], "overall_drafted_weeks": int(dvw_d["overall_drafted_weeks"].iloc[0]),
-        "waiver_ppg": dvw_d["waiver_ppg"].iloc[0], "waiver_weeks": int(dvw_d["waiver_weeks"].iloc[0]),
-        "by_round_ppg": {str(r.round): r.ppg for r in dvw_d.itertuples()},
-        "by_round_weeks": {str(r.round): r.weeks for r in dvw_d.itertuples()}}
-    dst["position_consistency"] = pos_json["consistency"]
     real = lineups[lineups["started"] & (lineups["slot"] != "IR")]
-    dst_started = pi.pos_started(real)
-    dpts, dstat = pi.correlation(dst_standings, dst_started, picks, {"D/ST": 1}, from_rounded=dst_all_drafted)
-    s = dstat.iloc[0]
-    dst["dst_performance"] = {
-        "points": [{"season": r.season, "manager": _name(names, r.manager_key), "win_pct": round(r.win_pct, 4),
-                    "ppg": round(r.ppg, 2), "drafted_round": r.drafted_round} for r in dpts.itertuples()],
-        "ppg_vs_winpct": {"r": s.ppg_r, "r2": s.ppg_r2, "slope": s.ppg_slope, "intercept": s.ppg_intercept, "n": int(s.ppg_n)},
-        "round_vs_winpct": {"r": s.round_r, "r2": s.round_r2, "slope": s.round_slope, "intercept": s.round_intercept,
-                            "n": int(s.round_n)}}
-    dcap = cap[cap["position"] == "D/ST"]
-    dst["draft_capital"] = {_name(names, m): {"by_year": {str(r.season): r.round for r in g.itertuples()},
-                                              "career_avg_round": g["career_avg_round"].iloc[0],
-                                              "years_drafted": int(g["years_drafted"].iloc[0]),
-                                              "years_streamed": int(g["years_streamed"].iloc[0])}
-                            for m, g in dcap.groupby("manager_key", sort=False)}
-    return pos_json, dst
+    dpts, dstat = pi.correlation(dst_standings, pi.pos_started(real), picks, {"D/ST": 1}, from_rounded=dst_all_drafted)
+    order, box = pi.draft_order(lineups, picks, nth, hidden)
+    frames = {
+        "positions": pi.POSITIONS, "total_games": int(len(games)), "flip_rates": rates, "season_flips": season_rates,
+        "net": net, "consistency": pi.consistency(lineups), "dvw": pi.draft_vs_waiver(lineups, picks, nth, hidden),
+        "order": order, "box": box, "cap": cap, "corr_pts": corr_pts, "corr_stats": corr_stats,
+        "acq": pi.acquisition_summary(acquisition, hidden=hidden), "dst_games": dg, "dst_managers": mstats,
+        "dst_flips": mflips, "dst_playoffs": pi.season_playoffs(dg, qualify),
+        "dst_dvw": pi.draft_vs_waiver(lineups, picks, {"D/ST": 1}, frozenset() if dst_all_drafted else hidden,
+                                      all_drafted=dst_all_drafted),
+        "dst_corr_pts": dpts, "dst_corr_stats": dstat,
+    }
+    return shape_payloads(frames, lambda mk: _name(names, mk), nth, hidden)
 
 
 # ---------------------------------------------------------------- compare

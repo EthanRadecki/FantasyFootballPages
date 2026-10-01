@@ -323,7 +323,9 @@ dist/
     lineup-efficiency.json, waiver-value.json, extra-analytics.json
 ```
 
-index.json's leaderboard also carries the pill stats managers.html shows, so there is no separate `managers/index.json`.
+index.json's leaderboard also carries the pill stats managers.html shows, so there is no separate `managers/index.json`. Playoff odds are their own model, `data/v1/playoff-odds.json` (A4), which the weekly rankings page reads beside its weekly files.
+
+**Page availability.** Each page in the template's page list (`engine/publish/site.py`) declares the page model files it needs. `config.json` lists a page only when its league feature is on and the build produced its data, so the nav (Stage B) adapts to each league: a league whose lineups never start a D/ST gets no Life Without Defense page. Position Impact and Life Without Defense are sub-pages of Extra Analytics (Ethan, session 6).
 
 Stage A (decision 7.1) additionally writes the legacy files (`data/matchups.json`, `data/preach_manager_stats.csv`, and so on) at their current paths, so the current pages run from `dist/` unchanged, and so each output can be checked against its golden. Data inline in a page is replaced in `dist/`'s copy of that page (the live page is untouched); `tools/freeze_golden.py` freezes the current inline block or `.js` file as its golden first. A legacy view uses the manager spelling of the file it replaces ("Carmine Pittelli Jr." on matchups.html). Its Stage A check builds it from legacy-mode analysis, reads it back the way the golden is read, and runs the same comparison (with the same excuses) `analyze --verify` runs on the engine tables.
 

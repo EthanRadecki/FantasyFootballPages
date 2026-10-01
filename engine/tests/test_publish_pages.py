@@ -281,3 +281,90 @@ def test_trade_views_rebuild_the_site_files_from_legacy_outputs():
     bad = [c.render() for c in checks if not c.ok]
     assert not bad, "\n".join(bad)
     assert [c.name for c in checks][-1] == "legacy view trade-value.html LEADERBOARD_TOTALS vs published"
+
+
+# ---------------------------------------------------------------- impact and odds
+
+from engine.publish.pages import impact as impact_pub  # noqa: E402
+from engine.publish.pages import odds as odds_pub  # noqa: E402
+from engine.publish.site import pages_for  # noqa: E402
+
+
+def _impact_frames(with_dst=True):
+    pos = ["QB", "RB"] + (["D/ST"] if with_dst else [])
+    stats = pd.DataFrame([{"position": p, "ppg_r": 0.1, "ppg_r2": 0.01, "ppg_slope": 1.0, "ppg_intercept": 0.0,
+                           "ppg_n": 3, "round_r": -0.1, "round_r2": 0.01, "round_slope": -1.0, "round_intercept": 1.0,
+                           "round_n": 3} for p in pos])
+    pts = pd.DataFrame([{"position": p, "season": 2024, "manager_key": "m_a", "win_pct": 0.5, "ppg": 10.0,
+                         "drafted_round": 3} for p in pos])
+    dvw = pd.DataFrame([{"position": p, "round": 1, "ppg": 12.0, "weeks": 10, "overall_drafted_ppg": 11.0,
+                         "overall_drafted_weeks": 20, "waiver_ppg": 8.0, "waiver_weeks": 5, "nth_pick": 1} for p in pos])
+    dg = pd.DataFrame([{"season": 2024, "week": 1, "manager_a": "m_a", "manager_b": "m_h", "score_a": 100.0,
+                        "score_b": 99.0, "pos_a": 5.0, "pos_b": 0.0, "adj_a": 95.0, "adj_b": 99.0,
+                        "actual_winner": "m_a", "adj_winner": "m_h", "flipped": True, "label": "Week 1"}])
+    return {
+        "positions": pos, "total_games": 1,
+        "flip_rates": pd.DataFrame([{"position": p, "flips": 1, "total": 1, "pct": 100.0} for p in pos]),
+        "season_flips": pd.DataFrame([{"position": p, "season": 2024, "pct": 100.0} for p in pos]),
+        "net": pd.DataFrame([{"position": "QB", "manager_key": "m_a", "gained": 1, "lost": 0, "net": 1},
+                             {"position": "QB", "manager_key": "m_h", "gained": 0, "lost": 1, "net": -1}]),
+        "consistency": pd.DataFrame([{"position": p, "avg_cv": 0.5, "sample": 4} for p in pos]),
+        "dvw": dvw, "order": pd.DataFrame(columns=["position", "order", "ppg", "weeks"]),
+        "box": pd.DataFrame(columns=["position", "order", "min", "q1", "median", "q3", "max", "n"]),
+        "cap": pd.DataFrame([{"position": "QB", "manager_key": "m_a", "season": 2024, "round": "3", "career_avg_round": 3.0,
+                              "years_drafted": 1, "years_streamed": 0},
+                             {"position": "QB", "manager_key": "m_a", "season": 2025, "round": "not_in_league",
+                              "career_avg_round": 3.0, "years_drafted": 1, "years_streamed": 0}]),
+        "corr_pts": pts, "corr_stats": stats,
+        "acq": pd.DataFrame([{"position": "QB", "manager_key": "m_a", "drafted": 10.0, "waiver": 1.0, "traded": 0.0,
+                              "hidden": False},
+                             {"position": "QB", "manager_key": None, "drafted": 10.0, "waiver": 1.0, "traded": 0.0,
+                              "hidden": False}]),
+        "dst_games": dg if with_dst else dg.iloc[0:0],
+        "dst_managers": pd.DataFrame([{"manager_key": "m_a", "games": 1, "actual_w": 1, "actual_l": 0, "adj_w": 0,
+                                       "adj_l": 1, "flipped": 1, "dst_ppg": 5.0}]),
+        "dst_flips": pd.DataFrame(columns=["manager_key"]),
+        "dst_playoffs": pd.DataFrame([{"season": 2024, "actual_field": '["m_a", "m_h"]', "adj_field": '["m_h", "m_a"]',
+                                       "gained": "[]", "lost": "[]", "playoff_flips": "[]", "actual_champion": "m_a",
+                                       "champion_changed": False, "champion_eliminated_round": None}]),
+        "dst_dvw": dvw[dvw["position"] == "D/ST"], "dst_corr_pts": pts[pts["position"] == "D/ST"],
+        "dst_corr_stats": stats[stats["position"] == "D/ST"],
+    }
+
+
+def test_impact_shaper_keys_by_manager_hides_managers_and_reads_table_encodings():
+    pos_json, dst = impact_pub.shape_payloads(_impact_frames(), lambda k: k, {"QB": 1, "RB": 2, "D/ST": 1}, {"m_h"})
+    assert pos_json["positions"] == ["QB", "RB", "D/ST"] and pos_json["nth_pick"]["RB"] == 2
+    assert pos_json["net_impact"]["QB"] == {"m_a": 1}                         # the hidden manager left out
+    assert pos_json["draft_capital"]["QB"]["m_a"]["by_year"] == {"2024": 3, "2025": "not_in_league"}
+    assert pos_json["acquisition_source"]["QB"]["league_total"] == {"drafted": 10.0, "waiver": 1.0, "traded": 0.0}
+    assert dst["league"]["all_games"][0]["adj_winner"] == "m_h"               # event rows keep hidden managers
+    assert dst["season_playoffs"]["2024"]["actual_top8"] == ["m_a", "m_h"]
+    assert dst["draft_vs_waiver"]["overall_drafted_weeks"] == 20 and "dst_performance" in dst
+
+
+def test_impact_without_dst_has_no_dst_sections():
+    f = _impact_frames(with_dst=False)
+    pos_json, dst = impact_pub.shape_payloads(f, lambda k: k, {"QB": 1, "RB": 2}, set())
+    assert "D/ST" not in pos_json["flip_rates"] and dst["draft_vs_waiver"] == {} and "dst_performance" not in dst
+
+
+def test_pages_for_drops_pages_whose_data_was_not_built():
+    produced = {"data/v1/position-impact.json", "data/v1/index.json"}
+    ids = [p["id"] for p in pages_for({}, produced)]
+    assert "position-impact" in ids and "dst-impact" not in ids and "matchups" not in ids
+    assert "draft-analysis" in ids                       # not yet ported: no data declared, always listed
+    pi = next(p for p in pages_for({}) if p["id"] == "dst-impact")
+    assert pi["parent"] == "extra-analytics" and pi["nav"] is True
+
+
+def test_odds_view_rebuilds_the_site_file():
+    gold = _json("playoff_odds/playoff_odds.json.gz")
+    names = Names(_ctx(), [n for d in gold.values() for o in d["weeks"].values() for n in o])
+    view = odds_pub.odds_view(odds_pub.frame_from_file(gold, CFG), {int(s): d["max_week"] for s, d in gold.items()}, names)
+    assert view == {s: {"cutoff": d["cutoff"], "max_week": d["max_week"],
+                        "weeks": {w: d["weeks"][w] for w in sorted(d["weeks"], key=int)}} for s, d in gold.items()}
+    frame = odds_pub.frame_from_file(gold, CFG).assign(method="results")
+    model = odds_pub.odds_model(frame, {int(s): d["max_week"] for s, d in gold.items()}, {LOOKUP["thomas sullivan"]})
+    first = model["seasons"][0]
+    assert first["season"] == 2020 and LOOKUP["thomas sullivan"] not in first["weeks"][0]["odds"]

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "position-impact",
+  "title": "data/v1/position-impact.json: how much each position decides games (position-impact.html)",
+  "type": "object",
+  "required": ["meta", "positions", "nth_pick", "total_games", "flip_rates", "net_impact", "season_flip_rate",
+               "consistency", "draft_vs_waiver", "draft_capital", "performance_correlation", "acquisition_source",
+               "draft_order"],
+  "additionalProperties": false,
+  "$defs": {
+    "keyed": {"type": "object", "propertyNames": {"pattern": "^m_[0-9a-f]{12}$"}},
+    "by_position": {"type": "object", "additionalProperties": {"type": "object"}}
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "position-impact"}, "schema_version": {"const": 1}}},
+    "positions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "nth_pick": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
+    "total_games": {"type": "integer", "minimum": 0},
+    "flip_rates": {"type": "object", "additionalProperties": {"type": "object", "required": ["flips", "total", "pct"]}},
+    "net_impact": {"type": "object", "additionalProperties": {"$ref": "#/$defs/keyed"}},
+    "season_flip_rate": {"$ref": "#/$defs/by_position"},
+    "consistency": {"type": "object", "additionalProperties": {"type": "object", "required": ["avg_cv", "sample"]}},
+    "draft_vs_waiver": {"type": "object", "additionalProperties": {
+      "type": "object", "required": ["nth_pick", "overall_drafted_ppg", "waiver_ppg", "by_round_ppg", "by_round_weeks"]}},
+    "draft_capital": {"type": "object", "additionalProperties": {"$ref": "#/$defs/keyed"}},
+    "performance_correlation": {"type": "object", "additionalProperties": {
+      "type": "object", "required": ["points", "ppg_vs_winpct", "round_vs_winpct"]}},
+    "acquisition_source": {"type": "object", "additionalProperties": {
+      "type": "object", "required": ["per_manager", "league_total"],
+      "properties": {"per_manager": {"$ref": "#/$defs/keyed"}}}},
+    "draft_order": {"type": "object", "additionalProperties": {
+      "type": "object", "required": ["by_order_ppg", "by_order_weeks", "by_order_boxplot"]}}
+  }
+}

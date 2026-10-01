@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "playoff-odds",
+  "title": "data/v1/playoff-odds.json: weekly playoff odds per season (weekly-rankings.html)",
+  "type": "object",
+  "required": ["meta", "seasons"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "playoff-odds"}, "schema_version": {"const": 1}}},
+    "seasons": {"type": "array", "items": {
+      "type": "object", "required": ["season", "cutoff", "regular_season_weeks", "weeks"], "additionalProperties": false,
+      "properties": {
+        "season": {"type": "integer"}, "cutoff": {"type": "integer", "minimum": 1},
+        "regular_season_weeks": {"type": "integer", "minimum": 1},
+        "weeks": {"type": "array", "items": {
+          "type": "object", "required": ["week", "method", "odds"], "additionalProperties": false,
+          "properties": {"week": {"type": "integer", "minimum": 1}, "method": {"type": "string"},
+                         "odds": {"type": "object", "propertyNames": {"pattern": "^m_[0-9a-f]{12}$"},
+                                  "additionalProperties": {"type": "number", "minimum": 0, "maximum": 100}}}}}}}}
+  }
+}
