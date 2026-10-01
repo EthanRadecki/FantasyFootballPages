@@ -169,8 +169,10 @@ def parse_js(text: str):
 
 def literal_span(text: str, name: str) -> tuple[int, int]:
     """(start, end) of the literal (object, array or number) assigned by the
-    first `var|let|const <name> =`."""
+    first `var|let|const <name> =` (or `var A = 1, <name> = 2`)."""
     m = re.search(rf"\b(?:var|let|const)\s+{re.escape(name)}\s*=\s*", text)
+    if not m:       # a later name in one declaration: `var A = 1, B = 2;`
+        m = re.search(rf"\b(?:var|let|const)\s+[^;]*?,\s*{re.escape(name)}\s*=(?!=)\s*", text)
     if not m:
         raise KeyError(f"no `{name} = ...` in the page")
     start = m.end()

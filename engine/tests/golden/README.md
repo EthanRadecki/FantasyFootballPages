@@ -108,6 +108,7 @@ Added 2026-09-29. Checked by `engine analyze --verify`.
 | `waivers/waiver_stints_full.csv.gz` | `GitHubRepoData/waiver_stints_full.csv` (builder lost; identical to `WAIVER_STINTS` inline in waiver-value.html) | 1,757 pickups, 2020-2025 |
 | `waivers/waiver_page.json.gz` | `LEADERBOARD_FULL`, `CONTESTED_SPLIT`, `BEST_BY_MANAGER`, `BEST_PICKUPS_BY_FILTER` from waiver-value.html | the page's aggregates (computed from the file's rounded values) |
 | `waivers/roster_stints.json.gz` | `data/roster_stints.json` (managers page) | runs of counted game weeks per manager and player, 2020 through 2026 week 2 |
+| `waivers/waiver_value_page.json.gz` | every inline data block of `pages/waiver-value.html`, frozen 2026-10-01 with `tools/freeze_golden.py` (PR A6a); its four aggregates equal `waiver_page.json.gz` and its `WAIVER_STINTS` the stint file | checked by `engine build --verify` (the legacy view built from legacy-mode stints) and `engine/tests/test_publish_transactions.py` (built from `waiver_stints_full.csv.gz`). 33 player names differ from ESPN's (Gabriel Davis, Gardner Minshew II): the same pickups, excused by that pattern |
 
 ## position_impact/
 

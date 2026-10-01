@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: A0-A4 merged (#29-#33); A5 (draft pages) in review. Status columns below are as of A5.
+Progress: A0-A5 merged (#29-#34); A6a (waiver-value) in review. Status columns below are as of A6a.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -54,7 +54,7 @@ Names: legacy data keys rows by manager display name, and the pages disagree on 
 | draft-fingerprints.html | ~245 KB inline | 2 | data COVERED (A5); metadata TEMPLATE; archetype names EDITORIAL file |
 | draft-history.html | ~84 KB inline | 3 | COVERED (A5) |
 | lineup-efficiency.html | ~150 KB inline | 11 | blunders COVERED; aggregates NO GOLDEN; bench depth NO PRODUCER |
-| waiver-value.html | ~284 KB inline | 6 | COVERED (5 checks); scale constants NO GOLDEN |
+| waiver-value.html | ~284 KB inline | 6 | COVERED (A6a: every inline block, golden `waivers/waiver_value_page.json`) |
 | extra-analytics.html | ~90 KB inline + HTML | 13 | mostly COVERED; luck chart NO GOLDEN; R2 history EDITORIAL |
 | transaction-analysis.html | none | 0 | hub page; config only |
 
@@ -263,7 +263,7 @@ All five `regenerate_data_files.py` outputs and `most_traded_data.js` become one
 | `BEST_PICKUPS_BY_FILTER` | inline | {filter: {pos: [{s, m, p, pos, wk, ppw, totalz, avgz, type}]}} | `waiver_best` | same, PASS | COVERED |
 | `CONTESTED_SPLIT` | inline | [{m, faPpw, faZ, faN, wvPpw, wvZ, wvN, careerPpw, careerZ}] | `waiver_leaderboard` | same, PASS | COVERED |
 | `WAIVER_STINTS` (1,757) | inline (~186 KB) | [{s, m, t, sw, wk, z, ppw, p, pos}] | `waiver_stints` | `waivers/waiver_stints_full.csv`, PASS | COVERED |
-| `POSITION_SCALE`, `WAIVER_Z_GLOBAL_*`, `UPSIDE_MIN/MAX`, `BEST_TOTALZ_*`, `BEST_AVGZ_*` | inline constants | numbers | derived | none | NO GOLDEN |
+| `POSITION_SCALE`, `WAIVER_Z_GLOBAL_*`, `UPSIDE_MIN/MAX`, `BEST_TOTALZ_*`, `BEST_AVGZ_*` | inline constants | numbers | derived (rules in METRICS_REFERENCE, Waiver Value) | `waivers/waiver_value_page.json` | COVERED (A6a) |
 
 ### 4.16 extra-analytics.html
 
@@ -392,7 +392,7 @@ Stage A (publish, current pages unchanged or minimally changed), then Stage B (f
 | A3 | trade-value: the five `regenerate_data_files.py` outputs, most traded, total QUAD | `regenerate_data_files.py` |
 | A4 | impact and odds: position-impact, dst-impact, playoff odds | |
 | A5 | draft pages: draft-history, draft-fingerprints, draft-analysis, surplus-value (new goldens for tips and best/worst lists), managers heatmap summaries | |
-| A6 | transaction pages: waiver-value; lineup-efficiency (port bench depth and depth-adjusted efficiency, new page goldens) | |
+| A6 | transaction pages, in two PRs: A6a waiver-value; A6b lineup-efficiency (port bench depth and depth-adjusted efficiency, new page goldens) | |
 | A7 | extra-analytics (luck chart golden) | |
 | A8 | champions, schedule_release, weekly rankings computed fields (editorial split), headshots | |
 | M1 | switch the live deploy to engine-mode data under the current pages; release notes from the engine change list | legacy weekly process |

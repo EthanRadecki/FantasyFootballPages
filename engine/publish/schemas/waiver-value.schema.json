@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "waiver-value",
+  "title": "data/v1/waiver-value.json: waiver and free agent pickups and their value (waiver-value.html)",
+  "type": "object",
+  "required": ["meta", "seasons", "pickups", "leaderboard", "best_by_manager", "best_pickups", "free_agent_vs_claim",
+               "scales"],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+    "range": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}},
+    "by_scope": {"type": "object", "additionalProperties": {"type": "object"}}
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "waiver-value"}, "schema_version": {"const": 1}}},
+    "seasons": {"type": "array", "items": {"type": "integer"}},
+    "pickups": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["season", "manager_key", "hidden", "player_id", "player_name", "position", "type", "start_week",
+                   "end_week", "weeks", "points", "ppw", "avg_z", "total_z"],
+      "properties": {"season": {"type": "integer"}, "manager_key": {"$ref": "#/$defs/key"}, "hidden": {"type": "boolean"},
+                     "player_id": {"type": "integer"}, "player_name": {"type": ["string", "null"]},
+                     "position": {"type": ["string", "null"]}, "type": {"enum": ["WAIVER", "FREEAGENT"]},
+                     "start_week": {"type": "integer"}, "end_week": {"type": ["integer", "null"]},
+                     "weeks": {"type": "integer", "minimum": 0}, "points": {"type": "number"}, "ppw": {"type": "number"},
+                     "avg_z": {"type": "number"}, "total_z": {"type": "number"}}}},
+    "leaderboard": {"$ref": "#/$defs/by_scope"},
+    "best_by_manager": {"$ref": "#/$defs/by_scope"},
+    "best_pickups": {"$ref": "#/$defs/by_scope"},
+    "free_agent_vs_claim": {"type": "array", "items": {
+      "type": "object", "required": ["manager_key", "free_agent", "waiver", "career"], "additionalProperties": false,
+      "properties": {"manager_key": {"$ref": "#/$defs/key"}, "free_agent": {"type": "object"},
+                     "waiver": {"type": "object"}, "career": {"type": "object"}}}},
+    "scales": {"type": "object", "required": ["position", "pickup_z", "upside", "best_total_z", "best_avg_z"],
+               "properties": {"position": {"type": "object"}, "pickup_z": {"$ref": "#/$defs/range"},
+                              "upside": {"$ref": "#/$defs/range"}, "best_total_z": {"$ref": "#/$defs/range"},
+                              "best_avg_z": {"$ref": "#/$defs/range"}}}
+  }
+}
