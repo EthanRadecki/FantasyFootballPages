@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "manager",
+  "title": "data/v1/managers/<key>.json: one manager's profile (managers.html)",
+  "type": "object",
+  "required": ["meta", "manager_key", "career", "seasons", "league_pf_per_game", "head_to_head", "rivals", "weeks",
+               "schedule_luck", "franchise_leaders", "roster_stints", "best_weeks"],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+    "num": {"type": ["number", "null"]},
+    "int": {"type": ["integer", "null"]},
+    "rival": {"oneOf": [{"type": "null"},
+                        {"type": "object", "required": ["opponent_key", "wins", "losses", "ties", "win_pct"],
+                         "properties": {"opponent_key": {"$ref": "#/$defs/key"}}}]}
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "manager"}, "schema_version": {"const": 1}}},
+    "manager_key": {"$ref": "#/$defs/key"},
+    "career": {"type": "object", "required": ["manager_key", "wins", "losses", "ties", "win_pct", "ranks"]},
+    "seasons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["season", "team_name", "conference", "wins", "losses", "ties", "games", "win_pct", "points_for",
+                     "points_against", "pf_per_game", "pa_per_game", "point_diff_per_game", "pf_rank", "pa_rank",
+                     "luck_rating", "dominance", "pa_z", "final_rank", "playoff_seed", "made_playoffs", "champion",
+                     "draft_slot", "is_live"],
+        "additionalProperties": false,
+        "properties": {
+          "season": {"type": "integer"}, "team_name": {"type": ["string", "null"]},
+          "conference": {"type": ["string", "null"]},
+          "wins": {"type": "integer"}, "losses": {"type": "integer"}, "ties": {"type": "integer"},
+          "games": {"type": "integer"}, "win_pct": {"$ref": "#/$defs/num"}, "points_for": {"type": "number"},
+          "points_against": {"type": "number"}, "pf_per_game": {"$ref": "#/$defs/num"},
+          "pa_per_game": {"$ref": "#/$defs/num"}, "point_diff_per_game": {"$ref": "#/$defs/num"},
+          "pf_rank": {"$ref": "#/$defs/int"}, "pa_rank": {"$ref": "#/$defs/int"},
+          "luck_rating": {"$ref": "#/$defs/int"}, "dominance": {"$ref": "#/$defs/num"},
+          "pa_z": {"$ref": "#/$defs/num"}, "final_rank": {"$ref": "#/$defs/int"},
+          "playoff_seed": {"$ref": "#/$defs/int"}, "made_playoffs": {"type": ["boolean", "null"]},
+          "champion": {"type": ["boolean", "null"]}, "draft_slot": {"$ref": "#/$defs/int"}, "is_live": {"type": "boolean"}
+        }
+      }
+    },
+    "league_pf_per_game": {"type": "object", "additionalProperties": {"type": "number"}},
+    "head_to_head": {
+      "type": "array",
+      "items": {"type": "object", "required": ["opponent_key", "wins", "losses", "ties"], "additionalProperties": false,
+                "properties": {"opponent_key": {"$ref": "#/$defs/key"}, "wins": {"type": "integer"},
+                               "losses": {"type": "integer"}, "ties": {"type": "integer"}}}
+    },
+    "rivals": {"type": "object", "required": ["best", "worst"],
+               "properties": {"best": {"$ref": "#/$defs/rival"}, "worst": {"$ref": "#/$defs/rival"}}},
+    "weeks": {
+      "type": "array",
+      "items": {"type": "object",
+                "required": ["season", "week", "opponent_key", "points", "result", "excluded_from_ppg", "league_avg",
+                             "league_median"],
+                "additionalProperties": false,
+                "properties": {"season": {"type": "integer"}, "week": {"type": "integer"},
+                               "opponent_key": {"$ref": "#/$defs/key"}, "points": {"type": "number"},
+                               "result": {"enum": ["W", "L", "T"]}, "excluded_from_ppg": {"type": "boolean"},
+                               "league_avg": {"type": "number"}, "league_median": {"type": "number"}}}
+    },
+    "schedule_luck": {
+      "type": "array",
+      "items": {"type": "object", "required": ["season", "games", "actual_wins", "expected_wins", "luck"],
+                "additionalProperties": false,
+                "properties": {"season": {"type": "integer"}, "games": {"type": "integer"},
+                               "actual_wins": {"type": "number"}, "expected_wins": {"type": "number"},
+                               "luck": {"type": "number"}}}
+    },
+    "franchise_leaders": {
+      "type": "array",
+      "items": {"type": "object",
+                "required": ["player_id", "name", "position", "season", "weeks_rostered", "games_played",
+                             "total_points"],
+                "additionalProperties": false,
+                "properties": {"player_id": {"type": "integer"}, "name": {"type": "string"},
+                               "position": {"type": "string"}, "season": {"type": "integer"},
+                               "weeks_rostered": {"type": "integer"}, "games_played": {"type": "integer"},
+                               "total_points": {"type": "number"}}}
+    },
+    "roster_stints": {
+      "type": "array",
+      "items": {"type": "object", "required": ["player_id", "name", "position", "season", "start", "end", "started"],
+                "additionalProperties": false,
+                "properties": {"player_id": {"type": "integer"}, "name": {"type": "string"},
+                               "position": {"type": "string"}, "season": {"type": "integer"},
+                               "start": {"type": "integer"}, "end": {"type": "integer"},
+                               "started": {"type": "array", "items": {"type": "integer"}}}}
+    },
+    "best_weeks": {
+      "type": "array",
+      "items": {"type": "object", "required": ["player_id", "name", "position", "season", "week", "points"],
+                "additionalProperties": false,
+                "properties": {"player_id": {"type": "integer"}, "name": {"type": "string"},
+                               "position": {"type": "string"}, "season": {"type": "integer"},
+                               "week": {"type": "integer"}, "points": {"type": "number"}}}
+    }
+  }
+}

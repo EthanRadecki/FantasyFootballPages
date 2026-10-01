@@ -381,9 +381,14 @@ def cmd_build(args: argparse.Namespace) -> int:
     n_site = sum(1 for f in result.copied if f not in {o.path for o in result.generated})
     print(f"Built {result.out}/ (build {ctx.build['id']}): {n_site} site files copied, "
           f"{len(result.generated)} generated")
+    groups: dict[tuple, list[str]] = {}
     for o in result.generated:
         kind = f"{o.schema} v{o.version}" if o.schema else "legacy view"
-        print(f"  {o.path:<40}{kind}")
+        folder = o.path.rsplit("/", 1)[0] if o.path.count("/") > 2 else o.path
+        groups.setdefault((folder, kind), []).append(o.path)
+    for (folder, kind), paths in groups.items():
+        label = paths[0] if len(paths) == 1 else f"{folder}/*.json ({len(paths)} files)"
+        print(f"  {label:<44}{kind}")
     cur = ctx.config["current"]
     if cur:
         live = " (live)" if ctx.config["live_season"] == cur["season"] else ""
@@ -393,8 +398,8 @@ def cmd_build(args: argparse.Namespace) -> int:
     checks = verify_build(ctx, result)
     print("\nVerifying the build:")
     for c in checks:
-        print(c.render())
-    return 0 if all(c.ok for c in checks) else 1
+        print(c if isinstance(c, str) else c.render())
+    return 0 if all(c.ok for c in checks if not isinstance(c, str)) else 1
 
 
 def cmd_update(args: argparse.Namespace) -> int:

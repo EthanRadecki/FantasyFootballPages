@@ -3,7 +3,10 @@
 Each module defines a publisher with `name`, `outputs(ctx)` (the page model
 file and, during Stage A, the legacy view of today's file) and `verify(ctx)`
 (the Stage A checks: the legacy view, fed legacy-mode analysis, against the
-golden). Pages are added from PR A2 on.
+golden, plus INFO lines on what the live page changes to at M1).
 """
 
-PUBLISHERS: list = []
+from engine.publish.pages.games import GamesPublisher
+from engine.publish.pages.managers import ManagersPublisher
+
+PUBLISHERS: list = [GamesPublisher(), ManagersPublisher()]

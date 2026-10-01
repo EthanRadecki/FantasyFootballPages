@@ -300,19 +300,20 @@ Hub page with links to the three transaction pages. No data. Prose "six seasons 
 
 ## 6. Target output
 
-`engine build` writes `dist/`. Every data file has a top-level `schema_version` and `generated_at`, and keys managers by `manager_key`; names, colors and logos come from `config.json`.
+`engine build` writes `dist/`. Every page model file has a top-level `meta` block (schema, schema_version, build_id, generated_at), keys managers by `manager_key`, and is checked against its JSON schema in `engine/publish/schemas/`; names, colors and logos come from `config.json`. Page models live under `data/v1/` (the major schema version), so they never collide with the legacy files the current pages read, and a later breaking change can ship as `data/v2/` beside it.
 
 ```
 dist/
   config.json                    league, seasons (first, finished, live), managers (key, name, short, colors,
-                                 logos, hidden), theme, round names, nav and enabled pages
-  data/
-    headshots.json               player id -> image url (decision 7.5)
-    index.json                   leaderboard rows, current champion
-    managers/index.json          pill stats for every manager
-    managers/<key>.json          one file per manager: seasons, h2h, luck, distribution, trends, franchise
-                                 leaders, roster stints, best weeks, draft profile, draft board map
-    matchups.json                games with box scores
+                                 logos, hidden, seasons), theme, round names, features, page list
+  build-manifest.json            every file, its sha256, and whether it was copied or generated
+  data/v1/
+    index.json                   leaderboard (career totals, visible-only ranks), current champion (A2)
+    managers/<key>.json          one file per visible manager: career, seasons, head-to-head, rivals, weekly
+                                 scores with league averages, schedule luck, franchise leaders, roster stints,
+                                 best weeks (A2); draft profile and draft board map (A5)
+    matchups.json                games with box scores (A2)
+    headshots.json               player id -> image url (A8, decision 7.5)
     weekly-rankings/index.json   manifest + playoff odds
     weekly-rankings/<season>-wNN.json   editorial file merged with computed fields
     trade-value.json             leaderboard, totals, scales, best/worst, trades, network, win%, explorer,
@@ -322,7 +323,9 @@ dist/
     lineup-efficiency.json, waiver-value.json, extra-analytics.json
 ```
 
-Stage A (decision 7.1) additionally writes the legacy shapes (`data/matchups.json`, `data/page_data.js` as JSON, and so on) through a thin "legacy view" so the current pages run from `dist/` unchanged, and so each output can be diffed against its golden.
+index.json's leaderboard also carries the pill stats managers.html shows, so there is no separate `managers/index.json`.
+
+Stage A (decision 7.1) additionally writes the legacy files (`data/matchups.json`, `data/preach_manager_stats.csv`, and so on) at their current paths, so the current pages run from `dist/` unchanged, and so each output can be checked against its golden. A legacy view uses the manager spelling of the file it replaces ("Carmine Pittelli Jr." on matchups.html). Its Stage A check builds it from legacy-mode analysis, reads it back the way the golden is read, and runs the same comparison (with the same excuses) `analyze --verify` runs on the engine tables.
 
 CI: build `dist/` from fixtures, validate every file against its schema, run `tools/check_paths.py dist`, and the style checks. The full build with real data runs in the Codespace (as `--verify` does now).
 

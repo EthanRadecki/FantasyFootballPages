@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "index",
+  "title": "data/v1/index.json: all-time leaderboard and current champion (index.html)",
+  "type": "object",
+  "required": ["meta", "leaderboard", "champion", "visible_managers"],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+    "record": {"type": "object", "required": ["season", "wins", "losses", "ties"],
+               "properties": {"season": {"type": "integer"}, "wins": {"type": "integer"},
+                              "losses": {"type": "integer"}, "ties": {"type": "integer"}}},
+    "career": {
+      "type": "object",
+      "required": ["manager_key", "seasons", "first_season", "last_season", "wins", "losses", "ties", "win_pct",
+                   "playoffs", "championships", "champion_seasons", "avg_pf_per_game", "avg_pa_z", "best_season",
+                   "worst_season", "ranks"],
+      "additionalProperties": false,
+      "properties": {
+        "manager_key": {"$ref": "#/$defs/key"},
+        "seasons": {"type": "integer", "minimum": 1},
+        "first_season": {"type": "integer"},
+        "last_season": {"type": "integer"},
+        "wins": {"type": "integer", "minimum": 0},
+        "losses": {"type": "integer", "minimum": 0},
+        "ties": {"type": "integer", "minimum": 0},
+        "win_pct": {"type": "number", "minimum": 0, "maximum": 1},
+        "playoffs": {"type": "integer", "minimum": 0},
+        "championships": {"type": "integer", "minimum": 0},
+        "champion_seasons": {"type": "array", "items": {"type": "integer"}},
+        "avg_pf_per_game": {"type": "number"},
+        "avg_pa_z": {"type": "number"},
+        "best_season": {"$ref": "#/$defs/record"},
+        "worst_season": {"$ref": "#/$defs/record"},
+        "ranks": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}}
+      }
+    }
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "index"}, "schema_version": {"const": 1}}},
+    "leaderboard": {"type": "array", "items": {"$ref": "#/$defs/career"}},
+    "champion": {"oneOf": [{"type": "null"},
+                           {"type": "object", "required": ["season", "manager_key", "team_name"],
+                            "properties": {"season": {"type": "integer"}, "manager_key": {"$ref": "#/$defs/key"},
+                                           "team_name": {"type": ["string", "null"]}}}]},
+    "visible_managers": {"type": "integer", "minimum": 0}
+  }
+}

@@ -43,6 +43,21 @@ def clean(value: Any) -> Any:
     return value
 
 
+MODEL_DIGITS = 6   # page model floats are rounded to this many places (no page shows more)
+
+
+def round_floats(value: Any, digits: int = MODEL_DIGITS) -> Any:
+    """Round every float in a cleaned JSON value, so float noise such as
+    343.71000000000004 never reaches a page model file."""
+    if isinstance(value, dict):
+        return {k: round_floats(v, digits) for k, v in value.items()}
+    if isinstance(value, list):
+        return [round_floats(v, digits) for v in value]
+    if isinstance(value, float):
+        return round(value, digits)
+    return value
+
+
 def rnd(value: Any, digits: int) -> float | None:
     """Round for display, None for missing values. Python's round (the one
     the legacy scripts used)."""
@@ -75,12 +90,13 @@ def build_info(build_id: str | None = None, now: dt.datetime | None = None) -> d
 
 
 def with_meta(schema: str, version: int, build: dict, payload: dict) -> dict:
-    """A page model file: `meta` first, then the page's own keys."""
+    """A page model file: `meta` first, then the page's own keys (floats
+    rounded to MODEL_DIGITS places)."""
     if "meta" in payload:
         raise ValueError(f"{schema}: payload may not use the reserved key 'meta'")
     meta = {"schema": schema, "schema_version": version, "build_id": build["id"],
             "generated_at": build["generated_at"]}
-    return {"meta": meta, **clean(payload)}
+    return {"meta": meta, **round_floats(clean(payload))}
 
 
 def dump(payload: Any) -> str:
