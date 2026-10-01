@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "draft-analysis",
+  "title": "data/v1/draft-analysis.json: results by draft slot, hit rate and late-round steals (draft-analysis.html)",
+  "type": "object",
+  "required": ["meta", "slot_results", "min_slot_seasons", "slot_managers", "hit_rate_tiers", "hit_rate_by_round",
+               "hit_rate_by_position", "steals", "season_steals", "career_preview", "above_average_max"],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+    "steal": {"type": "object", "additionalProperties": false,
+              "required": ["rank", "player_name", "position", "round", "draft_slot", "season", "ppg", "above_average",
+                           "games", "manager_key", "hidden"],
+              "properties": {"rank": {"type": "integer", "minimum": 1}, "player_name": {"type": ["string", "null"]},
+                             "position": {"type": "string"}, "round": {"type": "integer"},
+                             "draft_slot": {"type": "integer"}, "season": {"type": "integer"},
+                             "ppg": {"type": "number"}, "above_average": {"type": "number"},
+                             "games": {"type": "integer"}, "manager_key": {"$ref": "#/$defs/key"},
+                             "hidden": {"type": "boolean"}}}
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "draft-analysis"}, "schema_version": {"const": 1}}},
+    "slot_results": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["draft_slot", "seasons", "playoff_rate", "champion_rate", "pf_per_game", "dominance",
+                   "expected_dominance", "over_under"],
+      "properties": {"draft_slot": {"type": "integer", "minimum": 1}, "seasons": {"type": "integer", "minimum": 1},
+                     "playoff_rate": {"type": "number", "minimum": 0, "maximum": 1},
+                     "champion_rate": {"type": "number", "minimum": 0, "maximum": 1},
+                     "pf_per_game": {"type": "number"}, "dominance": {"type": "number"},
+                     "expected_dominance": {"type": "number"}, "over_under": {"type": "number"}}}},
+    "min_slot_seasons": {"type": "integer", "minimum": 1},
+    "slot_managers": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false, "required": ["season", "draft_slot", "manager_key", "live", "hidden"],
+      "properties": {"season": {"type": "integer"}, "draft_slot": {"type": "integer"}, "manager_key": {"$ref": "#/$defs/key"},
+                     "live": {"type": "boolean"}, "hidden": {"type": "boolean"}}}},
+    "hit_rate_tiers": {"type": "array", "items": {
+      "type": "object", "required": ["tier", "first_round", "last_round", "hit_rate", "hits", "picks"]}},
+    "hit_rate_by_round": {"type": "array", "items": {
+      "type": "object", "required": ["round", "tier", "hit_rate", "total_picks", "hits"]}},
+    "hit_rate_by_position": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "number"}}},
+    "steals": {"type": "array", "items": {"$ref": "#/$defs/steal"}},
+    "season_steals": {"type": "object", "propertyNames": {"pattern": "^[0-9]{4}$"},
+                      "additionalProperties": {"type": "array", "items": {"$ref": "#/$defs/steal"}}},
+    "career_preview": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false, "required": ["manager_key", "avg_surplus", "rank", "seasons"],
+      "properties": {"manager_key": {"$ref": "#/$defs/key"}, "avg_surplus": {"type": "number"},
+                     "rank": {"type": "integer"}, "seasons": {"type": "integer"}}}},
+    "above_average_max": {"type": "number"}
+  }
+}

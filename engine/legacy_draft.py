@@ -242,11 +242,12 @@ def board_frame(data: dict) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def check_board(legacy: dict, page: dict, cfg: dict) -> list[Comparison]:
+def check_board(legacy: dict, page: dict, cfg: dict, page_data: dict | None = None) -> list[Comparison]:
     """draft-history.html's inline DRAFT and SLOT_ORDER (generate_draft_board_data.py,
-    run on a draft file already in the corrected 2021 order and with ESPN's names)."""
+    run on a draft file already in the corrected 2021 order and with ESPN's names).
+    page_data: the page's data as publish built it (default: built here from the board)."""
     names = {m["id"]: m["name"] for m in cfg.get("managers") or []}
-    act_data = draft_mod.board_data(legacy["draft_board"], names)
+    act_data = page_data if page_data is not None else draft_mod.board_data(legacy["draft_board"], names)
     keys = ["season", "round", "pick_in_round"]
     exp, act = board_frame(page), board_frame(act_data)
     exp, act = _num(exp, ["ppg", "games"]), _num(act, ["ppg", "games"])

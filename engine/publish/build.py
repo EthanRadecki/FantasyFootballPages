@@ -58,6 +58,7 @@ class BuildContext:
     build: dict                                  # build_info()
     site_root: Path = Path(".")
     golden_dir: Path = Path("engine/tests/golden")
+    league_dir: Path | None = None               # the folder of league.yaml (editorial files live beside it)
     cache: dict = field(default_factory=dict)    # shared work between publishers (legacy-mode inputs)
 
     @cached_property

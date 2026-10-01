@@ -44,6 +44,27 @@
       }
     },
     "league_pf_per_game": {"type": "object", "additionalProperties": {"type": "number"}},
+    "draft_profile": {
+      "type": "object", "required": ["dims", "seasons", "career"], "additionalProperties": false,
+      "properties": {
+        "dims": {"type": "array", "items": {"type": "string"}},
+        "seasons": {"type": "array", "items": {
+          "type": "object", "required": ["season", "live", "cluster", "raw", "normalized"], "additionalProperties": false,
+          "properties": {"season": {"type": "integer"}, "live": {"type": "boolean"},
+                         "cluster": {"type": ["integer", "null"]},
+                         "raw": {"type": "object", "additionalProperties": {"$ref": "#/$defs/num"}},
+                         "normalized": {"type": "object", "additionalProperties": {"$ref": "#/$defs/num"}}}}},
+        "career": {"type": ["object", "null"], "required": ["seasons", "raw", "normalized"]}}},
+    "draft_board": {
+      "type": "object",
+      "required": ["board", "tiers", "positions", "best_picks", "worst_picks", "career_wtd_avg", "total_picks"],
+      "additionalProperties": false,
+      "properties": {
+        "board": {"type": "object", "additionalProperties": {
+          "type": "object", "required": ["round", "slot", "avg_surplus", "n_seasons", "picks"]}},
+        "tiers": {"type": "object"}, "positions": {"type": "object"},
+        "best_picks": {"type": "array"}, "worst_picks": {"type": "array"},
+        "career_wtd_avg": {"$ref": "#/$defs/num"}, "total_picks": {"type": "integer"}}},
     "head_to_head": {
       "type": "array",
       "items": {"type": "object", "required": ["opponent_key", "wins", "losses", "ties"], "additionalProperties": false,

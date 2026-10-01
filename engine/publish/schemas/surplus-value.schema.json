@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "surplus-value",
+  "title": "data/v1/surplus-value.json: draft grades and the best and worst picks by surplus value (surplus-value.html)",
+  "type": "object",
+  "required": ["meta", "seasons", "career_grades", "season_grades", "extremes", "best_picks", "worst_picks",
+               "season_best", "season_worst", "scale"],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+    "pick": {"type": "object", "additionalProperties": false,
+             "required": ["rank", "player_name", "position", "round", "overall_pick", "season", "prv", "expected_prv",
+                          "surplus_weighted", "manager_key", "hidden"],
+             "properties": {"rank": {"type": "integer", "minimum": 1}, "player_name": {"type": ["string", "null"]},
+                            "position": {"type": "string"}, "round": {"type": "integer", "minimum": 1},
+                            "overall_pick": {"type": "integer", "minimum": 1}, "season": {"type": "integer"},
+                            "prv": {"type": "number"}, "expected_prv": {"type": "number"},
+                            "surplus_weighted": {"type": "number"}, "manager_key": {"$ref": "#/$defs/key"},
+                            "hidden": {"type": "boolean"}}},
+    "extreme": {"type": "object", "required": ["player_id", "player_name", "position", "season", "round",
+                                               "surplus_weighted"]},
+    "by_season": {"type": "object", "propertyNames": {"pattern": "^[0-9]{4}$"},
+                  "additionalProperties": {"type": "array", "items": {"$ref": "#/$defs/pick"}}}
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "surplus-value"}, "schema_version": {"const": 1}}},
+    "seasons": {"type": "array", "items": {"type": "integer"}},
+    "career_grades": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rank", "manager_key", "avg_surplus", "weighted_total", "total_picks", "seasons"],
+      "properties": {"rank": {"type": "integer", "minimum": 1}, "manager_key": {"$ref": "#/$defs/key"},
+                     "avg_surplus": {"type": "number"}, "weighted_total": {"type": "number"},
+                     "total_picks": {"type": "integer"}, "seasons": {"type": "integer"}}}},
+    "season_grades": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false, "required": ["season", "manager_key", "grade", "rank", "total_picks"],
+      "properties": {"season": {"type": "integer"}, "manager_key": {"$ref": "#/$defs/key"}, "grade": {"type": "number"},
+                     "rank": {"type": ["integer", "null"]}, "total_picks": {"type": "integer"}}}},
+    "extremes": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false, "required": ["season", "manager_key", "best", "worst"],
+      "properties": {"season": {"type": ["integer", "null"]}, "manager_key": {"$ref": "#/$defs/key"},
+                     "best": {"$ref": "#/$defs/extreme"}, "worst": {"$ref": "#/$defs/extreme"}}}},
+    "best_picks": {"type": "array", "items": {"$ref": "#/$defs/pick"}},
+    "worst_picks": {"type": "array", "items": {"$ref": "#/$defs/pick"}},
+    "season_best": {"$ref": "#/$defs/by_season"},
+    "season_worst": {"$ref": "#/$defs/by_season"},
+    "scale": {"type": ["object", "null"], "required": ["min", "max"],
+              "properties": {"min": {"type": "number"}, "max": {"type": "number"}}}
+  }
+}

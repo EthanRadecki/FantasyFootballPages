@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "draft-fingerprints",
+  "title": "data/v1/draft-fingerprints.json: draft profiles per manager, season and career, and the draft archetypes (draft-fingerprints.html)",
+  "type": "object",
+  "required": ["meta", "radar_dims", "posdev_dims", "seasons", "career", "archetypes", "stats", "season_ranges",
+               "career_ranges"],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+    "range": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": ["number", "null"]}},
+    "metrics": {"type": "object", "additionalProperties": {"type": ["number", "boolean", "integer", "null"]}}
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "draft-fingerprints"}, "schema_version": {"const": 1}}},
+    "radar_dims": {"type": "array", "items": {"type": "string"}},
+    "posdev_dims": {"type": "array", "items": {"type": "string"}},
+    "seasons": {"type": "array", "items": {
+      "type": "object", "required": ["season", "manager_key", "live", "hidden", "cluster"],
+      "properties": {"season": {"type": "integer"}, "manager_key": {"$ref": "#/$defs/key"},
+                     "live": {"type": "boolean"}, "hidden": {"type": "boolean"},
+                     "cluster": {"type": ["integer", "null"], "minimum": 0}}}},
+    "career": {"type": "array", "items": {
+      "type": "object", "required": ["manager_key", "hidden", "n_seasons"],
+      "properties": {"manager_key": {"$ref": "#/$defs/key"}, "hidden": {"type": "boolean"},
+                     "n_seasons": {"type": "integer", "minimum": 1}}}},
+    "archetypes": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "description", "color", "n", "center", "win_pct", "ppg", "surplus"],
+      "properties": {"id": {"type": "integer", "minimum": 0}, "name": {"type": "string"},
+                     "description": {"type": "string"}, "color": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"},
+                     "n": {"type": "integer", "minimum": 1}, "center": {"$ref": "#/$defs/metrics"},
+                     "win_pct": {"type": ["number", "null"]}, "ppg": {"type": ["number", "null"]},
+                     "surplus": {"type": ["number", "null"]}}}},
+    "stats": {"type": "object", "required": ["k", "n_observations", "n_managers", "fill_notes"]},
+    "season_ranges": {"type": "object", "additionalProperties": {"$ref": "#/$defs/range"}},
+    "career_ranges": {"type": "object", "additionalProperties": {"$ref": "#/$defs/range"}}
+  }
+}

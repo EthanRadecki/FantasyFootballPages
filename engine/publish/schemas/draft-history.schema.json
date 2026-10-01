@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "draft-history",
+  "title": "data/v1/draft-history.json: every pick of every draft, and the round-1 slot order (draft-history.html)",
+  "type": "object",
+  "required": ["meta", "seasons", "picks", "slot_order"],
+  "additionalProperties": false,
+  "$defs": {"key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"}},
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "draft-history"}, "schema_version": {"const": 1}}},
+    "seasons": {"type": "array", "items": {
+      "type": "object", "required": ["season", "live", "rounds", "teams"], "additionalProperties": false,
+      "properties": {"season": {"type": "integer"}, "live": {"type": "boolean"},
+                     "rounds": {"type": "integer", "minimum": 1}, "teams": {"type": "integer", "minimum": 1}}}},
+    "picks": {"type": "array", "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["season", "round", "overall_pick", "draft_slot", "manager_key", "hidden", "player_id", "name",
+                   "position", "ppg", "games"],
+      "properties": {
+        "season": {"type": "integer"}, "round": {"type": "integer", "minimum": 1},
+        "overall_pick": {"type": "integer", "minimum": 1}, "draft_slot": {"type": "integer", "minimum": 1},
+        "manager_key": {"$ref": "#/$defs/key"}, "hidden": {"type": "boolean"},
+        "player_id": {"type": "integer"}, "name": {"type": ["string", "null"]}, "position": {"type": ["string", "null"]},
+        "ppg": {"type": ["number", "null"]}, "games": {"type": ["integer", "null"], "minimum": 0}}}},
+    "slot_order": {"type": "object", "propertyNames": {"pattern": "^[0-9]{4}$"},
+                   "additionalProperties": {"type": "array", "items": {"$ref": "#/$defs/key"}}}
+  }
+}

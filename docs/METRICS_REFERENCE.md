@@ -228,7 +228,8 @@ The finished seasons grouped by draft slot (tables `draft_slot_results` and `dra
 
 - **Per slot:** seasons drafted from it, playoff rate, championship rate, mean PF/G and mean dominance of those seasons.
 - **Expected dominance:** each manager's career dominance (mean over all their finished seasons), averaged over the slot's seasons. **Over/under** = dominance - expected: positive when managers did better from that slot than they usually do.
-- Sullivan and Serafin count. 2020 had 15 teams, so slot 15 has one season; the page shows slots 1-14.
+- Sullivan and Serafin count. 2020 had 15 teams, so slot 15 has one season. A slot needs at least 2 finished seasons to appear in the results table and charts (decision 7.4); slot 15 stays in "who drafted from each slot".
+- **Cell colors** (the builder is lost; this rule reproduces every cell of the page from the page's own numbers): playoff % and PF/G by z-score among the slots shown, good above +0.2, bad below -1.0; champ % good above 0; dominance, expected and over/under by sign. The table shows over/under to 2 places, rounded half away from zero from the 3-place value the chart uses.
 - **Who drafted from each slot:** every season, the live one included.
 
 **Legacy differences:** the builder is lost. Playoff %, dominance, expected and over/under are reproduced from the manager season file. The page's Champ % and Avg PF/G contradict that file (the page puts champions in slots 1, 2 and 7; they drafted from 3, 6 and 9) and are replaced with the real values. The manager season fixes (forfeit, per-game differential) carry over, e.g. slot 3's over/under -0.43 -> -0.36.
@@ -356,6 +357,21 @@ Every pick of every season in draft order (the corrected order for 2021), with t
 
 ---
 
+## Draft Value Pages (surplus-value.html, draft-analysis.html, managers.html)
+
+Display rules for the draft value tables (`draft_surplus`, `draft_career_grades`, `draft_season_grades`, `draft_hits`), recovered from the pages (their builders are lost) and checked by `engine build --verify`. Finished seasons only.
+
+- **Best and worst picks** (surplus-value.html): by weighted surplus; the 15 best and 15 worst ever, the 10 best and 5 worst per season. Shown: PRV ("actual"), expected PRV, weighted surplus, 2 places. Every manager's picks count (real picks, decision 7.3).
+- **Highs and lows, draft tips** (surplus-value.html): each visible manager's best and worst pick by weighted surplus, career and per draft (`Player RdN (+x.xx)`).
+- **Color scale:** the lowest and highest unweighted surplus of any visible pick, 2 places.
+- **Draft board map** (managers.html): per visible manager, round and draft slot, the picks made from that cell and their mean surplus (unweighted). Beside it: mean surplus per round tier (1-3, 4-7, 8-12, 13+) and per skill position against the league's (every pick, excluded managers included); a position's hit rate here is the share of picks with positive surplus; the 3 best picks, and the 3 worst among rounds 1-7 (a late-round miss costs little); the career grade and pick count.
+- **Hit rate** (draft-analysis.html): per round and tier (1-3, 4-7, 8+), and per tier and skill position, every manager's picks. The drafted positions per round cover every hit-rate season.
+- **Late-round steals:** rounds 8+, 8+ games, most points per game above the position average; 10 all-time and 10 per season, every manager's picks. The color scale's top is the highest value on the all-time list.
+
+**Legacy differences:** the per-season steals on the page were retyped from another file: 89 of their PPG, games, slot and points-above-average values contradict the script that wrote the lists (`hit_rate_by_round.py`); the engine shows the script's values. The page counted drafted positions per round over 2020-2024 only although it covers 2020-2025.
+
+---
+
 ## Draft Profiles (draft-fingerprints.html, managers.html)
 
 **What it measures:** how each manager drafts, not how well: when they take each position, how far they stray from the market, and how much their approach changes from year to year.
@@ -393,3 +409,5 @@ Picks without an ADP (usually late kickers and defenses) are left out of these.
 **Outcomes beside each profile:** win% and PPG from the manager's season stats (counted games), and draft surplus per pick = the pick-weighted average of surplus (sum of weighted surplus / sum of round weights), career pooled over every finished-season pick. Excluded managers get their surplus like everyone else.
 
 **Replaced method:** `draft_fingerprint.py` read the ADP exports by hand and joined them to the draft by name; the engine joins by player id (same result for every legacy pick). It numbered picks the way ESPN first recorded them; the engine uses the corrected draft order (2021), which moves K and D/ST patience for a few 2021 managers. The page's builder (lost; recovered from the page) averaged weighted surplus per pick without dividing by the weights, averaged career surplus over seasons, rounded each season's win% and PPG before averaging a career, and left the two excluded managers without surplus. `generate_fingerprints.py` built a separate 7-measure radar for managers.html; it is replaced by these profiles at publish.
+
+**Archetype names** are editorial (decision 7.6): `leagues/<league>/editorial/archetypes.yaml`, keyed by the stable cluster id (largest cluster 0). A league without that file gets a generated label from each cluster's most distinctive radar measure (its center's largest z-score against the finished seasons, for example "High Draft Conviction").

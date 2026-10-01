@@ -4,18 +4,23 @@ Outputs
     data/v1/index.json               page model (schema "index"): leaderboard, current champion
     data/v1/managers/<key>.json      page model (schema "manager"), one per visible manager:
                                      career, seasons, head-to-head, rivals, weekly scores,
-                                     schedule luck, franchise leaders, roster stints, best weeks
+                                     schedule luck, franchise leaders, roster stints, best weeks,
+                                     draft profile (10 dimensions) and draft board map
     data/preach_manager_stats.csv    legacy view (index.html, managers.html)
     data/franchise_leaders.json      legacy view (managers.html)
     data/best_single_week.json       legacy view (managers.html)
     data/roster_stints.json          legacy view (managers.html)
+    pages/managers.html              the page with its inline HEATMAP_DATA replaced (the draft
+                                     board performance map, engine/publish/pages/board_map.py)
 
 The math index.html and managers.html did in the browser (data-engine.js:
 career totals, ranks, head-to-head, rivals, league averages) is done here,
 once. Hidden managers are left out of every manager-level list and rank
 (decision 7.3); they still count in league averages.
 
-Draft profile and draft board map join the manager files in PR A5.
+The draft fingerprint radar's inline FINGERPRINTS (7 measures, retired with
+generate_fingerprints.py) is left as it is in Stage A; Stage B rebuilds the
+radar on the 10-dimension draft profile the manager files carry.
 """
 
 from __future__ import annotations
@@ -32,11 +37,15 @@ from engine.legacy_manager_seasons import ESPN_COLS, KEYS, RECORD_COLS, _known, 
 from engine.legacy_records import _per_manager, check_best_weeks, check_franchise_leaders
 from engine.legacy_waivers import check_roster_stints
 from engine.publish.build import Output
-from engine.publish.legacy_view import Names, csv_text, info_diff, site_csv, site_json
+from engine.publish.diff import compare_json
+from engine.publish.legacy_view import (Names, csv_text, info_diff, page_roundtrip, read_literal, replace_literal,
+                                        site_csv, site_json)
+from engine.publish.pages.board_map import board_map_view
 from engine.publish.pages.games import legacy_records
 from engine.publish.writer import clean
 
 INDEX_SCHEMA, MANAGER_SCHEMA, VERSION = "index", "manager", 1
+PAGE = "pages/managers.html"
 STATS_COLUMNS = ["Rank_Win%_Overall", "Rank_PPG_Overall", "Weighted_Rank_Ovr", "Weighted_Rank_Overall_Value", "Year",
                  "Placement_within_Year", "Team", "Manager", "Conference", "W", "L", "GP", "W%", "PF", "PA", "PF/G",
                  "PF/G_Rank_within_Year", "PA/G", "PA/G_Rank_within_Year", "Luck_Rating", "LR_zscore",
@@ -150,6 +159,8 @@ def manager_models(ctx, a: dict, hidden: set[str]) -> dict[str, dict]:
     h2h = h2h[~h2h["opponent_key"].isin(hidden)]
     luck = a.get("schedule_luck", pd.DataFrame(columns=["manager_key"]))
     fl, rs, bw = a["franchise_leaders"], a["roster_stints"], a["best_weeks"]
+    boards = draft_boards(ctx, a, hidden, lambda k: k)
+    profiles = draft_profiles(a)
     out = {}
     for key in board.index:
         mine = lambda df: df[df["manager_key"] == key]
@@ -184,6 +195,43 @@ def manager_models(ctx, a: dict, hidden: set[str]) -> dict[str, dict]:
                            for r in mine(bw).sort_values(["points", "season", "week"],
                                                          ascending=[False, True, True]).itertuples()],
         }
+        if key in profiles:
+            out[key]["draft_profile"] = profiles[key]
+        if key in boards:
+            out[key]["draft_board"] = boards[key]
+    return out
+
+
+DRAFT_NEEDS = ("draft_surplus", "draft_career_grades")
+
+
+def draft_boards(ctx, a: dict, hidden: set[str], names) -> dict:
+    """The draft board map per manager (finished seasons), or {} without draft tables."""
+    if not all(n in a and len(a[n]) for n in DRAFT_NEEDS):
+        return {}
+    seasons = sorted(set(int(x) for x in a["draft_surplus"]["season"]) & set(ctx.config["finished_seasons"]))
+    return board_map_view(a["draft_surplus"], a["draft_career_grades"], seasons, hidden, names)
+
+
+def draft_profiles(a: dict) -> dict:
+    """The 10-dimension draft profile per manager: each season (live included) and career."""
+    from engine.analytics.draft_profiles import RADAR
+
+    s, c = a.get("draft_profile_seasons"), a.get("draft_profile_career")
+    if s is None or c is None or not len(s):
+        return {}
+    dims = [d for d in RADAR if d in s]
+    entry = lambda r: {"raw": {d: clean(r[d]) for d in dims},
+                       "normalized": {d: clean(r.get(f"norm_{d}")) for d in dims}}
+    out = {}
+    for key, g in s.sort_values("season").groupby("manager_key"):
+        out[key] = {"dims": dims, "seasons": [{"season": int(r["season"]), "live": bool(r["live"]),
+                                               "cluster": None if pd.isna(r["cluster"]) else int(r["cluster"]),
+                                               **entry(r)} for _, r in g.iterrows()],
+                    "career": None}
+    for _, r in c.iterrows():
+        if r["manager_key"] in out:
+            out[r["manager_key"]]["career"] = {"seasons": int(r["n_seasons"]), **entry(r)}
     return out
 
 
@@ -312,6 +360,14 @@ def legacy_roster_stints(ctx) -> pd.DataFrame:
     return waivers_mod.roster_stints(rt, excluded_manager_keys(ctx.cfg))
 
 
+def _heatmap_names(text: str) -> list[str]:
+    """The page's spelling of each manager in HEATMAP_DATA."""
+    try:
+        return list(read_literal(text, "HEATMAP_DATA"))
+    except (KeyError, ValueError):
+        return []
+
+
 class ManagersPublisher:
     name = "managers"
     NEEDS = ("manager_seasons", "games", "head_to_head", "franchise_leaders", "roster_stints", "best_weeks")
@@ -334,6 +390,12 @@ class ManagersPublisher:
             Output("data/best_single_week.json", best_week_view(a["best_weeks"], Names(ctx, bw))),
             Output("data/roster_stints.json", roster_stint_view(a["roster_stints"], Names(ctx, rs))),
         ]
+        page = ctx.site_root / PAGE
+        if page.is_file():
+            text = page.read_text(encoding="utf-8")
+            board = draft_boards(ctx, a, hidden, Names(ctx, _heatmap_names(text)))
+            if board:
+                outs.append(Output(PAGE, replace_literal(text, "HEATMAP_DATA", board)))
         return outs
 
     def verify(self, ctx) -> list:
@@ -357,7 +419,40 @@ class ManagersPublisher:
                                 ctx.tables["lineups"][["player_id", "position"]].drop_duplicates())
         c.name = "legacy view data/roster_stints.json vs roster_stints.json"
         checks.append(c)
+        checks += self.check_board_map(ctx)
         checks += self.info(ctx)
+        return checks
+
+    def check_board_map(self, ctx) -> list:
+        """managers.html HEATMAP_DATA from the legacy-mode draft analysis vs draft_heatmap.json (= the page)."""
+        from engine.publish.pages.draft_common import legacy_draft
+
+        if not all(n in ctx.analysis for n in DRAFT_NEEDS):
+            return []
+        gold = ctx.golden["draft_heatmap"]
+        legacy = legacy_draft(ctx)
+        done = set(ctx.config["finished_seasons"])
+        seasons = sorted(int(x) for x in legacy["draft_surplus"]["season"].unique() if int(x) in done)
+        view = board_map_view(legacy["draft_surplus"], legacy["draft_career_grades"], seasons,
+                              excluded_manager_keys(ctx.cfg), Names(ctx, list(gold)))
+        page = ctx.site_root / PAGE
+        if page.is_file():
+            view = page_roundtrip(page.read_text(encoding="utf-8"), {"HEATMAP_DATA": view})["HEATMAP_DATA"]
+        checks: list = compare_json(f"legacy view {PAGE} HEATMAP_DATA (draft_heatmap.json)", view, gold,
+                                    by_section=False)
+        if page.is_file():
+            text = page.read_text(encoding="utf-8")
+            live = read_literal(text, "HEATMAP_DATA")
+            eng = draft_boards(ctx, ctx.analysis, excluded_manager_keys(ctx.cfg), Names(ctx, list(live)))
+            cells = lambda d: {(m, c): x["avg_surplus"] for m, v in d.items() for c, x in v["board"].items()}
+            lc, ec = cells(live), cells(eng)
+            moved = sum(1 for k in lc.keys() & ec.keys() if abs(lc[k] - ec[k]) > 0.005)
+            grade = sum(1 for m in live.keys() & eng.keys()
+                        if abs((live[m]["career_wtd_avg"] or 0) - (eng[m]["career_wtd_avg"] or 0)) > 0.00005)
+            checks.append(f"INFO  {PAGE} draft board map, engine data vs the live page: {len(lc.keys() & ec.keys())} "
+                          f"cells in both, {moved} with a different average surplus, {len(ec.keys() - lc.keys())} only in "
+                          f"the engine, {len(lc.keys() - ec.keys())} only in the live page; "
+                          f"{grade} career grade(s) change")
         return checks
 
     def info(self, ctx) -> list[str]:
