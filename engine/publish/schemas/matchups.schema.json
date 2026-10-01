@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "matchups",
+  "title": "data/v1/matchups.json: every counted game with box scores (matchups.html)",
+  "type": "object",
+  "required": ["meta", "games"],
+  "additionalProperties": false,
+  "$defs": {
+    "player": {
+      "type": "object",
+      "required": ["player_id", "name", "pos", "slot", "pts"],
+      "additionalProperties": false,
+      "properties": {
+        "player_id": {"type": "integer"},
+        "name": {"type": "string"},
+        "pos": {"type": "string"},
+        "slot": {"type": "string"},
+        "pts": {"type": "number"}
+      }
+    },
+    "team": {
+      "type": "object",
+      "required": ["manager_key", "team_id", "team_name", "points", "result", "starters", "bench"],
+      "additionalProperties": false,
+      "properties": {
+        "manager_key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"},
+        "team_id": {"type": "integer"},
+        "team_name": {"type": ["string", "null"]},
+        "points": {"type": "number"},
+        "result": {"enum": ["W", "L", "T"]},
+        "starters": {"type": "array", "items": {"$ref": "#/$defs/player"}},
+        "bench": {"type": "array", "items": {"$ref": "#/$defs/player"}}
+      }
+    }
+  },
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "matchups"}, "schema_version": {"const": 1}}},
+    "games": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "season", "week", "round", "is_playoff", "superlative_excluded", "teams", "margin",
+                     "combined"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string"},
+          "season": {"type": "integer"},
+          "week": {"type": "integer", "minimum": 1},
+          "round": {"type": ["string", "null"]},
+          "is_playoff": {"type": "boolean"},
+          "superlative_excluded": {"type": "boolean"},
+          "teams": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/team"}},
+          "margin": {"type": "number", "minimum": 0},
+          "combined": {"type": "number"}
+        }
+      }
+    }
+  }
+}

@@ -31,6 +31,7 @@ from engine.publish.writer import dump, with_meta, write_text
 
 SCHEMA_DIR = Path(__file__).parent / "schemas"
 MANIFEST = "build-manifest.json"
+MARKER = ".engine-build-in-progress"   # present while a build runs, so a failed build can be cleared next time
 
 
 @dataclass
@@ -57,6 +58,7 @@ class BuildContext:
     build: dict                                  # build_info()
     site_root: Path = Path(".")
     golden_dir: Path = Path("engine/tests/golden")
+    cache: dict = field(default_factory=dict)    # shared work between publishers (legacy-mode inputs)
 
     @cached_property
     def names(self) -> dict[str, str]:
@@ -66,13 +68,24 @@ class BuildContext:
     def config(self) -> dict:
         return config_json.build_config(self.cfg, self.tables, self.build)
 
+    @cached_property
+    def golden(self) -> dict:
+        from engine.cli import load_goldens
+        return load_goldens(Path(self.golden_dir))
+
+    def memo(self, key: str, fn):
+        """Compute once per build (for example the legacy-mode analysis several checks share)."""
+        if key not in self.cache:
+            self.cache[key] = fn()
+        return self.cache[key]
+
 
 class Publisher(Protocol):
     name: str
 
     def outputs(self, ctx: BuildContext) -> list[Output]: ...
 
-    def verify(self, ctx: BuildContext) -> list[Comparison]: ...
+    def verify(self, ctx: BuildContext) -> list: ...   # Comparisons (Stage A checks) and INFO strings
 
 
 @dataclass
@@ -85,11 +98,12 @@ class BuildResult:
 def _prepare(out: Path) -> None:
     """Empty `out`, refusing to delete anything that is not a previous build."""
     if out.exists():
-        if any(out.iterdir()) and not (out / MANIFEST).exists():
+        if any(out.iterdir()) and not (out / MANIFEST).exists() and not (out / MARKER).exists():
             raise SystemExit(f"error: {out} exists and is not a build output (no {MANIFEST}); "
                              f"choose another --out or remove it yourself")
         shutil.rmtree(out)
     out.mkdir(parents=True)
+    (out / MARKER).write_text("engine build in progress\n")
 
 
 def run_build(ctx: BuildContext, out: Path, publishers: list | None = None) -> BuildResult:
@@ -114,11 +128,12 @@ def run_build(ctx: BuildContext, out: Path, publishers: list | None = None) -> B
             text = dump(o.payload)
         write_text(out / o.path, text)
     generated = {o.path for o in outputs}
-    files = sorted(str(p.relative_to(out)).replace("\\", "/") for p in out.rglob("*") if p.is_file())
+    files = sorted(str(p.relative_to(out)).replace("\\", "/") for p in out.rglob("*") if p.is_file() and p.name != MARKER)
     manifest = {"build": ctx.build, "files": [
         {"path": f, "sha256": sha256(out / f), "bytes": (out / f).stat().st_size,
          "source": "generated" if f in generated else "site"} for f in files]}
     write_text(out / MANIFEST, json.dumps(manifest, indent=1))
+    (out / MARKER).unlink()
     return BuildResult(out, copied, outputs)
 
 
@@ -182,7 +197,7 @@ def check_paths(result: BuildResult, site_root: Path) -> Comparison:
     return c
 
 
-def verify_build(ctx: BuildContext, result: BuildResult, publishers: list | None = None) -> list[Comparison]:
+def verify_build(ctx: BuildContext, result: BuildResult, publishers: list | None = None) -> list:
     from engine.publish.pages import PUBLISHERS
 
     publishers = PUBLISHERS if publishers is None else publishers
