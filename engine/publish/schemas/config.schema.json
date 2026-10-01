@@ -110,8 +110,9 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["id", "title", "path", "parent", "feature", "nav"],
+        "required": ["id", "title", "path", "parent", "feature", "nav", "data"],
         "properties": {
+          "data": {"type": "array", "items": {"type": "string"}},
           "id": {"type": "string"},
           "title": {"type": "string"},
           "path": {"type": "string"},

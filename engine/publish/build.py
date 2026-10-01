@@ -26,7 +26,7 @@ import pandas as pd
 
 from engine.legacy import Comparison
 from engine.publish import config_json
-from engine.publish.site import copy_site, sha256
+from engine.publish.site import copy_site, pages_for, sha256
 from engine.publish.writer import dump, with_meta, write_text
 
 SCHEMA_DIR = Path(__file__).parent / "schemas"
@@ -112,9 +112,12 @@ def run_build(ctx: BuildContext, out: Path, publishers: list | None = None) -> B
     publishers = PUBLISHERS if publishers is None else publishers
     _prepare(out)
     copied = [str(p).replace("\\", "/") for p in copy_site(ctx.site_root, out)]
-    outputs = [Output("config.json", ctx.config, config_json.SCHEMA, config_json.SCHEMA_VERSION)]
+    outputs = []
     for pub in publishers:
         outputs += pub.outputs(ctx)
+    # config.json last: its page list keeps only pages whose data this build produced
+    ctx.config["pages"] = pages_for(ctx.cfg.get("features"), {o.path for o in outputs})
+    outputs.insert(0, Output("config.json", ctx.config, config_json.SCHEMA, config_json.SCHEMA_VERSION))
     seen: set[str] = set()
     for o in outputs:
         if o.path in seen:

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dst-impact",
+  "title": "data/v1/dst-impact.json: every game replayed without D/ST (dst-impact.html)",
+  "type": "object",
+  "required": ["meta", "league", "managers", "season_playoffs", "position_flip_rates", "draft_vs_waiver",
+               "position_consistency", "draft_capital"],
+  "additionalProperties": false,
+  "$defs": {"keyed": {"type": "object", "propertyNames": {"pattern": "^m_[0-9a-f]{12}$"}}},
+  "properties": {
+    "meta": {"type": "object", "required": ["schema", "schema_version"],
+             "properties": {"schema": {"const": "dst-impact"}, "schema_version": {"const": 1}}},
+    "league": {"type": "object", "required": ["total_games", "total_flips", "all_games"],
+               "properties": {"all_games": {"type": "array", "items": {"type": "object",
+                 "required": ["season", "label", "week_num", "team_a", "team_b", "score_a", "score_b", "dst_a", "dst_b",
+                              "adj_a", "adj_b", "actual_winner", "adj_winner", "flipped"]}}}},
+    "managers": {"$ref": "#/$defs/keyed"},
+    "season_playoffs": {"type": "object", "additionalProperties": {"type": "object",
+      "required": ["actual_top8", "adj_top8", "gained", "lost", "playoff_flips", "champion_changed", "actual_champion",
+                   "champion_eliminated_round"]}},
+    "position_flip_rates": {"type": "object"},
+    "draft_vs_waiver": {"type": "object"},
+    "position_consistency": {"type": "object"},
+    "dst_performance": {"type": "object", "required": ["points", "ppg_vs_winpct", "round_vs_winpct"]},
+    "draft_capital": {"$ref": "#/$defs/keyed"}
+  }
+}
