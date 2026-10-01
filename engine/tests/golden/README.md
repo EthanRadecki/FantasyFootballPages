@@ -24,6 +24,19 @@ Legacy trade pipeline outputs (`GitHubRepoData/`, local pipeline), added 2026-09
 | `trades/trade_explorer_data.json.gz` | `data/trade_explorer_data.js` (`build_trade_explorer_data.py`, a version rounding necessity to 3 places) | 150 trade nodes, 333 sides, for the trade explorer on trade-value.html |
 | `trades/lineup_efficiency.csv.gz` | `generate_lineup_efficiency.py` | used for the forfeit flag now; the lineups module later |
 
+### trades/ page goldens (phase 4, PR A3)
+
+Frozen 2026-10-01 from the live site with `tools/freeze_golden.py`. Checked by `engine build --verify` (the trade-value legacy views built from legacy-mode analysis) and by `engine/tests/test_publish_pages.py` (the same views built from the legacy pipeline's own outputs above, so CI covers them).
+
+| File | Source | Covers |
+|---|---|---|
+| `trades/page_data.json.gz` | `data/page_data.js` (`regenerate_data_files.py`, a later version that also wrote `wk`) | LEADERBOARD, the five scales, BEST_WORST, TRADES (328 visible sides) |
+| `trades/network_data.json.gz` | `data/network_data.js` | NETWORK_DATA, visible managers |
+| `trades/winpct_data.json.gz` | `data/winpct_data.js` | WINPCT_DATA (win % from `lineup_efficiency.csv`) |
+| `trades/trade_week_data.json.gz` | `data/trade_week_data.js` | TRADE_WEEK_DATA, every manager, 333 sides |
+| `trades/most_traded_data.json.gz` | `data/most_traded_data.js` (no script; rule recovered: one entry per received player in `player_stints_fixed.csv`, receiving managers in order, position from the rosters file, sorted by count) | MOST_TRADED, 283 players |
+| `trades/trade_value_inline.json.gz` | the inline `LEADERBOARD_TOTALS` of `pages/trade-value.html` | summed QUAD per manager, career and by season |
+
 ## records/
 
 Legacy site files for the records and lineups module, added 2026-09-29. Checked by `engine analyze --verify`.

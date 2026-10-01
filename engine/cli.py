@@ -141,6 +141,8 @@ DRAFT_CSV_GOLDENS = ["espn_player_stats_season", "espn_player_stats_2026", "draf
 DRAFT_JSON_GOLDENS = {"surplus_value_data": "surplus_value_data", "surplus_value_2026_live_json": "surplus_value_2026_live",
                       "draft_heatmap": "draft_heatmap", "hit_rate_data": "hit_rate_data",
                       "draft_fingerprints_page": "draft_fingerprints_page", "draft_board_page": "draft_board_page"}
+TRADE_PAGE_GOLDENS = ["page_data", "network_data", "winpct_data", "trade_week_data", "most_traded_data",
+                      "trade_value_inline"]
 TRADE_GOLDENS = ["trades_mapped", "trades_mapped_clean", "trade_universe", "position_baseline",
                  "player_stints_fixed", "metrics_final", "lineup_efficiency"]
 
@@ -155,6 +157,11 @@ def load_goldens(golden_dir: Path) -> dict:
     golden = {n: pd.read_csv(golden_dir / "trades" / f"{n}.csv.gz") for n in TRADE_GOLDENS}
     with gzip.open(golden_dir / "trades" / "trade_explorer_data.json.gz", "rt", encoding="utf-8") as f:
         golden["trade_explorer_data"] = json.load(f)
+    for n in TRADE_PAGE_GOLDENS:
+        path = golden_dir / "trades" / f"{n}.json.gz"
+        if path.exists():
+            with gzip.open(path, "rt", encoding="utf-8") as f:
+                golden[n] = json.load(f)
     golden["weekly_rosters_bracket_only"] = pd.read_csv(golden_dir / "weekly_rosters_bracket_only.csv.gz")
     golden["matchup_data"] = pd.read_csv(golden_dir / "matchup_data.csv.gz")
     for n in RECORD_JSON_GOLDENS:

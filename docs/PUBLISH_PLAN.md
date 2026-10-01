@@ -325,7 +325,7 @@ dist/
 
 index.json's leaderboard also carries the pill stats managers.html shows, so there is no separate `managers/index.json`.
 
-Stage A (decision 7.1) additionally writes the legacy files (`data/matchups.json`, `data/preach_manager_stats.csv`, and so on) at their current paths, so the current pages run from `dist/` unchanged, and so each output can be checked against its golden. A legacy view uses the manager spelling of the file it replaces ("Carmine Pittelli Jr." on matchups.html). Its Stage A check builds it from legacy-mode analysis, reads it back the way the golden is read, and runs the same comparison (with the same excuses) `analyze --verify` runs on the engine tables.
+Stage A (decision 7.1) additionally writes the legacy files (`data/matchups.json`, `data/preach_manager_stats.csv`, and so on) at their current paths, so the current pages run from `dist/` unchanged, and so each output can be checked against its golden. Data inline in a page is replaced in `dist/`'s copy of that page (the live page is untouched); `tools/freeze_golden.py` freezes the current inline block or `.js` file as its golden first. A legacy view uses the manager spelling of the file it replaces ("Carmine Pittelli Jr." on matchups.html). Its Stage A check builds it from legacy-mode analysis, reads it back the way the golden is read, and runs the same comparison (with the same excuses) `analyze --verify` runs on the engine tables.
 
 CI: build `dist/` from fixtures, validate every file against its schema, run `tools/check_paths.py dist`, and the style checks. The full build with real data runs in the Codespace (as `--verify` does now).
 

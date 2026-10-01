@@ -8,5 +8,6 @@ golden, plus INFO lines on what the live page changes to at M1).
 
 from engine.publish.pages.games import GamesPublisher
 from engine.publish.pages.managers import ManagersPublisher
+from engine.publish.pages.trades import TradesPublisher
 
-PUBLISHERS: list = [GamesPublisher(), ManagersPublisher()]
+PUBLISHERS: list = [GamesPublisher(), ManagersPublisher(), TradesPublisher()]
