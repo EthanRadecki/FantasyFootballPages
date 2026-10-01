@@ -52,7 +52,7 @@ PAGES = [
     {"id": "trade-value", "title": "Trade Value", "path": "pages/trade-value.html",
      "parent": "transaction-analysis", "feature": None, "nav": True, "data": ["data/v1/trade-value.json"]},
     {"id": "extra-analytics", "title": "Extra Analytics", "path": "pages/extra-analytics.html", "parent": None,
-     "feature": None, "nav": True},
+     "feature": None, "nav": True, "data": ["data/v1/extra-analytics.json"]},
     {"id": "position-impact", "title": "Position Impact", "path": "pages/position-impact.html",
      "parent": "extra-analytics", "feature": None, "nav": True, "data": ["data/v1/position-impact.json"]},
     {"id": "dst-impact", "title": "Life Without Defense", "path": "pages/dst-impact.html",

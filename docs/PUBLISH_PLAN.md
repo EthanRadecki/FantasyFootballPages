@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: A0-A5 merged (#29-#34), A6a (waiver-value) merged; A6b (lineup-efficiency) in review. Status columns below are as of A6b.
+Progress: A0-A6 merged (#29-#36); A7a (extra-analytics matchup sections) in review. Status columns below are as of A7a.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -55,7 +55,7 @@ Names: legacy data keys rows by manager display name, and the pages disagree on 
 | draft-history.html | ~84 KB inline | 3 | COVERED (A5) |
 | lineup-efficiency.html | ~150 KB inline | 11 | COVERED (A6b: bench depth ported, every inline block) |
 | waiver-value.html | ~284 KB inline | 6 | COVERED (A6a: every inline block, golden `waivers/waiver_value_page.json`) |
-| extra-analytics.html | ~90 KB inline + HTML | 13 | mostly COVERED; luck chart NO GOLDEN; R2 history EDITORIAL |
+| extra-analytics.html | ~90 KB inline + HTML | 13 | matchup sections COVERED (A7a, luck chart included); model sections A7b; R2 history EDITORIAL |
 | transaction-analysis.html | none | 0 | hub page; config only |
 
 ## 3. Shared across pages
@@ -252,7 +252,7 @@ Golden: `lineups/lineup_efficiency_page.json` (every inline block, A6b). Rules i
 | `ROSTERS_BY_FILTER` (box score of each blunder) | inline (~93 KB) | {filter: [{season, week, manager, starters[], bench[]}]} | `lineups` (ESPN's roster order) | same | COVERED (A6b) |
 | `DEPTH_BY_FILTER`, `DEPTH_ADJUSTED_BY_FILTER`, `DEPTH_VS_WINS_DATA` | inline | {filter: [{m, d}]}, {filter: [{m, raw, depth, adj}]}, [{m, s, d, wr}] | `lineups.bench_depth`, `lineups.depth_adjusted` (ported in A6b, legacy mode first) | same | COVERED (A6b) |
 | `SEASON_TREND_DATA` | inline | [{s, g}] | `lineup_efficiency` | same | COVERED (A6b) |
-| `HEATMAP_DATA`, `CAREER_AVG_DATA`, `HEATMAP_MANAGERS` | inline | [[season, week, manager index, gap, flag]] x1222, [[manager index, column, avg, n]] | `lineup_efficiency` | same | COVERED (A6b); the career grid's playoff columns are a decision (A6b) |
+| `HEATMAP_DATA`, `CAREER_AVG_DATA`, `HEATMAP_MANAGERS` | inline | [[season, week, manager index, gap, flag]] x1222, [[manager index, column, avg, n]] | `lineup_efficiency` | same | COVERED (A6b); playoff columns by role in engine mode (decision 7.11) |
 | `EFFICIENCY_GLOBAL_MIN/MAX`, `HEATMAP_GAP_MIN/MAX` | inline constants | numbers | derived | same | COVERED (A6b) |
 | Prose "r about 0.30", "2-12 playoff games" | HTML | text | derived | | TEMPLATE + data field |
 
@@ -269,13 +269,15 @@ Golden: `lineups/lineup_efficiency_page.json` (every inline block, A6b). Rules i
 
 ### 4.16 extra-analytics.html
 
+A7a replaces the matchup sections (head-to-head, closest games, luck chart, schedule swap, the conference markup) from `matchup_history/extra_analytics_inline.json` (every block, the typed conference markup included); A7b the model sections.
+
 | Element | Where | Shape | Producer | Golden / check | Status |
 |---|---|---|---|---|---|
 | Head-to-head matrix | inline `managers`, `h2h` | {name: {name: {w, l, pct}}} | `head_to_head` | `matchup_history/extra_analytics_matchups.json`, PASS | COVERED |
 | Closest games | inline `CLOSEST` | {all, regular, playoff: [{w, ws, l, ls, m, po, when}]} | `matchup_history.closest` | same, 3 checks PASS | COVERED |
 | Championship gauntlet | inline `CHAMPIONS`, `CHAMPION_RANKS`, `HARDEST`, `EASIEST` | cards with games; {"season_name": {rank, total}}; lists | `gauntlet_champions`, `gauntlet_window_games`, `gauntlet.extremes` | `gauntlet/extra_analytics_gauntlet.json`, 7 checks PASS | COVERED |
 | Conference analysis (cards, manager table, season table, rivalries, prose) | HTML | tables | `conference_summary`, `conference_managers`, `conference_seasons`, `rivalries` + `order_rivalries` | same, 4 checks PASS (avg PF/game was typed by hand) | COVERED; prose EDITORIAL |
-| Career schedule luck chart | inline `luckData` | [{name, actual, predicted, luck}] | `schedule_luck` summed over finished seasons | none; close to the engine but 6 managers differ by 1-2 (built from an older matchup file) | NO GOLDEN |
+| Career schedule luck chart | inline `luckData` | [{name, actual, predicted, luck}] | `schedule_luck` summed over finished seasons | `matchup_history/extra_analytics_inline.json` (A7a): equals `schedule_luck_season.csv` summed, except Gorman's typed 38 expected wins (file 39); Hancock and Bileydi follow the older matchup file, as analyze excuses | COVERED (A7a); a season filter is Stage B (Ethan, session 7) |
 | Schedule swap | inline `SCHEDULE_SWAP_DATA` | {season: {name: {actual, alt {name: {w, l, games, pct}}, avg_pct, wins_gained}}} | `schedule_swap`, `schedule_swap_summary` | `schedule/schedule_swap.json`, 2 checks PASS | COVERED |
 | `SS_CAVEATS` (2020 byes, 2024 forfeit) | inline | text | facts from data (odd team count, `exclude_games`) | | EDITORIAL |
 | Quarterly model | inline `coefs`, `corrs`, `pvals` | [num] x4 | `quarterly_coefficients`, `quarterly_fit` | regressions golden (coefs replaced, Ethan) | COVERED |
@@ -348,6 +350,8 @@ CI: build `dist/` from fixtures, validate every file against its schema, run `to
 | 7.8 | Live season | Stage A keeps each page's current coverage. After that every page shows data through the most recent finished week or season where it makes sense: season-filterable pages add the live season (marked live, finished weeks only); model fits (attribution, regressions, gauntlet ranks, draft surplus comparisons) stay on finished seasons. Page by page list in each Stage A PR. |
 | 7.9 | JSON granularity | One file per page plus `config.json` and `headshots.json`; managers split per manager; rankings one file per week. Editorial rankings are stored separately from computed fields with their own schema, because a commissioner-facing editor will later write them (phase 5/8). |
 | 7.10 | Weekly update flow | Now: one command (`engine update`: pull, normalize, analyze, build, verify). At cutover: a scheduled GitHub Action (during the season, after Monday night and Tuesday waivers, plus a manual "Run workflow" button) that deploys only when the build and checks pass. Later (phase 8): an on-page refresh button through a small authenticated relay, or server-side in a hosted product (section 8.4). |
+| 7.11 | Lineup career grid playoff columns (A6b) | The page labels columns 15-18 as playoff rounds but its data used the raw week number, mixing 2020-2021 playoff round 1 into week 14. The engine places playoff weeks by round, counted back from the championship (after the league's longest regular season, so any season length works). Legacy mode keeps the raw week for the Stage A check. |
+| 7.12 | Excluded managers' benches in the bench average (A6b) | Counted, as in every other calculation (they are only hidden). The page left them out (2020 only); legacy mode reproduces that. |
 
 ## 8. Rollout plan
 
@@ -395,9 +399,11 @@ Stage A (publish, current pages unchanged or minimally changed), then Stage B (f
 | A4 | impact and odds: position-impact, dst-impact, playoff odds | |
 | A5 | draft pages: draft-history, draft-fingerprints, draft-analysis, surplus-value (new goldens for tips and best/worst lists), managers heatmap summaries | |
 | A6 | transaction pages, in two PRs: A6a waiver-value; A6b lineup-efficiency (port bench depth and depth-adjusted efficiency, new page goldens) | |
-| A7 | extra-analytics (luck chart golden) | |
+| A7 | extra-analytics, in two PRs: A7a matchup sections (luck chart golden), A7b model sections | |
 | A8 | champions, schedule_release, weekly rankings computed fields (editorial split), headshots | |
 | M1 | switch the live deploy to engine-mode data under the current pages; release notes from the engine change list | legacy weekly process |
 | B1 | `web/` core: tokens.css, base and component CSS, `core/config.js`, `data.js`, `managers.js`, `nav.js`, `format.js`; CI check for manager names and hex colors outside `leagues/` | |
 | B2+ | pages moved into `web/` in batches, each reading its JSON and `config.json`; legacy views deleted as each page moves | the legacy view per page |
+
+Improvements folded into Stage B (requested, tracked here): schedule luck by season on the extra-analytics luck chart, a Career / season toggle per manager reading `schedule_luck.seasons` from `extra-analytics.json` (Ethan, session 7).
 | M2 | cutover (phase 6) | old root files (a later PR) |
