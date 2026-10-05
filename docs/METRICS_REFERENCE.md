@@ -144,7 +144,7 @@ A drop that ESPN records inside another manager's trade (a roster move forced wh
 
 ### Bench Depth
 
-**What it measures:** how much talent sat on a manager's bench, independent of whether it ever got played. For each bench player each week, compute `their points − average points of every bench player league-wide at that position that week` (every counted team's bench, the manager's own included: that is how the page's numbers were computed, checked against every value), then sum across the whole bench that week (IR not included), then average over every counted game of the season or career (forfeits and neglected lineups included). Excluded managers' benches count in the league average (they are only hidden); the page as first built left them out (2020 only), so 11 managers' career depth moves slightly.
+**What it measures:** how much talent sat on a manager's bench, independent of whether it ever got played. For each bench player each week, compute `their points − average points of every bench player league-wide at that position that week` (every counted team's bench, the manager's own included: that is how the page's numbers were computed, checked against every value), then sum across the whole bench that week (IR not included), then average over every counted game of the season or career (forfeits and neglected lineups included). Excluded managers' benches count in the league average (they are only hidden; decision 7.12); the page as first built left them out (2020 only), so 11 managers' career depth moves slightly.
 
 **Why this specific design, and not simpler alternatives:**
 - **Baseline is other benches, not starters.** Comparing to starters would answer a different question, "how much unrealized *starter-caliber* value existed," which is what the Depth-Adjusted Efficiency metric below needs. Depth is meant to be a standalone, general measure of roster construction, so it's benchmarked against other benches instead.
@@ -176,7 +176,7 @@ A drop that ESPN records inside another manager's trade (a roster move forced wh
 
 ### Week-by-Week Heatmap and Career Grid
 
-Every counted game's gap by week, forfeits and neglected lineups marked. The career grid averages each manager's gap by week of the season over averaged games. The page labels its last four columns as playoff roles (round 1, quarterfinal, semifinal, championship), but its data used the raw week number, so 2020-2021 playoff round 1 (week 14) shared a column with 2022-2025 regular-season week 14. The engine places playoff weeks by role, counted back from the final (pending Ethan's decision, PR A6b).
+Every counted game's gap by week, forfeits and neglected lineups marked. The career grid averages each manager's gap by week of the season over averaged games. The page labels its last four columns as playoff roles (round 1, quarterfinal, semifinal, championship), but its data used the raw week number, so 2020-2021 playoff round 1 (week 14) shared a column with 2022-2025 regular-season week 14. The engine places playoff weeks by role, counted back from the final (Ethan, decision 7.11).
 
 ---
 
@@ -417,3 +417,28 @@ Picks without an ADP (usually late kickers and defenses) are left out of these.
 **Replaced method:** `draft_fingerprint.py` read the ADP exports by hand and joined them to the draft by name; the engine joins by player id (same result for every legacy pick). It numbered picks the way ESPN first recorded them; the engine uses the corrected draft order (2021), which moves K and D/ST patience for a few 2021 managers. The page's builder (lost; recovered from the page) averaged weighted surplus per pick without dividing by the weights, averaged career surplus over seasons, rounded each season's win% and PPG before averaging a career, and left the two excluded managers without surplus. `generate_fingerprints.py` built a separate 7-measure radar for managers.html; it is replaced by these profiles at publish.
 
 **Archetype names** are editorial (decision 7.6): `leagues/<league>/editorial/archetypes.yaml`, keyed by the stable cluster id (largest cluster 0). A league without that file gets a generated label from each cluster's most distinctive radar measure (its center's largest z-score against the finished seasons, for example "High Draft Conviction").
+
+## Champions (champions.html)
+
+**What it shows:** one card per finished season's champion, and the finals chart.
+
+**How it is calculated:**
+- **Record and PF/G:** the champion's regular season (counted games), from the manager season stats. Playoff PPG is the mean of the champion's playoff game scores.
+- **Rounds:** one per playoff game the champion played, named by distance from the championship (Championship, Semifinal, Quarterfinal, First Round). A bye week has no round.
+- **Starters:** each round's starters in the box-score order every page uses, flex slots shown as FLEX.
+- **Player PPG:** the player's points per game for this team before the playoff run: the weeks before the champion's first playoff game, on this team's roster, not on IR, and not a benched zero (a bye week). A started zero counts. Players picked up for the playoffs show none.
+- **Finals:** the championship game's two scores.
+
+**Legacy differences:** the builder is lost. The rules above reproduce every card. The older cards typed PF/G to 1 place, a few player names were typed without a suffix (Jr., II) and one team name was capitalized by hand. The page listed starters in its own order (FLEX before TE, K before D/ST); the engine uses the shared box-score order.
+
+## Schedule Release (schedule_release.html)
+
+**What it shows:** the coming season's schedule by week and, for each manager's opponent each week, their head-to-head history.
+
+**How it is calculated:**
+- **Matchups:** from ESPN (the season's played games plus the scheduled ones), regular season only. Interconference when the two managers' conferences differ that season.
+- **Themes:** league-authored and optional (`leagues/<league>/editorial/schedule_themes.yaml`); weeks without one are Standard. The file also says what a theme highlights: `rematch` (the pair's deepest playoff meeting, the most recent on ties) or `trades` (trades between them, one per trade however many transactions it took).
+- **History:** every counted game between the two (playoffs included, consolation never) in the finished seasons, oldest first. Record, game log (win, loss, tie), most recent, closest and biggest blowout (earliest on ties), scores from the manager's side.
+- **MVP:** the winner's highest-scoring starter; in a tie game the higher of the two teams' best starters.
+
+**Legacy differences:** the builder is lost; the rules above reproduce both files. Two scores in the live file are from before an ESPN stat correction. The hand-written schedule CSV listed pairs in its own order; the engine follows ESPN's.

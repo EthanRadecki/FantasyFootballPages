@@ -265,11 +265,14 @@ def test_positional_and_quarterly_views():
 
 def test_team_names_editorial_overrides_espn_names(tmp_path):
     (tmp_path / "editorial").mkdir()
-    (tmp_path / "editorial" / "team_names.yaml").write_text('2021:\n  "Long Name": "Short"\n', encoding="utf-8")
+    (tmp_path / "editorial" / "team_names.yaml").write_text(
+        'shown:\n  2022:\n    "Long Name": "Shown"\nshort:\n  2021:\n    "Long Name": "Short"\n', encoding="utf-8")
     teams = pd.DataFrame({"season": [2021, 2022], "manager_key": ["m_000000000001"] * 2,
                           "team_name": ["Long Name", "Long Name"]})
     ctx = SimpleNamespace(league_dir=tmp_path, tables={"teams": teams})
-    assert extra_pub.team_names(ctx) == {(2021, "m_000000000001"): "Short", (2022, "m_000000000001"): "Long Name"}
+    from engine.publish.editorial import team_names
+    assert team_names(ctx) == {(2021, "m_000000000001"): "Long Name", (2022, "m_000000000001"): "Shown"}
+    assert team_names(ctx, short=True) == {(2021, "m_000000000001"): "Short", (2022, "m_000000000001"): "Shown"}
 
 
 def test_champion_rank_ties_are_excused_inside_the_tied_group():

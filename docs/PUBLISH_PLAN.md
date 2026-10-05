@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: A0-A7a merged (#29-#37); A7b (extra-analytics model sections) in review. Status columns below are as of A7b.
+Progress: A0-A7 merged (#29-#38); A8a (champions, schedule_release) in review. Status columns below are as of A8a.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -186,8 +186,8 @@ All five `regenerate_data_files.py` outputs and `most_traded_data.js` become one
 
 | Element | Where | Shape | Producer | Golden / check | Status |
 |---|---|---|---|---|---|
-| Per-manager schedule with history | file `manager_schedule.json` | {name: [{week, week_type, opponent, interconference, my_wins, opp_wins, total_games, most_recent, closest, blowout {season, week, score_a, score_b, winner, margin}, game_log[], rematch (null), trade_count (null), games[{season, label, score_a, score_b, winner, mvp_name, mvp_pos, mvp_pts}]}]} | pairs from `future_matchups`; history from `games` + `box_scores` | none | NO PRODUCER |
-| League schedule by week | file `schedule_by_week.json` | [{week, week_type, matchups[{team_a, team_b, interconference}]}] | pairs from `future_matchups`; week_type from `data/schedule_2026.csv` | none | NO PRODUCER |
+| Per-manager schedule with history | file `manager_schedule.json` | {name: [{week, week_type, opponent, interconference, my_wins, opp_wins, total_games, most_recent, closest, blowout {season, week, score_a, score_b, winner, margin}, game_log[], rematch (null), trade_count (null), games[{season, label, score_a, score_b, winner, mvp_name, mvp_pos, mvp_pts}]}]} | pairs from the season's `matchups` + `future_matchups`; history from `games` + `box_scores`; trade counts from `trade_sides`; themes and what they highlight from editorial `schedule_themes.yaml` | `schedule_release/manager_schedule.json`, PASS (A8a; 2 scores from before an ESPN stat correction) | COVERED (A8a) |
+| League schedule by week | file `schedule_by_week.json` | [{week, week_type, matchups[{team_a, team_b, interconference}]}] | pairs from ESPN; week_type from editorial `schedule_themes.yaml` ("Standard" when absent) | `schedule_release/schedule_by_week.json`, PASS (A8a; pairs compared regardless of order and orientation) | COVERED (A8a) |
 | Week themes | `data/schedule_2026.csv` (no page reads it directly) | Week, Week_Type, Team_A, Team_B, confs, Interconference | league-authored | `sos/schedule_2026.csv` is an older draft | LEAGUE-AUTHORED |
 | `CONF` (conference per manager), `MANAGER_COLOR`, `THEME_*` maps, og meta "2026 Schedule Release" | inline / head | | `ms.conference` of the live season; config; theme vocabulary is league-authored | | CONFIG / LEAGUE-AUTHORED |
 
@@ -195,8 +195,8 @@ All five `regenerate_data_files.py` outputs and `most_traded_data.js` become one
 
 | Element | Where | Shape | Producer | Golden / check | Status |
 |---|---|---|---|---|---|
-| Champion cards | inline `CHAMPS` (6) | [{year, manager, team, record, rs_ppg, po_ppg, runner_up, rounds[{label, week, total_score, roster[{pos, name, week_score, ppg}]}]}] | `ms` (champion, record, PF/G), `games` + `box_scores` (rounds), player PPG (definition to recover: D/ST values suggest PPG while on that roster) | none | NO PRODUCER, NO GOLDEN |
-| Finals chart and timeline | inline `FINALS` (6) | [{year, champ, champ_score, runner, runner_score}] | `games` (championship game) | none | NO PRODUCER, NO GOLDEN |
+| Champion cards | inline `CHAMPS` (6) | [{year, manager, team, record, rs_ppg, po_ppg, runner_up, rounds[{label, week, total_score, roster[{pos, name, week_score, ppg}]}]}] | `ms` (champion, record, PF/G), `games` + `box_scores` (rounds), player PPG (definition to recover: D/ST values suggest PPG while on that roster) | `champions/champions_inline.json` (A8a), PASS: rules recovered (player PPG = points per game on this roster before the champion's first playoff game, IR and benched zeros left out); excused: older cards typed PF/G to 1 place, hand-typed name suffixes, one team name capitalized by hand; starter order changes to the shared box-score order | COVERED (A8a) |
+| Finals chart and timeline | inline `FINALS` (6) | [{year, champ, champ_score, runner, runner_score}] | `games` (championship game) | same, PASS | COVERED (A8a) |
 | Trophy photo, page copy | HTML | image path | | | EDITORIAL |
 | `LOGO_MAP`, `TINT_HEX` | inline | | | | CONFIG |
 
@@ -346,7 +346,7 @@ CI: build `dist/` from fixtures, validate every file against its schema, run `to
 | 7.4 | Slot 15 on draft-analysis.html | Not in the slot results table or charts (one season, over/under 0 by construction); kept in the "who drafted from each slot" list. Generic rule: a slot needs at least 2 seasons to appear in results. |
 | 7.5 | Headshots | Generated from ESPN player ids (ESPN image URL pattern), for any league; the NFL.com file is retired. Pages keep their missing-image fallback. |
 | 7.6 | Archetype names | Editorial file keyed by stable cluster id; leagues without one get a generated label from the cluster's defining traits. |
-| 7.7 | schedule_release data | Matchups from ESPN (`future_matchups`), history from `games` + `box_scores`; week themes league-authored and optional (page hides them when absent); unused `rematch` and `trade_count` dropped. |
+| 7.7 | schedule_release data | Matchups from ESPN (the season's played games and `future_matchups`), history from `games` + `box_scores`; week themes league-authored and optional (page hides them when absent). Correction (A8a): `rematch` and `trade_count` are not unused; the page shows them on its Big Game Week and Trade Partner Week cards. The engine computes both for every pair (rematch = the pair's deepest playoff meeting, most recent on ties; trades = trades between them, one per trade) and the league's `schedule_themes.yaml` says which theme highlights which. |
 | 7.8 | Live season | Stage A keeps each page's current coverage. After that every page shows data through the most recent finished week or season where it makes sense: season-filterable pages add the live season (marked live, finished weeks only); model fits (attribution, regressions, gauntlet ranks, draft surplus comparisons) stay on finished seasons. Page by page list in each Stage A PR. |
 | 7.9 | JSON granularity | One file per page plus `config.json` and `headshots.json`; managers split per manager; rankings one file per week. Editorial rankings are stored separately from computed fields with their own schema, because a commissioner-facing editor will later write them (phase 5/8). |
 | 7.10 | Weekly update flow | Now: one command (`engine update`: pull, normalize, analyze, build, verify). At cutover: a scheduled GitHub Action (during the season, after Monday night and Tuesday waivers, plus a manual "Run workflow" button) that deploys only when the build and checks pass. Later (phase 8): an on-page refresh button through a small authenticated relay, or server-side in a hosted product (section 8.4). |
@@ -400,10 +400,10 @@ Stage A (publish, current pages unchanged or minimally changed), then Stage B (f
 | A5 | draft pages: draft-history, draft-fingerprints, draft-analysis, surplus-value (new goldens for tips and best/worst lists), managers heatmap summaries | |
 | A6 | transaction pages, in two PRs: A6a waiver-value; A6b lineup-efficiency (port bench depth and depth-adjusted efficiency, new page goldens) | |
 | A7 | extra-analytics, in two PRs: A7a matchup sections (luck chart golden), A7b model sections (editorial `team_names.yaml`) | |
-| A8 | champions, schedule_release, weekly rankings computed fields (editorial split), headshots | |
+| A8 | in two PRs: A8a champions and schedule_release (editorial `schedule_themes.yaml`; `team_names.yaml` split into `shown` and `short` names), A8b weekly rankings computed fields (editorial split) and headshots | |
 | M1 | switch the live deploy to engine-mode data under the current pages; release notes from the engine change list | legacy weekly process |
 | B1 | `web/` core: tokens.css, base and component CSS, `core/config.js`, `data.js`, `managers.js`, `nav.js`, `format.js`; CI check for manager names and hex colors outside `leagues/` | |
 | B2+ | pages moved into `web/` in batches, each reading its JSON and `config.json`; legacy views deleted as each page moves | the legacy view per page |
 
-Improvements folded into Stage B (requested, tracked here): schedule luck by season on the extra-analytics luck chart, a Career / season toggle per manager reading `schedule_luck.seasons` from `extra-analytics.json` (Ethan, session 7). Stage B housekeeping from A7b: the R2 history (`R2_LABELS`, `R2_VALS` minus the current fit) and the schedule-swap caveats move to editorial files.
+Improvements folded into Stage B (requested, tracked here): schedule luck by season on the extra-analytics luck chart, a Career / season toggle per manager reading `schedule_luck.seasons` from `extra-analytics.json` (Ethan, session 7). Schedule release for any league (Ethan, session 7): every league gets a card for every ESPN matchup with no setup (managers, all-time head-to-head record, every past result with its MVP, closest, blowout, most recent, plus playoff rematch and trade count whenever the pair has them); week themes are an optional extra from the league's `schedule_themes.yaml`, never required. The Stage B page reads the season, conferences, colors and logos from `config.json` instead of today's hardcoded 2026, `CONF` and theme maps. Stage B housekeeping from A7b: the R2 history (`R2_LABELS`, `R2_VALS` minus the current fit) and the schedule-swap caveats move to editorial files.
 | M2 | cutover (phase 6) | old root files (a later PR) |

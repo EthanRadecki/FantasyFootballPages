@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schedule",
+  "title": "data/v1/schedule.json: the schedule season's matchups by week with week themes, and each pair's head-to-head history and trade count (schedule_release.html)",
+  "type": "object",
+  "required": [
+    "meta",
+    "season",
+    "history_seasons",
+    "weeks",
+    "rivalries",
+    "theme_highlights"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "key": {
+      "type": "string",
+      "pattern": "^m_[0-9a-f]{12}$"
+    }
+  },
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "schema",
+        "schema_version"
+      ],
+      "properties": {
+        "schema": {
+          "const": "schedule"
+        },
+        "schema_version": {
+          "const": 1
+        }
+      }
+    },
+    "season": {
+      "type": "integer"
+    },
+    "history_seasons": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "weeks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "week",
+          "theme",
+          "matchups"
+        ],
+        "properties": {
+          "week": {
+            "type": "integer"
+          },
+          "theme": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "matchups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "manager_key",
+                "opponent_key",
+                "interconference"
+              ],
+              "properties": {
+                "manager_key": {
+                  "$ref": "#/$defs/key"
+                },
+                "opponent_key": {
+                  "$ref": "#/$defs/key"
+                },
+                "interconference": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "rivalries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "manager_key",
+          "opponent_key",
+          "trades",
+          "games"
+        ],
+        "properties": {
+          "manager_key": {
+            "$ref": "#/$defs/key"
+          },
+          "opponent_key": {
+            "$ref": "#/$defs/key"
+          },
+          "trades": {
+            "type": "integer"
+          },
+          "games": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "season",
+                "week",
+                "label",
+                "week_label",
+                "is_playoff",
+                "points",
+                "opponent_points",
+                "mvp"
+              ],
+              "properties": {
+                "season": {
+                  "type": "integer"
+                },
+                "week": {
+                  "type": "integer"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "week_label": {
+                  "type": "string"
+                },
+                "is_playoff": {
+                  "type": "boolean"
+                },
+                "points": {
+                  "type": "number"
+                },
+                "opponent_points": {
+                  "type": "number"
+                },
+                "mvp": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "additionalProperties": false,
+                  "required": [
+                    "player_id",
+                    "name",
+                    "position",
+                    "points",
+                    "manager_key"
+                  ],
+                  "properties": {
+                    "player_id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "position": {
+                      "type": "string"
+                    },
+                    "points": {
+                      "type": "number"
+                    },
+                    "manager_key": {
+                      "$ref": "#/$defs/key"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "theme_highlights": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "rematch",
+          "trades"
+        ]
+      }
+    }
+  }
+}

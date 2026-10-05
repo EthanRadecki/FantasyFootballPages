@@ -31,7 +31,7 @@ PAGES = [
     {"id": "managers", "title": "Managers", "path": "pages/managers.html", "parent": None, "feature": None,
      "nav": True, "data": ["data/v1/index.json"]},
     {"id": "champions", "title": "Champions", "path": "pages/champions.html", "parent": None,
-     "feature": "champions_gallery", "nav": True},
+     "feature": "champions_gallery", "nav": True, "data": ["data/v1/champions.json"]},
     {"id": "matchups", "title": "Matchups", "path": "pages/matchups.html", "parent": None, "feature": None,
      "nav": True, "data": ["data/v1/matchups.json"]},
     {"id": "draft-analysis", "title": "Draft Analysis", "path": "pages/draft-analysis.html", "parent": None,
@@ -58,7 +58,7 @@ PAGES = [
     {"id": "dst-impact", "title": "Life Without Defense", "path": "pages/dst-impact.html",
      "parent": "extra-analytics", "feature": None, "nav": True, "data": ["data/v1/dst-impact.json"]},
     {"id": "schedule-release", "title": "Schedule Release", "path": "pages/schedule_release.html", "parent": None,
-     "feature": None, "nav": False},
+     "feature": None, "nav": False, "data": ["data/v1/schedule.json"]},
 ]
 
 
