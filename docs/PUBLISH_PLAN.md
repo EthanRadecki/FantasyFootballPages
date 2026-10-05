@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: A0-A6 merged (#29-#36); A7a (extra-analytics matchup sections) in review. Status columns below are as of A7a.
+Progress: A0-A7a merged (#29-#37); A7b (extra-analytics model sections) in review. Status columns below are as of A7b.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -55,7 +55,7 @@ Names: legacy data keys rows by manager display name, and the pages disagree on 
 | draft-history.html | ~84 KB inline | 3 | COVERED (A5) |
 | lineup-efficiency.html | ~150 KB inline | 11 | COVERED (A6b: bench depth ported, every inline block) |
 | waiver-value.html | ~284 KB inline | 6 | COVERED (A6a: every inline block, golden `waivers/waiver_value_page.json`) |
-| extra-analytics.html | ~90 KB inline + HTML | 13 | matchup sections COVERED (A7a, luck chart included); model sections A7b; R2 history EDITORIAL |
+| extra-analytics.html | ~90 KB inline + HTML | 13 | COVERED (A7a matchup sections, A7b model sections); R2 history and swap caveats EDITORIAL |
 | transaction-analysis.html | none | 0 | hub page; config only |
 
 ## 3. Shared across pages
@@ -269,21 +269,21 @@ Golden: `lineups/lineup_efficiency_page.json` (every inline block, A6b). Rules i
 
 ### 4.16 extra-analytics.html
 
-A7a replaces the matchup sections (head-to-head, closest games, luck chart, schedule swap, the conference markup) from `matchup_history/extra_analytics_inline.json` (every block, the typed conference markup included); A7b the model sections.
+A7a replaces the matchup sections (head-to-head, closest games, luck chart, schedule swap, the conference markup) from `matchup_history/extra_analytics_inline.json` (every block, the typed conference markup included); A7b the model sections (quarterly model, positional production, win% attribution, championship gauntlet), checked against the same golden refrozen with the model literals. The data file carries the model sections by manager key (`quarterly`, `positional`, `attribution`, `gauntlet`).
 
 | Element | Where | Shape | Producer | Golden / check | Status |
 |---|---|---|---|---|---|
 | Head-to-head matrix | inline `managers`, `h2h` | {name: {name: {w, l, pct}}} | `head_to_head` | `matchup_history/extra_analytics_matchups.json`, PASS | COVERED |
 | Closest games | inline `CLOSEST` | {all, regular, playoff: [{w, ws, l, ls, m, po, when}]} | `matchup_history.closest` | same, 3 checks PASS | COVERED |
-| Championship gauntlet | inline `CHAMPIONS`, `CHAMPION_RANKS`, `HARDEST`, `EASIEST` | cards with games; {"season_name": {rank, total}}; lists | `gauntlet_champions`, `gauntlet_window_games`, `gauntlet.extremes` | `gauntlet/extra_analytics_gauntlet.json`, 7 checks PASS | COVERED |
+| Championship gauntlet | inline `CHAMPIONS`, `CHAMPION_RANKS`, `HARDEST`, `EASIEST` | cards with games; {"season_name": {rank, total}}; lists | `gauntlet_champions`, `gauntlet_window_games`, `gauntlet.extremes` | `gauntlet/extra_analytics_gauntlet.json`, 7 checks PASS; legacy view A7b: lists exact, ranks exact up to legacy ties (three champions sit in 2-way ties on the rounded score, whose order depends on the pandas version; excused inside the tied group as analyze does), `sameLength` for a 4-week champion window; cards rebuilt with the raw-dominance variant the page used, surges and raw points excused as analyze does; team names from ESPN, with the page's shortened names in editorial `team_names.yaml` (case and emoji differences excused) | COVERED (A7b) |
 | Conference analysis (cards, manager table, season table, rivalries, prose) | HTML | tables | `conference_summary`, `conference_managers`, `conference_seasons`, `rivalries` + `order_rivalries` | same, 4 checks PASS (avg PF/game was typed by hand) | COVERED; prose EDITORIAL |
 | Career schedule luck chart | inline `luckData` | [{name, actual, predicted, luck}] | `schedule_luck` summed over finished seasons | `matchup_history/extra_analytics_inline.json` (A7a): equals `schedule_luck_season.csv` summed, except Gorman's typed 38 expected wins (file 39); Hancock and Bileydi follow the older matchup file, as analyze excuses | COVERED (A7a); a season filter is Stage B (Ethan, session 7) |
 | Schedule swap | inline `SCHEDULE_SWAP_DATA` | {season: {name: {actual, alt {name: {w, l, games, pct}}, avg_pct, wins_gained}}} | `schedule_swap`, `schedule_swap_summary` | `schedule/schedule_swap.json`, 2 checks PASS | COVERED |
 | `SS_CAVEATS` (2020 byes, 2024 forfeit) | inline | text | facts from data (odd team count, `exclude_games`) | | EDITORIAL |
-| Quarterly model | inline `coefs`, `corrs`, `pvals` | [num] x4 | `quarterly_coefficients`, `quarterly_fit` | regressions golden (coefs replaced, Ethan) | COVERED |
-| Positional production | inline `DATA`, `STD_COEF`, `COEF_PVAL`, `CORR_R` | [{mgr, winpct, avg{}, std{}}], {pos: num} | `position_career`, `position_coefficients`, `position_fit` | `regressions/extra_analytics_regressions.json`, 3 checks PASS | COVERED |
-| Win% attribution | inline `DATA`, `COEF_VALS` | {name: {winpct, draft, waiver, lineup, trade, luck, predicted, residual}}, [std coef x5] | `attribution_managers`, `attribution_coefficients`, `attribution_fit` | `attribution/win_attribution_final.json`, 4 checks PASS | COVERED |
-| R2 history (`R2_LABELS`, `R2_VALS`) | inline | model versions and their R2 | history of past model versions; only the last value is the current fit | | EDITORIAL (last value from `attribution_fit`) |
+| Quarterly model | inline `coefs`, `corrs`, `pvals` | [num] x4 | `quarterly_coefficients`, `quarterly_fit` | regressions golden (coefs replaced, Ethan); legacy view A7b: labels and corrs match, coefs and pvals excused (session 4 decision) | COVERED (A7b) |
+| Positional production | inline `DATA`, `STD_COEF`, `COEF_PVAL`, `CORR_R` | [{mgr, winpct, avg{}, std{}}], {pos: num} | `position_career`, `position_coefficients`, `position_fit` | `regressions/extra_analytics_regressions.json`, 3 checks PASS; legacy view A7b: rows by manager, order by win % (three managers tie at 48.1 in the legacy script's order), coefficients within analyze's tolerances | COVERED (A7b) |
+| Win% attribution | inline `DATA`, `COEF_VALS` | {name: {winpct, draft, waiver, lineup, trade, luck, predicted, residual}}, [std coef x5] | `attribution_managers`, `attribution_coefficients`, `attribution_fit` | `attribution/win_attribution_final.json`, 4 checks PASS; legacy view A7b exact (`DATA#1`, intercept, coefficient order and values) | COVERED (A7b) |
+| R2 history (`R2_LABELS`, `R2_VALS`) | inline | model versions and their R2 | history of past model versions; only the last value is the current fit | legacy view A7b exact | EDITORIAL (A7b writes the last value from `attribution_fit`; the history moves to an editorial file in Stage B) |
 | 14 logo paths | inline | | | | CONFIG |
 
 ### 4.17 transaction-analysis.html
@@ -399,11 +399,11 @@ Stage A (publish, current pages unchanged or minimally changed), then Stage B (f
 | A4 | impact and odds: position-impact, dst-impact, playoff odds | |
 | A5 | draft pages: draft-history, draft-fingerprints, draft-analysis, surplus-value (new goldens for tips and best/worst lists), managers heatmap summaries | |
 | A6 | transaction pages, in two PRs: A6a waiver-value; A6b lineup-efficiency (port bench depth and depth-adjusted efficiency, new page goldens) | |
-| A7 | extra-analytics, in two PRs: A7a matchup sections (luck chart golden), A7b model sections | |
+| A7 | extra-analytics, in two PRs: A7a matchup sections (luck chart golden), A7b model sections (editorial `team_names.yaml`) | |
 | A8 | champions, schedule_release, weekly rankings computed fields (editorial split), headshots | |
 | M1 | switch the live deploy to engine-mode data under the current pages; release notes from the engine change list | legacy weekly process |
 | B1 | `web/` core: tokens.css, base and component CSS, `core/config.js`, `data.js`, `managers.js`, `nav.js`, `format.js`; CI check for manager names and hex colors outside `leagues/` | |
 | B2+ | pages moved into `web/` in batches, each reading its JSON and `config.json`; legacy views deleted as each page moves | the legacy view per page |
 
-Improvements folded into Stage B (requested, tracked here): schedule luck by season on the extra-analytics luck chart, a Career / season toggle per manager reading `schedule_luck.seasons` from `extra-analytics.json` (Ethan, session 7).
+Improvements folded into Stage B (requested, tracked here): schedule luck by season on the extra-analytics luck chart, a Career / season toggle per manager reading `schedule_luck.seasons` from `extra-analytics.json` (Ethan, session 7). Stage B housekeeping from A7b: the R2 history (`R2_LABELS`, `R2_VALS` minus the current fit) and the schedule-swap caveats move to editorial files.
 | M2 | cutover (phase 6) | old root files (a later PR) |

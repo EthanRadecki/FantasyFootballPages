@@ -4,7 +4,7 @@ Outputs
     data/v1/extra-analytics.json   page model (schema "extra-analytics"), keyed by manager key
     pages/extra-analytics.html     the page with its data replaced
 
-PR A7a covers the matchup sections; A7b adds the model sections (quarterly
+PR A7a covers the matchup sections; A7b the model sections (quarterly
 model, positional production, win% attribution, championship gauntlet).
 
 Matchup sections and their rules (the builders were lost or one-off; the rules
@@ -23,6 +23,29 @@ are `analytics/matchup_history.py` and `analytics/schedule.py`, checked by
                            record), the 8 longest rivalries (`order_rivalries`)
 The prose between the tables (and its numbers) is editorial and stays as it
 is until Stage B.
+
+Model sections (A7b; the fits are `analytics/regressions.py`,
+`analytics/attribution.py` and `analytics/gauntlet.py`, checked by `analyze
+--verify`; finished seasons):
+    labels, coefs, corrs, pvals   the quarterly playoff model: per quarter of the regular
+                                  season, the label "Qn (Wks a-b)", coefficient, correlation
+                                  and p-value (3 places)
+    POSITIONS, DATA, STD_COEF, COEF_PVAL, CORR_R
+                                  positional production: per visible manager, career win %
+                                  and the mean and SD of started points per position, win %
+                                  descending; the positional regression (p-values 4 places)
+    DATA#1, LEAGUE_INTERCEPT, COEF_LABELS, COEF_VALS
+                                  win% attribution: each visible manager's waterfall, and the
+                                  standardized coefficients, largest first
+    R2_VALS                       the model's refinement history is editorial; its last bar
+                                  is the current fit's R2
+    CHAMPION_RANKS, CHAMPIONS, HARDEST, EASIEST
+                                  the championship gauntlet: each champion's rank among
+                                  every window of the same length, the champion cards, and
+                                  the five hardest and easiest three-game stretches
+                                  (`sameLength` marks a champion window other than 3 weeks;
+                                  card team names from `teams`, overridden by the league's
+                                  editorial team_names.yaml where the page shortened them)
 
 Coverage: finished seasons, as the page shows today (decision 7.8, Stage A).
 The head-to-head, closest and conference sections are recomputed here on the
@@ -45,12 +68,16 @@ from engine.config import conference_labels, excluded_games, excluded_manager_ke
 from engine.legacy import Comparison, name_to_key
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
+from engine.publish.editorial import load_editorial
 from engine.publish.legacy_view import (Names, page_roundtrip, read_html, read_literal, replace_html,
                                         replace_literal)
 
 SCHEMA, VERSION = "extra-analytics", 1
 PAGE = "pages/extra-analytics.html"
 VARS = ["managers", "h2h", "CLOSEST", "luckData", "SCHEDULE_SWAP_DATA"]
+MODEL_VARS = ["labels", "coefs", "corrs", "pvals", "POSITIONS", "DATA", "STD_COEF", "COEF_PVAL", "CORR_R", "DATA#1",
+              "LEAGUE_INTERCEPT", "COEF_LABELS", "COEF_VALS", "R2_VALS", "CHAMPION_RANKS", "CHAMPIONS", "HARDEST",
+              "EASIEST"]
 HTML = {  # name: (anchor, opening tag) of typed markup
     "conference_teams": (None, '<div class="conf-teams-grid">'),
     "conference_cards": (None, '<div class="conf-stat-grid">'),
@@ -217,6 +244,86 @@ def parse_conference(html: dict) -> dict:
             "rivalries": [["Rivalry", "Record", "Games", "Conference"]] + riv, "teams": teams}
 
 
+# ---------------------------------------------------------------- model sections
+
+FACTOR_LABELS = {"draft": "Draft", "waiver": "Waiver", "lineup": "Lineup", "trade": "Trade", "luck": "Luck"}
+
+
+def quarterly_view(coefs: pd.DataFrame) -> dict:
+    c = coefs.reset_index(drop=True)
+    return {"labels": [f"{q} (Wks {w})" for q, w in zip(c["quarter"], c["weeks"])],
+            "coefs": [_r(v, 3) for v in c["coef"]], "corrs": [_r(v, 3) for v in c["corr"]],
+            "pvals": [_r(v, 3) for v in c["p_value"]]}
+
+
+def positional_view(career: pd.DataFrame, coefs: pd.DataFrame, win_pct: pd.Series, positions: list[str], names) -> dict:
+    """career: manager_key, <pos>_avg, <pos>_sd; win_pct: manager_key -> career win %."""
+    rows = []
+    for d in career.to_dict("records"):     # records keep "D/ST_avg" (itertuples renames it)
+        k = d["manager_key"]
+        if k not in win_pct.index:
+            continue
+        rows.append({"_wp": float(win_pct[k]), "mgr": names(k), "winpct": _r(win_pct[k], 1),
+                     "avg": {p: _r(d[f"{p}_avg"], 2) for p in positions},
+                     "std": {p: _r(d[f"{p}_sd"], 2) for p in positions}})
+    rows.sort(key=lambda r: (-r["_wp"], r["mgr"]))     # unrounded win %, as the page sorted
+    rows = [{k: v for k, v in r.items() if k != "_wp"} for r in rows]
+    c = coefs.set_index("position")
+    return {"POSITIONS": list(positions), "DATA": rows,
+            "STD_COEF": {p: _r(c.loc[p, "std_coef"], 3) for p in positions},
+            "COEF_PVAL": {p: _r(c.loc[p, "p_value"], 4) for p in positions},
+            "CORR_R": {p: _r(c.loc[p, "corr"], 3) for p in positions}}
+
+
+def attribution_view(managers: pd.DataFrame, coefs: pd.DataFrame, fit: pd.Series, r2_history: list, names) -> dict:
+    m = managers[~managers["hidden"]] if "hidden" in managers else managers
+    data = {names(r.manager_key): {"winpct": _r(r.win_pct, 1), "draft": _r(r.draft, 2), "waiver": _r(r.waiver, 2),
+                                   "lineup": _r(r.lineup, 2), "trade": _r(r.trade, 2), "luck": _r(r.luck, 2),
+                                   "predicted": _r(r.predicted, 2), "residual": _r(r.residual, 2)}
+            for r in m.itertuples()}
+    c = coefs.sort_values("std_coef", ascending=False, kind="stable")
+    hist = list(r2_history[:-1]) + [_r(fit["r2"], 3)] if r2_history else [_r(fit["r2"], 3)]
+    return {"DATA#1": dict(sorted(data.items())), "LEAGUE_INTERCEPT": _r(fit["league_intercept"], 2),
+            "COEF_LABELS": [FACTOR_LABELS.get(f, f.title()) for f in c["factor"]],
+            "COEF_VALS": [_r(v, 3) for v in c["std_coef"]], "R2_VALS": hist}
+
+
+def _window_games(detail: pd.DataFrame, r) -> pd.DataFrame:
+    return detail[(detail["season"] == r.season) & (detail["manager_key"] == r.manager_key) & (detail["n"] == r.n)
+                  & (detail["start_week"] == r.start_week)].sort_values("week")
+
+
+def gauntlet_view(win: pd.DataFrame, detail: pd.DataFrame, champs: pd.DataFrame, pf_per_game: dict, team: dict,
+                  names) -> dict:
+    """pf_per_game, team: (season, manager key) -> PF/G, team name."""
+    from engine.analytics import gauntlet as gt
+
+    hi, lo = gt.extremes(win)
+    listed = lambda sel: [{"season": int(r.season), "manager": names(r.manager_key), "s_pts": _r(r.s_pts, 1),
+                           "s_dom": _r(r.s_dom, 1), "s_streak": _r(r.s_streak, 1), "gs": _r(r.gs, 2),
+                           "games": [{"week": g.week_label, "opponent": names(g.opponent_key),
+                                      "own_score": _r(g.own_score, 1), "opp_score": _r(g.opp_score, 1),
+                                      "margin": _r(g.margin, 1), "opp_dom": _r(g.opp_dom, 3),
+                                      "opp_surge": _r(g.opp_surge, 1)} for g in _window_games(detail, r).itertuples()]}
+                          for r in sel.itertuples()]
+    # the page says "3-week stretches" unless sameLength names another window size
+    ranks = {f"{int(r.season)}_{names(r.manager_key)}": {"rank": int(r.rank), "total": int(r.total),
+                                                          **({"sameLength": int(r.n)} if int(r.n) != 3 else {})}
+             for r in champs.sort_values("rank").itertuples()}
+    cards = []
+    for r in champs.sort_values("gs", ascending=False).itertuples():
+        cards.append({"year": int(r.season), "champion": names(r.manager_key), "team": team.get((r.season, r.manager_key)),
+                      "gs": _r(r.gs, 1), "n": int(r.n), "s_pts": _r(r.s_pts, 1), "s_dom": _r(r.s_dom, 1),
+                      "s_streak": _r(r.s_streak, 1), "raw_pts": _r(r.raw_pts, 4), "raw_dom": _r(r.raw_dom, 4),
+                      "raw_streak": _r(r.raw_streak, 4),
+                      "games": [{"r": g.week_label.replace("Playoff ", ""), "opp": names(g.opponent_key),
+                                 "ot": team.get((r.season, g.opponent_key)), "cs": _r(g.own_score, 1),
+                                 "os": _r(g.opp_score, 1), "m": _r(g.margin, 1), "dom": _r(g.opp_dom, 3),
+                                 "rppg": _r(pf_per_game.get((r.season, g.opponent_key), float("nan")), 1),
+                                 "streak": _r(g.opp_surge, 1)} for g in _window_games(detail, r).itertuples()]})
+    return {"CHAMPION_RANKS": ranks, "CHAMPIONS": cards, "HARDEST": listed(hi), "EASIEST": listed(lo)}
+
+
 # ---------------------------------------------------------------- inputs
 
 def matchup_inputs(tables: dict, cfg: dict, seasons: list[int], legacy_mode: bool) -> dict:
@@ -240,7 +347,7 @@ def page_data(inp: dict, luck: pd.DataFrame, swap: pd.DataFrame, swap_summary: p
 
 
 def write_page(text: str, data: dict) -> str:
-    for var in VARS:
+    for var in VARS + [v for v in MODEL_VARS if v in data]:
         text = replace_literal(text, var, data[var])
     for name, (anchor, opening) in HTML.items():
         text = replace_html(text, opening, data[name], anchor)
@@ -248,9 +355,105 @@ def write_page(text: str, data: dict) -> str:
 
 
 def read_page(text: str) -> dict:
-    out = {v: read_literal(text, v) for v in VARS}
+    out = {v: read_literal(text, v) for v in VARS + MODEL_VARS}
     out.update({name: read_html(text, opening, anchor) for name, (anchor, opening) in HTML.items()})
     return out
+
+
+def team_names(ctx) -> dict:
+    """(season, manager key) -> team name as the site shows it (editorial team_names.yaml
+    overrides ESPN's name where the page shortened or cleaned it up)."""
+    shown = {int(s_): m for s_, m in (load_editorial(ctx, "team_names") or {}).items()}
+    t = ctx.tables["teams"]
+    return {(int(s_), k): shown.get(int(s_), {}).get(n, n)
+            for s_, k, n in zip(t["season"], t["manager_key"], t["team_name"])}
+
+
+def engine_models(ctx, names, r2_history: list) -> dict:
+    """The model sections from the engine's analysis tables ({} when they are missing)."""
+    a = ctx.analysis
+    need = ("quarterly_coefficients", "position_career", "position_coefficients", "attribution_managers",
+            "attribution_coefficients", "attribution_fit", "gauntlet_windows", "gauntlet_window_games",
+            "gauntlet_champions", "manager_seasons")
+    if not all(n in a and len(a[n]) for n in need):
+        return {}
+    pc = a["position_career"]
+    pc = pc[~pc["hidden"]]
+    positions = list(a["position_coefficients"]["position"])
+    ms = a["manager_seasons"]
+    return {**quarterly_view(a["quarterly_coefficients"]),
+            **positional_view(pc, a["position_coefficients"], pc.set_index("manager_key")["win_pct"] * 100, positions,
+                              names),
+            **attribution_view(a["attribution_managers"], a["attribution_coefficients"], a["attribution_fit"].iloc[0],
+                               r2_history, names),
+            **gauntlet_view(a["gauntlet_windows"], a["gauntlet_window_games"], a["gauntlet_champions"],
+                            {(s_, k): v for s_, k, v in zip(ms["season"], ms["manager_key"], ms["pf_per_game"])},
+                            team_names(ctx), names)}
+
+
+def legacy_models(ctx, names, r2_history: list) -> dict:
+    """The model sections on legacy inputs, as `analyze --verify` fits them (legacy gauntlet
+    rows name managers, so the names pass through)."""
+    from engine.analytics import attribution as attr
+    from engine.analytics import regressions as rg
+    from engine.legacy_attribution import published_factors
+    from engine.legacy_gauntlet import legacy_run
+    from engine.legacy_regressions import LAST_SEASON, _keys, legacy_regular, legacy_weekly
+
+    g, cfg = ctx.golden, ctx.cfg
+    reg = legacy_regular(g["matchup_data"], cfg)
+    stats = g["preach_manager_stats"]
+    stats = stats[stats["Year"] <= LAST_SEASON]
+    playoffs = pd.DataFrame({"season": stats["Year"].astype(int), "manager_key": _keys(stats["Manager"], cfg),
+                             "made": stats["Playoffs"].astype(int)})
+    q = rg.quarterly_fit(reg[["season", "manager_key", "week", "points"]], playoffs, rg.LEGACY_QUARTERS)
+    wp = reg.groupby(["season", "manager_key"])["win"].mean().rename("win_pct").reset_index()
+    pos = rg.position_fit(legacy_weekly(g["weekly_rosters_bracket_only"], g["matchup_data"], cfg), wp)
+    career = pos["career"].reset_index() if "manager_key" not in pos["career"] else pos["career"]
+    att = attr.fit(published_factors(g, cfg).assign(hidden=False), sample_sd=False)
+    win, detail, champs, dom = legacy_run(g, cfg)
+    lk = name_to_key(cfg)
+    team_of = team_names(ctx)
+    as_name = lambda k: k if not str(k).startswith("m_") else names(k)
+    models = {**quarterly_view(q["quarterly_coefficients"]),
+            **positional_view(career, pos["coefficients"], reg.groupby("manager_key")["win"].mean() * 100,
+                              list(pos["coefficients"]["position"]), names),
+            **attribution_view(att["attribution_managers"], att["attribution_coefficients"],
+                               att["attribution_fit"].iloc[0], r2_history, names),
+            **gauntlet_view(win, detail, champs,
+                            {(s_, m): v for s_, m, v in zip(dom["season"], dom["manager_key"], dom["pf_per_game"])},
+                            {(s_, m): team_of.get((s_, lk[m.strip().lower()])) for s_, m in
+                             zip(dom["season"], dom["manager_key"])}, as_name)}
+    _raw_dom_cards(models["CHAMPIONS"], champs, detail)
+    models["_rank_ties"] = rank_ties(champs, win, as_name)
+    return models
+
+
+def rank_ties(champs: pd.DataFrame, win: pd.DataFrame, names) -> dict:
+    """CHAMPION_RANKS key -> (first, last) rank of its tied group. Legacy ranked on the score
+    rounded to 2 places with pandas' default (unstable) sort, so the order inside a tie depends
+    on the pandas version (legacy_gauntlet.check_ranks excuses the same)."""
+    out = {}
+    for r in champs.itertuples():
+        pool = [round(float(v), 2) for v in win.loc[win["n"] == r.n, "gs"]]
+        mine = round(float(r.gs), 2)
+        lo, hi = sum(v > mine for v in pool) + 1, sum(v >= mine for v in pool)
+        if lo < hi:
+            out[f"{int(r.season)}_{names(r.manager_key)}"] = (lo, hi)
+    return out
+
+
+def _raw_dom_cards(cards: list[dict], champs: pd.DataFrame, detail: pd.DataFrame) -> None:
+    """The page's cards came from a script variant that scored dominance on the raw mean of the
+    opponents' dominance, not its z-score (METRICS_REFERENCE, gauntlet); rebuild that variant so
+    the legacy view reproduces the cards (analyze --verify checks them the same way)."""
+    from engine.analytics import gauntlet as gt
+
+    for c in cards:
+        r = champs[champs["season"] == c["year"]].iloc[0]
+        raw = _r(_window_games(detail, r)["opp_dom"].mean(), 4)
+        c["raw_dom"] = raw
+        c["s_dom"] = _r(gt.logistic(raw * c["n"] / (c["n"] + 1)), 1)
 
 
 # ---------------------------------------------------------------- page model
@@ -294,6 +497,64 @@ def extra_model(inp: dict, luck: pd.DataFrame, swap: pd.DataFrame, swap_summary:
     }
 
 
+def models_model(a: dict) -> dict:
+    """The model sections in the data file, by manager key ({} without the analysis tables).
+    The R2 history stays on the page until Stage B (editorial: it names past model versions)."""
+    need = ("quarterly_coefficients", "position_career", "position_coefficients", "attribution_managers",
+            "attribution_coefficients", "attribution_fit", "gauntlet_windows", "gauntlet_window_games",
+            "gauntlet_champions")
+    if not all(n in a and len(a[n]) for n in need):
+        return {}
+    from engine.analytics import gauntlet as gt
+
+    num = lambda v: None if pd.isna(v) else float(v)
+    pc = a["position_career"]
+    pc = pc[~pc["hidden"]]
+    positions = list(a["position_coefficients"]["position"])
+    am = a["attribution_managers"]
+    am = am[~am["hidden"]] if "hidden" in am else am
+    fit = a["attribution_fit"].iloc[0]
+    detail = a["gauntlet_window_games"]
+
+    def window(r) -> dict:
+        return {"season": int(r.season), "manager_key": r.manager_key, "n": int(r.n), "start_week": int(r.start_week),
+                **{f: float(getattr(r, f)) for f in ("raw_pts", "raw_dom", "raw_streak", "s_pts", "s_dom", "s_streak",
+                                                     "gs")},
+                "rank": int(r.rank), "total": int(r.total),
+                "games": [{"week": int(g.week), "week_label": g.week_label, "opponent_key": g.opponent_key,
+                           "own_score": float(g.own_score), "opp_score": float(g.opp_score),
+                           "margin": float(g.margin), "opp_dom": float(g.opp_dom), "opp_surge": float(g.opp_surge)}
+                          for g in _window_games(detail, r).itertuples()]}
+
+    hi, lo = gt.extremes(a["gauntlet_windows"])
+    return {
+        "quarterly": [{"quarter": r.quarter, "weeks": str(r.weeks), "coef": float(r.coef),
+                       "p_value": float(r.p_value), "corr": num(r.corr)}
+                      for r in a["quarterly_coefficients"].itertuples()],
+        "positional": {
+            "positions": positions,
+            "coefficients": [{"position": r.position, "coef": float(r.coef), "std_coef": float(r.std_coef),
+                              "p_value": float(r.p_value), "corr": num(r.corr)}
+                             for r in a["position_coefficients"].itertuples()],
+            "managers": [{"manager_key": d["manager_key"], "win_pct": float(d["win_pct"]),
+                          "avg": {p: num(d[f"{p}_avg"]) for p in positions},
+                          "sd": {p: num(d[f"{p}_sd"]) for p in positions}}
+                         for d in pc.sort_values("manager_key").to_dict("records")]},
+        "attribution": {
+            "fit": {"n": int(fit["n"]), "r2": float(fit["r2"]), "adj_r2": float(fit["adj_r2"]),
+                    "league_intercept": float(fit["league_intercept"])},
+            "coefficients": [{"factor": r.factor, "coef": float(r.coef), "std_coef": float(r.std_coef),
+                              "p_value": float(r.p_value)} for r in a["attribution_coefficients"].itertuples()],
+            "managers": [{"manager_key": r.manager_key, "seasons": int(r.seasons),
+                          **{f: float(getattr(r, f)) for f in ("win_pct", "draft", "waiver", "lineup", "trade", "luck",
+                                                               "predicted", "residual")}}
+                         for r in am.sort_values("manager_key").itertuples()]},
+        "gauntlet": {"champions": [window(r) for r in a["gauntlet_champions"].sort_values("season").itertuples()],
+                     "hardest": [window(r) for r in hi.itertuples()],
+                     "easiest": [window(r) for r in lo.itertuples()]},
+    }
+
+
 # ---------------------------------------------------------------- Stage A check
 
 def _page_names(ctx, text: str | None) -> Names:
@@ -324,11 +585,15 @@ class ExtraAnalyticsPublisher:
             return []
         inp, luck, swap, summ, seasons = self._engine(ctx)
         hidden = excluded_manager_keys(ctx.cfg)
-        out = [Output(f"data/v1/{SCHEMA}.json", extra_model(inp, luck, swap, summ, hidden, seasons), SCHEMA, VERSION)]
+        model = {**extra_model(inp, luck, swap, summ, hidden, seasons), **models_model(ctx.analysis)}
+        out = [Output(f"data/v1/{SCHEMA}.json", model, SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
         if path.is_file():
             text = path.read_text(encoding="utf-8")
-            out.append(Output(PAGE, write_page(text, page_data(inp, luck, swap, summ, _page_names(ctx, text), ctx))))
+            names = _page_names(ctx, text)
+            data = page_data(inp, luck, swap, summ, names, ctx)
+            data.update(engine_models(ctx, names, read_literal(text, "R2_VALS")))
+            out.append(Output(PAGE, write_page(text, data)))
         return out
 
     def verify(self, ctx) -> list:
@@ -343,13 +608,16 @@ class ExtraAnalyticsPublisher:
         sched = schedule_mod.analyze_schedule(t, excluded_manager_keys(ctx.cfg), legacy_mode=True)
         names = Names(ctx, gold["managers"])
         data = page_data(inp, sched["schedule_luck"], sched["schedule_swap"], sched["schedule_swap_summary"], names, ctx)
+        models = legacy_models(ctx, names, gold["R2_VALS"])
+        ties = models.pop("_rank_ties")
+        data.update(models)
         path = ctx.site_root / PAGE
         if path.is_file():
             data = read_page(write_page(path.read_text(encoding="utf-8"), data))
         hidden = excluded_manager_keys(ctx.cfg)
         full = {scope: closest_view(inp["games"], hidden, names, k=len(inp["games"]))[scope]
                 for scope in ("regular", "playoff")}
-        return compare_view(data, gold, ctx, full) + self.info(ctx)
+        return compare_view(data, gold, ctx, full) + compare_models(data, gold, ties) + self.info(ctx)
 
     def info(self, ctx) -> list[str]:
         path = ctx.site_root / PAGE
@@ -364,7 +632,20 @@ class ExtraAnalyticsPublisher:
         return [f"INFO  extra-analytics matchup sections, engine data vs the live page: career luck changes "
                 + (", ".join(moved) or "none") + " (engine: half wins for ties with the median, finished weeks); "
                 "the closest regular-season and playoff lists include the closer games the page skipped; "
-                "conference prose stays typed until Stage B"]
+                "conference prose stays typed until Stage B"] + self.model_info(ctx, text)
+
+    def model_info(self, ctx, text: str) -> list[str]:
+        live = read_page(text)
+        eng = engine_models(ctx, _page_names(ctx, text), live["R2_VALS"])
+        if not eng:
+            return []
+        ranks = lambda d: ", ".join(f"{k.replace('_', ' ')} {v['rank']}/{v['total']}"
+                                    for k, v in d["CHAMPION_RANKS"].items())
+        return [f"INFO  extra-analytics model sections, engine vs the live page: R2 {live['R2_VALS'][-1]} -> "
+                f"{eng['R2_VALS'][-1]}; attribution order {', '.join(live['COEF_LABELS'])} -> "
+                f"{', '.join(eng['COEF_LABELS'])}; quarterly coefficients {live['coefs']} -> {eng['coefs']} "
+                f"(decision, session 4); champion ranks {ranks(live)} -> {ranks(eng)} (engine ranks on the "
+                f"unrounded score and keeps excluded managers' games)"]
 
 
 # ---------------------------------------------------------------- comparison
@@ -432,3 +713,48 @@ def compare_view(data: dict, gold: dict, ctx, full_closest: dict) -> list:
     pf = lambda path, e, l: PF_TYPED if path.startswith("/conference_cards/Avg PF/Game") else None
     checks += compare_json(f"legacy view {PAGE} conference", got, want, known=pf)
     return checks
+
+
+QUARTERLY_REASON = "page coefficients from a run that cannot be reproduced; replaced with the correct fit (Ethan, session 4)"
+POS_REASON = "page fit from a slightly earlier data version (within {:g} of the legacy inputs' fit, as analyze --verify)"
+CARD_PTS_REASON = "champion card built on an earlier data version (league averages differ slightly; raw points within 0.03)"
+CARD_SURGE_REASON = "champion card surges from a lost script variant (not reproducible; analyze --verify checks the rest)"
+RANK_TIE_REASON = "tied score (ranks {}-{}); legacy's sort order inside a tie depends on the pandas version (as analyze --verify)"
+TEAM_REASON = "team name as typed on the page (case or emoji differ from ESPN's name)"
+
+
+def _team_key(name: str) -> str:
+    return re.sub(r"[^0-9a-z]", "", name.encode("ascii", "ignore").decode().casefold())
+
+
+def compare_models(data: dict, gold: dict, ties: dict | None = None) -> list[Comparison]:
+    from engine.legacy_regressions import COEF_CLOSE, P_CLOSE
+
+    ties = ties or {}
+
+    def known(path, eng, leg):
+        m = re.match(r"/CHAMPION_RANKS/(.+)/rank$", path)
+        if m and m.group(1) in ties and isinstance(eng, int) and isinstance(leg, int):
+            lo, hi = ties[m.group(1)]
+            return RANK_TIE_REASON.format(lo, hi) if lo <= eng <= hi and lo <= leg <= hi else None
+        if re.match(r"/(coefs|pvals)\[\d+\]$", path):
+            return QUARTERLY_REASON
+        m = re.match(r"/(STD_COEF|CORR_R|COEF_PVAL)/", path)
+        if m and isinstance(eng, float):
+            bound = P_CLOSE if m.group(1) == "COEF_PVAL" else COEF_CLOSE
+            return POS_REASON.format(bound) if abs(eng - leg) <= bound + 1e-9 else None
+        if re.match(r"/CHAMPIONS/\d+/(team|games\[\d+\]/ot)$", path) and isinstance(eng, str) and _team_key(eng) == _team_key(leg):
+            return TEAM_REASON
+        m = re.match(r"/CHAMPIONS/(\d+)/(raw_pts|s_pts|gs|s_streak|raw_streak|games\[\d+\]/streak)$", path)
+        if m:
+            if m.group(2) == "raw_pts":
+                return CARD_PTS_REASON if abs(eng - leg) <= 0.03 + 1e-9 else None
+            return CARD_SURGE_REASON
+        return None
+
+    # tied win % (three managers at 48.1) sort in the legacy script's own order: rows are checked by
+    # manager and the order by the sequence of win %
+    keyed = lambda d: {**{k: d[k] for k in MODEL_VARS}, "CHAMPIONS": {str(c["year"]): c for c in d["CHAMPIONS"]},
+                       "DATA": {r["mgr"]: r for r in d["DATA"]}, "DATA order": [r["winpct"] for r in d["DATA"]]}
+    out = compare_json(f"legacy view {PAGE} models", keyed(data), keyed(gold), known=known)
+    return out

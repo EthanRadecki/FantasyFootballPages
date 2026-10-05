@@ -1,0 +1,14 @@
+# Team names as the site shows them, where the page differs from ESPN's name on purpose
+# (shortened or cleaned up by hand). Editorial: keyed by season, then ESPN's team name.
+# Pages that print team names from the data (the gauntlet cards on extra-analytics today)
+# show the name here instead. Without this file every page shows ESPN's names.
+#
+# Written 2026-10-01 from the live gauntlet cards. Case and emoji differences are not
+# listed (the build shows ESPN's spelling for those).
+
+2020:
+  "Fourth Reich ✠": "The Minutemen"
+2021:
+  "I shoot blanks n shit": "I shoot b n s"
+2023:
+  "San Giacomos Frannys Fanny": "San Giacomos FF"
