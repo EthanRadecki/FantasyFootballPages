@@ -1,33 +1,544 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "extra-analytics",
-  "title": "data/v1/extra-analytics.json: head-to-head, closest games, schedule luck and swap, conference analysis (extra-analytics.html)",
+  "title": "data/v1/extra-analytics.json: head-to-head, closest games, schedule luck and swap, conference analysis, quarterly playoff model, positional production, win% attribution, championship gauntlet (extra-analytics.html)",
   "type": "object",
-  "required": ["meta", "seasons", "head_to_head", "closest", "schedule_luck", "schedule_swap", "conference"],
+  "required": [
+    "meta",
+    "seasons",
+    "head_to_head",
+    "closest",
+    "schedule_luck",
+    "schedule_swap",
+    "conference"
+  ],
   "additionalProperties": false,
-  "$defs": {"key": {"type": "string", "pattern": "^m_[0-9a-f]{12}$"}},
+  "$defs": {
+    "key": {
+      "type": "string",
+      "pattern": "^m_[0-9a-f]{12}$"
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "season",
+        "manager_key",
+        "n",
+        "start_week",
+        "raw_pts",
+        "raw_dom",
+        "raw_streak",
+        "s_pts",
+        "s_dom",
+        "s_streak",
+        "gs",
+        "rank",
+        "total",
+        "games"
+      ],
+      "properties": {
+        "season": {
+          "type": "integer"
+        },
+        "manager_key": {
+          "$ref": "#/$defs/key"
+        },
+        "n": {
+          "type": "integer"
+        },
+        "start_week": {
+          "type": "integer"
+        },
+        "raw_pts": {
+          "type": "number"
+        },
+        "raw_dom": {
+          "type": "number"
+        },
+        "raw_streak": {
+          "type": "number"
+        },
+        "s_pts": {
+          "type": "number"
+        },
+        "s_dom": {
+          "type": "number"
+        },
+        "s_streak": {
+          "type": "number"
+        },
+        "gs": {
+          "type": "number"
+        },
+        "rank": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "games": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/game"
+          }
+        }
+      }
+    },
+    "game": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "week",
+        "week_label",
+        "opponent_key",
+        "own_score",
+        "opp_score",
+        "margin",
+        "opp_dom",
+        "opp_surge"
+      ],
+      "properties": {
+        "week": {
+          "type": "integer"
+        },
+        "week_label": {
+          "type": "string"
+        },
+        "opponent_key": {
+          "$ref": "#/$defs/key"
+        },
+        "own_score": {
+          "type": "number"
+        },
+        "opp_score": {
+          "type": "number"
+        },
+        "margin": {
+          "type": "number"
+        },
+        "opp_dom": {
+          "type": "number"
+        },
+        "opp_surge": {
+          "type": "number"
+        }
+      }
+    }
+  },
   "properties": {
-    "meta": {"type": "object", "required": ["schema", "schema_version"],
-             "properties": {"schema": {"const": "extra-analytics"}, "schema_version": {"const": 1}}},
-    "seasons": {"type": "array", "items": {"type": "integer"}},
-    "head_to_head": {"type": "array", "items": {
-      "type": "object", "additionalProperties": false,
-      "required": ["manager_key", "opponent_key", "wins", "losses", "ties", "win_pct"],
-      "properties": {"manager_key": {"$ref": "#/$defs/key"}, "opponent_key": {"$ref": "#/$defs/key"},
-                     "wins": {"type": "integer"}, "losses": {"type": "integer"}, "ties": {"type": "integer"},
-                     "win_pct": {"type": "number"}}}},
-    "closest": {"type": "object", "required": ["all", "regular", "playoff"],
-                "additionalProperties": {"type": "array", "items": {"type": "object", "required": ["w", "l", "m", "when"]}}},
-    "schedule_luck": {"type": "object", "required": ["career", "seasons"],
-                      "properties": {
-                        "career": {"type": "array", "items": {"type": "object", "required": ["name", "actual", "predicted", "luck"]}},
-                        "seasons": {"type": "array", "items": {
-                          "type": "object", "additionalProperties": false,
-                          "required": ["season", "manager_key", "games", "actual_wins", "expected_wins", "luck"],
-                          "properties": {"season": {"type": "integer"}, "manager_key": {"$ref": "#/$defs/key"},
-                                         "games": {"type": "integer"}, "actual_wins": {"type": "number"},
-                                         "expected_wins": {"type": "number"}, "luck": {"type": "number"}}}}}},
-    "schedule_swap": {"type": "object", "propertyNames": {"pattern": "^[0-9]{4}$"}},
-    "conference": {"type": "object", "required": ["summary", "managers", "seasons", "rivalries"]}
+    "meta": {
+      "type": "object",
+      "required": [
+        "schema",
+        "schema_version"
+      ],
+      "properties": {
+        "schema": {
+          "const": "extra-analytics"
+        },
+        "schema_version": {
+          "const": 1
+        }
+      }
+    },
+    "seasons": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "head_to_head": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "manager_key",
+          "opponent_key",
+          "wins",
+          "losses",
+          "ties",
+          "win_pct"
+        ],
+        "properties": {
+          "manager_key": {
+            "$ref": "#/$defs/key"
+          },
+          "opponent_key": {
+            "$ref": "#/$defs/key"
+          },
+          "wins": {
+            "type": "integer"
+          },
+          "losses": {
+            "type": "integer"
+          },
+          "ties": {
+            "type": "integer"
+          },
+          "win_pct": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "closest": {
+      "type": "object",
+      "required": [
+        "all",
+        "regular",
+        "playoff"
+      ],
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "w",
+            "l",
+            "m",
+            "when"
+          ]
+        }
+      }
+    },
+    "schedule_luck": {
+      "type": "object",
+      "required": [
+        "career",
+        "seasons"
+      ],
+      "properties": {
+        "career": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "actual",
+              "predicted",
+              "luck"
+            ]
+          }
+        },
+        "seasons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "season",
+              "manager_key",
+              "games",
+              "actual_wins",
+              "expected_wins",
+              "luck"
+            ],
+            "properties": {
+              "season": {
+                "type": "integer"
+              },
+              "manager_key": {
+                "$ref": "#/$defs/key"
+              },
+              "games": {
+                "type": "integer"
+              },
+              "actual_wins": {
+                "type": "number"
+              },
+              "expected_wins": {
+                "type": "number"
+              },
+              "luck": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "schedule_swap": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[0-9]{4}$"
+      }
+    },
+    "conference": {
+      "type": "object",
+      "required": [
+        "summary",
+        "managers",
+        "seasons",
+        "rivalries"
+      ]
+    },
+    "quarterly": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "quarter",
+          "weeks",
+          "coef",
+          "p_value",
+          "corr"
+        ],
+        "properties": {
+          "quarter": {
+            "type": "string"
+          },
+          "weeks": {
+            "type": "string"
+          },
+          "coef": {
+            "type": "number"
+          },
+          "p_value": {
+            "type": "number"
+          },
+          "corr": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "positional": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "positions",
+        "coefficients",
+        "managers"
+      ],
+      "properties": {
+        "positions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coefficients": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "position",
+              "coef",
+              "std_coef",
+              "p_value",
+              "corr"
+            ],
+            "properties": {
+              "position": {
+                "type": "string"
+              },
+              "coef": {
+                "type": "number"
+              },
+              "std_coef": {
+                "type": "number"
+              },
+              "p_value": {
+                "type": "number"
+              },
+              "corr": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "managers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "manager_key",
+              "win_pct",
+              "avg",
+              "sd"
+            ],
+            "properties": {
+              "manager_key": {
+                "$ref": "#/$defs/key"
+              },
+              "win_pct": {
+                "type": "number"
+              },
+              "avg": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "sd": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fit",
+        "coefficients",
+        "managers"
+      ],
+      "properties": {
+        "fit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "n",
+            "r2",
+            "adj_r2",
+            "league_intercept"
+          ],
+          "properties": {
+            "n": {
+              "type": "integer"
+            },
+            "r2": {
+              "type": "number"
+            },
+            "adj_r2": {
+              "type": "number"
+            },
+            "league_intercept": {
+              "type": "number"
+            }
+          }
+        },
+        "coefficients": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "factor",
+              "coef",
+              "std_coef",
+              "p_value"
+            ],
+            "properties": {
+              "factor": {
+                "type": "string"
+              },
+              "coef": {
+                "type": "number"
+              },
+              "std_coef": {
+                "type": "number"
+              },
+              "p_value": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "managers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "manager_key",
+              "seasons",
+              "win_pct",
+              "draft",
+              "waiver",
+              "lineup",
+              "trade",
+              "luck",
+              "predicted",
+              "residual"
+            ],
+            "properties": {
+              "manager_key": {
+                "$ref": "#/$defs/key"
+              },
+              "seasons": {
+                "type": "integer"
+              },
+              "win_pct": {
+                "type": "number"
+              },
+              "draft": {
+                "type": "number"
+              },
+              "waiver": {
+                "type": "number"
+              },
+              "lineup": {
+                "type": "number"
+              },
+              "trade": {
+                "type": "number"
+              },
+              "luck": {
+                "type": "number"
+              },
+              "predicted": {
+                "type": "number"
+              },
+              "residual": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "gauntlet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "champions",
+        "hardest",
+        "easiest"
+      ],
+      "properties": {
+        "champions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/window"
+          }
+        },
+        "hardest": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/window"
+          }
+        },
+        "easiest": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/window"
+          }
+        }
+      }
+    }
   }
 }

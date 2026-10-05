@@ -198,3 +198,84 @@ def test_conference_markup_round_trip():
                                       "2024": "#9aadae", "2025": "#a9b88b"}, ["DEM", "REP"])
     assert extra_pub.parse_conference(html) == want
     assert conf["Ryan P McQuaid"] == "REP"
+
+
+# ---------------------------------------------------------------- extra-analytics model sections
+
+_GOLDENS = {}
+
+
+def _goldens() -> dict:
+    if not _GOLDENS:
+        from engine.cli import load_goldens
+        _GOLDENS.update(load_goldens(GOLDEN))
+    return _GOLDENS
+
+
+def test_attribution_view_rebuilds_the_page_from_the_published_factors():
+    from engine.analytics import attribution as attr
+    from engine.legacy_attribution import published_factors
+    gold = _json("matchup_history/extra_analytics_inline.json.gz")
+    names = Names(_ctx(), gold["managers"])
+    fit = attr.fit(published_factors(_goldens(), CFG).assign(hidden=False), sample_sd=False)
+    view = extra_pub.attribution_view(fit["attribution_managers"], fit["attribution_coefficients"],
+                                      fit["attribution_fit"].iloc[0], gold["R2_VALS"], names)
+    for k in ("DATA#1", "LEAGUE_INTERCEPT", "COEF_LABELS", "COEF_VALS", "R2_VALS"):
+        assert view[k] == gold[k], k
+
+
+def test_gauntlet_view_rebuilds_the_page_from_the_legacy_run():
+    from engine.legacy_gauntlet import legacy_run
+    gold = _json("matchup_history/extra_analytics_inline.json.gz")
+    names = Names(_ctx(), gold["managers"])
+    win, detail, champs, dom = legacy_run(_goldens(), CFG)
+    as_name = lambda k: k if not str(k).startswith("m_") else names(k)
+    pfg = {(s, m): v for s, m, v in zip(dom["season"], dom["manager_key"], dom["pf_per_game"])}
+    view = extra_pub.gauntlet_view(win, detail, champs, pfg, {}, as_name)
+    assert view["HARDEST"] == gold["HARDEST"] and view["EASIEST"] == gold["EASIEST"]
+    assert view["CHAMPION_RANKS"]["2020_Ethan Radecki"]["sameLength"] == 4
+    extra_pub._raw_dom_cards(view["CHAMPIONS"], champs, detail)
+    page = {c["year"]: c for c in gold["CHAMPIONS"]}
+    for c in view["CHAMPIONS"]:
+        p = page[c["year"]]
+        assert (c["champion"], c["n"], c["raw_dom"], c["s_dom"]) == (p["champion"], p["n"], p["raw_dom"], p["s_dom"])
+        for g, h in zip(c["games"], p["games"]):
+            assert [g[k] for k in ("r", "opp", "cs", "os", "m", "dom", "rppg")] == \
+                   [h[k] for k in ("r", "opp", "cs", "os", "m", "dom", "rppg")]
+
+
+def test_positional_and_quarterly_views():
+    gold = _json("matchup_history/extra_analytics_inline.json.gz")
+    names = Names(_ctx(), gold["managers"])
+    pos = gold["POSITIONS"]
+    career = pd.DataFrame([{"manager_key": _key(r["mgr"]), **{f"{p}_avg": r["avg"][p] for p in pos},
+                            **{f"{p}_sd": r["std"][p] for p in pos}} for r in gold["DATA"]])
+    wp = pd.Series({_key(r["mgr"]): r["winpct"] for r in gold["DATA"]})
+    coefs = pd.DataFrame([{"position": p, "std_coef": gold["STD_COEF"][p], "p_value": gold["COEF_PVAL"][p],
+                           "corr": gold["CORR_R"][p]} for p in pos])
+    view = extra_pub.positional_view(career, coefs, wp, pos, names)
+    assert {r["mgr"]: r for r in view["DATA"]} == {r["mgr"]: r for r in gold["DATA"]}
+    assert [view[k] for k in ("POSITIONS", "STD_COEF", "COEF_PVAL", "CORR_R")] == \
+           [gold[k] for k in ("POSITIONS", "STD_COEF", "COEF_PVAL", "CORR_R")]
+    q = pd.DataFrame({"quarter": ["Q1", "Q4"], "weeks": ["1-3", "10-13"], "coef": [0.3864, 0.7357],
+                      "corr": [0.1, 0.2], "p_value": [0.0001, 0.0004]})
+    assert extra_pub.quarterly_view(q) == {"labels": ["Q1 (Wks 1-3)", "Q4 (Wks 10-13)"], "coefs": [0.386, 0.736],
+                                           "corrs": [0.1, 0.2], "pvals": [0.0, 0.0]}
+
+
+def test_team_names_editorial_overrides_espn_names(tmp_path):
+    (tmp_path / "editorial").mkdir()
+    (tmp_path / "editorial" / "team_names.yaml").write_text('2021:\n  "Long Name": "Short"\n', encoding="utf-8")
+    teams = pd.DataFrame({"season": [2021, 2022], "manager_key": ["m_000000000001"] * 2,
+                          "team_name": ["Long Name", "Long Name"]})
+    ctx = SimpleNamespace(league_dir=tmp_path, tables={"teams": teams})
+    assert extra_pub.team_names(ctx) == {(2021, "m_000000000001"): "Short", (2022, "m_000000000001"): "Long Name"}
+
+
+def test_champion_rank_ties_are_excused_inside_the_tied_group():
+    gold = _json("matchup_history/extra_analytics_inline.json.gz")
+    data = json.loads(json.dumps(gold))
+    data["CHAMPION_RANKS"]["2021_Ben Castaldo"]["rank"] = 341        # the other order inside the 341-342 tie
+    assert all(c.ok for c in extra_pub.compare_models(data, gold, {"2021_Ben Castaldo": (341, 342)}))
+    bad = [c for c in extra_pub.compare_models(data, gold, {}) if not c.ok]
+    assert len(bad) == 1 and "CHAMPION_RANKS" in bad[0].name
