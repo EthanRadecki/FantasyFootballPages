@@ -44,8 +44,8 @@ Model sections (A7b; the fits are `analytics/regressions.py`,
                                   every window of the same length, the champion cards, and
                                   the five hardest and easiest three-game stretches
                                   (`sameLength` marks a champion window other than 3 weeks;
-                                  card team names from `teams`, overridden by the league's
-                                  editorial team_names.yaml where the page shortened them)
+                                  card team names from `teams`, the league's editorial team_names.yaml
+                                  short names where the page shortened them)
 
 Coverage: finished seasons, as the page shows today (decision 7.8, Stage A).
 The head-to-head, closest and conference sections are recomputed here on the
@@ -68,7 +68,7 @@ from engine.config import conference_labels, excluded_games, excluded_manager_ke
 from engine.legacy import Comparison, name_to_key
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
-from engine.publish.editorial import load_editorial
+from engine.publish.editorial import team_names
 from engine.publish.legacy_view import (Names, page_roundtrip, read_html, read_literal, replace_html,
                                         replace_literal)
 
@@ -360,15 +360,6 @@ def read_page(text: str) -> dict:
     return out
 
 
-def team_names(ctx) -> dict:
-    """(season, manager key) -> team name as the site shows it (editorial team_names.yaml
-    overrides ESPN's name where the page shortened or cleaned it up)."""
-    shown = {int(s_): m for s_, m in (load_editorial(ctx, "team_names") or {}).items()}
-    t = ctx.tables["teams"]
-    return {(int(s_), k): shown.get(int(s_), {}).get(n, n)
-            for s_, k, n in zip(t["season"], t["manager_key"], t["team_name"])}
-
-
 def engine_models(ctx, names, r2_history: list) -> dict:
     """The model sections from the engine's analysis tables ({} when they are missing)."""
     a = ctx.analysis
@@ -388,7 +379,7 @@ def engine_models(ctx, names, r2_history: list) -> dict:
                                r2_history, names),
             **gauntlet_view(a["gauntlet_windows"], a["gauntlet_window_games"], a["gauntlet_champions"],
                             {(s_, k): v for s_, k, v in zip(ms["season"], ms["manager_key"], ms["pf_per_game"])},
-                            team_names(ctx), names)}
+                            team_names(ctx, short=True), names)}
 
 
 def legacy_models(ctx, names, r2_history: list) -> dict:
@@ -413,7 +404,7 @@ def legacy_models(ctx, names, r2_history: list) -> dict:
     att = attr.fit(published_factors(g, cfg).assign(hidden=False), sample_sd=False)
     win, detail, champs, dom = legacy_run(g, cfg)
     lk = name_to_key(cfg)
-    team_of = team_names(ctx)
+    team_of = team_names(ctx, short=True)
     as_name = lambda k: k if not str(k).startswith("m_") else names(k)
     models = {**quarterly_view(q["quarterly_coefficients"]),
             **positional_view(career, pos["coefficients"], reg.groupby("manager_key")["win"].mean() * 100,

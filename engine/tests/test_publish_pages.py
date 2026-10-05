@@ -353,7 +353,8 @@ def test_pages_for_drops_pages_whose_data_was_not_built():
     produced = {"data/v1/position-impact.json", "data/v1/index.json"}
     ids = [p["id"] for p in pages_for({}, produced)]
     assert "position-impact" in ids and "dst-impact" not in ids and "matchups" not in ids
-    assert "champions" in ids                            # not yet ported: no data declared, always listed
+    assert "transaction-analysis" in ids                 # a hub page: no data declared, always listed
+    assert "champions" not in ids                        # ported (A8a): listed only when its data was built
     assert "draft-analysis" not in ids                   # ported (A5): listed only when its data was built
     pi = next(p for p in pages_for({}) if p["id"] == "dst-impact")
     assert pi["parent"] == "extra-analytics" and pi["nav"] is True

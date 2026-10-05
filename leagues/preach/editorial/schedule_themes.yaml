@@ -1,0 +1,25 @@
+# Week themes for schedule_release.html (decision 7.7). League-authored and optional;
+# a league without this file gets no themes. The matchups themselves come from ESPN.
+#
+#   themes   what a theme highlights on each manager's card: `rematch` (the pair's
+#            biggest playoff meeting) or `trades` (their all-time trade count).
+#            Themes not listed highlight nothing extra.
+#   weeks    keyed by season, then week; weeks not listed are "Standard".
+#
+# Written 2026-10-05 from data/schedule_2026.csv (the 2026 schedule as released).
+
+themes:
+  Big Game Week: rematch
+  Trade Partner Week: trades
+
+weeks:
+  2026:
+    1: Rivalry Week
+    4: Closest Rivalries Week
+    5: Interconference Week
+    6: Interconference Week
+    7: Interconference Week
+    9: Lopsided History Week
+    10: Big Game Week
+    13: Trade Partner Week
+    14: Rivalry Week
