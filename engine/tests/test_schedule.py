@@ -112,12 +112,17 @@ def test_swap_skips_weeks_the_wearer_did_not_play():
 
 def test_wins_gained_scales_by_the_season_length():
     rows = game(1, A, 100, B, 90) + game(1, C, 80, D, 70) + game(2, A, 60, B, 90) + game(2, C, 80, D, 70)
-    _, legacy = schedule.schedule_swap(tables(rows, {2024: 13}), legacy_mode=True)
-    _, engine = schedule.schedule_swap(tables(rows, {2024: 13}))
+    _, legacy = schedule.schedule_swap(tables(rows, {2024: 2}), legacy_mode=True)
+    _, engine = schedule.schedule_swap(tables(rows, {2024: 2}))          # a finished two-week regular season
     le, en = legacy.set_index("manager_key"), engine.set_index("manager_key")
     gap = en.loc[A, "avg_alt_pct"] - en.loc[A, "pct"]
-    assert abs(en.loc[A, "wins_gained"] - gap * 13) < 1e-9
+    assert abs(en.loc[A, "wins_gained"] - gap * 2) < 1e-9
     assert abs(le.loc[A, "wins_gained"] - gap * 14) < 1e-9
+    # a 13-week season two weeks in scales to the two weeks played, not a full season (M1b)
+    assert schedule.season_lengths(tables(rows, {2024: 13})) == {2024: 2}
+    assert schedule.season_lengths(tables(rows, {2024: 2})) == {2024: 2}
+    _, live = schedule.schedule_swap(tables(rows, {2024: 13}))
+    assert abs(live.set_index("manager_key").loc[A, "wins_gained"] - gap * 2) < 1e-9
 
 
 # ----------------------------------------------------------------- golden

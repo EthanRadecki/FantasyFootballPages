@@ -185,7 +185,7 @@
 
   <div class="page-header glass">
     <h1>Waiver Value</h1>
-    <p>Position-adjusted value produced per week rostered, for every waiver and free agent pickup (2020-2025).</p>
+    <p>Position-adjusted value produced per week rostered, for every waiver and free agent pickup (<span data-season-range>2020-2025</span>).</p>
   </div>
 
   <div class="callout glass">
@@ -300,6 +300,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="../shared.js"></script>
 <script>
+// The seasons this page shows, written by the build from the data (engine/publish).
+var PAGE_SEASONS = [2020, 2021, 2022, 2023, 2024, 2025];
+var PAGE_LIVE_SEASON = null;   // the live season among them (its pills read "2026 (live)"), or null
 /* ── Shared red/gold/green gradient helper ── */
 var GOOD = [90,138,90];
 var MID  = [212,175,55];
@@ -342,10 +345,10 @@ var waiverChart = null;
 
 function renderWaiverPills() {
   var el = document.getElementById('waiver-pills');
-  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var keys = ['career'].concat(PAGE_SEASONS.map(String));
   var html = '';
   keys.forEach(function(k) {
-    var label = k === 'career' ? 'Career' : k;
+    var label = k === 'career' ? 'Career' : seasonLabel(k);
     var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
     html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="setFilter(\''+k+'\', this)">'+label+'</button>';
   });
@@ -556,11 +559,11 @@ var totalValuePosFilter = 'ALL';
 
 function renderTotalValueFilters() {
   var seasonEl = document.getElementById('total-value-season-pills');
-  var seasons = [2020, 2021, 2022, 2023, 2024, 2025];
+  var seasons = PAGE_SEASONS.slice();
   var html = '<button class="heatmap-season-pill active" onclick="setTotalValueSeason(\'career\', this)">Career</button>';
   seasons.forEach(function(s){
     var swatch = SEASON_COLORS[s] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[s] + ';' : '';
-    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setTotalValueSeason('+s+', this)">'+s+'</button>';
+    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setTotalValueSeason('+s+', this)">'+seasonLabel(s)+'</button>';
   });
   seasonEl.innerHTML = html;
 
@@ -761,11 +764,11 @@ var UPSIDE_MIN = 0.0, UPSIDE_MAX = 86.81;
 
 function renderUpsideFilters() {
   var seasonEl = document.getElementById('upside-season-pills');
-  var seasons = [2020, 2021, 2022, 2023, 2024, 2025];
+  var seasons = PAGE_SEASONS.slice();
   var html = '<button class="heatmap-season-pill active" onclick="setUpsideSeason(\'career\', this)">Career</button>';
   seasons.forEach(function(s){
     var swatch = SEASON_COLORS[s] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[s] + ';' : '';
-    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setUpsideSeason('+s+', this)">'+s+'</button>';
+    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setUpsideSeason('+s+', this)">'+seasonLabel(s)+'</button>';
   });
   seasonEl.innerHTML = html;
 
@@ -947,11 +950,11 @@ var weekValueLastClicked = null;
 
 function renderWeekValueFilters() {
   var el = document.getElementById('week-value-season-pills');
-  var seasons = [2020, 2021, 2022, 2023, 2024, 2025];
+  var seasons = PAGE_SEASONS.slice();
   var html = '<button class="heatmap-season-pill active" onclick="setWeekValueSeason(\'career\', this)">Career</button>';
   seasons.forEach(function(s){
     var swatch = SEASON_COLORS[s] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[s] + ';' : '';
-    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setWeekValueSeason('+s+', this)">'+s+'</button>';
+    html += '<button class="heatmap-season-pill'+swatch+'" onclick="setWeekValueSeason('+s+', this)">'+seasonLabel(s)+'</button>';
   });
   el.innerHTML = html;
 
@@ -1173,10 +1176,10 @@ var bestSortState = { key: 'avgz', type: 'number', dir: 'desc' };
 
 function renderBestPills() {
   var el = document.getElementById('best-pills');
-  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var keys = ['career'].concat(PAGE_SEASONS.map(String));
   var html = '';
   keys.forEach(function(k) {
-    var label = k === 'career' ? 'Career' : k;
+    var label = k === 'career' ? 'Career' : seasonLabel(k);
     var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
     html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="setBestFilter(\''+k+'\', this)">'+label+'</button>';
   });

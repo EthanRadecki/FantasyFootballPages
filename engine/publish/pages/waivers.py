@@ -32,8 +32,8 @@ order (which also breaks ties); the legacy check does the same. The engine
 view aggregates unrounded values. Hidden managers are left out of every block
 (decision 7.3: leaderboards, the per-manager charts WAIVER_STINTS feeds);
 their pickups still count in the position baselines. POSITION_KEYS is
-template and stays. Coverage: finished seasons, as the page shows today
-(decision 7.8, Stage A).
+template and stays. Coverage: every finished season and the live season's finished
+weeks (M1b, decision 7.8); PAGE_SEASONS lists them for the page's season pills.
 """
 
 from __future__ import annotations
@@ -46,7 +46,8 @@ from engine.config import excluded_manager_keys
 from engine.legacy import Comparison
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
-from engine.publish.legacy_view import Names, page_roundtrip, read_literal, replace_literal
+from engine.publish.legacy_view import (Names, page_roundtrip, page_seasons, read_literal, replace_literal,
+                                        with_page_seasons)
 
 SCHEMA, VERSION = "waiver-value", 1
 PAGE = "pages/waiver-value.html"
@@ -108,7 +109,7 @@ def waiver_view(stints: pd.DataFrame, names) -> dict:
                                    for r in sorted(top.itertuples(), key=lambda r: names(r.manager_key))}
 
     best = waivers_mod.best_pickups(stints)
-    best_lists: dict = {}
+    best_lists: dict = {sc: {} for sc in _scopes(stints)}      # a scope with no pickup on a list yet stays empty
     for r in best.itertuples():
         best_lists.setdefault(r.scope, {}).setdefault(r.list_position, []).append(
             {"s": int(r.season), "m": names(r.manager_key), "p": r.player_name, "pos": r.position,
@@ -274,7 +275,7 @@ class WaiversPublisher:
 
     def _engine(self, ctx):
         st = season_names(ctx.analysis["waiver_stints"], ctx.tables["player_seasons"])
-        seasons = sorted(int(s) for s in st["season"].unique() if int(s) in set(ctx.config["finished_seasons"]))
+        seasons = page_seasons(ctx, st["season"].unique())
         return st[st["season"].isin(seasons)], seasons
 
     def outputs(self, ctx) -> list[Output]:
@@ -291,7 +292,7 @@ class WaiversPublisher:
             view = waiver_view(file_order(st[~st["manager_key"].isin(hidden)], names), names)
             for var in VARS:
                 text = replace_literal(text, var, view[var])
-            out.append(Output(PAGE, text))
+            out.append(Output(PAGE, with_page_seasons(text, seasons, ctx.config.get("live_season"))))
         return out
 
     def verify(self, ctx) -> list:

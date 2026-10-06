@@ -804,12 +804,7 @@ html { scroll-behavior:smooth; }
 
     <div class="ss-year-row">
       <span class="ss-year-label">Season</span>
-      <button class="fp-btn year-swatch-btn active" style="--swatch-color:#a4969d;" data-year="2020" onclick="setSsYear(2020,this)">2020</button>
-      <button class="fp-btn year-swatch-btn" style="--swatch-color:#8a93ab;" data-year="2021" onclick="setSsYear(2021,this)">2021</button>
-      <button class="fp-btn year-swatch-btn" style="--swatch-color:#d8b28e;" data-year="2022" onclick="setSsYear(2022,this)">2022</button>
-      <button class="fp-btn year-swatch-btn" style="--swatch-color:#bf8f8f;" data-year="2023" onclick="setSsYear(2023,this)">2023</button>
-      <button class="fp-btn year-swatch-btn" style="--swatch-color:#9aadae;" data-year="2024" onclick="setSsYear(2024,this)">2024</button>
-      <button class="fp-btn year-swatch-btn" style="--swatch-color:#a9b88b;" data-year="2025" onclick="setSsYear(2025,this)">2025</button>
+      <span id="ss-year-buttons" style="display:contents"></span>
     </div>
 
     <div class="ss-caveat" id="ss-caveat"></div>
@@ -955,6 +950,8 @@ html { scroll-behavior:smooth; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="../shared.js"></script>
 <script>
+// The live season, if the page shows one (its buttons read "2026 (live)"), written by the build.
+var PAGE_LIVE_SEASON = null;
 /* ══════════════════════════════════════
    Extra Analytics - all four sections
    ══════════════════════════════════════ */
@@ -1089,7 +1086,7 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
 (function() {
   var SEASON_COLORS = {
     2020: '#a4969d', 2021: '#8a93ab', 2022: '#d8b28e',
-    2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b'
+    2023: '#bf8f8f', 2024: '#9aadae', 2025: '#a9b88b', 2026: '#c292b8'
   };
 
   // Shown above the table only for seasons with a real data wrinkle worth
@@ -1100,6 +1097,9 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
   };
 
   var SS_SEASON_LENGTH = 14;
+  // regular-season games per season (the live season: the weeks played so far), written by the build
+  var SS_SEASON_GAMES = {"2020":14,"2021":14,"2022":14,"2023":14,"2024":14,"2025":14};
+  function ssLen(year) { return SS_SEASON_GAMES[String(year)] || SS_SEASON_LENGTH; }
 
   function ssCellClass(gain) {
     if (gain >= 2.5)  return 'win-high';
@@ -1138,7 +1138,7 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
       th.textContent = shortName(m);
       hrow.appendChild(th);
     });
-    ['Actual','Avg (14g)','Wins +/-'].forEach(function(label) {
+    ['Actual','Avg (' + ssLen(year) + 'g)','Wins +/-'].forEach(function(label) {
       var th = document.createElement('th');
       th.className = 'ss-summary-head';
       th.textContent = label;
@@ -1166,7 +1166,7 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
         } else {
           var alt = d.alt[col];
           if (alt) {
-            var gain = (alt.pct - d.actual.pct) * SS_SEASON_LENGTH;
+            var gain = (alt.pct - d.actual.pct) * ssLen(year);
             td.className = ssCellClass(gain);
             td.textContent = alt.w + '-' + alt.l;
             td.title = shortName(mgr) + ' wearing ' + shortName(col) + '\u2019s schedule: ' +
@@ -1184,7 +1184,7 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
       actualTd.title = 'Win% ' + d.actual.pct.toFixed(3);
       tr.appendChild(actualTd);
 
-      var avgWins = d.avg_pct * SS_SEASON_LENGTH;
+      var avgWins = d.avg_pct * ssLen(year);
       var avgTd = document.createElement('td');
       avgTd.className = 'ss-summary';
       avgTd.textContent = avgWins.toFixed(1);
@@ -1209,7 +1209,13 @@ var SCHEDULE_SWAP_DATA = {"2020":{"Andrew Root":{"actual":{"w":5,"l":5,"pct":0.5
     renderScheduleSwap(year);
   };
 
-  renderScheduleSwap(2020);
+  // one button per season in the data (the build writes SCHEDULE_SWAP_DATA)
+  var ssYears = Object.keys(SCHEDULE_SWAP_DATA).sort();
+  document.getElementById('ss-year-buttons').innerHTML = ssYears.map(function(y, i) {
+    return '<button class="fp-btn year-swatch-btn' + (i === 0 ? ' active' : '') + '" style="--swatch-color:' +
+      (SEASON_COLORS[y] || 'var(--muted)') + ';" data-year="' + y + '" onclick="setSsYear(' + y + ',this)">' + seasonLabel(y) + '</button>';
+  }).join('');
+  renderScheduleSwap(Number(ssYears[0]));
 })();
 
 /* ── 2. QUARTERLY REGRESSION ─────────────────────────────────────────────── */

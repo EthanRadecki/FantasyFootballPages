@@ -20,7 +20,8 @@ the receiving managers in trade order, sorted by count, at the player's
 position as the network uses it. LEADERBOARD_TOTALS is
 each manager's summed QUAD.
 
-Coverage: finished seasons, as the page shows today (decision 7.8, Stage A).
+Coverage: every finished season and the live season's trades so far (M1b, decision 7.8);
+PAGE_SEASONS lists them for the page's season pills.
 """
 
 from __future__ import annotations
@@ -34,7 +35,8 @@ from engine.config import excluded_manager_keys
 from engine.legacy import Comparison, name_to_key
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
-from engine.publish.legacy_view import Names, js_globals, read_js_globals, replace_literal
+from engine.publish.legacy_view import (Names, js_globals, page_seasons, read_js_globals, replace_literal,
+                                        with_page_seasons)
 from engine.publish.writer import clean
 
 SCHEMA, VERSION = "trade-value", 1
@@ -324,7 +326,7 @@ class TradesPublisher:
 
     def _engine(self, ctx):
         a = ctx.analysis
-        seasons = set(ctx.config["finished_seasons"])
+        seasons = set(page_seasons(ctx, a["trade_metrics"]["season"].unique()))
         name_of, pos_of = engine_lookups(ctx.tables)
         sides = sides_frame(a["trade_metrics"].sort_values(["group_id"], kind="stable"), name_of, pos_of, seasons)
         le = a["lineup_efficiency"]
@@ -349,7 +351,8 @@ class TradesPublisher:
             Output("data/trade_explorer_data.js", js_globals({"TRADE_NODES": v["explorer"]})),
             Output("data/trade_week_data.js", js_globals({"TRADE_WEEK_DATA": v["trade_week"]})),
             Output("data/most_traded_data.js", js_globals({"MOST_TRADED": v["most_traded"]})),
-            Output(PAGE, replace_literal(page, "LEADERBOARD_TOTALS", v["totals"])),
+            Output(PAGE, with_page_seasons(replace_literal(page, "LEADERBOARD_TOTALS", v["totals"]), sorted(seasons),
+                                          ctx.config.get("live_season"))),
         ]
 
     def verify(self, ctx) -> list:
