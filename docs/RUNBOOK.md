@@ -31,6 +31,14 @@ One-time setup: repository Settings → Secrets and variables → Actions → Ne
 
 ESPN cookies expire every few months; when the engine job's pull step reports expired cookies, update both secrets (Codespaces and Actions).
 
+### The change report (before M1)
+
+Each deploy also publishes `/next/changes.html`: every live page next to the same page on engine data, with the reasons for each kind of change, the build's own summary lines, and per file the counts and first examples of what differs. The run's summary page (Actions → the Deploy run) lists one line per page. To make it locally after a build with `--verify`:
+
+    python tools/change_report.py --dist dist --site .
+
+A difference with no reason on its page is a question to settle before M1. Rounding-only differences, games listed with their sides the other way round, and records from live-season weeks the live files do not have yet are counted but not called differences.
+
 ## Page test and build provenance
 
 `python tools/smoke_pages.py` opens every page of the site in headless Chromium (needs `pip install playwright` and `python -m playwright install chromium`) and fails on JavaScript errors or a blank page; `--screenshots DIR` saves one PNG per page, `-v` lists resources that did not load. CI runs it on every push. `build-manifest.json` in each build lists what the build was made from (`provenance`): two builds with the same digests write the same data.

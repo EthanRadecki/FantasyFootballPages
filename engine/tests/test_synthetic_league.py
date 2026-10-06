@@ -86,10 +86,13 @@ def test_the_engine_runs_end_to_end():
     assert len(canon["pro_games"]) and len(canon["projections"])
     # only page models (no legacy site for this league), and only the pages the league has
     files = {p.relative_to(dist).as_posix() for p in dist.rglob("*") if p.is_file()}
-    assert all(f.startswith("data/v1/") or f in ("config.json", "build-manifest.json") for f in files)
+    assert all(f.startswith("data/v1/") or f in ("config.json", "build-manifest.json", "verify.json")
+               for f in files)
     pages = {p["id"] for p in json.loads((dist / "config.json").read_text())["pages"]}
     assert "dst-impact" not in pages            # never starts a D/ST
     assert "weekly-rankings" not in pages       # no editorial rankings
+    verify = json.loads((dist / "verify.json").read_text())        # the checks, kept beside the build
+    assert verify["ok"] and verify["checks"] and all(c["ok"] for c in verify["checks"])
     assert {"home", "managers", "champions", "matchups", "extra-analytics", "position-impact",
             "draft-fingerprints", "trade-value", "waiver-value", "lineup-efficiency", "schedule-release"} <= pages
 

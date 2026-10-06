@@ -2,7 +2,8 @@ name: Deploy
 
 # Milestone M0 (docs/PUBLISH_PLAN.md section 8): GitHub Pages serves
 #   /       the committed site, byte for byte (tools/deploy_site.py assemble checks it)
-#   /next/  the engine's build of the same site (engine update), for review before M1
+#   /next/  the engine's build of the same site (engine update), for review before M1,
+#           with the change report at /next/changes.html
 # The live root deploys on every push even when the engine build fails; then /next/ is
 # left out of that deploy and the run fails at the end, so GitHub emails the failure.
 
@@ -61,6 +62,13 @@ jobs:
 
       - name: Sanity checks against the last deploy
         run: python tools/deploy_site.py sanity --dist dist --previous "$PREVIOUS_STATS"
+
+      - name: Change report (published at /next/changes.html, for the M1 review)
+        continue-on-error: true            # a review aid: a failure here never holds back the deploy
+        shell: bash
+        run: |
+          python tools/change_report.py --dist dist --site . | tee change-report.txt
+          { echo "### What changes at M1"; echo; sed 's/^/- /' change-report.txt; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Page test on the build
         run: python tools/smoke_pages.py dist --screenshots next-screenshots
