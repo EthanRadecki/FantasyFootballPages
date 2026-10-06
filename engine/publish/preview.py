@@ -2,7 +2,9 @@
 docs/PUBLISH_PLAN.md section 8; Ethan 2026-10-06: preview first, then one switch).
 
 `write_preview` copies web/ into <dist>/next/ with what the pages read: config.json, the page
-models (data/v1/) and, for the league on the Stage A site, its images. Pages not moved to web/ yet stay reachable: on a
+models (data/v1/) and, for the league on the Stage A site, its images. A template page the league does
+not have (its feature is off, or the build produced no data for it: no weekly rankings) is left out,
+so the preview never serves a page that cannot load. Pages not moved to web/ yet stay reachable: on a
 league with the Stage A site their nav links point at the live page (../pages/...), on any
 other league they are left out of the preview's page list. At cutover web/ becomes the root
 and no link needs rewriting.
@@ -44,6 +46,9 @@ def write_preview(root: Path, out: Path, legacy_site: bool) -> list[str]:
         return []
     dest = out / PREVIEW
     written = []
+    config = json.loads((out / "config.json").read_text(encoding="utf-8"))
+    from engine.publish.site import PAGES
+    absent = {p["path"] for p in PAGES} - {p["path"] for p in config["pages"]}
 
     def put(src: Path, rel: Path) -> None:
         (dest / rel).parent.mkdir(parents=True, exist_ok=True)
@@ -51,7 +56,8 @@ def write_preview(root: Path, out: Path, legacy_site: bool) -> list[str]:
         written.append(f"{PREVIEW}/{rel.as_posix()}")
 
     for rel in web_files(web):
-        put(web / rel, rel)
+        if rel.as_posix() not in absent:
+            put(web / rel, rel)
     for src in sorted((out / "data" / "v1").rglob("*")):
         if src.is_file():
             put(src, src.relative_to(out))
@@ -61,7 +67,6 @@ def write_preview(root: Path, out: Path, legacy_site: bool) -> list[str]:
     for src in sorted(images.rglob("*")) if legacy_site and images.is_dir() else []:
         if src.is_file():
             put(src, src.relative_to(root))
-    config = json.loads((out / "config.json").read_text(encoding="utf-8"))
     (dest / "config.json").write_text(json.dumps(preview_config(config, web, legacy_site), indent=1,
                                                  ensure_ascii=False) + "\n", encoding="utf-8")
     written.append(f"{PREVIEW}/config.json")

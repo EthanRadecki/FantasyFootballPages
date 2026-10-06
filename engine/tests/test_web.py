@@ -63,6 +63,20 @@ def test_write_preview(tmp_path):
     assert preview.write_preview(tmp_path / "no-web", out, legacy_site=True) == []
 
 
+def test_the_preview_leaves_out_pages_the_league_does_not_have(tmp_path):
+    """A league without weekly rankings gets no weekly rankings page (it could not load its data)."""
+    root, out = tmp_path / "repo", tmp_path / "dist"
+    (root / "web" / "pages").mkdir(parents=True)
+    (root / "web" / "index.html").write_text("<html></html>")
+    (root / "web" / "pages" / "weekly-rankings.html").write_text("<html></html>")
+    (root / "web" / "pages" / "managers.html").write_text("<html></html>")
+    (out / "data" / "v1").mkdir(parents=True)
+    (out / "config.json").write_text(json.dumps({"pages": [{"id": "home", "path": "index.html"},
+                                                           {"id": "managers", "path": "pages/managers.html"}]}))
+    files = preview.write_preview(root, out, legacy_site=False)
+    assert sorted(files) == ["next/config.json", "next/index.html", "next/pages/managers.html"]
+
+
 def test_every_template_page_is_in_the_site_page_list():
     """A page in web/ is one of engine/publish/site.py's pages (the nav and the preview links use that list)."""
     from engine.publish.site import PAGES
