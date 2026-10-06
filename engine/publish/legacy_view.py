@@ -226,6 +226,39 @@ def replace_literal(text: str, name: str, value) -> str:
     return text[:s] + json.dumps(clean(value), ensure_ascii=False, separators=(",", ":")) + text[e:]
 
 
+def page_seasons(ctx, present) -> list[int]:
+    """The seasons a season-filterable page shows (M1b, decision 7.8): every finished season with data,
+    and the live season once it has a finished week."""
+    keep = set(ctx.config["finished_seasons"])
+    live, cur = ctx.config.get("live_season"), ctx.config.get("current") or {}
+    if live is not None and cur.get("season") == live and (cur.get("last_completed_week") or 0) > 0:
+        keep.add(live)
+    return sorted({int(x) for x in present} & keep)
+
+
+def with_page_seasons(text: str, seasons: list[int], live: int | None = None) -> str:
+    """The page with its PAGE_SEASONS (the season pills and the season range it shows) and
+    PAGE_LIVE_SEASON (the live season among them, its pills marked live; null when none) set;
+    a literal the page does not declare is skipped."""
+    values = {"PAGE_SEASONS": [int(x) for x in seasons],
+              "PAGE_LIVE_SEASON": int(live) if live is not None and int(live) in {int(x) for x in seasons} else None}
+    for name, value in values.items():
+        try:
+            s, e = literal_span_any(text, name)
+        except KeyError:
+            continue
+        text = text[:s] + json.dumps(value) + text[e:]
+    return text
+
+
+def literal_span_any(text: str, name: str) -> tuple[int, int]:
+    """(start, end) of `name`'s value when it is a literal or `null` (PAGE_LIVE_SEASON)."""
+    m = re.search(rf"\b(?:var|let|const)\s+{re.escape(name)}\s*=\s*null\b", text)
+    if m:
+        return m.end() - 4, m.end()
+    return literal_span(text, name)
+
+
 def page_roundtrip(text: str, values: dict) -> dict:
     """Each inline literal written into the page and read back the way its
     golden was frozen (tools/freeze_golden.py), so a Stage A check compares

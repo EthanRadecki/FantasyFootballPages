@@ -227,7 +227,7 @@
 
   <div class="page-header glass">
     <h1>Trade Value</h1>
-    <p>Every real trade in league history (2020-2025), graded on four metrics and combined into one composite score.</p>
+    <p>Every real trade in league history (<span data-season-range>2020-2025</span>), graded on four metrics and combined into one composite score.</p>
   </div>
 
   <div class="chapter-rail" id="chapter-rail">
@@ -382,6 +382,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="../shared.js"></script>
 <script>
+// The seasons this page shows, written by the build from the data (engine/publish).
+var PAGE_SEASONS = [2020, 2021, 2022, 2023, 2024, 2025];
+var PAGE_LIVE_SEASON = null;   // the live season among them (its pills read "2026 (live)"), or null
 /* ── Shared red/gold/green gradient helper ── */
 // Trade Explorer's frame clamp (below) is desktop-only -- on a small
 // screen forcing everything into an already-tiny box just makes the
@@ -468,10 +471,10 @@ var currentQuadMetric = 'avg';
 
 function renderQuadPills() {
   var el = document.getElementById('quad-pills');
-  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var keys = ['career'].concat(PAGE_SEASONS.map(String));
   var html = '';
   keys.forEach(function(k) {
-    var label = k === 'career' ? 'Career' : k;
+    var label = k === 'career' ? 'Career' : seasonLabel(k);
     var swatch = SEASON_COLORS[k] ? ' color-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
     html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="setQuadFilter(\''+k+'\', this)">'+label+'</button>';
   });

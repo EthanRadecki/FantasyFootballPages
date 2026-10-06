@@ -112,7 +112,7 @@
   <div class="callout glass">
     <div class="callout-label">Methodology</div>
     <p class="methodology-note">
-      For every real matchup since 2020 (regular season plus real playoff bracket games, no consolation weeks -- 598 games total), each position's started points get subtracted from both teams' scores to see how often the winner would change, how predictable that position is week-to-week, and how well a team's production at that position predicts their actual win%. For the draft-capital analysis, QB/TE/K/D-ST use the round each manager's <strong>first</strong> pick at that position was taken; RB/WR use the <strong>second</strong> pick, since nearly everyone takes their RB1/WR1 in the first couple rounds regardless of philosophy -- the second one is where actual draft strategy diverges.
+      For every real matchup since 2020 (regular season plus real playoff bracket games, no consolation weeks -- <span data-total-games>598</span> games total), each position's started points get subtracted from both teams' scores to see how often the winner would change, how predictable that position is week-to-week, and how well a team's production at that position predicts their actual win%. For the draft-capital analysis, QB/TE/K/D-ST use the round each manager's <strong>first</strong> pick at that position was taken; RB/WR use the <strong>second</strong> pick, since nearly everyone takes their RB1/WR1 in the first couple rounds regardless of philosophy -- the second one is where actual draft strategy diverges.
     </p>
   </div>
 
@@ -920,7 +920,11 @@ function renderDraftCapitalTable() {
   var ordinal = n === 1 ? 'first' : 'second';
   document.getElementById('dcap-title').textContent = 'Who Spends Draft Capital On Their ' + ordinal + ' ' + CURRENT_POS + '?';
 
-  var years = ['2020','2021','2022','2023','2024','2025'];
+  // every season with a draft, from the data
+  var years = Object.keys(Object.keys(dc).reduce(function(acc, m) {
+    Object.keys(dc[m].by_year || {}).forEach(function(y) { acc[y] = 1; });
+    return acc;
+  }, {})).sort();
   var managers = Object.keys(dc).sort(function(a,b) {
     var aAvg = dc[a].career_avg_round, bAvg = dc[b].career_avg_round;
     if (aAvg === null) return 1;
@@ -962,6 +966,7 @@ function renderDraftCapitalTable() {
 
 fetch('../data/position_impact_data.json').then(function(r){ return r.json(); }).then(function(data) {
   PDATA = data;
+  document.querySelectorAll('[data-total-games]').forEach(function(el) { el.textContent = data.total_games; });
   renderFlipRateChart();
   renderConsistencyChart();
   renderCorrBarChart('ppg-corr-chart', function(p){ return PDATA.performance_correlation[p].ppg_vs_winpct.r; }, 'Correlation (r) with win%');

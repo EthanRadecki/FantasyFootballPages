@@ -282,3 +282,21 @@ def test_champion_rank_ties_are_excused_inside_the_tied_group():
     assert all(c.ok for c in extra_pub.compare_models(data, gold, {"2021_Ben Castaldo": (341, 342)}))
     bad = [c for c in extra_pub.compare_models(data, gold, {}) if not c.ok]
     assert len(bad) == 1 and "CHAMPION_RANKS" in bad[0].name
+
+
+def test_season_filterable_pages_show_the_live_season_once_it_has_a_finished_week():
+    """M1b: the season pills list every finished season and the live season's finished weeks."""
+    def ctx(week):
+        return SimpleNamespace(config={"finished_seasons": [2020, 2021], "live_season": 2022,
+                                       "current": {"season": 2022, "last_completed_week": week}})
+    assert lv.page_seasons(ctx(3), [2022, 2020, 2021, 2021]) == [2020, 2021, 2022]
+    assert lv.page_seasons(ctx(0), [2020, 2021, 2022]) == [2020, 2021]           # no finished week yet
+    assert lv.page_seasons(ctx(3), [2021]) == [2021]                                # only seasons with data
+    page = "<script>\nvar PAGE_SEASONS = [2020, 2021];\nvar PAGE_LIVE_SEASON = null;\nvar keys = [];"
+    out = lv.with_page_seasons(page, [2020, 2021, 2022], 2022)
+    assert lv.read_literal(out, "PAGE_SEASONS") == [2020, 2021, 2022] and lv.read_literal(out, "PAGE_LIVE_SEASON") == 2022
+    assert "PAGE_LIVE_SEASON = null;" in lv.with_page_seasons(page, [2020, 2021], 2022)    # live season not shown
+    assert lv.with_page_seasons("<p>no seasons here</p>", [2020]) == "<p>no seasons here</p>"
+    for rel in ("pages/waiver-value.html", "pages/trade-value.html", "pages/lineup-efficiency.html"):
+        text = (ROOT / rel).read_text(encoding="utf-8")
+        assert "var PAGE_SEASONS = [" in text and "'2025'" not in text, rel     # no hardcoded season list left

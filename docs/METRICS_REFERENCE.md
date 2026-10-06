@@ -202,7 +202,7 @@ Both use finished regular-season games only. Playoff games of every tier are lef
 
 **What it measures:** every manager's own weekly score, replayed against every other manager's real opponents and the scores those opponents put up. Each cell is "manager A wearing B's schedule"; the summary is A's average win% across all the other schedules, compared with A's real win%.
 
-**Why win% and not wins:** schedules are not all the same length (2020 had rotating byes, so managers played 9 to 11 games), so records compare as percentages. Wins gained converts the win% difference back into wins over that season's regular-season length (13 weeks in 2020 and 2021, 14 since).
+**Why win% and not wins:** schedules are not all the same length (2020 had rotating byes, so managers played 9 to 11 games), so records compare as percentages. Wins gained converts the win% difference back into wins over that season's regular-season length (13 weeks in 2020 and 2021, 14 since); for the live season, over the weeks played so far (M1b, Ethan 2026-10-06), so an early-season swing of one game reads as one win, not a full-season projection. The page's cells and average column use the same length per season (`SS_SEASON_GAMES`; the page used 14 for every season before).
 
 **Weeks left out of one pairing:**
 1. **B played A that week.** A cannot play itself, so that week drops from "A wearing B's schedule" only. Most pairs meet once a season; rivalry pairs meet twice.

@@ -697,7 +697,11 @@ var trendLinePlugin = {
 
 function renderDraftCapitalTable() {
   var dc = DST_DATA.draft_capital;
-  var years = ['2020','2021','2022','2023','2024','2025'];
+  // every season with a draft, from the data
+  var years = Object.keys(Object.keys(dc).reduce(function(acc, m) {
+    Object.keys(dc[m].by_year || {}).forEach(function(y) { acc[y] = 1; });
+    return acc;
+  }, {})).sort();
   var managers = Object.keys(dc).sort(function(a,b) {
     var aAvg = dc[a].career_avg_round, bAvg = dc[b].career_avg_round;
     if (aAvg === null) return 1;
@@ -1075,7 +1079,7 @@ function renderNetImpactChart() {
 }
 
 function renderSeasonFlipChart() {
-  var seasons = [2020, 2021, 2022, 2023, 2024, 2025];
+  var seasons = Array.from(new Set(DST_DATA.league.all_games.map(function(g){ return g.season; }))).sort();
   var counts = seasons.map(function(s) {
     var games = DST_DATA.league.all_games.filter(function(g){ return g.season === s; });
     var flips = games.filter(function(g){ return g.flipped; }).length;

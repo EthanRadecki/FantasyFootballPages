@@ -285,7 +285,7 @@
 
   <div class="page-header glass">
     <h1>Lineup Efficiency</h1>
-    <p>Actual points started vs. the best possible lineup each roster could have set, week by week (2020-2025).</p>
+    <p>Actual points started vs. the best possible lineup each roster could have set, week by week (<span data-season-range>2020-2025</span>).</p>
   </div>
 
   <div class="chapter-rail" id="chapter-rail">
@@ -441,6 +441,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="../shared.js"></script>
 <script>
+// The seasons this page shows, written by the build from the data (engine/publish).
+var PAGE_SEASONS = [2020, 2021, 2022, 2023, 2024, 2025];
+var PAGE_LIVE_SEASON = null;   // the live season among them (its pills read "2026 (live)"), or null
 // Season colors -- same palette used on managers.html, for the year
 // filter pills and the Biggest Blunders Season column.
 var SEASON_COLORS = {
@@ -599,10 +602,10 @@ var efficiencyChart = null;
 
 function renderEfficiencyPills() {
   var el = document.getElementById('efficiency-pills');
-  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var keys = ['career'].concat(PAGE_SEASONS.map(String));
   var html = '';
   keys.forEach(function(k) {
-    var label = k === 'career' ? 'Career' : k;
+    var label = k === 'career' ? 'Career' : seasonLabel(k);
     var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
     html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="renderEfficiencyChart(\''+k+'\', this)">'+label+'</button>';
   });
@@ -665,10 +668,10 @@ var depthAdjustedFilter = 'career';
 function renderDepthAdjustedPills() {
   var el = document.getElementById('depth-adjusted-pills');
   if (!el) return;
-  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var keys = ['career'].concat(PAGE_SEASONS.map(String));
   var html = '';
   keys.forEach(function(k) {
-    var label = k === 'career' ? 'Career' : k;
+    var label = k === 'career' ? 'Career' : seasonLabel(k);
     var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
     html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="setDepthAdjustedFilter(\''+k+'\', this)">'+label+'</button>';
   });
@@ -764,10 +767,10 @@ renderSeasonTrendChart();
 var depthChart = null;
 function renderDepthPills() {
   var el = document.getElementById('depth-pills');
-  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var keys = ['career'].concat(PAGE_SEASONS.map(String));
   var html = '';
   keys.forEach(function(k) {
-    var label = k === 'career' ? 'Career' : k;
+    var label = k === 'career' ? 'Career' : seasonLabel(k);
     var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
     html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="renderDepthChart(\''+k+'\', this)">'+label+'</button>';
   });
@@ -916,10 +919,10 @@ var missedWinsFilter = 'career';
 function renderMissedWinsPills() {
   var el = document.getElementById('missed-wins-pills');
   if (!el) return;
-  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var keys = ['career'].concat(PAGE_SEASONS.map(String));
   var html = '';
   keys.forEach(function(k) {
-    var label = k === 'career' ? 'Career' : k;
+    var label = k === 'career' ? 'Career' : seasonLabel(k);
     var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
     html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="setMissedWinsFilter(\''+k+'\', this)">'+label+'</button>';
   });
@@ -973,10 +976,10 @@ var blundersFilter = 'career';
 function renderBlundersPills() {
   var el = document.getElementById('blunders-pills');
   if (!el) return;
-  var keys = ['career','2020','2021','2022','2023','2024','2025'];
+  var keys = ['career'].concat(PAGE_SEASONS.map(String));
   var html = '';
   keys.forEach(function(k) {
-    var label = k === 'career' ? 'All-Time' : k;
+    var label = k === 'career' ? 'All-Time' : seasonLabel(k);
     var swatch = SEASON_COLORS[k] ? ' year-swatch-btn" style="--swatch-color:' + SEASON_COLORS[k] + ';' : '';
     html += '<button class="heatmap-season-pill'+(k==='career'?' active':'')+swatch+'" onclick="setBlundersFilter(\''+k+'\', this)">'+label+'</button>';
   });

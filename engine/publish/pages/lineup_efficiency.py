@@ -36,8 +36,9 @@ places playoff weeks by role, counted back from the final (pending Ethan's
 decision, PR A6b).
 
 Hidden managers are left out of every block (decision 7.3); in the engine
-their benches count in the bench average. Coverage: finished seasons, as the
-page shows today (decision 7.8, Stage A).
+their benches count in the bench average. Coverage: every finished season and the
+live season's finished weeks (M1b, decision 7.8); PAGE_SEASONS lists them for the
+page's season pills.
 """
 
 from __future__ import annotations
@@ -49,7 +50,8 @@ from engine.config import excluded_manager_keys
 from engine.legacy import Comparison
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
-from engine.publish.legacy_view import Names, page_roundtrip, read_literal, replace_literal
+from engine.publish.legacy_view import (Names, page_roundtrip, page_seasons, read_literal, replace_literal,
+                                        with_page_seasons)
 
 SCHEMA, VERSION = "lineup-efficiency", 1
 PAGE = "pages/lineup-efficiency.html"
@@ -256,7 +258,7 @@ class LineupEfficiencyPublisher:
 
     def _engine(self, ctx):
         eff = ctx.analysis["lineup_efficiency"]
-        seasons = sorted(int(s) for s in eff["season"].unique() if int(s) in set(ctx.config["finished_seasons"]))
+        seasons = page_seasons(ctx, eff["season"].unique())
         return eff[eff["season"].isin(seasons)], seasons
 
     def outputs(self, ctx) -> list[Output]:
@@ -273,7 +275,7 @@ class LineupEfficiencyPublisher:
             view = lineup_view(eff[~eff["manager_key"].isin(hidden)], lu, _page_names(ctx, text), by_role=True)
             for var in VARS:
                 text = replace_literal(text, var, view[var])
-            out.append(Output(PAGE, text))
+            out.append(Output(PAGE, with_page_seasons(text, seasons, ctx.config.get("live_season"))))
         return out
 
     def verify(self, ctx) -> list:

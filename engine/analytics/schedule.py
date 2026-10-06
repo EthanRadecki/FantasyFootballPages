@@ -47,7 +47,8 @@ LEGACY_SEASON_LENGTH = 14   # build_schedule_swap.py scaled every season to 14 w
 ENGINE_CHANGES = {
     "include_excluded": "excluded managers (Sullivan, Serafin) count in every calculation (weekly median, their "
                         "games, their schedules) and are only hidden from view",
-    "season_length": "wins gained scales to each season's regular-season length (13 weeks in 2020 and 2021), not 14",
+    "season_length": "wins gained scales to each season's regular-season length (13 weeks in 2020 and 2021), not 14; "
+                     "the live season's to the weeks played so far",
     "half_ties": "a tie counts as half a win; a score equal to the median is half an expected win",
 }
 
@@ -71,6 +72,14 @@ def _season_lengths(tables: dict[str, pd.DataFrame], legacy_mode: bool) -> dict[
     if legacy_mode:
         return {int(y): LEGACY_SEASON_LENGTH for y in s["season"]}
     return {int(y): int(n) for y, n in zip(s["season"], s["regular_season_periods"])}
+
+
+def season_lengths(tables: dict[str, pd.DataFrame]) -> dict[int, int]:
+    """Regular-season games per season: the league's regular season, or for a season still in its
+    regular season the weeks finished so far (M1b, Ethan 2026-10-06: the live season's wins gained
+    scale to the games played, not to a full season)."""
+    played = regular_games(tables).groupby("season")["week"].nunique()
+    return {y: min(n, int(played.get(y, n))) for y, n in _season_lengths(tables, False).items()}
 
 
 def schedule_luck(tables: dict[str, pd.DataFrame], exclude_managers: set[str] = frozenset(),
@@ -119,7 +128,7 @@ def schedule_swap(tables: dict[str, pd.DataFrame], exclude_managers: set[str] = 
              losses, ties, games, pct, hidden (either manager is hidden)
     summary: season, manager_key, wins, losses, ties, pct (actual record over
              the games used), avg_alt_pct (mean over every other schedule),
-             wins_gained ((avg_alt_pct - pct) x season length), hidden
+             wins_gained ((avg_alt_pct - pct) x season length, season_lengths()), hidden
     """
     fx = _fixes(legacy_mode, fixes)
     g = regular_games(tables)
@@ -127,7 +136,7 @@ def schedule_swap(tables: dict[str, pd.DataFrame], exclude_managers: set[str] = 
         # Legacy dropped excluded managers and every game against them.
         g = g[~g["manager_key"].isin(exclude_managers) & ~g["opponent_manager_key"].isin(exclude_managers)]
     forfeits = {tuple(r) for r in forfeited_weeks(tables)[["season", "week", "manager_key"]].itertuples(index=False)}
-    lengths = _season_lengths(tables, "season_length" not in fx)
+    lengths = season_lengths(tables) if "season_length" in fx else _season_lengths(tables, True)
     ties = "half_ties" in fx
 
     # season -> manager -> week -> (own points, opponent key, opponent points, result)

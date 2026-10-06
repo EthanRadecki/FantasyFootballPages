@@ -18,6 +18,9 @@ are `analytics/matchup_history.py` and `analytics/schedule.py`, checked by
                            and luck summed over the seasons), luck ascending
     SCHEDULE_SWAP_DATA     {season: {manager: {actual, alt {schedule: record}, avg_pct,
                            wins_gained}}}
+    SS_SEASON_GAMES        {season: games}: what the swap's cells and average scale to, the
+                           season's regular season or the live season's weeks played so far
+                           (the page scaled every season to 14 before M1b)
     conference HTML        the teams grid, the six totals, the manager table (by
                            conference, win % descending), the season table (REP's
                            record), the 8 longest rivalries (`order_rivalries`)
@@ -47,13 +50,13 @@ Model sections (A7b; the fits are `analytics/regressions.py`,
                                   card team names from `teams`, the league's editorial team_names.yaml
                                   short names where the page shortened them)
 
-Coverage: finished seasons, as the page shows today (decision 7.8, Stage A).
-The head-to-head, closest and conference sections are recomputed here on the
-finished seasons' games, because their analysis tables have no season
-column; the luck and swap tables are filtered by season. Stage B shows the
-live season's finished weeks (decision 7.8) and adds a season filter to the
-luck chart (Ethan, session 7), reading `schedule_luck` per season from the
-page model.
+Coverage of the matchup sections: every finished season and the live season's
+finished weeks (M1b, decision 7.8); the schedule swap's season buttons come from
+SCHEDULE_SWAP_DATA. The head-to-head, closest and conference sections are
+recomputed here on those seasons' games, because their analysis tables have no
+season column; the luck and swap tables are filtered by season. The model
+sections stay on finished seasons. Stage B adds a season filter to the luck chart
+(Ethan, session 7), reading `schedule_luck` per season from the page model.
 """
 
 from __future__ import annotations
@@ -69,8 +72,8 @@ from engine.legacy import Comparison, name_to_key
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
 from engine.publish.editorial import team_names
-from engine.publish.legacy_view import (Names, page_roundtrip, read_html, read_literal, replace_html,
-                                        replace_literal)
+from engine.publish.legacy_view import (Names, page_roundtrip, page_seasons, read_html, read_literal,
+                                        replace_html, replace_literal, with_page_seasons)
 
 SCHEMA, VERSION = "extra-analytics", 1
 PAGE = "pages/extra-analytics.html"
@@ -354,6 +357,18 @@ def write_page(text: str, data: dict) -> str:
     return text
 
 
+def with_season_games(text: str, tables: dict, seasons: list[int]) -> str:
+    """The page's SS_SEASON_GAMES: the games each season's schedule swap scales to (the regular season,
+    the live season's weeks played so far), so the cells, the average and wins gained agree."""
+    from engine.analytics.schedule import season_lengths
+
+    n = season_lengths(tables)
+    try:
+        return replace_literal(text, "SS_SEASON_GAMES", {str(s): n[s] for s in seasons if s in n})
+    except KeyError:
+        return text
+
+
 def read_page(text: str) -> dict:
     out = {v: read_literal(text, v) for v in VARS + MODEL_VARS}
     out.update({name: read_html(text, opening, anchor) for name, (anchor, opening) in HTML.items()})
@@ -563,7 +578,7 @@ class ExtraAnalyticsPublisher:
     NEEDS = ("schedule_luck", "schedule_swap", "schedule_swap_summary")
 
     def _seasons(self, ctx) -> list[int]:
-        return list(ctx.config["finished_seasons"])
+        return page_seasons(ctx, ctx.analysis["schedule_luck"]["season"].unique())
 
     def _engine(self, ctx):
         a, seasons = ctx.analysis, self._seasons(ctx)
@@ -584,7 +599,8 @@ class ExtraAnalyticsPublisher:
             names = _page_names(ctx, text)
             data = page_data(inp, luck, swap, summ, names, ctx)
             data.update(engine_models(ctx, names, read_literal(text, "R2_VALS")))
-            out.append(Output(PAGE, write_page(text, data)))
+            text = with_season_games(write_page(text, data), ctx.tables, seasons)
+            out.append(Output(PAGE, with_page_seasons(text, seasons, ctx.config.get("live_season"))))
         return out
 
     def verify(self, ctx) -> list:
