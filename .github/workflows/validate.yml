@@ -7,11 +7,11 @@ on:
 
 jobs:
   site-checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -25,11 +25,11 @@ jobs:
         run: python tools/check_style.py
 
   engine-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -45,11 +45,11 @@ jobs:
   synthetic-league:
     # the whole engine on a generated league that is not Preach (engine/testing/synthetic.py):
     # normalize, analyze and build --verify through the command line, as a new league would run them
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -65,3 +65,30 @@ jobs:
           python -m engine.cli normalize leagues/synthetic/league.yaml --cache .cache-synthetic
           python -m engine.cli analyze leagues/synthetic/league.yaml --cache .cache-synthetic
           python -m engine.cli build leagues/synthetic/league.yaml --cache .cache-synthetic --out dist-synthetic --verify
+
+  page-smoke:
+    # headless Chromium opens every page of the site and fails on JavaScript errors or a blank page
+    # (tools/smoke_pages.py); screenshots are kept as a workflow artifact to compare runs
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright and Chromium
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Open every page
+        run: python tools/smoke_pages.py . --screenshots smoke-screenshots
+
+      - name: Keep the screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: page-screenshots
+          path: smoke-screenshots/
+          retention-days: 14
