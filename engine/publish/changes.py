@@ -1,10 +1,11 @@
-"""The M1 change report: what the live pages will show differently once they read engine data.
+"""The change report: what the live pages show differently in a new build.
 
-Milestone M1 (docs/PUBLISH_PLAN.md section 8) switches the live root from the files the
-PC writes to the engine's legacy views. Before that, every changed number is reviewed:
-this module compares each legacy view in a build (dist/) with the file the live site
-serves today and writes `changes.html` (and `changes.json`) beside the build, so the
-deploy publishes it at /next/changes.html.
+At milestone M1 (docs/PUBLISH_PLAN.md section 8) the live root switched from the files the
+PC wrote to the engine's legacy views; the report listed every changed number for review
+first (M1a). From M1 on it is each deploy's release notes: the deploy fetches the site that
+is live (fetch() below), compares each legacy view in the new build (dist/) with it, and
+publishes `changes.html` (and `changes.json`) beside the build. Against an engine build the
+curated M1 reasons are left out (report() below).
 
 Per page:
     why          the reasons, in plain words, each tied to a decision or a METRICS_REFERENCE
@@ -232,7 +233,8 @@ class Tally:
         swapped      a pairing (a game, a matchup) listed with its sides the other way round
         only_engine  a record or key only in the engine
         only_live    a record or key only in the live file
-        newer        a record or key from the live season the live file does not have yet
+        newer        anything in the live season (a record, a key or a value inside one), which changes
+                     every week: counted apart, not as a difference
     """
 
     def __init__(self, live_season: int | None = None, examples: int = EXAMPLES):
@@ -242,10 +244,10 @@ class Tally:
         self.live_season = live_season
         self.max_examples = examples
 
-    def note(self, kind: str, where: str, old=None, new=None, rec: dict | None = None, key=None) -> None:
-        if kind == "only_engine" and self.live_season is not None and (
-                str(key) == str(self.live_season) or (rec is not None and rec.get(
-                "season", rec.get("s", rec.get("Season_Year", rec.get("Year")))) == self.live_season)):
+    def note(self, kind: str, where: str, old=None, new=None, rec: dict | None = None, key=None,
+             season=None) -> None:
+        if kind != "swapped" and self.live_season is not None and (
+                season == self.live_season or _year(key) == self.live_season or _season(rec) == self.live_season):
             kind = "newer"
         setattr(self, kind, getattr(self, kind) + 1)
         if len(self.examples) < self.max_examples and kind in ("changed", "filled", "blanked", "only_engine",
@@ -271,6 +273,22 @@ class Tally:
         return {k: getattr(self, k) for k in KINDS}
 
 
+SEASON_KEYS = ("season", "s", "Season_Year", "Year", "year")
+
+
+def _season(rec) -> int | None:
+    if not isinstance(rec, dict):
+        return None
+    v = next((rec[k] for k in SEASON_KEYS if k in rec), None)
+    return int(v) if _num(v) else None
+
+
+def _year(key) -> int | None:
+    """A dict key that is a season (DRAFT["2026"], odds["2026"])."""
+    k = str(key) if key is not None else ""
+    return int(k) if k.isdigit() and len(k) == 4 and k[:2] in ("19", "20") else None
+
+
 def _short(v) -> str:
     s = json.dumps(v, ensure_ascii=False) if not isinstance(v, str) else v
     return s if len(s) <= 70 else s[:67] + "..."
@@ -281,13 +299,13 @@ def _label(rec: dict) -> str:
     return ", ".join(f"{rec[k]}" for k in keys[:4]) or _short(rec)
 
 
-def _diff(a, b, where: str, live) -> Tally:
+def _diff(a, b, where: str, live, season) -> Tally:
     t = Tally(live, EXAMPLES)
-    compare(a, b, where, t)
+    compare(a, b, where, t, season)
     return t
 
 
-def _match(old: list, new: list, where: str, t: Tally) -> None:
+def _match(old: list, new: list, where: str, t: Tally, season=None) -> None:
     """Records matched by identity; within one identity each live record takes the engine record (as is, or
     with its sides exchanged) it differs from least."""
     o, n = defaultdict(list), defaultdict(list)
@@ -299,7 +317,7 @@ def _match(old: list, new: list, where: str, t: Tally) -> None:
         pool = list(n.get(k, []))
         for a in recs:
             if not pool:
-                t.note("only_live", f"{where}[{_label(a)}]", rec=a)
+                t.note("only_live", f"{where}[{_label(a)}]", rec=a, season=season)
                 continue
             best = None
             for i, b in enumerate(pool):
@@ -307,8 +325,8 @@ def _match(old: list, new: list, where: str, t: Tally) -> None:
                     bb = swapped(b) if flip else b
                     if bb is None:
                         continue
-                    d = _diff(a, bb, f"{where}[{_label(a)}]", t.live_season)
-                    score = (d.total + d.rounding, flip)
+                    d = _diff(a, bb, f"{where}[{_label(a)}]", t.live_season, season)
+                    score = (d.total + d.rounding + d.newer, flip)
                     if best is None or score < best[0]:
                         best = (score, i, flip, d)
                 if best[0][0] == 0 and not best[2]:
@@ -319,47 +337,64 @@ def _match(old: list, new: list, where: str, t: Tally) -> None:
             t.swapped += flip
     for k, recs in n.items():
         for b in recs[len(o.get(k, [])):]:
-            t.note("only_engine", f"{where}[{_label(b)}]", rec=b)
+            t.note("only_engine", f"{where}[{_label(b)}]", rec=b, season=season)
 
 
-def compare(old, new, where: str, t: Tally) -> None:
+def compare(old, new, where: str, t: Tally, season: int | None = None) -> None:
+    """Compare two values into `t`; `season` is the season of the record being compared (the enclosing
+    record's season field, a season key on the way down, or the file's season), so a change inside the
+    live season counts as newer data."""
     if isinstance(old, dict) and isinstance(new, dict):
+        season = _season(new) or _season(old) or season
         for k in old:
+            ks = _year(k) or season
             if k in new:
-                compare(old[k], new[k], f"{where}/{k}", t)
+                compare(old[k], new[k], f"{where}/{k}", t, ks)
             else:
-                t.note("only_live", f"{where}/{k}")
+                t.note("only_live", f"{where}/{k}", rec=old[k] if isinstance(old[k], dict) else None, season=ks)
         for k in new:
             if k not in old:
-                t.note("only_engine", f"{where}/{k}", rec=new[k] if isinstance(new[k], dict) else None, key=k)
+                t.note("only_engine", f"{where}/{k}", rec=new[k] if isinstance(new[k], dict) else None,
+                       season=_year(k) or season)
     elif isinstance(old, list) and isinstance(new, list):
         if old and new and all(isinstance(x, dict) for x in old + new):
-            _match(old, new, where, t)
+            _match(old, new, where, t, season)
         elif all(not isinstance(x, (dict, list)) for x in old + new) and sorted(map(repr, old)) == sorted(map(repr, new)):
             return                                      # the same values in another order
         elif len(old) == len(new):
             for i, (a, b) in enumerate(zip(old, new)):
-                compare(a, b, f"{where}[{i}]", t)
+                compare(a, b, f"{where}[{i}]", t, season)
         else:
-            t.note("changed", where, f"{len(old)} items", f"{len(new)} items")
+            t.note("changed", where, f"{len(old)} items", f"{len(new)} items", season=season)
     elif _num(old) and _num(new):
         if abs(float(old) - float(new)) > TOL:
-            t.note("rounding" if rounding_only(old, new) else "changed", where, old, new)
+            t.note("rounding" if rounding_only(old, new) else "changed", where, old, new, season=season)
     elif old is None and new is not None:
-        t.note("filled", where, old, new)
+        t.note("filled", where, old, new, season=season)
     elif new is None and old is not None:
-        t.note("blanked", where, old, new)
+        t.note("blanked", where, old, new, season=season)
     elif old != new:
-        t.note("changed", where, old, new)
+        t.note("changed", where, old, new, season=season)
 
 
 # ---------------------------------------------------------------- the report
 
+FILE_SEASON = re.compile(r"(?:^|/)((?:19|20)\d\d)_")
+
+
 def report(dist: Path, site: Path) -> dict:
-    """{build, live_season, pages: [{id, title, why, info, files: [{path, new_file, differences, <each Tally
-    kind>, examples}]}], unassigned: [...]} for every legacy view in the build."""
+    """{build, previous, live_season, pages: [{id, title, why, info, files: [{path, new_file, differences,
+    <each Tally kind>, examples}]}], unassigned: [...]} for every legacy view in the build.
+
+    `site` is the site that was live before this build. When it is an engine build too (it has a
+    build-manifest.json, from M1 on) the report is the week's release notes: `previous` names that build,
+    and the M1 reasons and the build's comparisons with the pre-engine files are left out."""
     with open(dist / "build-manifest.json", encoding="utf-8") as f:
         manifest = json.load(f)
+    previous = None
+    if (site / "build-manifest.json").is_file():
+        with open(site / "build-manifest.json", encoding="utf-8") as f:
+            previous = json.load(f).get("build") or {}
     with open(dist / "config.json", encoding="utf-8") as f:
         live = json.load(f).get("live_season")
     verify = {}
@@ -377,15 +412,19 @@ def report(dist: Path, site: Path) -> dict:
         for rel in mine:
             t = Tally(live)
             old, new = load(site / rel, rel), load(dist / rel, rel)
+            m = FILE_SEASON.search(rel)
             if old is not None:
-                compare(old, new, "", t)
+                compare(old, new, "", t, int(m.group(1)) if m else None)
             rows.append({"path": rel, "new_file": old is None, **t.counts(), "differences": t.total,
                          "examples": t.examples})
         lines = [ln[6:] if ln.startswith("INFO  ") else ln for ln in info
                  if any(m.lower() in ln.lower() for m in markers)]
+        if previous is not None:
+            why, lines = [], []
         pages.append({"id": pid, "title": title, "why": why, "info": lines, "files": rows})
     unassigned = [v for v in views if v not in used]
-    return {"build": manifest.get("build"), "live_season": live, "pages": pages, "unassigned": unassigned}
+    return {"build": manifest.get("build"), "previous": previous, "live_season": live, "pages": pages,
+            "unassigned": unassigned}
 
 
 CSS = """
@@ -418,20 +457,27 @@ def render(rep: dict) -> str:
     e = html.escape
     out = ["<!doctype html><html lang='en'><head><meta charset='utf-8'>",
            "<meta name='viewport' content='width=device-width,initial-scale=1'><meta name='robots' content='noindex'>",
-           f"<title>M1 change report</title><style>{CSS}</style></head><body><main>",
-           "<h1>What changes at M1</h1>",
-           f"<p class='sub'>Every live page next to the same page on engine data (build "
-           f"{e(str((rep.get('build') or {}).get('id')))}). A difference is a changed value, a value filled in or "
-           "left blank, or a record only one side has. Not counted as differences: numbers that differ only in "
-           "rounding, games listed with their sides the other way round, and records from weeks the live files do "
-           "not have yet (newer data).</p>"]
+           f"<title>Change report</title><style>{CSS}</style></head><body><main>"]
+    build = e(str((rep.get("build") or {}).get("id")))
+    if rep.get("previous") is not None:
+        out += ["<h1>What changed in this build</h1>",
+                f"<p class='sub'>Build {build} next to the build that was live before it "
+                f"({e(str(rep['previous'].get('id')))}). "]
+    else:
+        out += ["<h1>What changes at M1</h1>",
+                f"<p class='sub'>Every live page next to the same page on engine data (build {build}). "]
+    out[-1] += ("A difference is a changed value, a value filled in or left blank, or a record only one side has. "
+                f"Not counted as differences: numbers that differ only in rounding, games listed with their sides "
+                f"the other way round, and anything from the live season ({e(str(rep.get('live_season')))}), "
+                "which changes every week (newer).</p>")
     for p in rep["pages"]:
         total = _sum(p, "differences")
         extra = [f"{_sum(p, k):,} {label.lower()}" for k, label in COLUMNS[5:] if _sum(p, k)]
         out.append(f"<section id='{e(p['id'])}'><h2>{e(p['title'])}</h2>")
         out.append(f"<p><span class='chg'>{total:,} differences</span>"
                    + (f" <span class='new'>(also {', '.join(extra)})</span>" if extra else "") + "</p>")
-        out.append("<strong>Why</strong><ul>" + "".join(f"<li>{e(w)}</li>" for w in p["why"]) + "</ul>")
+        if p["why"]:
+            out.append("<strong>Why</strong><ul>" + "".join(f"<li>{e(w)}</li>" for w in p["why"]) + "</ul>")
         if p["info"]:
             out.append("<div class='info'><strong>The build's summary</strong><ul>"
                        + "".join(f"<li>{e(i)}</li>" for i in p["info"]) + "</ul></div>")
@@ -450,6 +496,31 @@ def render(rep: dict) -> str:
                    + "".join(f"<li><code>{e(u)}</code></li>" for u in rep["unassigned"]) + "</ul></section>")
     out.append("</main></body></html>")
     return "\n".join(out)
+
+
+def fetch(base: str, dist: Path, dest: Path, timeout: int = 30) -> int:
+    """Download the live site's copy of every legacy view in the build (and its build-manifest.json) from
+    `base` (the Pages URL) into `dest`. A file the site does not have is skipped. Returns the files fetched."""
+    import urllib.error
+    import urllib.request
+
+    with open(dist / "build-manifest.json", encoding="utf-8") as f:
+        files = [x["path"] for x in json.load(f)["files"] if x["source"] == "generated"
+                 and not x["path"].startswith("data/v1/") and x["path"] not in ("config.json", "build-manifest.json")]
+    n = 0
+    files.append("build-manifest.json")
+    for rel in files:
+        try:
+            with urllib.request.urlopen(base.rstrip("/") + "/" + rel, timeout=timeout) as r:
+                body = r.read()
+        except urllib.error.HTTPError as exc:
+            if exc.code == 404:
+                continue
+            raise
+        (dest / rel).parent.mkdir(parents=True, exist_ok=True)
+        (dest / rel).write_bytes(body)
+        n += 1
+    return n
 
 
 def write(dist: Path, site: Path) -> dict:

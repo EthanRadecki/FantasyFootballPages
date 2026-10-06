@@ -1,4 +1,4 @@
-"""Milestone M0 deploy (engine/publish/deploy.py): the published root and the sanity checks."""
+"""The deploy (milestones M0 and M1 (engine/publish/deploy.py): the published root and the sanity checks."""
 
 from __future__ import annotations
 
@@ -10,17 +10,40 @@ from engine.publish import deploy
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_root_is_the_committed_site_only(tmp_path):
-    out = tmp_path / "_site"
-    counts = deploy.assemble(ROOT, out, None)
-    assert counts["root"] > 100 and counts["next"] == 0
-    assert (out / "index.html").read_bytes() == (ROOT / "index.html").read_bytes()
-    assert deploy.check_root(ROOT, out) == []
+def _build(tmp_path: Path) -> Path:
+    """A stand-in engine build: every committed site file, one generated data file replacing its copy."""
+    import shutil
+
+    d = tmp_path / "build"
+    for f in deploy.committed_site_files(ROOT):
+        (d / f).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / f, d / f)
+    (d / "data" / "matchups.json").write_text("[]")
+    (d / "config.json").write_text("{}")
+    return d
+
+
+def test_root_is_the_engine_build(tmp_path):
+    dist, out = _build(tmp_path), tmp_path / "_site"
+    counts = deploy.assemble(ROOT, out, dist)
+    assert counts["next"] == 0 and counts["root"] == sum(1 for p in dist.rglob("*") if p.is_file())
+    assert (out / "data" / "matchups.json").read_text() == "[]"          # engine data, not the committed file
+    assert deploy.check_root(ROOT, out, dist) == []
     for internal in ("engine", "docs", "tools", "leagues", "README.md", ".github", "pyproject.toml"):
         assert not (out / internal).exists(), internal
     (out / "index.html").write_text("changed")
     (out / "stray.txt").write_text("x")
-    assert deploy.check_root(ROOT, out) == ["missing or changed: index.html", "not a committed site file: stray.txt"]
+    (out / "style.css").unlink()
+    (dist / "style.css").unlink()
+    assert deploy.check_root(ROOT, out, dist) == ["missing or changed: index.html", "not in the build: stray.txt",
+                                                  "committed site file not published: style.css"]
+
+
+def test_a_preview_build_goes_to_next(tmp_path):
+    dist, out = _build(tmp_path), tmp_path / "_site"
+    counts = deploy.assemble(ROOT, out, dist, next_dist=dist)
+    assert counts["next"] == counts["root"] and (out / "next" / "index.html").is_file()
+    assert deploy.check_root(ROOT, out, dist) == []
 
 
 def _dist(tmp_path: Path, games: dict, week: int, files: bool = True) -> Path:

@@ -1,16 +1,21 @@
 name: Deploy
 
-# Milestone M0 (docs/PUBLISH_PLAN.md section 8): GitHub Pages serves
-#   /       the committed site, byte for byte (tools/deploy_site.py assemble checks it)
-#   /next/  the engine's build of the same site (engine update), for review before M1,
-#           with the change report at /next/changes.html
-# The live root deploys on every push even when the engine build fails; then /next/ is
-# left out of that deploy and the run fails at the end, so GitHub emails the failure.
+# Milestone M1 (docs/PUBLISH_PLAN.md section 8): GitHub Pages serves the engine's build
+# (engine update --verify): the committed pages, styles and images with every data file
+# generated from ESPN data, plus the change report at /changes.html.
+# A deploy happens only when the build, its checks and the page tests pass. Otherwise
+# nothing is deployed, the last good site stays up, and the run fails so GitHub emails it.
+# Runs on every push to main, from the Run workflow button, and on a schedule:
+# Tuesday after Monday Night Football and Friday for ESPN's stat corrections.
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # times are UTC: 9:23 am New York time in summer time, 8:23 am in winter
+    - cron: "23 13 * * 2"
+    - cron: "23 13 * * 5"
 
 permissions:
   contents: read
@@ -21,7 +26,7 @@ concurrency:
 
 env:
   LEAGUE: leagues/preach/league.yaml
-  PREVIOUS_STATS: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/next/deploy-stats.json
+  SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
 jobs:
   engine:
@@ -61,22 +66,25 @@ jobs:
           key: espn-raw-${{ github.run_id }}
 
       - name: Sanity checks against the last deploy
-        run: python tools/deploy_site.py sanity --dist dist --previous "$PREVIOUS_STATS"
+        # the M0 preview kept its stats at /next/; the root has them from the first M1 deploy on
+        run: |
+          python tools/deploy_site.py sanity --dist dist \
+            --previous "$SITE_URL/deploy-stats.json" --previous "$SITE_URL/next/deploy-stats.json"
 
-      - name: Change report (published at /next/changes.html, for the M1 review)
-        continue-on-error: true            # a review aid: a failure here never holds back the deploy
+      - name: Change report against the live site (published at /changes.html)
+        continue-on-error: true            # release notes: a failure here never holds back the deploy
         shell: bash
         run: |
-          python tools/change_report.py --dist dist --site . | tee change-report.txt
-          { echo "### What changes at M1"; echo; sed 's/^/- /' change-report.txt; } >> "$GITHUB_STEP_SUMMARY"
+          python tools/change_report.py --dist dist --site "$SITE_URL" | tee change-report.txt
+          { echo "### What changed"; echo; sed 's/^/- /' change-report.txt; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Page test on the build
-        run: python tools/smoke_pages.py dist --screenshots next-screenshots
+        run: python tools/smoke_pages.py dist --screenshots screenshots
 
       - name: Keep the build
         uses: actions/upload-artifact@v4
         with:
-          name: next
+          name: site
           path: dist/
           retention-days: 30
 
@@ -84,13 +92,12 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: next-screenshots
-          path: next-screenshots/
+          name: screenshots
+          path: screenshots/
           retention-days: 14
 
   site:
     needs: engine
-    if: ${{ !cancelled() }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
@@ -105,18 +112,15 @@ jobs:
           python -m playwright install --with-deps chromium
 
       - name: Get the engine build
-        if: ${{ needs.engine.result == 'success' }}
         uses: actions/download-artifact@v4
         with:
-          name: next
+          name: site
           path: dist
 
-      - name: Assemble the site (root byte for byte, /next/ when the engine build passed)
-        run: |
-          if [ -d dist ]; then python tools/deploy_site.py assemble --out _site --dist dist
-          else python tools/deploy_site.py assemble --out _site; fi
+      - name: Assemble the site (the engine build, checked byte for byte)
+        run: python tools/deploy_site.py assemble --out _site --dist dist
 
-      - name: Page test on the live root
+      - name: Page test on the assembled site
         run: python tools/smoke_pages.py _site
 
       - uses: actions/upload-pages-artifact@v3
@@ -125,7 +129,6 @@ jobs:
 
   deploy:
     needs: site
-    if: ${{ !cancelled() && needs.site.result == 'success' }}
     runs-on: ubuntu-24.04
     permissions:
       pages: write
@@ -138,10 +141,10 @@ jobs:
         uses: actions/deploy-pages@v4
 
   report:
-    needs: [engine, deploy]
-    if: ${{ always() && needs.engine.result != 'success' }}
+    needs: [engine, site, deploy]
+    if: ${{ failure() }}
     runs-on: ubuntu-24.04
     steps:
       - run: |
-          echo "::error::The engine build failed (expired ESPN cookies, a failed check, or a page error): /next/ was not updated this run. Open the engine job's log."
+          echo "::error::Nothing was deployed: the live site still shows the last good build. Open the first failed job's log (expired ESPN cookies are named in the engine update step)."
           exit 1

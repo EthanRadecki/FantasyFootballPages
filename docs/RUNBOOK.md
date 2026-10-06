@@ -21,23 +21,35 @@ python -m engine.cli update leagues/preach/league.yaml --verify
 
 To look at the build: `python -m http.server 8000 --directory dist`, then open the forwarded port.
 
-Until milestone M1 (docs/PUBLISH_PLAN.md section 8) the live site is still updated the old way; `dist/` is for review only.
+From milestone M1 (docs/PUBLISH_PLAN.md section 8) the live site is this build, made by the deploy below; the old weekly process on the PC is retired, and the data files committed in `data/` are no longer updated (the build replaces every one it generates).
 
-## Deploy (milestone M0)
+## Deploy (milestone M1)
 
-GitHub Pages deploys from `.github/workflows/deploy.yml` on every push to `main` and from Actions → Deploy → Run workflow. It publishes the committed site at the root (exactly the repo's site files: `index.html`, `pages/`, `data/`, `images/`, the shared JS and CSS) and the engine's build at `/next/`. If the engine build fails (expired ESPN cookies, a failed check, a page error), the root still deploys, `/next/` is left out until the next good build, and the run fails so GitHub emails you; the engine job's log says which step.
+GitHub Pages deploys from `.github/workflows/deploy.yml`:
 
-One-time setup: repository Settings → Secrets and variables → Actions → New repository secret, `ESPN_S2` and `SWID` (the same values as the Codespaces secrets); Settings → Pages → Build and deployment → Source: GitHub Actions.
+- on every push to `main` (a weekly rankings commit, a code change);
+- on a schedule: Tuesday and Friday at 13:23 UTC (9:23 am New York time in summer time, 8:23 in winter), after Monday Night Football and after ESPN's stat corrections; GitHub can start scheduled runs some minutes late;
+- from Actions → Deploy → Run workflow, any time.
 
-ESPN cookies expire every few months; when the engine job's pull step reports expired cookies, update both secrets (Codespaces and Actions).
+Each run does `engine update --verify` with the Actions secrets, the sanity checks against the last deploy (`deploy-stats.json`: no season loses games, the live week never goes backwards, every visible manager has its files), the change report, and the page test on the build and on the assembled site. Only when all of that passes is the build published; the published root is the build byte for byte, and every committed page, style and image is in it. When anything fails, nothing is deployed: the live site keeps the last good build and the run fails, so GitHub emails you; the first failed step's log says why.
 
-### The change report (before M1)
+One-time setup (done at M0): repository Settings → Secrets and variables → Actions → New repository secret, `ESPN_S2` and `SWID` (the same values as the Codespaces secrets); Settings → Pages → Build and deployment → Source: GitHub Actions.
 
-Each deploy also publishes `/next/changes.html`: every live page next to the same page on engine data, with the reasons for each kind of change, the build's own summary lines, and per file the counts and first examples of what differs. The run's summary page (Actions → the Deploy run) lists one line per page. To make it locally after a build with `--verify`:
+ESPN cookies expire every few months; when the pull step reports expired cookies, update both secrets (Codespaces and Actions), then Run workflow.
 
-    python tools/change_report.py --dist dist --site .
+Undo: revert the commit that caused a problem (the push redeploys), or Run workflow once a fix is in. Each run keeps its build as the `site` artifact for 30 days and page screenshots for 14.
 
-A difference with no reason on its page is a question to settle before M1. Rounding-only differences, games listed with their sides the other way round, and records from live-season weeks the live files do not have yet are counted but not called differences.
+GitHub turns scheduled runs off in a repository with no commits for 60 days; the weekly rankings commits keep it on during the season. If the schedule stops in the offseason, Actions → Deploy → Enable workflow.
+
+### The change report
+
+Each deploy publishes `/changes.html` (and `changes.json`), with one line per page on the run's summary page (Actions → the Deploy run). It compares every page's data in the new build with the site that was live before it, so it is the release notes of that run: values changed, filled in or left blank, records only one side has, and examples. Counted apart, not as differences: numbers that differ only in rounding, games listed with their sides the other way round, and anything in the live season, which changes every week. A difference outside the live season is a stat correction, a rule change in that commit, or something to look into.
+
+The first M1 run compared with the PC's files and listed the reasons for each page (reviewed by Ethan, 2026-10-06). To make the report locally after a build with `--verify`:
+
+    python tools/change_report.py --dist dist --site https://ethanradecki.github.io/FantasyFootballPages
+
+(`--site .` compares with the files committed in the repo instead.)
 
 ## Page test and build provenance
 
@@ -60,16 +72,11 @@ CI runs the same steps on every push. Both folders are gitignored. After changin
 
 Each ranked week is an editorial file (`leagues/<league>/editorial/rankings/<season>_weekNN.json`: ranks, synopses, blurbs, the matchup of the week) plus a frozen snapshot of its computed fields (`leagues/<league>/snapshots/rankings/`); the build adds record, PPG, streak and the rank fields (docs/METRICS_REFERENCE.md, Weekly Rankings).
 
-Until M1 (the PC still writes `data/rankings/<season>_weekNN.json`), import each new week into those folders and commit them with the week:
+Each week, in the Codespace once the week's games are final (Tuesday):
 
 ```
-python tools/split_rankings.py leagues/preach/league.yaml
-```
-
-`build --verify` lists any week file in `data/rankings/` that has not been imported. From M1 on, after the weekly `engine update`:
-
-```
+python -m engine.cli update leagues/preach/league.yaml --verify
 python -m engine.cli rankings new leagues/preach/league.yaml --week 5
 ```
 
-writes the week's snapshot (refused if one exists; `--force` regenerates it) and, when the week has no editorial file yet, a draft with last week's order to rewrite. Fill in the ranks, synopses, blurbs and the matchup of the week (`"matchup_of_the_week": {"team_a": "<manager>", "team_b": "<manager>", "blurb": "..."}`), then commit both files.
+writes the week's snapshot (refused if one exists; `--force` regenerates it) and, when the week has no editorial file yet, a draft with last week's order to rewrite. Fill in the ranks, synopses, blurbs and the matchup of the week (`"matchup_of_the_week": {"team_a": "<manager>", "team_b": "<manager>", "blurb": "..."}`), then commit and push both files: the push deploys the week. `tools/split_rankings.py` imported the PC's weekly files before M1 and is no longer needed.

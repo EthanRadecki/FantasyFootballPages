@@ -1,19 +1,18 @@
-"""Milestone M0: what GitHub Pages serves, and the checks a deploy must pass.
+"""What GitHub Pages serves, and the checks a deploy must pass (milestones M0 and M1).
 
-The deploy workflow (.github/workflows/deploy.yml) publishes one folder:
+The deploy workflow (.github/workflows/deploy.yml) publishes one folder. From M1 on
+(2026-10-06) it is the engine's build (`engine update --verify`, dist/): the site files
+committed in the repo (engine/publish/site.py: index.html, pages/, images/, the shared JS
+and CSS, the logo) copied byte for byte, with every data file generated from ESPN data,
+plus `deploy-stats.json`, `verify.json` and the change report (`changes.html`). A deploy
+happens only when the build, its checks and the page test pass; otherwise the last good
+site stays up and the run fails.
 
-    /            the current site, exactly the files committed in the repo
-                 (engine/publish/site.py's site files: index.html, pages/, data/,
-                 images/, the shared JS and CSS, the logo), checked byte for byte
-    /next/       the engine's build of the same site (`engine update`), for review
-                 before milestone M1 makes engine data live
+Before M1 (M0) the root was the committed site files and the build was a preview at
+/next/; `assemble` still takes a `next` build for the Stage B preview (milestone M2).
 
-Only site files are published: the code, docs, tools and league folders stay in
-the repo (decision at M0, 2026-10-06). Every published page is byte-identical
-to what "deploy from branch" served.
-
-Sanity checks on a fresh /next/ build, against the stats of the last deploy
-(`deploy-stats.json`, published beside the build):
+Sanity checks on a fresh build, against the stats of the last deploy
+(`deploy-stats.json`, published with the site):
     games        a season's game count never goes down
     week         the live season's last completed week never goes backwards
     managers     every visible manager has a data file and a leaderboard row
@@ -43,30 +42,29 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def assemble(repo: Path, out: Path, dist: Path | None) -> dict:
-    """Write the folder Pages serves: the committed site at the root, the engine build at /next/
-    (when `dist` is given). Returns {"root": n files, "next": n files or 0}."""
+def assemble(repo: Path, out: Path, dist: Path, next_dist: Path | None = None) -> dict:
+    """Write the folder Pages serves: the engine build at the root, and a second build at /next/ when
+    `next_dist` is given (the Stage B preview). Returns {"root": n files, "next": n files or 0}."""
     if out.exists():
         shutil.rmtree(out)
-    out.mkdir(parents=True)
-    files = committed_site_files(repo)
-    for f in files:
-        (out / f).parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(repo / f, out / f)
+    shutil.copytree(dist, out)
     n_next = 0
-    if dist is not None:
-        shutil.copytree(dist, out / "next")
+    if next_dist is not None:
+        shutil.copytree(next_dist, out / "next")
         n_next = sum(1 for p in (out / "next").rglob("*") if p.is_file())
-    return {"root": len(files), "next": n_next}
+    n_root = sum(1 for p in out.rglob("*") if p.is_file() and not p.relative_to(out).as_posix().startswith("next/"))
+    return {"root": n_root, "next": n_next}
 
 
-def check_root(repo: Path, out: Path) -> list[str]:
-    """Problems with the published root: a committed site file missing or changed, or an extra file."""
-    files = committed_site_files(repo)
-    problems = [f"missing or changed: {f}" for f in files if not (out / f).is_file() or _sha(out / f) != _sha(repo / f)]
+def check_root(repo: Path, out: Path, dist: Path) -> list[str]:
+    """Problems with the published root: a file that differs from the build or is not in it, and a
+    committed site file missing (the build copies every one; the generated data files replace theirs)."""
+    built = {p.relative_to(dist).as_posix() for p in dist.rglob("*") if p.is_file()}
     published = {p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()
                  and not p.relative_to(out).as_posix().startswith("next/")}
-    problems += [f"not a committed site file: {f}" for f in sorted(published - set(files))]
+    problems = [f"missing or changed: {f}" for f in sorted(built) if f not in published or _sha(out / f) != _sha(dist / f)]
+    problems += [f"not in the build: {f}" for f in sorted(published - built)]
+    problems += [f"committed site file not published: {f}" for f in committed_site_files(repo) if f not in published]
     return problems
 
 
