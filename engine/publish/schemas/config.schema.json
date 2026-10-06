@@ -37,7 +37,8 @@
         "first_season": {"$ref": "#/$defs/season"},
         "logo": {"$ref": "#/$defs/path"},
         "logos_by_season": {"type": "object", "additionalProperties": {"$ref": "#/$defs/path"}},
-        "conference_labels": {"type": "object", "additionalProperties": {"type": "string"}}
+        "conference_labels": {"type": "object", "additionalProperties": {"type": "string"}},
+        "credit": {"type": "object", "required": ["name"], "properties": {"name": {"type": "string"}, "url": {"type": "string"}}}
       }
     },
     "seasons": {
@@ -118,7 +119,8 @@
           "path": {"type": "string"},
           "parent": {"type": ["string", "null"]},
           "feature": {"type": ["string", "null"]},
-          "nav": {"type": "boolean"}
+          "nav": {"type": "boolean"},
+          "href": {"type": "string"}
         }
       }
     }

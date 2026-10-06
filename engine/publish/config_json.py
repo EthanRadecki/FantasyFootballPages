@@ -126,6 +126,7 @@ def build_config(cfg: dict, tables: dict, build: dict) -> dict:
             "logo": _logo(cfg, current["season"] if current else None),
             "logos_by_season": {str(s["season"]): _logo(cfg, s["season"]) for s in seasons},
             "conference_labels": {str(k): v for k, v in conference_labels(cfg).items()},
+            **({"credit": dict(league["credit"])} if league.get("credit") else {}),
         },
         "seasons": seasons,
         "finished_seasons": finished,

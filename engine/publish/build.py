@@ -140,10 +140,12 @@ def run_build(ctx: BuildContext, out: Path, publishers: list | None = None) -> B
             text = dump(o.payload)
         write_text(out / o.path, text)
     generated = {o.path for o in outputs}
+    from engine.publish.preview import write_preview
+    preview = set(write_preview(ctx.site_root, out, ctx.legacy_site))   # the Stage B pages at next/ (web/)
     files = sorted(str(p.relative_to(out)).replace("\\", "/") for p in out.rglob("*") if p.is_file() and p.name != MARKER)
     manifest = {"build": ctx.build, "provenance": provenance(ctx), "files": [
         {"path": f, "sha256": sha256(out / f), "bytes": (out / f).stat().st_size,
-         "source": "generated" if f in generated else "site"} for f in files]}
+         "source": "generated" if f in generated else "preview" if f in preview else "site"} for f in files]}
     write_text(out / MANIFEST, json.dumps(manifest, indent=1))
     (out / MARKER).unlink()
     return BuildResult(out, copied, outputs)

@@ -1,0 +1,14 @@
+/* Shared components of the Stage B pages (web/). The look itself is site.css, ported unchanged. */
+
+/* A section's loading, empty and error states (core/data.js show()) */
+.data-state {
+  padding:1.25rem 1rem;text-align:center;font-size:0.85rem;color:var(--muted);
+}
+.data-state-error { color:var(--red); }
+.data-state-loading::after {
+  content:'';display:inline-block;width:0.8em;height:0.8em;margin-left:0.5em;vertical-align:-0.1em;
+  border:2px solid currentColor;border-right-color:transparent;border-radius:50%;
+  animation:dataSpin 0.8s linear infinite;
+}
+@keyframes dataSpin { to { transform:rotate(360deg); } }
+@media(prefers-reduced-motion:reduce) { .data-state-loading::after { animation:none; } }

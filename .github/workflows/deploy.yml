@@ -2,7 +2,8 @@ name: Deploy
 
 # Milestone M1 (docs/PUBLISH_PLAN.md section 8): GitHub Pages serves the engine's build
 # (engine update --verify): the committed pages, styles and images with every data file
-# generated from ESPN data, plus the change report at /changes.html.
+# generated from ESPN data, plus the change report at /changes.html, and the Stage B pages
+# (web/) as a preview at /next/ until they replace the root (milestone M2).
 # A deploy happens only when the build, its checks and the page tests pass. Otherwise
 # nothing is deployed, the last good site stays up, and the run fails so GitHub emails it.
 # Runs on every push to main, from the Run workflow button, and on a schedule:
@@ -79,7 +80,9 @@ jobs:
           { echo "### What changed"; echo; sed 's/^/- /' change-report.txt; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Page test on the build
-        run: python tools/smoke_pages.py dist --screenshots screenshots
+        run: |
+          python tools/smoke_pages.py dist --screenshots screenshots
+          python tools/smoke_pages.py dist/next --screenshots screenshots/next
 
       - name: Keep the build
         uses: actions/upload-artifact@v4

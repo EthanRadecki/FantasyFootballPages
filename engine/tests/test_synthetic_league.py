@@ -86,8 +86,14 @@ def test_the_engine_runs_end_to_end():
     assert len(canon["pro_games"]) and len(canon["projections"])
     # only page models (no legacy site for this league), and only the pages the league has
     files = {p.relative_to(dist).as_posix() for p in dist.rglob("*") if p.is_file()}
-    assert all(f.startswith("data/v1/") or f in ("config.json", "build-manifest.json", "verify.json")
+    assert all(f.startswith(("data/v1/", "next/")) or f in ("config.json", "build-manifest.json", "verify.json")
                for f in files)
+    # the Stage B preview (engine/publish/preview.py): the new pages with this league's data, no other league's
+    # images, and only the pages already moved to web/ in its page list
+    assert (dist / "next" / "index.html").is_file() and (dist / "next" / "data" / "v1" / "index.json").is_file()
+    assert not (dist / "next" / "images").exists()
+    preview = json.loads((dist / "next" / "config.json").read_text())
+    assert all((ROOT / "web" / p["path"]).is_file() and "href" not in p for p in preview["pages"])
     pages = {p["id"] for p in json.loads((dist / "config.json").read_text())["pages"]}
     assert "dst-impact" not in pages            # never starts a D/ST
     assert "weekly-rankings" not in pages       # no editorial rankings
