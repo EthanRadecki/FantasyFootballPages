@@ -181,7 +181,7 @@ class SurplusPublisher:
         seasons, hidden = self._seasons(ctx), excluded_manager_keys(ctx.cfg)
         out = [Output(f"data/v1/{SCHEMA}.json", surplus_model(a, seasons, hidden), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
-        if path.is_file():
+        if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
             c, s = _grades(a, seasons, hidden)
             view = surplus_view(picks_frame(a["draft_surplus"], seasons), c, s, seasons, _page_names(ctx, text),

@@ -210,8 +210,12 @@ def analyze_gauntlet(tables: dict[str, pd.DataFrame], manager_seasons: pd.DataFr
     dom = manager_seasons[manager_seasons["season"].isin(set(games["season"]))]
     if "include_excluded" not in fx:
         dom = dom[~dom["manager_key"].isin(exclude_managers)]
-    win, detail = windows(games, dom[["season", "manager_key", "dominance"]],
+    runs = champion_runs(tables, games)
+    # window lengths: 3 and 4 games, plus every champion run's length (a league with two playoff rounds
+    # has two-game runs), so each champion's run is ranked against windows of its own length
+    sizes = tuple(sorted(set(WINDOW_SIZES) | {len(o) for _, _, o in runs}))
+    win, detail = windows(games, dom[["season", "manager_key", "dominance"]], sizes,
                           unrounded_rank="unrounded_rank" in fx)
     win["hidden"] = win["manager_key"].isin(exclude_managers)
-    champs = champions(win, detail, champion_runs(tables, games))
+    champs = champions(win, detail, runs)
     return {"gauntlet_windows": win, "gauntlet_window_games": detail, "gauntlet_champions": champs}

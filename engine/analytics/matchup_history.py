@@ -133,11 +133,15 @@ def conference_tables(tables: dict[str, pd.DataFrame], labels: dict[int, str],
                       ppg_exclusions: set[tuple[int, int, str]] = frozenset(),
                       legacy_mode: bool = False, fixes=None) -> dict[str, pd.DataFrame]:
     fx = _fixes(legacy_mode, fixes)
-    if not labels:
-        return {}
-    g = _flag_ppg(_conference_games(tables, labels), ppg_exclusions, "ppg_forfeiter_only" in fx)
+    g = _flag_ppg(_conference_games(tables, labels or {}), ppg_exclusions, "ppg_forfeiter_only" in fx)
     if "include_excluded" not in fx:
         g = g[~g["manager_key"].isin(exclude_managers) & ~g["opponent_manager_key"].isin(exclude_managers)]
+    if not labels:
+        # a league without conferences (no league.conference_labels): rivalries only
+        return {"conference_managers": pd.DataFrame(columns=CONF_MANAGER_COLUMNS),
+                "conference_seasons": pd.DataFrame(columns=CONF_SEASON_COLUMNS),
+                "conference_summary": pd.DataFrame(columns=CONF_SUMMARY_COLUMNS),
+                "rivalries": rivalries(g, exclude_managers)}
     inter = g[g["conference"].notna() & g["opponent_conference"].notna() & (g["conference"] != g["opponent_conference"])]
 
     mgr = _record(inter, ["manager_key"])
@@ -170,13 +174,25 @@ def conference_tables(tables: dict[str, pd.DataFrame], labels: dict[int, str],
     summary["pf_per_game"] = own.groupby("conference")["points"].mean()
     summary = summary.fillna(0).reset_index().rename(columns={"index": "conference"})
 
+    drop = ["points_for", "points_against", "pf_games", "pa_games"]
+    return {"conference_managers": mgr.drop(columns=drop), "conference_seasons": seasons.drop(columns=drop),
+            "conference_summary": summary, "rivalries": rivalries(g, exclude_managers)}
+
+
+CONF_MANAGER_COLUMNS = ["manager_key", "wins", "losses", "ties", "games", "win_pct", "conference", "pf_per_game",
+                        "pa_per_game", "margin", "hidden"]
+CONF_SEASON_COLUMNS = ["season", "conference", "wins", "losses", "ties", "games", "win_pct"]
+CONF_SUMMARY_COLUMNS = ["conference", "titles", "title_games", "playoff_trips", "wins_regular", "wins_playoff",
+                        "pf_per_game"]
+
+
+def rivalries(g: pd.DataFrame, exclude_managers: set[str]) -> pd.DataFrame:
+    """Every pair's record (each pair once, the lower key first)."""
     pair = g[g["manager_key"] < g["opponent_manager_key"]]
     riv = _record(pair.rename(columns={"opponent_manager_key": "opponent_key"}), ["manager_key", "opponent_key"])
     riv = riv.drop(columns=["points_for", "points_against", "pf_games", "pa_games", "win_pct"])
     riv["hidden"] = riv["manager_key"].isin(exclude_managers) | riv["opponent_key"].isin(exclude_managers)
-    drop = ["points_for", "points_against", "pf_games", "pa_games"]
-    return {"conference_managers": mgr.drop(columns=drop), "conference_seasons": seasons.drop(columns=drop),
-            "conference_summary": summary, "rivalries": riv}
+    return riv
 
 
 def order_rivalries(riv: pd.DataFrame, names: dict[str, str], k: int = 8) -> pd.DataFrame:

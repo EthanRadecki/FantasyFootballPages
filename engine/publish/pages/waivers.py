@@ -285,7 +285,7 @@ class WaiversPublisher:
         hidden = excluded_manager_keys(ctx.cfg)
         out = [Output(f"data/v1/{SCHEMA}.json", waiver_model(st, seasons, hidden), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
-        if path.is_file():
+        if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
             names = _page_names(ctx, text)
             view = waiver_view(file_order(st[~st["manager_key"].isin(hidden)], names), names)

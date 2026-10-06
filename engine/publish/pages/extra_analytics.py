@@ -579,7 +579,7 @@ class ExtraAnalyticsPublisher:
         model = {**extra_model(inp, luck, swap, summ, hidden, seasons), **models_model(ctx.analysis)}
         out = [Output(f"data/v1/{SCHEMA}.json", model, SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
-        if path.is_file():
+        if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
             names = _page_names(ctx, text)
             data = page_data(inp, luck, swap, summ, names, ctx)

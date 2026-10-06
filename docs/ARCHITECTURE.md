@@ -181,6 +181,7 @@ On every push:
 - JSON schema validation of everything in `dist/data/`.
 - Broken path check: every image and data path referenced by HTML or JS must exist in `dist/`.
 - Style lint: no em dashes anywhere in the codebase; no hardcoded manager names or hex colors outside `leagues/`.
+- Synthetic league (F1): `engine/testing/synthetic.py` generates a deterministic ESPN league that is not Preach (10 then 12 teams, divisions on and off, no D/ST, a kicker dropped, a superflex, two- and three-round playoffs, a live season). CI runs normalize, analyze and `build --verify` on it (`leagues/synthetic/league.yaml`), and `engine/tests/test_synthetic_league.py` checks that every page model is produced, valid and adapted to the league. A league without `legacy` settings gets `config.json` and the page models only; Preach's `legacy` block keeps the Stage A site template and golden checks.
 
 ## 8. Migration strategy
 

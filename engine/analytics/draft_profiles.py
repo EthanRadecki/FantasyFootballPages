@@ -73,6 +73,7 @@ MIN_FILL_ROWS = 10                  # observed rows needed to fit the fill-in; f
 ARCHETYPE_K = 4
 PCA_COMPONENTS = 10
 MIN_CLUSTER_ROWS = 30               # fewer finished manager-seasons: no archetypes
+MIN_FEATURE_COVERAGE = 0.9          # share of finished drafts that must have a clustering feature
 SEED = 42
 BOOTSTRAP_RUNS = 100
 
@@ -277,7 +278,15 @@ def surplus_per_pick(surplus: pd.DataFrame, weighted: bool, by: list[str]) -> pd
 def archetypes(seasons: pd.DataFrame, feats: list[str]) -> dict:
     """k-means on standardized features reduced by PCA, fit on finished seasons,
     live seasons assigned to the nearest cluster. None when too few rows."""
-    feats = [f for f in feats if seasons[f].notna().any()]
+    done = seasons[~seasons["live"]]
+    # a feature counts when most finished drafts have it (a position the league's lineups dropped, or
+    # never had, leaves its patience and ADP deviation blank for whole seasons); a draft missing a kept
+    # feature takes the most patient value for a patience (it never drafted that position) or the
+    # finished drafts' median otherwise. Preach has no gaps, so this changes nothing there.
+    feats = [f for f in feats if len(done) and done[f].notna().mean() >= MIN_FEATURE_COVERAGE]
+    seasons = seasons.copy()
+    for f in feats:
+        seasons[f] = seasons[f].fillna(100.0 if f.endswith("_patience") else done[f].median())
     fit = seasons[~seasons["live"]].dropna(subset=feats)
     if len(fit) < MIN_CLUSTER_ROWS or len(feats) < 2:
         return {}
@@ -295,7 +304,7 @@ def archetypes(seasons: pd.DataFrame, feats: list[str]) -> dict:
     labels = pd.Series(km.predict(pca.transform(scaler.transform(rows[feats]))), index=rows.index)
     raw = KMeans(ARCHETYPE_K, n_init=50, random_state=SEED).fit(X)
     return {"labels": labels, "fit_index": fit.index, "Z": Z, "X": X, "km": km, "pca": pca, "scaler": scaler,
-            "feats": feats,
+            "feats": feats, "filled": rows[feats],
             "silhouette_pca": silhouette_score(Z, km.labels_), "silhouette_raw": silhouette_score(X, raw.labels_)}
 
 
@@ -410,11 +419,12 @@ def archetype_matches(s: pd.DataFrame, model: dict) -> pd.DataFrame:
     manager-seasons nearest to it (comparisons, nearest first). One row per
     live draft and comparison."""
     feats = model["feats"]
-    live = s[s["live"]].dropna(subset=feats + ["cluster"])
+    live = s[s["live"]].dropna(subset=["cluster"])
+    live = live[live.index.isin(model["filled"].index)]
     done = s.loc[model["fit_index"]]
     if not len(live):
         return pd.DataFrame(columns=MATCH_COLUMNS)
-    Zl = model["pca"].transform(model["scaler"].transform(live[feats]))
+    Zl = model["pca"].transform(model["scaler"].transform(model["filled"].loc[live.index, feats]))
     centers = model["km"].cluster_centers_
     rows = []
     for i, (_, r) in enumerate(live.iterrows()):

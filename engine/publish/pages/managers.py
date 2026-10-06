@@ -391,7 +391,7 @@ class ManagersPublisher:
             Output("data/roster_stints.json", roster_stint_view(a["roster_stints"], Names(ctx, rs))),
         ]
         page = ctx.site_root / PAGE
-        if page.is_file():
+        if ctx.legacy_site and page.is_file():
             text = page.read_text(encoding="utf-8")
             board = draft_boards(ctx, a, hidden, Names(ctx, _heatmap_names(text)))
             if board:

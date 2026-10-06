@@ -23,6 +23,19 @@ To look at the build: `python -m http.server 8000 --directory dist`, then open t
 
 Until milestone M1 (docs/PUBLISH_PLAN.md section 8) the live site is still updated the old way; `dist/` is for review only.
 
+## The synthetic league (F1)
+
+A generated test league that is not Preach, for checking the engine end to end on another league's shape (`engine/testing/synthetic.py`):
+
+```
+python tools/synthetic_league.py --cache .cache-synthetic
+python -m engine.cli normalize leagues/synthetic/league.yaml --cache .cache-synthetic
+python -m engine.cli analyze leagues/synthetic/league.yaml --cache .cache-synthetic
+python -m engine.cli build leagues/synthetic/league.yaml --cache .cache-synthetic --out dist-synthetic --verify
+```
+
+CI runs the same steps on every push. Both folders are gitignored. After changing the generator's managers, rewrite its config with `python tools/synthetic_league.py --yaml leagues/synthetic/league.yaml`.
+
 ## Weekly rankings
 
 Each ranked week is an editorial file (`leagues/<league>/editorial/rankings/<season>_weekNN.json`: ranks, synopses, blurbs, the matchup of the week) plus a frozen snapshot of its computed fields (`leagues/<league>/snapshots/rankings/`); the build adds record, PPG, streak and the rank fields (docs/METRICS_REFERENCE.md, Weekly Rankings).
