@@ -23,6 +23,14 @@ To look at the build: `python -m http.server 8000 --directory dist`, then open t
 
 Until milestone M1 (docs/PUBLISH_PLAN.md section 8) the live site is still updated the old way; `dist/` is for review only.
 
+## Deploy (milestone M0)
+
+GitHub Pages deploys from `.github/workflows/deploy.yml` on every push to `main` and from Actions → Deploy → Run workflow. It publishes the committed site at the root (exactly the repo's site files: `index.html`, `pages/`, `data/`, `images/`, the shared JS and CSS) and the engine's build at `/next/`. If the engine build fails (expired ESPN cookies, a failed check, a page error), the root still deploys, `/next/` is left out until the next good build, and the run fails so GitHub emails you; the engine job's log says which step.
+
+One-time setup: repository Settings → Secrets and variables → Actions → New repository secret, `ESPN_S2` and `SWID` (the same values as the Codespaces secrets); Settings → Pages → Build and deployment → Source: GitHub Actions.
+
+ESPN cookies expire every few months; when the engine job's pull step reports expired cookies, update both secrets (Codespaces and Actions).
+
 ## Page test and build provenance
 
 `python tools/smoke_pages.py` opens every page of the site in headless Chromium (needs `pip install playwright` and `python -m playwright install chromium`) and fails on JavaScript errors or a blank page; `--screenshots DIR` saves one PNG per page, `-v` lists resources that did not load. CI runs it on every push. `build-manifest.json` in each build lists what the build was made from (`provenance`): two builds with the same digests write the same data.

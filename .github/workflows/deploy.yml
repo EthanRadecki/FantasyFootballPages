@@ -1,0 +1,139 @@
+name: Deploy
+
+# Milestone M0 (docs/PUBLISH_PLAN.md section 8): GitHub Pages serves
+#   /       the committed site, byte for byte (tools/deploy_site.py assemble checks it)
+#   /next/  the engine's build of the same site (engine update), for review before M1
+# The live root deploys on every push even when the engine build fails; then /next/ is
+# left out of that deploy and the run fails at the end, so GitHub emails the failure.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  LEAGUE: leagues/preach/league.yaml
+  PREVIOUS_STATS: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/next/deploy-stats.json
+
+jobs:
+  engine:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install pyyaml pandas pyarrow scipy scikit-learn jsonschema requests playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Restore the ESPN cache (finished seasons are pulled once)
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/espn
+          key: espn-raw-${{ github.run_id }}
+          restore-keys: espn-raw-
+
+      - name: engine update (pull, normalize, analyze, build --verify)
+        id: update
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          SWID: ${{ secrets.SWID }}
+        run: python -m engine.cli update "$LEAGUE" --out dist --verify
+
+      - name: Save the ESPN cache
+        if: ${{ !cancelled() }}
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/espn
+          key: espn-raw-${{ github.run_id }}
+
+      - name: Sanity checks against the last deploy
+        run: python tools/deploy_site.py sanity --dist dist --previous "$PREVIOUS_STATS"
+
+      - name: Page test on the build
+        run: python tools/smoke_pages.py dist --screenshots next-screenshots
+
+      - name: Keep the build
+        uses: actions/upload-artifact@v4
+        with:
+          name: next
+          path: dist/
+          retention-days: 30
+
+      - name: Keep the screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-screenshots
+          path: next-screenshots/
+          retention-days: 14
+
+  site:
+    needs: engine
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install pyyaml playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Get the engine build
+        if: ${{ needs.engine.result == 'success' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: next
+          path: dist
+
+      - name: Assemble the site (root byte for byte, /next/ when the engine build passed)
+        run: |
+          if [ -d dist ]; then python tools/deploy_site.py assemble --out _site --dist dist
+          else python tools/deploy_site.py assemble --out _site; fi
+
+      - name: Page test on the live root
+        run: python tools/smoke_pages.py _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+
+  deploy:
+    needs: site
+    if: ${{ !cancelled() && needs.site.result == 'success' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  report:
+    needs: [engine, deploy]
+    if: ${{ always() && needs.engine.result != 'success' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - run: |
+          echo "::error::The engine build failed (expired ESPN cookies, a failed check, or a page error): /next/ was not updated this run. Open the engine job's log."
+          exit 1
