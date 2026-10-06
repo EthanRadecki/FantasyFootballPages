@@ -108,6 +108,26 @@ def spellings(ctx) -> list[str]:
     return keys
 
 
+def id_resolver(names: pd.DataFrame):
+    """(name, pos) -> player id, by the same matching the legacy view uses for other spellings: name
+    and position ignoring case, accents, punctuation and suffixes (the latest season wins a shared
+    name), else the name alone when only one player has it; None when nothing matches."""
+    by_norm: dict = {}
+    by_name: dict = {}
+    for r in names.sort_values(["season", "player_id"], kind="stable").itertuples():
+        by_norm[(norm(r.player_name), r.position)] = int(r.player_id)
+        by_name.setdefault(norm(r.player_name), set()).add(int(r.player_id))
+
+    def resolve(name, pos):
+        if not name:
+            return None
+        pid = by_norm.get((norm(name), pos))
+        if pid is None and len(by_name.get(norm(name), ())) == 1:
+            pid = next(iter(by_name[norm(name)]))
+        return pid
+    return resolve
+
+
 def legacy_view(index: pd.DataFrame, urls: dict[int, str], extra_keys: list[str],
                 names: pd.DataFrame | None = None) -> tuple[dict, list[str]]:
     """("Name|POS" -> URL, keys of `extra_keys` no player matches). Other spellings match any name and

@@ -44,7 +44,8 @@ def odds_model(odds: pd.DataFrame, regular_weeks: dict[int, int], hidden: set[st
             "weeks": [{"week": int(w), "method": str(wg["method"].iloc[0]),
                        "odds": {r.manager_key: float(r.odds) for r in wg.itertuples()}}
                       for w, wg in g.groupby("week", sort=True)]})
-    return {"seasons": seasons}
+    from engine.analytics.playoff_odds import TRIALS
+    return {"trials": TRIALS, "seasons": seasons}
 
 
 def frame_from_file(data: dict, cfg: dict) -> pd.DataFrame:

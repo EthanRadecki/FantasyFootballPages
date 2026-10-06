@@ -46,6 +46,8 @@ def test_theme_colors_are_checked():
     assert validate_config(minimal(theme={"champion_tints": {2020: "#ea7988"}})).ok
     report = validate_config(minimal(theme={"champion_tints": {2020: "pink"}}))
     assert not report.ok and "theme.champion_tints.2020" in report.errors[0]
+    report = validate_config(minimal(theme={"season_accents": {2026: "#9b4d8"}}))
+    assert not report.ok and "theme.season_accents.2026" in report.errors[0]
 
 
 def test_duplicate_manager_fails():

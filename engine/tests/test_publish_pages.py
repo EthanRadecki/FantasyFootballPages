@@ -388,3 +388,5 @@ def test_odds_view_rebuilds_the_site_file():
     model = odds_pub.odds_model(frame, {int(s): d["max_week"] for s, d in gold.items()}, {LOOKUP["thomas sullivan"]})
     first = model["seasons"][0]
     assert first["season"] == 2020 and LOOKUP["thomas sullivan"] not in first["weeks"][0]["odds"]
+    from engine.analytics.playoff_odds import TRIALS
+    assert model["trials"] == TRIALS          # the page states how many playouts each week's odds come from

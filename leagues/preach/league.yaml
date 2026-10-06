@@ -146,6 +146,14 @@ theme:
     2024: "#9aadae"
     2025: "#a9b88b"
     2026: "#c292b8"
+  season_accents:           # a text-safe darker shade of each season color: the weekly rankings page's accent
+    2020: "#77676f"         # for that season (optional; default: the site's accent)
+    2021: "#5f6984"
+    2022: "#916032"
+    2023: "#9a5858"
+    2024: "#5c7172"
+    2025: "#617044"
+    2026: "#9b4d8b"
   champion_tints:           # the champions page card tint per season (optional; default: the champion's dark color)
     2020: "#ea7988"
     2021: "#254bae"
