@@ -146,3 +146,10 @@ theme:
     2024: "#9aadae"
     2025: "#a9b88b"
     2026: "#c292b8"
+  champion_tints:           # the champions page card tint per season (optional; default: the champion's dark color)
+    2020: "#ea7988"
+    2021: "#254bae"
+    2022: "#21459a"
+    2023: "#e3a748"
+    2024: "#736ba6"
+    2025: "#333148"

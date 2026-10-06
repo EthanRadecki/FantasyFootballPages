@@ -41,6 +41,13 @@ def test_bad_color_fails():
     assert not validate_config(cfg).ok
 
 
+def test_theme_colors_are_checked():
+    """season_colors and champion_tints must be #RRGGBB."""
+    assert validate_config(minimal(theme={"champion_tints": {2020: "#ea7988"}})).ok
+    report = validate_config(minimal(theme={"champion_tints": {2020: "pink"}}))
+    assert not report.ok and "theme.champion_tints.2020" in report.errors[0]
+
+
 def test_duplicate_manager_fails():
     cfg = minimal(managers=[{"name": "A", "id": "1"}, {"name": "A", "id": "2"}])
     assert not validate_config(cfg).ok

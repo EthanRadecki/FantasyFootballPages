@@ -151,6 +151,32 @@
           }
         }
       }
+    },
+    "photos": {
+      "type": "array",
+      "description": "editorial champions.yaml: photos shown below a season's card",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "after",
+          "image"
+        ],
+        "properties": {
+          "after": {
+            "type": "integer"
+          },
+          "image": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "alt": {
+            "type": "string"
+          }
+        }
+      }
     }
   }
 }

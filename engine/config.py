@@ -163,8 +163,9 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
             errors.append(f"corrections.draft_pick_owners.{season}: unknown managers {unknown}")
 
     theme = cfg.get("theme") or {}
-    for season, color in (theme.get("season_colors") or {}).items():
-        if not HEX_COLOR.match(str(color)):
-            errors.append(f"theme.season_colors.{season}: '{color}' is not #RRGGBB")
+    for section in ("season_colors", "champion_tints"):
+        for season, color in (theme.get(section) or {}).items():
+            if not HEX_COLOR.match(str(color)):
+                errors.append(f"theme.{section}.{season}: '{color}' is not #RRGGBB")
 
     return ConfigReport(errors=errors, warnings=warnings)

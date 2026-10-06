@@ -1,0 +1,233 @@
+/* Champions page (web/pages/champions.html). Ported unchanged from the Stage A page. */
+/* ── CHAMPION CARD ── */
+.champ-card {
+  padding:0;overflow:hidden;margin-bottom:1.5rem;
+  position:relative;
+}
+.champ-card::after {
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:rgba(var(--tint,156,148,156),0.08);
+}
+
+/* Year banner */
+.champ-banner {
+  padding:1.4rem 2rem 1rem;position:relative;z-index:1;
+  border-bottom:1px solid rgba(212,175,55,0.15);
+}
+.champ-year-badge {
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.14em;
+  font-weight:700;color:var(--gold);margin-bottom:0.5rem;
+}
+.champ-title {
+  font-family:var(--font-display);font-size:1.8rem;font-weight:900;
+  color:var(--palm);letter-spacing:-0.02em;line-height:1.1;
+  margin-bottom:0.2rem;
+}
+.champ-manager-line {
+  font-size:0.82rem;color:var(--muted);
+}
+.champ-manager-line strong { color:var(--text-mid); }
+
+/* Stats bar */
+.champ-stats {
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid rgba(212,175,55,0.12);
+  position:relative;z-index:1;
+}
+.champ-stat {
+  padding:1.1rem 1.5rem;text-align:center;
+  border-right:1px solid rgba(212,175,55,0.1);
+}
+.champ-stat:last-child { border-right:none; }
+.champ-stat-value {
+  font-family:var(--font-display);font-size:1.5rem;font-weight:900;
+  color:var(--palm);line-height:1;margin-bottom:0.2rem;
+}
+.champ-stat-value.gold { color:var(--gold); }
+.champ-stat-label {
+  font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;
+  font-weight:700;color:var(--muted);
+}
+
+/* Roster view toggle */
+.roster-toggle-row {
+  display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;
+  padding:0.75rem 2rem 0;position:relative;z-index:1;
+}
+.roster-toggle {
+  display:inline-flex;background:rgba(156,148,156,0.12);
+  border-radius:999px;padding:0.2rem;
+}
+.roster-toggle-btn {
+  font-family:inherit;font-size:0.68rem;font-weight:700;
+  color:var(--muted);background:none;border:none;cursor:pointer;
+  padding:0.35rem 0.85rem;border-radius:999px;transition:all 0.15s;
+}
+.roster-toggle-btn.active {
+  background:var(--palm);color:var(--bg);
+}
+.roster-toggle-hint {
+  font-size:0.7rem;color:var(--muted);font-style:italic;
+}
+@media(max-width:600px) {
+  .roster-toggle-row { padding:0.65rem 1.25rem 0; }
+}
+
+/* Roster */
+.champ-roster {
+  padding:1.25rem 2rem 1.5rem;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0.5rem 1rem;
+  position:relative;z-index:1;
+}
+.roster-slot {
+  display:flex;flex-direction:column;gap:0.3rem;
+  padding:0.55rem 0.65rem;border-radius:7px;
+  background:rgba(255,255,255,0.28);
+}
+.roster-ppg-row {
+  display:flex;flex-wrap:wrap;gap:0.25rem 0.7rem;font-size:0.66rem;color:var(--muted);
+}
+.roster-ppg-row .ppg-val { font-weight:700;color:var(--text-mid); }
+.roster-ppg-row .ppg-po.up   { color:#4a8a5a; font-weight:700; }
+.roster-ppg-row .ppg-po.down { color:#c04a4a; font-weight:700; }
+@media(max-width:600px) {
+  .roster-ppg-row { padding-left:0; font-size:0.68rem; }
+}
+.roster-slot-top { display:flex;align-items:center;gap:0.5rem; }
+.roster-name {
+  font-size:0.8rem;font-weight:600;color:var(--text-mid);
+  line-height:1.3;
+}
+.roster-headshot {
+  width:26px;height:26px;border-radius:50%;object-fit:cover;
+  flex-shrink:0;background:rgba(255,255,255,0.5);
+  border:2px solid rgba(156,148,156,0.5);
+}
+
+/* Trophy handoff */
+.trophy-wrap {
+  padding:2rem;text-align:center;margin-bottom:1.5rem;
+}
+.trophy-label {
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.14em;
+  font-weight:700;color:var(--accent);margin-bottom:1rem;
+}
+.trophy-photo {
+  max-width:60%;border-radius:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.1);
+  cursor:zoom-in;transition:transform 0.2s;display:block;margin:0 auto;
+}
+.trophy-photo:hover { transform:scale(1.005); }
+
+@media(max-width:900px) {
+  .champ-stats { grid-template-columns:repeat(2,1fr); }
+  .champ-roster { grid-template-columns:repeat(2,1fr); }
+  .champ-title  { font-size:1.4rem; }
+}
+@media(max-width:600px) {
+  .champ-banner { padding:1rem 1.25rem 0.75rem; }
+  .champ-stat   { padding:0.9rem 0.75rem; }
+  .champ-stat-value { font-size:1.2rem; }
+  .champ-roster { padding:1rem 1.25rem 1.25rem;grid-template-columns:1fr 1fr; }
+  .trophy-photo { max-width:90%; }
+  .trophy-wrap  { padding:1.25rem; }
+}
+
+/* Banner layout with team logo */
+.champ-banner-flex { display:flex;align-items:center;gap:1.25rem; }
+.champ-logo-wrap {
+  position:relative;flex-shrink:0;width:64px;height:64px;
+}
+.champ-logo-wrap::before {
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,175,55,0.22),transparent 70%);
+}
+.champ-logo {
+  position:relative;width:64px;height:64px;object-fit:cover;
+  border-radius:50%;background:rgba(255,255,255,0.4);
+  padding:4px;display:block;
+}
+.champ-banner-text { min-width:0;flex:1;padding-right:56px; }
+.ring-badge {
+  display:inline-flex;align-items:center;gap:0.25rem;
+  font-size:0.62rem;font-weight:800;color:var(--gold);
+  background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.3);
+  padding:0.12rem 0.5rem;border-radius:999px;margin-left:0.5rem;
+  vertical-align:middle;
+}
+@media(max-width:600px) {
+  .champ-logo-wrap, .champ-logo { width:48px;height:48px; }
+  .champ-banner-text { padding-right:44px; }
+}
+
+/* Season league logo -- a small corner watermark on each card, distinct
+   from the manager's own team logo (.champ-logo above) so the two don't
+   compete for attention. Soft rounded square, not circular, on purpose:
+   keeps it visually differentiated from every circular logo elsewhere on
+   this page. Sits absolutely within .champ-banner (already position:
+   relative), so it never disturbs the existing flex layout. */
+.champ-season-logo-wrap {
+  position:absolute;top:1rem;right:1.4rem;z-index:2;
+  width:44px;height:44px;
+}
+.champ-season-logo {
+  width:100%;height:100%;object-fit:contain;
+  border-radius:10px;
+  background:rgba(255,255,255,0.55);
+  box-shadow:0 3px 10px rgba(30,26,20,0.12);
+  padding:3px;display:block;
+}
+@media(max-width:600px) {
+  .champ-season-logo-wrap { width:34px;height:34px;top:0.85rem;right:1rem; }
+}
+
+/* Champ vs runner-up mini score bar */
+.champ-margin-wrap { padding:1rem 2rem 0;position:relative;z-index:1; }
+.champ-margin-labels {
+  display:flex;justify-content:space-between;font-size:0.7rem;
+  font-weight:700;color:var(--text-mid);margin-bottom:0.35rem;
+}
+.champ-margin-labels .lbl-champ { color:var(--gold); }
+.champ-margin-labels .lbl-runner { color:var(--muted); }
+.champ-margin-bar {
+  display:flex;height:8px;border-radius:999px;overflow:hidden;
+  background:rgba(156,148,156,0.15);
+}
+.champ-margin-bar .seg-champ { background:rgba(212,175,55,0.85); }
+.champ-margin-bar .seg-runner { background:rgba(156,148,156,0.45); }
+@media(max-width:600px) { .champ-margin-wrap { padding:0.85rem 1.25rem 0; } }
+
+/* Position badges, same system used across the rest of the site (see
+   style.css), plus two extras this page needs: FLEX slots and the
+   team-total row. */
+.pos-flex{ background:rgba(120,110,130,0.22);color:#5a5064; }
+.pos-total{ background:rgba(212,175,55,0.28);color:#8a6d10; }
+
+.team-total-slot {
+  grid-column:1 / -1;
+  background:rgba(212,175,55,0.14);
+  border:1px solid rgba(212,175,55,0.3);
+}
+.team-total-slot .roster-name { font-weight:800;color:var(--text); }
+.team-total-slot .roster-ppg-row { font-size:0.72rem; }
+.team-total-slot .ppg-val { font-size:0.85rem; }
+.team-total-slot .ppg-po { font-size:0.85rem; }
+
+/* Scroll-reveal */
+.champ-card, .trophy-wrap {
+  opacity:0;transform:translateY(18px);
+  transition:opacity 0.55s ease, transform 0.55s ease;
+}
+.champ-card.revealed, .trophy-wrap.revealed {
+  opacity:1;transform:translateY(0);
+}
+
+/* A league without logos: the champion's initials on their color */
+.champ-logo-initials {
+  display:flex;align-items:center;justify-content:center;box-sizing:border-box;
+  background-clip:content-box;color:#fff;font-weight:800;font-size:1.3rem;letter-spacing:0.02em;
+}
+@media (max-width:768px) { .champ-logo-initials { font-size:1rem; } }

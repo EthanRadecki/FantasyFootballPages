@@ -104,6 +104,19 @@ def test_round_names():
                                                               "First Round", "Round 1"]
 
 
+def test_champions_photos_are_editorial(tmp_path):
+    """champions.yaml photos go into champions.json in file order; no file, no `photos` key."""
+    ctx = SimpleNamespace(league_dir=tmp_path)
+    assert champ_pub.photos(champ_pub.load_editorial(ctx, "champions")) == []
+    assert "photos" not in champ_pub.champions_model([], {}, [])
+    (tmp_path / "editorial").mkdir()
+    (tmp_path / "editorial" / "champions.yaml").write_text(
+        "photos:\n  - {after: 2031, image: images/a.jpg, label: Trophy}\n  - {after: 2030, image: images/b.jpg}\n")
+    pics = champ_pub.photos(champ_pub.load_editorial(ctx, "champions"))
+    assert pics == [{"after": 2031, "image": "images/a.jpg", "label": "Trophy"}, {"after": 2030, "image": "images/b.jpg"}]
+    assert champ_pub.champions_model([], {}, pics)["photos"] == pics
+
+
 # ---------------------------------------------------------------- schedule_release
 
 from engine.publish.pages import schedule as sched_pub  # noqa: E402

@@ -17,7 +17,7 @@ python -m engine.cli update leagues/preach/league.yaml --verify
 | analyze | `python -m engine.cli analyze leagues/preach/league.yaml` | `.cache/analysis/...` analysis tables |
 | build | `python -m engine.cli build leagues/preach/league.yaml --verify` | `dist/` (gitignored): the site, `config.json`, generated data, `build-manifest.json` |
 
-`update --skip-pull` rebuilds from the cached ESPN data. `build --verify` checks the build: site files copied byte for byte, every page model file against its JSON schema, every asset path in `config.json`, every data and image path referenced by the pages, and (from PR A2 on) each page's Stage A check against its golden. League editorial files the build reads live in `leagues/<league>/editorial/` (from PR A5: `archetypes.yaml`, the draft archetype names); every page works without them.
+`update --skip-pull` rebuilds from the cached ESPN data. `build --verify` checks the build: site files copied byte for byte, every page model file against its JSON schema, every asset path in `config.json`, every data and image path referenced by the pages, and (from PR A2 on) each page's Stage A check against its golden. League editorial files the build reads live in `leagues/<league>/editorial/` (from PR A5: `archetypes.yaml`, the draft archetype names; from B3: `champions.yaml`, the photos on the champions page, each shown below the season named in `after`); every page works without them.
 
 To look at the build: `python -m http.server 8000 --directory dist`, then open the forwarded port.
 

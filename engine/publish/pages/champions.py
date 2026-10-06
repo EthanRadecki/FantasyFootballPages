@@ -24,7 +24,8 @@ Starters are listed in the box-score order every page shares (the engine's
 `box_scores`), not the page's hand order (FLEX before TE, K before D/ST); the
 Stage A check compares each card's starters by slot and name. Team names
 follow the league's editorial team_names.yaml where a page shortened one.
-The trophy photo and the page copy are editorial.
+The trophy photo is editorial (champions.yaml `photos`, published in champions.json);
+the page copy is editorial.
 """
 
 from __future__ import annotations
@@ -34,8 +35,9 @@ import re
 import pandas as pd
 
 from engine.publish.build import Output
+from engine.legacy import Comparison
 from engine.publish.diff import compare_json
-from engine.publish.editorial import team_names
+from engine.publish.editorial import load_editorial, team_names
 from engine.publish.legacy_view import Names, read_literal, replace_literal
 
 SCHEMA = "champions"
@@ -101,8 +103,20 @@ def champion_runs(ms: pd.DataFrame, games: pd.DataFrame, box: pd.DataFrame, line
     return out
 
 
-def champions_model(runs: list[dict], teams: dict) -> dict:
-    return {"seasons": [{**r, "team_name": teams.get((r["season"], r["manager_key"]))} for r in runs]}
+def photos(editorial: dict | None) -> list[dict]:
+    """The league's editorial champions.yaml photos: {after, image, label, alt}, in file order."""
+    out = []
+    for ph in (editorial or {}).get("photos") or []:
+        out.append({"after": int(ph["after"]), "image": str(ph["image"]),
+                    **{k: str(ph[k]) for k in ("label", "alt") if ph.get(k) is not None}})
+    return out
+
+
+def champions_model(runs: list[dict], teams: dict, pics: list[dict] | None = None) -> dict:
+    model = {"seasons": [{**r, "team_name": teams.get((r["season"], r["manager_key"]))} for r in runs]}
+    if pics:
+        model["photos"] = pics
+    return model
 
 
 # ---------------------------------------------------------------- legacy view
@@ -199,7 +213,8 @@ class ChampionsPublisher:
         if not all(n in ctx.analysis for n in self.NEEDS):
             return []
         runs, teams = self._runs(ctx), team_names(ctx)
-        out = [Output(f"data/v1/{SCHEMA}.json", champions_model(runs, teams), SCHEMA, VERSION)]
+        pics = photos(load_editorial(ctx, "champions"))
+        out = [Output(f"data/v1/{SCHEMA}.json", champions_model(runs, teams, pics), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
         if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
@@ -223,7 +238,17 @@ class ChampionsPublisher:
         path = ctx.site_root / PAGE
         if path.is_file():
             data = read_page(write_page(path.read_text(encoding="utf-8"), data))
-        return compare_view(data, gold) + self.info(ctx, runs)
+        return compare_view(data, gold) + self.info(ctx, runs) + self.check_photos(ctx)
+
+    def check_photos(self, ctx) -> list:
+        """Every editorial photo's image is a site file."""
+        pics = photos(load_editorial(ctx, "champions"))
+        if not pics:
+            return []
+        c = Comparison("champions.yaml photos vs site files", len(pics), len(pics))
+        missing = [p["image"] for p in pics if not (ctx.site_root / p["image"]).is_file()]
+        c.missing, c.examples = len(missing), missing[:4]
+        return [c]
 
     def info(self, ctx, runs) -> list[str]:
         finished = list(ctx.config["finished_seasons"])
