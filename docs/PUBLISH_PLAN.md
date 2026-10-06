@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: A0-A7 merged (#29-#38); A8a (champions, schedule_release) in review. Status columns below are as of A8a.
+Progress: A0-A8a merged (#29-#39); A8b (weekly rankings) in review; A8c (headshots) next. Status columns below are as of A8b.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -43,7 +43,7 @@ Names: legacy data keys rows by manager display name, and the pages disagree on 
 | index.html | file (stats CSV) + client | 3 | leaderboard COVERED via manager seasons; client math moves to publish |
 | managers.html | 5 files, rankings files, ~280 KB inline, client | 14 | mostly COVERED; draft board map COVERED (A5); headshots NO PRODUCER; client luck uses a legacy method |
 | matchups.html | file (matchups.json) | 4 | COVERED |
-| weekly-rankings.html | rankings files, playoff odds, headshots | 6 plus ~20 computed fields | odds COVERED; computed ranking fields NO PRODUCER (builder lost); rest EDITORIAL |
+| weekly-rankings.html | rankings files, playoff odds, headshots | 6 plus ~20 computed fields | COVERED (A8b: editorial files, frozen snapshots, derived fields; odds A4); headshots NO PRODUCER (A8c) |
 | trade-value.html | 6 globals + inline | 8 | explorer COVERED; other globals NO GOLDEN; most traded NO PRODUCER |
 | position-impact.html | file | 1 (12 sections) | COVERED |
 | dst-impact.html | file | 1 (8 sections) | COVERED |
@@ -127,30 +127,30 @@ Note: the live season's rows (Playoffs 0, all-time ranks blank) are included in 
 
 | Element | Where | Shape | Producer | Golden / check | Status |
 |---|---|---|---|---|---|
-| Manifest | file `rankings/manifest.json` | [{season, weeks[], playoffRounds?, weekLabels?}] | built from the editorial files present | none | EDITORIAL index (generated) |
-| Weekly rankings, 2021-2025 | files `rankings/<season>_weekNN.json` | {season, week, teams[{manager, rank, prev_rank, rank_change, avg_rank, ppg_to_date, record_to_date, last_score, streak, synopsis, blurb}]} | editorial; the stat fields were typed or computed at the time | none | EDITORIAL (freeze as historical snapshots) |
-| Playoff round preview | file `rankings/2025_playoff_quarterfinals.json` | {season, round, round_label, overview, matchups[{matchup_label, higher_seed/lower_seed {seed, team, manager, projection, regular_season_avg, record}, pick, blurb}]} | seeds, records, averages from `ms`/`games`; projection from projections | none | EDITORIAL (blurbs) + computable fields |
-| Weekly rankings, live season | files `rankings/2026_weekNN.json` | teams[] adds: proj_ppg, proj_ppg_ros, sos_avg_opp_ppg, sos_rank, draft_grade, draft_surplus_total, draft_picks[{player, nfl_team, pos, round, pick_in_round, overall, espn_adp, adp_deviation, grade, surplus_value}], week 1 only: adp_value, position_spend {QB,RB,WR,TE}, draft_archetype {cluster_id, name, confidence, comparisons[3], dist_to_nearest, margin_over_2nd}; file adds: player_season_totals {"name|POS": pts}, undrafted_players[{player, pos, nfl_team, manager?}], matchup_of_the_week {team_a/b {manager, rank, record, proj_total, starters[{player, nfl_team, pos, slot, opp, proj}]}, blurb}, hide_archetype_link | see split below | `sos/rankings_2026_week03.json` (SOS values PASS) | mixed |
+| Manifest | file `rankings/manifest.json` | [{season, weeks[], playoffRounds?, weekLabels?}] | built from the editorial files present | `rankings/rankings_files.json`, PASS | COVERED (A8b, generated) |
+| Weekly rankings, 2021-2025 | files `rankings/<season>_weekNN.json` | {season, week, teams[{manager, rank, prev_rank, rank_change, avg_rank, ppg_to_date, record_to_date, last_score, streak, synopsis, blurb}]} | editorial files (rank, synopsis, blurb); record, PPG, last score, streak and the rank fields derived from `games` and the ranks | `rankings/rankings_files.json`, PASS (avg_rank by the older rule, 1-place typing excused) | COVERED (A8b) |
+| Playoff round preview | file `rankings/2025_playoff_quarterfinals.json` | {season, round, round_label, overview, matchups[{matchup_label, higher_seed/lower_seed {seed, team, manager, projection, regular_season_avg, record}, pick, blurb}]} | editorial file as written (its projections were a snapshot) | same, PASS | EDITORIAL (A8b); a generated preview is Stage B |
+| Weekly rankings, live season | files `rankings/2026_weekNN.json` | teams[] adds: proj_ppg, proj_ppg_ros, sos_avg_opp_ppg, sos_rank, draft_grade, draft_surplus_total, draft_picks[{player, nfl_team, pos, round, pick_in_round, overall, espn_adp, adp_deviation, grade, surplus_value}], week 1 only: adp_value, position_spend {QB,RB,WR,TE}, draft_archetype {cluster_id, name, confidence, comparisons[3], dist_to_nearest, margin_over_2nd}; file adds: player_season_totals {"name|POS": pts}, undrafted_players[{player, pos, nfl_team, manager?}], matchup_of_the_week {team_a/b {manager, rank, record, proj_total, starters[{player, nfl_team, pos, slot, opp, proj}]}, blurb}, hide_archetype_link | see split below | `rankings/rankings_files.json`, PASS; generator checked on 2026 (draft record and week 1 measures exact, drift INFO) | COVERED (A8b) |
 | Playoff odds chart | file `rankings/playoff_odds.json` | {season: {cutoff, max_week, weeks: {week: {name: odds}}}} | `playoff_odds` | `playoff_odds/playoff_odds.json`, backtest + live week 3 PASS | COVERED |
 | Headshots | file `player_headshots.json` | as 3 | | | NO PRODUCER |
 | `DRAFT_METRICS` labels and descriptions | inline | metadata | | | TEMPLATE |
 | `MANAGER_COLORS`, `LASTNAME_MAP`, `SEASON_THEME_COLORS` | inline | | | | CONFIG |
 
-Live-season computed fields and their engine source (the builder that wrote them is lost; none are checked except SOS):
+Live-season computed fields and their engine source. The builder that wrote them is lost; A8b stores the published values as frozen snapshots and generates new weeks with `engine rankings new` (rules in METRICS_REFERENCE, Weekly Rankings):
 
 | Field | Engine source | Status |
 |---|---|---|
-| record_to_date, ppg_to_date, last_score, streak | `games`, `ms` (finished weeks) | NO PRODUCER (trivial) |
-| proj_ppg (a hand snapshot today) | `projected_team_weeks` | NO PRODUCER |
-| proj_ppg_ros | `projected_team_weeks`, rule to recover from the files | NO PRODUCER |
-| sos_avg_opp_ppg, sos_rank | `projected_sos` | COVERED |
-| draft_grade, draft_surplus_total, draft_picks[].surplus_value | `draft_season_grades`, `draft_surplus` (live) | COVERED via `surplus_value_2026_live` goldens |
-| draft_picks[].espn_adp, adp_deviation | `adp`, `draft_picks` | NO PRODUCER (page layer) |
-| adp_value, position_spend (week 1) | `draft_picks` + `adp`, rule to recover | NO PRODUCER |
-| draft_archetype (week 1) | `draft_profile_seasons.cluster` for the live season (predicted); comparisons, distances and confidence are not in any table | NO PRODUCER (partly); name EDITORIAL |
-| player_season_totals, undrafted_players | `player_stats`, `lineups`, `players` | NO PRODUCER |
-| matchup_of_the_week starters and projections | `projected_lineups`, `future_matchups` | NO PRODUCER; choice and blurb EDITORIAL |
-| rank, prev_rank, rank_change, avg_rank, synopsis, blurb, screenshots, hide_archetype_link | editorial | EDITORIAL |
+| record_to_date, ppg_to_date, last_score, streak | `games` (regular season, before the week) | DERIVED every build, exact on every published week |
+| prev_rank, rank_change, avg_rank | the editorial ranks | DERIVED; avg_rank uses the 2026 rule everywhere (decision 7.13) |
+| proj_ppg | `projected_team_weeks` | SNAPSHOT |
+| proj_ppg_ros, sos_avg_opp_ppg, sos_rank | `projected_sos` (ESPN's current schedule) | SNAPSHOT; the published 2026 values used an early draft of the schedule |
+| draft_grade, draft_surplus_total, draft_picks[].surplus_value | `draft_season_grades`, `draft_surplus` | SNAPSHOT |
+| draft_picks[] draft-day fields (team, ADP, deviation) | `draft_picks`, `adp`, written in week 1 and copied | SNAPSHOT; checked against 2026 week 1 (exact apart from name suffixes; ADP INFO: the engine has FantasyPros for 2026, the file ESPN's draft-day ADP) |
+| adp_value, position_spend (week 1) | the week 1 picks | SNAPSHOT; rules recovered exactly (capital halves every three rounds) |
+| draft_archetype (week 1) | `draft_archetype_matches` (new in A8b: nearest finished drafts and center margins in the model's space), names from `archetypes.yaml` | SNAPSHOT; the published one came from the retired archetype model |
+| player_season_totals, undrafted_players | `player_stats`, `projections` (rosters), `draft_picks` | SNAPSHOT; engine rule sized to the page's pools (top 20 free agents per position) |
+| matchup_of_the_week starters and projections | `projected_lineups`, `pro_games` (new in A8b: NFL opponents) | SNAPSHOT (every team's lineup); the pair and blurb EDITORIAL |
+| rank, synopsis, blurb, screenshots, label, hide_archetype_link | editorial | EDITORIAL |
 
 ### 4.5 trade-value.html
 
@@ -319,8 +319,9 @@ dist/
                                  best weeks (A2); draft profile and draft board map (A5)
     matchups.json                games with box scores (A2)
     headshots.json               player id -> image url (A8, decision 7.5)
-    weekly-rankings/index.json   manifest + playoff odds
-    weekly-rankings/<season>-wNN.json   editorial file merged with computed fields
+    weekly-rankings/index.json   every ranked week and playoff preview
+    weekly-rankings/<season>-wNN.json   editorial file merged with its snapshot and derived fields
+    weekly-rankings/<season>-playoff-<round>.json   playoff previews
     trade-value.json             leaderboard, totals, scales, best/worst, trades, network, win%, explorer,
                                  by week, most traded
     position-impact.json, dst-impact.json, schedule-release.json, champions.json,
@@ -352,6 +353,7 @@ CI: build `dist/` from fixtures, validate every file against its schema, run `to
 | 7.10 | Weekly update flow | Now: one command (`engine update`: pull, normalize, analyze, build, verify). At cutover: a scheduled GitHub Action (during the season, after Monday night and Tuesday waivers, plus a manual "Run workflow" button) that deploys only when the build and checks pass. Later (phase 8): an on-page refresh button through a small authenticated relay, or server-side in a hosted product (section 8.4). |
 | 7.11 | Lineup career grid playoff columns (A6b) | The page labels columns 15-18 as playoff rounds but its data used the raw week number, mixing 2020-2021 playoff round 1 into week 14. The engine places playoff weeks by round, counted back from the championship (after the league's longest regular season, so any season length works). Legacy mode keeps the raw week for the Stage A check. |
 | 7.12 | Excluded managers' benches in the bench average (A6b) | Counted, as in every other calculation (they are only hidden). The page left them out (2020 only); legacy mode reproduces that. |
+| 7.13 | Weekly rankings layout and avg_rank (A8b, 2026-10-05) | Each ranked week = an editorial file (`leagues/<league>/editorial/rankings/`), a frozen snapshot of the computed fields (`leagues/<league>/snapshots/rankings/`, written once by `engine rankings new`, never rewritten), and fields derived every build (record, PPG, last score, streak, prev_rank, rank_change, avg_rank, manifest). avg_rank uses the 2026 rule in every season (running average including the week, 1 place, blank in the first week); files before 2026 averaged the prior weeks. SOS and rest-of-season projections use ESPN's current schedule. Until M1, `tools/split_rankings.py` imports the PC's weekly files. |
 
 ## 8. Rollout plan
 
@@ -400,7 +402,7 @@ Stage A (publish, current pages unchanged or minimally changed), then Stage B (f
 | A5 | draft pages: draft-history, draft-fingerprints, draft-analysis, surplus-value (new goldens for tips and best/worst lists), managers heatmap summaries | |
 | A6 | transaction pages, in two PRs: A6a waiver-value; A6b lineup-efficiency (port bench depth and depth-adjusted efficiency, new page goldens) | |
 | A7 | extra-analytics, in two PRs: A7a matchup sections (luck chart golden), A7b model sections (editorial `team_names.yaml`) | |
-| A8 | in two PRs: A8a champions and schedule_release (editorial `schedule_themes.yaml`; `team_names.yaml` split into `shown` and `short` names), A8b weekly rankings computed fields (editorial split) and headshots | |
+| A8 | in three PRs: A8a champions and schedule_release (editorial `schedule_themes.yaml`; `team_names.yaml` split into `shown` and `short` names), A8b weekly rankings (editorial files, frozen snapshots, derived fields, `engine rankings new`, `pro_games`), A8c headshots | the PC rankings builder (at M1) |
 | M1 | switch the live deploy to engine-mode data under the current pages; release notes from the engine change list | legacy weekly process |
 | B1 | `web/` core: tokens.css, base and component CSS, `core/config.js`, `data.js`, `managers.js`, `nav.js`, `format.js`; CI check for manager names and hex colors outside `leagues/` | |
 | B2+ | pages moved into `web/` in batches, each reading its JSON and `config.json`; legacy views deleted as each page moves | the legacy view per page |

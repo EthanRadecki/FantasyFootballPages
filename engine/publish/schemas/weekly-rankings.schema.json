@@ -1,0 +1,508 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "weekly-rankings",
+ "title": "data/v1/weekly-rankings/<season>-wNN.json: one ranked week, editorial + snapshot + derived fields (weekly-rankings.html)",
+ "type": "object",
+ "required": [
+  "meta",
+  "season",
+  "week",
+  "teams"
+ ],
+ "additionalProperties": false,
+ "properties": {
+  "meta": {
+   "type": "object",
+   "required": [
+    "schema",
+    "schema_version"
+   ],
+   "properties": {
+    "schema": {
+     "const": "weekly-rankings"
+    },
+    "schema_version": {
+     "const": 1
+    }
+   }
+  },
+  "season": {
+   "type": "integer"
+  },
+  "week": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "label": {
+   "type": "string"
+  },
+  "blurb_label": {
+   "type": "string"
+  },
+  "hide_archetype_link": {
+   "type": "boolean"
+  },
+  "teams": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "manager_key",
+     "rank",
+     "record_to_date"
+    ],
+    "properties": {
+     "manager_key": {
+      "type": "string",
+      "pattern": "^m_[0-9a-f]{12}$"
+     },
+     "rank": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "synopsis": {
+      "type": "string"
+     },
+     "blurb": {
+      "type": "string"
+     },
+     "screenshots": {
+      "type": "array"
+     },
+     "prev_rank": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "rank_change": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "avg_rank": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "ppg_to_date": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "record_to_date": {
+      "type": "string",
+      "pattern": "^\\d+-\\d+(-\\d+)?$"
+     },
+     "last_score": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "streak": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "pattern": "^[WLT]\\d+$"
+     },
+     "proj_ppg": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "proj_ppg_ros": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "sos_avg_opp_ppg": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "sos_rank": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "draft_grade": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "draft_surplus_total": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "draft_picks": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "player",
+        "pos",
+        "round",
+        "pick_in_round",
+        "overall"
+       ],
+       "properties": {
+        "player": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "nfl_team": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "pos": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "round": {
+         "type": "integer"
+        },
+        "pick_in_round": {
+         "type": "integer"
+        },
+        "overall": {
+         "type": "integer"
+        },
+        "espn_adp": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "adp_deviation": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "grade": {},
+        "surplus_value": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       }
+      }
+     },
+     "adp_value": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "position_spend": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "additionalProperties": {
+       "type": "number"
+      }
+     },
+     "draft_archetype": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "required": [
+       "cluster_id",
+       "name",
+       "confidence",
+       "comparisons"
+      ],
+      "properties": {
+       "cluster_id": {
+        "type": "integer"
+       },
+       "name": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "confidence": {
+        "type": "string"
+       },
+       "comparisons": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "required": [
+          "manager_key",
+          "season"
+         ],
+         "properties": {
+          "manager_key": {
+           "type": "string",
+           "pattern": "^m_[0-9a-f]{12}$"
+          },
+          "season": {
+           "type": "integer"
+          },
+          "archetype": {
+           "type": [
+            "string",
+            "null"
+           ]
+          },
+          "ppg": {
+           "type": [
+            "number",
+            "null"
+           ]
+          },
+          "dist": {
+           "type": [
+            "number",
+            "null"
+           ]
+          }
+         }
+        }
+       },
+       "dist_to_nearest": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "margin_over_2nd": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      }
+     }
+    }
+   }
+  },
+  "matchup_of_the_week": {
+   "type": "object",
+   "required": [
+    "team_a",
+    "team_b"
+   ],
+   "properties": {
+    "team_a": {
+     "type": "object",
+     "required": [
+      "manager_key"
+     ],
+     "properties": {
+      "manager_key": {
+       "type": "string",
+       "pattern": "^m_[0-9a-f]{12}$"
+      },
+      "rank": {
+       "type": [
+        "integer",
+        "null"
+       ]
+      },
+      "record": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "proj_total": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "starters": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "required": [
+         "player",
+         "pos",
+         "slot"
+        ],
+        "properties": {
+         "player": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "nfl_team": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "pos": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "slot": {
+          "type": "string"
+         },
+         "opp": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "proj": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        }
+       }
+      }
+     }
+    },
+    "team_b": {
+     "type": "object",
+     "required": [
+      "manager_key"
+     ],
+     "properties": {
+      "manager_key": {
+       "type": "string",
+       "pattern": "^m_[0-9a-f]{12}$"
+      },
+      "rank": {
+       "type": [
+        "integer",
+        "null"
+       ]
+      },
+      "record": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "proj_total": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "starters": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "required": [
+         "player",
+         "pos",
+         "slot"
+        ],
+        "properties": {
+         "player": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "nfl_team": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "pos": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "slot": {
+          "type": "string"
+         },
+         "opp": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "proj": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        }
+       }
+      }
+     }
+    },
+    "blurb": {
+     "type": "string"
+    }
+   }
+  },
+  "player_season_totals": {
+   "type": "object",
+   "additionalProperties": {
+    "type": [
+     "number",
+     "null"
+    ]
+   }
+  },
+  "undrafted_players": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "player",
+     "pos"
+    ],
+    "properties": {
+     "player": {
+      "type": "string"
+     },
+     "pos": {
+      "type": "string"
+     },
+     "nfl_team": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "manager_key": {
+      "type": "string",
+      "pattern": "^m_[0-9a-f]{12}$"
+     },
+     "manager": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ }
+}

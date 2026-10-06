@@ -109,7 +109,8 @@ def test_game_rows_results_byes_and_tiers():
 def test_normalize_league_end_to_end(tmp_path):
     t = normalize_league(write_league(tmp_path))
     assert set(t) == {"seasons", "managers", "teams", "matchups", "lineups", "draft_picks", "transactions",
-                      "player_seasons", "players", "player_stats", "future_matchups", "projections", "pro_teams"}
+                      "player_seasons", "players", "player_stats", "future_matchups", "projections", "pro_teams",
+                      "pro_games"}
     assert len(t["projections"]) == 0 and len(t["future_matchups"]) == 0    # finished season: no snapshot
 
     assert dict(zip(t["teams"]["team_name"], t["teams"]["division_name"])) == {"Aces": "East", "Bees": "East",
@@ -350,7 +351,10 @@ def test_live_projection_snapshot(tmp_path):
                                                     "proTeamId": 8, "stats": []}}]}
     (d / "proj_week_03_available.json").write_text(json.dumps(avail))
     (d / "pro_teams.json").write_text(json.dumps({"settings": {"proTeams": [
-        {"id": 7, "abbrev": "KC", "byeWeek": 5}, {"id": 8, "abbrev": "CAR", "byeWeek": 3}]}}))
+        {"id": 7, "abbrev": "KC", "byeWeek": 5, "proGamesByScoringPeriod": {
+            "3": [{"id": 401, "homeProTeamId": 8, "awayProTeamId": 7, "date": 0}]}},
+        {"id": 8, "abbrev": "CAR", "byeWeek": 3, "proGamesByScoringPeriod": {
+            "3": [{"id": 401, "homeProTeamId": 8, "awayProTeamId": 7, "date": 0}]}}]}}))
     t = normalize_league(tmp_path)
 
     fm = t["future_matchups"]
@@ -364,3 +368,6 @@ def test_live_projection_snapshot(tmp_path):
     assert pr.loc[50, "projected_points"] == 14.2 and pd.isna(pr.loc[50, "team_id"])
     assert pd.isna(pr.loc[51, "projected_points"])            # no projection line (on bye)
     assert dict(zip(t["pro_teams"]["abbrev"], t["pro_teams"]["bye_week"])) == {"KC": 5, "CAR": 3}
+    pg = t["pro_games"].set_index("pro_team_id")
+    assert (pg.loc[7, "week"], pg.loc[7, "opponent_pro_team_id"], bool(pg.loc[7, "home"])) == (3, 8, False)
+    assert (pg.loc[8, "opponent_pro_team_id"], bool(pg.loc[8, "home"])) == (7, True)

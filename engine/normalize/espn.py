@@ -21,6 +21,8 @@ Live season only (a snapshot from the last pull, for the weeks still to play):
                      every rostered player (source "roster", with team and slot)
                      and every free agent or waiver player (source "available")
     pro_teams        season x NFL team: abbreviation and bye week
+    pro_games        season x week x NFL team: that week's NFL opponent and whether
+                     the team is at home (no row in its bye week)
 
 Raw ESPN values are kept as-is (for example negative D/ST scores). Any league
 rule that adjusts values belongs in analytics, never here, so the canonical
@@ -54,6 +56,7 @@ PROJECTION_COLUMNS = ["season", "week", "source", "team_id", "player_id", "playe
                       "pro_team_id", "slot", "pool_status", "percent_owned", "projected_points"]
 FUTURE_MATCHUP_COLUMNS = ["season", "week", "matchup_period", "game_id", "team_id", "opponent_team_id"]
 PRO_TEAM_COLUMNS = ["season", "pro_team_id", "abbrev", "bye_week"]
+PRO_GAME_COLUMNS = ["season", "week", "pro_team_id", "opponent_pro_team_id", "home"]
 
 PLAYER_STATS_COLUMNS = ["season", "player_id", "player_name", "position", "pro_team_id", "pool_status",
                         "on_team_id", "percent_owned", "pool_rank", "total_points", "avg_points", "games"]
@@ -143,6 +146,21 @@ def projection_rows(season: int, week: int, box: dict, available: dict | None) -
 def pro_team_rows(season: int, data: dict) -> list[dict]:
     return [{"season": season, "pro_team_id": t.get("id"), "abbrev": t.get("abbrev"), "bye_week": t.get("byeWeek")}
             for t in ((data.get("settings") or {}).get("proTeams") or [])]
+
+
+def pro_game_rows(season: int, data: dict) -> list[dict]:
+    """One row per NFL team and scoring period it plays in (ESPN's proGamesByScoringPeriod)."""
+    rows = []
+    for t in (data.get("settings") or {}).get("proTeams") or []:
+        tid = t.get("id")
+        for period, games in (t.get("proGamesByScoringPeriod") or {}).items():
+            for g in games or []:
+                home, away = g.get("homeProTeamId"), g.get("awayProTeamId")
+                if tid not in (home, away):
+                    continue
+                rows.append({"season": season, "week": int(period), "pro_team_id": tid,
+                             "opponent_pro_team_id": away if tid == home else home, "home": tid == home})
+    return rows
 
 
 # ---------------------------------------------------------------- per season
@@ -364,7 +382,7 @@ def read_adp_snapshots(league_dir: Path) -> dict[int, dict]:
 def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
     """Build every canonical table from a league's cache directory."""
     seasons, managers, teams, matchups, lineups, picks, txs, people, pool = [], [], [], [], [], [], [], [], []
-    future, projections, pro_teams = [], [], []
+    future, projections, pro_teams, pro_games = [], [], [], []
     for season_dir in sorted(p for p in league_dir.iterdir() if p.is_dir() and p.name.isdigit()):
         season = int(season_dir.name)
         league = _read(season_dir / "league.json")
@@ -397,7 +415,9 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
             future.extend(g)
             projections.extend(r)
         if (season_dir / "pro_teams.json").exists():
-            pro_teams.extend(pro_team_rows(season, _read(season_dir / "pro_teams.json")))
+            pro_data = _read(season_dir / "pro_teams.json")
+            pro_teams.extend(pro_team_rows(season, pro_data))
+            pro_games.extend(pro_game_rows(season, pro_data))
 
     t = pd.DataFrame(teams)
     owner = t.set_index(["season", "team_id"])["manager_key"]
@@ -448,6 +468,8 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
         "future_matchups": fm,
         "projections": pr,
         "pro_teams": pd.DataFrame(pro_teams, columns=PRO_TEAM_COLUMNS),
+        "pro_games": pd.DataFrame(pro_games, columns=PRO_GAME_COLUMNS).drop_duplicates(
+            ["season", "week", "pro_team_id"]).reset_index(drop=True),
         "seasons": pd.DataFrame(seasons),
         "managers": pd.DataFrame(managers).drop_duplicates("manager_key", keep="last").reset_index(drop=True),
         "teams": t,

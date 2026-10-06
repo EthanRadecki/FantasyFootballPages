@@ -1,0 +1,89 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "weekly-rankings-index",
+ "title": "data/v1/weekly-rankings/index.json: every ranked week and playoff preview, newest season first",
+ "type": "object",
+ "required": [
+  "meta",
+  "seasons"
+ ],
+ "additionalProperties": false,
+ "properties": {
+  "meta": {
+   "type": "object",
+   "required": [
+    "schema",
+    "schema_version"
+   ],
+   "properties": {
+    "schema": {
+     "const": "weekly-rankings-index"
+    },
+    "schema_version": {
+     "const": 1
+    }
+   }
+  },
+  "seasons": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "season",
+     "weeks",
+     "previews"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "season": {
+      "type": "integer"
+     },
+     "weeks": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "week",
+        "file"
+       ],
+       "additionalProperties": false,
+       "properties": {
+        "week": {
+         "type": "integer"
+        },
+        "label": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "file": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "previews": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "round",
+        "file"
+       ],
+       "additionalProperties": false,
+       "properties": {
+        "round": {
+         "type": "string"
+        },
+        "file": {
+         "type": "string"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

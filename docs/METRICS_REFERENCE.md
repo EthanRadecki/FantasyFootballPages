@@ -442,3 +442,29 @@ Picks without an ADP (usually late kickers and defenses) are left out of these.
 - **MVP:** the winner's highest-scoring starter; in a tie game the higher of the two teams' best starters.
 
 **Legacy differences:** the builder is lost; the rules above reproduce both files. Two scores in the live file are from before an ESPN stat correction. The hand-written schedule CSV listed pairs in its own order; the engine follows ESPN's.
+
+---
+
+## Weekly Rankings (weekly-rankings.html)
+
+**What it shows:** the commissioner's power rankings for each week, with each team's record and form, and in the live season its projections, schedule strength, draft and roster numbers.
+
+**Where each part comes from** (decision 7.9; layout in `engine/publish/rankings.py`):
+- **Editorial** (`leagues/<league>/editorial/rankings/<season>_weekNN.json`): rank, synopsis, blurb, screenshots, the week's label, the matchup of the week (which two managers, and its blurb). Playoff previews (`<season>_playoff_<round>.json`) are editorial as a whole.
+- **Snapshot** (`leagues/<league>/snapshots/rankings/<season>_weekNN.json`): the computed fields that only hold on the day the week is published. `engine rankings new` writes one for the live week and never rewrites it, so a week's numbers never move after its blurbs are written against them.
+- **Derived** (every build): record, points per game, last score, streak, previous rank, rank change, average rank, and the list of ranked weeks.
+
+**Derived fields:**
+- **Record, PPG, last score, streak:** the season's regular-season games before the week. PPG is the mean, Python round to 2 places (a game in `analysis.exclude_games` with `from: [ppg]` is left out). Streak is the current run ("W3", "L1", "T1").
+- **Previous rank, rank change:** the manager's rank in the season's previous ranked week; change = previous minus current (positive = moved up).
+- **Average rank:** the mean of the manager's ranks this season through this week, 1 place; blank in the season's first ranked week.
+
+**Snapshot fields** (the live season):
+- **Projected points:** the team's best projected lineup for the week (Projected Strength of Schedule above), 1 place. **Rest of season** and **SOS:** the own and opponent projected averages and SOS rank from Projected Strength of Schedule, over ESPN's current schedule.
+- **Draft grade:** the season's weighted draft surplus so far (Draft Value Pages); each pick's surplus to date beside it.
+- **Draft record:** every pick with the NFL team, ADP and ADP deviation (ADP minus overall pick; positive = reached) as of draft day. Written in the season's first ranked week and copied unchanged into every later week; only the surplus updates.
+- **Week 1 only:** ADP value = mean ADP deviation over QB, RB, WR and TE picks, 2 places. Position spend = each position's share of the QB/RB/WR/TE draft capital, 1 place, where a pick's capital halves every three rounds (0.5 ^ (round / 3)); this reproduces the 2026 week 1 file exactly. Draft archetype = the draft's cluster in the Draft Profiles model with its editorial name, the three finished manager-seasons nearest to it in the model's space (with their archetype and PPG), the distance to its cluster's center, and the margin over the next center ("clear" from 1.0, else "borderline").
+- **Season totals and undrafted players** (King of the Hill): season points to date for every drafted QB/RB/WR/TE and every listed undrafted player. Undrafted players are each QB/RB/WR/TE on a roster now who is not on that manager's own draft list (with the manager; a drafted player now on another roster appears here under his current manager), plus the 20 best free agents per position who were never drafted (the size of the page's pools).
+- **Matchup of the week:** each of the two teams' projected starting lineup for the week in box-score order (flex slots shown as FLEX), with each starter's NFL opponent ("@PHI" away) from ESPN's pro schedule, projected points to 1 place and the lineup total. The snapshot keeps every team's lineup, so the commissioner can pick the matchup afterwards.
+
+**Legacy differences:** the builder of the computed fields is lost. Before 2026, average rank was the average of the prior weeks (2024 weeks 7 and 8 left it blank); every week now uses the 2026 rule (Ethan, 2026-10-05). Two week files typed PPG and last score to 1 place (2023 week 15, 2026 week 2), and the 2023 end-of-season file left last score and streak blank; the engine fills them. Published 2026 weeks keep their frozen snapshots (draft-day ESPN ADP, the archetype from the retired model, projections and SOS as published, the latter over an early draft of the schedule); new weeks use the rules above.

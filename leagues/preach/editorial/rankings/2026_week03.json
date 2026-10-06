@@ -1,0 +1,239 @@
+{
+ "season": 2026,
+ "week": 3,
+ "hide_archetype_link": true,
+ "teams": [
+  {
+   "manager": "Anthony Kelly",
+   "rank": 1,
+   "synopsis": "I don’t know how sustainable this success is with the injuries and the WR2, TE, and FLEX being fluky, but it’s working for now and who says it won’t continue.",
+   "blurb": "We have a new team on the throne. <em class=\"hl-team\">Rolls With Butter</em> is a peculiar case, on one hand the team leads the league in points scored and they’re <strong class=\"hl-stat\">2</strong>-<strong class=\"hl-stat\">0</strong>, but on the other hand they are dealing with so many injuries and are projected to be one of the lowest scoring teams in the league. Looking at the team, they’re kind of just a four-headed monster at this point, but those four have been incredible. <strong class=\"hl-key\">I don’t know how sustainable this success is with the injuries and the <mark class=\"hl-pos-WR\">WR</mark><strong class=\"hl-stat\">2</strong>, <mark class=\"hl-pos-TE\">TE</mark>, and FLEX being fluky, but it’s working for now and who says it won’t continue</strong>. <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> is projected to have the hardest strength of schedule for the rest of the season and a tough matchup in Week <strong class=\"hl-stat\">3</strong>, but he’s proved me wrong before. For the moment being, this is the team to beat. [[img:anthony_01]] [[img:anthony_02]]",
+   "screenshots": [
+    {
+     "id": "anthony_01",
+     "file": "../images/rankings/week_03/anthony_01.png",
+     "caption": ""
+    },
+    {
+     "id": "anthony_02",
+     "file": "../images/rankings/week_03/anthony_02.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Andrew Root",
+   "rank": 2,
+   "synopsis": "Led by Davante Adams 39.5 points in Week 2, which is the franchise’s 6th most points scored by a player in a single game, N.Y. Routensss put the entire league on notice with their SNF and MNF comeback.",
+   "blurb": "One of the biggest risers in this week’s rankings, <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> deserves his flowers after being the highest scoring team in Week <strong class=\"hl-stat\">2</strong>. <strong class=\"hl-key\">Led by <mark class=\"hl-player\">Davante Adams</mark> <strong class=\"hl-stat\">39.5</strong> points in Week <strong class=\"hl-stat\">2</strong>, which is the franchise’s <strong class=\"hl-stat\">6th</strong> most points scored by a player in a single game, <em class=\"hl-team\">N.Y. Routensss</em> put the entire league on notice with their SNF and MNF comeback</strong>. [[img:andrew_01]] It’s kind of crazy because this team still has room for improvement. <mark class=\"hl-player\">Justin Jefferson</mark> was disappointing in the bad weather game, the <mark class=\"hl-pos-WR\">WR</mark><strong class=\"hl-stat\">5</strong> is sitting on <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark>’s bench, and the Kicker and D/ST combined for less than six points in Week <strong class=\"hl-stat\">2</strong>. The team is projected to obliterate their opponent in Week <strong class=\"hl-stat\">3</strong>, based on ESPN’s projections, but even without those I think this is shaping up to be a fun week for the team. Also, fun note for <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark>, with the win in Week <strong class=\"hl-stat\">2</strong> the team now moves to <strong class=\"hl-stat\">7</strong>-<strong class=\"hl-stat\">0</strong> all-time in Week <strong class=\"hl-stat\">2</strong> matchups. They were inevitable. [[img:andrew_02]] [[img:andrew_03]]",
+   "screenshots": [
+    {
+     "id": "andrew_01",
+     "file": "../images/rankings/week_03/andrew_01.png",
+     "caption": ""
+    },
+    {
+     "id": "andrew_02",
+     "file": "../images/rankings/week_03/andrew_02.png",
+     "caption": ""
+    },
+    {
+     "id": "andrew_03",
+     "file": "../images/rankings/week_03/andrew_03.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Charlie Gorman",
+   "rank": 3,
+   "synopsis": "The team is projected to score the most points in Week 3, alone with N.Y. Routensss as the only two teams to be projected to score over 120 points this week.",
+   "blurb": "After raving about this team in last week’s rankings they went out and put up less than <strong class=\"hl-stat\">100</strong> points in a loss, come on brother. Despite that poor performance I still have them as a top ranked team heading into Week <strong class=\"hl-stat\">3</strong>. <strong class=\"hl-key\">The team is projected to score the most points in Week <strong class=\"hl-stat\">3</strong>, alone with <em class=\"hl-team\">N.Y. Routensss</em> as the only two teams to be projected to score over <strong class=\"hl-stat\">120</strong> points this week</strong>. [[img:charlie_01]] I talked about <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> having some of the best depth in the league, well <mark class=\"hl-manager\" style=\"color:#28843a;\">Charlie</mark> is up there too. On paper the team looks like it has no holes, but we’ve seen how flaky <mark class=\"hl-player\">David Montgomery</mark> and the <mark class=\"hl-pos-WR\">WR</mark> duo of <mark class=\"hl-player\">Drake London</mark> and <mark class=\"hl-player\">George Pickens</mark> can be. However, I think those players are primed for a bounce back going forward. I’m obviously hesitant to drop this team further down the rankings, but if they repeat their Week <strong class=\"hl-stat\">2</strong> performance in Week <strong class=\"hl-stat\">3</strong> then uncomfortable conversations will need to be had, but I don’t see that happening. The team is also projected to have the <strong class=\"hl-stat\">2nd</strong> easiest strength of schedule rest of season, Week <strong class=\"hl-stat\">3</strong> will be very telling in how we should view <em class=\"hl-team\">No Fox Gibbs’en</em>. [[img:charlie_02]]",
+   "screenshots": [
+    {
+     "id": "charlie_01",
+     "file": "../images/rankings/week_03/charlie_01.png",
+     "caption": ""
+    },
+    {
+     "id": "charlie_02",
+     "file": "../images/rankings/week_03/charlie_02.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Aidan Quigley",
+   "rank": 4,
+   "synopsis": "Interestingly enough, this feeling isn’t new for Aidan as he came into 2026 with the worst schedule luck in league history, with 7 wins less than expected from 2021-2025.",
+   "blurb": "Back up to <strong class=\"hl-stat\">4th</strong> after dropping down a few spots. Despite the close loss to <em class=\"hl-team\">N.Y. Routensss</em> in Week <strong class=\"hl-stat\">2</strong> I moved <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> up, which I feel is fair for a team that dropped the <strong class=\"hl-stat\">2nd</strong> most points on the week. <strong class=\"hl-key\">Interestingly enough, this feeling isn’t new for <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> as he came into <strong class=\"hl-stat\">2026</strong> with the worst schedule luck in league history, with <strong class=\"hl-stat\">7</strong> wins less than expected from <strong class=\"hl-stat\">2021</strong>-<strong class=\"hl-stat\">2025</strong></strong>. [[img:aidan_01]] Unfortunately, ESPN predicts the losing to continue in Week <strong class=\"hl-stat\">3</strong>, but we’ll see what happens. I won’t put <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> on prime time this week with the Matchup of the Week, maybe the lights are a little too bright. <mark class=\"hl-player\">Chris Olave</mark> and <mark class=\"hl-player\">Ja’Marr Chase</mark> is as good as it gets at the <mark class=\"hl-pos-WR\">WR</mark> position, while the rest of the starting lineup seems like it’s in a good place. Maybe the FLEX has been shaky, but I’d say <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> has some of the best depth in the entire league so that fix shouldn’t be hard to make. Let’s see if the team can get their <strong class=\"hl-stat\">1</strong>st win of <strong class=\"hl-stat\">2026</strong>, their <strong class=\"hl-stat\">1</strong>st win since Week <strong class=\"hl-stat\">10</strong> of <strong class=\"hl-stat\">2025</strong>, and their <strong class=\"hl-stat\">3rd</strong> win since Week <strong class=\"hl-stat\">11</strong> of <strong class=\"hl-stat\">2024</strong>… sheesh I just got sad typing that out.",
+   "screenshots": [
+    {
+     "id": "aidan_01",
+     "file": "../images/rankings/week_03/aidan_01.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Ben Castaldo",
+   "rank": 5,
+   "synopsis": "I don’t really see any holes in the roster.",
+   "blurb": "No change in rank for <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> this week. I have similar thoughts on <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark>’s team as I had for <mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark>’s team above, but I just think the ceiling is higher for this team. Like I said in my Week <strong class=\"hl-stat\">2</strong> ranking for this team, <strong class=\"hl-key\">I don’t really see any holes in the roster</strong>. The team has a star <mark class=\"hl-pos-WR\">WR</mark>, a star <mark class=\"hl-pos-RB\">RB</mark>, a star <mark class=\"hl-pos-QB\">QB</mark>, and then serviceable depth for both <mark class=\"hl-pos-RB\">RB</mark> and <mark class=\"hl-pos-WR\">WR</mark>. I also believe <mark class=\"hl-player\">Kyle Pitts</mark> will bounce back with <mark class=\"hl-player\">Michael Penix Jr.</mark> in Week <strong class=\"hl-stat\">3</strong> and beyond, so <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> won’t have as much uncertainty with that position moving forward. It also doesn’t hurt to have an advantage at D/ST. ESPN projects it to be a rough week for the team against <em class=\"hl-team\">Make Fantasy Great Again</em>, but I can see those projections being wrong and <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> continuing his undefeated <strong class=\"hl-stat\">2026</strong> season. [[img:ben_01]]",
+   "screenshots": [
+    {
+     "id": "ben_01",
+     "file": "../images/rankings/week_03/ben_01.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Brandon Hancock",
+   "rank": 6,
+   "synopsis": "We just haven’t seen anything from the WR duo of Rashee Rice and Rome Odunze and now I fear Kenneth Walker’s arrival may have dropped Rashee Rice to a top 20 WR at best and the Caleb Williams injury may handicap Rome Odunze in an already packed receiving corps.",
+   "blurb": "I just have a feeling <mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark> won’t be happy with this ranking, but when is he ever? The team is <strong class=\"hl-stat\">2</strong>-<strong class=\"hl-stat\">0</strong>, but they’re middle of the pack in terms of points per game and we’ve yet to see a true “ceiling” game where the team looks unbeatable. I’ll give it to them, they have a high floor with the <mark class=\"hl-pos-RB\">RB</mark> duo of <mark class=\"hl-player\">Jonathan Taylor</mark> and <mark class=\"hl-player\">Kyren Williams</mark>, <mark class=\"hl-player\">Jalen Hurts</mark> has been great, and the Patriots defense looks to be a true advantage at the position. However, <strong class=\"hl-key\">we just haven’t seen anything from the <mark class=\"hl-pos-WR\">WR</mark> duo of <mark class=\"hl-player\">Rashee Rice</mark> and <mark class=\"hl-player\">Rome Odunze</mark> and now I fear <mark class=\"hl-player\">Kenneth Walker</mark>’s arrival may have dropped <mark class=\"hl-player\">Rashee Rice</mark> to a top <strong class=\"hl-stat\">20</strong> <mark class=\"hl-pos-WR\">WR</mark> at best and the <mark class=\"hl-player\">Caleb Williams</mark> injury may handicap <mark class=\"hl-player\">Rome Odunze</mark> in an already packed receiving corps</strong>. <mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark> is projected to lose by A LOT against <mark class=\"hl-manager\" style=\"color:#28843a;\">Charlie</mark> in Week <strong class=\"hl-stat\">3</strong>, but if the concerns I talked above dissipate during this week’s games then he definitely has a chance. The easiest projected strength of schedule also could help the team continue their strong start to the <strong class=\"hl-stat\">2026</strong> campaign after Week <strong class=\"hl-stat\">3</strong>. [[img:brandon_01]] [[img:brandon_02]]",
+   "screenshots": [
+    {
+     "id": "brandon_01",
+     "file": "../images/rankings/week_03/brandon_01.png",
+     "caption": ""
+    },
+    {
+     "id": "brandon_02",
+     "file": "../images/rankings/week_03/brandon_02.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Baylen Slansky",
+   "rank": 7,
+   "synopsis": "The main difference was that both the team’s stars were even better in Week 2 and Harrison Butker added some production for a change.",
+   "blurb": "Like the team above, <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark> jumps many spots after a solid Week <strong class=\"hl-stat\">2</strong> performance. Similar to Week <strong class=\"hl-stat\">1</strong>, the team was led by the duo of <mark class=\"hl-player\">Jaxon Smith-Njigba</mark> and <mark class=\"hl-player\">Brock Purdy</mark> with some production from <mark class=\"hl-player\">Tyler Warren</mark> mixed in. <strong class=\"hl-key\">The main difference was that both the team’s stars were even better in Week <strong class=\"hl-stat\">2</strong> and <mark class=\"hl-player\">Harrison Butker</mark> added some production for a change</strong>. How sustainable is this recipe for success? I guess we will see the answer to that in Week <strong class=\"hl-stat\">3</strong> and beyond with a tougher projected matchup against <em class=\"hl-team\">The Gegwich Effect</em> and one of the harder strength of schedules. Rumor has it this team may be adding <mark class=\"hl-player\">Jalen Coker</mark>, but for what remains to be seen. Can <em class=\"hl-team\">Station Grits</em> continue the dominant performance in Week <strong class=\"hl-stat\">3</strong>? [[img:baylen_01]] [[img:baylen_02]]",
+   "screenshots": [
+    {
+     "id": "baylen_01",
+     "file": "../images/rankings/week_03/baylen_01.png",
+     "caption": ""
+    },
+    {
+     "id": "baylen_02",
+     "file": "../images/rankings/week_03/baylen_02.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Deniz Bileydi",
+   "rank": 8,
+   "synopsis": "The RB2 slot has yielded the team the lowest points from the slot out of all teams in the league through two weeks.",
+   "blurb": "A big riser after a strong Week <strong class=\"hl-stat\">2</strong> win. <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> earned his first win of the season as he scored <strong class=\"hl-stat\">123.51</strong> points, his most in a single week since Week <strong class=\"hl-stat\">8</strong> of <strong class=\"hl-stat\">2025</strong>. The performance was fueled by his top four players once again, but also some contributions from <mark class=\"hl-player\">Xavier Worthy</mark>. [[img:deniz_01]] The team is once again projected to win in Week <strong class=\"hl-stat\">3</strong> against a struggling opponent. I may sound like a broken record, but will we see <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> address the <mark class=\"hl-pos-RB\">RB</mark><strong class=\"hl-stat\">2</strong> concerns in the coming weeks? <strong class=\"hl-key\">The <mark class=\"hl-pos-RB\">RB</mark><strong class=\"hl-stat\">2</strong> slot has yielded the team the lowest points from the slot out of all teams in the league through two weeks</strong>. The Kicker position has also only given <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> four points total through two weeks, which is something that’s bound to change with the new kicker acquisition. After being ranked <strong class=\"hl-stat\">14th</strong> and <strong class=\"hl-stat\">13th</strong> to start the season, I think this ranking is more accurate for the team’s performance going forward.",
+   "screenshots": [
+    {
+     "id": "deniz_01",
+     "file": "../images/rankings/week_03/deniz_01.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Ethan Radecki",
+   "rank": 9,
+   "synopsis": "Currently, I am projected to score the 3rd most points in Week 3 against a team I have yet to lose to in the league’s 7-year history.",
+   "blurb": "Down I fall. I thought the <mark class=\"hl-player\">Zay Flowers</mark> hamstring and the <mark class=\"hl-player\">De’Zhaun Stribling</mark> foot injuries were painful, but losing my <strong class=\"hl-stat\">5th</strong> round pick for the season? I will miss you <mark class=\"hl-player\">Jaxson Dart</mark>. Looking forward, <mark class=\"hl-player\">Bo Nix</mark> was drafted for this very reason, but he’s been disappointing so far, can he turn it around? On paper, I like my team, but <mark class=\"hl-player\">Tucker Kraft</mark>’s underwhelming performances can only earn him a starting spot for so long. <strong class=\"hl-key\">Currently, I am projected to score the <strong class=\"hl-stat\">3rd</strong> most points in Week <strong class=\"hl-stat\">3</strong> against a team I have yet to lose to in the league’s <strong class=\"hl-stat\">7</strong>-year history</strong>. Let’s see how Week <strong class=\"hl-stat\">3</strong> goes. [[img:ethan_01]] [[img:ethan_02]]",
+   "screenshots": [
+    {
+     "id": "ethan_01",
+     "file": "../images/rankings/week_03/ethan_01.png",
+     "caption": ""
+    },
+    {
+     "id": "ethan_02",
+     "file": "../images/rankings/week_03/ethan_02.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Ryan P McQuaid",
+   "rank": 10,
+   "synopsis": "He’s projected to score above average compared to the rest of the league in Week 3 and I just think this roster as currently constructed can give people a run for their money each week.",
+   "blurb": "He’s climbing, maybe this time next week he’ll be in the top eight for Week <strong class=\"hl-stat\">4</strong> rankings. <em class=\"hl-team\">Make Fantasy Great Again</em> has scored the <strong class=\"hl-stat\">3rd</strong> fewest points in the league through two weeks and has an <strong class=\"hl-stat\">0</strong>-<strong class=\"hl-stat\">2</strong> record, so why do I have him ranked as the <strong class=\"hl-stat\">5th</strong> lowest team? Well, <strong class=\"hl-key\">he’s projected to score above average compared to the rest of the league in Week <strong class=\"hl-stat\">3</strong> and I just think this roster as currently constructed can give people a run for their money each week</strong>. [[img:ryan_01]] I don’t think this roster as of today is built to contend, unless some breakouts happen like <mark class=\"hl-player\">Jadarian Price</mark> or <mark class=\"hl-player\">Brian Thomas Jr.</mark>, but I do see them being good enough to drop <strong class=\"hl-stat\">110</strong>-<strong class=\"hl-stat\">120</strong> points weekly. Week <strong class=\"hl-stat\">3</strong> will be crucial for this team’s <strong class=\"hl-stat\">2026</strong> outlook, a win can make their lives much easier later in the season, but a loss would immediately send the team down the wrong path. Take advantage of the <strong class=\"hl-stat\">5</strong>-point spread, don’t fall to <strong class=\"hl-stat\">0</strong>-<strong class=\"hl-stat\">3</strong>, don’t let the defense defenders break your spirit.",
+   "screenshots": [
+    {
+     "id": "ryan_01",
+     "file": "../images/rankings/week_03/ryan_01.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Quin Gegwich",
+   "rank": 11,
+   "synopsis": "I actually shocked myself with this stat, but I thought Quin’s 91.38-point win had to be down there in terms of points scored in a win but actually it was only the 23rd lowest points scored in a win in league history, playoffs included, out of 624 matchups.",
+   "blurb": "No change in ranking for <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark> as we head into the <strong class=\"hl-stat\">3</strong>rd week of the season. It was a great day for <mark class=\"hl-player\">Devonta Smith</mark> on Sunday, as he bounced back and put up <strong class=\"hl-stat\">27.7</strong> points in a win for both the Eagles and <em class=\"hl-team\">The Gegwich Effect</em>. Now, the only real bright spot in Week <strong class=\"hl-stat\">2</strong> for <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark> was <mark class=\"hl-player\">Brandon Aubrey</mark> returning to his usual self, the rest of the team, starting lineup and bench, looked very poor and tried their best to lose <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark> his Week <strong class=\"hl-stat\">2</strong> matchup. <strong class=\"hl-key\">I actually shocked myself with this stat, but I thought <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark>’s <strong class=\"hl-stat\">91.38</strong>-point win had to be down there in terms of points scored in a win but actually it was only the <strong class=\"hl-stat\">23rd</strong> lowest points scored in a win in league history, playoffs included, out of <strong class=\"hl-stat\">624</strong> matchups</strong>. A win is a win. [[img:quin_01]] It will be interesting to see how <mark class=\"hl-player\">Isaiah Likely</mark> and <mark class=\"hl-player\">Malik Nabers</mark> look with <mark class=\"hl-player\">Jameis Winston</mark> at the helm, since those two will be key pieces in <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark>’s hunt for his first Preach Fantasy championship. We know how I feel about <mark class=\"hl-player\">Quinshon Judkins</mark>, but that could change this week against a weaker run defense. <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark> will also need <mark class=\"hl-player\">Justin Herbert</mark> and the Chargers offense to get going if he wants to be considered a top team in this league, but the easier strength of schedule should help him along that journey.",
+   "screenshots": [
+    {
+     "id": "quin_01",
+     "file": "../images/rankings/week_03/quin_01.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Carmine Pittelli Jr.",
+   "rank": 12,
+   "synopsis": "The team’s 57.87-point performance in Week 2 was the franchise’s first time scoring less than 70 points in a single week, excluding playoff games.",
+   "blurb": "The biggest faller of the week, <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark> had one of his worst weeks ever. In fact, <strong class=\"hl-key\">the team’s <strong class=\"hl-stat\">57.87</strong>-point performance in Week <strong class=\"hl-stat\">2</strong> was the franchise’s first time scoring less than <strong class=\"hl-stat\">70</strong> points in a single week, excluding playoff games</strong>. [[img:carmine_01]] I was very high on <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark> coming into the season and then even higher going into Week <strong class=\"hl-stat\">2</strong>, but now with injury uncertainty surrounding <mark class=\"hl-player\">DJ Moore</mark> and <mark class=\"hl-player\">Nico Collins</mark>, no consistent FLEX player as of Week <strong class=\"hl-stat\">3</strong>, and <mark class=\"hl-player\">Drake Maye</mark> looking absolutely horrible up until now, I think moving the team far down the rankings is the right call to make. When the team is healthy and players other than the <mark class=\"hl-pos-RB\">RB</mark> duo start to produce, I believe they can be right back up into the top <strong class=\"hl-stat\">5</strong>, but until then <strong class=\"hl-stat\">12th</strong> feels fair. The tough projected strength of schedule also doesn’t make me feel good about <em class=\"hl-team\">Breece’s Pieces</em> outlook, let’s see how things shake out in Week <strong class=\"hl-stat\">3</strong> against what is projected to be an easier matchup. [[img:carmine_02]]",
+   "screenshots": [
+    {
+     "id": "carmine_01",
+     "file": "../images/rankings/week_03/carmine_01.png",
+     "caption": ""
+    },
+    {
+     "id": "carmine_02",
+     "file": "../images/rankings/week_03/carmine_02.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Max Malich",
+   "rank": 13,
+   "synopsis": "You have the two draft picks with the lowest surplus value in 2026, basically Colston Loveland and Marvin Harrison Jr. have been the worst picks given where Max took them compared to all picks from 2020-2026.",
+   "blurb": "A big fall for <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> after Week <strong class=\"hl-stat\">2</strong>, but that’s what happens when you score <strong class=\"hl-stat\">70</strong> points and you start dealing with injuries to a top <mark class=\"hl-pos-TE\">TE</mark>, a top <mark class=\"hl-pos-QB\">QB</mark>, and potentially your <strong class=\"hl-stat\">1st</strong> round pick. It also doesn’t help when, not counting injuries, <strong class=\"hl-key\">you have the two draft picks with the lowest surplus value in <strong class=\"hl-stat\">2026</strong>, basically <mark class=\"hl-player\">Colston Loveland</mark> and <mark class=\"hl-player\">Marvin Harrison Jr.</mark> have been the worst picks given where <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> took them compared to all picks from <strong class=\"hl-stat\">2020</strong>-<strong class=\"hl-stat\">2026</strong></strong>. That will surely change as we move through the season, but that can’t feel good if you’re <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark>. [[img:max_01]] On the bright side, <mark class=\"hl-player\">Bryce Young</mark> looks like a fine replacement for <mark class=\"hl-player\">Caleb Williams</mark> while he misses time and <mark class=\"hl-player\">Derrick Henry</mark> is on pace to lead the NFL in rushing touchdowns this season. A lot will fall on the shoulders of the <mark class=\"hl-pos-WR\">WR</mark> trio of <mark class=\"hl-player\">Tee Higgins</mark>, <mark class=\"hl-player\">Matthew Golden</mark>, and <mark class=\"hl-player\">KC Concepcion</mark> in Week <strong class=\"hl-stat\">3</strong> and potentially beyond. A win in Week <strong class=\"hl-stat\">3</strong> would be helpful for getting the team back on track, but historically it’s been a tough matchup for <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark>. [[img:max_02]]",
+   "screenshots": [
+    {
+     "id": "max_01",
+     "file": "../images/rankings/week_03/max_01.png",
+     "caption": ""
+    },
+    {
+     "id": "max_02",
+     "file": "../images/rankings/week_03/max_02.png",
+     "caption": ""
+    }
+   ]
+  },
+  {
+   "manager": "Cole Maney",
+   "rank": 14,
+   "synopsis": "The team is uninspiring and missing that superstar to get them 20+ points/week.",
+   "blurb": "Falling to <strong class=\"hl-stat\">0</strong>-<strong class=\"hl-stat\">2</strong> for the <strong class=\"hl-stat\">4th</strong> time in seven years, <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> has had a rough start to his <strong class=\"hl-stat\">2026</strong> campaign. For starters, he was hit with the injury bug to a few key players, most notably <mark class=\"hl-player\">Puka Nacua</mark> and <mark class=\"hl-player\">Jayden Daniels</mark>. Combine that with mediocre play from the <mark class=\"hl-pos-RB\">RB</mark> spots through the first two weeks and you get yourself a <strong class=\"hl-stat\">14th</strong> ranked team. Now, <mark class=\"hl-player\">Puka Nacua</mark> could be back as early as Week <strong class=\"hl-stat\">3</strong> and the <mark class=\"hl-pos-WR\">WR</mark> depth of <mark class=\"hl-player\">Ladd McConkey</mark>, <mark class=\"hl-player\">Josh Downs</mark>, <mark class=\"hl-player\">Stefon Diggs</mark>, and <mark class=\"hl-player\">Devaughn Vele</mark> is very serviceable, so if the team continues to lose I don’t think it will be because of that position. Essentially, <strong class=\"hl-key\">the team is uninspiring and missing that superstar to get them <strong class=\"hl-stat\">20</strong>+ points/week</strong>, a <mark class=\"hl-player\">Puka Nacua</mark> shaped lifeline is needed. The Week <strong class=\"hl-stat\">3</strong> matchup will be difficult on its own, and the tough rest of season strength of schedule doesn’t give me much hope, but maybe this miserable team can shock us? [[img:cole_01]]",
+   "screenshots": [
+    {
+     "id": "cole_01",
+     "file": "../images/rankings/week_03/cole_01.png",
+     "caption": ""
+    }
+   ]
+  }
+ ],
+ "matchup_of_the_week": {
+  "team_a": "Ben Castaldo",
+  "team_b": "Ryan P McQuaid",
+  "blurb": "The Matchup of the Week from Week <strong class=\"hl-stat\">2</strong> did not disappoint with the two highest scoring team going against each other and <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> completing the crazy comeback on Monday night. For this week’s matchup I decided to choose the matchup between the <strong class=\"hl-stat\">10th</strong> and <strong class=\"hl-stat\">5th</strong> ranked teams in the Week <strong class=\"hl-stat\">3</strong> rankings. <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> and <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> have met six times in league history, with <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> coming out victorious five of those six times, and he’s favored to do it again. <strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark>’s dealing with some injuries that we’ll have to keep an eye on, but when healthy I think he has the balanced team here while <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> has more star power and a higher ceiling.</strong> Let’s hope for a repeat of last week’s prime time game!"
+ }
+}
