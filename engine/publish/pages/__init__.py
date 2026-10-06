@@ -12,6 +12,7 @@ from engine.publish.pages.draft_history import DraftHistoryPublisher
 from engine.publish.pages.extra_analytics import ExtraAnalyticsPublisher
 from engine.publish.pages.fingerprints import FingerprintsPublisher
 from engine.publish.pages.games import GamesPublisher
+from engine.publish.pages.headshots import HeadshotsPublisher
 from engine.publish.pages.impact import ImpactPublisher
 from engine.publish.pages.lineup_efficiency import LineupEfficiencyPublisher
 from engine.publish.pages.managers import ManagersPublisher
@@ -25,4 +26,5 @@ from engine.publish.pages.waivers import WaiversPublisher
 PUBLISHERS: list = [GamesPublisher(), ManagersPublisher(), TradesPublisher(), ImpactPublisher(),
                      OddsPublisher(), DraftHistoryPublisher(), FingerprintsPublisher(), SurplusPublisher(),
                      DraftAnalysisPublisher(), WaiversPublisher(), LineupEfficiencyPublisher(),
-                     ExtraAnalyticsPublisher(), ChampionsPublisher(), SchedulePublisher(), RankingsPublisher()]
+                     ExtraAnalyticsPublisher(), ChampionsPublisher(), SchedulePublisher(), RankingsPublisher(),
+                     HeadshotsPublisher()]

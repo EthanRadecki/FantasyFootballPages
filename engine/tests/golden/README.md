@@ -103,6 +103,10 @@ Added 2026-09-29. `playoff_odds/playoff_odds.json.gz` is `data/rankings/playoff_
 
 Added 2026-10-05 (PR A8b). `rankings/rankings_files.json.gz` is every file in `data/rankings/` except `playoff_odds.json` (54 week files 2021 through 2026 week 4, the 2025 quarterfinal preview, `manifest.json`), keyed by file name, as published that day. Checked by `engine build --verify` (each week rebuilt from its editorial file, snapshot and the derived fields; the manifest and preview from the editorial files; the snapshot generator's draft-day fields against 2026 week 1) and by `engine/tests/test_publish_rankings.py` (the split is lossless; the derived fields from `records/matchups.json.gz`; the week 1 measures). Known differences: average rank by the older rules before 2026, two files typed to 1 place, the 2023 end-of-season file's blank last score and streak.
 
+## headshots/
+
+Added 2026-10-06 (PR A8c). `headshots/player_headshots.json.gz` is `data/player_headshots.json` (1,319 keys `Name|POS`, NFL.com image URLs, no producer). The URLs change by design (decision 7.5: ESPN images by player id), so `engine build --verify` checks coverage: every published key is still in the legacy view; 10 keys whose name matches no player in the league's data (nicknames such as Josh Palmer, players ESPN no longer lists) are excused. `engine/tests/test_publish_headshots.py` checks the URL rule and the spelling match.
+
 ## waivers/
 
 Added 2026-09-29. Checked by `engine analyze --verify`.

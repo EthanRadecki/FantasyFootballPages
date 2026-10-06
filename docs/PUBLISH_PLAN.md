@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: A0-A8a merged (#29-#39); A8b (weekly rankings) in review; A8c (headshots) next. Status columns below are as of A8b.
+Progress: Stage A complete: A0-A8b merged (#29-#40), A8c (headshots) in review. Next: F1, then M0/M1 and Stage B. Status columns below are as of A8c.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -41,14 +41,14 @@ Names: legacy data keys rows by manager display name, and the pages disagree on 
 | Page | Data today | Elements | Status in one line |
 |---|---|---|---|
 | index.html | file (stats CSV) + client | 3 | leaderboard COVERED via manager seasons; client math moves to publish |
-| managers.html | 5 files, rankings files, ~280 KB inline, client | 14 | mostly COVERED; draft board map COVERED (A5); headshots NO PRODUCER; client luck uses a legacy method |
+| managers.html | 5 files, rankings files, ~280 KB inline, client | 14 | mostly COVERED; draft board map COVERED (A5); headshots COVERED (A8c); client luck uses a legacy method |
 | matchups.html | file (matchups.json) | 4 | COVERED |
-| weekly-rankings.html | rankings files, playoff odds, headshots | 6 plus ~20 computed fields | COVERED (A8b: editorial files, frozen snapshots, derived fields; odds A4); headshots NO PRODUCER (A8c) |
+| weekly-rankings.html | rankings files, playoff odds, headshots | 6 plus ~20 computed fields | COVERED (A8b: editorial files, frozen snapshots, derived fields; odds A4); headshots COVERED (A8c) |
 | trade-value.html | 6 globals + inline | 8 | explorer COVERED; other globals NO GOLDEN; most traded NO PRODUCER |
 | position-impact.html | file | 1 (12 sections) | COVERED |
 | dst-impact.html | file | 1 (8 sections) | COVERED |
 | schedule_release.html | 2 files + inline | 4 | NO PRODUCER; schedule LEAGUE-AUTHORED |
-| champions.html | ~15 KB inline + headshots | 4 | NO PRODUCER, NO GOLDEN (hand-built) |
+| champions.html | ~15 KB inline + headshots | 4 | COVERED (A8a cards and finals, A8c headshots) |
 | surplus-value.html | ~25 KB inline | 9 | COVERED (A5: new golden for tips, highs and lows, best/worst lists, scale) |
 | draft-analysis.html | ~14 KB inline + HTML | 8 | COVERED (A5: inline data and typed HTML replaced) |
 | draft-fingerprints.html | ~245 KB inline | 2 | data COVERED (A5); metadata TEMPLATE; archetype names EDITORIAL file |
@@ -74,7 +74,7 @@ These appear in many pages and become `config.json` (built from `league.yaml`) o
 | Seasons and "live" season | `FL_TL_SEASONS`, `SEASONS`, `HEATMAP_SEASONS`, "six seasons (2020-2025)", "seven seasons, 2020-2026", "Est. 2020" | `config.json` seasons, first_season, live_season, finished_seasons | CONFIG |
 | Regular season length, playoff start week | `flPlayoffStartWeek` (managers), `FL_TL_WEEKS_PER_SEASON` | `rules.regular_season_weeks` | CONFIG |
 | League logo and favicon | `preach_logo_2026.png` in every head; `preach_logo.png` at the root | `league.logo.by_season`, current season | CONFIG |
-| Player headshots | `data/player_headshots.json` (1,319 entries keyed `name|POS`, NFL.com image URLs; no producer) read by managers, champions, weekly-rankings | generated per player id (decision 7.5) | NO PRODUCER |
+| Player headshots | `data/player_headshots.json` (1,319 entries keyed `name|POS`, NFL.com image URLs; no producer) read by managers, champions, weekly-rankings | generated per player id (decision 7.5): `data/v1/headshots.json` by id; the legacy view keyed by ESPN name and every spelling the published data uses | COVERED (A8c: ESPN images by player id, golden `headshots/player_headshots.json`) |
 | Position colors, pos badge classes, gradients | every page | template tokens | TEMPLATE |
 | `data-engine.js` | index (leaderboard), managers (profiles, pills) | its CSV parser and math go away; publish emits the numbers | client |
 | `shared.js` | every page | menu and lightbox only; stays as template | TEMPLATE |
@@ -109,7 +109,7 @@ Note: the live season's rows (Playoffs 0, all-time ranks blank) are included in 
 | Franchise leaders table, scatter | file `franchise_leaders.json` | {name: [{player, position, season, weeks_rostered, games_played, total_points}]} | `franchise_leaders` | `records/franchise_leaders.json`, PASS | COVERED |
 | Roster timeline | file `roster_stints.json` | {name: {player: {position, stints: [{season, start, end, started[]}]}}} | `roster_stints` | `waivers/roster_stints.json`, PASS | COVERED |
 | Best single-week performances | file `best_single_week.json` | {name: [{player, position, season, week, points}]}, top 25 per position and season | `best_weeks` | `records/best_single_week.json`, PASS | COVERED |
-| Headshots | file `player_headshots.json` | {"name|POS": url} | none | none | NO PRODUCER |
+| Headshots | file `player_headshots.json` | {"name|POS": url} | `pages/headshots.py` | `headshots/player_headshots.json`, coverage PASS | COVERED (A8c: ESPN images by player id, golden `headshots/player_headshots.json`) |
 | Pills, colors, aliases, season colors | HTML + inline | config | config | | CONFIG |
 
 `update_2026.py` patched the live season into five of these files in place (matchups.json, franchise_leaders, best_single_week, roster_stints, preach_manager_stats.csv). Publish writes each whole, every run.
@@ -132,7 +132,7 @@ Note: the live season's rows (Playoffs 0, all-time ranks blank) are included in 
 | Playoff round preview | file `rankings/2025_playoff_quarterfinals.json` | {season, round, round_label, overview, matchups[{matchup_label, higher_seed/lower_seed {seed, team, manager, projection, regular_season_avg, record}, pick, blurb}]} | editorial file as written (its projections were a snapshot) | same, PASS | EDITORIAL (A8b); a generated preview is Stage B |
 | Weekly rankings, live season | files `rankings/2026_weekNN.json` | teams[] adds: proj_ppg, proj_ppg_ros, sos_avg_opp_ppg, sos_rank, draft_grade, draft_surplus_total, draft_picks[{player, nfl_team, pos, round, pick_in_round, overall, espn_adp, adp_deviation, grade, surplus_value}], week 1 only: adp_value, position_spend {QB,RB,WR,TE}, draft_archetype {cluster_id, name, confidence, comparisons[3], dist_to_nearest, margin_over_2nd}; file adds: player_season_totals {"name|POS": pts}, undrafted_players[{player, pos, nfl_team, manager?}], matchup_of_the_week {team_a/b {manager, rank, record, proj_total, starters[{player, nfl_team, pos, slot, opp, proj}]}, blurb}, hide_archetype_link | see split below | `rankings/rankings_files.json`, PASS; generator checked on 2026 (draft record and week 1 measures exact, drift INFO) | COVERED (A8b) |
 | Playoff odds chart | file `rankings/playoff_odds.json` | {season: {cutoff, max_week, weeks: {week: {name: odds}}}} | `playoff_odds` | `playoff_odds/playoff_odds.json`, backtest + live week 3 PASS | COVERED |
-| Headshots | file `player_headshots.json` | as 3 | | | NO PRODUCER |
+| Headshots | file `player_headshots.json` | as 3 | `pages/headshots.py` | as 3 | COVERED (A8c: ESPN images by player id, golden `headshots/player_headshots.json`) |
 | `DRAFT_METRICS` labels and descriptions | inline | metadata | | | TEMPLATE |
 | `MANAGER_COLORS`, `LASTNAME_MAP`, `SEASON_THEME_COLORS` | inline | | | | CONFIG |
 
