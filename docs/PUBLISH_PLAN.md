@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: Stage A complete (#29-#41); F1a merged (#42); F1b (build provenance, size budget, headless page tests in CI) in review; then M0/M1 and Stage B. Status columns below are as of A8c.
+Progress: Stage A complete (#29-#41); F1 merged (#42, #43); M0 (A1b, Actions deploy with `/next/`) in review; then M1 and Stage B. Status columns below are as of A8c.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -395,7 +395,7 @@ Stage A (publish, current pages unchanged or minimally changed), then Stage B (f
 |---|---|---|
 | A0 | this document | |
 | A1 | publish skeleton: `engine/publish/` (writer, schema_version and build id, rounding helpers, legacy view, JSON diff moved from `legacy_position_impact`), `engine build` (dist/ = current site + generated data + config.json), `engine update`, `engine build --verify`, CI build + schema + path checks on `dist/` | |
-| A1b | M0: Actions deploy of the unchanged root plus `/next/`, secrets, season cache, sanity checks, smoke test, failure alerts | "deploy from branch" |
+| A1b | M0: `.github/workflows/deploy.yml` and `engine/publish/deploy.py` / `tools/deploy_site.py`. Root = the committed site files only (code, docs, tools and league folders no longer published; Ethan, 2026-10-06), byte for byte; `/next/` = `engine update --verify` with Actions secrets `ESPN_S2`/`SWID`, the raw ESPN cache kept between runs, sanity checks against the last deploy's `deploy-stats.json` (no season loses games, the live week never goes backwards, every visible manager has its files), the page test on both; runs on every push to main and from the Run workflow button (the weekly schedule comes at M1). The root deploys even when the engine build fails (then without `/next/`, and the run fails so GitHub emails it) | "deploy from branch" |
 | A2 | games and manager files: matchups.json, matchup_data.csv, preach_manager_stats.csv, franchise_leaders, best_single_week, roster_stints; index and managers client math into `index.json` / `managers/*.json` | `update_2026.py` |
 | A3 | trade-value: the five `regenerate_data_files.py` outputs, most traded, total QUAD | `regenerate_data_files.py` |
 | A4 | impact and odds: position-impact, dst-impact, playoff odds | |
