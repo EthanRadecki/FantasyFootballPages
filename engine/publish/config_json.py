@@ -139,6 +139,7 @@ def build_config(cfg: dict, tables: dict, build: dict) -> dict:
         "theme": {
             "fonts": dict(theme.get("fonts") or {}),
             "season_colors": {str(k): v for k, v in (theme.get("season_colors") or {}).items()},
+            "champion_tints": {str(k): v for k, v in (theme.get("champion_tints") or {}).items()},
         },
         "features": {str(k): bool(v) for k, v in (cfg.get("features") or {}).items()},
         "pages": pages_for(cfg.get("features")),

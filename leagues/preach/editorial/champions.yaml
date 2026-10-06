@@ -1,0 +1,8 @@
+# Photos on the champions page (optional). Each one is shown below the card of the
+# season named in `after`. The image path is relative to the site root.
+
+photos:
+  - after: 2025
+    image: images/champions/2024_2025_champs.jpeg
+    label: Passing of the Trophy
+    alt: 2024 Champion passes trophy to 2025 Champion

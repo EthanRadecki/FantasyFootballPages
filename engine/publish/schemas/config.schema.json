@@ -102,7 +102,8 @@
       "required": ["fonts", "season_colors"],
       "properties": {
         "fonts": {"type": "object", "additionalProperties": {"type": "string"}},
-        "season_colors": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hex"}}
+        "season_colors": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hex"}},
+        "champion_tints": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hex"}}
       }
     },
     "features": {"type": "object", "additionalProperties": {"type": "boolean"}},

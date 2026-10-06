@@ -18,12 +18,12 @@ function links(cfg, current) {
 
 export function drawNav(cfg, current) {
   var home = cfg.pages.find(function (p) { return p.id === 'home'; });
-  var logo = url(cfg.league.logo);
+  var logo = cfg.league.logo ? url(cfg.league.logo) : '';
   var nav = document.getElementById('site-nav');
   if (nav) {
     nav.innerHTML =
       '<a href="' + esc(home ? href(home) : url('index.html')) + '" class="nav-brand">' +
-      '<img src="' + esc(logo) + '" alt="" onerror="this.remove()"><span>' + esc(cfg.league.name) + '</span></a>' +
+      (logo ? '<img src="' + esc(logo) + '" alt="" onerror="this.remove()">' : '') + '<span>' + esc(cfg.league.name) + '</span></a>' +
       '<div class="nav-links">' + links(cfg, current) + '</div>' +
       '<button class="nav-hamburger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
       'stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" ' +
@@ -41,7 +41,8 @@ export function drawNav(cfg, current) {
   // the browser tab: the league's current logo and "<Page> | <League>" (the home page shows the league name)
   var icon = document.querySelector('link[rel="icon"]') || document.head.appendChild(Object.assign(
     document.createElement('link'), { rel: 'icon', type: 'image/png' }));
-  icon.href = logo;
+  if (logo) icon.href = logo;
+  else icon.remove();
   var page = cfg.pages.find(function (p) { return p.id === current; });
   document.title = page && page.id !== 'home' ? page.title + ' | ' + cfg.league.name : cfg.league.name;
 }

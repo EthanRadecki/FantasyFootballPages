@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matchups</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/matchups.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="mx-hero glass">
+    <h1>Matchup Explorer</h1>
+    <p class="mx-hero-sub" id="heroSub">Loading matchup history&hellip;</p>
+  </div>
+
+  <div class="mx-quickjump" id="quickJump"></div>
+
+  <div class="mx-controls glass">
+    <div class="mx-season-row" id="seasonPills"></div>
+    <div class="mx-filter-row">
+      <div class="mx-phase-toggle" id="phaseToggle">
+        <button data-phase="all" class="active">All Games</button>
+        <button data-phase="regular">Regular Season</button>
+        <button data-phase="playoff">Playoffs</button>
+      </div>
+      <div class="mx-search-wrap">
+        <input type="text" id="searchInput" placeholder="Search a manager or team name&hellip;" list="managerList" autocomplete="off">
+        <datalist id="managerList"></datalist>
+      </div>
+      <select id="sortSelect">
+        <option value="recent">Most Recent</option>
+        <option value="oldest">Oldest First</option>
+        <option value="closest">Closest Games</option>
+        <option value="blowout">Biggest Blowouts</option>
+        <option value="highest">Highest Combined</option>
+        <option value="lowest">Lowest Combined</option>
+      </select>
+    </div>
+    <div class="mx-h2h-row">
+      <span class="mx-h2h-label">Head-to-Head</span>
+      <select id="h2hA"><option value="">Choose manager&hellip;</option></select>
+      <span class="mx-h2h-vs">VS</span>
+      <select id="h2hB"><option value="">Choose manager&hellip;</option></select>
+      <button id="h2hGo">Compare</button>
+      <button id="h2hClear" class="mx-h2h-clear" hidden>Clear &#10005;</button>
+    </div>
+    <div class="mx-h2h-summary glass" id="h2hSummary" hidden></div>
+  </div>
+
+  <div class="mx-results-bar">
+    <span id="resultsCount"></span>
+    <button id="randomBtn">&#127922; Surprise Me</button>
+  </div>
+
+  <div class="mx-grid" id="matchupGrid"></div>
+  <div class="mx-load-more-wrap"><button id="loadMoreBtn" class="glass">Load More Matchups</button></div>
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<div class="mx-modal-overlay" id="modalOverlay">
+  <button class="mx-modal-nav mx-modal-prev" id="modalPrev">&#8249;</button>
+  <div class="mx-modal glass" id="modalContent">
+    <button class="mx-modal-close" id="modalClose">&#10005;</button>
+    <div id="modalBody"></div>
+  </div>
+  <button class="mx-modal-nav mx-modal-next" id="modalNext">&#8250;</button>
+</div>
+
+<script type="module" src="../assets/js/pages/matchups.js"></script>
+</body>
+</html>

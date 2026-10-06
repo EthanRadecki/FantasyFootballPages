@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Champions</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/champions.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="page-header glass">
+    <h1>Hall of Champions</h1>
+    <p id="pageSub">Every championship team since the league's founding</p>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section-label">Championship History</div>
+  <div class="glass" style="padding:1.5rem;margin-bottom:1.5rem;overflow-x:auto;">
+    <div id="timeline"></div>
+  </div>
+
+  <!-- CHAMPIONSHIP GAME SCORES -->
+  <div id="finalsSection">
+  <div class="section-label">The Finals</div>
+  <div class="section-title">Championship game scores.</div>
+  <div class="glass" style="padding:1.5rem;margin-bottom:1.5rem;">
+    <div style="position:relative;height:260px;">
+      <canvas id="chart-finals"></canvas>
+    </div>
+  </div>
+  </div>
+
+  <div id="champ-list"></div>
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close">&#10005;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="../assets/js/pages/champions.js"></script>
+</body>
+</html>
