@@ -41,3 +41,27 @@ jobs:
 
       - name: League config is valid
         run: python -m engine.cli config check leagues/preach/league.yaml
+
+  synthetic-league:
+    # the whole engine on a generated league that is not Preach (engine/testing/synthetic.py):
+    # normalize, analyze and build --verify through the command line, as a new league would run them
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml pandas pyarrow scipy scikit-learn jsonschema
+
+      - name: Generate the synthetic league
+        run: python tools/synthetic_league.py --cache .cache-synthetic
+
+      - name: Config, normalize, analyze, build --verify
+        run: |
+          python -m engine.cli config check leagues/synthetic/league.yaml
+          python -m engine.cli normalize leagues/synthetic/league.yaml --cache .cache-synthetic
+          python -m engine.cli analyze leagues/synthetic/league.yaml --cache .cache-synthetic
+          python -m engine.cli build leagues/synthetic/league.yaml --cache .cache-synthetic --out dist-synthetic --verify

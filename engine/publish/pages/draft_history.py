@@ -74,7 +74,7 @@ class DraftHistoryPublisher:
         out = [Output(f"data/v1/{SCHEMA}.json",
                       history_model(board, set(live_seasons(ctx.tables)), excluded_manager_keys(ctx.cfg)),
                       SCHEMA, VERSION)]
-        if path.is_file():
+        if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
             view = history_view(board, _page_names(ctx, text))
             for var in ("DRAFT", "SLOT_ORDER"):

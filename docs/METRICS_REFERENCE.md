@@ -262,7 +262,7 @@ The finished seasons grouped by draft slot (tables `draft_slot_results` and `dra
 
 **What it measures:** how hard a run of consecutive opponents was. The champions' cards score each title run; the hardest and easiest lists show the toughest and softest three-game stretches any manager faced.
 
-**Window:** n consecutive games of one manager (3, or 4 for the 2020 champion's four-round run), no earlier than their 6th game. Each opponent is scored three ways, each as a z-score against the league: the points they put up in that game, their season dominance (PF/G z-score), and their surge coming in (their average over the previous 5 games minus their regular-season average). The three averages are shrunk by n / (n + 1), mapped to 0-100 with a logistic curve, and weighted 70% points, 15% dominance, 15% surge.
+**Window:** n consecutive games of one manager (3 or 4, plus every champion run's length, so a league with two playoff rounds ranks its two-game title runs against two-game windows), no earlier than their 6th game. Each opponent is scored three ways, each as a z-score against the league: the points they put up in that game, their season dominance (PF/G z-score), and their surge coming in (their average over the previous 5 games minus their regular-season average). The three averages are shrunk by n / (n + 1), mapped to 0-100 with a logistic curve, and weighted 70% points, 15% dominance, 15% surge.
 
 **Games:** finished regular-season and winners-bracket games. The Castaldo 2024 week 14 forfeit is left out for both teams, so no window runs through it. Champion runs come from the bracket (2021's first-round bye leaves a three-game run).
 
@@ -339,6 +339,8 @@ All from counted games (finished regular-season and winners-bracket games). The 
 
 ## Position Impact and Life Without Defense (position-impact.html, dst-impact.html)
 
+**Positions:** the ones the league's lineups ever start (Preach: QB, RB, WR, TE, K, D/ST). A league that never starts a D/ST has no D/ST rows and no Life Without Defense page.
+
 **Flip rate:** remove one position's started points from both teams in every counted game and recheck the winner. A tie after removal counts as a flip (the win is gone). Net impact per manager is wins gained minus wins lost.
 
 **Nth pick:** for draft questions, each manager's Nth pick at a position, where N is the number of starting slots that position has in the league's lineup (Preach: the 1st QB, TE, K, and D/ST; the 2nd RB and WR, since nearly everyone takes an RB1 and WR1 early regardless of philosophy). It adapts to any lineup.
@@ -406,7 +408,7 @@ Picks without an ADP (usually late kickers and defenses) are left out of these.
 
 **Archetypes (draft-fingerprints.html):** each manager-season is grouped with the drafts it most resembles.
 - **Missing K and D/ST ADP deviation** (late picks outside the ADP list) is filled from a straight-line fit on that position's patience over the league's finished seasons, clipped to the observed range. With fewer than 10 observed rows, the observed average is used; with none, the value stays blank. Filled values are flagged.
-- **Features:** the ten radar measures, ADP deviation by position, and the ADP summary (average deviation, reach, value hunting, independence), standardized, then reduced with PCA to 10 components (about 88% of the variance for Preach). PCA damps the four ADP summary measures, which largely say the same thing.
+- **Features:** the ten radar measures, ADP deviation by position, and the ADP summary (average deviation, reach, value hunting, independence). A measure is used when at least 90% of finished drafts have it (a position the league's lineups dropped or never had is left out); a draft missing a used measure takes the most patient value (100) for a patience (it never drafted that position) or the finished drafts' median otherwise. Preach has no gaps. The measures are standardized, then reduced with PCA to 10 components (about 88% of the variance for Preach). PCA damps the four ADP summary measures, which largely say the same thing.
 - **Groups:** k-means with 4 groups, fit on finished seasons; the live season is placed in the nearest group once its draft is done. Leagues with fewer than 30 finished manager-seasons get no archetypes. Group numbers go by size (0 is the largest), so they stay put when the fit is rerun; the names on the page are editorial.
 - **Checks shown with them:** silhouette (how separated the groups are) on the PCA components and on the raw features, a 3-group Gaussian mixture's silhouette, and bootstrap agreement (ARI over 100 resamples, seeded). Win% and PPG across groups are compared with a Kruskal-Wallis test (Preach: p = 0.23 and 0.57, no real difference).
 

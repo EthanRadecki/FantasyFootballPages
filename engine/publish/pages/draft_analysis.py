@@ -377,7 +377,7 @@ class DraftAnalysisPublisher:
         parts = self._engine(ctx)
         out = [Output(f"data/v1/{SCHEMA}.json", analysis_model(*parts, excluded_manager_keys(ctx.cfg)), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
-        if path.is_file():
+        if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
             out.append(Output(PAGE, write_page(text, analysis_view(*parts, self._names(ctx, text)))))
         return out

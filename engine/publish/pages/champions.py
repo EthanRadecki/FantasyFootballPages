@@ -201,7 +201,7 @@ class ChampionsPublisher:
         runs, teams = self._runs(ctx), team_names(ctx)
         out = [Output(f"data/v1/{SCHEMA}.json", champions_model(runs, teams), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
-        if path.is_file():
+        if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
             names = Names(ctx, spellings(read_page(text)))
             out.append(Output(PAGE, write_page(text, champions_view(runs, teams, names))))

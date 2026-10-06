@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: Stage A complete: A0-A8b merged (#29-#40), A8c (headshots) in review. Next: F1, then M0/M1 and Stage B. Status columns below are as of A8c.
+Progress: Stage A complete (#29-#41). F1a (synthetic league, end-to-end CI, generic fixes) in review; F1b (build provenance, size budget, headless page tests in CI) next; then M0/M1 and Stage B. Status columns below are as of A8c.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -403,6 +403,8 @@ Stage A (publish, current pages unchanged or minimally changed), then Stage B (f
 | A6 | transaction pages, in two PRs: A6a waiver-value; A6b lineup-efficiency (port bench depth and depth-adjusted efficiency, new page goldens) | |
 | A7 | extra-analytics, in two PRs: A7a matchup sections (luck chart golden), A7b model sections (editorial `team_names.yaml`) | |
 | A8 | in three PRs: A8a champions and schedule_release (editorial `schedule_themes.yaml`; `team_names.yaml` split into `shown` and `short` names), A8b weekly rankings (editorial files, frozen snapshots, derived fields, `engine rankings new`, `pro_games`), A8c headshots | the PC rankings builder (at M1) |
+| F1a | foundations, part 1: the synthetic league (`engine/testing/synthetic.py`, `leagues/synthetic/league.yaml`), a CI job running normalize, analyze and `build --verify` on it, and the generic fixes it surfaced (positions from the league's lineups, conference-free leagues, champion runs of any length, sparse draft-profile features, page models only for a league without the legacy template: `league.yaml` `legacy` block) | |
+| F1b | foundations, part 2: build provenance in the manifest, a page data size budget, headless page tests in CI | |
 | M1 | switch the live deploy to engine-mode data under the current pages; release notes from the engine change list | legacy weekly process |
 | B1 | `web/` core: tokens.css, base and component CSS, `core/config.js`, `data.js`, `managers.js`, `nav.js`, `format.js`; CI check for manager names and hex colors outside `leagues/` | |
 | B2+ | pages moved into `web/` in batches, each reading its JSON and `config.json`; legacy views deleted as each page moves | the legacy view per page |

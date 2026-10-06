@@ -57,7 +57,8 @@ class BuildContext:
     analysis: dict[str, pd.DataFrame]            # analysis tables (engine analyze)
     build: dict                                  # build_info()
     site_root: Path = Path(".")
-    golden_dir: Path = Path("engine/tests/golden")
+    golden_dir: Path | None = Path("engine/tests/golden")   # None: a league without legacy files (no Stage A)
+    legacy_site: bool = True                     # build on the current (Stage A) site and write its legacy views
     league_dir: Path | None = None               # the folder of league.yaml (editorial files live beside it)
     cache: dict = field(default_factory=dict)    # shared work between publishers (legacy-mode inputs)
 
@@ -112,10 +113,12 @@ def run_build(ctx: BuildContext, out: Path, publishers: list | None = None) -> B
 
     publishers = PUBLISHERS if publishers is None else publishers
     _prepare(out)
-    copied = [str(p).replace("\\", "/") for p in copy_site(ctx.site_root, out)]
+    # A league on the Stage A template gets the current site and its legacy data views; any other league
+    # gets config.json and the page models only, until the Stage B pages read them (docs/PUBLISH_PLAN.md)
+    copied = [str(p).replace("\\", "/") for p in copy_site(ctx.site_root, out)] if ctx.legacy_site else []
     outputs = []
     for pub in publishers:
-        outputs += pub.outputs(ctx)
+        outputs += [o for o in pub.outputs(ctx) if o.schema or ctx.legacy_site]
     # config.json last: its page list keeps only pages whose data this build produced
     ctx.config["pages"] = pages_for(ctx.cfg.get("features"), {o.path for o in outputs})
     outputs.insert(0, Output("config.json", ctx.config, config_json.SCHEMA, config_json.SCHEMA_VERSION))
@@ -205,8 +208,11 @@ def verify_build(ctx: BuildContext, result: BuildResult, publishers: list | None
     from engine.publish.pages import PUBLISHERS
 
     publishers = PUBLISHERS if publishers is None else publishers
-    checks = [check_site_copy(result, ctx.site_root), check_schemas(result), check_assets(result, ctx.config),
-              check_paths(result, ctx.site_root)]
+    checks = [check_site_copy(result, ctx.site_root), check_schemas(result)]
+    if ctx.legacy_site:
+        checks += [check_assets(result, ctx.config), check_paths(result, ctx.site_root)]
+    if ctx.golden_dir is None:
+        return checks + ["INFO  no legacy golden files for this league (legacy.golden_dir): Stage A checks skipped"]
     for pub in publishers:
         checks += pub.verify(ctx)
     return checks

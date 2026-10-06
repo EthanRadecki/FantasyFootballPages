@@ -492,15 +492,19 @@ def analyze_position_impact(tables: dict[str, pd.DataFrame], analysis: dict[str,
 
     inp = engine_inputs(tables, analysis["waiver_stints"], analysis["trade_stints"])
     games, lu, picks, nth = inp["games"], inp["lineups"], inp["picks"], inp["nth"]
+    # the positions this league starts (a league without a D/ST or kicker slot has no rows for it,
+    # and no D/ST deep dive page); Preach starts all six
+    positions = [p for p in POSITIONS if p in set(lu.loc[lu["started"].astype(bool), "position"])]
+    nth = {p: n for p, n in nth.items() if p in positions}
     started = pos_started(lu)
-    rates, season_rates, net = flip_summary(games, started)
+    rates, season_rates, net = flip_summary(games, started, positions)
     net["hidden"] = net["manager_key"].isin(exclude_managers)
     dvw = draft_vs_waiver(lu, picks, nth, exclude_managers)
     order, box = draft_order(lu, picks, nth, exclude_managers)
     cap = draft_capital(picks, inp["active"], nth, inp["seasons"], exclude_managers)
     corr_pts, corr_stats = correlation(standings_from_games(games), started, picks, nth)
     corr_pts["hidden"] = corr_pts["manager_key"].isin(exclude_managers)
-    acq = acquisition_summary(inp["acquisition"], hidden=exclude_managers)
+    acq = acquisition_summary(inp["acquisition"], positions, hidden=exclude_managers)
     dg = dst_games(games, started, playoff_labels(games))
     mstats, mflips = dst_managers(dg, lu)
     mstats["hidden"] = mstats["manager_key"].isin(exclude_managers)
@@ -509,7 +513,7 @@ def analyze_position_impact(tables: dict[str, pd.DataFrame], analysis: dict[str,
         po[c] = po[c].map(lambda v: json.dumps(v, default=float))
     return {
         "position_flip_rates": rates, "position_season_flips": season_rates, "position_net_impact": net,
-        "position_consistency": consistency(lu), "position_draft_vs_waiver": dvw, "position_draft_order": order,
+        "position_consistency": consistency(lu, positions), "position_draft_vs_waiver": dvw, "position_draft_order": order,
         "position_draft_order_box": box, "position_draft_capital": cap.astype({"round": object}).assign(
             round=lambda d: d["round"].map(lambda v: None if v is None else str(v))),
         "position_correlation_points": corr_pts, "position_correlation": corr_stats, "position_acquisition": acq,

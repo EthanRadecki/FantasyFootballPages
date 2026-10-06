@@ -21,6 +21,14 @@ from pathlib import Path
 from engine.config import load_config, validate_config
 
 
+def golden_dir(args: argparse.Namespace, cfg: dict) -> Path | None:
+    """The legacy golden files this league is checked against (Stage A): --golden, else the league's
+    `legacy.golden_dir`. None for a league without legacy files: --verify then runs only the checks
+    that need no goldens (schemas, paths, assets, sizes)."""
+    path = getattr(args, "golden", None) or (cfg.get("legacy") or {}).get("golden_dir")
+    return Path(path) if path else None
+
+
 def cmd_config_check(args: argparse.Namespace) -> int:
     cfg = load_config(args.path)
     report = validate_config(cfg)
@@ -108,7 +116,10 @@ def cmd_normalize(args: argparse.Namespace) -> int:
 
     if not args.verify:
         return 0
-    golden = Path(args.golden)
+    golden = golden_dir(args, cfg)
+    if golden is None:
+        print("note: this league has no legacy golden files (legacy.golden_dir); nothing to verify")
+        return 0
     print("\nVerifying against legacy files:")
     results = [
         legacy.check_matchups(tables, pd.read_csv(golden / "matchup_data.csv.gz"), cfg),
@@ -332,7 +343,11 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     from engine.legacy_trades import verify_trades
     from engine.legacy_waivers import verify_waivers
 
-    golden = load_goldens(Path(args.golden))
+    gdir = golden_dir(args, cfg)
+    if gdir is None:
+        print("note: this league has no legacy golden files (legacy.golden_dir); nothing to verify")
+        return 0
+    golden = load_goldens(gdir)
     detail_dir = Path(args.cache) / "verify"
     detail_dir.mkdir(parents=True, exist_ok=True)
     trade_checks, info = verify_trades(tables, golden, cfg)
@@ -399,7 +414,8 @@ def cmd_build(args: argparse.Namespace) -> int:
     if not analysis:
         print(f"note: no analysis tables at {ana} (run `engine analyze`); pages that need them are skipped")
     ctx = BuildContext(cfg=cfg, tables=read_tables(src), analysis=analysis, build=build_info(args.build_id),
-                       site_root=Path(args.site), golden_dir=Path(args.golden),
+                       site_root=Path(args.site), golden_dir=golden_dir(args, cfg),
+                       legacy_site=bool((cfg.get("legacy") or {}).get("site_template")),
                        league_dir=Path(args.path).parent)
     result = run_build(ctx, Path(args.out))
     n_site = sum(1 for f in result.copied if f not in {o.path for o in result.generated})
@@ -496,14 +512,14 @@ def main(argv: list[str] | None = None) -> int:
     norm.add_argument("path", help="league.yaml")
     norm.add_argument("--cache", default=".cache", help="cache root (default .cache)")
     norm.add_argument("--verify", action="store_true", help="compare with the legacy golden files")
-    norm.add_argument("--golden", default="engine/tests/golden", help="golden files directory")
+    norm.add_argument("--golden", default=None, help="golden files directory (default: the league's verify.golden_dir)")
     norm.set_defaults(func=cmd_normalize)
 
     ana = sub.add_parser("analyze", help="Build analysis tables from the canonical tables")
     ana.add_argument("path", help="league.yaml")
     ana.add_argument("--cache", default=".cache", help="cache root (default .cache)")
     ana.add_argument("--verify", action="store_true", help="compare with the legacy golden files")
-    ana.add_argument("--golden", default="engine/tests/golden", help="golden files directory")
+    ana.add_argument("--golden", default=None, help="golden files directory (default: the league's verify.golden_dir)")
     ana.set_defaults(func=cmd_analyze)
 
     def build_args(p: argparse.ArgumentParser) -> None:
@@ -513,7 +529,7 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--site", default=".", help="folder holding the site template (default: repo root)")
         p.add_argument("--build-id", dest="build_id", help="build id (default: UTC time plus git commit)")
         p.add_argument("--verify", action="store_true", help="check the build (schemas, paths, goldens)")
-        p.add_argument("--golden", default="engine/tests/golden", help="golden files directory")
+        p.add_argument("--golden", default=None, help="golden files directory (default: the league's verify.golden_dir)")
 
     build = sub.add_parser("build", help="Assemble the site in dist/ from the analysis tables")
     build_args(build)

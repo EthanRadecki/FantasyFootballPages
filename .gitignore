@@ -56,3 +56,5 @@ Thumbs.db
 # local verify output
 verify.txt
 verify_detail.zip
+.cache-synthetic/
+dist-synthetic/

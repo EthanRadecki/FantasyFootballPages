@@ -296,7 +296,7 @@ class FingerprintsPublisher:
         meta = self._meta(ctx, res)
         out = [Output(f"data/v1/{SCHEMA}.json", fingerprints_model(res, meta), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
-        if path.is_file():
+        if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
             live = read_literal(text, "DATA")
             view = fingerprints_view(res, self._names(ctx, text), meta)

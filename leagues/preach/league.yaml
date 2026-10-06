@@ -127,6 +127,10 @@ analysis:
     library: fantasypros_ppr    # engine/data/adp/: market ADP by season, PPR, for seasons without a draft-day ESPN copy
     snapshot_max_days: 3        # ESPN's own ADP is used only if engine pull saved it within 3 days of the draft
 
+legacy:                             # Stage A (docs/PUBLISH_PLAN.md); removed at cutover (phase 6)
+  site_template: true               # build dist/ on the current site files and write their legacy data views
+  golden_dir: engine/tests/golden   # the legacy files `--verify` checks the engine against
+
 features:
   weekly_rankings: true
   champions_gallery: true

@@ -268,7 +268,7 @@ class LineupEfficiencyPublisher:
         lu = ctx.tables["lineups"]
         out = [Output(f"data/v1/{SCHEMA}.json", lineup_model(eff, lu, hidden, seasons), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
-        if path.is_file():
+        if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
             view = lineup_view(eff[~eff["manager_key"].isin(hidden)], lu, _page_names(ctx, text), by_role=True)
             for var in VARS:
