@@ -1,0 +1,419 @@
+/* Managers page (web/pages/managers.html). Ported unchanged from the Stage A page. */
+/* ── MANAGER SELECTOR GRID ── */
+.mgr-grid {
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
+  gap:0.6rem;margin-bottom:2rem;
+}
+.mgr-pill {
+  padding:0.9rem 0.75rem;text-align:center;cursor:pointer;
+  transition:all 0.2s;border-left:3px solid rgba(var(--mgr-accent-rgb,156,148,156),0.45);
+  text-decoration:none;color:var(--text-mid);
+}
+.mgr-pill:hover {
+  transform:translateY(-2px);border-left-color:var(--mgr-accent,var(--accent));
+}
+.mgr-pill.active {
+  border-left-color:var(--mgr-accent,var(--accent));
+  background:rgba(var(--mgr-accent-rgb,var(--accent-rgb)),0.1) !important;
+}
+.mgr-pill .mgr-logo {
+  width:40px;height:40px;border-radius:0;object-fit:contain;
+  margin:0 auto 0.4rem;display:block;
+}
+.mgr-pill .mgr-name {
+  font-family:var(--font-display);font-size:0.85rem;font-weight:800;
+  color:var(--palm);line-height:1.2;margin-bottom:0.2rem;
+}
+.mgr-pill .mgr-quick {
+  font-size:0.68rem;color:var(--muted);
+}
+.mgr-pill.active .mgr-name { color:var(--mgr-accent-text,var(--accent)); }
+
+/* ── PROFILE SECTION ── */
+#manager-profile { display:none; }
+#manager-profile.visible { display:block; }
+
+.profile-header {
+  display:flex;align-items:center;gap:1.5rem;
+  padding:2rem;margin-bottom:1.5rem;
+  border-left:3px solid var(--mgr-accent,var(--accent));
+}
+.profile-logo {
+  width:80px;height:80px;border-radius:0;object-fit:contain;
+  flex-shrink:0;
+}
+.profile-name-wrap { flex:1; }
+.profile-name {
+  font-family:var(--font-display);font-size:1.8rem;font-weight:900;
+  color:var(--palm);letter-spacing:-0.02em;margin-bottom:0.15rem;
+}
+.profile-subtitle {
+  font-size:0.82rem;color:var(--muted);
+}
+.profile-champ-badges {
+  display:flex;gap:0.4rem;margin-top:0.4rem;
+}
+
+/* ── CAREER STATS GRID ── */
+.career-grid {
+  display:grid;grid-template-columns:repeat(6,1fr);gap:0.6rem;
+  margin-bottom:1.5rem;
+}
+.career-stat {
+  padding:1.1rem 0.75rem;text-align:center;
+  position:relative;
+}
+.career-stat .stat-value {
+  font-family:var(--font-display);font-size:1.6rem;font-weight:900;
+  color:var(--palm);line-height:1;margin-bottom:0.25rem;
+}
+.career-stat .stat-label {
+  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--muted);font-weight:600;
+}
+.career-stat .stat-rank {
+  font-size:0.6rem;font-weight:700;
+  padding:0.15rem 0.4rem;border-radius:4px;
+  display:inline-block;margin-top:0.3rem;
+}
+
+/* ── RIVALRY CARDS ── */
+.rivalry-row {
+  display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;
+  margin-bottom:1.5rem;
+}
+.rivalry-card {
+  padding:1.25rem;display:flex;align-items:center;gap:1rem;
+}
+.rivalry-icon { font-size:1.4rem; }
+.rivalry-logo {
+  width:42px;height:42px;border-radius:0;object-fit:contain;
+  flex-shrink:0;
+}
+.rivalry-info { flex:1; }
+.rivalry-label {
+  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;
+  font-weight:700;margin-bottom:0.15rem;
+}
+.rivalry-label.best { color:var(--green); }
+.rivalry-label.worst { color:var(--red); }
+.rivalry-name {
+  font-family:var(--font-display);font-size:0.95rem;font-weight:800;color:var(--palm);
+}
+.rivalry-record { font-size:0.8rem;color:var(--muted); }
+
+/* ── SEASON TABLE ── */
+.season-table {
+  width:100%;border-collapse:collapse;font-size:0.82rem;
+}
+.season-table thead th {
+  text-align:left;padding:0.65rem 0.7rem;
+  font-size:0.64rem;text-transform:uppercase;letter-spacing:0.08em;
+  font-weight:700;color:var(--mgr-accent-text,var(--accent));
+  border-bottom:2px solid rgba(var(--mgr-accent-rgb,var(--accent-rgb)),0.25);
+  white-space:nowrap;
+}
+.season-table tbody tr {
+  border-bottom:1px solid rgba(var(--mgr-accent-rgb,var(--accent-rgb)),0.08);transition:background 0.15s;
+}
+.season-table tbody tr:hover { background:rgba(var(--mgr-accent-rgb,var(--accent-rgb)),0.06); }
+.season-table tbody td {
+  padding:0.55rem 0.7rem;color:var(--text-mid);white-space:nowrap;
+}
+.season-table .playoff-yes {
+  color:var(--green);font-weight:700;
+}
+.season-table .playoff-no {
+  color:var(--red);
+}
+
+/* ── CHART SECTIONS ── */
+.chart-section {
+  margin-bottom:1.5rem;
+}
+.chart-section-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--mgr-accent-text,var(--accent));font-weight:700;margin-bottom:0.75rem;
+  padding-left:0.25rem;
+}
+.chart-area {
+  padding:1.5rem;
+}
+.chart-area canvas {
+  display:block;width:100% !important;
+}
+
+/* Two-chart row */
+.chart-row {
+  display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;
+  margin-bottom:1.5rem;
+}
+
+/* ── SELECT PROMPT ── */
+.select-prompt {
+  text-align:center;padding:4rem 2rem;
+}
+.select-prompt .prompt-icon {
+  font-size:2.5rem;margin-bottom:1rem;display:block;opacity:0.3;
+}
+.select-prompt p {
+  font-size:0.95rem;color:var(--muted);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px) {
+  .career-grid { grid-template-columns:repeat(3,1fr); }
+  .chart-row { grid-template-columns:1fr; }
+}
+@media(max-width:768px) {
+  .mgr-grid { grid-template-columns:repeat(3,1fr); }
+  .profile-header { flex-direction:column;text-align:center;gap:0.75rem; }
+  .career-grid { grid-template-columns:repeat(2,1fr); }
+  .rivalry-row { grid-template-columns:1fr; }
+  .profile-name { font-size:1.5rem; }
+}
+@media(max-width:480px) {
+  .mgr-grid { grid-template-columns:repeat(2,1fr); }
+}
+
+/* ── DRAFT FINGERPRINT RADAR ── */
+.fingerprint-filter-row {
+  display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:1rem;
+}
+.fp-btn {
+  padding:0.25rem 0.7rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.75rem;
+  font-weight:500;cursor:pointer;transition:all 0.15s;
+}
+.fp-btn:hover { background:var(--accent-glow); }
+.fp-btn.active { background:var(--mgr-accent-text,var(--accent));color:var(--bg);border-color:var(--mgr-accent-text,var(--accent));font-weight:700; }
+
+/* Season color swatches -- consistent hue per year across every filter
+   button and year-labeled cell on this page. */
+.year-swatch-btn { position:relative;padding-left:1.5rem; }
+.year-swatch-btn::before {
+  content:'';position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;background:var(--swatch-color,var(--muted));
+}
+.year-swatch-btn.active {
+  background:var(--swatch-color,var(--mgr-accent,var(--accent))) !important;
+  border-color:var(--swatch-color,var(--mgr-accent,var(--accent))) !important;
+  color:#fff !important;
+}
+.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+
+/* Position filter buttons -- colored per position, matching .pos-badge hues used site-wide */
+.pos-swatch-btn { position:relative;padding-left:1.5rem; }
+.pos-swatch-btn::before {
+  content:'';position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;background:var(--swatch-color,var(--muted));
+}
+.pos-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.pos-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.season-pill {
+  display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
+  font-size:0.68rem;font-weight:700;color:#fff;
+}
+
+/* Best Single-Week Performances podium */
+.bsw-podium {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0.65rem;
+  margin-bottom:1.1rem;
+}
+.bsw-podium-card {
+  background:rgba(255,255,255,0.32);border-radius:10px;
+  padding:1rem 0.6rem 0.85rem;text-align:center;position:relative;
+}
+.bsw-podium-card.rank-1 { background:rgba(255,255,255,0.5); }
+.bsw-podium-rank {
+  font-family:var(--font-display,inherit);font-weight:900;
+  font-size:1.1rem;color:var(--muted);margin-bottom:0.4rem;
+}
+.bsw-podium-headshot {
+  width:56px;height:56px;border-radius:50%;object-fit:cover;
+  display:block;margin:0 auto 0.5rem;background:rgba(255,255,255,0.5);
+  border:3px solid rgba(156,148,156,0.5);
+}
+.bsw-podium-card.rank-1 .bsw-podium-headshot { width:68px;height:68px; }
+.bsw-podium-placeholder {
+  width:56px;height:56px;border-radius:50%;margin:0 auto 0.5rem;
+  background:rgba(156,148,156,0.15);
+}
+.bsw-podium-player {
+  font-weight:700;color:var(--palm);font-size:0.82rem;line-height:1.25;
+  margin-bottom:0.35rem;min-height:2.1em;
+}
+.bsw-podium-points {
+  font-family:var(--font-display,inherit);font-weight:900;
+  font-size:1.5rem;color:var(--text);line-height:1;
+}
+.bsw-podium-card.rank-1 .bsw-podium-points { font-size:1.85rem; }
+.bsw-podium-meta {
+  font-size:0.66rem;color:var(--muted);margin-top:0.4rem;
+  display:flex;align-items:center;justify-content:center;gap:0.35rem;flex-wrap:wrap;
+}
+@media(max-width:600px) {
+  .bsw-podium { gap:0.4rem; }
+  .bsw-podium-card { padding:0.75rem 0.35rem 0.6rem; }
+  .bsw-podium-headshot { width:44px;height:44px; }
+  .bsw-podium-card.rank-1 .bsw-podium-headshot { width:52px;height:52px; }
+  .bsw-podium-points { font-size:1.15rem; }
+  .bsw-podium-card.rank-1 .bsw-podium-points { font-size:1.4rem; }
+  .bsw-podium-player { font-size:0.72rem; }
+}
+.fp-filter-label { font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--mgr-accent-text,var(--accent)); }
+.fp-link {
+  display:inline-flex;align-items:center;gap:0.3rem;
+  font-size:0.72rem;font-weight:600;color:var(--mgr-accent-text,var(--accent));text-decoration:none;margin-left:auto;
+  padding:0.25rem 0.6rem;border-radius:4px;border:1px solid rgba(var(--mgr-accent-rgb,var(--accent-rgb)),0.25);transition:all 0.15s;
+}
+.fp-link:hover { background:var(--accent-glow); }
+
+/* ── FRANCHISE LEADERS ── */
+.fl-table th.fl-sortable {
+  cursor:pointer;user-select:none;transition:color 0.15s;
+}
+.fl-table th.fl-sortable:hover { color:var(--mgr-accent-text,var(--accent)); }
+.fl-table th.fl-sortable::after {
+  content:'';display:inline-block;margin-left:0.35rem;
+  border:4px solid transparent;opacity:0.25;vertical-align:middle;
+}
+.fl-table th.fl-sortable.sort-desc::after {
+  border-top-color:var(--mgr-accent,var(--accent));opacity:1;
+}
+.fl-table th.fl-sortable.sort-asc::after {
+  border-bottom-color:var(--mgr-accent,var(--accent));margin-bottom:4px;opacity:1;
+}
+.fl-table tbody td:first-child { color:var(--muted);font-weight:600; }
+.fl-empty-row td {
+  text-align:center;color:var(--muted);padding:1.5rem;font-style:italic;
+}
+.fl-table td.fl-grad-cell { font-weight:700;border-radius:4px; }
+.fl-scatter-wrap { position:relative;height:420px; }
+@media(max-width:768px) {
+  .fl-scatter-wrap { height:320px; }
+}
+
+/* ── ROSTER TIMELINE ── */
+.fl-tl-scroll {
+  overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:0.5rem;
+}
+.fl-tl-header {
+  display:grid;font-size:0.65rem;color:var(--muted);margin-bottom:0.4rem;font-weight:600;
+}
+.fl-tl-row {
+  display:grid;align-items:center;padding:0.2rem 0;border-radius:4px;
+}
+.fl-tl-row.fl-tl-alt { background:rgba(156,148,156,0.08); }
+.fl-tl-label {
+  font-size:0.75rem;color:var(--palm);display:flex;align-items:center;gap:0.4rem;
+  padding-right:0.6rem;padding-left:0.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  position:sticky;left:0;z-index:2;background:var(--bg);
+  border-right:0.5px solid rgba(156,148,156,0.25);
+}
+.fl-tl-track {
+  position:relative;height:22px;
+}
+.fl-tl-gridline {
+  position:absolute;top:0;bottom:0;width:0;
+  border-left:1px dotted rgba(156,148,156,0.35);
+}
+.fl-tl-playoff-line {
+  position:absolute;top:-2px;bottom:-2px;width:0;
+  border-left:1.5px dashed rgba(168,90,90,0.55);
+}
+.fl-tl-ticks {
+  position:relative;height:11px;font-size:0.55rem;color:var(--muted);
+}
+.fl-tl-tick {
+  position:absolute;transform:translateX(-50%);white-space:nowrap;
+}
+.fl-tl-tick.fl-tl-tick-first{ transform:translateX(0); }
+.fl-tl-tick.fl-tl-tick-last{ transform:translateX(-100%); }
+.fl-tl-seasoncell {
+  position:absolute;top:0;bottom:0;border-left:0.5px solid rgba(156,148,156,0.2);
+}
+.fl-tl-bar {
+  position:absolute;top:3px;height:16px;border-radius:3px;
+}
+@media(max-width:768px) {
+  .fl-tl-label { font-size:0.68rem; }
+  .fl-tl-label .pos-badge { font-size:0.55rem;padding:0.05rem 0.25rem; }
+}
+.fl-pagination {
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  margin-top:0.9rem;
+}
+.fl-page-btn {
+  padding:0.35rem 0.8rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.75rem;
+  font-weight:600;cursor:pointer;transition:all 0.15s;
+}
+.fl-page-btn:hover:not(:disabled) { background:var(--accent-glow);color:var(--mgr-accent-text,var(--accent)); }
+.fl-page-btn:disabled { opacity:0.3;cursor:default; }
+.fl-page-info { font-size:0.72rem;color:var(--muted);font-weight:600;white-space:nowrap; }
+
+/* ── DRAFT BOARD HEATMAP ── */
+.heatmap-wrap {
+  overflow-x:auto;padding-bottom:0.5rem;
+}
+.heatmap-grid {
+  display:grid;
+  grid-template-columns: 36px repeat(14, 1fr);
+  gap:2px;
+  min-width:520px;
+}
+.hm-cell {
+  aspect-ratio:1;border-radius:3px;position:relative;
+  cursor:default;transition:transform 0.1s;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.52rem;font-weight:700;color:rgba(255,255,255,0.7);
+}
+.hm-cell:hover { transform:scale(1.15);z-index:10; }
+.hm-cell.empty { background:rgba(156,148,156,0.08);cursor:default; }
+.hm-cell.empty:hover { transform:none; }
+.hm-header {
+  font-size:0.58rem;font-weight:700;color:var(--muted);
+  text-align:center;display:flex;align-items:center;justify-content:center;
+}
+.hm-row-label {
+  font-size:0.58rem;font-weight:700;color:var(--muted);
+  display:flex;align-items:center;justify-content:flex-end;
+  padding-right:4px;
+}
+.hm-tooltip {
+  position:fixed;z-index:1000;
+  background:var(--glass-bg);backdrop-filter:blur(12px);
+  border:1px solid rgba(var(--mgr-accent-rgb,var(--accent-rgb)),0.3);
+  border-radius:var(--radius-sm);padding:0.6rem 0.85rem;
+  font-size:0.72rem;pointer-events:none;
+  max-width:220px;display:none;
+  box-shadow:0 4px 20px rgba(0,0,0,0.15);
+}
+.hm-tooltip.visible { display:block; }
+.hm-tooltip-title { font-weight:700;color:var(--palm);margin-bottom:0.3rem;font-size:0.78rem; }
+.hm-tooltip-row { color:var(--text-mid);margin-bottom:0.15rem; }
+.hm-tooltip-surplus { font-weight:700;margin-top:0.3rem; }
+.hm-legend {
+  display:flex;align-items:center;gap:0.5rem;margin-top:0.75rem;
+  font-size:0.65rem;color:var(--muted);
+}
+.hm-legend-bar {
+  height:8px;flex:1;border-radius:4px;
+  background:linear-gradient(to right, #c0623a, #f5f0e8, #5a8a5a);
+  max-width:120px;
+}
+.hm-dot-legend {
+  display:flex;align-items:center;gap:0.75rem;margin-top:0.5rem;flex-wrap:wrap;
+}
+.hm-dot-item {
+  display:flex;align-items:center;gap:0.3rem;
+  font-size:0.62rem;color:var(--muted);
+}
+.hm-dot {
+  width:8px;height:8px;border-radius:50%;border:1px solid rgba(255,255,255,0.3);
+}

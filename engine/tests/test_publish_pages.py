@@ -203,6 +203,24 @@ def test_career_ranks_visible_managers_and_picks_seasons_stably():
     assert model["champion"]["season"] == 2024 and model["visible_managers"] == 2
 
 
+def test_score_range_is_the_visible_regular_season_scores():
+    """index.json's score_range: the shared x-axis of every manager's scoring distribution (Stage B)."""
+    ctx = SimpleNamespace(config={"seasons": [{"season": 2024, "regular_season_weeks": 2}]},
+                          cfg={"managers": [{"name": "Hid Den", "id": "m_h"}],
+                               "analysis": {"exclude_games": [{"season": 2024, "week": 2, "manager": "hid-den",
+                                                                "from": ["ppg"]}]}})
+    g = pd.DataFrame([
+        {"season": 2024, "week": 1, "team_a_key": "m_a", "team_b_key": "m_b", "team_a_points": 90.5,
+         "team_b_points": 140.0, "team_a_result": "L", "team_b_result": "W"},
+        {"season": 2024, "week": 2, "team_a_key": "m_a", "team_b_key": "m_h", "team_a_points": 60.0,
+         "team_b_points": 0.0, "team_a_result": "W", "team_b_result": "L"},
+        {"season": 2024, "week": 3, "team_a_key": "m_a", "team_b_key": "m_b", "team_a_points": 200.0,   # playoffs
+         "team_b_points": 10.0, "team_a_result": "W", "team_b_result": "L"},
+    ])
+    assert mgr_pub.score_range(ctx, g, {"m_h"}) == {"min": 60.0, "max": 140.0}
+    assert mgr_pub.score_range(ctx, g.iloc[:0], set()) is None
+
+
 def test_rivals_break_ties_by_games_then_key():
     h = pd.DataFrame([{"opponent_key": "m_b", "wins": 2, "losses": 0, "ties": 0, "games": 2},
                       {"opponent_key": "m_c", "wins": 4, "losses": 0, "ties": 0, "games": 4},
