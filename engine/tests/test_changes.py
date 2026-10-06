@@ -130,3 +130,60 @@ def test_the_command_line(tmp_path, capsys):
     assert change_report.main(["--dist", str(dist), "--site", str(tmp_path)]) == 0
     assert "Matchups: 0 differences" in capsys.readouterr().out
     assert (dist / "changes.html").is_file()
+
+
+def test_anything_in_the_live_season_is_newer_data():
+    old = {"games": [{"season": 2026, "week": 4, "team_a": "A", "team_b": "B", "score_a": 100.0, "score_b": 90.0},
+                     {"season": 2025, "week": 4, "team_a": "A", "team_b": "B", "score_a": 80.0, "score_b": 70.0}],
+           "DRAFT": {"2026": [{"player": "X", "ppg": None}]}}
+    new = {"games": [{"season": 2026, "week": 4, "team_a": "B", "team_b": "A", "score_a": 91.0, "score_b": 100.0},
+                     {"season": 2025, "week": 4, "team_a": "A", "team_b": "B", "score_a": 80.0, "score_b": 71.0}],
+           "DRAFT": {"2026": [{"player": "X", "ppg": 12.5}]}}
+    t = diff(old, new)
+    assert (t.changed, t.swapped, t.newer, t.total) == (1, 1, 2, 1)      # the 2025 score is the one difference
+
+
+def test_after_m1_the_report_compares_two_engine_builds(tmp_path):
+    def build(root: Path, build_id: str, score: float) -> None:
+        (root / "data").mkdir(parents=True)
+        (root / "data" / "schedule_by_week.json").write_text(json.dumps(
+            [{"week": 1, "matchups": [{"team_a": "A", "team_b": "B", "score_a": score}]}]))
+        (root / "build-manifest.json").write_text(json.dumps(
+            {"build": {"id": build_id}, "files": [{"path": "data/schedule_by_week.json", "source": "generated"}]}))
+        (root / "config.json").write_text(json.dumps({"live_season": 2026}))
+
+    live, dist = tmp_path / "live", tmp_path / "dist"
+    build(live, "b1", 10.0)
+    build(dist, "b2", 12.0)
+    rep = changes.write(dist, live)
+    assert rep["previous"] == {"id": "b1"}
+    sched = next(p for p in rep["pages"] if p["id"] == "schedule")
+    assert sched["why"] == [] and sched["files"][0]["changed"] == 1
+    page = (dist / "changes.html").read_text(encoding="utf-8")
+    assert "What changed in this build" in page and "<strong>Why</strong>" not in page
+
+
+def test_the_live_files_can_be_fetched_from_the_site(tmp_path):
+    import functools
+    import http.server
+    import threading
+
+    live, dist, got = tmp_path / "live", tmp_path / "dist", tmp_path / "got"
+    for root, n in ((live, 1), (dist, 2)):
+        (root / "data").mkdir(parents=True)
+        (root / "data" / "a.json").write_text(json.dumps({"n": n}))
+        (root / "build-manifest.json").write_text(json.dumps({"build": {"id": f"b{n}"}, "files": [
+            {"path": "data/a.json", "source": "generated"}, {"path": "data/new.json", "source": "generated"},
+            {"path": "data/v1/index.json", "source": "generated"}]}))
+
+    class Quiet(http.server.SimpleHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+    httpd = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(Quiet, directory=str(live)))
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    try:
+        n = changes.fetch(f"http://127.0.0.1:{httpd.server_address[1]}/", dist, got)
+    finally:
+        httpd.shutdown()
+    assert n == 2                                     # data/a.json and the manifest; data/new.json is not live yet
+    assert json.loads((got / "data" / "a.json").read_text()) == {"n": 1} and not (got / "data" / "v1").exists()
