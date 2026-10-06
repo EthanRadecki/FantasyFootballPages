@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Managers</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/managers.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="page-header glass">
+    <h1>Manager Profiles</h1>
+    <p>Select a manager to view their full career dashboard</p>
+  </div>
+
+  <!-- MANAGER SELECTOR GRID (one pill per visible manager, from config.json) -->
+  <div class="mgr-grid" id="mgr-grid"><div class="data-state data-state-loading">Loading&hellip;</div></div>
+
+  <!-- SELECT PROMPT (shown when no manager selected) -->
+  <div class="select-prompt glass" id="select-prompt">
+    <span class="prompt-icon">&#128100;</span>
+    <p>Select a manager above to view their career dashboard</p>
+  </div>
+
+  <!-- MANAGER PROFILE (hidden until selection) -->
+  <div id="manager-profile">
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header glass">
+      <img class="profile-logo" id="profile-logo" src="" alt="">
+      <div class="profile-name-wrap">
+        <div class="profile-name" id="profile-name"></div>
+        <div class="profile-subtitle" id="profile-subtitle"></div>
+        <div class="profile-champ-badges" id="profile-badges"></div>
+      </div>
+    </div>
+
+    <!-- CAREER STATS -->
+    <div class="career-grid">
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-wins"></div>
+        <div class="stat-label">Wins</div>
+        <div class="stat-rank" id="rank-wins"></div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-losses"></div>
+        <div class="stat-label">Losses</div>
+        <div class="stat-rank" id="rank-losses"></div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-winpct"></div>
+        <div class="stat-label">Win %</div>
+        <div class="stat-rank" id="rank-winpct"></div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-playoffs"></div>
+        <div class="stat-label">Playoffs</div>
+        <div class="stat-rank" id="rank-playoffs"></div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-champs"></div>
+        <div class="stat-label">Championships</div>
+      </div>
+      <div class="career-stat glass">
+        <div class="stat-value" id="stat-pfg"></div>
+        <div class="stat-label">Career PF/G</div>
+        <div class="stat-rank" id="rank-pfg"></div>
+      </div>
+    </div>
+
+    <!-- RIVALRIES -->
+    <div class="rivalry-row">
+      <div class="rivalry-card glass">
+        <img class="rivalry-logo" id="rival-best-logo" src="" alt="">
+        <div class="rivalry-info">
+          <div class="rivalry-label best">Best Matchup</div>
+          <div class="rivalry-name" id="rival-best-name"></div>
+          <div class="rivalry-record" id="rival-best-record"></div>
+        </div>
+      </div>
+      <div class="rivalry-card glass">
+        <img class="rivalry-logo" id="rival-worst-logo" src="" alt="">
+        <div class="rivalry-info">
+          <div class="rivalry-label worst">Worst Matchup</div>
+          <div class="rivalry-name" id="rival-worst-name"></div>
+          <div class="rivalry-record" id="rival-worst-record"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEASON TABLE -->
+    <div class="chart-section">
+      <div class="chart-section-label">Season-by-Season</div>
+      <div class="table-wrap glass">
+        <table class="season-table" id="season-table">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Team</th>
+              <th>Record</th>
+              <th>Win %</th>
+              <th>PF/G</th>
+              <th>PA/G</th>
+              <th>Diff</th>
+              <th>Draft</th>
+              <th>Playoffs</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BEST SINGLE-WEEK PERFORMANCES -->
+    <div class="chart-section">
+      <div class="chart-section-label">Best Single-Week Performances</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <div class="fingerprint-filter-row bsw-filter-row" data-filter="pos"></div>
+        <div class="fingerprint-filter-row bsw-filter-row" data-filter="year"></div>
+        <div class="bsw-podium" id="bsw-podium"></div>
+        <div class="table-wrap">
+          <table class="season-table" id="bsw-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Player</th>
+                <th>Pos</th>
+                <th>Points</th>
+                <th>Week</th>
+                <th>Season</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.75rem;">
+          Single starting-lineup weeks only.
+        </p>
+      </div>
+    </div>
+
+    <!-- FRANCHISE LEADERS -->
+    <div class="chart-section">
+      <div class="chart-section-label">Franchise Leaders</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <div class="fingerprint-filter-row fl-filter-row" data-filter="pos"></div>
+        <div class="fingerprint-filter-row fl-filter-row" data-filter="year"></div>
+        <div class="table-wrap">
+          <table class="season-table fl-table" id="franchise-leaders-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Player</th>
+                <th>Pos</th>
+                <th class="fl-sortable sort-desc" data-sort-key="total_points">Total Pts</th>
+                <th class="fl-sortable" data-sort-key="ppg">PPG</th>
+                <th class="fl-sortable" data-sort-key="games_played">Games</th>
+                <th class="fl-sortable" data-sort-key="weeks_rostered">Weeks Rostered</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="fl-pagination" id="fl-pagination">
+          <button class="fl-page-btn" id="fl-prev-btn">&#8592; Prev</button>
+          <span class="fl-page-info" id="fl-page-info"></span>
+          <button class="fl-page-btn" id="fl-next-btn">Next &#8594;</button>
+        </div>
+        <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.75rem;">
+          Total points and PPG only count weeks a player was in the starting lineup. Weeks rostered counts every week on the roster, bench and IR included.
+        </p>
+      </div>
+    </div>
+
+    <!-- WORKHORSE VS RENTAL SCATTER -->
+    <div class="chart-section">
+      <div class="chart-section-label">Workhorse vs. Rental</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <div class="fingerprint-filter-row fl-filter-row" data-filter="pos"></div>
+        <div class="fingerprint-filter-row fl-filter-row" data-filter="year"></div>
+        <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0;">
+          Top 50 players by total points. Bubble size is total points, ring color is position, and headshots fill in where a match exists.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+          <span class="pos-badge pos-rb">RB</span>
+          <span class="pos-badge pos-wr">WR</span>
+          <span class="pos-badge pos-qb">QB</span>
+          <span class="pos-badge pos-te">TE</span>
+          <span class="pos-badge pos-k">K</span>
+          <span class="pos-badge pos-dst">D/ST</span>
+        </div>
+        <div class="fl-scatter-wrap">
+          <canvas id="fl-scatter-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROSTER TIMELINE -->
+    <div class="chart-section">
+      <div class="chart-section-label">Roster Timeline</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <div class="fingerprint-filter-row fl-filter-row" data-filter="pos"></div>
+        <div class="fingerprint-filter-row fl-filter-row" data-filter="year"></div>
+        <p style="font-size:0.75rem;color:var(--muted);margin:0.75rem 0 0.9rem;">
+          Top 20 players by total points. Solid segments are weeks started, faded segments are weeks benched or on IR. Dotted lines mark weeks 5/9/13; the dashed red line marks the start of that season's playoffs.
+        </p>
+        <div id="fl-timeline-wrap"></div>
+      </div>
+    </div>
+
+    <!-- PERFORMANCE OVER TIME -->
+    <div class="chart-section">
+      <div class="chart-section-label">Performance Over Time</div>
+      <div class="chart-area glass">
+        <div style="position:relative;height:220px;">
+          <canvas id="chart-perf"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE LUCK -->
+    <div class="chart-section">
+      <div class="chart-section-label">Schedule Luck by Season</div>
+      <div class="chart-area glass">
+        <div style="position:relative;height:220px;">
+          <canvas id="chart-luck"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- H2H + SCORING DIST -->
+    <div class="chart-row">
+      <div class="chart-section">
+        <div class="chart-section-label">Head-to-Head Records</div>
+        <div class="chart-area glass">
+          <div style="position:relative;height:260px;">
+            <canvas id="chart-h2h"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-section-label">Scoring Distribution</div>
+        <div class="chart-area glass">
+          <div style="position:relative;height:260px;">
+            <canvas id="chart-dist"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEKLY SCORING TRENDS -->
+    <div class="chart-section">
+      <div class="chart-section-label">Weekly Scoring Trends</div>
+      <div class="chart-area glass">
+        <div style="position:relative;height:280px;">
+          <canvas id="chart-trends"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- RANK TRAJECTORY -->
+    <div class="chart-section">
+      <div class="chart-section-label">Power Ranking Trajectory</div>
+      <div class="chart-area glass">
+        <div style="position:relative;height:220px;">
+          <canvas id="chart-rank"></canvas>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- DRAFT FINGERPRINT -->
+    <div class="chart-section">
+      <div class="chart-section-label">Draft Fingerprint</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <div class="fingerprint-filter-row" id="fp-filter-row"></div>
+        <div style="position:relative;height:300px;">
+          <canvas id="chart-fingerprint"></canvas>
+        </div>
+        <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-top:0.75rem;text-align:center;">
+          Outer edge = league high for that trait in that period. Hover each point for raw values. Career shown by default.
+        </p>
+      </div>
+    </div>
+
+    <!-- DRAFT BOARD HEATMAP -->
+    <div class="chart-section">
+      <div class="chart-section-label">Draft Board Performance Map</div>
+      <div class="chart-area glass" style="padding:1.25rem 1.5rem;">
+        <p style="font-size:0.72rem;color:var(--muted);margin-bottom:1rem;line-height:1.5;">
+          Each cell is one draft slot across all seasons. Green means surplus value found there, red means capital lost. Grey cells were never picked at. Hover any cell for details.
+        </p>
+        <div class="heatmap-wrap">
+          <div class="heatmap-grid" id="heatmap-grid"></div>
+        </div>
+        <div class="hm-legend">
+          <span>Worse</span>
+          <div class="hm-legend-bar"></div>
+          <span>Better</span>
+          <span style="margin-left:auto;font-size:0.6rem;">Cell size = 1 draft slot. Numbers show seasons played at that slot.</span>
+        </div>
+        <div class="hm-dot-legend">
+          <div class="hm-dot-item"><div class="hm-dot" style="background:#5a8a5a"></div>RB</div>
+          <div class="hm-dot-item"><div class="hm-dot" style="background:#4a7fa8"></div>WR</div>
+          <div class="hm-dot-item"><div class="hm-dot" style="background:#c08a3a"></div>QB</div>
+          <div class="hm-dot-item"><div class="hm-dot" style="background:#9f8bc2"></div>TE</div>
+          <div class="hm-dot-item"><div class="hm-dot" style="background:rgba(156,148,156,0.3)"></div>Never drafted here</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hm-tooltip" id="hm-tooltip">
+      <div class="hm-tooltip-title" id="hm-tt-title"></div>
+      <div id="hm-tt-picks"></div>
+    </div>
+  </div><!-- end #manager-profile -->
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="../assets/js/pages/managers.js"></script>
+</body>
+</html>

@@ -84,6 +84,14 @@
                                "result": {"enum": ["W", "L", "T"]}, "excluded_from_ppg": {"type": "boolean"},
                                "league_avg": {"type": "number"}, "league_median": {"type": "number"}}}
     },
+    "playoff_weeks": {
+      "type": "array",
+      "items": {"type": "object", "required": ["season", "week", "round", "opponent_key", "points", "result"],
+                "additionalProperties": false,
+                "properties": {"season": {"type": "integer"}, "week": {"type": "integer"}, "round": {"type": "string"},
+                               "opponent_key": {"$ref": "#/$defs/key"}, "points": {"type": "number"},
+                               "result": {"enum": ["W", "L", "T"]}}}
+    },
     "schedule_luck": {
       "type": "array",
       "items": {"type": "object", "required": ["season", "games", "actual_wins", "expected_wins", "luck"],

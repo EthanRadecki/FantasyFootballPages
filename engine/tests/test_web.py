@@ -61,3 +61,13 @@ def test_write_preview(tmp_path):
     assert sorted(files) == ["next/assets/a.js", "next/config.json", "next/data/v1/index.json",
                              "next/images/logos/l.png", "next/index.html"]
     assert preview.write_preview(tmp_path / "no-web", out, legacy_site=True) == []
+
+
+def test_every_template_page_is_in_the_site_page_list():
+    """A page in web/ is one of engine/publish/site.py's pages (the nav and the preview links use that list)."""
+    from engine.publish.site import PAGES
+
+    paths = {p["path"] for p in PAGES}
+    web = ROOT / "web"
+    pages = sorted(p.relative_to(web).as_posix() for p in web.rglob("*.html"))
+    assert pages and all(p in paths for p in pages), pages

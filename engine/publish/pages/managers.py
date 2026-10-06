@@ -3,8 +3,9 @@
 Outputs
     data/v1/index.json               page model (schema "index"): leaderboard, current champion
     data/v1/managers/<key>.json      page model (schema "manager"), one per visible manager:
-                                     career, seasons, head-to-head, rivals, weekly scores,
-                                     schedule luck, franchise leaders, roster stints, best weeks,
+                                     career, seasons, head-to-head, rivals, weekly scores
+                                     (regular season), winners-bracket playoff games with their
+                                     round, schedule luck, franchise leaders, roster stints, best weeks,
                                      draft profile (10 dimensions) and draft board map
     data/preach_manager_stats.csv    legacy view (index.html, managers.html)
     data/franchise_leaders.json      legacy view (managers.html)
@@ -100,15 +101,28 @@ def _career_record(r: pd.Series) -> dict:
     return {k: clean(r[k]) for k in r.index if not k.startswith("rank_")} | {"ranks": ranks}
 
 
-def index_model(ctx, ms: pd.DataFrame, hidden: set[str]) -> dict:
+def score_range(ctx, games: pd.DataFrame, hidden: set[str]) -> dict | None:
+    """The lowest and highest regular-season score of any visible manager (forfeits and games left out of
+    points per game excluded): the shared x-axis of every manager's scoring distribution (Stage B)."""
+    if not len(games):
+        return None
+    sides, _ = regular_weeks(ctx, games)
+    s = sides[~sides["manager_key"].isin(hidden) & ~sides["excluded_from_ppg"] & (sides["points"] > 0)]["points"]
+    return {"min": float(s.min()), "max": float(s.max())} if len(s) else None
+
+
+def index_model(ctx, ms: pd.DataFrame, hidden: set[str], games: pd.DataFrame | None = None) -> dict:
     board = career(ms, hidden)
     finished = ms[~ms["is_live"].astype(bool) & flag(ms["champion"])].sort_values("season")
     champ = None
     if len(finished):
         c = finished.iloc[-1]
         champ = {"season": int(c["season"]), "manager_key": c["manager_key"], "team_name": c["team_name"]}
-    return {"leaderboard": [_career_record(r) for _, r in board.iterrows()], "champion": champ,
-            "visible_managers": int(len(board))}
+    out = {"leaderboard": [_career_record(r) for _, r in board.iterrows()], "champion": champ,
+           "visible_managers": int(len(board))}
+    if games is not None:
+        out["score_range"] = score_range(ctx, games, hidden)
+    return out
 
 
 # ---------------------------------------------------------------- manager files
@@ -149,11 +163,26 @@ def rivals(h2h: pd.DataFrame) -> dict:
     return {"best": pick(best), "worst": pick(worst)}
 
 
+def playoff_weeks(ctx, games: pd.DataFrame) -> pd.DataFrame:
+    """Each team's winners-bracket games (the games table keeps only the games that count: no consolation
+    games, no byes), with the round's name: (season, week, round, manager_key, opponent_key, points, result)."""
+    reg = {s["season"]: s["regular_season_weeks"] for s in ctx.config["seasons"]}
+    names = {(s["season"], int(w)): n for s in ctx.config["seasons"] for w, n in (s.get("rounds") or {}).items()}
+    g = games[[w > reg.get(int(s), 99) for s, w in zip(games["season"], games["week"])]]
+    sides = pd.concat([
+        pd.DataFrame({"season": g["season"], "week": g["week"], "manager_key": g[f"team_{s}_key"],
+                      "opponent_key": g[f"team_{o}_key"], "points": g[f"team_{s}_points"],
+                      "result": g[f"team_{s}_result"]}) for s, o in (("a", "b"), ("b", "a"))], ignore_index=True)
+    sides["round"] = [names.get((int(s), int(w)), "Playoffs") for s, w in zip(sides["season"], sides["week"])]
+    return sides.sort_values(["season", "week"])
+
+
 def manager_models(ctx, a: dict, hidden: set[str]) -> dict[str, dict]:
     ms = a["manager_seasons"]
     board = career(ms, hidden).set_index("manager_key")
     sides, avg = regular_weeks(ctx, a["games"])
     sides = sides.merge(avg, on=["season", "week"], how="left")
+    playoffs = playoff_weeks(ctx, a["games"])
     league_pfg = ms.groupby("season")["pf_per_game"].mean()
     h2h = a["head_to_head"]
     h2h = h2h[~h2h["opponent_key"].isin(hidden)]
@@ -179,6 +208,9 @@ def manager_models(ctx, a: dict, hidden: set[str]) -> dict[str, dict]:
                        "points": float(r.points), "result": r.result, "excluded_from_ppg": bool(r.excluded_from_ppg),
                        "league_avg": float(r.league_avg), "league_median": float(r.league_median)}
                       for r in mine(sides).itertuples()],
+            "playoff_weeks": [{"season": int(r.season), "week": int(r.week), "round": r.round,
+                               "opponent_key": r.opponent_key, "points": float(r.points), "result": r.result}
+                              for r in mine(playoffs).itertuples()],
             "schedule_luck": [{"season": int(r.season), "games": int(r.games), "actual_wins": float(r.actual_wins),
                                "expected_wins": float(r.expected_wins), "luck": float(r.schedule_luck)}
                               for r in mine(luck).sort_values("season").itertuples()],
@@ -377,7 +409,8 @@ class ManagersPublisher:
         if not all(n in a for n in self.NEEDS):
             return []
         hidden = excluded_manager_keys(ctx.cfg)
-        outs = [Output("data/v1/index.json", index_model(ctx, a["manager_seasons"], hidden), INDEX_SCHEMA, VERSION)]
+        outs = [Output("data/v1/index.json", index_model(ctx, a["manager_seasons"], hidden, a["games"]), INDEX_SCHEMA,
+                       VERSION)]
         for key, model in manager_models(ctx, a, hidden).items():
             outs.append(Output(f"data/v1/managers/{key}.json", model, MANAGER_SCHEMA, VERSION))
         stats = site_csv(ctx, "data/preach_manager_stats.csv")
