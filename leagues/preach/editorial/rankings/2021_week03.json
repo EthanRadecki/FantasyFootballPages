@@ -1,0 +1,62 @@
+{
+ "season": 2021,
+ "week": 3,
+ "teams": [
+  {
+   "manager": "Max Malich",
+   "rank": 1
+  },
+  {
+   "manager": "Deniz Bileydi",
+   "rank": 2
+  },
+  {
+   "manager": "Carmine Pittelli Jr.",
+   "rank": 3
+  },
+  {
+   "manager": "Anthony Kelly",
+   "rank": 4
+  },
+  {
+   "manager": "Ben Castaldo",
+   "rank": 5
+  },
+  {
+   "manager": "Ethan Radecki",
+   "rank": 6
+  },
+  {
+   "manager": "Cole Maney",
+   "rank": 7
+  },
+  {
+   "manager": "Ryan P McQuaid",
+   "rank": 8
+  },
+  {
+   "manager": "Charlie Gorman",
+   "rank": 9
+  },
+  {
+   "manager": "Quin Gegwich",
+   "rank": 10
+  },
+  {
+   "manager": "Aidan Quigley",
+   "rank": 11
+  },
+  {
+   "manager": "Brandon Hancock",
+   "rank": 12
+  },
+  {
+   "manager": "Andrew Root",
+   "rank": 13
+  },
+  {
+   "manager": "Baylen Slansky",
+   "rank": 14
+  }
+ ]
+}

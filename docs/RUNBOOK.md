@@ -22,3 +22,21 @@ python -m engine.cli update leagues/preach/league.yaml --verify
 To look at the build: `python -m http.server 8000 --directory dist`, then open the forwarded port.
 
 Until milestone M1 (docs/PUBLISH_PLAN.md section 8) the live site is still updated the old way; `dist/` is for review only.
+
+## Weekly rankings
+
+Each ranked week is an editorial file (`leagues/<league>/editorial/rankings/<season>_weekNN.json`: ranks, synopses, blurbs, the matchup of the week) plus a frozen snapshot of its computed fields (`leagues/<league>/snapshots/rankings/`); the build adds record, PPG, streak and the rank fields (docs/METRICS_REFERENCE.md, Weekly Rankings).
+
+Until M1 (the PC still writes `data/rankings/<season>_weekNN.json`), import each new week into those folders and commit them with the week:
+
+```
+python tools/split_rankings.py leagues/preach/league.yaml
+```
+
+`build --verify` lists any week file in `data/rankings/` that has not been imported. From M1 on, after the weekly `engine update`:
+
+```
+python -m engine.cli rankings new leagues/preach/league.yaml --week 5
+```
+
+writes the week's snapshot (refused if one exists; `--force` regenerates it) and, when the week has no editorial file yet, a draft with last week's order to rewrite. Fill in the ranks, synopses, blurbs and the matchup of the week (`"matchup_of_the_week": {"team_a": "<manager>", "team_b": "<manager>", "blurb": "..."}`), then commit both files.

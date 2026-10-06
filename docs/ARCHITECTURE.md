@@ -107,6 +107,7 @@ Every analysis reads only these, never provider output directly. This is the sea
 | `future_matchups` | live season: team x remaining week, scheduled opponent |
 | `projections` | live season: player x remaining week, ESPN projection (rostered and available players) |
 | `pro_teams` | NFL team x season, bye week |
+| `pro_games` | NFL team x season x week, opponent and home/away (ESPN's pro schedule) |
 
 ### Incremental builds, one code path
 

@@ -1,0 +1,62 @@
+{
+ "season": 2025,
+ "week": 13,
+ "teams": [
+  {
+   "manager": "Cole Maney",
+   "rank": 1
+  },
+  {
+   "manager": "Ben Castaldo",
+   "rank": 2
+  },
+  {
+   "manager": "Ryan P McQuaid",
+   "rank": 3
+  },
+  {
+   "manager": "Anthony Kelly",
+   "rank": 4
+  },
+  {
+   "manager": "Baylen Slansky",
+   "rank": 5
+  },
+  {
+   "manager": "Brandon Hancock",
+   "rank": 6
+  },
+  {
+   "manager": "Carmine Pittelli Jr.",
+   "rank": 7
+  },
+  {
+   "manager": "Andrew Root",
+   "rank": 8
+  },
+  {
+   "manager": "Ethan Radecki",
+   "rank": 9
+  },
+  {
+   "manager": "Quin Gegwich",
+   "rank": 10
+  },
+  {
+   "manager": "Charlie Gorman",
+   "rank": 11
+  },
+  {
+   "manager": "Max Malich",
+   "rank": 12
+  },
+  {
+   "manager": "Deniz Bileydi",
+   "rank": 13
+  },
+  {
+   "manager": "Aidan Quigley",
+   "rank": 14
+  }
+ ]
+}

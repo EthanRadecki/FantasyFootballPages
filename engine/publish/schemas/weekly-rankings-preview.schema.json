@@ -1,0 +1,125 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "weekly-rankings-preview",
+ "title": "data/v1/weekly-rankings/<season>-playoff-<round>.json: a playoff round preview as the commissioner wrote it",
+ "type": "object",
+ "required": [
+  "meta",
+  "season",
+  "round",
+  "matchups"
+ ],
+ "properties": {
+  "meta": {
+   "type": "object",
+   "required": [
+    "schema",
+    "schema_version"
+   ],
+   "properties": {
+    "schema": {
+     "const": "weekly-rankings-preview"
+    },
+    "schema_version": {
+     "const": 1
+    }
+   }
+  },
+  "season": {
+   "type": "integer"
+  },
+  "round": {
+   "type": "string"
+  },
+  "round_label": {
+   "type": "string"
+  },
+  "overview": {
+   "type": "string"
+  },
+  "matchups": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "higher_seed": {
+      "type": "object",
+      "required": [
+       "manager_key",
+       "manager",
+       "seed"
+      ],
+      "properties": {
+       "manager_key": {
+        "type": "string",
+        "pattern": "^m_[0-9a-f]{12}$"
+       },
+       "manager": {
+        "type": "string"
+       },
+       "seed": {
+        "type": "integer"
+       },
+       "team": {
+        "type": "string"
+       },
+       "projection": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "regular_season_avg": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "record": {
+        "type": "string"
+       }
+      }
+     },
+     "lower_seed": {
+      "type": "object",
+      "required": [
+       "manager_key",
+       "manager",
+       "seed"
+      ],
+      "properties": {
+       "manager_key": {
+        "type": "string",
+        "pattern": "^m_[0-9a-f]{12}$"
+       },
+       "manager": {
+        "type": "string"
+       },
+       "seed": {
+        "type": "integer"
+       },
+       "team": {
+        "type": "string"
+       },
+       "projection": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "regular_season_avg": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "record": {
+        "type": "string"
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

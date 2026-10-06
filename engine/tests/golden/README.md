@@ -99,6 +99,10 @@ Added 2026-09-29. Checked by `engine analyze --verify` and by `engine/tests/test
 
 Added 2026-09-29. `playoff_odds/playoff_odds.json.gz` is `data/rankings/playoff_odds.json`: 2020-2025 from `generate_playoff_odds.py` (reproduced exactly from `matchup_data.csv.gz`), 2026 weeks 1-3 from `generate_playoff_odds_2026_live.py` (week 3 reproduced exactly from the `sos/` goldens and 2026 results in `records/matchups.json.gz`; week 2's projection input no longer exists). CI checks 2020 and 2026 week 3; `engine analyze --verify` checks every season.
 
+## rankings/
+
+Added 2026-10-05 (PR A8b). `rankings/rankings_files.json.gz` is every file in `data/rankings/` except `playoff_odds.json` (54 week files 2021 through 2026 week 4, the 2025 quarterfinal preview, `manifest.json`), keyed by file name, as published that day. Checked by `engine build --verify` (each week rebuilt from its editorial file, snapshot and the derived fields; the manifest and preview from the editorial files; the snapshot generator's draft-day fields against 2026 week 1) and by `engine/tests/test_publish_rankings.py` (the split is lossless; the derived fields from `records/matchups.json.gz`; the week 1 measures). Known differences: average rank by the older rules before 2026, two files typed to 1 place, the 2023 end-of-season file's blank last score and streak.
+
 ## waivers/
 
 Added 2026-09-29. Checked by `engine analyze --verify`.

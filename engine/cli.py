@@ -6,6 +6,8 @@
     engine analyze leagues/preach/league.yaml [--verify]
     engine build leagues/preach/league.yaml [--out dist] [--verify]
     engine update leagues/preach/league.yaml [--verify]      pull, normalize, analyze, build
+    engine rankings new leagues/preach/league.yaml --week 5 [--season 2026] [--force]
+                                                             the live week's rankings snapshot + editorial draft
 
 See docs/ARCHITECTURE.md and docs/PUBLISH_PLAN.md.
 """
@@ -185,6 +187,8 @@ def load_goldens(golden_dir: Path) -> dict:
         golden["rankings_2026_week03"] = json.load(f)
     with gzip.open(golden_dir / "playoff_odds" / "playoff_odds.json.gz", "rt", encoding="utf-8") as f:
         golden["playoff_odds"] = json.load(f)
+    with gzip.open(golden_dir / "rankings" / "rankings_files.json.gz", "rt", encoding="utf-8") as f:
+        golden["rankings_files"] = json.load(f)
     golden["waiver_stints_full"] = pd.read_csv(golden_dir / "waivers" / "waiver_stints_full.csv.gz")
     golden["attribution_season_data_final"] = pd.read_csv(
         golden_dir / "attribution" / "attribution_season_data_final.csv.gz")
@@ -402,7 +406,7 @@ def cmd_build(args: argparse.Namespace) -> int:
     groups: dict[tuple, list[str]] = {}
     for o in result.generated:
         kind = f"{o.schema} v{o.version}" if o.schema else "legacy view"
-        folder = o.path.rsplit("/", 1)[0] if o.path.count("/") > 2 else o.path
+        folder = o.path.rsplit("/", 1)[0] if o.path.count("/") >= 2 else o.path
         groups.setdefault((folder, kind), []).append(o.path)
     for (folder, kind), paths in groups.items():
         label = paths[0] if len(paths) == 1 else f"{folder}/*.json ({len(paths)} files)"
@@ -418,6 +422,31 @@ def cmd_build(args: argparse.Namespace) -> int:
     for c in checks:
         print(c if isinstance(c, str) else c.render())
     return 0 if all(c.ok for c in checks if not isinstance(c, str)) else 1
+
+
+def cmd_rankings_new(args: argparse.Namespace) -> int:
+    """Freeze the computed fields of a ranked week (decision 7.9) and start its editorial file."""
+    from engine.publish.build import BuildContext
+    from engine.publish.pages.rankings import write_week
+    from engine.publish.writer import build_info
+    from engine.store import canonical_dir, read_tables
+
+    cfg = load_config(args.path)
+    league = cfg["league"]
+    src = canonical_dir(Path(args.cache), league["provider"], league["league_id"])
+    ana = Path(args.cache) / "analysis" / league["provider"] / str(league["league_id"])
+    if not src.exists() or not ana.exists():
+        print(f"error: run `engine update {args.path}` (or normalize and analyze) first")
+        return 1
+    ctx = BuildContext(cfg=cfg, tables=read_tables(src), analysis=read_tables(ana), build=build_info(),
+                       site_root=Path("."), league_dir=Path(args.path).parent)
+    season = args.season or ctx.config.get("live_season")
+    if season is None:
+        print("error: no live season; pass --season")
+        return 1
+    for path in write_week(ctx, int(season), int(args.week), force=args.force):
+        print(f"wrote {path}")
+    return 0
 
 
 def cmd_update(args: argparse.Namespace) -> int:
@@ -494,6 +523,16 @@ def main(argv: list[str] | None = None) -> int:
     update.add_argument("--auth", help="JSON file with espn_s2 and swid (default: environment)")
     update.add_argument("--skip-pull", dest="skip_pull", action="store_true", help="use the cached raw data")
     update.set_defaults(func=cmd_update)
+
+    rk = sub.add_parser("rankings", help="Weekly rankings files")
+    rk_sub = rk.add_subparsers(dest="rankings_command", required=True)
+    new = rk_sub.add_parser("new", help="Write the live week's snapshot and an editorial draft")
+    new.add_argument("path", help="league.yaml")
+    new.add_argument("--week", type=int, required=True, help="the week being ranked (the next one to play)")
+    new.add_argument("--season", type=int, help="default: the live season")
+    new.add_argument("--cache", default=".cache", help="cache root (default .cache)")
+    new.add_argument("--force", action="store_true", help="regenerate an existing (frozen) snapshot")
+    new.set_defaults(func=cmd_rankings_new)
 
     args = parser.parse_args(argv)
     return args.func(args)

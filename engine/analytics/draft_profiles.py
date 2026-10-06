@@ -294,7 +294,8 @@ def archetypes(seasons: pd.DataFrame, feats: list[str]) -> dict:
     rows = seasons.dropna(subset=feats)
     labels = pd.Series(km.predict(pca.transform(scaler.transform(rows[feats]))), index=rows.index)
     raw = KMeans(ARCHETYPE_K, n_init=50, random_state=SEED).fit(X)
-    return {"labels": labels, "fit_index": fit.index, "Z": Z, "X": X, "km": km, "pca": pca,
+    return {"labels": labels, "fit_index": fit.index, "Z": Z, "X": X, "km": km, "pca": pca, "scaler": scaler,
+            "feats": feats,
             "silhouette_pca": silhouette_score(Z, km.labels_), "silhouette_raw": silhouette_score(X, raw.labels_)}
 
 
@@ -343,11 +344,14 @@ def profiles(fp: dict[str, pd.DataFrame], outcomes: pd.DataFrame, surplus: pd.Da
 
     model = archetypes(s, features(s.columns))
     s["cluster"] = model["labels"].reindex(s.index).astype("Int64") if model else pd.array([pd.NA] * len(s), "Int64")
+    remap = {k: k for k in range(ARCHETYPE_K)}
     if model and ch["stable_cluster_ids"]:
         fit = s[~s["live"]].dropna(subset=["cluster"])
         order = (fit.groupby("cluster").agg(n=("cluster", "size"), conv=("draft_conviction", "mean"))
                  .sort_values(["n", "conv"], ascending=[False, True]).index)
-        s["cluster"] = s["cluster"].map({old: new for new, old in enumerate(order)}).astype("Int64")
+        remap = {int(old): new for new, old in enumerate(order)}
+        s["cluster"] = s["cluster"].map(remap).astype("Int64")
+    matches = archetype_matches(s, model) if model else pd.DataFrame(columns=MATCH_COLUMNS)
 
     c = fp["draft_fingerprint_career"].copy()
     done = s[~s["live"]]
@@ -389,7 +393,42 @@ def profiles(fp: dict[str, pd.DataFrame], outcomes: pd.DataFrame, surplus: pd.Da
             stats.update(stability(model))
     stats["fill_notes"] = "; ".join(fill_notes)
     return {"draft_profile_seasons": s.drop(columns="name"), "draft_profile_career": c,
-            "draft_archetypes": arch, "draft_archetype_stats": pd.DataFrame([stats])}
+            "draft_archetypes": arch, "draft_archetype_stats": pd.DataFrame([stats]),
+            "draft_archetype_matches": matches}
+
+
+MATCH_COLUMNS = ["season", "manager_key", "cluster", "dist_to_nearest", "margin_over_2nd", "rank",
+                 "comp_season", "comp_manager_key", "comp_cluster", "comp_dist"]
+MATCH_COMPARISONS = 3
+
+
+def archetype_matches(s: pd.DataFrame, model: dict) -> pd.DataFrame:
+    """Each live-season draft against the archetype model, in the space k-means
+    was fit in (standardized features, PCA): the distance to its own cluster's
+    center, how much nearer that center is than the next one (margin_over_2nd,
+    how clearly the draft belongs to its archetype), and the finished
+    manager-seasons nearest to it (comparisons, nearest first). One row per
+    live draft and comparison."""
+    feats = model["feats"]
+    live = s[s["live"]].dropna(subset=feats + ["cluster"])
+    done = s.loc[model["fit_index"]]
+    if not len(live):
+        return pd.DataFrame(columns=MATCH_COLUMNS)
+    Zl = model["pca"].transform(model["scaler"].transform(live[feats]))
+    centers = model["km"].cluster_centers_
+    rows = []
+    for i, (_, r) in enumerate(live.iterrows()):
+        dc = np.sqrt(((centers - Zl[i]) ** 2).sum(axis=1))
+        near = np.sort(dc)
+        d = np.sqrt(((model["Z"] - Zl[i]) ** 2).sum(axis=1))
+        for rank, j in enumerate(np.argsort(d, kind="stable")[:MATCH_COMPARISONS], start=1):
+            c = done.iloc[j]
+            rows.append({"season": int(r["season"]), "manager_key": r["manager_key"], "cluster": int(r["cluster"]),
+                         "dist_to_nearest": float(near[0]),
+                         "margin_over_2nd": float(near[1] - near[0]) if len(near) > 1 else np.nan,
+                         "rank": rank, "comp_season": int(c["season"]), "comp_manager_key": c["manager_key"],
+                         "comp_cluster": int(c["cluster"]), "comp_dist": float(d[j])})
+    return pd.DataFrame(rows, columns=MATCH_COLUMNS)
 
 
 def ranges(frame: pd.DataFrame, columns: list[str]) -> dict[str, list[float]]:

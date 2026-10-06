@@ -1,0 +1,62 @@
+{
+ "season": 2022,
+ "week": 1,
+ "teams": [
+  {
+   "manager": "Carmine Pittelli Jr.",
+   "rank": 1
+  },
+  {
+   "manager": "Ethan Radecki",
+   "rank": 2
+  },
+  {
+   "manager": "Aidan Quigley",
+   "rank": 3
+  },
+  {
+   "manager": "Charlie Gorman",
+   "rank": 4
+  },
+  {
+   "manager": "Quin Gegwich",
+   "rank": 5
+  },
+  {
+   "manager": "Ryan P McQuaid",
+   "rank": 6
+  },
+  {
+   "manager": "Cole Maney",
+   "rank": 7
+  },
+  {
+   "manager": "Brandon Hancock",
+   "rank": 8
+  },
+  {
+   "manager": "Ben Castaldo",
+   "rank": 9
+  },
+  {
+   "manager": "Max Malich",
+   "rank": 10
+  },
+  {
+   "manager": "Andrew Root",
+   "rank": 11
+  },
+  {
+   "manager": "Anthony Kelly",
+   "rank": 12
+  },
+  {
+   "manager": "Baylen Slansky",
+   "rank": 13
+  },
+  {
+   "manager": "Deniz Bileydi",
+   "rank": 14
+  }
+ ]
+}
