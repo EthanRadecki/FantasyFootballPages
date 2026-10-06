@@ -23,6 +23,10 @@ To look at the build: `python -m http.server 8000 --directory dist`, then open t
 
 Until milestone M1 (docs/PUBLISH_PLAN.md section 8) the live site is still updated the old way; `dist/` is for review only.
 
+## Page test and build provenance
+
+`python tools/smoke_pages.py` opens every page of the site in headless Chromium (needs `pip install playwright` and `python -m playwright install chromium`) and fails on JavaScript errors or a blank page; `--screenshots DIR` saves one PNG per page, `-v` lists resources that did not load. CI runs it on every push. `build-manifest.json` in each build lists what the build was made from (`provenance`): two builds with the same digests write the same data.
+
 ## The synthetic league (F1)
 
 A generated test league that is not Preach, for checking the engine end to end on another league's shape (`engine/testing/synthetic.py`):

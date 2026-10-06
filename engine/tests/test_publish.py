@@ -174,11 +174,15 @@ def test_build_and_verify_real_site(tmp_path):
     sources = {f["path"]: f["source"] for f in manifest["files"]}
     assert sources["config.json"] == "generated" and sources["data/rankings/manifest.json"] == "generated"
     assert sources["index.html"] == "site"
-    checks = verify_build(ctx, res, publishers=[_FakePublisher()])
-    assert [c.name for c in checks][:4] == [
+    checks = [c for c in verify_build(ctx, res, publishers=[_FakePublisher()]) if not isinstance(c, str)]
+    assert [c.name for c in checks][:5] == [
         "site files in dist vs the repo (byte for byte)", "page model files vs their JSON schemas",
+        "generated files within the 5 MB page data budget",
         "config.json asset paths vs dist", "referenced data and image paths in dist"]
     assert all(c.ok for c in checks), "\n".join(c.render() for c in checks if not c.ok)
+    prov = manifest["provenance"]
+    assert prov["engine_version"] and len(prov["canonical_tables_sha256"]) == 64
+    assert prov["league_config_sha256"] is None             # no league_dir given to this context
     # a rebuild replaces the previous build
     run_build(ctx, out, publishers=[])
     assert json.loads((out / "data/rankings/manifest.json").read_text()) != [{"season": 2026, "weeks": [1]}]
@@ -193,7 +197,7 @@ def test_verify_catches_schema_and_copy_problems(tmp_path):
     conf["managers"][0]["colors"]["dark"] = "red"
     conf_path.write_text(json.dumps(conf))
     (tmp_path / "dist" / "style.css").write_text("changed")
-    checks = {c.name: c for c in verify_build(ctx, res, publishers=[])}
+    checks = {c.name: c for c in verify_build(ctx, res, publishers=[]) if not isinstance(c, str)}
     assert not checks["page model files vs their JSON schemas"].ok
     assert "colors" in checks["page model files vs their JSON schemas"].examples[0]
     assert checks["site files in dist vs the repo (byte for byte)"].examples == ["style.css"]
@@ -225,3 +229,40 @@ def test_duplicate_output_paths_rejected(tmp_path):
 
     with pytest.raises(ValueError, match="two outputs"):
         run_build(ctx, tmp_path / "dist", publishers=[Dup()])
+
+
+def test_size_budget_and_provenance(tmp_path):
+    from engine.publish import build as build_mod
+
+    class Big:
+        name = "big"
+
+        def outputs(self, ctx):
+            return [Output("data/big.json", "x" * 2000), Output("data/small.json", "y")]
+
+        def verify(self, ctx):
+            return []
+
+    cfg = load_config(PREACH)
+    ctx = BuildContext(cfg=cfg, tables=_tables(cfg), analysis={}, build=BUILD, site_root=ROOT,
+                       league_dir=PREACH.parent)
+    old = build_mod.SIZE_LIMIT, build_mod.SIZE_NOTICE
+    build_mod.SIZE_LIMIT, build_mod.SIZE_NOTICE = 1000, 500
+    try:
+        res = run_build(ctx, tmp_path / "dist", publishers=[Big()])
+        check, info = build_mod.check_sizes(res)
+    finally:
+        build_mod.SIZE_LIMIT, build_mod.SIZE_NOTICE = old
+    assert not check.ok and "data/big.json: 0.0 MB" in check.examples
+    assert not any(e.startswith("data/small.json") for e in check.examples)
+    assert info.startswith("INFO  page data sizes")
+    prov = json.loads((tmp_path / "dist" / "build-manifest.json").read_text())["provenance"]
+    assert len(prov["league_config_sha256"]) == 64 and prov["league_files"] > 50
+    # the same inputs give the same digests; a changed value changes the table digest
+    t = _tables(cfg)
+    assert build_mod.tables_digest(t) == build_mod.tables_digest(_tables(cfg))
+    first = next(iter(t))
+    if len(t[first]):
+        t[first] = t[first].copy()
+        t[first].iloc[0, 0] = "changed" if isinstance(t[first].iloc[0, 0], str) else 12345
+        assert build_mod.tables_digest(t) != build_mod.tables_digest(_tables(cfg))

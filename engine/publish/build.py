@@ -13,7 +13,9 @@ the files to write; `verify(ctx)` returns Stage A checks against the goldens.
 
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -30,6 +32,9 @@ from engine.publish.site import copy_site, pages_for, sha256
 from engine.publish.writer import dump, with_meta, write_text
 
 SCHEMA_DIR = Path(__file__).parent / "schemas"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+SIZE_LIMIT = 5_000_000      # bytes: a generated file above this fails the build check (a page loads it whole)
+SIZE_NOTICE = 1_500_000     # bytes: generated files above this are listed in an INFO line
 MANIFEST = "build-manifest.json"
 MARKER = ".engine-build-in-progress"   # present while a build runs, so a failed build can be cleared next time
 
@@ -136,12 +141,74 @@ def run_build(ctx: BuildContext, out: Path, publishers: list | None = None) -> B
         write_text(out / o.path, text)
     generated = {o.path for o in outputs}
     files = sorted(str(p.relative_to(out)).replace("\\", "/") for p in out.rglob("*") if p.is_file() and p.name != MARKER)
-    manifest = {"build": ctx.build, "files": [
+    manifest = {"build": ctx.build, "provenance": provenance(ctx), "files": [
         {"path": f, "sha256": sha256(out / f), "bytes": (out / f).stat().st_size,
          "source": "generated" if f in generated else "site"} for f in files]}
     write_text(out / MANIFEST, json.dumps(manifest, indent=1))
     (out / MARKER).unlink()
     return BuildResult(out, copied, outputs)
+
+
+# ---------------------------------------------------------------- provenance
+
+def _engine_version() -> str | None:
+    try:
+        import tomllib
+        with open(REPO_ROOT / "pyproject.toml", "rb") as f:
+            return tomllib.load(f).get("project", {}).get("version")
+    except (OSError, ValueError):
+        return None
+
+
+def _git() -> dict:
+    """The commit the build ran from, and whether the working tree had uncommitted changes."""
+    def run(*args):
+        try:
+            return subprocess.run(["git", *args], capture_output=True, text=True, timeout=10, cwd=REPO_ROOT,
+                                  check=False).stdout.strip()
+        except (OSError, subprocess.SubprocessError):
+            return ""
+    commit = os.environ.get("GITHUB_SHA") or run("rev-parse", "HEAD")
+    return {"commit": commit or None, "dirty": bool(run("status", "--porcelain", "--untracked-files=no"))
+            if commit else None}
+
+
+def _files_digest(paths: list[Path], base: Path) -> str:
+    h = hashlib.sha256()
+    for p in sorted(paths):
+        h.update(p.relative_to(base).as_posix().encode())
+        h.update(b"\0")
+        h.update(p.read_bytes())
+    return h.hexdigest()
+
+
+def tables_digest(tables: dict[str, pd.DataFrame]) -> str:
+    """One sha256 over every table (its name and its rows as CSV text), so the same inputs give the
+    same digest and any changed value changes it."""
+    h = hashlib.sha256()
+    for name in sorted(tables):
+        h.update(name.encode() + b"\0")
+        h.update(tables[name].to_csv(index=False, lineterminator="\n").encode())
+    return h.hexdigest()
+
+
+def provenance(ctx: BuildContext) -> dict:
+    """What this build was made from, for build-manifest.json: the engine version and commit, the
+    league's config and editorial files, and the input tables, each as a sha256. Two builds with the
+    same provenance write the same data (only the build id and times differ)."""
+    league = Path(ctx.league_dir) if ctx.league_dir else None
+    cfg_file = league / "league.yaml" if league else None
+    league_files = [p for d in ("editorial", "snapshots") if league and (league / d).is_dir()
+                    for p in (league / d).rglob("*") if p.is_file()]
+    return {
+        "engine_version": _engine_version(), **_git(),
+        "python": sys.version.split()[0], "pandas": pd.__version__,
+        "league_config_sha256": sha256(cfg_file) if cfg_file and cfg_file.is_file() else None,
+        "league_files_sha256": _files_digest(league_files, league) if league_files else None,
+        "league_files": len(league_files),
+        "canonical_tables_sha256": tables_digest(ctx.tables),
+        "analysis_tables_sha256": tables_digest(ctx.analysis) if ctx.analysis else None,
+    }
 
 
 # ---------------------------------------------------------------- verify
@@ -170,6 +237,21 @@ def check_schemas(result: BuildResult) -> Comparison:
     c.mismatched["files"] = len(bad)
     c.examples = bad[:4]
     return c
+
+
+def check_sizes(result: BuildResult) -> list:
+    """Page data budget: no generated file above SIZE_LIMIT (a page downloads its file whole); an INFO
+    line lists the files above SIZE_NOTICE and the page models' total."""
+    sizes = {o.path: (result.out / o.path).stat().st_size for o in result.generated}
+    c = Comparison(f"generated files within the {SIZE_LIMIT / 1e6:.0f} MB page data budget", len(sizes), len(sizes))
+    over = sorted((p for p, b in sizes.items() if b > SIZE_LIMIT), key=lambda p: -sizes[p])
+    c.mismatched["files"] = len(over)
+    c.examples = [f"{p}: {sizes[p] / 1e6:.1f} MB" for p in over[:4]]
+    big = sorted((p for p, b in sizes.items() if SIZE_NOTICE < b <= SIZE_LIMIT), key=lambda p: -sizes[p])
+    models = sum(b for p, b in sizes.items() if p.startswith("data/v1/"))
+    info = (f"INFO  page data sizes: page models {models / 1e6:.1f} MB in all; over {SIZE_NOTICE / 1e6:.1f} MB: "
+            + (", ".join(f"{p} {sizes[p] / 1e6:.1f} MB" for p in big) if big else "none"))
+    return [c, info]
 
 
 def check_site_copy(result: BuildResult, site_root: Path) -> Comparison:
@@ -208,7 +290,7 @@ def verify_build(ctx: BuildContext, result: BuildResult, publishers: list | None
     from engine.publish.pages import PUBLISHERS
 
     publishers = PUBLISHERS if publishers is None else publishers
-    checks = [check_site_copy(result, ctx.site_root), check_schemas(result)]
+    checks = [check_site_copy(result, ctx.site_root), check_schemas(result), *check_sizes(result)]
     if ctx.legacy_site:
         checks += [check_assets(result, ctx.config), check_paths(result, ctx.site_root)]
     if ctx.golden_dir is None:

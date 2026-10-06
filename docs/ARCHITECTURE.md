@@ -181,6 +181,8 @@ On every push:
 - JSON schema validation of everything in `dist/data/`.
 - Broken path check: every image and data path referenced by HTML or JS must exist in `dist/`.
 - Style lint: no em dashes anywhere in the codebase; no hardcoded manager names or hex colors outside `leagues/`.
+- Page data budget: `build --verify` fails any generated file above 5 MB (a page loads its file whole) and lists those above 1.5 MB. `build-manifest.json` records the build's provenance: engine version, git commit and whether the tree was dirty, Python and pandas versions, and sha256 digests of the league config, its editorial and snapshot files, and the canonical and analysis tables.
+- Headless page test (`tools/smoke_pages.py`): headless Chromium opens every page and fails on an uncaught error, a console error or a blank page; screenshots are kept as a workflow artifact.
 - Synthetic league (F1): `engine/testing/synthetic.py` generates a deterministic ESPN league that is not Preach (10 then 12 teams, divisions on and off, no D/ST, a kicker dropped, a superflex, two- and three-round playoffs, a live season). CI runs normalize, analyze and `build --verify` on it (`leagues/synthetic/league.yaml`), and `engine/tests/test_synthetic_league.py` checks that every page model is produced, valid and adapted to the league. A league without `legacy` settings gets `config.json` and the page models only; Preach's `legacy` block keeps the Stage A site template and golden checks.
 
 ## 8. Migration strategy
