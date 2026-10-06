@@ -27,7 +27,7 @@ from the current one on:
                                  roster and ESPN's projection for the week
     proj_week_NN_available.json  free agents and waiver players with their
                                  projection for the week, most owned first
-    pro_teams.json               NFL teams with their bye weeks
+    pro_teams.json               NFL teams with their bye weeks and games by week
 
 A season is complete once its final scoring period is finished (ESPN keeps
 status.isActive true for old seasons, so that flag is not used). Completed
@@ -50,6 +50,19 @@ SEASON_URL = "https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/{s
 BASE_URL = SEASON_URL + "/segments/0/leagues/{league_id}"
 RETRY_STATUSES = {429, 500, 502, 503, 504}
 MANIFEST_VERSION = 4   # 2: player cards; 3: player pool; 4: completeness by final period, live projections
+
+
+HEADSHOT_URL = "https://a.espncdn.com/i/headshots/nfl/players/full/{player_id}.png"
+TEAM_LOGO_URL = "https://a.espncdn.com/i/teamlogos/nfl/500/{abbrev}.png"
+
+
+def headshot_url(player_id: int, position: str | None = None, team_abbrev: str | None = None) -> str | None:
+    """ESPN's image for a player (decision 7.5): the headshot by ESPN player id; a D/ST (ESPN gives
+    team defenses negative ids) gets its NFL team's logo, or None without the team. ESPN has no
+    headshot for some players; pages keep their missing-image fallback."""
+    if position == "D/ST" or int(player_id) < 0:
+        return TEAM_LOGO_URL.format(abbrev=team_abbrev.lower()) if team_abbrev else None
+    return HEADSHOT_URL.format(player_id=int(player_id))
 
 
 class EspnError(RuntimeError):

@@ -1,0 +1,42 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "headshots",
+ "title": "data/v1/headshots.json: player id -> image URL from the league's provider (decision 7.5; managers.html, champions.html, weekly-rankings.html)",
+ "type": "object",
+ "required": [
+  "meta",
+  "provider",
+  "players"
+ ],
+ "additionalProperties": false,
+ "properties": {
+  "meta": {
+   "type": "object",
+   "required": [
+    "schema",
+    "schema_version"
+   ],
+   "properties": {
+    "schema": {
+     "const": "headshots"
+    },
+    "schema_version": {
+     "const": 1
+    }
+   }
+  },
+  "provider": {
+   "type": "string"
+  },
+  "players": {
+   "type": "object",
+   "propertyNames": {
+    "pattern": "^-?[0-9]+$"
+   },
+   "additionalProperties": {
+    "type": "string",
+    "pattern": "^https://"
+   }
+  }
+ }
+}

@@ -189,6 +189,8 @@ def load_goldens(golden_dir: Path) -> dict:
         golden["playoff_odds"] = json.load(f)
     with gzip.open(golden_dir / "rankings" / "rankings_files.json.gz", "rt", encoding="utf-8") as f:
         golden["rankings_files"] = json.load(f)
+    with gzip.open(golden_dir / "headshots" / "player_headshots.json.gz", "rt", encoding="utf-8") as f:
+        golden["player_headshots"] = json.load(f)
     golden["waiver_stints_full"] = pd.read_csv(golden_dir / "waivers" / "waiver_stints_full.csv.gz")
     golden["attribution_season_data_final"] = pd.read_csv(
         golden_dir / "attribution" / "attribution_season_data_final.csv.gz")
