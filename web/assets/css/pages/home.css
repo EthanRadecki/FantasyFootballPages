@@ -1,0 +1,193 @@
+/* Home page (web/index.html). Ported unchanged from the Stage A page. */
+.hero {
+  text-align:center;padding:3rem 2rem 2.5rem;margin-bottom:2rem;
+  position:relative;overflow:hidden;
+  border:1px solid rgba(var(--accent-rgb),0.2);
+}
+.hero::before {
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 50% 60% at 50% 40%, rgba(var(--accent-rgb),0.08), transparent 70%);
+  pointer-events:none;
+}
+.hero-logo {
+  width:120px;height:120px;border-radius:24px;object-fit:cover;
+  margin-bottom:1.25rem;position:relative;
+  box-shadow:0 6px 32px rgba(var(--accent-rgb),0.2);
+  border:2px solid rgba(var(--accent-rgb),0.25);
+}
+.hero h1 {
+  font-family:var(--font-display);font-size:2.8rem;font-weight:900;
+  letter-spacing:-0.03em;line-height:1.1;color:var(--palm);margin-bottom:0.5rem;
+  position:relative;
+}
+.hero-est {
+  font-size:0.82rem;color:var(--accent);font-weight:600;letter-spacing:0.08em;
+  position:relative;
+}
+
+.champ-banner {
+  display:flex;align-items:center;gap:1.5rem;
+  padding:1.5rem 2rem;margin-bottom:2rem;
+  text-decoration:none;color:var(--text);transition:transform 0.2s;
+  position:relative;overflow:hidden;
+}
+.champ-banner::before {
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg, transparent 30%, rgba(212,175,55,0.16) 45%, rgba(212,175,55,0.28) 50%, rgba(212,175,55,0.16) 55%, transparent 70%);
+  background-size:250% 100%;background-position:100% 0;
+  animation:champShimmer 5s ease-in-out infinite;
+}
+@keyframes champShimmer {
+  0%, 20% { background-position:130% 0; }
+  60%, 100% { background-position:-30% 0; }
+}
+.champ-banner:hover { transform:translateY(-1px); }
+.champ-trophy-badge {
+  width:64px;height:64px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  background:radial-gradient(circle, rgba(212,175,55,0.22), rgba(212,175,55,0.05) 70%);
+  border:2px solid rgba(212,175,55,0.4);
+}
+.champ-trophy { font-size:2rem;position:relative;z-index:1; }
+.champ-info { flex:1;position:relative;z-index:1; }
+.champ-eyebrow {
+  font-size:0.63rem;text-transform:uppercase;letter-spacing:0.14em;
+  color:var(--gold);font-weight:700;margin-bottom:0.2rem;
+  display:flex;align-items:center;gap:0.4rem;
+}
+.champ-eyebrow::before { content:'\2726';font-size:0.75rem; }
+.champ-info h3 { font-family:var(--font-display);font-size:1.2rem;font-weight:800;color:var(--palm); }
+.champ-info p { font-size:0.82rem;color:var(--muted); }
+.champ-arrow { font-size:0.82rem;font-weight:600;color:var(--accent);transition:transform 0.2s;position:relative;z-index:1; }
+.champ-banner:hover .champ-arrow { transform:translateX(3px); }
+@media(prefers-reduced-motion:reduce) {
+  .champ-banner::before { animation:none; }
+}
+
+.nav-grid {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;
+  margin-bottom:2.5rem;
+}
+.nav-card {
+  text-decoration:none;color:var(--text);
+  padding:1.75rem 1.5rem;transition:all 0.25s;position:relative;overflow:hidden;
+  
+}
+.nav-card:hover { transform:translateY(-2px); }
+.nav-card h3 {
+  font-family:var(--font-display);font-size:1.05rem;font-weight:800;
+  color:var(--palm);margin-bottom:0.3rem;
+  display:flex;align-items:center;gap:0.5rem;position:relative;z-index:1;
+}
+.nav-card h3 .icon { font-size:1.1rem; }
+.nav-card p { font-size:0.78rem;color:var(--muted);line-height:1.5;position:relative;z-index:1; }
+.nav-card .card-arrow {
+  display:inline-flex;align-items:center;gap:0.25rem;
+  margin-top:0.75rem;font-size:0.75rem;font-weight:600;
+  transition:gap 0.2s;position:relative;z-index:1;
+}
+.nav-card:hover .card-arrow { gap:0.5rem; }
+
+/* Background watermark pseudo-element */
+.nav-card::before {
+  content:'';position:absolute;inset:0;pointer-events:none;
+  opacity:0;transition:opacity 0.3s;z-index:0;
+}
+.nav-card:hover::before { opacity:1; }
+
+/* ── CARD ACCENTS ── */
+.card-managers { --card-accent:#b07050; }
+.card-draft { --card-accent:#5a8a6a; }
+.card-rankings { --card-accent:#8878a8; }
+.card-champions { --card-accent:var(--gold); }
+.card-transactions { --card-accent:#3d7a7a; }
+.card-analytics { --card-accent:#9c849c; }
+.card-matchups { --card-accent:#a8524f; }
+
+.nav-card::after { content:'';position:absolute;left:1.5rem;right:1.5rem;bottom:0.7rem;height:2px;border-radius:99px;background:linear-gradient(90deg,transparent,var(--card-accent),transparent);opacity:0.55;transition:opacity 0.25s,transform 0.25s;transform:scaleX(0.72);z-index:0; }
+.nav-card:hover::after { opacity:0.95;transform:scaleX(1); }
+.nav-card::before { background:radial-gradient(ellipse 70% 80% at 100% 100%,color-mix(in srgb,var(--card-accent) 11%,transparent),transparent 68%); }
+.nav-card .card-arrow { color:var(--card-accent); }
+.card-subpage-pill { background:color-mix(in srgb,var(--card-accent) 12%,transparent);color:var(--card-accent); }
+
+/* ── CHAMPION BANNER ACCENT ── */
+.champ-banner { border-left:none;border-bottom:2px solid rgba(212,175,55,0.45);border-radius:0 0 10px 10px; }
+.champ-banner::after { content:'';position:absolute;left:8%;right:8%;bottom:0;height:2px;border-radius:99px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.8; }
+
+@media(max-width:900px) { .nav-grid { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:768px) {
+  .hero h1 { font-size:2.1rem; }
+  .hero-logo { width:90px;height:90px;border-radius:18px; }
+  .champ-banner { flex-direction:column;text-align:center;gap:0.75rem;padding:1.5rem;border-left:none; }
+  .champ-arrow { display:none; }
+}
+@media(max-width:480px) { .nav-grid { grid-template-columns:1fr; } }
+
+/* ── DRAFT ANALYSIS SUB-PAGE CHIPS ── */
+.card-subpages {
+  display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.7rem;position:relative;z-index:1;
+}
+.card-subpage-pill {
+  font-size:0.66rem;font-weight:600;padding:0.2rem 0.55rem;border-radius:99px;
+  background:rgba(90,138,106,0.12);color:#5a8a6a;
+}
+
+/* ── HOMEPAGE LEADERBOARD SECTION ── */
+.home-leaderboard { margin-bottom:2.5rem;scroll-margin-top:90px; }
+.home-leaderboard .section-heading {
+  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  margin-bottom:1rem;flex-wrap:wrap;
+}
+.home-leaderboard .section-heading h2 {
+  font-family:var(--font-display);font-size:1.5rem;font-weight:800;
+  color:var(--palm);letter-spacing:-0.01em;
+}
+.home-leaderboard .section-heading p {
+  font-size:0.82rem;color:var(--muted);
+}
+.lb-table {
+  width:100%;border-collapse:collapse;font-size:0.84rem;
+}
+.lb-table thead th {
+  text-align:left;padding:0.75rem 0.8rem;
+  font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;
+  font-weight:700;color:#4a7fa8;
+  border-bottom:2px solid rgba(74,127,168,0.25);
+  cursor:pointer;user-select:none;white-space:nowrap;transition:color 0.15s;
+}
+.lb-table thead th:hover { color:var(--palm); }
+.lb-table thead th .sort-arrow { font-size:0.6rem;margin-left:0.3rem;opacity:0.4; }
+.lb-table thead th.sorted .sort-arrow { opacity:1;color:var(--palm); }
+.lb-table tbody tr {
+  border-bottom:1px solid rgba(74,127,168,0.08);transition:background 0.15s;
+}
+.lb-table tbody tr:hover { background:rgba(74,127,168,0.06); }
+.lb-table tbody td { padding:0.7rem 0.8rem;color:var(--text-mid);white-space:nowrap; }
+.lb-table-wrap { overflow-x:auto; }
+@media(max-width:768px) {
+  .lb-table { font-size:0.78rem; }
+  .lb-table thead th { padding:0.6rem 0.5rem;font-size:0.62rem; }
+  .lb-table tbody td { padding:0.55rem 0.5rem; }
+}
+
+/* ── ENTRANCE MOTION ── */
+@keyframes fadeSlideUp {
+  from { opacity:0;transform:translateY(14px); }
+  to   { opacity:1;transform:translateY(0); }
+}
+.hero, .champ-banner, .home-leaderboard, .nav-card {
+  animation:fadeSlideUp 0.55s cubic-bezier(0.16,1,0.3,1) both;
+}
+.hero { animation-delay:0.02s; }
+.champ-banner { animation-delay:0.1s; }
+.home-leaderboard { animation-delay:0.18s; }
+.nav-grid .nav-card:nth-child(1) { animation-delay:0.24s; }
+.nav-grid .nav-card:nth-child(2) { animation-delay:0.29s; }
+.nav-grid .nav-card:nth-child(3) { animation-delay:0.34s; }
+.nav-grid .nav-card:nth-child(4) { animation-delay:0.39s; }
+.nav-grid .nav-card:nth-child(5) { animation-delay:0.44s; }
+.nav-grid .nav-card:nth-child(6) { animation-delay:0.49s; }
+.nav-grid .nav-card:nth-child(7) { animation-delay:0.54s; }
+@media(prefers-reduced-motion:reduce) {
+  .hero, .champ-banner, .home-leaderboard, .nav-card { animation:none; }
+}

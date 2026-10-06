@@ -15,6 +15,7 @@ league:
   first_season: 2020
   logo:
     by_season: images/logos/league/preach_logo_{season}.png   # moves to leagues/preach/assets in phase 5
+  credit: { name: Ethan Radecki, url: "https://radeckiethan.github.io" }   # the site footer's "Built by" (optional)
   conference_labels: { 0: REP, 1: DEM }   # ESPN division id -> the league's conference, stable across seasons
       # ESPN's division names changed (2020 East/West, 2021-2022 West/East, 2023-2024 AFC/NFC,
       # 2025 on Republicans/Democrats) but each id kept the same conference

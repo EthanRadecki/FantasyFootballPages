@@ -42,6 +42,9 @@ jobs:
       - name: League config is valid
         run: python -m engine.cli config check leagues/preach/league.yaml
 
+      - name: No league data in the site template (web/)
+        run: python tools/check_web.py
+
   synthetic-league:
     # the whole engine on a generated league that is not Preach (engine/testing/synthetic.py):
     # normalize, analyze and build --verify through the command line, as a new league would run them
@@ -54,7 +57,9 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install pyyaml pandas pyarrow scipy scikit-learn jsonschema
+        run: |
+          pip install pyyaml pandas pyarrow scipy scikit-learn jsonschema playwright
+          python -m playwright install --with-deps chromium
 
       - name: Generate the synthetic league
         run: python tools/synthetic_league.py --cache .cache-synthetic
@@ -65,6 +70,17 @@ jobs:
           python -m engine.cli normalize leagues/synthetic/league.yaml --cache .cache-synthetic
           python -m engine.cli analyze leagues/synthetic/league.yaml --cache .cache-synthetic
           python -m engine.cli build leagues/synthetic/league.yaml --cache .cache-synthetic --out dist-synthetic --verify
+
+      - name: The new pages (web/, the preview at next/) open on this league
+        run: python tools/smoke_pages.py dist-synthetic/next --screenshots synthetic-screenshots
+
+      - name: Keep the screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-screenshots
+          path: synthetic-screenshots/
+          retention-days: 14
 
   page-smoke:
     # headless Chromium opens every page of the site and fails on JavaScript errors or a blank page

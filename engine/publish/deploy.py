@@ -60,8 +60,9 @@ def check_root(repo: Path, out: Path, dist: Path) -> list[str]:
     """Problems with the published root: a file that differs from the build or is not in it, and a
     committed site file missing (the build copies every one; the generated data files replace theirs)."""
     built = {p.relative_to(dist).as_posix() for p in dist.rglob("*") if p.is_file()}
+    extra = set() if (dist / "next").is_dir() else {"next/"}      # a separate preview build at /next/ (assemble)
     published = {p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()
-                 and not p.relative_to(out).as_posix().startswith("next/")}
+                 and not any(p.relative_to(out).as_posix().startswith(x) for x in extra)}
     problems = [f"missing or changed: {f}" for f in sorted(built) if f not in published or _sha(out / f) != _sha(dist / f)]
     problems += [f"not in the build: {f}" for f in sorted(published - built)]
     problems += [f"committed site file not published: {f}" for f in committed_site_files(repo) if f not in published]
