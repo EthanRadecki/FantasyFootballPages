@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Rankings</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/weekly-rankings.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="page-header glass">
+    <img id="season-logo" class="season-logo" src="" alt="" style="display:none;">
+    <h1>Weekly Rankings</h1>
+    <p id="page-sub"></p>
+  </div>
+
+  <div class="filter-bar glass">
+    <div class="filter-group">
+      <label>Season</label>
+      <select class="filter-select" id="season-select"></select>
+    </div>
+    <div class="filter-group">
+      <label>Week</label>
+      <select class="filter-select" id="week-select"></select>
+    </div>
+  </div>
+
+  <div id="rankings-content">
+    <div class="empty-state glass">
+      <span class="empty-icon">&#128202;</span>
+      <p>Loading rankings...</p>
+    </div>
+  </div>
+
+  <!-- MATCHUP OF THE WEEK -- sits right below the rankings cards, above
+       Draft Insights/Trajectory/Playoff Odds, so it reads as part of "this
+       week" rather than the season-long historical sections below it -->
+  <div id="motw-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#127942; Matchup of the Week</div>
+    <div class="glass motw-card" id="motw-content"></div>
+  </div>
+
+  <!-- DRAFT INSIGHTS -- shown whenever a week's teams carry ADP/proj/
+       position-spend data, typically Week 1 -->
+  <div id="draft-insights-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;" id="draft-insights-label">&#127919; Draft Insights</div>
+    <div class="glass" style="padding:1.5rem;">
+      <div class="draft-insights-tabs" id="draft-insights-tabs"></div>
+      <p class="draft-insights-desc" id="draft-insights-desc"></p>
+      <div style="position:relative;height:440px;">
+        <canvas id="chart-draft-insights"></canvas>
+      </div>
+      <p class="draft-detail-hint" id="draft-insights-hint">Click a bar to see the picks behind it.</p>
+      <div class="draft-detail-card" id="draft-detail-card">
+        <div class="draft-detail-header">
+          <div class="draft-detail-title" id="draft-detail-title"></div>
+          <button class="draft-detail-close" id="draft-detail-close">&#10005;</button>
+        </div>
+        <div id="draft-detail-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KING OF THE HILL -- top 20 players overall + by position. Week 1
+       (before any games are played) ranks by draft order; once real
+       weekly scoring exists the same section re-ranks by cumulative
+       fantasy points, recomputed fresh each week. -->
+  <!-- TRAJECTORY CHART -- below cards so it doesn't spoil the reveal -->
+  <div id="trajectory-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#128200; Season Ranking Trajectory</div>
+    <div class="glass" style="padding:1.5rem;">
+      <div style="position:relative;height:400px;">
+        <canvas id="chart-trajectory"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAYOFF ODDS TRACKER -->
+  <div id="playoff-odds-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#127942; Playoff Odds Tracker</div>
+    <div class="glass" style="padding:1.5rem;">
+      <p id="playoff-odds-desc" style="font-size:0.78rem;color:var(--muted);margin:0 0 1rem;line-height:1.5;"></p>
+      <div style="position:relative;height:400px;">
+        <canvas id="chart-playoff-odds"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- KING OF THE HILL -- top 20 players overall + by position. Week 1
+       (before any games are played) ranks by draft order; once real
+       weekly scoring exists the same section re-ranks by cumulative
+       fantasy points, recomputed fresh each week. Deliberately the last
+       graphic on the page, below Trajectory and Playoff Odds. -->
+  <div id="koth-wrap" style="display:none;margin-bottom:2rem;">
+    <div class="rankings-label" style="margin-top:0.5rem;">&#9968; King of the Hill</div>
+    <div class="glass" style="padding:1.5rem;">
+      <div class="draft-insights-tabs" id="koth-tabs"></div>
+      <p class="koth-desc" id="koth-desc"></p>
+      <div class="koth-pyramid" id="koth-pyramid"></div>
+    </div>
+  </div>
+
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<!-- Lightbox for full-size blurb screenshots -->
+<div class="screenshot-lightbox" id="screenshot-lightbox">
+  <img id="screenshot-lightbox-img" src="" alt="">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="../assets/js/pages/weekly-rankings.js"></script>
+</body>
+</html>

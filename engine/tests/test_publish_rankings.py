@@ -136,8 +136,46 @@ def test_week_model_keys_managers_and_drops_hidden():
     hidden = {LOOKUP["thomas sullivan"]}
     m = pub.week_model(view, LOOKUP, hidden, {"tee'd up": LOOKUP["charlie gorman"]})
     assert [t["manager_key"] for t in m["teams"]] == [LOOKUP["charlie gorman"]]
-    assert m["undrafted_players"] == [{"manager_key": LOOKUP["charlie gorman"], "player": "A", "pos": "QB"},
-                                      {"player": "B", "pos": "RB"}]
+    assert m["undrafted_players"] == [{"manager_key": LOOKUP["charlie gorman"], "player": "A", "pos": "QB", "player_id": None},
+                                      {"player": "B", "pos": "RB", "player_id": None}]
+
+
+def test_week_model_names_players_by_id_and_paths_from_the_site_root():
+    """Stage B pages find headshots by player id and images from the site root (B4)."""
+    ids = {("Qb One", "QB"): 1, ("Rb Two", "RB"): 2, ("Wr Free", "WR"): 3}
+    view = {"season": 2026, "week": 4,
+            "teams": [{"manager": "Charlie Gorman", "rank": 1, "record_to_date": "2-1",
+                       "draft_picks": [{"player": "Qb One", "pos": "QB", "round": 1, "pick_in_round": 1, "overall": 1},
+                                       {"player": "Nobody", "pos": "TE", "round": 2, "pick_in_round": 1, "overall": 2}],
+                       "screenshots": [{"id": "a", "file": "../images/rankings/week_04/a.png", "caption": ""},
+                                       {"id": "b"}]}],
+            "matchup_of_the_week": {"blurb": "x",
+                                    "team_a": {"manager": "Charlie Gorman", "starters": [{"player": "Rb Two", "pos": "RB",
+                                                                                           "slot": "RB"}]},
+                                    "team_b": {"manager": "Ethan Radecki"}},
+            "undrafted_players": [{"player": "Wr Free", "pos": "WR"}]}
+    m = pub.week_model(view, LOOKUP, set(), None, lambda name, pos: ids.get((name, pos)))
+    picks = m["teams"][0]["draft_picks"]
+    assert [p["player_id"] for p in picks] == [1, None]
+    assert m["teams"][0]["screenshots"] == [{"id": "a", "file": "images/rankings/week_04/a.png", "caption": ""}, {"id": "b"}]
+    assert m["matchup_of_the_week"]["team_a"]["starters"][0]["player_id"] == 2
+    assert m["matchup_of_the_week"]["team_b"] == {"manager_key": LOOKUP["ethan radecki"]}
+    assert m["undrafted_players"] == [{"player": "Wr Free", "pos": "WR", "player_id": 3}]
+    assert pub.site_path("../images/x.png") == "images/x.png" and pub.site_path("/images/x.png") == "images/x.png"
+
+
+def test_player_id_resolver_matches_spellings():
+    from engine.publish.pages.headshots import id_resolver
+    names = pd.DataFrame({"player_id": [1, 2, 3, 4, 5],
+                          "player_name": ["Kenneth Walker III", "Amon-Ra St. Brown", "Josh Allen", "Josh Allen", "Taysom Hill"],
+                          "position": ["RB", "WR", "QB", "QB", "TE"], "season": [2025, 2025, 2019, 2025, 2025]})
+    resolve = id_resolver(names)
+    assert resolve("Kenneth Walker", "RB") == 1          # suffix dropped
+    assert resolve("Amon-Ra St Brown", "WR") == 2        # punctuation ignored
+    assert resolve("Josh Allen", "QB") == 4              # a shared name: the latest season's player
+    assert resolve("Taysom Hill", "QB") == 5             # listed at another position, one player by that name
+    assert resolve("Josh Allen", "LB") is None           # two players by that name, neither at this position
+    assert resolve("Nobody", "QB") is None and resolve(None, "QB") is None
 
 
 def _tiny_tables():

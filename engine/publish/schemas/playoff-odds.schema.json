@@ -8,6 +8,7 @@
   "properties": {
     "meta": {"type": "object", "required": ["schema", "schema_version"],
              "properties": {"schema": {"const": "playoff-odds"}, "schema_version": {"const": 1}}},
+    "trials": {"type": "integer", "minimum": 1},
     "seasons": {"type": "array", "items": {
       "type": "object", "required": ["season", "cutoff", "regular_season_weeks", "weeks"], "additionalProperties": false,
       "properties": {

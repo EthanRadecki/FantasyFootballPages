@@ -144,6 +144,7 @@ def test_build_config_from_data():
     assert conf["league"]["logo"].endswith("preach_logo_2026.png")
     assert conf["exclude_games"][0]["season"] == 2024
     assert conf["theme"]["champion_tints"]["2020"] == "#ea7988"        # the champions page card tints
+    assert conf["theme"]["season_accents"]["2026"] == "#9b4d8b"        # the weekly rankings page accent
     assert "images/logos/Radecki.png" in config_json.asset_paths(conf)
     assert not any(p.startswith("https://") for p in config_json.asset_paths(conf))
 

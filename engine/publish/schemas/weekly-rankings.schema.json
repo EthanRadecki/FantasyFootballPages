@@ -67,7 +67,25 @@
       "type": "string"
      },
      "screenshots": {
-      "type": "array"
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "string"
+        },
+        "file": {
+         "type": "string",
+         "description": "image path relative to the site root"
+        },
+        "caption": {
+         "type": [
+          "string",
+          "null"
+         ]
+        }
+       }
+      }
      },
      "prev_rank": {
       "type": [
@@ -203,6 +221,13 @@
           "number",
           "null"
          ]
+        },
+        "player_id": {
+         "type": [
+          "integer",
+          "null"
+         ],
+         "description": "the player's id (headshots.json), null when no player matches the name"
         }
        }
       }
@@ -377,6 +402,13 @@
            "number",
            "null"
           ]
+         },
+         "player_id": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "description": "the player's id (headshots.json), null when no player matches the name"
          }
         }
        }
@@ -453,6 +485,13 @@
            "number",
            "null"
           ]
+         },
+         "player_id": {
+          "type": [
+           "integer",
+           "null"
+          ],
+          "description": "the player's id (headshots.json), null when no player matches the name"
          }
         }
        }
@@ -500,6 +539,13 @@
      },
      "manager": {
       "type": "string"
+     },
+     "player_id": {
+      "type": [
+       "integer",
+       "null"
+      ],
+      "description": "the player's id (headshots.json), null when no player matches the name"
      }
     }
    }

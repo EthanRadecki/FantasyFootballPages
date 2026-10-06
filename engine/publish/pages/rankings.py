@@ -48,11 +48,27 @@ def model_path(name: str) -> str:
 
 # ---------------------------------------------------------------- page models
 
-def week_model(view: dict, lookup: dict[str, str], hidden: set[str], team_names: dict[str, str] | None = None) -> dict:
+def site_path(path):
+    """An editorial image path as the legacy page wrote it (relative to pages/, "../images/...") made
+    relative to the site root, as every path in the page models is."""
+    p = str(path or "")
+    while p.startswith("../"):
+        p = p[3:]
+    return p.lstrip("/")
+
+
+def week_model(view: dict, lookup: dict[str, str], hidden: set[str], team_names: dict[str, str] | None = None,
+               player_id=None) -> dict:
     """A merged week file keyed by manager key (hidden managers dropped, decision 7.3). A name that is
     neither a manager nor an alias is tried as one of the season's team names (`team_names`, lower
-    case -> key), else kept as written under `manager`."""
+    case -> key), else kept as written under `manager`. Each named player gets his `player_id`
+    (`player_id(name, pos)`, None when no player matches) so pages find his headshot by id;
+    screenshot paths are relative to the site root."""
     team_names = team_names or {}
+    pid = player_id or (lambda name, pos: None)
+
+    def with_id(p: dict) -> dict:
+        return {**p, "player_id": pid(p.get("player"), p.get("pos"))}
 
     def key(n):
         n = str(n).strip().lower()
@@ -70,6 +86,11 @@ def week_model(view: dict, lookup: dict[str, str], hidden: set[str], team_names:
         row = keyed(t)
         if row.get("manager_key") in hidden:
             continue
+        if row.get("draft_picks"):
+            row["draft_picks"] = [with_id(x) for x in row["draft_picks"]]
+        if row.get("screenshots"):
+            row["screenshots"] = [{**s, "file": site_path(s["file"])} if s.get("file") else dict(s)
+                                  for s in row["screenshots"]]
         arch = row.get("draft_archetype")
         if arch and arch.get("comparisons"):
             row["draft_archetype"] = {**arch, "comparisons": [keyed(c) for c in arch["comparisons"]]}
@@ -77,10 +98,11 @@ def week_model(view: dict, lookup: dict[str, str], hidden: set[str], team_names:
     out["teams"] = teams
     if view.get(R.MOTW):
         m = view[R.MOTW]
+        side = lambda s: {**keyed(s), **({"starters": [with_id(x) for x in s["starters"]]} if s.get("starters") else {})}
         out[R.MOTW] = {**{k: v for k, v in m.items() if k not in ("team_a", "team_b")},
-                       "team_a": keyed(m["team_a"]), "team_b": keyed(m["team_b"])}
+                       "team_a": side(m["team_a"]), "team_b": side(m["team_b"])}
     if "undrafted_players" in view:
-        out["undrafted_players"] = [keyed(p) if "manager" in p else dict(p) for p in view["undrafted_players"]]
+        out["undrafted_players"] = [with_id(keyed(p) if "manager" in p else dict(p)) for p in view["undrafted_players"]]
     return out
 
 
@@ -190,12 +212,14 @@ class RankingsPublisher:
         editorial, _, lookup, views = got
         hidden = excluded_manager_keys(ctx.cfg)
         teams = ctx.tables["teams"]
+        from engine.publish.pages.headshots import id_resolver, name_rows
+        resolve = id_resolver(name_rows(ctx.tables))
         outs = []
         for name, view in views.items():
             tn = {str(n).strip().lower(): k for n, k in zip(teams.loc[teams["season"] == view["season"], "team_name"],
                                                             teams.loc[teams["season"] == view["season"], "manager_key"])}
             outs.append(Output(f"{LEGACY_DIR}/{name}", view))
-            outs.append(Output(model_path(name), week_model(view, lookup, hidden, tn), SCHEMA, VERSION))
+            outs.append(Output(model_path(name), week_model(view, lookup, hidden, tn, resolve), SCHEMA, VERSION))
         for name, data in R.preview_files(editorial).items():
             outs.append(Output(f"{LEGACY_DIR}/{name}", data))
             outs.append(Output(model_path(name), preview_model(data, lookup), PREVIEW_SCHEMA, VERSION))
