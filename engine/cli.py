@@ -15,6 +15,7 @@ See docs/ARCHITECTURE.md and docs/PUBLISH_PLAN.md.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -439,7 +440,12 @@ def cmd_build(args: argparse.Namespace) -> int:
     print("\nVerifying the build:")
     for c in checks:
         print(c if isinstance(c, str) else c.render())
-    return 0 if all(c.ok for c in checks if not isinstance(c, str)) else 1
+    # the checks beside the build, for the change report (engine/publish/changes.py) and the deploy log
+    record = {"build": ctx.build, "ok": all(c.ok for c in checks if not isinstance(c, str)),
+              "checks": [{"name": c.name, "ok": c.ok, "text": c.render()} for c in checks if not isinstance(c, str)],
+              "info": [c for c in checks if isinstance(c, str)]}
+    (result.out / "verify.json").write_text(json.dumps(record, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    return 0 if record["ok"] else 1
 
 
 def cmd_rankings_new(args: argparse.Namespace) -> int:

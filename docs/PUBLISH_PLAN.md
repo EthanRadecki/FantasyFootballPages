@@ -1,7 +1,7 @@
 # Publish plan (phase 4)
 
 Status: agreed, 2026-09-30 (session 6). Owner: Ethan Radecki.
-Progress: Stage A complete (#29-#41); F1 merged (#42, #43); M0 (A1b, Actions deploy with `/next/`) in review; then M1 and Stage B. Status columns below are as of A8c.
+Progress: Stage A complete (#29-#41); F1 merged (#42, #43); M0 live (#44, Actions deploy with `/next/`); M1a (the change report) in review; then M1, M1b and Stage B. Status columns below are as of A8c.
 
 This is the page data contract for phase 4: every page, every piece of data it reads, the shape of that data today, the engine table or function that produces it, and what is missing. It is the input to `engine/publish/` and to the frontend refactor (ARCHITECTURE.md sections 3 and 6 to 8). The current site files are the goldens; `engine/_legacy/regenerate_data_files.py` and `update_2026.py` are the spec for the files they write.
 
@@ -405,7 +405,9 @@ Stage A (publish, current pages unchanged or minimally changed), then Stage B (f
 | A8 | in three PRs: A8a champions and schedule_release (editorial `schedule_themes.yaml`; `team_names.yaml` split into `shown` and `short` names), A8b weekly rankings (editorial files, frozen snapshots, derived fields, `engine rankings new`, `pro_games`), A8c headshots | the PC rankings builder (at M1) |
 | F1a | foundations, part 1: the synthetic league (`engine/testing/synthetic.py`, `leagues/synthetic/league.yaml`), a CI job running normalize, analyze and `build --verify` on it, and the generic fixes it surfaced (positions from the league's lineups, conference-free leagues, champion runs of any length, sparse draft-profile features, page models only for a league without the legacy template: `league.yaml` `legacy` block) | |
 | F1b | foundations, part 2: build provenance in `build-manifest.json` (engine version, commit, league config and editorial digests, input table digests), a page data size budget in `build --verify` (fail above 5 MB per file, INFO above 1.5 MB), headless page tests in CI (`tools/smoke_pages.py`, screenshots kept 14 days), CI actions on Node 24 and the runner pinned to Ubuntu 24.04 | |
+| M1a | the change report: `engine/publish/changes.py` and `tools/change_report.py` compare every legacy view in the build with the live file and publish `/next/changes.html` (and `changes.json`) on every deploy, with a summary in the run. Per page: the reasons (curated, each tied to a decision or a METRICS_REFERENCE section), the build's own INFO lines (`build --verify` now writes them to `dist/verify.json`), and per file the values changed, filled in or left blank and the records only one side has; numbers that differ only in rounding, games listed with their sides the other way round, and live-season records the live file does not have yet are counted apart. Records are matched by what they are about (player, manager, season, week, pairing; names without suffixes; a pick by its player), so reordering is never a change. Reviewed by Ethan before M1 | |
 | M1 | switch the live deploy to engine-mode data under the current pages; release notes from the engine change list | legacy weekly process |
+| M1b | the live season on every season-filterable page (waiver value, trade value, lineup efficiency, extra-analytics matchup sections, position impact and life without defense); season lists from data instead of hardcoded; fitted models and draft pages stay on finished seasons | |
 | B1 | `web/` core: tokens.css, base and component CSS, `core/config.js`, `data.js`, `managers.js`, `nav.js`, `format.js`; CI check for manager names and hex colors outside `leagues/` | |
 | B2+ | pages moved into `web/` in batches, each reading its JSON and `config.json`; legacy views deleted as each page moves | the legacy view per page |
 
