@@ -57,7 +57,8 @@
           "playoff_team_count": {"type": ["integer", "null"]},
           "last_completed_week": {"type": ["integer", "null"], "minimum": 1},
           "live": {"type": "boolean"},
-          "rounds": {"type": "object", "additionalProperties": {"type": "string"}}
+          "rounds": {"type": "object", "additionalProperties": {"type": "string"}},
+          "faab": {"type": "boolean", "description": "waiver claims by FAAB bidding that season (else waiver priority)"}
         }
       }
     },

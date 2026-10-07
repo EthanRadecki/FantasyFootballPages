@@ -68,6 +68,7 @@ def _seasons(cfg: dict, tables: dict) -> list[dict]:
             "final_week": final, "playoff_team_count": int(r.playoff_team_count) if pd.notna(r.playoff_team_count) else None,
             "last_completed_week": last or None, "live": season in live,
             "rounds": round_names(cfg, season, reg, final),
+            "faab": bool(getattr(r, "faab_enabled", False)) if pd.notna(getattr(r, "faab_enabled", None)) else False,
         })
     return out
 

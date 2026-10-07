@@ -124,6 +124,20 @@ def test_depth_adjusted_and_role_columns():
     assert lineup_pub.playoff_columns(eff, by_role=True).tolist() == [13, 15, 16, 17, 18, 14, 16, 17, 18]
 
 
+def test_lineup_model_carries_the_grids_slots_and_notes():
+    eff, lu = _legacy_lineup_inputs()
+    seasons = sorted(int(x) for x in eff["season"].unique())
+    eff = eff.assign(points=eff["actual_points"], opponent_points=0.0, efficiency_gap=eff["optimal_points"] - eff["actual_points"],
+                     would_have_won=eff["missed_win"])                     # per-game fields the model lists
+    m = lineup_pub.lineup_model(eff, lu, set(), seasons, {"first_round": "Story.", "other": "dropped"})
+    assert m["notes"] == {"first_round": "Story."}                         # only the notes the page reads
+    assert lineup_pub.lineup_model(eff, lu, set(), seasons)["notes"] == {}
+    assert m["weekly_grid"]["seasons"] == seasons
+    assert all(len(c) == 5 for c in m["weekly_grid"]["cells"])
+    assert sorted(m["slots"]) == [str(s) for s in seasons]
+    assert sorted(m["slots"][str(seasons[-1])]) == ["D/ST", "K", "QB", "RB", "RB", "RB/WR/TE", "TE", "WR", "WR"]
+
+
 # ---------------------------------------------------------------- extra-analytics, matchup sections (PR A7a)
 
 from engine.publish.pages import extra_analytics as extra_pub  # noqa: E402

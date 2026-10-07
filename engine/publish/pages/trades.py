@@ -35,6 +35,7 @@ from engine.config import excluded_manager_keys
 from engine.legacy import Comparison, name_to_key
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
+from engine.publish.editorial import load_editorial
 from engine.publish.legacy_view import (Names, js_globals, page_seasons, read_js_globals, replace_literal,
                                         with_page_seasons)
 from engine.publish.writer import clean
@@ -190,7 +191,7 @@ def legacy_views(sides, stints, results, hidden, names, name_of, pos_of, seasons
 # ---------------------------------------------------------------- page model
 
 def model(sides: pd.DataFrame, stints: pd.DataFrame, results: pd.DataFrame, hidden: set[str], name_of, pos_of,
-          seasons: set[int]) -> dict:
+          seasons: set[int], notes: dict | None = None) -> dict:
     ident = _Ident()                        # the model keys everything by manager key
     active = sides[~sides["manager_key"].isin(hidden)]
     return {
@@ -206,6 +207,7 @@ def model(sides: pd.DataFrame, stints: pd.DataFrame, results: pd.DataFrame, hidd
         "network": network(active, ident), "win_pct": winpct(active, results, ident),
         "most_traded": most_traded(stints, name_of, pos_of, ident, seasons),
         "scales": {k: {"min": float(sides[c].min()), "max": float(sides[c].max())} for k, c in METRICS.items()},
+        "notes": {k: str(v) for k, v in (notes or {}).items() if k in ("trade_week",) and v},
     }
 
 
@@ -344,7 +346,8 @@ class TradesPublisher:
         names = Names(ctx, list(old.get("LEADERBOARD", {}).get("career", {})))
         v = legacy_views(sides, stints, results, hidden, names, name_of, pos_of, seasons)
         return [
-            Output("data/v1/trade-value.json", model(sides, stints, results, hidden, name_of, pos_of, seasons), SCHEMA, VERSION),
+            Output("data/v1/trade-value.json", model(sides, stints, results, hidden, name_of, pos_of, seasons,
+                                                    load_editorial(ctx, "trade_value")), SCHEMA, VERSION),
             Output("data/page_data.js", js_globals(v["page_data"])),
             Output("data/network_data.js", js_globals({"NETWORK_DATA": v["network"]})),
             Output("data/winpct_data.js", js_globals({"WINPCT_DATA": v["winpct"]})),

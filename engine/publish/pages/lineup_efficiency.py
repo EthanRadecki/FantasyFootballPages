@@ -50,6 +50,7 @@ from engine.config import excluded_manager_keys
 from engine.legacy import Comparison
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
+from engine.publish.editorial import load_editorial
 from engine.publish.legacy_view import (Names, page_roundtrip, page_seasons, read_literal, replace_literal,
                                         with_page_seasons)
 
@@ -164,7 +165,8 @@ def lineup_view(eff: pd.DataFrame, rosters: pd.DataFrame, names, by_role: bool =
 
 # ---------------------------------------------------------------- page model
 
-def lineup_model(eff: pd.DataFrame, rosters: pd.DataFrame, hidden: set[str], seasons: list[int]) -> dict:
+def lineup_model(eff: pd.DataFrame, rosters: pd.DataFrame, hidden: set[str], seasons: list[int],
+                 notes: dict | None = None) -> dict:
     ident = lambda k: k
     vis = eff[~eff["manager_key"].isin(hidden)]
     v = lineup_view(vis, rosters, ident, by_role=True)
@@ -184,6 +186,9 @@ def lineup_model(eff: pd.DataFrame, rosters: pd.DataFrame, hidden: set[str], sea
         "depth": v["DEPTH_BY_FILTER"], "depth_adjusted": v["DEPTH_ADJUSTED_BY_FILTER"],
         "season_trend": v["SEASON_TREND_DATA"], "depth_vs_wins": v["DEPTH_VS_WINS_DATA"],
         "career_grid": {"managers": v["HEATMAP_MANAGERS"], "cells": v["CAREER_AVG_DATA"]},
+        "weekly_grid": {"seasons": v["HEATMAP_SEASONS"], "cells": v["HEATMAP_DATA"]},
+        "slots": {str(s): sl for s, sl in sorted(lineups_mod.lineup_slots(rosters).items()) if int(s) in set(seasons)},
+        "notes": {k: str(v_) for k, v_ in (notes or {}).items() if k in ("first_round",) and v_},
         "scales": {"gap": [v["EFFICIENCY_GLOBAL_MIN"], v["EFFICIENCY_GLOBAL_MAX"]],
                    "heatmap_gap": [v["HEATMAP_GAP_MIN"], v["HEATMAP_GAP_MAX"]]},
     }
@@ -268,7 +273,7 @@ class LineupEfficiencyPublisher:
         eff, seasons = self._engine(ctx)
         hidden = excluded_manager_keys(ctx.cfg)
         lu = ctx.tables["lineups"]
-        out = [Output(f"data/v1/{SCHEMA}.json", lineup_model(eff, lu, hidden, seasons), SCHEMA, VERSION)]
+        out = [Output(f"data/v1/{SCHEMA}.json", lineup_model(eff, lu, hidden, seasons, load_editorial(ctx, "lineup_efficiency")), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
         if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")

@@ -1,0 +1,152 @@
+/* Trade Value page (web/pages/trade-value.html). Ported unchanged from the Stage A page. */
+.chart-card-interactive { padding:1.5rem; }
+.chart-card-interactive .chart-card-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--accent);font-weight:700;margin-bottom:1rem;
+}
+.chart-card-interactive canvas { display:block;width:100% !important; }
+.tv-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
+.tv-table thead th {
+  text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
+}
+.tv-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
+.tv-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.tv-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid); }
+.tv-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
+.tv-table th.sortable { cursor:pointer;user-select:none;transition:color 0.15s; }
+.tv-table th.sortable:hover { color:var(--palm); }
+.tv-table th.sortable::after { content:'\2195'; opacity:0.35;margin-left:0.3rem;font-size:0.7rem; }
+.tv-table th.sortable.sorted-asc::after { content:'\2191'; opacity:1; }
+.tv-table th.sortable.sorted-desc::after { content:'\2193'; opacity:1; }
+.heatmap-controls { display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem; }
+.heatmap-season-pill {
+  font-size:0.75rem;font-weight:700;padding:0.35rem 0.85rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.25);color:var(--accent);background:transparent;
+  cursor:pointer;transition:all 0.15s;
+}
+.heatmap-season-pill:hover { background:var(--accent-glow); }
+.heatmap-season-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
+
+/* Color swatches for filter pills -- used for season, position, and
+   manager colors alike, since the visual treatment (a dot + a filled
+   active state) is identical regardless of what the color represents. */
+.heatmap-season-pill.color-swatch-btn { position:relative;padding-left:1.6rem; }
+.heatmap-season-pill.color-swatch-btn::before {
+  content:'';position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);
+  width:7px;height:7px;border-radius:50%;background:var(--swatch-color,var(--accent));
+}
+.heatmap-season-pill.color-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.heatmap-season-pill.color-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.season-pill {
+  display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
+  font-size:0.68rem;font-weight:700;color:#fff;
+}
+.metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
+.methodology-list { margin:0 0 0.75rem;padding-left:1.2rem;line-height:1.65;font-size:0.85rem; }
+.methodology-list li { margin-bottom:0.5rem; }
+.methodology-list li:last-child { margin-bottom:0; }
+.methodology-list strong { color:var(--palm); }
+.methodology-list em { color:var(--muted); }
+.multi-badge {
+  display:inline-block;font-size:0.62rem;font-weight:700;color:#4a7fa8;
+  border:1px solid rgba(74,127,168,0.4);border-radius:4px;background:rgba(74,127,168,0.12);
+  padding:0.03rem 0.35rem;margin-left:0.35rem;letter-spacing:0.02em;
+}
+#explorer-detail-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;
+  color:var(--accent);margin-bottom:0.6rem;
+}
+@keyframes explorerDetailFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(156,148,156,0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(156,148,156,0); }
+}
+#explorer-detail.flash { animation: explorerDetailFlash 0.7s ease-out; }
+.got-txt { color:#4a7fa8; }
+.gave-txt { color:#a8664a; }
+/* Dashed line between different trades in the Trades by Week detail
+   panel -- a dedicated empty row rather than a border on the adjacent
+   data rows, since a cell border competing with border-collapse's
+   existing row separator isn't guaranteed to win that conflict and can
+   silently disappear depending on the browser. This way there's only
+   ever one border in play at that grid line. */
+.tw-table tr.tw-divider td {
+  border: hidden;
+  padding: 0.5rem 0 0;
+  height: 0;
+}
+.tw-table tr.tw-divider td::before {
+  content: '';
+  display: block;
+  border-top: 1.5px dashed rgba(var(--accent-rgb), 0.4);
+}
+@media(max-width:768px) {
+  .tv-table { font-size:0.74rem; }
+  .tw-chart-scroll { overflow-x:auto; }
+}
+
+/* ── CHAPTER RAIL (in-page section nav) ── */
+.chapter-rail {
+  position:fixed;top:50%;transform:translateY(-50%);
+  z-index:20;display:flex;flex-direction:column;gap:0.85rem;align-items:center;
+  visibility:hidden;
+}
+.chapter-rail.visible { visibility:visible; }
+.chapter-rail::before {
+  content:'';position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);
+  width:1px;background:rgba(var(--accent-rgb),0.15);
+}
+.chapter-rail-item {
+  position:relative;width:16px;height:16px;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;cursor:pointer;
+}
+.chapter-rail-dot {
+  width:9px;height:9px;border-radius:50%;background:rgba(245,240,232,0.95);
+  border:1px solid rgba(var(--accent-rgb),0.4);transition:all 0.18s;position:relative;z-index:1;
+}
+.chapter-rail-item:hover .chapter-rail-dot { background:rgba(var(--accent-rgb),0.6);border-color:rgba(var(--accent-rgb),0.6); }
+.chapter-rail-item.active .chapter-rail-dot {
+  background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(var(--accent-rgb),0.15);
+}
+.chapter-rail-label {
+  position:absolute;right:100%;top:50%;margin-right:0.7rem;
+  transform:translateY(-50%) translateX(6px);
+  font-size:0.68rem;font-weight:600;color:var(--muted);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity 0.18s,transform 0.18s;
+  background:rgba(245,240,232,0.97);padding:0.25rem 0.6rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.15);
+}
+.chapter-rail-item:hover .chapter-rail-label,
+.chapter-rail-item.active .chapter-rail-label {
+  opacity:1;transform:translateY(-50%) translateX(0);pointer-events:auto;
+}
+
+.jump-fab {
+  display:none;position:fixed;bottom:1.25rem;right:1.25rem;z-index:25;
+  background:var(--accent);color:var(--bg);border:none;border-radius:999px;
+  padding:0.7rem 1.1rem;font-size:0.78rem;font-weight:700;
+  box-shadow:0 4px 18px rgba(0,0,0,0.18);cursor:pointer;
+  align-items:center;gap:0.4rem;font-family:inherit;
+}
+.jump-fab.visible { display:inline-flex; }
+.jump-sheet { display:none;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,0.35); }
+.jump-sheet.open { display:block; }
+.jump-sheet-inner {
+  position:absolute;left:0;right:0;bottom:0;background:var(--bg,#f5f0e8);
+  border-radius:1rem 1rem 0 0;padding:1.25rem 1.5rem 1.75rem;max-height:70vh;overflow-y:auto;
+  border-top:1px solid rgba(var(--accent-rgb),0.2);
+}
+.jump-sheet-title { font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:700;margin-bottom:0.75rem; }
+.jump-sheet a {
+  display:block;padding:0.65rem 0;font-size:0.92rem;font-weight:600;color:var(--text);
+  text-decoration:none;border-bottom:1px solid rgba(var(--accent-rgb),0.08);
+}
+.jump-sheet a:last-child { border-bottom:none; }
+.jump-sheet a.active { color:var(--accent); }
+/* Position badges, same system used across the rest of the site */

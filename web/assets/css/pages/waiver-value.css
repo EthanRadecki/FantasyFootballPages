@@ -1,0 +1,110 @@
+/* Waiver Value page (web/pages/waiver-value.html). Ported unchanged from the Stage A page. */
+.chart-card-interactive { padding:1.5rem; }
+.chart-card-interactive .chart-card-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--accent);font-weight:700;margin-bottom:1rem;
+}
+.chart-card-interactive canvas { display:block;width:100% !important; }
+.wv-table { width:100%;border-collapse:collapse;font-size:0.82rem; }
+.wv-table thead th {
+  text-align:left;padding:0.7rem 0.75rem;font-size:0.66rem;text-transform:uppercase;
+  letter-spacing:0.08em;font-weight:700;color:var(--accent);
+  border-bottom:2px solid rgba(var(--accent-rgb),0.25);white-space:nowrap;
+}
+.wv-table tbody tr { border-bottom:1px solid rgba(var(--accent-rgb),0.08);transition:background 0.15s; }
+.wv-table tbody tr:hover { background:rgba(var(--accent-rgb),0.06); }
+.wv-table tbody td { padding:0.6rem 0.75rem;color:var(--text-mid);white-space:nowrap; }
+.wv-rank { font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--accent); }
+.type-badge { display:inline-block;padding:0.15rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;letter-spacing:0.04em; }
+.type-waiver { background:rgba(74,127,168,0.18);color:#4a7fa8; }
+.type-freeagent { background:rgba(154,144,128,0.18);color:#8a7f6e; }
+.metric-note { font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:0.5rem;line-height:1.5; }
+.methodology-list { margin:0;padding-left:1.2rem;line-height:1.65;font-size:0.85rem; }
+.methodology-list li { margin-bottom:0.5rem; }
+.methodology-list li:last-child { margin-bottom:0; }
+.methodology-list strong { color:var(--palm); }
+.methodology-list em { color:var(--muted); }
+.wv-table th.sortable { cursor:pointer;user-select:none;transition:color 0.15s; }
+.wv-table th.sortable:hover { color:var(--palm); }
+.wv-table th.sortable::after { content:'\2195'; opacity:0.35;margin-left:0.3rem;font-size:0.7rem; }
+.wv-table th.sortable.sorted-asc::after { content:'\2191'; opacity:1; }
+.wv-table th.sortable.sorted-desc::after { content:'\2193'; opacity:1; }
+.heatmap-controls { display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem; }
+.heatmap-season-pill {
+  font-size:0.75rem;font-weight:700;padding:0.35rem 0.85rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.25);color:var(--accent);background:transparent;
+  cursor:pointer;transition:all 0.15s;
+}
+.heatmap-season-pill:hover { background:var(--accent-glow); }
+.heatmap-season-pill.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
+@media(max-width:768px) {
+  .wv-table { font-size:0.74rem; }
+  .wv-chart-scroll { overflow-x:auto; }
+}
+
+/* Position badges -- canonical system used across the rest of the site */
+.pos-badge { display:inline-block;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.6rem;font-weight:700;letter-spacing:0.05em; }
+.pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
+.pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
+.pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
+.pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
+.pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
+.pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
+
+/* Season color swatches -- same palette used on managers.html */
+.heatmap-season-pill.year-swatch-btn { position:relative;padding-left:1.6rem; }
+.heatmap-season-pill.year-swatch-btn::before {
+  content:'';position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);
+  width:7px;height:7px;border-radius:50%;background:var(--swatch-color,var(--accent));
+}
+.heatmap-season-pill.year-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.heatmap-season-pill.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.season-pill {
+  display:inline-block;padding:0.1rem 0.5rem;border-radius:999px;
+  font-size:0.68rem;font-weight:700;color:#fff;
+}
+.detail-panel-label {
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;
+  color:var(--accent);margin-bottom:0.6rem;
+}
+@keyframes detailPanelFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(156,148,156,0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(156,148,156,0); }
+}
+.detail-panel.flash { animation: detailPanelFlash 0.7s ease-out; }
+
+/* Pagination -- same treatment as the Full Ledger table on managers.html */
+.upside-pagination {
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  margin-top:0.9rem;
+}
+.upside-page-btn {
+  padding:0.35rem 0.8rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.75rem;
+  font-weight:600;cursor:pointer;transition:all 0.15s;
+}
+.upside-page-btn:hover:not(:disabled) { background:var(--accent-glow);color:var(--accent); }
+.upside-page-btn:disabled { opacity:0.3;cursor:default; }
+.upside-page-info { font-size:0.72rem;color:var(--muted);font-weight:600;white-space:nowrap; }
+@media(max-width:480px) {
+  .upside-pagination { gap:0.6rem; }
+  .upside-page-info { font-size:0.66rem; }
+  .upside-page-btn { padding:0.3rem 0.6rem;font-size:0.7rem; }
+}
+
+/* Position color swatches -- same treatment, using the pos-badge palette */
+.heatmap-season-pill.pos-swatch-btn { position:relative;padding-left:1.6rem; }
+.heatmap-season-pill.pos-swatch-btn::before {
+  content:'';position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);
+  width:7px;height:7px;border-radius:50%;background:var(--swatch-color,var(--accent));
+}
+.heatmap-season-pill.pos-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.heatmap-season-pill.pos-swatch-btn.active::before { background:rgba(255,255,255,0.85); }

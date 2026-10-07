@@ -135,6 +135,10 @@ def test_build_config_from_data():
     assert conf["current"] == {"season": 2026, "last_completed_week": 2}
     assert [s["team_count"] for s in conf["seasons"]] == [4, 4]
     assert conf["seasons"][0]["last_completed_week"] == 4 and conf["seasons"][0]["live"] is False
+    assert [s["faab"] for s in conf["seasons"]] == [False, False]           # no faab_enabled column
+    t = _tables(cfg)
+    t["seasons"]["faab_enabled"] = [False, True]
+    assert [s["faab"] for s in config_json.build_config(cfg, t, BUILD)["seasons"]] == [False, True]
     by_key = {m["key"]: m for m in conf["managers"]}
     new = by_key["m_0000000000ff"]
     assert new["name"] == "Newcomer Person" and new["short"] == "Person" and new["hidden"] is False

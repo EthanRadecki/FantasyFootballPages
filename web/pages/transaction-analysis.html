@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Analysis</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/transaction-analysis.css">
+</head>
+<body>
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="draft-subnav" id="page-subnav"></div>
+
+  <div class="page-header glass">
+    <h1>Transaction Analysis</h1>
+    <p id="hub-sub"></p>
+  </div>
+
+  <div class="callout glass">
+    <div class="callout-label">About This Data</div>
+    <ul class="txn-methodology-list">
+      <li id="hub-scope"></li>
+      <li id="hub-excluded"></li>
+      <li><strong>Playoff weeks</strong> only count real bracket games. <em>Consolation weeks are excluded.</em></li>
+    </ul>
+  </div>
+
+  <div class="section-label" style="margin-top:1rem;">Explore The Data</div>
+  <div class="section-title">Pick a sub-analysis below.</div>
+  <div class="subpage-grid">
+    <a href="#" data-page="lineup-efficiency" class="subpage-card glass theme-lineup">
+      <div class="subpage-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="3.5" height="10"></rect>
+          <rect x="10.25" y="6" width="3.5" height="14"></rect>
+          <rect x="16.5" y="13" width="3.5" height="7"></rect>
+        </svg>
+      </div>
+      <h3>Lineup Efficiency</h3>
+      <p>Actual points started vs. the best possible lineup every roster could have set, week by week.</p>
+      <span class="card-arrow">View analysis &#8594;</span>
+    </a>
+    <a href="#" data-page="waiver-value" class="subpage-card glass theme-waiver">
+      <div class="subpage-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"></circle>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+      </div>
+      <h3>Waiver Wire Value</h3>
+      <p><strong>Points per week rostered</strong> for every pickup, <span class="season-range"></span>.</p>
+      <span class="card-arrow">View analysis &#8594;</span>
+    </a>
+    <a href="#" data-page="trade-value" class="subpage-card glass theme-trade">
+      <div class="subpage-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 7 H17 M17 7 L14 4 M17 7 L14 10"></path>
+          <path d="M17 17 H7 M7 17 L10 14 M7 17 L10 20"></path>
+        </svg>
+      </div>
+      <h3>Trade Value</h3>
+      <p>Every real trade, graded on <strong>Trade Grade</strong>, <strong>Realized Gains</strong>, <strong>Fit</strong>, and <strong>Necessity</strong>, combined into one QUAD score.</p>
+      <span class="card-arrow">View analysis &#8594;</span>
+    </a>
+  </div>
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<script type="module" src="../assets/js/pages/transaction-analysis.js"></script>
+</body>
+</html>
