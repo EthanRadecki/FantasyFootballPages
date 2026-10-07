@@ -166,6 +166,19 @@ def test_schedule_views_rules():
     assert first["most_recent"]["winner"] == A and first["rematch"] is None and first["trade_count"] is None
     assert second["rematch"] == {"season": "2031", "round": "Championship"}     # deepest, then most recent
     assert managers[B][0]["opp_wins"] == 3 and by_week[1]["week_type"] == "Big"
+    assert model["conferences"] == {A: "X", B: "Y"}
+
+
+def test_schedule_conferences_missing_are_never_interconference():
+    """A league without divisions: no conference badges and no game counted as interconference."""
+    h = _schedule_history()
+    pairs = pd.DataFrame({"week": [1, 2], "manager_key": [A, B], "opponent_key": [B, A]})
+    for conf in ({}, {A: float("nan"), B: float("nan")}, {A: None, B: ""}):
+        model = sched_pub.schedule_model(pairs, conf, {}, h, {}, 2032, [2030, 2031])
+        assert model["conferences"] == {}
+        assert not any(m["interconference"] for w in model["weeks"] for m in w["matchups"])
+    model = sched_pub.schedule_model(pairs, {A: "X", B: float("nan")}, {}, h, {}, 2032, [2030, 2031])
+    assert model["conferences"] == {A: "X", B: None} and not model["weeks"][0]["matchups"][0]["interconference"]
 
 
 def test_schedule_golden_records_are_consistent():

@@ -19,6 +19,11 @@
     }
   },
   "properties": {
+    "conferences": {
+      "type": "object",
+      "description": "each scheduled manager's conference that season (ESPN division label); empty when the league has none",
+      "additionalProperties": {"type": ["string", "null"]}
+    },
     "meta": {
       "type": "object",
       "required": [
