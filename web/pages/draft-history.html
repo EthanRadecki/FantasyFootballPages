@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draft History</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/draft-history.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="draft-subnav" id="page-subnav"></div>
+  <div class="page-header glass">
+    <h1>Draft History</h1>
+    <p>Every pick from every season. Each row is a round, each column is a manager.</p>
+  </div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="season-filter-row" id="season-row">
+      <span class="season-filter-label">Season:</span>
+    </div>
+
+    <div class="season-filter-row" id="manager-row">
+      <span class="season-filter-label">Manager:</span>
+    </div>
+
+    <div class="pos-legend">
+      <div class="legend-item" data-pos="RB"><div class="legend-swatch" style="background:rgba(90,138,90,0.35)"></div>RB</div>
+      <div class="legend-item" data-pos="WR"><div class="legend-swatch" style="background:rgba(74,127,168,0.35)"></div>WR</div>
+      <div class="legend-item" data-pos="QB"><div class="legend-swatch" style="background:rgba(168,90,90,0.35)"></div>QB</div>
+      <div class="legend-item" data-pos="TE"><div class="legend-swatch" style="background:rgba(212,175,55,0.35)"></div>TE</div>
+      <div class="legend-item" data-pos="K"><div class="legend-swatch" style="background:rgba(156,148,156,0.35)"></div>K</div>
+      <div class="legend-item" data-pos="D/ST"><div class="legend-swatch" style="background:rgba(100,90,80,0.35)"></div>D/ST</div>
+      <span style="font-size:0.7rem;color:var(--muted);margin-left:0.5rem;">Tap any pick for stats</span>
+    </div>
+
+    <div class="board-wrap">
+      <table class="draft-board" id="draft-board">
+        <thead id="board-head"></thead>
+        <tbody id="board-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div class="pick-tooltip" id="pick-tooltip"></div>
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<script type="module" src="../assets/js/pages/draft-history.js"></script>
+</body>
+</html>

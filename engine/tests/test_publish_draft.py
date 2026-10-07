@@ -241,3 +241,34 @@ def test_season_steals_excuses():
     view2 = {"SEASON_STEALS": {"2020": [{"player": "B", "above": 7.31}]}, "ALL_TIME_STEALS": []}
     assert draft_analysis.steals_source(source, view2, gold)("/SEASON_STEALS/2020[0]/player", "B", "A") == \
         draft_analysis.TIE_REASON
+
+
+def test_draft_method_states_the_engine_constants():
+    """The draft pages' method notes are written from these (Stage B, B5)."""
+    from engine.analytics import draft as d
+    from engine.publish.pages.draft_common import draft_method
+    m = draft_method(16)
+    assert m["rounds"] == 16 and m["starter_rank"] == d.STARTER_RANK and m["min_games"] == d.MIN_GAMES
+    assert m["window"] == d.WINDOW and m["hit_top_n"] == d.HIT_TOP_N
+    assert m["round_weights"][0] == {"last_round": 3, "weight": 1.0}
+    assert m["round_weights"][-1] == {"last_round": None, "weight": d.LATE_WEIGHT}
+
+
+def test_fingerprint_fill_notes_parse():
+    from engine.publish.pages.fingerprints import fills
+    notes = ("K: 8 filled from k_patience (r = 0.80, 78 rows); D/ST: 2 filled from dst_patience (r = -0.62, 83 rows); "
+             "QB: 3 filled with the mean (5 rows, too few to fit); TE: no observed ADP deviation, 4 left blank")
+    assert fills(notes) == [
+        {"position": "K", "filled": 8, "method": "regression", "source": "k_patience", "r": 0.8, "rows": 78},
+        {"position": "D/ST", "filled": 2, "method": "regression", "source": "dst_patience", "r": -0.62, "rows": 83},
+        {"position": "QB", "filled": 3, "method": "mean", "source": None, "r": None, "rows": 5}]
+    assert fills("") == [] and fills(None) == []
+
+
+def test_fingerprints_editorial_notes():
+    """The k-choice story and the quoted composite correlation are shown as written (Ethan, 2026-10-07)."""
+    import yaml
+    notes = yaml.safe_load((Path(__file__).resolve().parents[2] / "leagues" / "preach" / "editorial" /
+                            "fingerprints.yaml").read_text(encoding="utf-8"))
+    assert set(notes) == {"silhouette_sweep", "k_choice", "conviction_r"}
+    assert "k=2&ndash;9" in notes["k_choice"] and notes["conviction_r"] == "0.73&ndash;0.84"

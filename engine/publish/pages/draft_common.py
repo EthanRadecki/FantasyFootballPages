@@ -36,3 +36,14 @@ def player_names(ctx) -> dict:
         ps = ctx.tables["player_seasons"]
         return {(int(s), int(p)): n for s, p, n in zip(ps["season"], ps["player_id"], ps["player_name"])}
     return ctx.memo("draft_player_names", run)
+
+
+def draft_method(rounds: int | None = None) -> dict:
+    """The draft value method's constants (engine/analytics/draft.py), published with the draft pages so
+    their method notes state the rules the numbers follow instead of typing them. `rounds`: the most
+    rounds any of the graded drafts had (the last round weight runs to it)."""
+    from engine.analytics import draft as d
+    return {"rounds": rounds, "starter_rank": dict(d.STARTER_RANK), "min_games": d.MIN_GAMES, "window": d.WINDOW,
+            "round_weights": [{"last_round": last, "weight": w} for last, w in d.ROUND_WEIGHTS]
+            + [{"last_round": None, "weight": d.LATE_WEIGHT}],
+            "hit_top_n": dict(d.HIT_TOP_N), "steal_min_round": d.STEAL_MIN_ROUND, "steal_min_games": d.STEAL_MIN_GAMES}

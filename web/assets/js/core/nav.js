@@ -56,3 +56,19 @@ export function drawFooter(cfg) {
     (credit && credit.name ? ' · Built by ' + (credit.url ? '<a href="' + esc(credit.url) + '" target="_blank">' +
       esc(credit.name) + '</a>' : esc(credit.name)) : '') + '</p>';
 }
+
+/* A section's pill row (the draft pages today): the section's main page and its sub-pages, from
+   config.json's page list, the current page marked. Drawn into #page-subnav; hidden when the
+   section has a single page. */
+export function drawSubnav(cfg, current) {
+  var el = document.getElementById('page-subnav');
+  if (!el) return;
+  var page = cfg.pages.find(function (p) { return p.id === current; });
+  var root = page && (page.parent || page.id);
+  var family = cfg.pages.filter(function (p) { return p.id === root || p.parent === root; });
+  if (family.length < 2) { el.style.display = 'none'; return; }
+  el.innerHTML = family.map(function (p) {
+    return '<a href="' + esc(href(p)) + '" class="draft-subnav-pill' + (p.id === current ? ' current' : '') + '">' +
+      esc(p.title) + '</a>';
+  }).join('\n');
+}

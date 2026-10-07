@@ -33,7 +33,19 @@
                      "n": {"type": "integer", "minimum": 1}, "center": {"$ref": "#/$defs/metrics"},
                      "win_pct": {"type": ["number", "null"]}, "ppg": {"type": ["number", "null"]},
                      "surplus": {"type": ["number", "null"]}}}},
-    "stats": {"type": "object", "required": ["k", "n_observations", "n_managers", "fill_notes"]},
+    "stats": {"type": "object", "required": ["k", "n_observations", "n_managers", "fill_notes"],
+              "properties": {
+                "bootstrap_runs": {"type": "integer"}, "n_features": {"type": "integer"},
+                "fills": {"type": "array", "description": "K and D/ST ADP deviations filled in (parsed from fill_notes)",
+                          "items": {"type": "object", "required": ["position", "filled", "method"],
+                                    "properties": {"position": {"type": "string"}, "filled": {"type": "integer"},
+                                                   "method": {"enum": ["regression", "mean"]},
+                                                   "source": {"type": ["string", "null"]}, "r": {"type": ["number", "null"]},
+                                                   "rows": {"type": "integer"}}}}}},
+    "notes": {"type": "object", "additionalProperties": false,
+              "description": "the league's editorial methodology notes (editorial fingerprints.yaml), shown as written",
+              "properties": {"silhouette_sweep": {"type": "string"}, "k_choice": {"type": "string"},
+                             "conviction_r": {"type": "string"}}},
     "season_ranges": {"type": "object", "additionalProperties": {"$ref": "#/$defs/range"}},
     "career_ranges": {"type": "object", "additionalProperties": {"$ref": "#/$defs/range"}}
   }

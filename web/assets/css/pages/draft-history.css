@@ -1,0 +1,153 @@
+/* Draft History page (web/pages/draft-history.html). Ported unchanged from the Stage A page. */
+.back-link {
+  display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;font-weight:600;
+  color:var(--accent);text-decoration:none;margin-bottom:1.5rem;
+  padding:0.35rem 0.75rem;border-radius:var(--radius-sm);
+  border:1px solid rgba(var(--accent-rgb),0.25);transition:all 0.15s;
+}
+.back-link:hover { background:var(--accent-glow); }
+
+.season-filter-row { display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap; }
+.season-btn {
+  padding:0.35rem 0.85rem;border-radius:4px;border:1px solid rgba(var(--accent-rgb),0.3);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.8rem;
+  font-weight:500;cursor:pointer;transition:all 0.15s;
+}
+.season-btn:hover { background:var(--accent-glow); }
+.season-btn.active { background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700; }
+/* Season color swatches -- consistent hue per year, matches managers.html/waiver-value.html. */
+.season-btn.year-swatch-btn { position:relative;padding-left:1.5rem; }
+.season-btn.year-swatch-btn::before {
+  content:'';position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;border-radius:50%;background:var(--swatch-color,var(--muted));
+}
+.season-btn.year-swatch-btn.active {
+  background:var(--swatch-color,var(--accent)) !important;
+  border-color:var(--swatch-color,var(--accent)) !important;
+  color:#fff !important;
+}
+.season-btn.year-swatch-btn.active::before { background:rgba(255,255,255,0.85); }
+.season-filter-label { font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent); }
+
+/* Manager filter pills */
+.mgr-btn {
+  display:inline-flex;align-items:center;gap:0.45rem;
+  padding:0.35rem 0.85rem;border-radius:999px;border:1px solid rgba(var(--accent-rgb),0.25);
+  background:transparent;color:var(--text-mid);font-family:var(--font);font-size:0.78rem;
+  font-weight:600;cursor:pointer;transition:all 0.15s;white-space:nowrap;
+}
+.mgr-btn:hover { background:var(--accent-glow); }
+.mgr-btn .mgr-dot { width:8px;height:8px;border-radius:50%;background:var(--mgr-color,var(--muted));flex-shrink:0; }
+.mgr-btn.mgr-all.active { background:var(--accent);color:var(--bg);border-color:var(--accent); }
+.mgr-btn.active:not(.mgr-all) { background:var(--mgr-color);border-color:var(--mgr-color);color:#fff; }
+.mgr-btn.active:not(.mgr-all) .mgr-dot { background:rgba(255,255,255,0.85); }
+.draft-board th, .draft-board td { transition:opacity 0.2s; }
+.draft-board th.mgr-dim, .draft-board td.mgr-dim { opacity:0.22; }
+
+/* Draft board */
+.board-wrap { overflow-x:auto;padding:1.5rem; }
+
+.draft-board {
+  border-collapse:collapse;
+  font-size:0.75rem;
+  min-width:900px;
+  width:100%;
+}
+
+/* Round label column */
+.draft-board .round-cell {
+  padding:0.5rem 0.6rem;
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;
+  font-weight:700;color:var(--accent);
+  background:rgba(var(--accent-rgb),0.06);
+  border-right:2px solid rgba(var(--accent-rgb),0.15);
+  white-space:nowrap;text-align:center;
+  border-bottom:1px solid rgba(var(--accent-rgb),0.08);
+  vertical-align:middle;
+}
+
+/* Manager header */
+.draft-board thead th {
+  padding:0.6rem 0.4rem;
+  text-align:center;
+  border-bottom:2px solid rgba(var(--accent-rgb),0.2);
+  border-right:1px solid rgba(var(--accent-rgb),0.06);
+  white-space:nowrap;
+  background:rgba(var(--accent-rgb),0.04);
+  vertical-align:bottom;
+}
+.draft-board thead th:first-child {
+  border-right:2px solid rgba(var(--accent-rgb),0.15);
+  background:rgba(var(--accent-rgb),0.06);
+}
+.manager-logo {
+  width:32px;height:32px;border-radius:50%;object-fit:cover;
+  display:block;margin:0 auto 0.3rem;
+  border:1.5px solid rgba(var(--accent-rgb),0.2);
+}
+.manager-name-header {
+  font-size:0.6rem;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.06em;
+  display:block;
+}
+
+/* Pick cells */
+.draft-board tbody td {
+  padding:0.35rem 0.3rem;
+  border-right:1px solid rgba(var(--accent-rgb),0.06);
+  border-bottom:1px solid rgba(var(--accent-rgb),0.06);
+  vertical-align:top;
+  cursor:pointer;
+  transition:background 0.12s;
+  min-width:80px;
+  max-width:110px;
+}
+.draft-board tbody td:hover { background:rgba(var(--accent-rgb),0.1); }
+.draft-board tbody tr:last-child td { border-bottom:none; }
+
+/* Pick cell content */
+.pick-cell { display:flex;flex-direction:column;gap:0.2rem;align-items:flex-start; }
+.pick-name {
+  font-size:0.72rem;font-weight:600;color:var(--palm);
+  line-height:1.2;word-break:break-word;white-space:normal;
+}
+.pick-name.empty { color:var(--muted);font-weight:400;font-size:0.65rem;font-style:italic; }
+
+/* Position badge colors as cell backgrounds */
+.cell-rb { background:rgba(90,138,90,0.08); }
+.cell-wr { background:rgba(74,127,168,0.08); }
+.cell-qb { background:rgba(168,90,90,0.08); }
+.cell-te { background:rgba(212,175,55,0.08); }
+.cell-k  { background:rgba(156,148,156,0.06); }
+.cell-dst{ background:rgba(100,90,80,0.06); }
+
+.cell-rb:hover { background:rgba(90,138,90,0.18) !important; }
+.cell-wr:hover { background:rgba(74,127,168,0.18) !important; }
+.cell-qb:hover { background:rgba(168,90,90,0.18) !important; }
+.cell-te:hover { background:rgba(212,175,55,0.18) !important; }
+.cell-k:hover  { background:rgba(156,148,156,0.14) !important; }
+.cell-dst:hover{ background:rgba(100,90,80,0.14) !important; }
+
+
+/* Popup tooltip */
+.pick-tooltip {
+  position:fixed;z-index:200;
+  background:rgba(44,42,40,0.97);color:#f5f0e8;
+  padding:0.75rem 1rem;border-radius:10px;
+  font-size:0.78rem;line-height:1.6;
+  box-shadow:0 8px 32px rgba(0,0,0,0.35);
+  pointer-events:none;opacity:0;transition:opacity 0.12s;
+  min-width:160px;max-width:220px;
+}
+.pick-tooltip.visible { opacity:1; }
+.pick-tooltip .tip-name { font-weight:700;font-size:0.85rem;margin-bottom:0.3rem; }
+.pick-tooltip .tip-stat { color:rgba(245,240,232,0.75);font-size:0.73rem; }
+.pick-tooltip .tip-stat span { color:#f5f0e8;font-weight:600; }
+
+/* Legend */
+.pos-legend {
+  display:flex;gap:0.75rem;flex-wrap:wrap;
+  margin-bottom:1.25rem;align-items:center;
+}
+.legend-item { display:flex;align-items:center;gap:0.35rem;font-size:0.72rem;color:var(--muted); }
+.legend-swatch { width:10px;height:10px;border-radius:2px; }
