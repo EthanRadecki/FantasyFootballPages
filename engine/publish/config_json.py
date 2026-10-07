@@ -128,6 +128,7 @@ def build_config(cfg: dict, tables: dict, build: dict) -> dict:
             "logos_by_season": {str(s["season"]): _logo(cfg, s["season"]) for s in seasons},
             "conference_labels": {str(k): v for k, v in conference_labels(cfg).items()},
             **({"credit": dict(league["credit"])} if league.get("credit") else {}),
+            **({"site_url": str(league["site_url"]).rstrip("/")} if league.get("site_url") else {}),
         },
         "seasons": seasons,
         "finished_seasons": finished,

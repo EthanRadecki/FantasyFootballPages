@@ -38,7 +38,8 @@
         "logo": {"$ref": "#/$defs/path"},
         "logos_by_season": {"type": "object", "additionalProperties": {"$ref": "#/$defs/path"}},
         "conference_labels": {"type": "object", "additionalProperties": {"type": "string"}},
-        "credit": {"type": "object", "required": ["name"], "properties": {"name": {"type": "string"}, "url": {"type": "string"}}}
+        "credit": {"type": "object", "required": ["name"], "properties": {"name": {"type": "string"}, "url": {"type": "string"}}},
+        "site_url": {"type": "string", "description": "the site's public URL (league.yaml, optional); share-preview tags are written from it, else from SITE_URL"}
       }
     },
     "seasons": {
