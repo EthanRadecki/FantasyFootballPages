@@ -141,11 +141,16 @@ def pair_history(hist: pd.DataFrame, me: str, opp: str) -> list[dict]:
 
 def schedule_model(pairs: pd.DataFrame, conf: dict, week_themes: dict, hist: pd.DataFrame, trades: dict,
                    season: int, seasons: list[int]) -> dict:
+    # a manager's conference that season, None when the league has none (a missing value never
+    # makes a game interconference)
+    conf = {k: (None if v is None or pd.isna(v) or v == "" else str(v)) for k, v in conf.items()}
     weeks = []
     for w, g in pairs.groupby("week", sort=True):
         weeks.append({"week": int(w), "theme": week_themes.get(int(w)),
                       "matchups": [{"manager_key": r.manager_key, "opponent_key": r.opponent_key,
-                                    "interconference": conf.get(r.manager_key) != conf.get(r.opponent_key)}
+                                    "interconference": conf.get(r.manager_key) is not None
+                                    and conf.get(r.opponent_key) is not None
+                                    and conf.get(r.manager_key) != conf.get(r.opponent_key)}
                                    for r in g.itertuples()]})
     keys = sorted({k for k in pairs["manager_key"]} | {k for k in pairs["opponent_key"]})
     rivalries = []
@@ -155,7 +160,9 @@ def schedule_model(pairs: pd.DataFrame, conf: dict, week_themes: dict, hist: pd.
             n = trades.get(frozenset((a, b)), 0)
             if games or n:
                 rivalries.append({"manager_key": a, "opponent_key": b, "trades": n, "games": games})
-    return {"season": season, "history_seasons": list(seasons), "weeks": weeks, "rivalries": rivalries}
+    conferences = {k: conf.get(k) for k in keys}
+    return {"season": season, "history_seasons": list(seasons), "weeks": weeks, "rivalries": rivalries,
+            "conferences": conferences if any(v is not None for v in conferences.values()) else {}}
 
 
 # ---------------------------------------------------------------- legacy views
