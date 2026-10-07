@@ -24,9 +24,17 @@ label from each cluster's most distinctive radar trait.
 
 Coverage: finished seasons plus the live season once its draft is done, as
 the page shows today.
+
+Methodology numbers (Stage B, Ethan 2026-10-07): the model's `stats` carries what the page's
+methodology text quotes: the fit statistics, the feature count, the bootstrap runs and the
+K and D/ST fill-ins (`fills`, parsed from the fit's notes). How k was chosen in the original
+analysis is not rerun by the engine; the league's editorial `fingerprints.yaml` keeps that
+story (`notes`), shown as written.
 """
 
 from __future__ import annotations
+
+import re
 
 import numpy as np
 import pandas as pd
@@ -192,11 +200,32 @@ def fingerprints_view(res: dict, names, meta: dict[int, dict]) -> dict:
 
 # ---------------------------------------------------------------- page model
 
+FILL_NOTE = re.compile(r"(?P<position>[^:;]+): (?P<filled>\d+) filled from (?P<source>\w+) \(r = (?P<r>-?[0-9.]+), "
+                       r"(?P<rows>\d+) rows\)")
+MEAN_NOTE = re.compile(r"(?P<position>[^:;]+): (?P<filled>\d+) filled with the mean \((?P<rows>\d+) rows")
+
+
+def fills(notes: str) -> list[dict]:
+    """The K and D/ST fill-ins from the fit's notes: position, rows filled, how, r and rows fitted."""
+    out = []
+    for part in [p.strip() for p in str(notes or "").split(";") if p.strip()]:
+        m = FILL_NOTE.match(part)
+        if m:
+            out.append({"position": m["position"], "filled": int(m["filled"]), "method": "regression",
+                        "source": m["source"], "r": float(m["r"]), "rows": int(m["rows"])})
+            continue
+        m = MEAN_NOTE.match(part)
+        if m:
+            out.append({"position": m["position"], "filled": int(m["filled"]), "method": "mean", "source": None,
+                        "r": None, "rows": int(m["rows"])})
+    return out
+
+
 def _rows(frame: pd.DataFrame, cols: list[str]) -> list[dict]:
     return [clean(r) for r in frame[[c for c in cols if c in frame]].to_dict(orient="records")]
 
 
-def fingerprints_model(res: dict, meta: dict[int, dict]) -> dict:
+def fingerprints_model(res: dict, meta: dict[int, dict], notes: dict | None = None) -> dict:
     s, c = res["draft_profile_seasons"], res["draft_profile_career"]
     arch, st = res["draft_archetypes"], res["draft_archetype_stats"].iloc[0]
     metrics, pdims = season_metrics(s), posdev_dims(s)
@@ -218,7 +247,12 @@ def fingerprints_model(res: dict, meta: dict[int, dict]) -> dict:
     fin = s[~s["live"]]
     stats = {k: clean(st[k]) for k in st.index if k != "fill_notes"}
     stats["fill_notes"] = str(st.get("fill_notes") or "")
-    return {"radar_dims": [d for d in RADAR if d in s], "posdev_dims": pdims, "seasons": seasons, "career": career,
+    from engine.analytics.draft_profiles import BOOTSTRAP_RUNS, features
+    stats["bootstrap_runs"] = BOOTSTRAP_RUNS
+    stats["n_features"] = len(features(s.columns))
+    stats["fills"] = fills(stats["fill_notes"])
+    notes = {k: str(v) for k, v in (notes or {}).items() if k in ("silhouette_sweep", "k_choice", "conviction_r") and v}
+    return {"notes": notes, "radar_dims": [d for d in RADAR if d in s], "posdev_dims": pdims, "seasons": seasons, "career": career,
             "archetypes": archetypes, "stats": stats,
             "season_ranges": {k: [clean(fin[k].min()), clean(fin[k].max())] for k in metrics + ["win_pct", "ppg", "surplus"]
                               if k in fin and fin[k].notna().any()},
@@ -294,7 +328,7 @@ class FingerprintsPublisher:
             return []
         res = {n: a[n] for n in self.NEEDS}
         meta = self._meta(ctx, res)
-        out = [Output(f"data/v1/{SCHEMA}.json", fingerprints_model(res, meta), SCHEMA, VERSION)]
+        out = [Output(f"data/v1/{SCHEMA}.json", fingerprints_model(res, meta, load_editorial(ctx, "fingerprints")), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
         if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")

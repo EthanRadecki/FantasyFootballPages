@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surplus Value</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/surplus-value.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="draft-subnav" id="page-subnav"></div>
+
+  <div class="page-header glass">
+    <h1>Surplus Value Index</h1>
+    <p>How much value did each manager extract from every pick, relative to what that slot should produce? (<span class="season-range"></span>)</p>
+  </div>
+
+  <div class="chapter-rail" id="chapter-rail">
+    <a href="#career-draft-rankings" class="chapter-rail-item" data-target="career-draft-rankings"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Career Draft Rankings</span></a>
+    <a href="#season-draft-grades" class="chapter-rail-item" data-target="season-draft-grades"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Season Draft Grades</span></a>
+    <a href="#manager-highs-lows" class="chapter-rail-item" data-target="manager-highs-lows"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Manager Highs and Lows</span></a>
+    <a href="#best-individual-picks" class="chapter-rail-item" data-target="best-individual-picks"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Best Individual Picks</span></a>
+    <a href="#biggest-busts" class="chapter-rail-item" data-target="biggest-busts"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Biggest Busts</span></a>
+  </div>
+
+  <button class="jump-fab">&#9776; Jump to</button>
+  <div class="jump-sheet" id="jump-sheet">
+    <div class="jump-sheet-inner">
+      <div class="jump-sheet-title">Jump to Section</div>
+      <a href="#career-draft-rankings" data-target="career-draft-rankings">Career Draft Rankings</a>
+      <a href="#season-draft-grades" data-target="season-draft-grades">Season Draft Grades</a>
+      <a href="#manager-highs-lows" data-target="manager-highs-lows">Manager Highs and Lows</a>
+      <a href="#best-individual-picks" data-target="best-individual-picks">Best Individual Picks</a>
+      <a href="#biggest-busts" data-target="biggest-busts">Biggest Busts</a>
+    </div>
+  </div>
+
+
+  <div class="callout glass">
+    <div class="callout-label">How It Works</div>
+    <p id="method-note"></p>
+  </div>
+
+  <!-- CAREER LEADERBOARD -->
+  <div class="section-label" id="career-draft-rankings">Career Draft Rankings</div>
+  <div class="section-title">Who drafts best across all seasons?</div>
+
+  <div class="chart-grid" style="grid-template-columns:1fr;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Average Surplus Per Pick, Career (<span class="season-range"></span>)</div>
+      <div style="position:relative;height:320px;max-height:320px;">
+        <canvas id="chart-career"></canvas>
+      </div>
+      <p class="metric-note">Positive = manager got more than expected from their picks on average. Negative = picks underperformed their draft slot. Managers ordered best to worst.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap glass">
+    <table class="career-table">
+      <thead>
+        <tr><th>#</th><th>Manager</th><th>Avg Surplus/Pick</th><th>Total Surplus</th><th>Picks Scored</th><th>Seasons</th></tr>
+      </thead>
+      <tbody id="career-tbody"></tbody>
+    </table>
+    <p class="metric-note">Picks scored = skill position picks with 8+ games played. Picks below that threshold count as 0 surplus.</p>
+  </div>
+
+  <!-- SEASON HEATMAP -->
+  <div class="section-label" id="season-draft-grades">Season Draft Grades</div>
+  <div class="section-title">How did each manager grade out year by year?</div>
+
+  <div class="callout glass">
+    <div class="callout-label">Reading the Heatmap</div>
+    <p>Each cell is a manager's total surplus for that season. Green means they got more than expected, red means busts and underperformers cost them. Color scales within each season so you can see relative performance across the field. Hover any cell to see that manager's best and worst pick for that year.<span id="joined-note"></span></p>
+  </div>
+
+  <div class="heatmap-wrap glass" id="heatmap-container"></div>
+
+  <!-- MANAGER BEST AND WORST ALL TIME -->
+  <div class="section-label" style="margin-top:2rem;" id="manager-highs-lows">Manager Highs and Lows</div>
+  <div class="section-title">Every manager's best and worst pick of all time.</div>
+
+  <div class="callout glass">
+    <div class="callout-label">Note</div>
+    <p>Best pick is the single highest surplus pick across all seasons. Worst pick is the single lowest surplus pick across all seasons. Both require minimum 8 games played.</p>
+  </div>
+
+  <div class="table-wrap glass">
+    <table class="manager-bw-table">
+      <thead>
+        <tr>
+          <th>Manager</th>
+          <th>Best Pick</th><th>Pos</th><th>Season</th><th>Rd</th><th>Surplus</th>
+          <th style="border-left:1px solid rgba(var(--accent-rgb),0.15)">Worst Pick</th><th>Pos</th><th>Season</th><th>Rd</th><th>Surplus</th>
+        </tr>
+      </thead>
+      <tbody id="manager-bw-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- BEST PICKS TABLE -->
+  <div class="section-label" style="margin-top:2rem;" id="best-individual-picks">Best Individual Picks</div>
+  <div class="section-title">The picks that most outperformed their draft slot.</div>
+
+  <div class="callout glass">
+    <div class="callout-label">Note on Best Picks</div>
+    <p>Surplus is calculated against players drafted within 3 spots at the same position, so a round 14 steal looks huge relative to round-14 expectations. PPG in this table refers to <strong>Points Per Game vs the average starter for that position from that season.</strong> Minimum 8 games played to qualify.</p>
+  </div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="season-filter-row" id="best-filter">
+      <span class="season-filter-label">Season:</span>
+      <button class="season-btn active" data-season="all">All Time</button>
+    </div>
+    <table class="pick-table">
+      <thead>
+        <tr><th>#</th><th>Player</th><th>Pos</th><th>Round</th><th>Pick</th><th>Season</th><th>Actual PPG</th><th>Expected PPG</th><th>Surplus</th><th>Manager</th></tr>
+      </thead>
+      <tbody id="best-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- WORST PICKS TABLE -->
+  <div class="section-label" style="margin-top:2rem;" id="biggest-busts">Biggest Busts</div>
+  <div class="section-title">Early picks that most underperformed their draft slot.</div>
+
+  <div class="callout glass">
+    <div class="callout-label">Note on Busts</div>
+    <p> Picks with fewer than 8 games played count as 0 surplus, so pure injury busts don't appear here. These are the picks where a healthy player just didn't perform. Same PPG explanation as the Best Picks table above.</p>
+  </div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="season-filter-row" id="worst-filter">
+      <span class="season-filter-label">Season:</span>
+      <button class="season-btn active" data-season="all">All Time</button>
+    </div>
+    <table class="pick-table">
+      <thead>
+        <tr><th>#</th><th>Player</th><th>Pos</th><th>Round</th><th>Pick</th><th>Season</th><th>Actual PPG</th><th>Expected PPG</th><th>Surplus</th><th>Manager</th></tr>
+      </thead>
+      <tbody id="worst-tbody"></tbody>
+    </table>
+  </div>
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="../assets/js/pages/surplus-value.js"></script>
+</body>
+</html>

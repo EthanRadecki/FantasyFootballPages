@@ -47,6 +47,8 @@
       "type": "object", "additionalProperties": false, "required": ["manager_key", "avg_surplus", "rank", "seasons"],
       "properties": {"manager_key": {"$ref": "#/$defs/key"}, "avg_surplus": {"type": "number"},
                      "rank": {"type": "integer"}, "seasons": {"type": "integer"}}}},
-    "above_average_max": {"type": "number"}
+    "above_average_max": {"type": "number"},
+    "seasons": {"type": "array", "items": {"type": "integer"}, "description": "the seasons the hit rates and steals cover"},
+    "method": {"type": "object", "required": ["starter_rank", "min_games", "window", "round_weights"], "properties": {"rounds": {"type": ["integer", "null"]}, "starter_rank": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}, "description": "players per position averaged for the starter baseline"}, "min_games": {"type": "integer", "minimum": 0, "description": "games a pick needs to be graded"}, "window": {"type": "integer", "minimum": 0, "description": "picks either side compared for expected value"}, "round_weights": {"type": "array", "items": {"type": "object", "required": ["last_round", "weight"], "properties": {"last_round": {"type": ["integer", "null"]}, "weight": {"type": "number"}}}}, "hit_top_n": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}}, "steal_min_round": {"type": "integer"}, "steal_min_games": {"type": "integer"}}, "description": "The draft value method's constants (engine/analytics/draft.py), as the draft pages state them"}
   }
 }

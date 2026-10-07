@@ -36,7 +36,7 @@ from engine.legacy import Comparison
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
 from engine.publish.legacy_view import Names, page_roundtrip, read_literal, replace_literal
-from engine.publish.pages.draft_common import legacy_draft
+from engine.publish.pages.draft_common import draft_method, legacy_draft
 
 SCHEMA, VERSION = "surplus-value", 1
 PAGE = "pages/surplus-value.html"
@@ -147,6 +147,7 @@ def surplus_model(a: dict, seasons: list[int], hidden: set[str]) -> dict:
         "season_best": {k: [row(x) for x in xs] for k, xs in v["SEASON_BEST"].items()},
         "season_worst": {k: [row(x) for x in xs] for k, xs in v["SEASON_WORST"].items()},
         "scale": {"min": float(vis["surplus"].min()), "max": float(vis["surplus"].max())} if len(vis) else None,
+        "method": draft_method(int(p["round"].max()) if len(p) else None),
     }
 
 

@@ -48,7 +48,7 @@ from engine.legacy_manager_seasons import legacy_slots, slot_frame, slot_manager
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
 from engine.publish.legacy_view import Names, read_html, read_literal, replace_html, replace_literal
-from engine.publish.pages.draft_common import legacy_draft
+from engine.publish.pages.draft_common import draft_method, legacy_draft
 
 SCHEMA, VERSION = "draft-analysis", 1
 PAGE = "pages/draft-analysis.html"
@@ -257,6 +257,8 @@ def analysis_model(results, who, h, positions, career, hidden: set[str]) -> dict
         "career_preview": [{"manager_key": x["manager"], "avg_surplus": x["avg"], "rank": x["rank"],
                             "seasons": x["seasons"]} for x in v["CAREER_PREVIEW"]],
         "above_average_max": v["ABOVE_AVG_CEIL"],
+        "seasons": sorted(int(s) for s in h["season"].unique()),
+        "method": draft_method(int(h["round"].max()) if len(h) else None),
     }
 
 

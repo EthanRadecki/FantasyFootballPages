@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draft Fingerprints</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/draft-fingerprints.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="draft-subnav" id="page-subnav"></div>
+
+  <div class="page-header glass">
+    <h1>Draft Fingerprints</h1>
+    <p id="header-sub"></p>
+  </div>
+
+  <div class="chapter-rail" id="chapter-rail">
+    <a href="#style-comparison" class="chapter-rail-item" data-target="style-comparison"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Scouting Report</span></a>
+    <a href="#metric-explorer" class="chapter-rail-item" data-target="metric-explorer"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Metric Explorer</span></a>
+    <a href="#draft-archetypes" class="chapter-rail-item" data-target="draft-archetypes"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Draft Archetypes</span></a>
+    <a href="#cluster-scatter" class="chapter-rail-item" data-target="cluster-scatter"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Cluster Scatter</span></a>
+    <a href="#archetype-outcomes" class="chapter-rail-item" data-target="archetype-outcomes"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Archetype Outcomes</span></a>
+    <a href="#methodology" class="chapter-rail-item" data-target="methodology"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Methodology</span></a>
+  </div>
+
+  <button class="jump-fab">&#9776; Jump to</button>
+  <div class="jump-sheet" id="jump-sheet">
+    <div class="jump-sheet-inner">
+      <div class="jump-sheet-title">Jump to Section</div>
+      <a href="#style-comparison" data-target="style-comparison">Scouting Report</a>
+      <a href="#metric-explorer" data-target="metric-explorer">Metric Explorer</a>
+      <a href="#draft-archetypes" data-target="draft-archetypes">Draft Archetypes</a>
+      <a href="#cluster-scatter" data-target="cluster-scatter">Cluster Scatter</a>
+      <a href="#archetype-outcomes" data-target="archetype-outcomes">Archetype Outcomes</a>
+      <a href="#methodology" data-target="methodology">Methodology</a>
+    </div>
+  </div>
+
+  <div class="callout glass">
+    <div class="callout-label">How to Read This</div>
+    <p id="read-note"></p>
+  </div>
+
+  <!-- SCOUTING REPORT / RADAR SECTION -->
+  <div class="section-label" id="style-comparison">Scouting Report</div>
+  <div class="section-title">Select managers to overlay their draft profiles.</div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="filter-row" id="period-row">
+      <span class="filter-label">Period:</span>
+    </div>
+
+    <div class="mgr-toggle-grid" id="mgr-chips"></div>
+    <div class="active-legend" id="active-legend"></div>
+
+    <div class="radar-wrap">
+      <canvas id="chart-radar"></canvas>
+    </div>
+    <p class="metric-note" id="radar-note"></p>
+
+    <div class="posdev-panel">
+      <div class="callout-label" style="margin-bottom:0.5rem;">ADP Deviation Fingerprint</div>
+      <p class="group-desc">How far each active manager's picks landed from consensus ADP, broken out by position. Bars run from the field's low end (left) to high end (right) for that position; the tick marks zero deviation. Positive means the manager reached, drafting the player ahead of consensus ADP; negative means the player fell to them, drafted later than ADP suggested.</p>
+      <div id="posdev-strip"></div>
+    </div>
+  </div>
+
+
+  <!-- METRIC EXPLORER -->
+  <div class="section-label" style="margin-top:2rem;" id="metric-explorer">Metric Explorer</div>
+  <div class="section-title" id="explorer-title"></div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="explorer-toolbar">
+      <div class="tab-group" id="explorer-tabs"></div>
+      <div class="search-wrap">
+        <input type="text" class="search-input" id="explorer-search" placeholder="Find a manager...">
+      </div>
+    </div>
+    <p class="group-desc" id="explorer-group-desc"></p>
+    <div class="explorer-scroll">
+      <table class="dim-table" id="explorer-table">
+        <thead><tr id="explorer-thead"></tr></thead>
+        <tbody id="explorer-tbody"></tbody>
+      </table>
+    </div>
+    <p class="metric-note" id="explorer-note"></p>
+  </div>
+
+
+  <!-- ARCHETYPE SECTION -->
+  <div class="section-label" style="margin-top:2rem;" id="draft-archetypes">Draft Archetypes</div>
+  <div class="section-title" id="archetype-title"></div>
+
+  <div class="callout glass">
+    <div class="callout-label">Important Notes</div>
+    <p id="archetype-note"></p>
+  </div>
+
+  <div class="archetype-cards" id="archetype-cards"></div>
+
+  <div class="section-label" id="cluster-scatter">Cluster Scatter</div>
+  <div class="section-title">Each dot is one manager-season, colored by archetype. Did better drafting actually lead to more scoring?</div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="cluster-legend" id="cluster-legend"></div>
+    <div class="cluster-scatter-wrap">
+      <canvas id="chart-scatter"></canvas>
+    </div>
+    <p class="metric-note" id="scatter-note"></p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="archetype-outcomes">Archetype Outcomes</div>
+  <div class="section-title">How did each drafting style translate to on-field results?</div>
+
+  <div class="table-wrap glass" style="padding:1.5rem;">
+    <div class="outcome-chart-wrap">
+      <canvas id="chart-outcomes"></canvas>
+    </div>
+    <p class="metric-note" id="outcomes-note"></p>
+    <div class="cluster-legend" id="outcome-surplus-strip" style="margin-top:0.75rem;"></div>
+  </div>
+
+
+  <!-- METHODOLOGY -->
+  <div class="section-label" style="margin-top:2rem;" id="methodology">Methodology</div>
+  <div class="section-title">How this was built, and where to be skeptical of it.</div>
+
+  <div class="table-wrap glass method-grid">
+    <div class="method-block">
+      <h4>Feature set &amp; reduction</h4>
+      <p id="method-features"></p>
+      <h4 style="margin-top:0.9rem;" id="k-heading"></h4>
+      <p id="method-k"></p>
+    </div>
+    <div class="method-block">
+      <h4>Imputation</h4>
+      <p id="method-impute"></p>
+      <h4 style="margin-top:0.9rem;">Known exclusions &amp; cautions</h4>
+      <ul>
+        <li id="method-hidden"></li>
+        <li>Avg ADP Deviation and the position-specific deviations: positive means the manager reached (drafted the player ahead of consensus ADP); negative means the player fell to them (drafted later than ADP suggested).</li>
+        <li id="method-multi"></li>
+      </ul>
+    </div>
+  </div>
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="../assets/js/pages/draft-fingerprints.js"></script>
+</body>
+</html>

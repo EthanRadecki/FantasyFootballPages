@@ -1,0 +1,17 @@
+# Draft Fingerprints methodology notes (draft-fingerprints.html), editorial (Ethan, 2026-10-07).
+#
+# The page generates every number the engine computes (feature and component counts, variance,
+# p-values, bootstrap agreement, imputation). These notes record how k=4 was chosen in the
+# original 2025 analysis, which the engine does not rerun; they are shown as written. Without
+# this file a league gets the engine's own silhouette numbers in their place.
+
+# completes "It's also a soft grouping: ..." in the archetype notes
+silhouette_sweep: "silhouette scores were low across every k tested (0.09&ndash;0.17)"
+
+# the "Choosing k=4" methodology block
+k_choice: "Elbow + silhouette sweep (k=2&ndash;9) cross-validated against Ward-linkage hierarchical clustering. k=4 was the point where K-means and hierarchical clustering agreed most (ARI=0.50), the elbow curve started flattening, and k=5 stopped avoiding a degenerate 3-observation cluster. It's a defensible choice, not an obvious one: k=3 is a reasonable alternative, and an independent GMM run on the same PCA components slightly preferred k=3 (silhouette 0.162 vs 0.146 for k=4)."
+
+# the range quoted for the four "deviates from consensus" composites (Reach Tendency, Value
+# Hunting, Draft Conviction, ADP Independence): the strong pairs of the original analysis.
+# Without it the page shows the range over all six pairs from the data.
+conviction_r: "0.73&ndash;0.84"
