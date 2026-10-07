@@ -55,8 +55,13 @@ finished weeks (M1b, decision 7.8); the schedule swap's season buttons come from
 SCHEDULE_SWAP_DATA. The head-to-head, closest and conference sections are
 recomputed here on those seasons' games, because their analysis tables have no
 season column; the luck and swap tables are filtered by season. The model
-sections stay on finished seasons. Stage B adds a season filter to the luck chart
+sections stay on finished seasons. Stage B (B7) added the season filter to the luck chart
 (Ethan, session 7), reading `schedule_luck` per season from the page model.
+
+Page model additions for the Stage B page (B7): `quarterly_fit`, `positional.fit`, the champion
+windows' `team` and their games' `opponent_team` / `opponent_ppg`, `attribution.history` (the
+league's editorial earlier model versions, then the current fit), `notes.swap_caveats` (editorial),
+`season_games`, `conference.moved`, and every rivalry pair (the page orders and lists them).
 """
 
 from __future__ import annotations
@@ -71,7 +76,7 @@ from engine.config import conference_labels, excluded_games, excluded_manager_ke
 from engine.legacy import Comparison, name_to_key
 from engine.publish.build import Output
 from engine.publish.diff import compare_json
-from engine.publish.editorial import team_names
+from engine.publish.editorial import load_editorial, team_names
 from engine.publish.legacy_view import (Names, page_roundtrip, page_seasons, read_html, read_literal,
                                         replace_html, replace_literal, with_page_seasons)
 
@@ -466,6 +471,8 @@ def _raw_dom_cards(cards: list[dict], champs: pd.DataFrame, detail: pd.DataFrame
 
 def extra_model(inp: dict, luck: pd.DataFrame, swap: pd.DataFrame, swap_summary: pd.DataFrame, hidden: set[str],
                 seasons: list[int]) -> dict:
+    """The matchup sections by manager key. Rivalries: every visible pair (the page orders them by
+    meetings, the closest record and the pair's names, and lists the first RIVALRIES_LISTED)."""
     ident = lambda k: k
     h = inp["head_to_head"]
     h = h[~h["hidden"]]
@@ -499,13 +506,26 @@ def extra_model(inp: dict, luck: pd.DataFrame, swap: pd.DataFrame, swap_summary:
                            "second_wins": int(r.second_wins), "games": int(r.games)}
                           for r in mh.order_rivalries(res["rivalries"], {k: k for k in set(res["rivalries"]["manager_key"])
                                                                         | set(res["rivalries"]["opponent_key"])},
-                                                      k=RIVALRIES_LISTED).itertuples()]},
+                                                      k=len(res["rivalries"])).itertuples()]},
     }
 
 
-def models_model(a: dict) -> dict:
+def moved_conference(tables: dict, seasons: list[int], hidden: set[str]) -> list[str]:
+    """Visible managers whose ESPN division changed between the page's seasons (the page says the
+    conferences were never reshuffled only when this is empty)."""
+    t = tables["teams"]
+    t = t[t["season"].isin(seasons) & ~t["manager_key"].isin(hidden)]
+    if "division_id" not in t:
+        return []
+    n = t.dropna(subset=["division_id"]).groupby("manager_key")["division_id"].nunique()
+    return sorted(n[n > 1].index)
+
+
+def models_model(a: dict, team: dict | None = None, notes: dict | None = None) -> dict:
     """The model sections in the data file, by manager key ({} without the analysis tables).
-    The R2 history stays on the page until Stage B (editorial: it names past model versions)."""
+    team: (season, manager key) -> team name as the gauntlet cards show it (editorial short names);
+    notes: the league's editorial extra_analytics.yaml (`model_history`: the attribution model's
+    earlier versions, the current fit appended as the last bar)."""
     need = ("quarterly_coefficients", "position_career", "position_coefficients", "attribution_managers",
             "attribution_coefficients", "attribution_fit", "gauntlet_windows", "gauntlet_window_games",
             "gauntlet_champions")
@@ -533,7 +553,21 @@ def models_model(a: dict) -> dict:
                           for g in _window_games(detail, r).itertuples()]}
 
     hi, lo = gt.extremes(a["gauntlet_windows"])
-    return {
+    team = team or {}
+    ms = a.get("manager_seasons")
+    ppg = ({(int(s_), k): float(v) for s_, k, v in zip(ms["season"], ms["manager_key"], ms["pf_per_game"])}
+           if ms is not None else {})
+
+    def champion(r) -> dict:
+        """A champion's window with the names and opponents' regular-season PF/G the cards show."""
+        w = window(r)
+        w["team"] = team.get((w["season"], w["manager_key"]))
+        for g in w["games"]:
+            g["opponent_team"] = team.get((w["season"], g["opponent_key"]))
+            g["opponent_ppg"] = ppg.get((w["season"], g["opponent_key"]))
+        return w
+
+    out = {
         "quarterly": [{"quarter": r.quarter, "weeks": str(r.weeks), "coef": float(r.coef),
                        "p_value": float(r.p_value), "corr": num(r.corr)}
                       for r in a["quarterly_coefficients"].itertuples()],
@@ -555,10 +589,33 @@ def models_model(a: dict) -> dict:
                           **{f: float(getattr(r, f)) for f in ("win_pct", "draft", "waiver", "lineup", "trade", "luck",
                                                                "predicted", "residual")}}
                          for r in am.sort_values("manager_key").itertuples()]},
-        "gauntlet": {"champions": [window(r) for r in a["gauntlet_champions"].sort_values("season").itertuples()],
+        "gauntlet": {"champions": [champion(r) for r in a["gauntlet_champions"].sort_values("season").itertuples()],
                      "hardest": [window(r) for r in hi.itertuples()],
                      "easiest": [window(r) for r in lo.itertuples()]},
     }
+    if len(a.get("quarterly_fit", ())):
+        q = a["quarterly_fit"].iloc[0]
+        out["quarterly_fit"] = {"n": int(q["n"]), "auc": float(q["auc"])}
+    if len(a.get("position_fit", ())):
+        f = a["position_fit"].iloc[0]
+        out["positional"]["fit"] = {"n": int(f["n"]), "r2": float(f["r2"])}
+    out["attribution"]["history"] = model_history(notes, float(fit["r2"]))
+    return out
+
+
+def model_history(notes: dict | None, r2: float) -> list[dict]:
+    """The win% attribution model's refinement history for its R2 chart: the earlier versions the
+    league's editorial file lists (`model_history`, each {label, r2}), then the current fit, labelled
+    by `current_label` ("Current model" without one)."""
+    notes = notes or {}
+    hist = [{"label": str(h["label"]), "r2": float(h["r2"])} for h in notes.get("model_history") or []]
+    return hist + [{"label": str(notes.get("current_label") or "Current model"), "r2": r2}]
+
+
+def editorial_notes(notes: dict | None) -> dict:
+    """The page's editorial text in the model: schedule swap caveats by season (HTML)."""
+    notes = notes or {}
+    return {"swap_caveats": {str(s): str(v) for s, v in (notes.get("swap_caveats") or {}).items() if v}}
 
 
 # ---------------------------------------------------------------- Stage A check
@@ -591,7 +648,15 @@ class ExtraAnalyticsPublisher:
             return []
         inp, luck, swap, summ, seasons = self._engine(ctx)
         hidden = excluded_manager_keys(ctx.cfg)
-        model = {**extra_model(inp, luck, swap, summ, hidden, seasons), **models_model(ctx.analysis)}
+        notes = load_editorial(ctx, "extra_analytics")
+        base = extra_model(inp, luck, swap, summ, hidden, seasons)
+        base["conference"]["moved"] = (moved_conference(ctx.tables, seasons, hidden) if conference_labels(ctx.cfg)
+                                       else [])
+        from engine.analytics.schedule import season_lengths
+        games = season_lengths(ctx.tables)
+        base["season_games"] = {str(s): int(games[s]) for s in seasons if s in games}
+        model = {**base,
+                 **models_model(ctx.analysis, team_names(ctx, short=True), notes), "notes": editorial_notes(notes)}
         out = [Output(f"data/v1/{SCHEMA}.json", model, SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
         if ctx.legacy_site and path.is_file():

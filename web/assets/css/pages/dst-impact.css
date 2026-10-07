@@ -1,0 +1,149 @@
+/* Life Without Defense page (web/pages/dst-impact.html). Ported unchanged from the Stage A page. */
+/* Position badges -- same system used across the rest of the site */
+.pos-badge { display:inline-block;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.6rem;font-weight:700;letter-spacing:0.05em; }
+.pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
+.pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
+.pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
+.pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
+.pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
+.pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
+
+/* Strip any inherited border-left accent from shared card classes --
+   this site never uses that style, per standing design preference. */
+.glass, .callout, .chart-area, .page-header { border-left: none !important; }
+
+.chart-section-label { margin-bottom:0.6rem; }
+.chart-section { margin-bottom:2rem; }
+
+.headline-stat {
+  text-align:center;padding:1.5rem 0.75rem;
+}
+.headline-stat .big-num {
+  font-family:var(--font-display);font-size:2.6rem;font-weight:900;color:var(--accent);
+  line-height:1;
+}
+.headline-stat .big-sub {
+  font-size:0.85rem;color:var(--text-mid);margin-top:0.6rem;max-width:420px;margin-left:auto;margin-right:auto;
+}
+.headline-mini-row {
+  display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:1.25rem;
+}
+.headline-mini-row .headline-mini:last-child { grid-column:1 / -1; }
+.headline-mini {
+  text-align:center;padding:0.8rem 0.5rem;background:rgba(156,148,156,0.08);border-radius:var(--radius-sm);
+}
+.headline-mini .mini-num { font-size:1.15rem;font-weight:800;color:var(--palm);font-family:var(--font-display); }
+.headline-mini .mini-label { font-size:0.64rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:0.15rem; }
+
+/* Manager selector -- background tint on hover/active, no border-left accents */
+.mgr-chip-grid {
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(105px, 1fr));
+  gap:0.5rem;margin-bottom:1.5rem;
+}
+.mgr-chip {
+  padding:0.65rem 0.4rem;text-align:center;cursor:pointer;border-radius:var(--radius-sm);
+  border:1px solid rgba(156,148,156,0.25);background:rgba(156,148,156,0.05);
+  transition:all 0.15s;font-size:0.72rem;font-weight:600;color:var(--text-mid);
+}
+.mgr-chip:active { background:rgba(var(--chip-rgb,156,148,156),0.22); }
+.mgr-chip.active {
+  background:rgba(var(--chip-rgb,156,148,156),0.22);
+  border-color:rgba(var(--chip-rgb,156,148,156),0.55);
+  color:var(--palm);font-weight:800;
+}
+
+.record-compare {
+  display:flex;align-items:center;justify-content:center;gap:1rem;padding:0.85rem 0 1.25rem;
+}
+.record-block { text-align:center; }
+.record-block .rec-label { font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em; }
+.record-block .rec-value { font-family:var(--font-display);font-size:1.5rem;font-weight:800;margin-top:0.2rem; }
+.record-arrow { font-size:1.2rem;color:var(--muted); }
+
+.mgr-flip-list { margin-top:0.5rem; }
+.mgr-flip-row {
+  padding:0.6rem 0.15rem;
+  border-bottom:1px solid rgba(156,148,156,0.12);font-size:0.78rem;
+}
+.mgr-flip-row:last-child { border-bottom:none; }
+.flip-row-top { display:flex;align-items:center;justify-content:space-between;margin-bottom:0.3rem; }
+.flip-tag {
+  font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;
+  padding:0.15rem 0.45rem;border-radius:3px;
+}
+.flip-tag.gained { background:rgba(74,138,90,0.18);color:#4a8a5a; }
+.flip-tag.lost   { background:rgba(192,74,74,0.18);color:#c04a4a; }
+.flip-detail { color:var(--text-mid);line-height:1.4; }
+.flip-meta { color:var(--muted);font-size:0.68rem;white-space:nowrap; }
+
+.pie-wrap { display:flex;flex-direction:column;align-items:center;gap:1rem; }
+.pie-canvas-wrap { position:relative;width:170px;height:170px;flex-shrink:0; }
+.pie-legend { display:flex;flex-direction:column;gap:0.5rem;width:100%;max-width:260px; }
+.pie-legend-row { display:flex;align-items:center;gap:0.5rem;font-size:0.78rem; }
+.pie-swatch { width:11px;height:11px;border-radius:3px;flex-shrink:0; }
+.pie-legend-val { font-weight:700;color:var(--palm);margin-left:auto;padding-left:0.75rem; }
+
+.league-chart-wrap { position:relative; }
+
+.season-card {
+  padding:0.85rem 0.4rem;border-bottom:1px solid rgba(156,148,156,0.15);
+}
+.season-card:last-child { border-bottom:none; }
+.season-card-header {
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;
+}
+.season-year { font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--palm); }
+.season-badge {
+  font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;
+  padding:0.15rem 0.5rem;border-radius:3px;
+}
+.season-badge.changed { background:rgba(192,74,74,0.18);color:#c04a4a; }
+.season-badge.same { background:rgba(156,148,156,0.18);color:#6a6460; }
+.season-field-row { display:flex;flex-wrap:wrap;gap:0.4rem;font-size:0.74rem;margin-bottom:0.4rem; }
+.season-tag { display:inline-flex;align-items:center;gap:0.25rem;padding:0.18rem 0.5rem;border-radius:3px;font-weight:600; }
+.season-tag.gained { background:rgba(74,138,90,0.15);color:#4a8a5a; }
+.season-tag.lost { background:rgba(192,74,74,0.15);color:#c04a4a; }
+.season-none { font-size:0.74rem;color:var(--muted);font-style:italic;margin-bottom:0.3rem; }
+.season-flip-note { font-size:0.72rem;color:var(--text-mid);line-height:1.5;background:rgba(156,148,156,0.06);padding:0.5rem 0.6rem;border-radius:var(--radius-sm);margin-top:0.2rem; }
+
+.dcap-scroll {
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+.dcap-table {
+  border-collapse:collapse;font-size:0.76rem;white-space:nowrap;
+}
+.dcap-table th, .dcap-table td {
+  padding:0.45rem 0.6rem;text-align:center;
+}
+.dcap-table thead th {
+  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);
+  border-bottom:1px solid rgba(156,148,156,0.25);
+}
+.dcap-table tbody tr:nth-child(even) { background:rgba(156,148,156,0.06); }
+.dcap-mgr-cell {
+  position:sticky;left:0;z-index:1;text-align:left;font-weight:700;color:var(--palm);
+  background:var(--bg);border-right:1px solid rgba(156,148,156,0.25);
+}
+.dcap-round-cell { font-weight:700;color:#3d3a38; }
+.dcap-streamed { color:var(--muted);font-style:italic;font-weight:400;font-size:0.7rem; }
+.dcap-not-in-league { color:rgba(156,148,156,0.4);font-weight:400;font-size:0.7rem; }
+.dcap-avg-cell { font-weight:800;color:var(--palm);border-left:1px solid rgba(156,148,156,0.25); }
+
+.perf-corr-block { margin-bottom:1.25rem; }
+.perf-corr-block:last-of-type { margin-bottom:0; }
+.perf-corr-label { font-size:0.8rem;font-weight:700;color:var(--palm);margin-bottom:0.4rem;text-align:center; }
+.perf-corr-readout {
+  text-align:center;font-size:0.76rem;color:var(--text-mid);margin-top:0.4rem;font-weight:600;
+}
+
+.methodology-note {
+  font-size:0.75rem;color:var(--muted);line-height:1.6;
+}
+
+/* Above phone width, allow a couple of things a bit more room */
+@media(min-width:480px) {
+  .headline-stat .big-num { font-size:3.2rem; }
+  .headline-mini-row { grid-template-columns:repeat(3,1fr); }
+  .headline-mini-row .headline-mini:last-child { grid-column:auto; }
+  .pie-wrap { flex-direction:row;justify-content:center;flex-wrap:wrap; }
+}

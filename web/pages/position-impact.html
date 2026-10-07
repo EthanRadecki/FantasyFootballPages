@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Position Impact</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/position-impact.css">
+</head>
+<body>
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="draft-subnav" id="page-subnav"></div>
+
+  <div class="page-header glass">
+    <h1>How Much Does Each Position Matter?</h1>
+    <p>The same "remove it and recheck the winner" method from the defense analysis, run for every position -- QB, RB, WR, TE, K, and D/ST, side by side.</p>
+  </div>
+
+  <div class="callout glass">
+    <div class="callout-label">Methodology</div>
+    <p class="methodology-note">
+      For every real matchup since <span data-first-season></span> (regular season plus real playoff bracket games, no consolation weeks -- <span data-total-games></span> games total), each position's started points get subtracted from both teams' scores to see how often the winner would change, how predictable that position is week-to-week, and how well a team's production at that position predicts their actual win%. <span id="nth-note"></span>
+    </p>
+  </div>
+
+  <!-- FLIP RATE COMPARISON -->
+  <div class="chart-section">
+    <div class="chart-section-label">Which Position Decides The Most Games?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        % of all <span data-total-games></span> games that would have had a different winner if that position didn't exist.
+      </p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="flip-rate-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREDICTABILITY COMPARISON -->
+  <div class="chart-section">
+    <div class="chart-section-label">Which Position Is Hardest To Predict?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        Coefficient of variation: how much a player's own week-to-week score swings relative to their own average. Taller bars mean less predictable.
+      </p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="consistency-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- PPG VS WIN% COMPARISON -->
+  <div class="chart-section">
+    <div class="chart-section-label">Which Position's Performance Predicts Winning Most?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        Correlation (r) between a team's season-long production at that position and their regular-season win%, across <span id="ppg-n"></span> manager-seasons.
+      </p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="ppg-corr-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRAFT ROUND VS WIN% COMPARISON -->
+  <div class="chart-section">
+    <div class="chart-section-label">Does Draft Round Predict Winning, For Any Position?</div>
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.5rem;">
+        Correlation (r) between the round a manager's Nth pick at that position was drafted and their season win%.<span id="round-corr-note"></span>
+      </p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="round-corr-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRAFT VS WAIVER: ALL POSITIONS -->
+  <div class="chart-section">
+    <div class="chart-section-label">Does Drafting Early Help? (Every Position)</div>
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Real PPG by the round each manager's pick at that position was drafted (<span id="dv-picks"></span> -- see methodology above). Dashed line is the league-wide waiver/free-agent PPG baseline for that position.
+      </p>
+      <div class="league-pie-grid" id="draft-waiver-grid"></div>
+    </div>
+  </div>
+
+  <!-- DRAFT ORDER: ALL POSITIONS -->
+  <div class="chart-section">
+    <div class="chart-section-label">Does Being First To Draft It Help? (Every Position)</div>
+    <div class="chart-area glass" style="padding:1.25rem 1rem;margin-bottom:1.5rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Every position's PPG by draft order, indexed to their own 1st pick = 100%, so shapes are directly comparable regardless of each position's raw scoring scale. A flat line near 100 means draft order doesn't matter; a line that slides downward means it does. Only well-sampled ranks (20+ real weeks) are plotted.
+      </p>
+      <div class="league-chart-wrap" style="height:320px;">
+        <canvas id="draft-order-index-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <div class="chart-section-label" style="margin-bottom:0.75rem;">Exact PPG By Draft Order (Detail)</div>
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Within each season, rank managers by draft order at that position (1st team to take one, 2nd team, and so on), regardless of which round that happened in. Bars past a certain rank get thin (fewer managers draft that deep at every position every year); hover for sample size.
+      </p>
+      <div class="league-pie-grid" id="draft-order-grid"></div>
+    </div>
+  </div>
+
+  <!-- DRAFT CAPITAL SUMMARY: ALL POSITIONS -->
+  <div class="chart-section">
+    <div class="chart-section-label">Who Invests Early In Which Position? (Career Average Round)</div>
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Each manager's career-average draft round for their Nth pick at each position (lower = earlier/more capital). Click a position below for the full year-by-year breakdown.
+      </p>
+      <div class="dcap-scroll">
+        <table class="dcap-table" id="dcap-summary-table"></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEAGUE-WIDE ACQUISITION PIES -->
+  <div class="chart-section">
+    <div class="chart-section-label">League-Wide: Where Does Production Come From?</div>
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <p class="methodology-note" style="margin-bottom:0.75rem;">
+        Every point ever scored at each position, league-wide, by how it was acquired.
+      </p>
+      <div class="league-pie-grid" id="league-pie-grid"></div>
+    </div>
+  </div>
+
+  <!-- MANAGER-SPECIFIC ACQUISITION PIES -->
+  <div class="chart-section">
+    <div class="chart-section-label">Where Does Their Production Come From? (Pick A Manager)</div>
+    <div class="chart-area glass" style="padding:1.25rem 1rem;">
+      <div class="mgr-select-row" id="mgr-select-row"></div>
+      <div class="league-pie-grid" id="mgr-pie-grid"></div>
+    </div>
+  </div>
+
+  <!-- POSITION DEEP DIVE -->
+  <div class="chart-section">
+    <div class="chart-section-label">Pick A Position To Dig Into</div>
+    <div class="pos-select-row" id="pos-select-row"></div>
+
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;margin-bottom:1.5rem;">
+      <div class="chart-section-label" style="margin-bottom:0;" id="net-impact-title"></div>
+      <p class="methodology-note" style="margin:0.4rem 0 0.5rem;">
+        Net games gained or lost to this position, per manager. Green means removing it would net help them; red means it would net hurt.
+      </p>
+      <div class="league-chart-wrap" style="height:340px;">
+        <canvas id="net-impact-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;margin-bottom:1.5rem;">
+      <div class="chart-section-label" style="margin-bottom:0;" id="ppg-scatter-title"></div>
+      <p class="methodology-note" style="margin:0.4rem 0 0.5rem;" id="ppg-scatter-note"></p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="ppg-scatter-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;margin-bottom:1.5rem;">
+      <div class="chart-section-label" style="margin-bottom:0;" id="round-scatter-title"></div>
+      <p class="methodology-note" style="margin:0.4rem 0 0.5rem;" id="round-scatter-note"></p>
+      <div class="league-chart-wrap" style="height:260px;">
+        <canvas id="round-scatter-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-area glass" style="padding:1rem 1rem 0.5rem;margin-bottom:1.5rem;">
+      <div class="chart-section-label" style="margin-bottom:0;" id="boxplot-title"></div>
+      <p class="methodology-note" style="margin:0.4rem 0 0.5rem;">
+        Real weekly score distribution by draft order at that position. Box is the middle 50% (Q1-Q3), line inside is the median, whiskers reach min/max. Ranks need at least 5 real weeks to show a box.
+      </p>
+      <div class="league-chart-wrap" style="height:300px;">
+        <canvas id="boxplot-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-area glass" style="padding:1rem 1rem 1.25rem;">
+      <div class="chart-section-label" style="margin-bottom:0.75rem;" id="dcap-title"></div>
+      <div class="dcap-scroll">
+        <table class="dcap-table" id="dcap-table"></table>
+      </div>
+    </div>
+  </div>
+
+  <footer id="site-footer"></footer>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="../assets/js/pages/position-impact.js"></script>
+</body>
+</html>

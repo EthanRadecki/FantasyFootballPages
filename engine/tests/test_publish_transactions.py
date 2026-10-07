@@ -314,3 +314,28 @@ def test_season_filterable_pages_show_the_live_season_once_it_has_a_finished_wee
     for rel in ("pages/waiver-value.html", "pages/trade-value.html", "pages/lineup-efficiency.html"):
         text = (ROOT / rel).read_text(encoding="utf-8")
         assert "var PAGE_SEASONS = [" in text and "'2025'" not in text, rel     # no hardcoded season list left
+
+
+# ---------------------------------------------------------------- extra-analytics, Stage B (B7)
+
+def test_extra_analytics_editorial_history_and_caveats():
+    import yaml
+    gold = _json("matchup_history/extra_analytics_inline.json.gz")
+    notes = yaml.safe_load((ROOT / "leagues/preach/editorial/extra_analytics.yaml").read_text(encoding="utf-8"))
+    hist = extra_pub.model_history(notes, 0.4291)
+    # the page's earlier versions word for word, then the engine's current fit as the last bar
+    assert [h["r2"] for h in hist[:-1]] == gold["R2_VALS"][:-1]
+    assert hist[-1] == {"label": "+ corrected trade\ndata & playoffs", "r2": 0.4291}
+    assert extra_pub.model_history(None, 0.5) == [{"label": "Current model", "r2": 0.5}]   # no editorial file
+    caveats = extra_pub.editorial_notes(notes)["swap_caveats"]
+    assert sorted(caveats) == ["2020", "2024"] and all(chr(0x2014) not in v for v in caveats.values())
+    assert extra_pub.editorial_notes(None) == {"swap_caveats": {}}
+
+
+def test_extra_analytics_conference_moves():
+    teams = pd.DataFrame({"season": [2020, 2021, 2020, 2021, 2020, 2021],
+                          "manager_key": ["m_a", "m_a", "m_b", "m_b", "m_c", "m_c"],
+                          "division_id": [0, 0, 0, 1, 1, 0]})
+    assert extra_pub.moved_conference({"teams": teams}, [2020, 2021], {"m_c"}) == ["m_b"]   # hidden left out
+    assert extra_pub.moved_conference({"teams": teams}, [2021], set()) == []
+    assert extra_pub.moved_conference({"teams": teams.drop(columns="division_id")}, [2020, 2021], set()) == []
