@@ -36,6 +36,15 @@
     "career_grid": {"type": "object", "required": ["managers", "cells"],
                     "properties": {"managers": {"type": "array", "items": {"$ref": "#/$defs/key"}},
                                    "cells": {"type": "array", "items": {"type": "array", "minItems": 4, "maxItems": 4}}}},
+    "slots": {"type": "object", "description": "season -> the starting slots most teams used (lineups.lineup_slots)",
+              "additionalProperties": {"type": "array", "items": {"type": "string"}}},
+    "notes": {"type": "object", "additionalProperties": false,
+              "description": "the league's editorial notes (lineup_efficiency.yaml)",
+              "properties": {"first_round": {"type": "string"}}},
+    "weekly_grid": {"type": "object", "required": ["seasons", "cells"],
+                    "description": "every counted game's lineup gap: [season, week, index into career_grid.managers, gap to 1 place, excluded 0/1]",
+                    "properties": {"seasons": {"type": "array", "items": {"type": "integer"}},
+                                   "cells": {"type": "array", "items": {"type": "array", "minItems": 5, "maxItems": 5}}}},
     "scales": {"type": "object", "required": ["gap", "heatmap_gap"]}
   }
 }

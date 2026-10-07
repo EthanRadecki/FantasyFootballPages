@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lineup Efficiency</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/lineup-efficiency.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="draft-subnav" id="page-subnav"></div>
+
+  <div class="page-header glass">
+    <h1>Lineup Efficiency</h1>
+    <p>Actual points started vs. the best possible lineup each roster could have set, week by week (<span data-season-range></span>).</p>
+  </div>
+
+  <div class="chapter-rail" id="chapter-rail">
+    <a href="#missed-wins" class="chapter-rail-item" data-target="missed-wins"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Missed Wins</span></a>
+    <a href="#career-leaderboard" class="chapter-rail-item" data-target="career-leaderboard"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Career Leaderboard</span></a>
+    <a href="#weekly-efficiency-calendar" class="chapter-rail-item" data-target="weekly-efficiency-calendar"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Weekly Efficiency Calendar</span></a>
+    <a href="#league-trend" class="chapter-rail-item" data-target="league-trend"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">League Trend by Season</span></a>
+    <a href="#bench-depth" class="chapter-rail-item" data-target="bench-depth"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Bench Depth</span></a>
+    <a href="#depth-adjusted-efficiency" class="chapter-rail-item" data-target="depth-adjusted-efficiency"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Depth-Adjusted Efficiency</span></a>
+    <a href="#biggest-lineup-blunders" class="chapter-rail-item" data-target="biggest-lineup-blunders"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Biggest Lineup Blunders</span></a>
+  </div>
+
+  <button class="jump-fab">&#9776; Jump to</button>
+  <div class="jump-sheet" id="jump-sheet">
+    <div class="jump-sheet-inner">
+      <div class="jump-sheet-title">Jump to Section</div>
+      <a href="#missed-wins" data-target="missed-wins">Missed Wins</a>
+      <a href="#career-leaderboard" data-target="career-leaderboard">Career Leaderboard</a>
+      <a href="#weekly-efficiency-calendar" data-target="weekly-efficiency-calendar">Weekly Efficiency Calendar</a>
+      <a href="#league-trend" data-target="league-trend">League Trend by Season</a>
+      <a href="#bench-depth" data-target="bench-depth">Bench Depth</a>
+      <a href="#depth-adjusted-efficiency" data-target="depth-adjusted-efficiency">Depth-Adjusted Efficiency</a>
+      <a href="#biggest-lineup-blunders" data-target="biggest-lineup-blunders">Biggest Lineup Blunders</a>
+    </div>
+  </div>
+
+  <div class="roster-modal-overlay" id="roster-modal" onclick="if(event.target===this)closeRosterModal()">
+    <div class="roster-modal-inner">
+      <button class="roster-modal-close" onclick="closeRosterModal()">&#10005;</button>
+      <div id="roster-modal-body"></div>
+    </div>
+  </div>
+
+
+  <div class="callout glass">
+    <div class="callout-label">Methodology</div>
+    <ul class="methodology-list">
+      <li><strong>Optimal lineup:</strong> the best possible score from a manager's full roster that week, following real slot rules (<span id="slot-rules"></span>).</li>
+      <li><strong>IR players are excluded.</strong> <em>Bye weeks and consolation weeks are excluded too.</em></li>
+      <li><strong>Excluded from the average:</strong> weeks with 2+ mandatory slots left empty despite a real bench alternative. Still counts as a missed win if applicable. A single empty slot stays in as normal data.</li>
+      <li><strong>Bench depth:</strong> weekly bench value compared to other benches at the same position, summed across the bench, averaged over time. Measures roster talent, not decision quality. Example: a score of 3.99 means a manager's whole bench, added together, nets out to about 4 points above what a league-average bench would post that week. It is not "each bench player is 4 points better."</li>
+    </ul>
+  </div>
+
+  <div class="section-label" id="missed-wins">Missed Wins</div>
+  <div class="section-title">Losses that would have been wins with an optimal lineup.</div>
+  <div class="heatmap-controls" id="missed-wins-pills" style="margin-bottom:1rem;"></div>
+  <div class="table-wrap glass">
+    <table class="le-table" id="missed-wins-table">
+      <thead>
+        <tr><th>Rank</th><th class="sortable" data-key="manager" data-type="text">Manager</th><th class="sortable" data-key="weeks" data-type="number">Weeks</th><th class="sortable" data-key="losses" data-type="number">Losses</th><th class="sortable" data-key="n" data-type="number">Missed Wins</th><th class="sortable" data-key="rate" data-type="number">Missed %</th><th class="sortable" data-key="reg" data-type="number">Reg Season</th><th class="sortable" data-key="po" data-type="number">Playoffs</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="metric-note">Missed % is missed wins divided by losses, not all games played. Playoff sample sizes are small (<span id="playoff-games"></span> per manager), so a single missed win can swing that column a lot.</p>
+
+  <div class="section-label" style="margin-top:2rem;" id="career-leaderboard">Career Leaderboard</div>
+  <div class="section-title">Average points left on the bench per week. Lower is better.</div>
+  <div class="chart-grid" style="grid-template-columns:1fr;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Avg Efficiency Gap by Manager</div>
+      <div class="heatmap-controls" id="efficiency-pills" style="margin-bottom:1rem;"></div>
+      <div style="position:relative;height:520px;">
+        <canvas id="chart-efficiency-gap"></canvas>
+      </div>
+      <p class="metric-note" id="flagged-note"></p>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="weekly-efficiency-calendar">Weekly Efficiency Calendar</div>
+  <div class="section-title">Every manager, every week. Green means a tight lineup, red means points left on the bench.</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="season-pills"></div>
+    <div class="heatmap-legend">
+      <span>Efficient</span>
+      <div class="heatmap-legend-bar"></div>
+      <span>Blunder</span>
+      <span class="heatmap-legend-note">Hatched = excluded from average (forfeit or 2+ empty slots with a real alternative). Blank = bye or not in the playoff bracket.</span>
+    </div>
+    <div class="heatmap-scroll"><div id="heatmap-grid"></div></div>
+    <p class="metric-note" id="first-round-note"></p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="league-trend">League Trend by Season</div>
+  <div class="section-title">Has the whole league gotten sharper at setting lineups over time?</div>
+  <div class="chart-grid" style="grid-template-columns:1fr;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">League-Wide Avg Efficiency Gap by Season</div>
+      <div style="position:relative;height:340px;">
+        <canvas id="chart-season-trend"></canvas>
+      </div>
+      <p class="metric-note">League-wide average gap by season.</p>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="bench-depth">Bench Depth</div>
+  <div class="section-title">How much talent sat on each manager's bench, regardless of whether it ever got played.</div>
+  <div class="chart-grid" style="grid-template-columns:1fr;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Avg Bench Depth by Manager</div>
+      <div class="heatmap-controls" id="depth-pills" style="margin-bottom:1rem;"></div>
+      <div style="position:relative;height:520px;">
+        <canvas id="chart-depth"></canvas>
+      </div>
+      <p class="metric-note">Weekly bench value vs. other benches at the same position, summed and averaged.</p>
+    </div>
+  </div>
+  <div class="chart-grid" style="grid-template-columns:1fr;margin-top:1rem;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Bench Depth vs. Win Rate</div>
+      <div class="depth-wins-chart-scroll">
+        <div style="position:relative;height:460px;min-width:600px;">
+          <canvas id="chart-depth-wins"></canvas>
+        </div>
+      </div>
+      <div class="manager-color-legend" id="depth-wins-legend"></div>
+      <p class="metric-note">One point per manager-season. <span id="depth-wins-note"></span></p>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="depth-adjusted-efficiency">Depth-Adjusted Efficiency</div>
+  <div class="section-title">A low raw gap can mean sharp decisions, or it can mean a thin bench that never gave you a chance to miss. This adjusts for that.</div>
+  <div class="callout glass">
+    <div class="callout-label">How To Read This Chart</div>
+    <p>Bench depth correlates with raw efficiency gap by <strong>about <span id="depth-gap-r"></span>%</strong>. That means depth alone predicts a large share of a manager's average gap, before looking at a single lineup decision. So we use that relationship to <strong>predict what a manager's gap should be, given their depth</strong>, then take the difference between that predicted gap and the manager's actual gap. That difference is <strong>depth-adjusted efficiency</strong>. A <strong>lower value</strong> means the model says you made better lineup decisions than your bench depth alone would suggest.</p>
+  </div>
+  <div class="chart-grid" style="grid-template-columns:1fr;">
+    <div class="chart-card-interactive glass">
+      <div class="chart-card-label">Efficiency Gap vs. What Bench Depth Predicts</div>
+      <div class="heatmap-controls" id="depth-adjusted-pills" style="margin-bottom:1rem;"></div>
+      <div style="position:relative;height:520px;">
+        <canvas id="chart-depth-adjusted"></canvas>
+      </div>
+      <p class="metric-note">Efficiency gap adjusted for bench depth. Green (negative) is better than depth predicts. Red (positive) is worse. Each season refits its own prediction line using that season's managers only.</p>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="biggest-lineup-blunders">Biggest Lineup Blunders</div>
+  <div class="section-title">The 10 largest single-week efficiency gaps, all-time or by season.</div>
+  <div class="heatmap-controls" id="blunders-pills" style="margin-bottom:1rem;"></div>
+  <div class="table-wrap glass">
+    <table class="le-table" id="blunders-table">
+      <thead>
+        <tr><th>Rank</th><th>Season</th><th>Week</th><th>Manager</th><th>Actual</th><th>Optimal</th><th>Gap</th><th>Result</th><th>Missed Win?</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="metric-note">Click any row to see that manager's full starting lineup and bench for the week.</p>
+
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="../assets/js/pages/lineup-efficiency.js"></script>
+</body>
+</html>

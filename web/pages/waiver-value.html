@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waiver Value</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/waiver-value.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="draft-subnav" id="page-subnav"></div>
+
+  <div class="page-header glass">
+    <h1>Waiver Value</h1>
+    <p>Position-adjusted value produced per week rostered, for every waiver and free agent pickup (<span data-season-range></span>).</p>
+  </div>
+
+  <div class="callout glass">
+    <div class="callout-label">Methodology</div>
+    <ul class="methodology-list">
+      <li id="waiver-system"></li>
+      <li><strong>Position-adjusted value:</strong> raw points aren't fair across positions, <em>a mediocre QB pickup outscores a great TE pickup every week just because QBs score more.</em> So every pickup gets scored on how many standard deviations above or below the average rostered player at that position, that week, across the whole league. A value of 0 means exactly average for a rostered player at that position.</li>
+      <li><strong>Most pickups score below zero.</strong> <em>That's expected, not a bug</em>, since most waiver adds are below-average by definition.</li>
+      <li><strong>Stints:</strong> a stint ends at the next drop or trade-away, whichever comes first. Bye weeks are kept (real production, even without a fantasy opponent that week), but <em>consolation/loser-bracket weeks are excluded</em>, since teams are often already eliminated and not managed seriously by that point.</li>
+      <li id="excluded-note"></li>
+    </ul>
+  </div>
+
+  <div class="section-label">Career Leaderboard</div>
+  <div class="section-title">Points per week rostered, ranked by position-adjusted value.</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="waiver-pills"></div>
+    <div class="heatmap-controls" id="waiver-position-pills" style="margin-top:0.4rem;"></div>
+    <div style="position:relative;height:520px;">
+      <canvas id="chart-waiver-value"></canvas>
+    </div>
+    <p class="metric-note">The bright bar shows <strong>points per week rostered (PPW)</strong> (bottom axis), the intuitive number. The faint background bar shows <strong>number of pickups</strong> (top axis), scaled to this view, so a leaderboard built on 2 pickups looks visibly thinner than one built on 40. Managers are <strong>ranked by position-adjusted value</strong> (z-score vs. other rostered players at that position), so bar order and bar length won't always match, that's the point. The axis and color scale rescale to fit each position (QB and K don't share a range), but stay fixed across seasons so year-to-year comparisons at the same position are fair. Hover a row for the full breakdown, including that manager's best pickup in this view.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Contested vs. Uncontested</div>
+  <div class="section-title">Waiver claims (contested) vs. free agent adds (uncontested). Click a column to sort.</div>
+  <div class="table-wrap glass">
+    <table class="wv-table" id="split-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th class="sortable" data-key="m" data-type="text">Manager</th>
+          <th class="sortable" data-key="careerPpw">Career PPW</th>
+          <th class="sortable sorted-desc" data-key="wvZ">Waiver Value</th>
+          <th class="sortable" data-key="wvPpw">Waiver PPW</th>
+          <th class="sortable" data-key="wvN">Waiver Adds</th>
+          <th class="sortable" data-key="faZ">FA Value</th>
+          <th class="sortable" data-key="faPpw">FA PPW</th>
+          <th class="sortable" data-key="faN">FA Adds</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="metric-note">PPW is the raw number; Value is position-adjusted (z-score) and drives the default sort. Across nearly every manager, contested waiver claims outperform uncontested free agent pickups.</p>
+
+  <div class="section-label" style="margin-top:2rem;">Total Value Earned by Manager</div>
+  <div class="section-title">Sum of position-adjusted value across every pickup. Volume and quality together, not just average quality.</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="total-value-season-pills"></div>
+    <div class="heatmap-controls" id="total-value-weeks-pills" style="margin-top:0.4rem;"></div>
+    <div class="heatmap-controls" id="total-value-pos-pills" style="margin-top:0.4rem;"></div>
+    <div style="position:relative;height:480px;">
+      <canvas id="chart-total-value"></canvas>
+    </div>
+    <p class="metric-note">This is a different lens than the average-based leaderboards above: a manager who made <strong>many</strong> decent pickups can out-total a manager who made a <strong>few</strong> great ones. Bars can go negative since most individual pickups score below zero by definition (see methodology above). <strong>The weeks-rostered filter lets you separate pickups that actually mattered from every add ever made</strong>, including same-week drops. <strong>Click a manager's bar to see their top pickups.</strong></p>
+    <div id="total-value-detail" class="glass detail-panel" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Waiver Upside (Positive-Only)</div>
+  <div class="section-title">Same pickups, but every add that scored below replacement is treated as zero instead of a loss. Only real hits count.</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="upside-season-pills"></div>
+    <div class="heatmap-controls" id="upside-position-pills" style="margin-top:0.4rem;"></div>
+    <div style="position:relative;height:480px;">
+      <canvas id="chart-upside"></canvas>
+    </div>
+    <p class="metric-note">Career totals, all positions by default, no minimum weeks rostered. Bars only ever go up since bad and neutral adds contribute nothing here, unlike the total above. <strong>Click a manager's bar to see every pickup behind it.</strong></p>
+    <div id="upside-detail" class="glass detail-panel" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Value by Week of the Season</div>
+  <div class="section-title">Every pickup, grouped by the week it was added. When does volume peak, and when is the value actually good?</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="week-value-season-pills"></div>
+    <div class="heatmap-controls" id="week-value-weeks-pills" style="margin-top:0.4rem;"></div>
+    <div class="heatmap-controls" id="week-value-pos-pills" style="margin-top:0.4rem;"></div>
+    <div class="wv-chart-scroll">
+      <div style="position:relative;height:420px;min-width:700px;">
+        <canvas id="chart-week-value"></canvas>
+      </div>
+    </div>
+    <p class="metric-note">Bars (left axis) are <strong>pickup volume</strong> that week, split waiver vs. free agent. The line (right axis) is <strong>average position-adjusted value</strong> of pickups added that week, all types combined. <strong>Click a bar to see the top pickups from that week.</strong> Use the weeks-rostered filter to separate pickups that actually stuck around from same-week churn. Weeks 15&ndash;17 are playoff weeks, only teams still alive are actively managing by then, so both volume and the sample size behind that average drop off fast.</p>
+    <div id="week-value-detail" class="glass detail-panel" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;">Best Pickups Ever</div>
+  <div class="section-title">Ranked by position-adjusted value (minimum 3 weeks rostered, positive value only). Click a column to sort.</div>
+  <div class="heatmap-controls" id="best-pills"></div>
+  <div class="heatmap-controls" id="best-position-pills" style="margin-top:0.4rem;"></div>
+  <div class="table-wrap glass">
+    <table class="wv-table" id="best-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th class="sortable" data-key="s">Season</th>
+          <th class="sortable" data-key="m" data-type="text">Manager</th>
+          <th class="sortable" data-key="p" data-type="text">Player</th>
+          <th class="sortable" data-key="pos" data-type="text">Pos</th>
+          <th class="sortable" data-key="wk">Weeks</th>
+          <th class="sortable" data-key="ppw">PPW</th>
+          <th class="sortable" data-key="totalz">Total Value</th>
+          <th class="sortable sorted-desc" data-key="avgz">Value/Week</th>
+          <th data-key="type">Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="../assets/js/pages/waiver-value.js"></script>
+</body>
+</html>

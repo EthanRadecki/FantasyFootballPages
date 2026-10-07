@@ -24,6 +24,7 @@ import { drawNav, drawFooter, drawSubnav } from '../core/nav.js';
 import { esc } from '../core/site.js';
 import { seasonColor } from '../core/theme.js';
 import { chapterRail } from '../components/chapter-rail.js';
+import { pyRound, halfUp } from '../core/format.js';
 import { RADAR_LABELS as RADAR_LABEL_BY_DIM, POSDEV_LABELS as POSDEV_LABEL_BY_DIM, EXPLORER_GROUPS as GROUPS_TEMPLATE,
          CAREER_EXTRAS_GROUP as CAREER_GROUP_TEMPLATE, METRIC_META as META_TEMPLATE } from './fingerprint-meta.js';
 
@@ -38,23 +39,6 @@ var CAREER_EXTRAS = ['draft_adaptability', 'first_qb_round', 'first_te_round', '
 var CAREER_SKIP = ['manager_key', 'hidden', 'n_seasons', 'win_pct', 'ppg', 'surplus'];
 var COMPOSITES = ['reach_tendency', 'value_hunting', 'draft_conviction', 'adp_independence'];
 
-/* ── rounding as the Stage A builder did it ── */
-/* Python's round(): the float's exact decimal value, ties to even */
-function pyRound(x, d) {
-  if (x === null || x === undefined || !isFinite(x)) return x === undefined ? null : x;
-  var neg = x < 0, parts = Math.abs(x).toFixed(100).split('.');
-  var digits = parts[0] + parts[1].slice(0, d), rest = parts[1].slice(d);
-  var up = rest[0] > '5' || (rest[0] === '5' && (/[1-9]/.test(rest.slice(1)) || Number(digits.slice(-1)) % 2 === 1));
-  var n = (BigInt(digits) + (up ? 1n : 0n)).toString().padStart(d + 1, '0');
-  var v = Number(d ? n.slice(0, n.length - d) + '.' + n.slice(n.length - d) : n);
-  return neg ? -v : v;
-}
-/* the builder's round_half_up (numpy floor of x*10^d + 0.5) */
-function halfUp(x, d) {
-  if (x === null || x === undefined) return null;
-  var f = Math.pow(10, d);
-  return Math.floor(x * f + 0.5 + 1e-9) / f;
-}
 function num(v, d) { return v === null || v === undefined ? null : d === undefined ? v : pyRound(v, d); }
 
 /* ── text helpers ── */

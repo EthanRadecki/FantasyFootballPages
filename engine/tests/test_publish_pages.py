@@ -301,6 +301,15 @@ def test_trade_views_rebuild_the_site_files_from_legacy_outputs():
     assert [c.name for c in checks][-1] == "legacy view trade-value.html LEADERBOARD_TOTALS vs published"
 
 
+def test_trade_model_keeps_only_the_notes_the_page_reads():
+    metrics, stints, results, name_of, pos_of = _golden_trade_inputs()
+    seasons = set(int(s) for s in metrics["season"].unique())
+    sides = trades_pub.sides_frame(metrics, name_of, pos_of, seasons)
+    m = trades_pub.model(sides, stints, results, set(), name_of, pos_of, seasons, {"trade_week": "Late lull.", "x": "y"})
+    assert m["notes"] == {"trade_week": "Late lull."}
+    assert trades_pub.model(sides, stints, results, set(), name_of, pos_of, seasons)["notes"] == {}
+
+
 # ---------------------------------------------------------------- impact and odds
 
 from engine.publish.pages import impact as impact_pub  # noqa: E402

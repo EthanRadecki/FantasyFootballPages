@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade Value</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/trade-value.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="draft-subnav" id="page-subnav"></div>
+
+  <div class="page-header glass">
+    <h1>Trade Value</h1>
+    <p>Every real trade in league history (<span data-season-range></span>), graded on four metrics and combined into one composite score.</p>
+  </div>
+
+  <div class="chapter-rail" id="chapter-rail">
+    <a href="#manager-leaderboard" class="chapter-rail-item" data-target="manager-leaderboard"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Manager Leaderboard</span></a>
+    <a href="#trade-quality-win-pct" class="chapter-rail-item" data-target="trade-quality-win-pct"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Trade Quality vs. Win Percentage</span></a>
+    <a href="#trade-network" class="chapter-rail-item" data-target="trade-network"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Trade Network</span></a>
+    <a href="#trade-explorer" class="chapter-rail-item" data-target="trade-explorer"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Trade Explorer</span></a>
+    <a href="#most-traded-players" class="chapter-rail-item" data-target="most-traded-players"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">Most Traded Players</span></a>
+    <a href="#all-trades" class="chapter-rail-item" data-target="all-trades"><span class="chapter-rail-dot"></span><span class="chapter-rail-label">All Trades</span></a>
+  </div>
+
+  <button class="jump-fab">&#9776; Jump to</button>
+  <div class="jump-sheet" id="jump-sheet">
+    <div class="jump-sheet-inner">
+      <div class="jump-sheet-title">Jump to Section</div>
+      <a href="#manager-leaderboard" data-target="manager-leaderboard">Manager Leaderboard</a>
+      <a href="#trade-quality-win-pct" data-target="trade-quality-win-pct">Trade Quality vs. Win Percentage</a>
+      <a href="#trade-network" data-target="trade-network">Trade Network</a>
+      <a href="#trade-explorer" data-target="trade-explorer">Trade Explorer</a>
+      <a href="#most-traded-players" data-target="most-traded-players">Most Traded Players</a>
+      <a href="#all-trades" data-target="all-trades">All Trades</a>
+    </div>
+  </div>
+
+
+  <div class="callout glass">
+    <div class="callout-label">Methodology</div>
+    <ul class="methodology-list">
+      <li><strong>Trade Grade</strong> <span style="color:var(--muted);">(z-score)</span>: value swing: what you got minus what you gave, position-adjusted.</li>
+      <li><strong>Realized Gains</strong> <span style="color:var(--muted);">(z-score)</span>: same swing, counting only weeks the player was started.</li>
+      <li><strong>Fit Score</strong> <span style="color:var(--muted);">(z-score shift)</span>: team's positional output, before the trade vs. after.</li>
+      <li><strong>Necessity Score</strong> <span style="color:var(--muted);">(points/week, shrunk for small samples)</span>: acquired player vs. best unstarted bench option that week.</li>
+      <li><strong>Playoff Weighting</strong> <span style="color:var(--muted);">(1.0x&ndash;2.0x multiplier)</span>: production counts more the later it happens: Regular 1.0x, First Round 1.15x, Quarterfinal 1.3x, Semifinal 1.6x, Championship 2.0x.</li>
+      <li><strong>QUAD</strong> <span style="color:var(--muted);">(z-score)</span>: the four metrics combined, weighted 35/30/20/15 (Realized Gains/Trade Grade/Fit/Necessity).</li>
+    </ul>
+    <p style="margin:0;font-size:0.8rem;color:var(--muted);"><em>Note: reversed trades are excluded entirely, multi-team trades are linked and graded on each manager's true net position<span id="trade-excluded"></span>.</em></p>
+  </div>
+
+  <div class="section-label" id="manager-leaderboard">Manager Leaderboard</div>
+  <div class="section-title">Average or total QUAD per manager, career or by season.</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="quad-metric-toggle" style="margin-bottom:0.5rem;"></div>
+    <div class="heatmap-controls" id="quad-pills"></div>
+    <div style="position:relative;height:480px;">
+      <canvas id="chart-quad"></canvas>
+    </div>
+    <p class="metric-note">Trade count is shown in each manager's label. Hover a row for that manager's best and worst trade in this view. <strong>Average</strong> measures decision quality per trade regardless of volume. <strong>Total</strong> measures aggregate value gained or lost through trading overall, so a manager who trades often weighs in more here even at a modest average.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="trade-quality-win-pct">Trade Quality vs. Win Percentage</div>
+  <div class="section-title">Does making good trades actually correlate with winning more than making a lot of them?</div>
+  <div class="chart-card-interactive glass">
+    <div id="winpct-legend" style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;font-size:0.72rem;color:var(--muted);"></div>
+    <div style="position:relative;height:480px;">
+      <canvas id="chart-winpct"></canvas>
+    </div>
+    <p class="metric-note">Each bubble is one manager, positioned by <strong>average QUAD per trade</strong> (x-axis, trade quality) and <strong>career win percentage</strong> (y-axis, bracket-only games, consolation weeks excluded). Bubble size is <strong>trades made</strong>, so volume is still visible even though it's not an axis. The dashed line is the best fit across all <span id="winpct-count"></span> managers. Trade quality correlates with winning more strongly than trade volume does, though it's still far from the whole story, a lot of winning comes down to the draft, waiver wire, and week-to-week lineup decisions covered elsewhere on this site.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="trade-network">Trade Network</div>
+  <div class="section-title">Who trades with who. Node size is total trades made; drag any manager to explore.</div>
+  <div class="chart-card-interactive glass">
+    <div style="position:relative;height:560px;" id="network-container">
+      <svg id="network-svg" style="width:100%;height:100%;"></svg>
+      <div id="network-tooltip" style="position:absolute;pointer-events:none;opacity:0;background:rgba(30,26,20,0.92);color:#f5f0e8;padding:0.55rem 0.75rem;border-radius:6px;font-size:0.78rem;max-width:260px;line-height:1.5;transition:opacity 0.1s;z-index:10;"></div>
+    </div>
+    <p class="metric-note">Line thickness is how many times two managers have traded. Hover a manager to see their most-traded partners, positions exchanged, and who tends to come out ahead. Hover a line for the exact breakdown between those two. <strong>Click any manager to pin them at the center</strong> with everyone else arranged evenly around them. Drag any node afterward to move it freely again, or <a href="#" onclick="resetNetworkLayout();return false;" style="color:var(--accent);font-weight:700;">reset the layout</a> to go back to the free-floating view.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="trade-explorer">Trade Explorer</div>
+  <div class="section-title">Filter down to any slice of trade history and tap a trade to see the full breakdown.</div>
+  <div class="chart-card-interactive glass">
+    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Season</div>
+    <div class="heatmap-controls" id="explorer-season-pills"></div>
+
+    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Trade Type</div>
+    <div class="heatmap-controls" id="explorer-type-pills"></div>
+
+    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Manager A</div>
+    <div class="heatmap-controls" id="explorer-manager-a-pills"></div>
+
+    <div style="margin-bottom:0.4rem;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;color:var(--accent);">Manager B <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);">(optional, pick a second manager to see only trades between the two)</span></div>
+    <div class="heatmap-controls" id="explorer-manager-b-pills" style="margin-bottom:1rem;"></div>
+
+    <div style="position:relative;height:480px;" id="explorer-container">
+      <svg id="explorer-svg" style="width:100%;height:100%;"></svg>
+      <div id="explorer-tooltip" style="position:absolute;pointer-events:none;opacity:0;background:rgba(30,26,20,0.92);color:#f5f0e8;padding:0.5rem 0.7rem;border-radius:6px;font-size:0.75rem;max-width:240px;line-height:1.5;transition:opacity 0.1s;z-index:10;"></div>
+      <div id="explorer-empty" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:0.95rem;color:var(--muted);font-weight:600;">No Trades Were Found</div>
+    </div>
+    <p class="metric-note">Diamonds are trades, logos are managers. Tap a diamond for the full breakdown below. Bigger diamonds involved more managers. <strong>Click any manager to center the graph on their trades</strong> (this also sets the Manager A filter above, so the view gets less crowded too). Drag any node afterward to move it freely, or <a href="#" onclick="resetExplorerLayout();return false;" style="color:var(--accent);font-weight:700;">reset the layout</a> to go back to the free-floating view.</p>
+
+    <div id="explorer-detail" class="glass" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="most-traded-players">Most Traded Players</div>
+  <div class="section-title">Players who changed hands the most, across every real trade in league history.</div>
+  <div class="heatmap-controls" id="most-traded-pos-pills"></div>
+  <div class="chart-card-interactive glass">
+    <div style="position:relative;height:520px;">
+      <canvas id="chart-most-traded"></canvas>
+    </div>
+    <p class="metric-note">Hover a bar for the full trade history: which managers acquired that player, and in what seasons.</p>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="trades-by-week">Trades by Week of the Season</div>
+  <div class="section-title">Every trade, grouped by the week it happened. When does the league make the most deals, and when are they actually good ones?</div>
+  <div class="chart-card-interactive glass">
+    <div class="heatmap-controls" id="trade-week-season-pills"></div>
+    <div class="tw-chart-scroll">
+      <div style="position:relative;height:420px;min-width:700px;">
+        <canvas id="chart-trade-week"></canvas>
+      </div>
+    </div>
+    <p class="metric-note">Bars (left axis) are <strong>trade count</strong> that week - a multi-team trade counts once, not once per manager. The line (right axis) is <strong>average QUAD</strong> across both sides of every trade made that week. <strong>Click a bar to see the trades from that week.</strong><span id="trade-week-note"></span></p>
+    <div id="trade-week-detail" class="glass detail-panel" style="display:none;margin-top:1.25rem;padding:1.25rem 1.5rem;"></div>
+  </div>
+
+  <div class="section-label" style="margin-top:2rem;" id="all-trades">All Trades</div>
+  <div class="section-title">Every real trade, one row per manager's side. Click a column to sort.</div>
+  <div class="heatmap-controls" id="trades-season-pills"></div>
+  <div class="heatmap-controls" id="trades-manager-pills" style="margin-top:0.4rem;"></div>
+  <div class="table-wrap glass">
+    <table class="tv-table" id="trades-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th class="sortable" data-key="s">Season</th>
+          <th class="sortable" data-key="wk">Week</th>
+          <th class="sortable" data-key="m" data-type="text">Manager</th>
+          <th data-key="got">Got</th>
+          <th data-key="gave">Gave</th>
+          <th class="sortable" data-key="tg">Trade Grade</th>
+          <th class="sortable" data-key="rg">Realized Gains</th>
+          <th class="sortable" data-key="fit">Fit</th>
+          <th class="sortable" data-key="nec">Necessity/wk</th>
+          <th class="sortable sorted-desc" data-key="quad">QUAD</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="metric-note">Trades tagged <span class="multi-badge">MULTI</span> involved 3 or more managers, linked and graded on true net position.</p>
+
+  <footer id="site-footer"></footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script type="module" src="../assets/js/pages/trade-value.js"></script>
+</body>
+</html>

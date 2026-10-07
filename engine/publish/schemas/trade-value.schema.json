@@ -40,6 +40,9 @@
     "win_pct": {"type": "array", "items": {"type": "object", "required": ["m", "winPct", "games", "trades", "avgQuad"]}},
     "most_traded": {"type": "array",
                     "items": {"type": "object", "required": ["player", "count", "seasons", "managers", "pos"]}},
-    "scales": {"type": "object", "additionalProperties": {"type": "object", "required": ["min", "max"]}}
+    "scales": {"type": "object", "additionalProperties": {"type": "object", "required": ["min", "max"]}},
+    "notes": {"type": "object", "additionalProperties": false,
+              "description": "the league's editorial notes (trade_value.yaml)",
+              "properties": {"trade_week": {"type": "string"}}}
   }
 }

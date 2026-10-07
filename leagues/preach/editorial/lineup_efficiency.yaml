@@ -1,0 +1,6 @@
+# Lineup Efficiency notes (lineup-efficiency.html), editorial. The page writes the parts that come from
+# the data (which seasons had a first playoff round, how many rounds the others ran); this note adds
+# the story behind those first rounds. Without this file the page shows only the generated part.
+
+# shown after "Rd1 only appears in 2020 and 2021." under the Weekly Efficiency Calendar
+first_round: "In 2020 it was a real first round (Baylen Slansky had the bye; Aidan Quigley wasn't in the league yet). In 2021 it was a single wildcard game between Cole Maney and Ethan Radecki to decide the last Quarterfinal spot."
