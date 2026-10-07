@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extra Analytics</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/extra-analytics.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="draft-subnav" id="page-subnav"></div>
+
+  <div class="page-header glass">
+    <h1>Extra Analytics</h1>
+    <p>Deep dives into schedule luck, seasonal trends, historical similarity, and more</p>
+  </div>
+
+  <div class="jump-nav" id="jump-nav">
+    <div class="jump-nav-edge left"></div>
+    <a href="#head-to-head" class="jump-nav-pill" data-target="head-to-head">Head-to-Head</a>
+    <a href="#closest-games" class="jump-nav-pill" data-target="closest-games">Closest Games Ever</a>
+    <a href="#championship-gauntlet" class="jump-nav-pill" data-target="championship-gauntlet">Championship Gauntlet</a>
+    <a href="#conference-analysis" class="jump-nav-pill" data-target="conference-analysis">Conference Analysis</a>
+    <a href="#schedule-luck" class="jump-nav-pill" data-target="schedule-luck">Schedule Luck</a>
+    <a href="#schedule-swap" class="jump-nav-pill" data-target="schedule-swap">Schedule Swap</a>
+    <a href="#seasonal-analysis" class="jump-nav-pill" data-target="seasonal-analysis">Seasonal Analysis</a>
+    <a href="#positional-production" class="jump-nav-pill" data-target="positional-production">Positional Production</a>
+    <a href="#win-attribution" class="jump-nav-pill" data-target="win-attribution">Win% Attribution</a>
+    <div class="jump-nav-edge right"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       H2H MATRIX
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section" id="head-to-head">
+    <div class="section-label">Head-to-Head</div>
+    <div class="section-title">All-time rivalry records.</div>
+    <div class="callout glass">
+      <div class="callout-label">What You're Looking At</div>
+      <p>Every manager's all-time record against every other manager. Row is the manager, column is the opponent. <strong>Green cells indicate winning records, red indicates losing.</strong> Hover any cell for the exact record.</p>
+    </div>
+    <div class="h2h-scroll glass">
+      <table class="h2h-table" id="h2h-table"></table>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       CLOSEST GAMES EVER
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section" id="closest-games">
+    <div class="section-label">Closest Games Ever</div>
+    <div class="section-title">The top 10 nail-biters in league history.</div>
+    <div class="callout glass">
+      <div class="callout-label">What Counts</div>
+      <p>Every regular season game, plus every playoff game that <strong>actually counted</strong> toward a bracket or a championship. Playoff-week games that didn't count for anything are left out.</p>
+    </div>
+
+    <div class="season-filter-row">
+      <span class="season-filter-label">Show:</span>
+      <button class="season-btn active" onclick="filterClosest('all', this)">All Games</button>
+      <button class="season-btn" onclick="filterClosest('regular', this)">Regular Season</button>
+      <button class="season-btn" onclick="filterClosest('playoff', this)">Playoffs</button>
+    </div>
+
+    <div class="table-wrap glass">
+      <table class="closest-table" id="closest-table">
+        <thead><tr><th>#</th><th>Winner</th><th>Score</th><th>Loser</th><th>Score</th><th>Margin</th><th>When</th></tr></thead>
+        <tbody id="closest-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       CHAMPIONSHIP GAUNTLET
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section" id="championship-gauntlet">
+    <div class="section-label">Championship Gauntlet</div>
+    <div class="section-title">Who had to earn it?</div>
+    <div class="callout glass">
+      <div class="callout-label">How It Works</div>
+      <p>Each title run is scored on three things: <strong>points opponents actually scored</strong> against the champion, <strong>how strong those opponents were</strong> across the regular season, and whether they were <strong>hot or cold</strong> in the five games right before facing the champion. Every score is measured against the <strong>full history of the league</strong>, so the scale stays fixed as new champions get added. Three-game and four-game runs get a small statistical adjustment to compare fairly. <strong>Weighted 70/15/15</strong>, heavily toward how tough the games themselves actually were.</p>
+    </div>
+
+    <div class="gauntlet-legend">
+      <div class="gauntlet-legend-item">
+        <div class="gauntlet-legend-dot" style="background:#4a7fa8"></div>Opp. Points Against (70%)
+      </div>
+      <div class="gauntlet-legend-item">
+        <div class="gauntlet-legend-dot" style="background:#a85a5a"></div>Opp. Dominance (15%)
+      </div>
+      <div class="gauntlet-legend-item">
+        <div class="gauntlet-legend-dot" style="background:#9c849c"></div>Opp. Hot Streak (15%)
+      </div>
+    </div>
+
+    <div class="gspectrum-wrap glass">
+      <div class="gspectrum-axis" id="gauntletSpectrum"></div>
+      <div class="gspectrum-legend" id="gauntletSpectrumLegend"></div>
+    </div>
+
+    <div class="gauntlet-grid" id="gauntletGrid"></div>
+
+    <p class="gauntlet-method-note">
+      Gauntlet Score blends three z-scored components: points scored against the champion, opponent regular-season dominance, and opponent hot streak entering the game. Each is measured against the full league history and mapped through a fixed curve, not scaled to just these <span id="g-runs"></span> runs. Games are lightly shrunk toward the league average based on how many rounds each champion played, so three-game and four-game runs compare fairly. Weighted 70/15/15, so this is mostly about how tough the actual games were, with dominance and hot streak adding a smaller layer of nuance. A score near 50 is a typical path. Anything further out means the field was tougher or softer than usual.
+    </p>
+
+    <div class="gauntlet-stretch-intro">
+      <div class="section-title" style="font-size:1.1rem;margin-top:1.75rem;">How hard is hard? The same math, every 3-week stretch ever.</div>
+      <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;">
+        <span id="g-stretch-intro"></span>
+      </p>
+    </div>
+
+    <div class="gauntlet-stretch-cols">
+      <div class="gauntlet-stretch-col">
+        <div class="gstretch-col-label gstretch-hard">Hardest 3-Week Stretches Ever</div>
+        <div class="gauntlet-grid gauntlet-grid-compact" id="hardestStretchGrid"></div>
+      </div>
+      <div class="gauntlet-stretch-col">
+        <div class="gstretch-col-label gstretch-easy">Easiest 3-Week Stretches Ever</div>
+        <div class="gauntlet-grid gauntlet-grid-compact" id="easiestStretchGrid"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       CONFERENCE ANALYSIS
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section" id="conference-analysis">
+    <div class="section-label">Conference Analysis</div>
+    <div class="section-title" id="conf-title">Does the conference actually mean anything?</div>
+    <div class="callout glass">
+      <div class="callout-label">Background</div>
+      <p id="conf-background"></p>
+    </div>
+
+    <div class="conf-teams-grid" id="conf-teams"></div>
+
+    <div class="conf-stat-grid" id="conf-cards"></div>
+
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:1.5rem;" id="conf-summary-note"></p>
+
+    <div class="table-wrap glass">
+      <p class="table-hint">Manager-by-manager record against the other conference, regular season and real playoff games only.</p>
+      <table class="conf-mgr-table">
+        <thead><tr><th>Manager</th><th>Conf</th><th>Record</th><th>Win%</th><th>Avg PF</th><th>Avg PA</th><th>Margin</th></tr></thead>
+        <tbody id="conf-managers"></tbody>
+      </table>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;margin-bottom:1.5rem;" id="conf-outliers-note"></p>
+
+    <div class="table-wrap glass">
+      <p class="table-hint" id="conf-seasons-hint"></p>
+      <table class="conf-year-table">
+        <thead><tr><th>Season</th><th>Record</th><th id="conf-seasons-pct"></th><th>Games</th></tr></thead>
+        <tbody id="conf-seasons"></tbody>
+      </table>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;margin-bottom:1.5rem;" id="conf-seasons-note"></p>
+
+    <div class="table-wrap glass">
+      <p class="table-hint">Longest-running rivalries by total meetings, regular season and playoffs combined.</p>
+      <table class="rivalry-table">
+        <thead><tr><th>Rivalry</th><th>Record</th><th>Games</th><th>Conference</th></tr></thead>
+        <tbody id="rivalries"></tbody>
+      </table>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;" id="conf-rivalry-note"></p>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       SCHEDULE LUCK
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section" id="schedule-luck">
+    <div class="section-label">Schedule Luck</div>
+    <div class="section-title">Who has the schedule been kind to?</div>
+    <div class="callout glass">
+      <div class="callout-label">How It Works</div>
+      <p>Each week, every manager's score is compared to the <strong>league median</strong>. If you scored above the median, you "should have" won that week regardless of your actual opponent. The difference between your actual wins and these expected wins is your schedule luck. Positive means the schedule gifted you wins; negative means it took them away.</p>
+    </div>
+    <div class="ss-year-row">
+      <span class="ss-year-label">Show</span>
+      <span id="luck-buttons" style="display:contents"></span>
+    </div>
+    <div class="chart-area-pad glass">
+      <div style="position:relative;height:380px;">
+        <canvas id="chart-luck"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       SCHEDULE SWAP
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section" id="schedule-swap">
+    <div class="section-label">Schedule Swap</div>
+    <div class="section-title">What if everyone played everyone else's schedule?</div>
+    <div class="callout glass">
+      <div class="callout-label">How It Works</div>
+      <p>Every manager's own weekly score, replayed against every other manager's real opponents and scores that season. If a manager's actual schedule happened to line up softer or tougher than someone else's, this is where it shows up. <strong>Regular season only.</strong> <span id="ss-excluded"></span> are excluded, matching the rest of this page.</p>
+    </div>
+
+    <div class="ss-year-row">
+      <span class="ss-year-label">Season</span>
+      <span id="ss-year-buttons" style="display:contents"></span>
+    </div>
+
+    <div class="ss-caveat" id="ss-caveat"></div>
+
+    <div class="gauntlet-legend">
+      <div class="gauntlet-legend-item"><span class="gauntlet-legend-dot" style="background:#3a7a3a;"></span>Gained 2.5+ wins</div>
+      <div class="gauntlet-legend-item"><span class="gauntlet-legend-dot" style="background:#5a8a5a;"></span>Gained ~1-2.5 wins</div>
+      <div class="gauntlet-legend-item"><span class="gauntlet-legend-dot" style="background:#b8960a;"></span>Roughly even</div>
+      <div class="gauntlet-legend-item"><span class="gauntlet-legend-dot" style="background:#a85a5a;"></span>Lost ~1-2.5 wins</div>
+      <div class="gauntlet-legend-item"><span class="gauntlet-legend-dot" style="background:#7a3a3a;"></span>Lost 2.5+ wins</div>
+    </div>
+
+    <div class="ss-scroll glass">
+      <table class="ss-table" id="ss-table"></table>
+    </div>
+    <p class="table-hint">Each cell is what that row's manager would have gone under that column's schedule that season. The muted diagonal cell is their real record. Hover any cell for the exact games used.</p>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       SEASONAL ANALYSIS
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section" id="seasonal-analysis">
+    <div class="section-label">Seasonal Analysis</div>
+    <div class="section-title">Which quarter of the season matters most?</div>
+    <div class="callout glass">
+      <div class="callout-label">Methodology</div>
+      <p><span id="q-method"></span></p>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-area-pad glass">
+        <canvas id="chart-q-coef" height="200"></canvas>
+      </div>
+      <div class="chart-area-pad glass">
+        <canvas id="chart-q-corr" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       POSITIONAL PRODUCTION
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section" id="positional-production">
+    <div class="section-label">Positional Production</div>
+    <div class="section-title">Which positions actually win you games?</div>
+    <div class="callout glass">
+      <div class="callout-label">Methodology</div>
+      <p>Average weekly points come from <strong>started lineups only</strong>, across every regular season game and every real playoff bracket game. Consolation-bracket games are excluded entirely, same as the rest of the site. A season-level regression (<strong id="pos-fit"></strong>) tests how much each position's average weekly production predicts that season's win%.</p>
+    </div>
+
+    <div class="season-filter-row">
+      <span class="season-filter-label">Show:</span>
+      <button class="season-btn active" onclick="setPosView('avg', this)">Average PPG</button>
+      <button class="season-btn" onclick="setPosView('std', this)">Consistency</button>
+    </div>
+
+    <div class="table-wrap glass">
+      <p class="table-hint" id="pos-table-hint">Career average weekly points per position, started lineups only. Click any column to sort.</p>
+      <table class="rivalry-table pos-table" id="pos-table">
+        <thead>
+          <tr id="pos-head"></tr>
+        </thead>
+        <tbody id="pos-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="chart-grid" style="margin-top:1.75rem;">
+      <div class="chart-area-pad glass">
+        <canvas id="chart-pos-coef" height="200"></canvas>
+      </div>
+      <div class="chart-area-pad glass">
+        <canvas id="chart-pos-corr" height="200"></canvas>
+      </div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;" id="pos-note"></p>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══════════════════════════════════════════
+       WIN% ATTRIBUTION
+       ══════════════════════════════════════════ -->
+  <div class="analysis-section" id="win-attribution">
+    <div class="section-label">Win% Attribution</div>
+    <div class="section-title">Where does a season's win% actually come from?</div>
+    <div class="callout glass">
+      <div class="callout-label">Methodology</div>
+      <p>Five ingredients, each pulled from the metric that already powers its own page: <strong>draft surplus</strong> (Surplus Value), <strong>waiver upside</strong> (only the positive value from pickups counts, bad and neutral adds contribute nothing), <strong>missed wins</strong> from Lineup Efficiency (a bad start/sit call only counts if it actually flipped a real result), <strong>trade QUAD</strong> (Trade Value), and <strong>schedule luck</strong> (regular season only, real bracket games excluded same as consolation weeks). The outcome being explained, Win%, includes real playoff bracket games (still no consolation games), which schedule luck itself deliberately doesn't: a shrinking bracket field breaks the weekly-median comparison luck depends on in a way it doesn't break a plain win/loss count. A season-level regression (<strong id="attr-fit"></strong>) turns these into a per-manager breakdown of exactly how many points of win%, above or below league average, each ingredient is responsible for.</p>
+    </div>
+
+    <div class="attr-mgr-row" id="attr-mgr-pills"></div>
+
+    <div class="attr-summary-row">
+      <div class="attr-stat-card glass">
+        <div class="attr-stat-label">Actual Win%</div>
+        <div class="attr-stat-num" id="attr-actual">&ndash;</div>
+      </div>
+      <div class="attr-stat-card glass">
+        <div class="attr-stat-label">Model Predicts</div>
+        <div class="attr-stat-num" id="attr-predicted">&ndash;</div>
+      </div>
+      <div class="attr-stat-card glass">
+        <div class="attr-stat-label">Unexplained</div>
+        <div class="attr-stat-num" id="attr-residual">&ndash;</div>
+      </div>
+    </div>
+
+    <div class="chart-area-pad glass">
+      <div style="position:relative;height:420px;">
+        <canvas id="chart-waterfall"></canvas>
+      </div>
+    </div>
+    <p class="table-hint" style="margin-top:0.9rem;">Each step is that ingredient's real contribution, in percentage points, relative to a league-average manager. The last two bars show the model's full prediction against the manager's actual win% - the gap between them is what the five ingredients don't explain.</p>
+
+    <div class="chart-grid" style="margin-top:1.75rem;">
+      <div class="chart-area-pad glass">
+        <canvas id="chart-attr-coef" height="200"></canvas>
+      </div>
+      <div class="chart-area-pad glass">
+        <canvas id="chart-attr-r2" height="200"></canvas>
+      </div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-mid);margin-top:1rem;" id="attr-note"></p>
+  </div>
+  <footer id="site-footer"></footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="../assets/js/pages/extra-analytics.js"></script>
+</body>
+</html>

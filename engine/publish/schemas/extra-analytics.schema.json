@@ -82,6 +82,13 @@
           "items": {
             "$ref": "#/$defs/game"
           }
+        },
+        "team": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "champion windows: the team name the card shows (editorial short name, else ESPN's)"
         }
       }
     },
@@ -122,6 +129,20 @@
         },
         "opp_surge": {
           "type": "number"
+        },
+        "opponent_team": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "champion windows: the opponent's team name that season"
+        },
+        "opponent_ppg": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "champion windows: the opponent's regular-season points per game that season"
         }
       }
     }
@@ -395,6 +416,23 @@
               }
             }
           }
+        },
+        "fit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "n",
+            "r2"
+          ],
+          "description": "the positional regression's fit: manager-seasons and R2",
+          "properties": {
+            "n": {
+              "type": "integer"
+            },
+            "r2": {
+              "type": "number"
+            }
+          }
         }
       }
     },
@@ -508,6 +546,26 @@
               }
             }
           }
+        },
+        "history": {
+          "type": "array",
+          "description": "the model's refinement history: the league's editorial earlier versions, then the current fit",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "r2"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "r2": {
+                "type": "number"
+              }
+            }
+          }
         }
       }
     },
@@ -538,6 +596,44 @@
             "$ref": "#/$defs/window"
           }
         }
+      }
+    },
+    "quarterly_fit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "n",
+        "auc"
+      ],
+      "description": "the quarterly playoff model's fit: manager-seasons and area under the ROC curve",
+      "properties": {
+        "n": {
+          "type": "integer"
+        },
+        "auc": {
+          "type": "number"
+        }
+      }
+    },
+    "notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "editorial text from the league's extra_analytics.yaml",
+      "properties": {
+        "swap_caveats": {
+          "type": "object",
+          "description": "season -> HTML note shown above that season's schedule swap",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "season_games": {
+      "type": "object",
+      "description": "regular-season games per season (the live season: weeks played so far); the schedule swap scales its cells, average and wins gained to them",
+      "additionalProperties": {
+        "type": "integer"
       }
     }
   }

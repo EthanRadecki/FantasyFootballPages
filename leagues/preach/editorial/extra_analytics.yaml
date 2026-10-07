@@ -1,0 +1,19 @@
+# Extra Analytics page text (extra-analytics.html), editorial. Everything else on the page, including
+# the numbers in its notes, comes from the data. Without this file the page shows the current model
+# alone on the R2 chart and no swap caveats.
+
+# Win% Attribution, "Model Refinement" chart: R2 at each earlier methodology fix, in the order the fixes
+# were made. The engine's current fit is drawn after them as the last bar, labelled current_label.
+# "\n" breaks a label onto two lines.
+model_history:
+  - {label: "Original model", r2: 0.197}
+  - {label: "+ outcome-based\nlineup", r2: 0.302}
+  - {label: "+ real trade\nQUAD", r2: 0.334}
+  - {label: "+ schedule\nluck", r2: 0.389}
+  - {label: "+ upside-only\nwaiver", r2: 0.412}
+current_label: "+ corrected trade\ndata & playoffs"
+
+# Schedule Swap: shown above the table for seasons with a data wrinkle worth flagging (HTML).
+swap_caveats:
+  2020: "<strong>2020 had 15 teams with rotating bye weeks</strong>, so managers played 9 to 11 regular season games instead of a clean 14, and some managers are missing individual weeks entirely (whenever that week’s real opponent was Thomas Sullivan or William Serafin, who are excluded everywhere on this site). Every comparison below uses <strong>win percentage</strong>, not raw win total, so the uneven schedule lengths don’t distort the picture. Game counts still vary cell to cell -- hover any cell to see exactly how many games it’s built on."
+  2024: "<strong>Ben Castaldo’s Week 14, 2024 forfeit</strong> (recorded as a 0-point loss) still counts in his actual record below, but it’s excluded from every alternate-schedule calculation that would otherwise use it as his own score -- a forfeit isn’t a real performance, and using it would force an automatic loss in every single alt-schedule for that week."

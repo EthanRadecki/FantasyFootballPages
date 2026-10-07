@@ -112,6 +112,12 @@ def test_page_models_adapt_to_the_league():
     ex = _model(dist, "extra-analytics.json")
     assert ex["conference"]["summary"] == [] and ex["conference"]["rivalries"]   # no conferences configured
     assert len(ex["gauntlet"]["champions"]) == 3                    # two- and three-game title runs
+    assert all(c["team"] and all("opponent_ppg" in g for g in c["games"]) for c in ex["gauntlet"]["champions"])
+    assert ex["attribution"]["history"] == [{"label": "Current model", "r2": ex["attribution"]["fit"]["r2"]}]
+    assert ex["notes"] == {"swap_caveats": {}} and ex["conference"]["moved"] == []    # no editorial file
+    assert sorted(ex["season_games"]) == sorted(ex["schedule_swap"]) and ex["quarterly_fit"]["n"] > 0
+    n = len({k for r in ex["conference"]["rivalries"] for k in (r["first_key"], r["second_key"])})
+    assert len(ex["conference"]["rivalries"]) > 8 and n >= 11       # every pair; the page lists the first 8
     assert len(_model(dist, "champions.json")["seasons"]) == 3
     assert len(_model(dist, "draft-fingerprints.json")["archetypes"]) == 4
     assert len(ana["draft_archetype_matches"]) == 12 * 3            # every live draft, three comparisons

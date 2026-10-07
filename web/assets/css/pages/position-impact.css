@@ -1,0 +1,90 @@
+/* Position Impact page (web/pages/position-impact.html). Ported unchanged from the Stage A page. */
+.pos-badge { display:inline-block;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.6rem;font-weight:700;letter-spacing:0.05em; }
+.pos-rb  { background:rgba(90,138,90,0.22);color:#4a7a4a; }
+.pos-wr  { background:rgba(74,127,168,0.22);color:#3a6f98; }
+.pos-qb  { background:rgba(168,90,90,0.22);color:#983a3a; }
+.pos-te  { background:rgba(212,175,55,0.22);color:#a07010; }
+.pos-k   { background:rgba(156,148,156,0.22);color:#6a6460; }
+.pos-dst { background:rgba(100,90,80,0.22);color:#504840; }
+
+.glass, .callout, .chart-area, .page-header { border-left:none !important; }
+.chart-section-label { margin-bottom:0.6rem; }
+.chart-section { margin-bottom:2rem; }
+
+.methodology-note { font-size:0.78rem;color:var(--muted);line-height:1.6; }
+.league-chart-wrap { position:relative; }
+
+/* Position selector for the deep-dive section */
+.pos-select-row {
+  display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem;
+}
+.pos-select-pill {
+  padding:0.5rem 0.9rem;border-radius:999px;cursor:pointer;font-size:0.78rem;font-weight:700;
+  border:1.5px solid rgba(156,148,156,0.3);background:rgba(156,148,156,0.06);color:var(--text-mid);
+  transition:all 0.15s;
+}
+.pos-select-pill.active { color:var(--bg); }
+.pos-select-pill[data-pos="QB"].active { background:#983a3a;border-color:#983a3a; }
+.pos-select-pill[data-pos="RB"].active { background:#4a7a4a;border-color:#4a7a4a; }
+.pos-select-pill[data-pos="WR"].active { background:#3a6f98;border-color:#3a6f98; }
+.pos-select-pill[data-pos="TE"].active { background:#a07010;border-color:#a07010; }
+.pos-select-pill[data-pos="K"].active { background:#6a6460;border-color:#6a6460; }
+.pos-select-pill[data-pos="D/ST"].active { background:#504840;border-color:#504840; }
+
+.pick-convention-note {
+  text-align:center;font-size:0.74rem;color:var(--muted);font-style:italic;margin:-0.5rem 0 0.75rem;
+}
+
+/* Draft capital table (horizontal scroll, sticky manager column) */
+.dcap-scroll { overflow-x:auto;-webkit-overflow-scrolling:touch; }
+.dcap-table { border-collapse:collapse;font-size:0.76rem;white-space:nowrap; }
+.dcap-table th, .dcap-table td { padding:0.45rem 0.6rem;text-align:center; }
+.dcap-table thead th {
+  font-size:0.62rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);
+  border-bottom:1px solid rgba(156,148,156,0.25);
+}
+.dcap-sortable:hover { background:rgba(156,148,156,0.12); }
+.dcap-table tbody tr:nth-child(even) { background:rgba(156,148,156,0.06); }
+.dcap-mgr-cell {
+  position:sticky;left:0;z-index:1;text-align:left;font-weight:700;color:var(--palm);
+  background:var(--bg);border-right:1px solid rgba(156,148,156,0.25);
+}
+.dcap-streamed { color:var(--muted);font-style:italic;font-weight:400;font-size:0.7rem; }
+.dcap-not-in-league { color:rgba(156,148,156,0.4);font-weight:400;font-size:0.7rem; }
+.dcap-avg-cell { font-weight:800;color:var(--palm);border-left:1px solid rgba(156,148,156,0.25); }
+
+.pie-wrap { display:flex;flex-direction:column;align-items:center;gap:0.75rem; }
+.pie-canvas-wrap { position:relative;width:150px;height:150px;flex-shrink:0; }
+.pie-legend { display:flex;flex-direction:column;gap:0.4rem;width:100%;max-width:240px;font-size:0.72rem; }
+.pie-legend-row { display:flex;align-items:center;gap:0.5rem; }
+.pie-swatch { width:10px;height:10px;border-radius:3px;flex-shrink:0; }
+.pie-legend-val { font-weight:700;color:var(--palm);margin-left:auto;padding-left:0.5rem; }
+
+.league-pie-grid {
+  display:grid;grid-template-columns:1fr;gap:1.25rem;
+}
+.league-pie-cell { text-align:center; }
+.league-pie-label {
+  font-size:0.78rem;font-weight:800;margin-bottom:0.5rem;padding:0.15rem 0.6rem;
+  border-radius:4px;display:inline-block;
+}
+
+.mgr-select-row {
+  display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.75rem 0 1rem;
+}
+.mgr-select-pill {
+  padding:0.35rem 0.65rem;border-radius:999px;cursor:pointer;font-size:0.7rem;font-weight:600;
+  border:1px solid rgba(156,148,156,0.3);background:rgba(156,148,156,0.06);color:var(--text-mid);
+  transition:all 0.15s;
+}
+.mgr-select-pill.active { background:var(--palm);color:var(--bg);border-color:var(--palm); }
+
+@media(min-width:600px) {
+  .league-pie-grid { grid-template-columns:1fr 1fr; }
+}
+@media(min-width:900px) {
+  .league-pie-grid { grid-template-columns:repeat(3,1fr); }
+}
+@media(min-width:480px) {
+  .pos-select-row { justify-content:center; }
+}
