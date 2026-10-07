@@ -85,3 +85,42 @@ def test_every_template_page_is_in_the_site_page_list():
     web = ROOT / "web"
     pages = sorted(p.relative_to(web).as_posix() for p in web.rglob("*.html"))
     assert pages and all(p in paths for p in pages), pages
+
+
+def test_share_tags_give_chat_apps_a_preview_card(tmp_path):
+    """A link pasted into a group chat shows a card only from tags in the HTML (crawlers run no scripts)."""
+    import os
+    root, out = tmp_path / "repo", tmp_path / "dist"
+    (root / "web" / "pages").mkdir(parents=True)
+    (root / "web" / "index.html").write_text("<html><head><title>Home</title></head></html>")
+    (root / "web" / "pages" / "schedule_release.html").write_text("<html><head><title>x</title></head></html>")
+    (out / "data" / "v1").mkdir(parents=True)
+    cfg = {"league": {"name": "Test & Co", "first_season": 2020, "logo": "images/l.png",
+                      "logos_by_season": {"2026": "images/l26.png"}, "site_url": "https://x.github.io/site/"},
+           "live_season": 2026, "pages": [{"id": "home", "title": "Home", "path": "index.html"},
+                                          {"id": "schedule-release", "title": "Schedule Release",
+                                           "path": "pages/schedule_release.html"}]}
+    (out / "config.json").write_text(json.dumps(cfg))
+    saved = os.environ.pop("SITE_URL", None)
+    try:
+        preview.write_preview(root, out, legacy_site=False)
+        page = (out / "next" / "pages" / "schedule_release.html").read_text()
+        assert "<title>Test &amp; Co: 2026 Schedule Release</title>" in page
+        assert '<meta property="og:title" content="Test &amp; Co: 2026 Schedule Release">' in page
+        assert '<meta property="og:url" content="https://x.github.io/site/next/pages/schedule_release.html">' in page
+        assert '<meta property="og:image" content="https://x.github.io/site/next/images/l26.png">' in page
+        assert "you&#x27;re up against" in page and page.index("og:title") < page.index("</head>")
+        home = (out / "next" / "index.html").read_text()
+        assert '<meta property="og:title" content="Test &amp; Co">' in home
+        # no public URL known: no tags (relative URLs would not work in a chat preview)
+        del cfg["league"]["site_url"]
+        (out / "config.json").write_text(json.dumps(cfg))
+        preview.write_preview(root, out, legacy_site=False)
+        assert "og:" not in (out / "next" / "index.html").read_text()
+        os.environ["SITE_URL"] = "https://y.github.io/z"
+        preview.write_preview(root, out, legacy_site=False)
+        assert 'content="https://y.github.io/z/next/index.html"' in (out / "next" / "index.html").read_text()
+    finally:
+        os.environ.pop("SITE_URL", None)
+        if saved is not None:
+            os.environ["SITE_URL"] = saved
