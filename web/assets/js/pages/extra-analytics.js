@@ -709,7 +709,7 @@ if (D.labels) (function() {
 })();
 
 /* ── POSITIONAL PRODUCTION ────────────────────────────────────────────────── */
-if (D.labels) (function() {
+if (D.POSITIONS) (function() {
   var POSITIONS = D.POSITIONS;
 
   // Career averages and career std dev (week-to-week volatility) of started
@@ -921,7 +921,7 @@ if (D.labels) (function() {
 })();
 
 /* ── WIN% ATTRIBUTION ─────────────────────────────────────────────────────── */
-if (D.labels) (function() {
+if (D['DATA#1']) (function() {
   var DATA = D['DATA#1'];
   var LEAGUE_INTERCEPT = D.LEAGUE_INTERCEPT;
   var STEPS = ['draft','waiver','lineup','trade','luck'];
@@ -1169,7 +1169,7 @@ if (D.labels) (function() {
 })();
 
 /* ── 5. CHAMPIONSHIP GAUNTLET ─────────────────────────────────────────────── */
-if (D.labels) (function() {
+if (D.CHAMPIONS) (function() {
   // Each champion's rank among every stretch of the same length in league history, computed by
   // applying the exact same Gauntlet Score methodology to every stretch any manager has faced, not
   // just championship runs (sameLength names a run that was not 3 weeks).
@@ -1381,7 +1381,7 @@ if (D.labels) (function() {
    Same Gauntlet Score methodology as above, generalized to every possible
    3-consecutive-real-week stretch any manager has faced, not just
    championship playoff runs. See generate_gauntlet_stretches.py. */
-if (D.labels) (function() {
+if (D.HARDEST) (function() {
   var HARDEST = D.HARDEST;
 
   var EASIEST = D.EASIEST;
@@ -1523,19 +1523,21 @@ config().then(function (c) {
   EASIEST_ALL = D.EASIEST || [];
   conferenceSection();
   swapNotes();
-  if (M.quarterly) {
-    quarterlyNotes();
-    positionalNotes();
-    attributionNotes();
-    gauntletNotes();
-  } else {                                   // no fitted models yet (a league's first season): hide those sections
-    ['championship-gauntlet', 'seasonal-analysis', 'positional-production', 'win-attribution'].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-      var pill = document.querySelector('.jump-nav-pill[data-target="' + id + '"]');
+  // each model section only when the league's data fits it (a league where everyone makes the playoffs has
+  // no quarterly model; a first season has none of them): the rest hide with their jump pills
+  [['seasonal-analysis', M.quarterly, quarterlyNotes], ['positional-production', M.positional, positionalNotes],
+   ['win-attribution', M.attribution, attributionNotes], ['championship-gauntlet', M.gauntlet, gauntletNotes]]
+    .forEach(function (s) {
+      if (s[1]) { s[2](); return; }
+      var el = document.getElementById(s[0]);
+      if (el) {
+        el.style.display = 'none';
+        var hr = el.previousElementSibling;
+        if (hr && hr.tagName === 'HR') hr.style.display = 'none';
+      }
+      var pill = document.querySelector('.jump-nav-pill[data-target="' + s[0] + '"]');
       if (pill) pill.remove();
     });
-  }
   runPage();
 }).catch(function (err) {
   console.error(err);

@@ -64,14 +64,17 @@ export function extraData(M, name) {
 
   var out = { managers: managers, h2h: H2H, CLOSEST: CLOSEST, luckData: luckData, SCHEDULE_SWAP_DATA: SCHEDULE_SWAP_DATA,
               SS_SEASON_GAMES: Object.assign({}, M.season_games || {}) };
-  if (!M.quarterly) return out;
-
+  // each model section only when the league's data fits it (the model leaves it out otherwise)
+  if (M.quarterly) {
   // quarterly playoff model
   out.labels = M.quarterly.map(function (q) { return q.quarter + ' (Wks ' + q.weeks + ')'; });
   out.coefs = M.quarterly.map(function (q) { return r(q.coef, 3); });
   out.corrs = M.quarterly.map(function (q) { return r(q.corr, 3); });
   out.pvals = M.quarterly.map(function (q) { return r(q.p_value, 3); });
 
+  }
+
+  if (M.positional) {
   // positional production: win % descending (unrounded), then name
   var P = M.positional, positions = P.positions;
   out.POSITIONS = positions.slice();
@@ -88,6 +91,9 @@ export function extraData(M, name) {
     out.STD_COEF[p] = r(coef[p].std_coef, 3); out.COEF_PVAL[p] = r(coef[p].p_value, 4); out.CORR_R[p] = r(coef[p].corr, 3);
   });
 
+  }
+
+  if (M.attribution) {
   // win% attribution
   var A = M.attribution, attr = {};
   A.managers.forEach(function (d) {
@@ -106,6 +112,9 @@ export function extraData(M, name) {
   out.R2_LABELS = hist.map(function (h) { return h.label; });
   out.R2_VALS = hist.map(function (h) { return r(h.r2, 3); });
 
+  }
+
+  if (M.gauntlet) {
   // championship gauntlet
   var G = M.gauntlet;
   out.CHAMPION_RANKS = {};
@@ -137,5 +146,6 @@ export function extraData(M, name) {
   };
   out.HARDEST = listed(G.hardest);
   out.EASIEST = listed(G.easiest);
+  }
   return out;
 }

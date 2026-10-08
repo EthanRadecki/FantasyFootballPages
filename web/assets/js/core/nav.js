@@ -8,11 +8,13 @@ function href(page) {
   return url(page.href || page.path);
 }
 
-function links(cfg, current) {
+/* arrow: write the sub-page arrow into the link text (the mobile menu); the desktop nav's stylesheet
+   draws its own (.nav-links a.nav-sub::before), so there the text has none (it showed two) */
+function links(cfg, current, arrow) {
   return cfg.pages.filter(function (p) { return p.nav; }).map(function (p) {
     var cls = [p.parent ? 'nav-sub' : '', p.id === current ? 'active' : ''].filter(Boolean).join(' ');
     return '<a href="' + esc(href(p)) + '"' + (cls ? ' class="' + cls + '"' : '') + '>' +
-      (p.parent ? '&#8627; ' : '') + esc(p.title) + '</a>';
+      (p.parent && arrow ? '&#8627; ' : '') + esc(p.title) + '</a>';
   }).join('\n');
 }
 
@@ -24,7 +26,7 @@ export function drawNav(cfg, current) {
     nav.innerHTML =
       '<a href="' + esc(home ? href(home) : url('index.html')) + '" class="nav-brand">' +
       (logo ? '<img src="' + esc(logo) + '" alt="" onerror="this.remove()">' : '') + '<span>' + esc(cfg.league.name) + '</span></a>' +
-      '<div class="nav-links">' + links(cfg, current) + '</div>' +
+      '<div class="nav-links">' + links(cfg, current, false) + '</div>' +
       '<button class="nav-hamburger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
       'stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" ' +
       'y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>';
@@ -32,7 +34,7 @@ export function drawNav(cfg, current) {
   var menu = document.getElementById('mobile-menu');
   if (menu) {
     menu.innerHTML = '<div class="mobile-menu-inner"><button class="mobile-menu-close" aria-label="Close">&#10005;</button>' +
-      links(cfg, current) + '</div>';
+      links(cfg, current, true) + '</div>';
     menu.addEventListener('click', function (e) { if (e.target === menu) menu.classList.remove('active'); });
     menu.querySelector('.mobile-menu-close').addEventListener('click', function () { menu.classList.remove('active'); });
     var burger = nav && nav.querySelector('.nav-hamburger');

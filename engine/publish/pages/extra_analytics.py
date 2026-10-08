@@ -522,56 +522,29 @@ def moved_conference(tables: dict, seasons: list[int], hidden: set[str]) -> list
 
 
 def models_model(a: dict, team: dict | None = None, notes: dict | None = None) -> dict:
-    """The model sections in the data file, by manager key ({} without the analysis tables).
-    team: (season, manager key) -> team name as the gauntlet cards show it (editorial short names);
-    notes: the league's editorial extra_analytics.yaml (`model_history`: the attribution model's
-    earlier versions, the current fit appended as the last bar)."""
-    need = ("quarterly_coefficients", "position_career", "position_coefficients", "attribution_managers",
-            "attribution_coefficients", "attribution_fit", "gauntlet_windows", "gauntlet_window_games",
-            "gauntlet_champions")
-    if not all(n in a and len(a[n]) for n in need):
-        return {}
-    from engine.analytics import gauntlet as gt
-
+    """The model sections in the data file, by manager key. Each section is published only when its
+    own analysis tables have rows (a league whose data cannot fit one model keeps the others: one where
+    every manager makes the playoffs has no quarterly model). team: (season, manager key) -> team name
+    as the gauntlet cards show it (editorial short names); notes: the league's editorial
+    extra_analytics.yaml (`model_history`: the attribution model's earlier versions, the current fit
+    appended as the last bar)."""
+    has = lambda *names: all(n in a and len(a[n]) for n in names)
     num = lambda v: None if pd.isna(v) else float(v)
-    pc = a["position_career"]
-    pc = pc[~pc["hidden"]]
-    positions = list(a["position_coefficients"]["position"])
-    am = a["attribution_managers"]
-    am = am[~am["hidden"]] if "hidden" in am else am
-    fit = a["attribution_fit"].iloc[0]
-    detail = a["gauntlet_window_games"]
+    out: dict = {}
 
-    def window(r) -> dict:
-        return {"season": int(r.season), "manager_key": r.manager_key, "n": int(r.n), "start_week": int(r.start_week),
-                **{f: float(getattr(r, f)) for f in ("raw_pts", "raw_dom", "raw_streak", "s_pts", "s_dom", "s_streak",
-                                                     "gs")},
-                "rank": int(r.rank), "total": int(r.total),
-                "games": [{"week": int(g.week), "week_label": g.week_label, "opponent_key": g.opponent_key,
-                           "own_score": float(g.own_score), "opp_score": float(g.opp_score),
-                           "margin": float(g.margin), "opp_dom": float(g.opp_dom), "opp_surge": float(g.opp_surge)}
-                          for g in _window_games(detail, r).itertuples()]}
+    if has("quarterly_coefficients"):
+        out["quarterly"] = [{"quarter": r.quarter, "weeks": str(r.weeks), "coef": float(r.coef),
+                             "p_value": float(r.p_value), "corr": num(r.corr)}
+                            for r in a["quarterly_coefficients"].itertuples()]
+        if has("quarterly_fit"):
+            q = a["quarterly_fit"].iloc[0]
+            out["quarterly_fit"] = {"n": int(q["n"]), "auc": float(q["auc"])}
 
-    hi, lo = gt.extremes(a["gauntlet_windows"])
-    team = team or {}
-    ms = a.get("manager_seasons")
-    ppg = ({(int(s_), k): float(v) for s_, k, v in zip(ms["season"], ms["manager_key"], ms["pf_per_game"])}
-           if ms is not None else {})
-
-    def champion(r) -> dict:
-        """A champion's window with the names and opponents' regular-season PF/G the cards show."""
-        w = window(r)
-        w["team"] = team.get((w["season"], w["manager_key"]))
-        for g in w["games"]:
-            g["opponent_team"] = team.get((w["season"], g["opponent_key"]))
-            g["opponent_ppg"] = ppg.get((w["season"], g["opponent_key"]))
-        return w
-
-    out = {
-        "quarterly": [{"quarter": r.quarter, "weeks": str(r.weeks), "coef": float(r.coef),
-                       "p_value": float(r.p_value), "corr": num(r.corr)}
-                      for r in a["quarterly_coefficients"].itertuples()],
-        "positional": {
+    if has("position_career", "position_coefficients"):
+        pc = a["position_career"]
+        pc = pc[~pc["hidden"]]
+        positions = list(a["position_coefficients"]["position"])
+        out["positional"] = {
             "positions": positions,
             "coefficients": [{"position": r.position, "coef": float(r.coef), "std_coef": float(r.std_coef),
                               "p_value": float(r.p_value), "corr": num(r.corr)}
@@ -579,8 +552,16 @@ def models_model(a: dict, team: dict | None = None, notes: dict | None = None) -
             "managers": [{"manager_key": d["manager_key"], "win_pct": float(d["win_pct"]),
                           "avg": {p: num(d[f"{p}_avg"]) for p in positions},
                           "sd": {p: num(d[f"{p}_sd"]) for p in positions}}
-                         for d in pc.sort_values("manager_key").to_dict("records")]},
-        "attribution": {
+                         for d in pc.sort_values("manager_key").to_dict("records")]}
+        if has("position_fit"):
+            f = a["position_fit"].iloc[0]
+            out["positional"]["fit"] = {"n": int(f["n"]), "r2": float(f["r2"])}
+
+    if has("attribution_managers", "attribution_coefficients", "attribution_fit"):
+        am = a["attribution_managers"]
+        am = am[~am["hidden"]] if "hidden" in am else am
+        fit = a["attribution_fit"].iloc[0]
+        out["attribution"] = {
             "fit": {"n": int(fit["n"]), "r2": float(fit["r2"]), "adj_r2": float(fit["adj_r2"]),
                     "league_intercept": float(fit["league_intercept"])},
             "coefficients": [{"factor": r.factor, "coef": float(r.coef), "std_coef": float(r.std_coef),
@@ -588,18 +569,44 @@ def models_model(a: dict, team: dict | None = None, notes: dict | None = None) -
             "managers": [{"manager_key": r.manager_key, "seasons": int(r.seasons),
                           **{f: float(getattr(r, f)) for f in ("win_pct", "draft", "waiver", "lineup", "trade", "luck",
                                                                "predicted", "residual")}}
-                         for r in am.sort_values("manager_key").itertuples()]},
-        "gauntlet": {"champions": [champion(r) for r in a["gauntlet_champions"].sort_values("season").itertuples()],
-                     "hardest": [window(r) for r in hi.itertuples()],
-                     "easiest": [window(r) for r in lo.itertuples()]},
-    }
-    if len(a.get("quarterly_fit", ())):
-        q = a["quarterly_fit"].iloc[0]
-        out["quarterly_fit"] = {"n": int(q["n"]), "auc": float(q["auc"])}
-    if len(a.get("position_fit", ())):
-        f = a["position_fit"].iloc[0]
-        out["positional"]["fit"] = {"n": int(f["n"]), "r2": float(f["r2"])}
-    out["attribution"]["history"] = model_history(notes, float(fit["r2"]))
+                         for r in am.sort_values("manager_key").itertuples()],
+            "history": model_history(notes, float(fit["r2"]))}
+
+    if has("gauntlet_windows", "gauntlet_window_games", "gauntlet_champions"):
+        from engine.analytics import gauntlet as gt
+
+        detail = a["gauntlet_window_games"]
+
+        def window(r) -> dict:
+            return {"season": int(r.season), "manager_key": r.manager_key, "n": int(r.n),
+                    "start_week": int(r.start_week),
+                    **{f: float(getattr(r, f)) for f in ("raw_pts", "raw_dom", "raw_streak", "s_pts", "s_dom",
+                                                         "s_streak", "gs")},
+                    "rank": int(r.rank), "total": int(r.total),
+                    "games": [{"week": int(g.week), "week_label": g.week_label, "opponent_key": g.opponent_key,
+                               "own_score": float(g.own_score), "opp_score": float(g.opp_score),
+                               "margin": float(g.margin), "opp_dom": float(g.opp_dom),
+                               "opp_surge": float(g.opp_surge)}
+                              for g in _window_games(detail, r).itertuples()]}
+
+        team = team or {}
+        ms = a.get("manager_seasons")
+        ppg = ({(int(s_), k): float(v) for s_, k, v in zip(ms["season"], ms["manager_key"], ms["pf_per_game"])}
+               if ms is not None else {})
+
+        def champion(r) -> dict:
+            """A champion's window with the names and opponents' regular-season PF/G the cards show."""
+            w = window(r)
+            w["team"] = team.get((w["season"], w["manager_key"]))
+            for g in w["games"]:
+                g["opponent_team"] = team.get((w["season"], g["opponent_key"]))
+                g["opponent_ppg"] = ppg.get((w["season"], g["opponent_key"]))
+            return w
+
+        hi, lo = gt.extremes(a["gauntlet_windows"])
+        out["gauntlet"] = {"champions": [champion(r) for r in a["gauntlet_champions"].sort_values("season").itertuples()],
+                           "hardest": [window(r) for r in hi.itertuples()],
+                           "easiest": [window(r) for r in lo.itertuples()]}
     return out
 
 
