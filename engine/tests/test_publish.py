@@ -70,11 +70,14 @@ def test_compare_json_missing_keys_both_ways():
 
 # ---------------------------------------------------------------- config.json pieces
 
-def test_short_name_and_fallback_color():
+def test_short_name_and_generated_colors():
     assert config_json.short_name("Carmine Pittelli Jr.") == "Pittelli"
     assert config_json.short_name("Ryan P McQuaid") == "McQuaid"
-    assert config_json.fallback_color("m_000000000001") == config_json.fallback_color("m_000000000001")
-    assert config_json.fallback_color("m_000000000001") in config_json.FALLBACK_COLORS
+    gen = config_json.generated_colors({"m_b": "Zed", "m_a": "Amy", "m_c": "Bo"})
+    pal = config_json.MANAGER_PALETTE
+    assert [gen[k]["dark"] for k in ("m_a", "m_c", "m_b")] == [pal[0][0], pal[1][0], pal[2][0]]   # name order
+    assert len({c for c, _ in pal}) == len(pal) == 16                                         # all distinct
+    assert config_json.season_color(2022) == "#d8b28e" and config_json.season_color(2018) == config_json.SEASON_PALETTE[2032]
 
 
 def test_round_names_week_map_default_list_and_generic():
@@ -142,7 +145,7 @@ def test_build_config_from_data():
     by_key = {m["key"]: m for m in conf["managers"]}
     new = by_key["m_0000000000ff"]
     assert new["name"] == "Newcomer Person" and new["short"] == "Person" and new["hidden"] is False
-    assert new["logo"] == "https://logo/m_0000000000ff.png" and new["colors"]["dark"] in config_json.FALLBACK_COLORS
+    assert new["logo"] == "https://logo/m_0000000000ff.png" and new["colors"]["dark"] in {d for d, _ in config_json.MANAGER_PALETTE}
     assert sum(m["hidden"] for m in conf["managers"]) == 2        # both excluded managers, from league.yaml
     assert by_key[cfg["managers"][0]["id"]]["seasons"] == [2025]
     assert conf["league"]["logo"].endswith("preach_logo_2026.png")
@@ -272,3 +275,25 @@ def test_size_budget_and_provenance(tmp_path):
         t[first] = t[first].copy()
         t[first].iloc[0, 0] = "changed" if isinstance(t[first].iloc[0, 0], str) else 12345
         assert build_mod.tables_digest(t) != build_mod.tables_digest(_tables(cfg))
+
+
+def test_a_two_week_round_is_one_game_at_its_per_week_score():
+    """Option 1 (Ethan, 2026-10-08): ESPN lists a two-week round in both weeks with the full total."""
+    from engine.normalize.espn import collapse_multiweek
+    rows = []
+    for week in (15, 16):
+        for team, opp, pts, res in ((1, 2, 438.1, "W"), (2, 1, 309.7, "L")):
+            rows.append({"season": 2022, "week": week, "matchup_period": 15, "game_id": 43, "team_id": team,
+                         "opponent_team_id": opp, "points": pts, "opponent_points": 747.8 - pts, "result": res})
+    rows.append({"season": 2022, "week": 14, "matchup_period": 14, "game_id": 40, "team_id": 1,
+                 "opponent_team_id": 2, "points": 131.06, "opponent_points": 220.84, "result": "L"})
+    m = collapse_multiweek(pd.DataFrame(rows))
+    two = m[m["matchup_period"] == 15]
+    assert len(two) == 2 and set(two["week"]) == {16} and set(two["first_week"]) == {15}
+    assert two["points"].tolist() == [219.05, 154.85] and two["points_total"].tolist() == [438.1, 309.7]
+    assert two["result"].tolist() == ["W", "L"]
+    one = m[m["matchup_period"] == 14].iloc[0]
+    assert one["period_weeks"] == 1 and one["points"] == one["points_total"] == 131.06
+    assert collapse_multiweek(m).equals(m)                                 # safe to apply twice
+    names = config_json.round_names({}, 2022, 14, 18, [16, 18])
+    assert names == {"16": "Semifinals", "18": "Championship"}

@@ -33,18 +33,27 @@ function roundShort(name) { return String(name || '').replace(/^The /, ''); }
 function playoffTier(g) {
   if (!g.isPlayoff) return 0;
   var info = seasonInfo(cfg, g.season) || {};
-  var fromEnd = (info.final_week || g.week) - g.week;
+  // rounds counted back from the final by the weeks that hold a round (a two-week round is one)
+  var weeks = Object.keys(info.rounds || {}).map(Number).sort(function (a, b) { return a - b; });
+  var fromEnd = weeks.indexOf(g.week) !== -1 ? weeks.length - 1 - weeks.indexOf(g.week) : (info.final_week || g.week) - g.week;
   return Math.max(1, 4 - fromEnd);
+}
+
+/* "Semifinals", or "Semifinals · Wks 15-16" for a two-week round */
+function roundLabel(g, short) {
+  var name = short ? roundShort(g.round) : (g.round || 'Playoffs');
+  return g.weeks > 1 ? name + ' \u00b7 Wks ' + g.firstWeek + '-' + g.week : name;
 }
 
 function side(t) {
   var m = mgr.get(t.manager_key) || {};
   return { key: t.manager_key, name: m.name || t.manager_key, short: m.short || m.name || '?', team: t.team_name || '',
-           score: t.points, won: t.result === 'W', starters: t.starters || [], bench: t.bench || [] };
+           score: t.points, total: t.points_total, won: t.result === 'W', starters: t.starters || [], bench: t.bench || [] };
 }
 
 function adapt(g) {
   return { id: g.id, season: g.season, week: g.week, round: g.round, isPlayoff: !!g.is_playoff,
+           weeks: g.weeks || 1, firstWeek: g.first_week || g.week,
            excluded: !!g.superlative_excluded, margin: g.margin, combined: g.combined,
            a: side(g.teams[0]), b: side(g.teams[1]) };
 }
@@ -252,7 +261,9 @@ function sideHtml(s, isModal) {
     (isModal ? '' : '<div class="mx-logo-wrap">') + img + fallback + (isModal ? '' : '</div>') +
     '<div class="' + prefix + (isModal ? 'team-name' : 'side-name') + '">' + esc(s.short) + '</div>' +
     '<div class="' + prefix + (isModal ? 'team-sub' : 'side-team') + '">' + esc(s.team) + '</div>' +
-    '<div class="' + prefix + (isModal ? 'team-score' : 'side-score') + '">' + s.score.toFixed(2) + '</div>' +
+    // a two-week round: ESPN's total, with the per-week score every comparison uses beneath it
+    '<div class="' + prefix + (isModal ? 'team-score' : 'side-score') + '">' + (s.total != null ? s.total : s.score).toFixed(2) + '</div>' +
+    (s.total != null ? '<div class="' + prefix + (isModal ? 'team-sub' : 'side-team') + '">' + s.score.toFixed(2) + ' per week</div>' : '') +
     (s.won ? '<div class="mx-win-badge" style="--side-color:' + color + '">Winner</div>' : '') + '</div>';
 }
 
@@ -261,7 +272,7 @@ function buildCard(g, idx) {
   el.className = 'mx-card glass' + (tier ? ' mx-po mx-po-' + tier : '');
   el.style.animationDelay = (Math.min(idx % BATCH, 11) * 0.03) + 's';
   el.innerHTML = '<div class="mx-card-tags"><span class="mx-tag" style="--tag-color:' + (seasonColor(cfg, g.season) || '#888') + '">' +
-    g.season + '</span><span class="mx-tag mx-tag-week">' + esc(g.isPlayoff ? roundShort(g.round) : 'Wk ' + g.week) + '</span>' +
+    g.season + '</span><span class="mx-tag mx-tag-week">' + esc(g.isPlayoff ? roundLabel(g, true) : 'Wk ' + g.week) + '</span>' +
     (g.isPlayoff ? '<span class="mx-tag mx-tag-playoff">&#127942;</span>' : '') + '</div>' +
     '<div class="mx-card-body">' + sideHtml(g.a, false) + '<div class="mx-center"><div class="mx-vs">VS</div><div class="mx-margin">' +
     g.margin.toFixed(1) + ' pt' + (g.margin === 1 ? '' : 's') + '</div></div>' + sideHtml(g.b, false) + '</div>';
@@ -285,7 +296,7 @@ function buildModalBody(g) {
   document.getElementById('modalBody').innerHTML =
     '<div class="mx-modal-header"><div class="mx-modal-tags"><span class="mx-tag" style="--tag-color:' +
     (seasonColor(cfg, g.season) || '#888') + '">' + g.season + '</span><span class="mx-tag mx-tag-week">' +
-    esc(g.isPlayoff ? g.round || 'Playoffs' : 'Week ' + g.week) + '</span>' +
+    esc(g.isPlayoff ? roundLabel(g, false) : 'Week ' + g.week) + '</span>' +
     (g.isPlayoff ? '<span class="mx-tag mx-tag-playoff">&#127942; Playoffs</span>' : '') + '</div>' +
     '<div class="mx-modal-vs">' + sideHtml(g.a, true) + '<div class="mx-modal-atsign">VS</div>' + sideHtml(g.b, true) + '</div></div>' +
     '<div class="mx-modal-columns">' + rosterColumn(g.a, 'a') + rosterColumn(g.b, 'b') + '</div>';

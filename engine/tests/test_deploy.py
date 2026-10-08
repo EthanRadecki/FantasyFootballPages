@@ -137,3 +137,24 @@ def test_the_root_switch_and_its_rollback(tmp_path):
         raise AssertionError("assembled without a new site")
     except FileNotFoundError:
         pass
+
+
+def test_a_second_league_is_served_in_its_folder(tmp_path):
+    """Option B (2026-10-08): another league's new site at /family/, checked on its own; the root check
+    leaves that folder to it."""
+    root, fam = _web_build(tmp_path / "a"), _web_build(tmp_path / "b")
+    out = tmp_path / "_site"
+    deploy.assemble_web(out, root)
+    counts = deploy.assemble_web(out / "family", fam, redirects=False)
+    assert counts["next"] == 0 and (out / "family" / "index.html").is_file()
+    assert not (out / "family" / "next").exists()
+    assert deploy.check_web_root(out, root, leagues=("family",)) == []
+    assert deploy.check_web_root(out / "family", fam, redirects=False) == []
+    assert "not in the build: family/index.html" in deploy.check_web_root(out, root)
+    assert deploy.league_path("/family/") == "family"
+    for bad in ("next", "Family", "a/b", ""):
+        try:
+            deploy.league_path(bad)
+            raise AssertionError(bad)
+        except ValueError:
+            pass

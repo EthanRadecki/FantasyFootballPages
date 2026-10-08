@@ -43,6 +43,10 @@ Undo: revert the commit that caused a problem (the push redeploys), or Run workf
 
 GitHub turns scheduled runs off in a repository with no commits for 60 days; the weekly rankings commits keep it on during the season. If the schedule stops in the offseason, Actions → Deploy → Enable workflow.
 
+### More leagues (the family league at /family/)
+
+Every league in `LEAGUES_EXTRA` (deploy.yml, `PATH=league.yaml` pairs) is built, checked, page-tested and published at `/PATH/` after the first league, with its own `deploy-stats.json` and `changes.html` there. The ESPN cookies must be able to read every league (an ESPN account's cookies read every league that account is in). Any league failing deploys nothing; the live site keeps the last good build of all of them. To add one: write `leagues/<name>/league.yaml` (league id, first season, name, `site_path`, and the managers with their hashed ids from `python tools/espn_members.py --league ID --first YEAR --last YEAR`), build it once in the Codespace (`python -m engine.cli update leagues/<name>/league.yaml --out dist-<name> --verify`), then add `PATH=leagues/<name>/league.yaml` to `LEAGUES_EXTRA`.
+
 ### The change report
 
 Each deploy publishes `/changes.html` (and `changes.json`), with one line per page on the run's summary page (Actions → the Deploy run). It compares every page's data (the page models in `data/v1/`, from M2 on) in the new build with the site that was live before it, so it is the release notes of that run: values changed, filled in or left blank, records only one side has, and examples. Counted apart, not as differences: numbers that differ only in rounding, games listed with their sides the other way round, and anything in the live season, which changes every week. A difference outside the live season is a stat correction, a rule change in that commit, or something to look into.

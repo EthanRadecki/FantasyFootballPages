@@ -1,0 +1,30 @@
+# The Radecki family league (Ethan, 2026-10-08): the first league served beside Preach, at /family/
+# (deploy.yml LEAGUES_EXTRA). Everything not set here comes from ESPN: seasons, lineups, playoff
+# rounds, team count; season and manager colors from the shared palettes (config_json).
+
+league:
+  name: Radecki Family League
+  provider: espn
+  league_id: 68979295
+  first_season: 2022
+  site_path: family              # served at <site>/family/
+
+managers:                        # all share a last name, so the short names are first names
+  - name: Eric Radecki
+    id: m_dd757b70c791
+    short: Eric
+  - name: Erika Radecki
+    id: m_c350cdcaf789
+    short: Erika
+  - name: Ethan Radecki
+    id: m_75b9d7bd54e4
+    short: Ethan
+  - name: Hunter Radecki
+    id: m_cc46c4279a62
+    short: Hunter
+  - name: Logan Radecki
+    id: m_2c0905660295
+    short: Logan
+  - name: Michael Radecki
+    id: m_ed845bc2d0e7
+    short: Michael

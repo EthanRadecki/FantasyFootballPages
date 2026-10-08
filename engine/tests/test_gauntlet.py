@@ -69,7 +69,7 @@ def test_champion_run_comes_from_the_bracket_and_a_bye_shortens_it():
     g = league(weeks=11, skip={(9, "a")}, regular=8)         # a has a first-round bye
     teams = pd.DataFrame({"season": 2024, "manager_key": MGRS, "final_rank": [1, 2, 3, 4]})
     runs = gt.champion_runs({"teams": teams}, g)
-    assert runs == [(2024, "a", ["c", "b"])]
+    assert [r[:3] for r in runs] == [(2024, "a", ["c", "b"])] and runs[0][3] == [10, 11]
 
 
 def test_extremes_hide_excluded_managers():
@@ -86,3 +86,29 @@ def test_legacy_inputs_reproduce_the_page():
         g["extra_analytics_gauntlet"] = json.load(f)
     for result in check_legacy(g, load_config("leagues/preach/league.yaml")):
         assert result.ok, result.render()
+
+
+def test_a_two_week_round_is_one_game_and_runs_stay_consecutive():
+    """Family league 2022 (2026-10-08): rounds over weeks 15-16 and 17-18. A run counts games, so the final
+    (first week 17) follows the semifinal (last week 16); the champion's run matches its own weeks, not an
+    earlier stretch against the same opponents."""
+    g = league(weeks=10, regular=8)
+    g = g[g["week"] <= 8]
+    po = pd.DataFrame([
+        {"season": 2024, "week": 10, "first_week": 9, "week_label": "Playoff Round 1", "is_regular": False,
+         "manager_key": "a", "opponent_key": "b", "points": 120.0, "opponent_points": 100.0},
+        {"season": 2024, "week": 10, "first_week": 9, "week_label": "Playoff Round 1", "is_regular": False,
+         "manager_key": "b", "opponent_key": "a", "points": 100.0, "opponent_points": 120.0},
+        {"season": 2024, "week": 12, "first_week": 11, "week_label": "Playoff Round 2", "is_regular": False,
+         "manager_key": "a", "opponent_key": "c", "points": 130.0, "opponent_points": 110.0},
+        {"season": 2024, "week": 12, "first_week": 11, "week_label": "Playoff Round 2", "is_regular": False,
+         "manager_key": "c", "opponent_key": "a", "points": 110.0, "opponent_points": 130.0}])
+    g = pd.concat([g.assign(first_week=g["week"]), po], ignore_index=True)
+    win, detail = gt.windows(g, dominance(), sizes=(2,))
+    a = win[(win["manager_key"] == "a")]
+    assert 10 in set(a["start_week"])                          # the two playoff rounds form one window
+    teams = pd.DataFrame({"season": 2024, "manager_key": MGRS, "final_rank": [1, 2, 3, 4]})
+    runs = gt.champion_runs({"teams": teams}, g)
+    assert runs[0][2:] == (["b", "c"], [10, 12])
+    champ = gt.champions(win, detail, runs)
+    assert champ.iloc[0]["start_week"] == 10                  # not an earlier b-then-c stretch

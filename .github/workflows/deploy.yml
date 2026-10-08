@@ -32,6 +32,9 @@ env:
   # with the new one at /next/. Roll back by setting the repository variable SITE_ROOT to legacy
   # (Settings, Secrets and variables, Actions, Variables) and running this workflow.
   SITE_ROOT: ${{ vars.SITE_ROOT || 'web' }}
+  # more leagues served beside the first, each at /PATH/ (PATH=league.yaml, space-separated; option B,
+  # 2026-10-08). Each is built, checked and page-tested like the first; any failure deploys nothing.
+  LEAGUES_EXTRA: "family=leagues/family/league.yaml"
 
 jobs:
   engine:
@@ -63,6 +66,24 @@ jobs:
           SWID: ${{ secrets.SWID }}
         run: python -m engine.cli update "$LEAGUE" --out dist --verify
 
+      - name: Other leagues (update, sanity, change report, page test)
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          SWID: ${{ secrets.SWID }}
+        shell: bash
+        run: |
+          set -eo pipefail
+          for entry in $LEAGUES_EXTRA; do
+            path="${entry%%=*}"; yaml="${entry#*=}"
+            echo "::group::$path ($yaml)"
+            python -m engine.cli update "$yaml" --out "dist-$path" --verify
+            python tools/deploy_site.py sanity --dist "dist-$path" --previous "$SITE_URL/$path/deploy-stats.json"
+            python tools/change_report.py --dist "dist-$path" --site "$SITE_URL/$path" --models | tee "change-report-$path.txt" || true
+            { echo "### What changed at /$path/"; echo; sed 's/^/- /' "change-report-$path.txt"; } >> "$GITHUB_STEP_SUMMARY" || true
+            python tools/smoke_pages.py "dist-$path/next" --screenshots "screenshots/$path"
+            echo "::endgroup::"
+          done
+
       - name: Save the ESPN cache
         if: ${{ !cancelled() }}
         uses: actions/cache/save@v4
@@ -92,7 +113,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: site
-          path: dist/
+          path: |
+            dist/
+            dist-*/
           retention-days: 30
 
       - name: Keep the screenshots
@@ -122,13 +145,20 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: site
-          path: dist
+          path: .
 
       - name: Assemble the site (SITE_ROOT; every file checked against the build)
-        run: python tools/deploy_site.py assemble --out _site --dist dist --root "$SITE_ROOT"
+        shell: bash
+        run: |
+          args=()
+          for entry in $LEAGUES_EXTRA; do path="${entry%%=*}"; args+=(--league "$path=dist-$path"); done
+          python tools/deploy_site.py assemble --out _site --dist dist --root "$SITE_ROOT" "${args[@]}"
 
       - name: Page test on the assembled site
-        run: python tools/smoke_pages.py _site
+        shell: bash
+        run: |
+          python tools/smoke_pages.py _site
+          for entry in $LEAGUES_EXTRA; do python tools/smoke_pages.py "_site/${entry%%=*}"; done
 
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -135,9 +135,13 @@ def efficiency(tables: dict[str, pd.DataFrame], exclude: set[str] = frozenset(),
     rows = []
     for (season, week, team_id), roster in lu.groupby(["season", "week", "team_id"]):
         rows.append({"season": season, "week": week, "team_id": team_id,
+                     "game_week": int(roster["game_week"].iloc[0]) if "game_week" in roster else week,
                      "actual_points": roster.loc[roster["started"], "points"].sum(),
                      "optimal_points": optimal_points(roster, slots[int(season)])})
-    eff = pd.DataFrame(rows, columns=["season", "week", "team_id", "actual_points", "optimal_points"])
+    eff = pd.DataFrame(rows, columns=["season", "week", "team_id", "game_week", "actual_points", "optimal_points"])
+    # a two-week playoff round: the per-week average of its weeks, like its score (option 1)
+    eff = (eff.groupby(["season", "game_week", "team_id"], as_index=False)[["actual_points", "optimal_points"]].mean()
+           .rename(columns={"game_week": "week"}))
     out = games[["season", "week", "team_id", "manager_key", "opponent_manager_key", "points", "opponent_points",
                  "result", "tier", "is_playoff_week"]].merge(eff, on=["season", "week", "team_id"], how="left")
     out["efficiency_gap"] = out["optimal_points"] - out["actual_points"]

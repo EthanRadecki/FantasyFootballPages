@@ -59,3 +59,4 @@ verify_detail.zip
 .cache-synthetic/
 dist-synthetic/
 smoke-screenshots/
+dist-*/

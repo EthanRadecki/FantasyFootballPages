@@ -45,20 +45,42 @@ def counted_games(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     return m[~m["is_bye"] & (~m["is_playoff_week"] | m["tier"].eq("WINNERS_BRACKET"))]
 
 
+def game_weeks(rows: pd.DataFrame) -> pd.DataFrame:
+    """Matchup rows -> (season, week, team_id, game_week): every scoring week a game covers. A two-week
+    playoff round (normalize.espn.collapse_multiweek: one row at its last week, first_week its first)
+    covers both of its weeks; an ordinary game only its own (game_week == week)."""
+    first = rows["first_week"] if "first_week" in rows else rows["week"]
+    out = []
+    for s, w0, w1, t in zip(rows["season"], first.fillna(rows["week"]).astype(int), rows["week"].astype(int),
+                            rows["team_id"]):
+        out += [(s, w, t, w1) for w in range(w0, w1 + 1)]
+    return pd.DataFrame(out, columns=["season", "week", "team_id", "game_week"]).drop_duplicates()
+
+
+def playoff_game_weeks(tables: dict[str, pd.DataFrame]) -> dict[int, list[int]]:
+    """season -> the weeks that hold a playoff game (a two-week round's last week), in order: what the
+    playoff round labels count (Round 1 is the first of them)."""
+    m = tables["matchups"]
+    m = m[m["is_playoff_week"].astype(bool)]
+    return {int(s): sorted(int(w) for w in g.unique()) for s, g in m.groupby("season")["week"]}
+
+
 def bracket_lineups(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     """Lineup rows for weeks that count, as the trade analysis uses them: every
     finished regular-season week (a bye team included) and, in playoff weeks,
     only teams playing a winners-bracket game."""
     m = tables["matchups"].merge(completed_weeks(tables), on=["season", "week"])
     keep = m[~m["is_playoff_week"] | (m["tier"].eq("WINNERS_BRACKET") & ~m["is_bye"])]
-    keep = keep[["season", "week", "team_id"]].drop_duplicates()
+    keep = game_weeks(keep)[["season", "week", "team_id"]].drop_duplicates()
     return tables["lineups"].merge(keep, on=["season", "week", "team_id"])
 
 
 def game_lineups(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     """Lineup rows for teams that played a counted game that week (see
-    counted_games). Unlike bracket_lineups, a bye week is left out."""
-    keep = counted_games(tables)[["season", "week", "team_id"]].drop_duplicates()
+    counted_games). Unlike bracket_lineups, a bye week is left out. Both weeks of
+    a two-week playoff round count (each row keeps its own week; game_week names
+    the game's week)."""
+    keep = game_weeks(counted_games(tables))
     return tables["lineups"].merge(keep, on=["season", "week", "team_id"])
 
 
