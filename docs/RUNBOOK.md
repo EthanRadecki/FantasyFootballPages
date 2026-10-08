@@ -31,11 +31,13 @@ GitHub Pages deploys from `.github/workflows/deploy.yml`:
 - on a schedule: Tuesday and Friday at 13:23 UTC (9:23 am New York time in summer time, 8:23 in winter), after Monday Night Football and after ESPN's stat corrections; GitHub can start scheduled runs some minutes late;
 - from Actions → Deploy → Run workflow, any time.
 
-Each run does `engine update --verify` with the Actions secrets, the sanity checks against the last deploy (`deploy-stats.json`: no season loses games, the live week never goes backwards, every visible manager has its files), the change report, and the page test on the build and on the assembled site. Only when all of that passes is the build published; the published root is the build byte for byte, and every committed page, style and image is in it. When anything fails, nothing is deployed: the live site keeps the last good build and the run fails, so GitHub emails you; the first failed step's log says why.
+Each run does `engine update --verify` with the Actions secrets, the sanity checks against the last deploy (`deploy-stats.json`: no season loses games, the live week never goes backwards, every visible manager has its files), the change report, and the page test on the build and on the assembled site. Only when all of that passes is the build published; every published file is checked against the build (with `SITE_ROOT=legacy`, byte for byte, and every committed page, style and image is in it). When anything fails, nothing is deployed: the live site keeps the last good build and the run fails, so GitHub emails you; the first failed step's log says why.
 
 One-time setup (done at M0): repository Settings → Secrets and variables → Actions → New repository secret, `ESPN_S2` and `SWID` (the same values as the Codespaces secrets); Settings → Pages → Build and deployment → Source: GitHub Actions.
 
 ESPN cookies expire every few months; when the pull step reports expired cookies, update both secrets (Codespaces and Actions), then Run workflow.
+
+What the root serves (M2, 2026-10-07): the new site (`web/`) by default. The repository variable `SITE_ROOT` picks it: `web` (or unset) for the new site, with `/next/` redirecting old preview links to the same page at the root; `legacy` for the Stage A pages on engine data, with the new site back at `/next/`. To roll the live site back: Settings → Secrets and variables → Actions → Variables → New repository variable, `SITE_ROOT` = `legacy`, then Actions → Deploy → Run workflow (about 8 minutes). Delete the variable (or set it to `web`) and run it again to go forward. The share-preview tags follow the same setting.
 
 Undo: revert the commit that caused a problem (the push redeploys), or Run workflow once a fix is in. Each run keeps its build as the `site` artifact for 30 days and page screenshots for 14.
 
@@ -43,11 +45,11 @@ GitHub turns scheduled runs off in a repository with no commits for 60 days; the
 
 ### The change report
 
-Each deploy publishes `/changes.html` (and `changes.json`), with one line per page on the run's summary page (Actions → the Deploy run). It compares every page's data in the new build with the site that was live before it, so it is the release notes of that run: values changed, filled in or left blank, records only one side has, and examples. Counted apart, not as differences: numbers that differ only in rounding, games listed with their sides the other way round, and anything in the live season, which changes every week. A difference outside the live season is a stat correction, a rule change in that commit, or something to look into.
+Each deploy publishes `/changes.html` (and `changes.json`), with one line per page on the run's summary page (Actions → the Deploy run). It compares every page's data (the page models in `data/v1/`, from M2 on) in the new build with the site that was live before it, so it is the release notes of that run: values changed, filled in or left blank, records only one side has, and examples. Counted apart, not as differences: numbers that differ only in rounding, games listed with their sides the other way round, and anything in the live season, which changes every week. A difference outside the live season is a stat correction, a rule change in that commit, or something to look into.
 
 The first M1 run compared with the PC's files and listed the reasons for each page (reviewed by Ethan, 2026-10-06). To make the report locally after a build with `--verify`:
 
-    python tools/change_report.py --dist dist --site https://ethanradecki.github.io/FantasyFootballPages
+    python tools/change_report.py --dist dist --site https://ethanradecki.github.io/FantasyFootballPages --models
 
 (`--site .` compares with the files committed in the repo instead.)
 
@@ -57,7 +59,7 @@ The first M1 run compared with the PC's files and listed the reasons for each pa
 
 ## The new pages (Stage B preview)
 
-The Stage B pages live in `web/` (the template: no league data; `tools/check_web.py` checks) and read `config.json` and `data/v1/`. Every build writes them to `dist/next/` with their data, and the deploy publishes them at `/next/` beside the live site, so a moved page can be compared with the live one side by side. Pages not moved yet link to the live page. When every page is moved, one deploy puts `web/` at the root (milestone M2).
+The Stage B pages live in `web/` (the template: no league data; `tools/check_web.py` checks) and read `config.json` and `data/v1/`. Every build writes them to `dist/next/` with their data, and the deploy publishes them at `/next/` beside the live site, so a moved page can be compared with the live one side by side. Pages not moved yet link to the live page. Every page moved by B7 (#56); from M2 the deploy puts the new site at the root (see Deploy above).
 
 To look at the preview locally after a build: `python -m http.server 8000 --directory dist`, then open `/next/`.
 

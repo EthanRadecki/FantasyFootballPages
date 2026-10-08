@@ -18,6 +18,10 @@ Per page:
                  does not have yet
     examples     the first differences of each file
 
+From M2 on (the new pages at the root) the deploy compares the page models instead (`models=True`,
+report_models(): data/v1/, which the live site has served since M1), so the notes work the same before
+and after the cutover.
+
 Comparison rules (the files are not all keyed): JSON, CSV, the .js globals and the data
 literals inline in the pages are compared value by value; a list of records is matched
 by what it is about (identity() below), so a reordered list is not a change and a changed
@@ -382,6 +386,67 @@ def compare(old, new, where: str, t: Tally, season: int | None = None) -> None:
 FILE_SEASON = re.compile(r"(?:^|/)((?:19|20)\d\d)_")
 
 
+# ---------------------------------------------------------------- page models (M2 on)
+
+MODEL_DIRS = {"managers": ["data/v1/managers/"], "weekly-rankings": ["data/v1/weekly-rankings/"]}
+SKIP_MODELS = {"config.json", "build-manifest.json"}
+
+
+def model_files(manifest: dict) -> list[str]:
+    """The page models (data/v1/) a build wrote."""
+    return [f["path"] for f in manifest["files"] if f["path"].startswith("data/v1/") and f["path"].endswith(".json")]
+
+
+def model_pages() -> list[tuple[str, str, list[str]]]:
+    """(page id, title, the model files or folders it reads), in the site's page order (site.PAGES)."""
+    from engine.publish.site import PAGES as SITE_PAGES
+
+    return [(p["id"], p["title"], list(p.get("data") or []) + MODEL_DIRS.get(p["id"], [])) for p in SITE_PAGES
+            if p.get("data") or p["id"] in MODEL_DIRS]
+
+
+def load_model(path: Path):
+    """A page model without its meta block (build id and time change every build); None when missing."""
+    if not path.is_file():
+        return None
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(doc, dict):
+        doc.pop("meta", None)
+    return doc
+
+
+def report_models(dist: Path, site: Path) -> dict:
+    """The release notes from the page models (data/v1/), which the live site serves before and after
+    the M2 cutover: the same shape as report(), one section per page that reads model files (a file
+    two pages read is listed under the first), and no curated reasons."""
+    with open(dist / "build-manifest.json", encoding="utf-8") as f:
+        manifest = json.load(f)
+    previous = None
+    if (site / "build-manifest.json").is_file():
+        with open(site / "build-manifest.json", encoding="utf-8") as f:
+            previous = json.load(f).get("build") or {}
+    with open(dist / "config.json", encoding="utf-8") as f:
+        live = json.load(f).get("live_season")
+    views = model_files(manifest)
+    pages, used = [], set()
+    for pid, title, files in model_pages():
+        mine = [v for v in views if v not in used and any(v == p or (p.endswith("/") and v.startswith(p)) for p in files)]
+        used |= set(mine)
+        rows = []
+        for rel in mine:
+            t = Tally(live)
+            old, new = load_model(site / rel), load_model(dist / rel)
+            m = FILE_SEASON.search(rel)
+            if old is not None:
+                compare(old, new, "", t, int(m.group(1)) if m else None)
+            rows.append({"path": rel, "new_file": old is None, **t.counts(), "differences": t.total,
+                         "examples": t.examples})
+        if rows:
+            pages.append({"id": pid, "title": title, "why": [], "info": [], "files": rows})
+    return {"build": manifest.get("build"), "previous": previous if previous is not None else {}, "live_season": live,
+            "pages": pages, "unassigned": [v for v in views if v not in used]}
+
+
 def report(dist: Path, site: Path) -> dict:
     """{build, previous, live_season, pages: [{id, title, why, info, files: [{path, new_file, differences,
     <each Tally kind>, examples}]}], unassigned: [...]} for every legacy view in the build.
@@ -498,15 +563,18 @@ def render(rep: dict) -> str:
     return "\n".join(out)
 
 
-def fetch(base: str, dist: Path, dest: Path, timeout: int = 30) -> int:
-    """Download the live site's copy of every legacy view in the build (and its build-manifest.json) from
-    `base` (the Pages URL) into `dest`. A file the site does not have is skipped. Returns the files fetched."""
+def fetch(base: str, dist: Path, dest: Path, timeout: int = 30, models: bool = False) -> int:
+    """Download the live site's copy of every legacy view in the build (with `models`, every page model)
+    and its build-manifest.json from `base` (the Pages URL) into `dest`. A file the site does not have is
+    skipped. Returns the files fetched."""
     import urllib.error
     import urllib.request
 
     with open(dist / "build-manifest.json", encoding="utf-8") as f:
-        files = [x["path"] for x in json.load(f)["files"] if x["source"] == "generated"
-                 and not x["path"].startswith("data/v1/") and x["path"] not in ("config.json", "build-manifest.json")]
+        manifest = json.load(f)
+    files = model_files(manifest) if models else [
+        x["path"] for x in manifest["files"] if x["source"] == "generated"
+        and not x["path"].startswith("data/v1/") and x["path"] not in ("config.json", "build-manifest.json")]
     n = 0
     files.append("build-manifest.json")
     for rel in files:
@@ -523,8 +591,8 @@ def fetch(base: str, dist: Path, dest: Path, timeout: int = 30) -> int:
     return n
 
 
-def write(dist: Path, site: Path) -> dict:
-    rep = report(dist, site)
+def write(dist: Path, site: Path, models: bool = False) -> dict:
+    rep = report_models(dist, site) if models else report(dist, site)
     (dist / "changes.json").write_text(json.dumps(rep, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     (dist / "changes.html").write_text(render(rep), encoding="utf-8")
     return rep

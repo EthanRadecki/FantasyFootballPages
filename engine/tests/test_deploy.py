@@ -77,3 +77,63 @@ def test_sanity_checks(tmp_path):
 def test_sanity_needs_every_visible_manager(tmp_path):
     d = _dist(tmp_path, {2026: 1}, 1, files=False)
     assert deploy.sanity(d, None) == ["manager m_000000000002: no data/v1/managers file"]
+
+
+# ---------------------------------------------------------------- M2: the new site at the root
+
+def _web_build(tmp_path: Path) -> Path:
+    """A stand-in build with the new site in next/ and the build files at its root."""
+    d = tmp_path / "build"
+    (d / "next" / "pages").mkdir(parents=True)
+    (d / "next" / "index.html").write_text("<html>home</html>")
+    (d / "next" / "pages" / "managers.html").write_text("<html>managers</html>")
+    (d / "next" / "assets").mkdir()
+    (d / "next" / "assets" / "a.js").write_text("export {};")
+    (d / "next" / "config.json").write_text(json.dumps({"pages": [{"id": "home", "path": "index.html"},
+                                                                  {"id": "managers", "path": "pages/managers.html"}]}))
+    (d / "index.html").write_text("<html>stage A</html>")              # the Stage A site: not published at M2
+    for name in ("build-manifest.json", "verify.json", "changes.html", deploy.STATS):
+        (d / name).write_text("{}")
+    return d
+
+
+def test_m2_serves_the_new_site_at_the_root(tmp_path):
+    dist, out = _web_build(tmp_path), tmp_path / "_site"
+    counts = deploy.assemble_web(out, dist)
+    assert counts == {"root": 8, "next": 2}
+    assert (out / "index.html").read_text() == "<html>home</html>"       # the new site, not Stage A
+    assert (out / "changes.html").is_file() and (out / deploy.STATS).is_file()
+    assert deploy.check_web_root(out, dist) == []
+    page = (out / "next" / "pages" / "managers.html").read_text()        # preview links still land
+    assert 'url=../../pages/managers.html' in page and 'location.replace("../../pages/managers.html"' in page
+    assert 'location.replace("../index.html"' in (out / "next" / "index.html").read_text()
+    (out / "pages" / "managers.html").unlink()
+    (out / "stray.txt").write_text("x")
+    (out / "verify.json").unlink()
+    assert deploy.check_web_root(out, dist) == [
+        "missing or changed: pages/managers.html", "build file not published: verify.json",
+        "page in config.json not published: pages/managers.html", "not in the build: stray.txt"]
+
+
+def test_the_root_switch_and_its_rollback(tmp_path):
+    import os
+    saved = os.environ.pop("SITE_ROOT", None)
+    try:
+        assert deploy.root_mode() == "web"                               # M2 default
+        os.environ["SITE_ROOT"] = "Legacy "
+        assert deploy.root_mode() == "legacy"                            # the repository variable rolls back
+        assert deploy.root_mode("web") == "web"
+        try:
+            deploy.root_mode("next")
+            raise AssertionError("accepted an unknown root")
+        except ValueError:
+            pass
+    finally:
+        os.environ.pop("SITE_ROOT", None)
+        if saved is not None:
+            os.environ["SITE_ROOT"] = saved
+    try:
+        deploy.assemble_web(tmp_path / "_site", tmp_path)                # no new site in the build
+        raise AssertionError("assembled without a new site")
+    except FileNotFoundError:
+        pass

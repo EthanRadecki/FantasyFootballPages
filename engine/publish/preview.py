@@ -13,7 +13,8 @@ Share previews: a link pasted into a group chat or social app shows a card (titl
 image) only when the page's HTML carries Open Graph and Twitter tags with absolute URLs; crawlers
 do not run the pages' scripts. `share_tags` writes them into each page's <head> when the site's
 public URL is known: `league.site_url` in league.yaml, else the SITE_URL environment variable (the
-deploy workflow sets it). A build without either writes no tags.
+deploy workflow sets it). A build without either writes no tags. The pages' URLs follow where the
+deploy serves them (deploy.root_mode: the root from M2 on, /next/ when SITE_ROOT is legacy).
 """
 
 from __future__ import annotations
@@ -111,11 +112,13 @@ def write_preview(root: Path, out: Path, legacy_site: bool) -> list[str]:
         if rel.as_posix() not in absent:
             put(web / rel, rel)
     url = site_url(config)
+    from engine.publish.deploy import root_mode
+    base = f"{url}/" if root_mode() == "web" else f"{url}/{PREVIEW}/"   # where the deploy serves these pages
     if url:                                           # share previews (see the module docstring)
         for p in config["pages"]:
             path = dest / p["path"]
             if path.is_file() and (web / p["path"]).is_file():
-                title, meta = share_tags(config, p, f"{url}/{PREVIEW}/")
+                title, meta = share_tags(config, p, base)
                 path.write_text(with_share_tags(path.read_text(encoding="utf-8"), title, meta), encoding="utf-8")
     for src in sorted((out / "data" / "v1").rglob("*")):
         if src.is_file():

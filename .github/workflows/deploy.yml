@@ -28,6 +28,10 @@ concurrency:
 env:
   LEAGUE: leagues/preach/league.yaml
   SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+  # what the root serves (engine/publish/deploy.py): web, the new site (M2), or legacy, the Stage A site
+  # with the new one at /next/. Roll back by setting the repository variable SITE_ROOT to legacy
+  # (Settings, Secrets and variables, Actions, Variables) and running this workflow.
+  SITE_ROOT: ${{ vars.SITE_ROOT || 'web' }}
 
 jobs:
   engine:
@@ -76,7 +80,7 @@ jobs:
         continue-on-error: true            # release notes: a failure here never holds back the deploy
         shell: bash
         run: |
-          python tools/change_report.py --dist dist --site "$SITE_URL" | tee change-report.txt
+          python tools/change_report.py --dist dist --site "$SITE_URL" --models | tee change-report.txt
           { echo "### What changed"; echo; sed 's/^/- /' change-report.txt; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Page test on the build
@@ -120,8 +124,8 @@ jobs:
           name: site
           path: dist
 
-      - name: Assemble the site (the engine build, checked byte for byte)
-        run: python tools/deploy_site.py assemble --out _site --dist dist
+      - name: Assemble the site (SITE_ROOT; every file checked against the build)
+        run: python tools/deploy_site.py assemble --out _site --dist dist --root "$SITE_ROOT"
 
       - name: Page test on the assembled site
         run: python tools/smoke_pages.py _site

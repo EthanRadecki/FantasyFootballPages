@@ -1,15 +1,18 @@
 """Assemble and check the folder GitHub Pages serves (milestone M1, engine/publish/deploy.py).
 
     python tools/deploy_site.py sanity --dist dist [--previous URL_OR_FILE ...]
-    python tools/deploy_site.py assemble --out _site --dist dist [--next DIR]
+    python tools/deploy_site.py assemble --out _site --dist dist [--root web|legacy] [--next DIR]
 
 `sanity` checks a fresh engine build and writes its deploy-stats.json; with --previous
 (the last deploy's deploy-stats.json; the first one that loads is used, so the M0
 location /next/deploy-stats.json can follow the root one) it also checks that no season
 lost games and the live week did not go backwards. When none can be fetched (the first
-deploy) the comparisons are skipped with a note. `assemble` writes the engine build at
-the root (and a preview build at /next/ with --next), then checks the root byte for byte
-against the build and that every committed site file is in it. Both exit 1 on any problem.
+deploy) the comparisons are skipped with a note. `assemble` with --root web (M2, the
+default; else SITE_ROOT) writes the new site (dist/next/) at the root, the build files
+beside it and redirects at /next/, and checks each file against the build; with --root
+legacy it writes the engine build as before M2 (the Stage A site, the new site at /next/)
+and checks the root byte for byte against the build and that every committed site file is
+in it. Both exit 1 on any problem.
 """
 
 from __future__ import annotations
@@ -59,6 +62,7 @@ def main(argv: list[str] | None = None) -> int:
     a.add_argument("--out", required=True)
     a.add_argument("--dist", required=True)
     a.add_argument("--next", help="a second build to publish at /next/ (the Stage B preview)")
+    a.add_argument("--root", choices=deploy.ROOTS, help="what the root serves (default: SITE_ROOT, else web)")
     args = ap.parse_args(argv)
 
     if args.cmd == "sanity":
@@ -69,10 +73,17 @@ def main(argv: list[str] | None = None) -> int:
         print(f"games by season: {now['games']}; current: {now['current']}; "
               f"{len(now['visible_managers'])} visible managers")
     else:
-        out = Path(args.out)
-        counts = deploy.assemble(REPO, out, Path(args.dist), Path(args.next) if args.next else None)
-        problems = deploy.check_root(REPO, out, Path(args.dist))
-        print(f"assembled {out}: {counts['root']} files at the root (the engine build), {counts['next']} at /next/")
+        out, mode = Path(args.out), deploy.root_mode(args.root)
+        if mode == "web":
+            counts = deploy.assemble_web(out, Path(args.dist))
+            problems = deploy.check_web_root(out, Path(args.dist))
+            print(f"assembled {out}: {counts['root']} files at the root (the new site), "
+                  f"{counts['next']} redirects at /next/")
+        else:
+            counts = deploy.assemble(REPO, out, Path(args.dist), Path(args.next) if args.next else None)
+            problems = deploy.check_root(REPO, out, Path(args.dist))
+            print(f"assembled {out}: {counts['root']} files at the root (the Stage A site on engine data), "
+                  f"{counts['next']} at /next/")
     for p in problems:
         print(f"FAIL  {p}")
     print("OK" if not problems else f"{len(problems)} problem(s)")
