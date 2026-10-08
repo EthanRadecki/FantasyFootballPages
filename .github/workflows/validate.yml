@@ -34,7 +34,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install test dependencies
-        run: pip install pyyaml pytest pandas pyarrow scipy scikit-learn jsonschema
+        run: pip install pyyaml pytest pandas pyarrow scipy scikit-learn jsonschema pillow
 
       - name: Unit tests
         run: python -m pytest -q
@@ -58,7 +58,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pyyaml pandas pyarrow scipy scikit-learn jsonschema playwright
+          pip install pyyaml pandas pyarrow scipy scikit-learn jsonschema playwright pillow
           python -m playwright install --with-deps chromium
 
       - name: Generate the synthetic league
