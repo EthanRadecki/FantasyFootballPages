@@ -6,7 +6,10 @@ Career and live (in-season) grading are one code path.
 
 Method (unchanged from the legacy scripts):
 1. Starter baseline per season and position: mean points per game of the top
-   14 QB and TE, top 28 RB and WR, among the season's player pool, counting
+   N at the position, N = the league's starters there that season (starter_counts:
+   teams x the position's own lineup slots plus its share of the FLEX slots, split by
+   who filled them; Ethan 2026-10-08, option B; legacy mode: the fixed 14 QB and TE,
+   28 RB and WR), among the season's player pool, counting
    only players with 8 games; in a live season, half the weeks played so far
    (rounded down, at least 1), reaching 8 in week 16. The legacy baseline had
    no games floor (league decision 2026-09-29 to add it).
@@ -42,6 +45,9 @@ ROUND_WEIGHTS = [(3, 1.00), (7, 0.85), (12, 0.70)]
 LATE_WEIGHT = 0.55
 
 HIT_TOP_N = {"WR": 24, "RB": 24, "QB": 7, "TE": 7}
+# a hit is the same tier of starter in every league: the legacy cutoffs over Preach's dedicated
+# starters (24 of 28 RB/WR, 7 of 14 QB/TE), applied to each season's starter count
+HIT_SHARE = {"WR": 24 / 28, "RB": 24 / 28, "QB": 7 / 14, "TE": 7 / 14}
 HIT_BENCH_GAMES = 10
 STEAL_MIN_ROUND = 8
 STEAL_MIN_GAMES = 8
@@ -82,7 +88,55 @@ def baseline_min_games(weeks_played: int | None) -> int:
     return max(MIN_GAMES_LIVE, min(MIN_GAMES, weeks_played // 2))
 
 
-def baselines(stats: pd.DataFrame, live_weeks: dict[int, int] | None = None, min_games: bool = True) -> pd.DataFrame:
+def starter_counts(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """(season, position, starters, baseline_n, hit_n) for the skill positions.
+
+    starters = the season's team count x (the position's own starting slots + its share of every FLEX
+    slot, the share being how often that position filled that kind of slot in the season's started
+    lineups; a superflex slot counts QBs the same way). baseline_n = starters rounded (at least 1): the
+    surplus baseline's top N. hit_n = starters x HIT_SHARE rounded (at least 1): the hit cutoff's top N.
+    Preach (14 teams, 1 QB, 2 RB, 2 WR, 1 TE, 1 FLEX): QB and TE 14, RB and WR 28 plus their FLEX share."""
+    from engine.analytics.lineups import eligible, lineup_slots
+
+    lu = tables["lineups"]
+    lu = lu[lu["started"].astype(bool)]
+    slots = lineup_slots(lu)
+    teams = dict(zip(tables["seasons"]["season"].astype(int), tables["seasons"]["team_count"].astype(int)))
+    rows = []
+    for season, shape in sorted(slots.items()):
+        n_teams = teams.get(int(season))
+        if not n_teams:
+            continue
+        g = lu[lu["season"] == season]
+        per_team = {p: 0.0 for p in SKILL}
+        for slot in shape:
+            ok = [p for p in SKILL if p in eligible(slot)]
+            if len(ok) == 1 and slot == ok[0]:
+                per_team[ok[0]] += 1
+            elif ok:                                  # a FLEX: split by who filled it this season
+                filled = g.loc[(g["slot"] == slot) & g["position"].isin(ok), "position"].value_counts()
+                total = filled.sum()
+                for p in ok:
+                    per_team[p] += float(filled.get(p, 0)) / total if total else 1 / len(ok)
+        for p in SKILL:
+            s = n_teams * per_team[p]
+            rows.append({"season": int(season), "position": p, "starters": round(s, 4),
+                         "baseline_n": max(1, int(round(s))), "hit_n": max(1, int(round(s * HIT_SHARE[p])))})
+    return pd.DataFrame(rows, columns=["season", "position", "starters", "baseline_n", "hit_n"])
+
+
+def _top_n(counts: pd.DataFrame | None, column: str, fixed: dict[str, int]):
+    """season, position -> N from the starter counts (the latest season's for a season without them),
+    or the fixed legacy numbers without counts."""
+    if counts is None or not len(counts):
+        return lambda season, pos: fixed[pos]
+    by = {(int(s), p): int(n) for s, p, n in zip(counts["season"], counts["position"], counts[column])}
+    latest = int(counts["season"].max())
+    return lambda season, pos: by.get((int(season), pos), by.get((latest, pos), fixed[pos]))
+
+
+def baselines(stats: pd.DataFrame, live_weeks: dict[int, int] | None = None, min_games: bool = True,
+              counts: pd.DataFrame | None = None) -> pd.DataFrame:
     """(season, position) -> starter baseline PPG.
 
     Only players with enough games count toward it (baseline_min_games), so a
@@ -95,8 +149,9 @@ def baselines(stats: pd.DataFrame, live_weeks: dict[int, int] | None = None, min
         floor = s["season"].map(lambda season: baseline_min_games(live_weeks.get(season)))
         s = s[s["games"] >= floor]
     rows = []
+    n_of = _top_n(counts, "baseline_n", STARTER_RANK)
     for (season, pos), g in s.groupby(["season", "stat_position"]):
-        top = g.nlargest(STARTER_RANK[pos], "ppg")["ppg"].mean()
+        top = g.nlargest(n_of(season, pos), "ppg")["ppg"].mean()
         rows.append({"season": season, "position": pos, "baseline": round(top, 4)})
     return pd.DataFrame(rows)
 
@@ -121,13 +176,13 @@ def skill_picks(tables: dict[str, pd.DataFrame], exclude: set[str] = frozenset()
 def surplus(picks: pd.DataFrame, stats: pd.DataFrame, live_seasons: set[int] = frozenset(),
             force_zero: set[tuple[int, int]] = frozenset(),
             no_stats: set[tuple[int, int]] = frozenset(), baseline_floor: bool = True,
-            live_weeks: dict[int, int] | None = None) -> pd.DataFrame:
+            live_weeks: dict[int, int] | None = None, counts: pd.DataFrame | None = None) -> pd.DataFrame:
     """PRV, expected PRV, and surplus for every pick.
 
     Legacy mode only, both keyed by (season, overall_pick):
     force_zero: picks with no PRV whatever their games (the hand-kept injury list)
     no_stats: picks treated as having no stats at all (legacy name match missed)"""
-    base = baselines(stats, live_weeks, baseline_floor)
+    base = baselines(stats, live_weeks, baseline_floor, counts)
     out = picks.merge(stats[["season", "player_id", "ppg", "games"]], on=["season", "player_id"], how="left")
     out["ppg"] = out["ppg"].fillna(0.0)
     out["games"] = out["games"].fillna(0).astype(int)
@@ -193,7 +248,9 @@ def season_grades(sur: pd.DataFrame) -> pd.DataFrame:
         draft_grade=("surplus_wtd", "sum"), total_weight=("weight", "sum"), total_picks=("player_id", "size"),
         picks_with_data=("zeroed", lambda z: int((~z).sum())), hidden=("hidden", "any")).reset_index()
     g["draft_grade"] = g["draft_grade"].round(2)
-    g["season_rank"] = g["draft_grade"].where(~g["hidden"]).groupby(g["season"]).rank(ascending=False).astype("Int64")
+    # tied grades share the better rank (rank's default averages them into a half rank)
+    g["season_rank"] = (g["draft_grade"].where(~g["hidden"]).groupby(g["season"])
+                        .rank(ascending=False, method="min").astype("Int64"))
     return g
 
 
@@ -207,21 +264,24 @@ def heatmap(sur: pd.DataFrame) -> pd.DataFrame:
 
 # ---------------------------------------------------------------- hit rate
 
-def hit_thresholds(stats: pd.DataFrame) -> pd.DataFrame:
+def hit_thresholds(stats: pd.DataFrame, counts: pd.DataFrame | None = None) -> pd.DataFrame:
     """(season, position) -> hit cutoff (PPG of the Nth best player with 10+
-    games) and position average (mean PPG of those players)."""
+    games; N from the starter counts, else the fixed legacy numbers) and position
+    average (mean PPG of those players)."""
     bench = stats[(stats["games"] >= HIT_BENCH_GAMES) & stats["stat_position"].isin(HIT_TOP_N)]
     rows = []
+    n_of = _top_n(counts, "hit_n", HIT_TOP_N)
     for (season, pos), g in bench.groupby(["season", "stat_position"]):
         ranked = g.sort_values("ppg", ascending=False)["ppg"].reset_index(drop=True)
-        n = HIT_TOP_N[pos]
+        n = n_of(season, pos)
         rows.append({"season": season, "position": pos,
                      "cutoff": ranked.iloc[n - 1] if len(ranked) >= n else ranked.iloc[-1],
                      "pos_avg": round(ranked.mean(), 2)})
     return pd.DataFrame(rows)
 
 
-def hits(picks: pd.DataFrame, stats: pd.DataFrame, force_zero: set[tuple[int, int]] = frozenset()) -> pd.DataFrame:
+def hits(picks: pd.DataFrame, stats: pd.DataFrame, force_zero: set[tuple[int, int]] = frozenset(),
+         counts: pd.DataFrame | None = None) -> pd.DataFrame:
     """Every skill pick with hit flag (PPG at or above the season's top-N
     cutoff at the position) and points above the position average."""
     out = picks.merge(stats[["season", "player_id", "ppg", "games"]], on=["season", "player_id"], how="left")
@@ -229,7 +289,7 @@ def hits(picks: pd.DataFrame, stats: pd.DataFrame, force_zero: set[tuple[int, in
     out["games"] = out["games"].fillna(0).astype(int)
     forced = pd.Series([(s, p) in force_zero for s, p in zip(out["season"], out["overall_pick"])], index=out.index)
     out.loc[forced, ["ppg", "games"]] = [0.0, 0]
-    out = out.merge(hit_thresholds(stats), on=["season", "position"], how="left")
+    out = out.merge(hit_thresholds(stats, counts), on=["season", "position"], how="left")
     out["hit"] = (out["ppg"] > 0) & out["cutoff"].notna() & (out["ppg"] >= out["cutoff"])
     out["pts_above_avg"] = np.where(out["ppg"] == 0, 0.0, (out["ppg"] - out["pos_avg"].fillna(0)).round(2))
     out["tier"] = out["round"].map(tier)
@@ -313,22 +373,26 @@ def analyze_draft(tables: dict[str, pd.DataFrame], exclude: set[str] = frozenset
     row carries `hidden`, and ranks count visible managers only.
     """
     live = live_seasons(tables)
+    counts = None if legacy_mode else starter_counts(tables)        # legacy: the fixed 14/28 and 24/7
     stats = season_stats(tables, legacy_universe if legacy_mode else None)
     picks = skill_picks(tables, exclude if legacy_mode else frozenset(), espn_numbering=legacy_mode)
     picks["hidden"] = picks["manager_key"].isin(exclude)
     weeks_played = live_weeks_played(tables, live)
-    sur = surplus(picks, stats, live, force_zero, no_stats, baseline_floor=not legacy_mode, live_weeks=weeks_played)
+    sur = surplus(picks, stats, live, force_zero, no_stats, baseline_floor=not legacy_mode, live_weeks=weeks_played,
+                  counts=counts)
     finished = sorted(set(sur["season"]) - live)
     all_picks = skill_picks(tables, frozenset(), espn_numbering=legacy_mode)
-    h = hits(all_picks[~all_picks["season"].isin(live)], stats, hit_force_zero)
+    h = hits(all_picks[~all_picks["season"].isin(live)], stats, hit_force_zero, counts)
     h["hidden"] = h["manager_key"].isin(exclude)
     return {
-        "draft_baselines": baselines(stats, weeks_played, min_games=not legacy_mode),
+        "draft_baselines": baselines(stats, weeks_played, min_games=not legacy_mode, counts=counts),
         "draft_surplus": sur,
         "draft_career_grades": career_grades(sur, finished),
         "draft_season_grades": season_grades(sur),
         "draft_heatmap": heatmap(sur[sur["season"].isin(finished)]),
-        "draft_hit_thresholds": hit_thresholds(stats),
+        "draft_hit_thresholds": hit_thresholds(stats, counts),
+        "draft_starter_counts": counts if counts is not None else pd.DataFrame(
+            columns=["season", "position", "starters", "baseline_n", "hit_n"]),
         "draft_hits": h,
         "draft_board": board(tables, stats, live, all_positions=not legacy_mode, live_stats=not legacy_mode,
                              force_zero=hit_force_zero if legacy_mode else frozenset()),

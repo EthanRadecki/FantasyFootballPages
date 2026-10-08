@@ -147,7 +147,7 @@ def surplus_model(a: dict, seasons: list[int], hidden: set[str]) -> dict:
         "season_best": {k: [row(x) for x in xs] for k, xs in v["SEASON_BEST"].items()},
         "season_worst": {k: [row(x) for x in xs] for k, xs in v["SEASON_WORST"].items()},
         "scale": {"min": float(vis["surplus"].min()), "max": float(vis["surplus"].max())} if len(vis) else None,
-        "method": draft_method(int(p["round"].max()) if len(p) else None),
+        "method": draft_method(int(p["round"].max()) if len(p) else None, a.get("draft_starter_counts"), list(seasons)),
     }
 
 

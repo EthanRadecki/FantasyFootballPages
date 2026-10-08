@@ -38,12 +38,30 @@ def player_names(ctx) -> dict:
     return ctx.memo("draft_player_names", run)
 
 
-def draft_method(rounds: int | None = None) -> dict:
+def draft_method(rounds: int | None = None, counts=None, seasons: list[int] | None = None) -> dict:
     """The draft value method's constants (engine/analytics/draft.py), published with the draft pages so
     their method notes state the rules the numbers follow instead of typing them. `rounds`: the most
-    rounds any of the graded drafts had (the last round weight runs to it)."""
+    rounds any of the graded drafts had (the last round weight runs to it).
+
+    counts: the analysis table `draft_starter_counts` (each season's starters per position from its
+    lineup slots and team count). With it, `starter_rank` and `hit_top_n` are the latest graded
+    season's (`season`), `by_season` lists every graded season's, and `lineup_scaled` is true;
+    without it they are the fixed legacy numbers."""
     from engine.analytics import draft as d
-    return {"rounds": rounds, "starter_rank": dict(d.STARTER_RANK), "min_games": d.MIN_GAMES, "window": d.WINDOW,
-            "round_weights": [{"last_round": last, "weight": w} for last, w in d.ROUND_WEIGHTS]
-            + [{"last_round": None, "weight": d.LATE_WEIGHT}],
-            "hit_top_n": dict(d.HIT_TOP_N), "steal_min_round": d.STEAL_MIN_ROUND, "steal_min_games": d.STEAL_MIN_GAMES}
+    out = {"rounds": rounds, "starter_rank": dict(d.STARTER_RANK), "min_games": d.MIN_GAMES, "window": d.WINDOW,
+           "round_weights": [{"last_round": last, "weight": w} for last, w in d.ROUND_WEIGHTS]
+           + [{"last_round": None, "weight": d.LATE_WEIGHT}],
+           "hit_top_n": dict(d.HIT_TOP_N), "steal_min_round": d.STEAL_MIN_ROUND, "steal_min_games": d.STEAL_MIN_GAMES,
+           "lineup_scaled": False}
+    if counts is None or not len(counts):
+        return out
+    have = sorted(int(s) for s in counts["season"].unique())
+    graded = [s for s in (seasons or have) if s in have] or have
+    by = {}
+    for s in graded:
+        c = counts[counts["season"] == s]
+        by[str(s)] = {"starter_rank": {r.position: int(r.baseline_n) for r in c.itertuples()},
+                      "hit_top_n": {r.position: int(r.hit_n) for r in c.itertuples()}}
+    last = str(graded[-1])
+    return out | {"starter_rank": by[last]["starter_rank"], "hit_top_n": by[last]["hit_top_n"], "season": int(last),
+                  "by_season": by, "lineup_scaled": True}

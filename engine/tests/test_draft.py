@@ -111,3 +111,18 @@ def test_board_orders_picks_and_applies_legacy_rules():
     data = board_data(eng, {"a": "Ann", "b": "Bob"})
     assert [p["p"] for p in data["DRAFT"]["2024"]["1"]] == ["WR Guy", "RB Guy"]
     assert data["SLOT_ORDER"] == {"2024": ["Ann", "Bob"]}
+
+
+def test_starter_counts_follow_each_seasons_lineup():
+    """Option B (Ethan, 2026-10-08): teams x the position's own slots plus its share of the FLEX slots."""
+    rows = []
+    for team in range(4):                                   # 4 teams, one week: QB, RB, WR, FLEX (filled 3 WR, 1 RB)
+        for slot, pos in (("QB", "QB"), ("RB", "RB"), ("WR", "WR"), ("RB/WR/TE", "WR" if team < 3 else "RB")):
+            rows.append({"season": 2025, "week": 1, "team_id": team, "slot": slot, "position": pos, "started": True})
+    tables = {"lineups": pd.DataFrame(rows), "seasons": pd.DataFrame({"season": [2025], "team_count": [4]})}
+    c = draft.starter_counts(tables).set_index("position")
+    assert c.loc["QB", "starters"] == 4 and c.loc["TE", "starters"] == 0
+    assert c.loc["WR", "starters"] == 4 + 3 and c.loc["RB", "starters"] == 4 + 1
+    assert c.loc["WR", "hit_n"] == round(7 * 24 / 28) and c.loc["TE", "baseline_n"] == 1     # at least one
+    assert draft._top_n(None, "baseline_n", draft.STARTER_RANK)(2025, "QB") == 14             # legacy: fixed
+    assert draft._top_n(c.reset_index(), "baseline_n", draft.STARTER_RANK)(2030, "WR") == 7   # latest season's
