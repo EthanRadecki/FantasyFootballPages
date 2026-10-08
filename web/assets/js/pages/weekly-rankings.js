@@ -562,7 +562,7 @@ var DRAFT_METRICS = {
   },
   projected_sos: {
     label: 'Projected SOS',
-    desc: 'Average projected points of each manager’s opponents across the full regular-season schedule. Higher means a tougher slate of matchups.',
+    desc: 'Average projected points of each manager’s remaining opponents, from this week through the end of the regular season. Higher means a tougher slate of matchups.',
     getValue: function (t) { return t.sos_avg_opp_ppg; },
     format: function (v) { return v.toFixed(1) + ' PPG'; },
     diverging: false
