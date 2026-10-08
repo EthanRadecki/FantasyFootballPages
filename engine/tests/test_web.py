@@ -132,3 +132,46 @@ def test_share_tags_give_chat_apps_a_preview_card(tmp_path):
             os.environ["SITE_ROOT"] = saved_root
         if saved is not None:
             os.environ["SITE_URL"] = saved
+
+
+def test_a_league_without_a_logo_gets_its_own_share_card_and_icon(tmp_path):
+    """Ethan, 2026-10-08: a family league link showed Preach's logo. A league with no logo gets a drawn
+    card (og:image) and icon (favicon, apple-touch-icon); a league with a logo gets neither."""
+    import os
+    root, out = tmp_path / "repo", tmp_path / "dist"
+    (root / "web" / "pages").mkdir(parents=True)
+    head = '<html><head><title>x</title><link rel="icon" type="image/png" href=""></head></html>'
+    (root / "web" / "index.html").write_text(head)
+    (root / "web" / "pages" / "matchups.html").write_text(head)
+    (out / "data" / "v1").mkdir(parents=True)
+    cfg = {"league": {"name": "Radecki Family League", "first_season": 2022, "logo": None,
+                      "logos_by_season": {"2026": None}, "site_url": "https://x.github.io/site/family"},
+           "live_season": 2026, "theme": {"season_colors": {"2022": "#d8b28e", "2026": "#c292b8"}},
+           "pages": [{"id": "home", "title": "Home", "path": "index.html"},
+                     {"id": "matchups", "title": "Matchups", "path": "pages/matchups.html"}]}
+    (out / "config.json").write_text(json.dumps(cfg))
+    saved_root = os.environ.get("SITE_ROOT")
+    os.environ["SITE_ROOT"] = "web"
+    try:
+        written = preview.write_preview(root, out, legacy_site=False)
+        assert "next/assets/share/card.png" in written and "next/assets/share/icon.png" in written
+        from PIL import Image
+        assert Image.open(out / "next" / "assets" / "share" / "card.png").size == (1200, 630)
+        page = (out / "next" / "pages" / "matchups.html").read_text()
+        assert '<meta property="og:image" content="https://x.github.io/site/family/assets/share/card.png">' in page
+        assert 'rel="apple-touch-icon" href="https://x.github.io/site/family/assets/share/icon.png"' in page
+        assert '<link rel="icon" type="image/png" href="../assets/share/icon.png">' in page
+        assert 'href="assets/share/icon.png"' in (out / "next" / "index.html").read_text()
+        from engine.publish.share_card import initials
+        assert initials("Radecki Family League") == "RFL" and initials("Preach") == "P"
+        # a league with a logo keeps it: no drawn card
+        out2 = tmp_path / "dist2"
+        (out2 / "data" / "v1").mkdir(parents=True)
+        cfg["league"]["logo"] = "images/l.png"
+        (out2 / "config.json").write_text(json.dumps(cfg))
+        assert not any("share/" in w for w in preview.write_preview(root, out2, legacy_site=False))
+        assert "images/l.png" in (out2 / "next" / "index.html").read_text()
+    finally:
+        os.environ.pop("SITE_ROOT", None)
+        if saved_root is not None:
+            os.environ["SITE_ROOT"] = saved_root

@@ -44,7 +44,7 @@ export function drawNav(cfg, current) {
   var icon = document.querySelector('link[rel="icon"]') || document.head.appendChild(Object.assign(
     document.createElement('link'), { rel: 'icon', type: 'image/png' }));
   if (logo) icon.href = logo;
-  else icon.remove();
+  else if (!icon.getAttribute('href')) icon.remove();   // keep the icon the build drew (no league logo)
   var page = cfg.pages.find(function (p) { return p.id === current; });
   document.title = page && page.id !== 'home' ? page.title + ' | ' + cfg.league.name : cfg.league.name;
 }

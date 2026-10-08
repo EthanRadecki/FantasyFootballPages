@@ -14,7 +14,8 @@ image) only when the page's HTML carries Open Graph and Twitter tags with absolu
 do not run the pages' scripts. `share_tags` writes them into each page's <head> when the site's
 public URL is known: `league.site_url` in league.yaml, else the SITE_URL environment variable (the
 deploy workflow sets it). A build without either writes no tags. The pages' URLs follow where the
-deploy serves them (deploy.root_mode: the root from M2 on, /next/ when SITE_ROOT is legacy).
+deploy serves them (deploy.root_mode: the root from M2 on, /next/ when SITE_ROOT is legacy). A league
+without a logo gets a drawn card and icon (share_card.py) so its links do not borrow another league's.
 """
 
 from __future__ import annotations
@@ -71,8 +72,9 @@ def site_url(config: dict) -> str | None:
     return url.rstrip("/") + (f"/{path}" if path else "")
 
 
-def share_tags(config: dict, page: dict, base: str) -> tuple[str, str]:
-    """(title, the <meta> tags) for one page; base is the URL the page's path is relative to."""
+def share_tags(config: dict, page: dict, base: str, cards: bool = False) -> tuple[str, str]:
+    """(title, the <meta> tags) for one page; base is the URL the page's path is relative to. cards: the
+    league has no logo and the build drew its share card and icon (share_card.py)."""
     league = config["league"]
     season = config.get("live_season") or (config.get("current") or {}).get("season") or ""
     fill = {"league": league["name"], "season": season, "first": league.get("first_season", ""),
@@ -80,6 +82,10 @@ def share_tags(config: dict, page: dict, base: str) -> tuple[str, str]:
     title, desc = SHARE_TEXT.get(page["id"], ("{page} | {league}", DEFAULT_DESCRIPTION))
     title, desc = title.format(**fill), desc.format(**fill)
     logo = (league.get("logos_by_season") or {}).get(str(season)) or league.get("logo")
+    touch = logo
+    if not logo and cards:
+        from engine.publish.share_card import CARD, ICON
+        logo, touch = CARD, ICON
     tags = [("property", "og:title", title), ("property", "og:description", desc),
             ("property", "og:url", base + page["path"]), ("property", "og:type", "website"),
             ("property", "og:site_name", league["name"]),
@@ -88,8 +94,8 @@ def share_tags(config: dict, page: dict, base: str) -> tuple[str, str]:
     if logo:
         tags += [("property", "og:image", base + logo), ("name", "twitter:image", base + logo)]
     meta = "".join(f'<meta {k}="{v}" content="{html.escape(c, quote=True)}">\n' for k, v, c in tags)
-    if logo:
-        meta += f'<link rel="apple-touch-icon" href="{html.escape(base + logo, quote=True)}">\n'
+    if touch:
+        meta += f'<link rel="apple-touch-icon" href="{html.escape(base + touch, quote=True)}">\n'
     return title, meta
 
 
@@ -97,6 +103,11 @@ def with_share_tags(text: str, title: str, meta: str) -> str:
     """The page with its <title> set (crawlers that ignore og:title read it) and the tags before </head>."""
     text = re.sub(r"<title>.*?</title>", lambda m: f"<title>{html.escape(title)}</title>", text, count=1, flags=re.S)
     return text.replace("</head>", meta + "</head>", 1)
+
+
+def with_icon(text: str, href: str) -> str:
+    """The page's static icon link pointed at href (the template ships it empty)."""
+    return re.sub(r'(<link rel="icon"[^>]*?href=)""', lambda m: f'{m.group(1)}"{href}"', text, count=1)
 
 
 def write_preview(root: Path, out: Path, legacy_site: bool) -> list[str]:
@@ -119,6 +130,9 @@ def write_preview(root: Path, out: Path, legacy_site: bool) -> list[str]:
     for rel in web_files(web):
         if rel.as_posix() not in absent:
             put(web / rel, rel)
+    from engine.publish.share_card import ICON, write_cards
+    cards = write_cards(dest, config)                 # a league without a logo: its own share image and icon
+    written += [f"{PREVIEW}/{rel}" for rel in cards]
     url = site_url(config)
     from engine.publish.deploy import root_mode
     base = f"{url}/" if root_mode() == "web" else f"{url}/{PREVIEW}/"   # where the deploy serves these pages
@@ -126,8 +140,14 @@ def write_preview(root: Path, out: Path, legacy_site: bool) -> list[str]:
         for p in config["pages"]:
             path = dest / p["path"]
             if path.is_file() and (web / p["path"]).is_file():
-                title, meta = share_tags(config, p, base)
+                title, meta = share_tags(config, p, base, bool(cards))
                 path.write_text(with_share_tags(path.read_text(encoding="utf-8"), title, meta), encoding="utf-8")
+    if cards:                                         # the tab icon, relative to each page (also with no URL)
+        for p in config["pages"]:
+            path = dest / p["path"]
+            if path.is_file() and (web / p["path"]).is_file():
+                rel = "../" * p["path"].count("/") + ICON
+                path.write_text(with_icon(path.read_text(encoding="utf-8"), rel), encoding="utf-8")
     for src in sorted((out / "data" / "v1").rglob("*")):
         if src.is_file():
             put(src, src.relative_to(out))
