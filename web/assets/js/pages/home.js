@@ -43,9 +43,10 @@ function pageHref(cfg, id) {
 }
 
 function drawHero(cfg) {
-  var logo = url(cfg.league.logo);
+  // a league without a logo shows its name alone (no request for a missing image)
+  var logo = cfg.league.logo ? url(cfg.league.logo) : null;
   document.getElementById('hero').innerHTML =
-    '<img src="' + esc(logo) + '" alt="" class="hero-logo" onerror="this.remove()">' +
+    (logo ? '<img src="' + esc(logo) + '" alt="" class="hero-logo" onerror="this.remove()">' : '') +
     '<h1>' + esc(cfg.league.name) + '</h1><p class="hero-est">Est. ' + esc(cfg.league.first_season) + '</p>';
 }
 

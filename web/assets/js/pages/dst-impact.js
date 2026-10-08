@@ -60,7 +60,7 @@ function notes(cfg, mgr) {
   var info = function (s) { return (cfg.seasons || []).find(function (x) { return x.season === Number(s); }) || {}; };
   var odd = Object.keys(SP).filter(function (s) { return info(s).playoff_team_count && info(s).playoff_team_count !== field; }).sort();
   var rest = Object.keys(SP).filter(function (s) { return odd.indexOf(s) === -1; }).map(Number);
-  document.getElementById('format-note').textContent = !odd.length ? '' : ' ' + andList(odd) + ' had non-standard playoff formats ('
+  document.getElementById('format-note').textContent = !odd.length ? '' : ' ' + andList(odd) + (odd.length === 1 ? ' had a non-standard playoff format (' : ' had non-standard playoff formats (')
     + odd.map(function (s) {
       var i = info(s);
       return s + ': ' + i.playoff_team_count + (i.team_count === i.playoff_team_count ? ' of ' + i.team_count : '') + ' teams made the playoffs';

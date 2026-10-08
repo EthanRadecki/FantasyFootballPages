@@ -339,3 +339,28 @@ def test_extra_analytics_conference_moves():
     assert extra_pub.moved_conference({"teams": teams}, [2020, 2021], {"m_c"}) == ["m_b"]   # hidden left out
     assert extra_pub.moved_conference({"teams": teams}, [2021], set()) == []
     assert extra_pub.moved_conference({"teams": teams.drop(columns="division_id")}, [2020, 2021], set()) == []
+
+
+def test_model_sections_stand_alone_in_small_leagues():
+    """A league where every manager makes the playoffs (the first friend-league test, 2026-10-08) cannot fit the
+    quarterly model: its tables come back empty and the other model sections are still published."""
+    import warnings
+    import numpy as np
+    from engine.analytics import regressions as rg
+
+    q = pd.DataFrame({"season": [2023] * 6, "manager_key": list("abcdef"), "Q1": [1.0, 2, 3, 4, 5, 6],
+                      "Q2": [2.0, 1, 4, 3, 6, 5], "made": [1] * 6})
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        assert rg._quarter_model(q, ["1-3", "4-6"])["quarterly_coefficients"].empty     # nothing to predict
+        sep = q.assign(made=[0, 0, 0, 1, 1, 1], Q2=[1.0, 2, 3, 4, 5, 6])
+        out = rg._quarter_model(sep, ["1-3", "4-6"])                                   # perfectly separated
+    assert out["quarterly_coefficients"].empty or np.isfinite(out["quarterly_coefficients"]["coef"]).all()
+    a = {"quarterly_coefficients": pd.DataFrame(columns=rg.QUARTER_COLUMNS),
+         "position_career": pd.DataFrame([{"manager_key": "m_a", "win_pct": 0.5, "QB_avg": 20.0, "QB_sd": 5.0,
+                                           "hidden": False}]),
+         "position_coefficients": pd.DataFrame([{"position": "QB", "coef": 1.0, "std_coef": 0.5, "p_value": 0.01,
+                                                 "corr": 0.4}])}
+    m = extra_pub.models_model(a)
+    assert "quarterly" not in m and "attribution" not in m and "gauntlet" not in m
+    assert m["positional"]["positions"] == ["QB"]

@@ -182,9 +182,32 @@ def quarter_averages(scores: pd.DataFrame, quarters: list[tuple[int, int]]) -> p
     return out.reset_index()
 
 
+QUARTER_COLUMNS = ["quarter", "weeks", "coef", "p_value", "odds_ratio", "corr"]
+
+
+def no_quarter_model(reason: str) -> dict[str, pd.DataFrame]:
+    """The quarterly model's tables when a league's data cannot fit it (empty), and why."""
+    import warnings
+    warnings.warn(f"quarterly playoff model not fitted: {reason}", stacklevel=2)
+    return {"quarterly_coefficients": pd.DataFrame(columns=QUARTER_COLUMNS),
+            "quarterly_fit": pd.DataFrame(columns=["n", "auc"])}
+
+
 def _quarter_model(q: pd.DataFrame, labels: list[str]) -> dict[str, pd.DataFrame]:
+    """Generic leagues: a league where every manager makes the playoffs (or none miss in the data) has
+    nothing to predict, and a tiny one can separate the outcome perfectly so the fit never converges;
+    both give empty tables instead of stopping the build (the page hides the section)."""
     cols = [c for c in q.columns if c.startswith("Q")]
-    fit = logit(q["made"].astype(float).to_numpy(), q[cols])
+    made = q["made"].astype(float)
+    if made.nunique() < 2:
+        return no_quarter_model("every manager-season has the same playoff outcome")
+    try:
+        with np.errstate(all="ignore"):
+            fit = logit(made.to_numpy(), q[cols])
+    except np.linalg.LinAlgError:
+        return no_quarter_model("the fit does not converge (the quarters separate the outcome perfectly)")
+    if not all(np.isfinite(v) for v in list(fit["coef"].values()) + list(fit["p"].values())):
+        return no_quarter_model("the fit does not converge (non-finite coefficients)")
     coef = pd.DataFrame({"quarter": cols, "weeks": labels, "coef": [fit["coef"][c] for c in cols],
                          "p_value": [fit["p"][c] for c in cols], "odds_ratio": [fit["odds_ratio"][c] for c in cols],
                          "corr": [q[c].corr(q["made"].astype(float)) for c in cols]})
