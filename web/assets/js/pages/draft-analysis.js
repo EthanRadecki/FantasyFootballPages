@@ -271,7 +271,9 @@ function notes() {
     var tops = Object.keys(groups).map(Number).sort(function (a, b) { return b - a; })
       .map(function (n) { return 'top ' + n + ' at ' + groups[n].join(' or '); }).join(', or ');
     document.getElementById('hit-note').innerHTML = 'A pick is a <strong>hit</strong> if the player finished ' + tops
-      + ', in PPR points per game for that season.' + (teams && teams === m.starter_rank.QB ? ' Thresholds are calibrated to the ' + teams + '-team league size.' : '')
+      + ', in PPR points per game for that season.' + (m.lineup_scaled
+        ? ' Cutoffs follow each season\u2019s starters at the position (' + m.season + ' shown): the teams times its lineup slots, FLEX slots split by who filled them.'
+        : (teams && teams === m.starter_rank.QB ? ' Thresholds are calibrated to the ' + teams + '-team league size.' : ''))
       + ' Stats are sourced directly from ' + esc(provider) + ' fantasy scoring to match your exact league settings. Data covers all '
       + count(seasons.length, 'season') + ', ' + rangeText(seasons) + '. Players with fewer than ' + m.min_games
       + ' games are excluded from hit rate calculations, since small samples are not reliable indicators of talent.';
@@ -282,7 +284,8 @@ function notes() {
     ['QB', 'TE', 'RB', 'WR'].forEach(function (p) { if (m.starter_rank[p] != null) (sr[m.starter_rank[p]] = sr[m.starter_rank[p]] || []).push(p); });
     var base = Object.keys(sr).map(Number).sort(function (a, b) { return a - b; }).map(function (n) { return 'top ' + n + ' for ' + sr[n].join('/'); }).join(', ');
     document.getElementById('surplus-note').innerHTML = 'Every pick is scored using <strong>position-relative value (PRV)</strong> -- how a player '
-      + 'performed versus the average starter at their position that season (' + base + '). That PRV is then compared against all skill position '
+      + 'performed versus the average starter at their position that season (' + base + (m.lineup_scaled ? ' in ' + m.season
+        + ', from each season\u2019s lineup slots' : '') + '). That PRV is then compared against all skill position '
       + 'players taken within ' + m.window + ' picks of that slot, capturing <strong>opportunity cost</strong>. A TE who beats the TE baseline by 5 '
       + 'points earns the same credit as a WR who beats the WR baseline by 5 points. <strong>Round weights</strong> apply: full weight early, '
       + 'discounted late. Picks with fewer than ' + m.min_games + ' games played count as zero surplus.';

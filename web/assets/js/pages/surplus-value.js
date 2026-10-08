@@ -72,7 +72,8 @@ function methodNote(m) {
   // "in a 14-team league" when the baseline is one starter per team of the league's latest graded season
   var last = D.seasons[D.seasons.length - 1];
   var teams = ((cfg.seasons || []).find(function (s) { return s.season === last; }) || {}).team_count;
-  if (teams && teams === m.starter_rank.QB) tops += ' in a ' + teams + '-team league';
+  if (m.lineup_scaled) tops += ' in ' + m.season + '; each season uses its own: the teams times the position\u2019s lineup slots, FLEX slots split by who filled them';
+  else if (teams && teams === m.starter_rank.QB) tops += ' in a ' + teams + '-team league';
   var lo = 1;
   var weights = m.round_weights.map(function (w) {
     var hi = w.last_round != null ? w.last_round : m.rounds;

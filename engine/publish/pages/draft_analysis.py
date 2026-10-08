@@ -229,7 +229,7 @@ def read_page(text: str) -> dict:
     return out
 
 
-def analysis_model(results, who, h, positions, career, hidden: set[str]) -> dict:
+def analysis_model(results, who, h, positions, career, hidden: set[str], counts=None) -> dict:
     ident = lambda k: k
     v = analysis_view(results, who, h, positions, career, ident)
     shown = shown_slots(results)
@@ -258,7 +258,8 @@ def analysis_model(results, who, h, positions, career, hidden: set[str]) -> dict
                             "seasons": x["seasons"]} for x in v["CAREER_PREVIEW"]],
         "above_average_max": v["ABOVE_AVG_CEIL"],
         "seasons": sorted(int(s) for s in h["season"].unique()),
-        "method": draft_method(int(h["round"].max()) if len(h) else None),
+        "method": draft_method(int(h["round"].max()) if len(h) else None, counts,
+                               sorted(int(s) for s in h["season"].unique())),
     }
 
 
@@ -377,7 +378,8 @@ class DraftAnalysisPublisher:
         if not all(n in a and len(a[n]) for n in self.NEEDS):
             return []
         parts = self._engine(ctx)
-        out = [Output(f"data/v1/{SCHEMA}.json", analysis_model(*parts, excluded_manager_keys(ctx.cfg)), SCHEMA, VERSION)]
+        out = [Output(f"data/v1/{SCHEMA}.json", analysis_model(*parts, excluded_manager_keys(ctx.cfg),
+                                                                         counts=ctx.analysis.get("draft_starter_counts")), SCHEMA, VERSION)]
         path = ctx.site_root / PAGE
         if ctx.legacy_site and path.is_file():
             text = path.read_text(encoding="utf-8")
