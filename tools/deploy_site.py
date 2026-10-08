@@ -63,6 +63,8 @@ def main(argv: list[str] | None = None) -> int:
     a.add_argument("--dist", required=True)
     a.add_argument("--next", help="a second build to publish at /next/ (the Stage B preview)")
     a.add_argument("--root", choices=deploy.ROOTS, help="what the root serves (default: SITE_ROOT, else web)")
+    a.add_argument("--league", action="append", default=[], metavar="PATH=DIST",
+                   help="another league's build (DIST) to publish at /PATH/ (repeatable)")
     args = ap.parse_args(argv)
 
     if args.cmd == "sanity":
@@ -74,16 +76,22 @@ def main(argv: list[str] | None = None) -> int:
               f"{len(now['visible_managers'])} visible managers")
     else:
         out, mode = Path(args.out), deploy.root_mode(args.root)
+        extra = [(deploy.league_path(x.split("=", 1)[0]), Path(x.split("=", 1)[1])) for x in args.league]
         if mode == "web":
             counts = deploy.assemble_web(out, Path(args.dist))
-            problems = deploy.check_web_root(out, Path(args.dist))
             print(f"assembled {out}: {counts['root']} files at the root (the new site), "
                   f"{counts['next']} redirects at /next/")
         else:
             counts = deploy.assemble(REPO, out, Path(args.dist), Path(args.next) if args.next else None)
-            problems = deploy.check_root(REPO, out, Path(args.dist))
             print(f"assembled {out}: {counts['root']} files at the root (the Stage A site on engine data), "
                   f"{counts['next']} at /next/")
+        for path, dist in extra:
+            n = deploy.assemble_web(out / path, dist, redirects=False)
+            print(f"assembled {out / path}: {n['root']} files (league at /{path}/)")
+        problems = (deploy.check_web_root(out, Path(args.dist), leagues=tuple(p for p, _ in extra)) if mode == "web"
+                    else deploy.check_root(REPO, out, Path(args.dist), leagues=tuple(p for p, _ in extra)))
+        for path, dist in extra:
+            problems += [f"/{path}/: {p}" for p in deploy.check_web_root(out / path, dist, redirects=False)]
     for p in problems:
         print(f"FAIL  {p}")
     print("OK" if not problems else f"{len(problems)} problem(s)")

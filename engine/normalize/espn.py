@@ -379,6 +379,36 @@ def read_adp_snapshots(league_dir: Path) -> dict[int, dict]:
 
 # ---------------------------------------------------------------- all seasons
 
+def collapse_multiweek(m: pd.DataFrame) -> pd.DataFrame:
+    """One row per team per matchup period. ESPN lists a matchup period that spans several scoring weeks
+    (a two-week playoff round) in each week's box score, every time with the period's full total, which
+    made it two games with doubled scores. Kept: the row of the period's last week (when the result is
+    decided), with
+        period_weeks    the scoring weeks the period spans (1 for an ordinary game)
+        first_week      its first week (week stays the last)
+        points_total, opponent_points_total   ESPN's totals for the whole period
+        points, opponent_points               the per-week average (total / period_weeks), so every
+                                              score-based stat compares like with like (Ethan, 2026-10-08,
+                                              option 1); the result is ESPN's, decided on the totals."""
+    if "period_weeks" in m:                       # already collapsed (safe to call twice)
+        return m
+    if not len(m):
+        return m.assign(period_weeks=pd.Series(dtype=int), first_week=pd.Series(dtype=int),
+                        points_total=pd.Series(dtype=float), opponent_points_total=pd.Series(dtype=float))
+    period = m["matchup_period"].fillna(m["week"])
+    g = m.assign(_period=period).groupby(["season", "_period", "team_id"])["week"]
+    m = m.assign(period_weeks=g.transform("nunique").astype(int), first_week=g.transform("min").astype(int),
+                 _last=g.transform("max"), _period=period)
+    m = m[m["week"] == m["_last"]].drop_duplicates(["season", "_period", "team_id"], keep="last")
+    m = m.assign(points_total=m["points"], opponent_points_total=m["opponent_points"])
+    multi = m["period_weeks"] > 1
+    m.loc[multi, "points"] = (m.loc[multi, "points_total"] / m.loc[multi, "period_weeks"]).round(2)
+    m.loc[multi, "opponent_points"] = (m.loc[multi, "opponent_points_total"].astype(float)
+                                       / m.loc[multi, "period_weeks"]).round(2)
+    # ESPN's row order is kept: a game's first row is its home team (records.games reads it so)
+    return m.drop(columns=["_last", "_period"]).reset_index(drop=True)
+
+
 def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
     """Build every canonical table from a league's cache directory."""
     seasons, managers, teams, matchups, lineups, picks, txs, people, pool = [], [], [], [], [], [], [], [], []
@@ -427,7 +457,7 @@ def normalize_league(league_dir: Path) -> dict[str, pd.DataFrame]:
         df[out_col] = owner.reindex(idx).to_numpy()
         return df
 
-    m = pd.DataFrame(matchups)
+    m = collapse_multiweek(pd.DataFrame(matchups))
     m["opponent_team_id"] = m["opponent_team_id"].astype("Int64")
     m = with_owner(m)
     m = with_owner(m, "opponent_team_id", "opponent_manager_key")

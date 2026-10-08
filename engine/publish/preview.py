@@ -59,8 +59,16 @@ DEFAULT_DESCRIPTION = "{page} for {league}: league history and analytics, every 
 
 
 def site_url(config: dict) -> str | None:
-    url = (config.get("league") or {}).get("site_url") or os.environ.get("SITE_URL")
-    return url.rstrip("/") if url else None
+    """This league's public URL: league.site_url, else SITE_URL plus the league's site_path (a second
+    league served beside the first, e.g. /family/)."""
+    league = config.get("league") or {}
+    if league.get("site_url"):
+        return str(league["site_url"]).rstrip("/")
+    url = os.environ.get("SITE_URL")
+    if not url:
+        return None
+    path = str(league.get("site_path") or "").strip("/")
+    return url.rstrip("/") + (f"/{path}" if path else "")
 
 
 def share_tags(config: dict, page: dict, base: str) -> tuple[str, str]:

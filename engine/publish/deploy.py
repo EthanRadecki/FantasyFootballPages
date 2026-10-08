@@ -18,6 +18,10 @@ preview at /next/), a GitHub repository variable: setting it to legacy and runni
 rolls the live site back without a code change. The build files the deploy publishes (its manifest,
 verify.json, the change report, deploy-stats.json) sit at the root either way.
 
+More leagues (option B, Ethan 2026-10-08): the deploy can publish other leagues' new sites in folders
+under the root (`/family/`), each with its own build files and checks (assemble_web with redirects off,
+check_web_root on its folder); the root check leaves those folders to them.
+
 Sanity checks on a fresh build, against the stats of the last deploy
 (`deploy-stats.json`, published with the site):
     games        a season's game count never goes down
@@ -73,9 +77,11 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def assemble_web(out: Path, dist: Path) -> dict:
+def assemble_web(out: Path, dist: Path, redirects: bool = True) -> dict:
     """M2: the new site (the build's next/ folder) at the root, the build files beside it, and /next/
-    redirecting every page to the root. Returns {"root": n files, "next": n redirects}."""
+    redirecting every page to the root (`redirects`; a league that never had a preview needs none).
+    `out` is the root, or a second league's folder under it (assemble_league). Returns
+    {"root": n files, "next": n redirects}."""
     site = dist / PREVIEW
     if not (site / "config.json").is_file():
         raise FileNotFoundError(f"{site} has no new site (config.json); build with web/ present")
@@ -85,7 +91,7 @@ def assemble_web(out: Path, dist: Path) -> dict:
     for name in BUILD_FILES:
         if (dist / name).is_file():
             shutil.copy2(dist / name, out / name)
-    pages = sorted(p.relative_to(site) for p in site.rglob("*.html"))
+    pages = sorted(p.relative_to(site) for p in site.rglob("*.html")) if redirects else []
     for rel in pages:
         dest = out / PREVIEW / rel
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -94,9 +100,10 @@ def assemble_web(out: Path, dist: Path) -> dict:
     return {"root": n_root, "next": len(pages)}
 
 
-def check_web_root(out: Path, dist: Path) -> list[str]:
+def check_web_root(out: Path, dist: Path, redirects: bool = True, leagues: tuple[str, ...] = ()) -> list[str]:
     """Problems with an M2 root: a new-site file missing or changed, a build file missing, a page
-    config.json lists that is not there, a /next/ page without its redirect, or a file nothing put there."""
+    config.json lists that is not there, a /next/ page without its redirect, or a file nothing put there.
+    `leagues`: the folders other leagues are served from (checked on their own)."""
     site = dist / PREVIEW
     files = {p.relative_to(site).as_posix() for p in site.rglob("*") if p.is_file()}
     problems = [f"missing or changed: {f}" for f in sorted(files)
@@ -107,11 +114,21 @@ def check_web_root(out: Path, dist: Path) -> list[str]:
     cfg = json.loads((site / "config.json").read_text(encoding="utf-8"))
     problems += [f"page in config.json not published: {p['path']}" for p in cfg.get("pages", [])
                  if not p.get("href") and not (out / p["path"]).is_file()]
-    redirects = {f"{PREVIEW}/{f}" for f in files if f.endswith(".html")}
-    problems += [f"no redirect at /{r}" for r in sorted(redirects) if not (out / r).is_file()]
-    published = {p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()}
-    problems += [f"not in the build: {f}" for f in sorted(published - files - build - redirects)]
+    moved = {f"{PREVIEW}/{f}" for f in files if f.endswith(".html")} if redirects else set()
+    problems += [f"no redirect at /{r}" for r in sorted(moved) if not (out / r).is_file()]
+    published = {p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()
+                 and not any(p.relative_to(out).as_posix().startswith(lg.strip("/") + "/") for lg in leagues)}
+    problems += [f"not in the build: {f}" for f in sorted(published - files - build - moved)]
     return problems
+
+
+def league_path(path: str) -> str:
+    """A second league's folder under the site: one path segment of letters, digits and hyphens."""
+    import re
+    p = path.strip("/")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", p) or p == PREVIEW:
+        raise ValueError(f"league path must be one lower-case segment (not {PREVIEW!r}): {path!r}")
+    return p
 
 
 def assemble(repo: Path, out: Path, dist: Path, next_dist: Path | None = None) -> dict:
@@ -128,11 +145,13 @@ def assemble(repo: Path, out: Path, dist: Path, next_dist: Path | None = None) -
     return {"root": n_root, "next": n_next}
 
 
-def check_root(repo: Path, out: Path, dist: Path) -> list[str]:
+def check_root(repo: Path, out: Path, dist: Path, leagues: tuple[str, ...] = ()) -> list[str]:
     """Problems with the published root: a file that differs from the build or is not in it, and a
-    committed site file missing (the build copies every one; the generated data files replace theirs)."""
+    committed site file missing (the build copies every one; the generated data files replace theirs).
+    `leagues`: the folders other leagues are served from (checked on their own)."""
     built = {p.relative_to(dist).as_posix() for p in dist.rglob("*") if p.is_file()}
     extra = set() if (dist / "next").is_dir() else {"next/"}      # a separate preview build at /next/ (assemble)
+    extra |= {lg.strip("/") + "/" for lg in leagues}
     published = {p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()
                  and not any(p.relative_to(out).as_posix().startswith(x) for x in extra)}
     problems = [f"missing or changed: {f}" for f in sorted(built) if f not in published or _sha(out / f) != _sha(dist / f)]

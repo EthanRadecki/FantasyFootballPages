@@ -27,6 +27,7 @@
         "team_id": {"type": "integer"},
         "team_name": {"type": ["string", "null"]},
         "points": {"type": "number"},
+        "points_total": {"type": "number", "description": "a two-week round: the team's total over the round (points is the per-week average)"},
         "result": {"enum": ["W", "L", "T"]},
         "starters": {"type": "array", "items": {"$ref": "#/$defs/player"}},
         "bench": {"type": "array", "items": {"$ref": "#/$defs/player"}}
@@ -52,7 +53,9 @@
           "superlative_excluded": {"type": "boolean"},
           "teams": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/team"}},
           "margin": {"type": "number", "minimum": 0},
-          "combined": {"type": "number"}
+          "combined": {"type": "number"},
+          "weeks": {"type": "integer", "minimum": 2, "description": "a two-week round: the scoring weeks it spans (the scores are per-week averages)"},
+          "first_week": {"type": "integer", "description": "a two-week round: its first week (week is its last)"}
         }
       }
     }

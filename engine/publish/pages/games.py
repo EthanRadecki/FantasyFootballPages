@@ -73,12 +73,15 @@ def matchups_model(ctx, games: pd.DataFrame, box: pd.DataFrame) -> dict:
                           "team_name": getattr(g, f"team_{side}_name"),
                           "points": float(getattr(g, f"team_{side}_points")),
                           "result": getattr(g, f"team_{side}_result"), "starters": starters, "bench": bench})
+            if getattr(g, "weeks", 1) > 1:          # a two-week round: ESPN's total beside the per-week score
+                teams[-1]["points_total"] = float(getattr(g, f"team_{side}_total"))
         out.append({
             "id": f"{season}-{week}-{int(g.game_id)}", "season": season, "week": week,
             "round": rounds.get(season, {}).get(str(week)) if g.is_playoff else None,
             "is_playoff": bool(g.is_playoff),
             "superlative_excluded": any((season, week, t["manager_key"]) in ppg_out for t in teams),
             "teams": teams, "margin": float(g.margin), "combined": float(g.combined),
+            **({"weeks": int(g.weeks), "first_week": int(g.first_week)} if getattr(g, "weeks", 1) > 1 else {}),
         })
     return {"games": out}
 

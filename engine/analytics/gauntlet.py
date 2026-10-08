@@ -13,8 +13,9 @@ ways, each as a z-score against the league:
 The window's three averages are shrunk by n / (n + 1) and mapped to 0-100
 with a logistic curve; the gauntlet score is 0.70 points + 0.15 dom + 0.15
 streak. A window starts no earlier than a manager's 6th game, needs its
-weeks to be consecutive, and needs every opponent to have a surge (5 earlier
-games).
+weeks to be consecutive (a game that starts the week after the previous one ends: a
+two-week playoff round is one game, so the next round follows it), and needs every
+opponent to have a surge (5 earlier games).
 
 Games: finished regular-season and winners-bracket games (no byes, no
 consolation games). A forfeited game (a sat lineup scoring 0) is left out for
@@ -104,10 +105,12 @@ def windows(games: pd.DataFrame, dominance: pd.DataFrame, sizes=WINDOW_SIZES,
         shrink = n / (n + 1)
         for (season, mgr), g in games.groupby(["season", "manager_key"], sort=True):
             g = g.sort_values("week").reset_index(drop=True)
+            first = (g["first_week"] if "first_week" in g else g["week"]).tolist()
             for start in range(SURGE_GAMES, len(g) - (n - 1)):
                 w = g.iloc[start:start + n]
                 wk = w["week"].tolist()
-                if any(wk[j + 1] != wk[j] + 1 for j in range(n - 1)):
+                fw = first[start:start + n]
+                if any(fw[j + 1] != wk[j] + 1 for j in range(n - 1)):
                     continue
                 keys = [(int(season), o) for o in w["opponent_key"]]
                 sv = [surge.get((season, o, x)) for o, x in zip(w["opponent_key"], wk)]
@@ -150,29 +153,34 @@ def extremes(win: pd.DataFrame, n: int = 3, k: int = 5) -> tuple[pd.DataFrame, p
     return hi.drop(columns="_gs"), lo.drop(columns="_gs")
 
 
-def champion_runs(tables: dict[str, pd.DataFrame], games: pd.DataFrame) -> list[tuple[int, str, list[str]]]:
-    """(season, champion key, opponents in order) from the bracket."""
+def champion_runs(tables: dict[str, pd.DataFrame], games: pd.DataFrame) -> list[tuple]:
+    """(season, champion key, opponents in order, their weeks) from the bracket."""
     teams = tables["teams"]
     champs = teams[teams["final_rank"].eq(1)][["season", "manager_key"]]
     out = []
     for season, mgr in champs.itertuples(index=False):
         g = games[(games["season"] == season) & (games["manager_key"] == mgr) & ~games["is_regular"]]
         if len(g):
-            out.append((int(season), mgr, g.sort_values("week")["opponent_key"].tolist()))
+            g = g.sort_values("week")
+            out.append((int(season), mgr, g["opponent_key"].tolist(), [int(w) for w in g["week"]]))
     return out
 
 
 def champions(win: pd.DataFrame, detail: pd.DataFrame, runs) -> pd.DataFrame:
     """Each champion's run as a window (the window of the run's length whose
-    opponents are the run's opponents, in order)."""
+    opponents are the run's opponents, in order, and, when the run gives them, in
+    its weeks: a champion could have met the same opponents in the same order
+    earlier in the season, as the family league's 2023 champion did in weeks 9-10)."""
     rows = []
-    for season, mgr, opps in runs:
+    for run in runs:
+        season, mgr, opps = run[:3]
+        run_weeks = run[3] if len(run) > 3 else None
         n = len(opps)
         cand = win[(win["season"] == season) & (win["manager_key"] == mgr) & (win["n"] == n)]
         for r in cand.itertuples():
             d = detail[(detail["season"] == season) & (detail["manager_key"] == mgr) & (detail["n"] == n)
                        & (detail["start_week"] == r.start_week)].sort_values("week")
-            if d["opponent_key"].tolist() == opps:
+            if d["opponent_key"].tolist() == opps and (run_weeks is None or d["week"].tolist() == run_weeks):
                 rows.append(r._asdict())
                 break
     return pd.DataFrame(rows).drop(columns="Index", errors="ignore")
@@ -194,9 +202,12 @@ def engine_games(tables: dict[str, pd.DataFrame], exclude_managers: set[str], in
     if not include_excluded:
         g = g[~g["manager_key"].isin(exclude_managers) & ~g["opponent_manager_key"].isin(exclude_managers)]
     reg = dict(zip(tables["seasons"]["season"], tables["seasons"]["regular_season_periods"]))
+    from engine.analytics.weeks import playoff_game_weeks
+    pw = playoff_game_weeks(tables)
     return pd.DataFrame({
         "season": g["season"].astype(int), "week": g["week"].astype(int),
-        "week_label": [week_label(reg, s, w) for s, w in zip(g["season"], g["week"])],
+        "week_label": [week_label(reg, s, w, pw) for s, w in zip(g["season"], g["week"])],
+        "first_week": (g["first_week"] if "first_week" in g else g["week"]).astype(int),
         "is_regular": ~g["is_playoff_week"].astype(bool), "manager_key": g["manager_key"],
         "opponent_key": g["opponent_manager_key"], "points": g["points"].astype(float),
         "opponent_points": g["opponent_points"].astype(float)}).reset_index(drop=True)
@@ -213,7 +224,7 @@ def analyze_gauntlet(tables: dict[str, pd.DataFrame], manager_seasons: pd.DataFr
     runs = champion_runs(tables, games)
     # window lengths: 3 and 4 games, plus every champion run's length (a league with two playoff rounds
     # has two-game runs), so each champion's run is ranked against windows of its own length
-    sizes = tuple(sorted(set(WINDOW_SIZES) | {len(o) for _, _, o in runs}))
+    sizes = tuple(sorted(set(WINDOW_SIZES) | {len(r[2]) for r in runs}))
     win, detail = windows(games, dom[["season", "manager_key", "dominance"]], sizes,
                           unrounded_rank="unrounded_rank" in fx)
     win["hidden"] = win["manager_key"].isin(exclude_managers)

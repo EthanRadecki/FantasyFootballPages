@@ -101,9 +101,14 @@ def _quantile(sorted_vals: list[float], q: float) -> float:
 
 
 def pos_started(lineups: pd.DataFrame) -> dict:
-    """(season, week, manager_key, position) -> started points."""
+    """(season, week, manager_key, position) -> started points. A two-week playoff round (game_lineups'
+    game_week) gives its game week the per-week average over its weeks, as its score is (option 1)."""
     s = lineups[lineups["started"]]
-    return s.groupby(["season", "week", "manager_key", "position"])["points"].sum().to_dict()
+    if "game_week" not in s or (s["game_week"] == s["week"]).all():
+        return s.groupby(["season", "week", "manager_key", "position"])["points"].sum().to_dict()
+    n = lineups.groupby(["season", "game_week", "manager_key"])["week"].nunique()
+    tot = s.groupby(["season", "game_week", "manager_key", "position"])["points"].sum()
+    return {k: v / n[k[:3]] for k, v in tot.items()}
 
 
 # ---------------------------------------------------------------- flips
