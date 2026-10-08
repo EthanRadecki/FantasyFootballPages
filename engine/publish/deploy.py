@@ -11,6 +11,13 @@ site stays up and the run fails.
 Before M1 (M0) the root was the committed site files and the build was a preview at
 /next/; `assemble` still takes a `next` build for the Stage B preview (milestone M2).
 
+M2 (2026-10-07): the root is the new site (web/, built at dist/next/ by preview.py) and /next/
+holds redirects to the same pages at the root, so links shared from the preview keep working. The
+switch is the deploy's SITE_ROOT ("web", the default, or "legacy" for the Stage A site with the
+preview at /next/), a GitHub repository variable: setting it to legacy and running the workflow
+rolls the live site back without a code change. The build files the deploy publishes (its manifest,
+verify.json, the change report, deploy-stats.json) sit at the root either way.
+
 Sanity checks on a fresh build, against the stats of the last deploy
 (`deploy-stats.json`, published with the site):
     games        a season's game count never goes down
@@ -21,7 +28,9 @@ Sanity checks on a fresh build, against the stats of the last deploy
 from __future__ import annotations
 
 import hashlib
+import html
 import json
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -29,6 +38,28 @@ from pathlib import Path
 from engine.publish.site import LEGACY_SITE_DIRS, LEGACY_SITE_FILES
 
 STATS = "deploy-stats.json"
+ROOTS = ("web", "legacy")
+DEFAULT_ROOT = "web"                    # M2: the new site at the root
+BUILD_FILES = ("build-manifest.json", "verify.json", "changes.html", "changes.json", STATS)
+PREVIEW = "next"
+
+
+def root_mode(value: str | None = None) -> str:
+    """Which site the root serves: the argument, else SITE_ROOT, else DEFAULT_ROOT."""
+    mode = (value or os.environ.get("SITE_ROOT") or DEFAULT_ROOT).strip().lower()
+    if mode not in ROOTS:
+        raise ValueError(f"SITE_ROOT must be one of {', '.join(ROOTS)}, not {mode!r}")
+    return mode
+
+
+def redirect_page(target: str) -> str:
+    """A page that sends the browser on to `target` (relative), keeping the query and the fragment."""
+    t = html.escape(target, quote=True)
+    return ("<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Moved</title>\n"
+            "<meta name=\"robots\" content=\"noindex\">\n"
+            f"<meta http-equiv=\"refresh\" content=\"0; url={t}\">\n"
+            f"<script>location.replace({json.dumps(target)} + location.search + location.hash);</script>\n"
+            f"</head><body><p>This page has moved: <a href=\"{t}\">{t}</a></p></body></html>\n")
 
 
 def committed_site_files(repo: Path) -> list[str]:
@@ -40,6 +71,47 @@ def committed_site_files(repo: Path) -> list[str]:
 
 def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def assemble_web(out: Path, dist: Path) -> dict:
+    """M2: the new site (the build's next/ folder) at the root, the build files beside it, and /next/
+    redirecting every page to the root. Returns {"root": n files, "next": n redirects}."""
+    site = dist / PREVIEW
+    if not (site / "config.json").is_file():
+        raise FileNotFoundError(f"{site} has no new site (config.json); build with web/ present")
+    if out.exists():
+        shutil.rmtree(out)
+    shutil.copytree(site, out)
+    for name in BUILD_FILES:
+        if (dist / name).is_file():
+            shutil.copy2(dist / name, out / name)
+    pages = sorted(p.relative_to(site) for p in site.rglob("*.html"))
+    for rel in pages:
+        dest = out / PREVIEW / rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(redirect_page("../" * len(rel.parts) + rel.as_posix()), encoding="utf-8")
+    n_root = sum(1 for p in out.rglob("*") if p.is_file() and not p.relative_to(out).as_posix().startswith("next/"))
+    return {"root": n_root, "next": len(pages)}
+
+
+def check_web_root(out: Path, dist: Path) -> list[str]:
+    """Problems with an M2 root: a new-site file missing or changed, a build file missing, a page
+    config.json lists that is not there, a /next/ page without its redirect, or a file nothing put there."""
+    site = dist / PREVIEW
+    files = {p.relative_to(site).as_posix() for p in site.rglob("*") if p.is_file()}
+    problems = [f"missing or changed: {f}" for f in sorted(files)
+                if not (out / f).is_file() or _sha(out / f) != _sha(site / f)]
+    build = {n for n in BUILD_FILES if (dist / n).is_file()}
+    problems += [f"build file not published: {n}" for n in sorted(build)
+                 if not (out / n).is_file() or _sha(out / n) != _sha(dist / n)]
+    cfg = json.loads((site / "config.json").read_text(encoding="utf-8"))
+    problems += [f"page in config.json not published: {p['path']}" for p in cfg.get("pages", [])
+                 if not p.get("href") and not (out / p["path"]).is_file()]
+    redirects = {f"{PREVIEW}/{f}" for f in files if f.endswith(".html")}
+    problems += [f"no redirect at /{r}" for r in sorted(redirects) if not (out / r).is_file()]
+    published = {p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()}
+    problems += [f"not in the build: {f}" for f in sorted(published - files - build - redirects)]
+    return problems
 
 
 def assemble(repo: Path, out: Path, dist: Path, next_dist: Path | None = None) -> dict:

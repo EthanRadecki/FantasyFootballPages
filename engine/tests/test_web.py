@@ -102,6 +102,8 @@ def test_share_tags_give_chat_apps_a_preview_card(tmp_path):
                                            "path": "pages/schedule_release.html"}]}
     (out / "config.json").write_text(json.dumps(cfg))
     saved = os.environ.pop("SITE_URL", None)
+    saved_root = os.environ.get("SITE_ROOT")
+    os.environ["SITE_ROOT"] = "legacy"                  # the preview at /next/ (the root from M2: below)
     try:
         preview.write_preview(root, out, legacy_site=False)
         page = (out / "next" / "pages" / "schedule_release.html").read_text()
@@ -120,7 +122,13 @@ def test_share_tags_give_chat_apps_a_preview_card(tmp_path):
         os.environ["SITE_URL"] = "https://y.github.io/z"
         preview.write_preview(root, out, legacy_site=False)
         assert 'content="https://y.github.io/z/next/index.html"' in (out / "next" / "index.html").read_text()
+        os.environ["SITE_ROOT"] = "web"                 # M2: the new site serves the root
+        preview.write_preview(root, out, legacy_site=False)
+        assert 'content="https://y.github.io/z/index.html"' in (out / "next" / "index.html").read_text()
     finally:
         os.environ.pop("SITE_URL", None)
+        os.environ.pop("SITE_ROOT", None)
+        if saved_root is not None:
+            os.environ["SITE_ROOT"] = saved_root
         if saved is not None:
             os.environ["SITE_URL"] = saved

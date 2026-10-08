@@ -187,3 +187,25 @@ def test_the_live_files_can_be_fetched_from_the_site(tmp_path):
         httpd.shutdown()
     assert n == 2                                     # data/a.json and the manifest; data/new.json is not live yet
     assert json.loads((got / "data" / "a.json").read_text()) == {"n": 1} and not (got / "data" / "v1").exists()
+
+
+def test_release_notes_from_the_page_models(tmp_path):
+    """From M2 the notes compare data/v1/ (served before and after the cutover); meta never counts."""
+    live, dist = tmp_path / "live", tmp_path / "dist"
+    for d, score, build in ((live, 100.0, "b1"), (dist, 101.0, "b2")):
+        (d / "data" / "v1" / "managers").mkdir(parents=True)
+        (d / "data" / "v1" / "matchups.json").write_text(json.dumps(
+            {"meta": {"build": build}, "games": [{"season": 2025, "week": 3, "team_a": "m_a", "team_b": "m_b",
+                                                   "score_a": score, "score_b": 90.0}]}))
+        (d / "data" / "v1" / "managers" / "m_a.json").write_text(json.dumps({"meta": {"build": build}, "x": 1}))
+        (d / "build-manifest.json").write_text(json.dumps({"build": {"id": build}, "files": [
+            {"path": "data/v1/matchups.json", "source": "generated"},
+            {"path": "data/v1/managers/m_a.json", "source": "generated"},
+            {"path": "data/v1/extra.json", "source": "generated"}]}))
+    (dist / "config.json").write_text(json.dumps({"live_season": 2026}))
+    rep = changes.write(dist, live, models=True)
+    pages = {p["id"]: p for p in rep["pages"]}
+    assert rep["previous"]["id"] == "b1" and rep["unassigned"] == ["data/v1/extra.json"]
+    assert [(f["path"], f["differences"]) for f in pages["managers"]["files"]] == [("data/v1/managers/m_a.json", 0)]
+    assert pages["matchups"]["files"][0]["changed"] == 1 and pages["matchups"]["why"] == []
+    assert "<h1>What changed in this build</h1>" in (dist / "changes.html").read_text()
