@@ -4,9 +4,9 @@
  "teams": [
   {
    "manager": "Max Malich",
-   "proj_ppg": 96.9,
-   "proj_ppg_ros": 110.18,
-   "sos_avg_opp_ppg": 111.87,
+   "proj_ppg": 97.9,
+   "proj_ppg_ros": 110.28,
+   "sos_avg_opp_ppg": 111.63,
    "sos_rank": 13,
    "draft_grade": -14.1,
    "draft_surplus_total": -14.1,
@@ -191,9 +191,9 @@
   },
   {
    "manager": "Cole Maney",
-   "proj_ppg": 115.2,
-   "proj_ppg_ros": 110.49,
-   "sos_avg_opp_ppg": 114.82,
+   "proj_ppg": 115.0,
+   "proj_ppg_ros": 110.47,
+   "sos_avg_opp_ppg": 114.84,
    "sos_rank": 6,
    "draft_grade": -21.21,
    "draft_surplus_total": -21.21,
@@ -378,7 +378,7 @@
   },
   {
    "manager": "Andrew Root",
-   "proj_ppg": 110.8,
+   "proj_ppg": 110.9,
    "proj_ppg_ros": 116.82,
    "sos_avg_opp_ppg": 114.9,
    "sos_rank": 5,
@@ -565,10 +565,10 @@
   },
   {
    "manager": "Carmine Pittelli Jr.",
-   "proj_ppg": 113.0,
-   "proj_ppg_ros": 115.86,
-   "sos_avg_opp_ppg": 115.37,
-   "sos_rank": 4,
+   "proj_ppg": 112.9,
+   "proj_ppg_ros": 115.85,
+   "sos_avg_opp_ppg": 115.61,
+   "sos_rank": 3,
    "draft_grade": -2.65,
    "draft_surplus_total": -2.65,
    "draft_picks": [
@@ -752,9 +752,9 @@
   },
   {
    "manager": "Brandon Hancock",
-   "proj_ppg": 105.2,
-   "proj_ppg_ros": 112.28,
-   "sos_avg_opp_ppg": 114.56,
+   "proj_ppg": 105.4,
+   "proj_ppg_ros": 112.3,
+   "sos_avg_opp_ppg": 114.54,
    "sos_rank": 7,
    "draft_grade": -18.07,
    "draft_surplus_total": -18.07,
@@ -939,9 +939,9 @@
   },
   {
    "manager": "Aidan Quigley",
-   "proj_ppg": 120.8,
-   "proj_ppg_ros": 120.04,
-   "sos_avg_opp_ppg": 113.14,
+   "proj_ppg": 120.6,
+   "proj_ppg_ros": 120.02,
+   "sos_avg_opp_ppg": 113.05,
    "sos_rank": 9,
    "draft_grade": 8.98,
    "draft_surplus_total": 8.98,
@@ -1126,9 +1126,9 @@
   },
   {
    "manager": "Ben Castaldo",
-   "proj_ppg": 96.7,
-   "proj_ppg_ros": 113.76,
-   "sos_avg_opp_ppg": 110.52,
+   "proj_ppg": 94.3,
+   "proj_ppg_ros": 113.53,
+   "sos_avg_opp_ppg": 110.61,
    "sos_rank": 14,
    "draft_grade": 5.4,
    "draft_surplus_total": 5.4,
@@ -1313,9 +1313,9 @@
   },
   {
    "manager": "Ethan Radecki",
-   "proj_ppg": 114.7,
-   "proj_ppg_ros": 108.85,
-   "sos_avg_opp_ppg": 112.01,
+   "proj_ppg": 117.0,
+   "proj_ppg_ros": 109.09,
+   "sos_avg_opp_ppg": 112.0,
    "sos_rank": 11,
    "draft_grade": -13.36,
    "draft_surplus_total": -13.36,
@@ -1500,9 +1500,9 @@
   },
   {
    "manager": "Quin Gegwich",
-   "proj_ppg": 105.8,
-   "proj_ppg_ros": 106.71,
-   "sos_avg_opp_ppg": 111.88,
+   "proj_ppg": 105.0,
+   "proj_ppg_ros": 106.62,
+   "sos_avg_opp_ppg": 111.86,
    "sos_rank": 12,
    "draft_grade": -36.58,
    "draft_surplus_total": -36.58,
@@ -1876,8 +1876,8 @@
    "manager": "Baylen Slansky",
    "proj_ppg": 123.5,
    "proj_ppg_ros": 118.42,
-   "sos_avg_opp_ppg": 115.47,
-   "sos_rank": 3,
+   "sos_avg_opp_ppg": 115.48,
+   "sos_rank": 4,
    "draft_grade": 14.39,
    "draft_surplus_total": 14.39,
    "draft_picks": [
@@ -2248,8 +2248,8 @@
   },
   {
    "manager": "Charlie Gorman",
-   "proj_ppg": 121.3,
-   "proj_ppg_ros": 121.34,
+   "proj_ppg": 121.0,
+   "proj_ppg_ros": 121.31,
    "sos_avg_opp_ppg": 112.04,
    "sos_rank": 10,
    "draft_grade": -0.06,
@@ -2437,7 +2437,7 @@
    "manager": "Deniz Bileydi",
    "proj_ppg": 119.9,
    "proj_ppg_ros": 114.63,
-   "sos_avg_opp_ppg": 117.12,
+   "sos_avg_opp_ppg": 117.09,
    "sos_rank": 1,
    "draft_grade": -9.28,
    "draft_surplus_total": -9.28,
@@ -2623,7 +2623,7 @@
  ],
  "lineups": {
   "Max Malich": {
-   "proj_total": 96.9,
+   "proj_total": 97.9,
    "starters": [
     {
      "player": "Kirk Cousins",
@@ -2642,12 +2642,12 @@
      "proj": 16.8
     },
     {
-     "player": "Dameon Pierce",
-     "nfl_team": "PHI",
+     "player": "Roschon Johnson",
+     "nfl_team": "CHI",
      "pos": "RB",
      "slot": "RB",
-     "opp": "@JAX",
-     "proj": 5.5
+     "opp": "@GB",
+     "proj": 7.8
     },
     {
      "player": "Tee Higgins",
@@ -2655,7 +2655,7 @@
      "pos": "WR",
      "slot": "WR",
      "opp": "@MIA",
-     "proj": 14.2
+     "proj": 12.8
     },
     {
      "player": "Matthew Golden",
@@ -2700,7 +2700,7 @@
    ]
   },
   "Cole Maney": {
-   "proj_total": 115.2,
+   "proj_total": 115.0,
    "starters": [
     {
      "player": "Jayden Daniels",
@@ -2751,12 +2751,12 @@
      "proj": 13.1
     },
     {
-     "player": "Stefon Diggs",
-     "nfl_team": "WSH",
-     "pos": "WR",
+     "player": "TreVeyon Henderson",
+     "nfl_team": "NE",
+     "pos": "RB",
      "slot": "FLEX",
-     "opp": "NYG",
-     "proj": 10.8
+     "opp": "LV",
+     "proj": 10.5
     },
     {
      "player": "Seahawks D/ST",
@@ -2777,7 +2777,7 @@
    ]
   },
   "Andrew Root": {
-   "proj_total": 110.8,
+   "proj_total": 110.9,
    "starters": [
     {
      "player": "Aaron Rodgers",
@@ -2854,7 +2854,7 @@
    ]
   },
   "Carmine Pittelli Jr.": {
-   "proj_total": 113.0,
+   "proj_total": 112.9,
    "starters": [
     {
      "player": "Jared Goff",
@@ -2878,7 +2878,7 @@
      "pos": "RB",
      "slot": "RB",
      "opp": "NYG",
-     "proj": 8.0
+     "proj": 7.9
     },
     {
      "player": "Nico Collins",
@@ -2931,7 +2931,7 @@
    ]
   },
   "Brandon Hancock": {
-   "proj_total": 105.2,
+   "proj_total": 105.4,
    "starters": [
     {
      "player": "Jalen Hurts",
@@ -2955,7 +2955,7 @@
      "pos": "RB",
      "slot": "RB",
      "opp": "IND",
-     "proj": 14.5
+     "proj": 14.4
     },
     {
      "player": "Rome Odunze",
@@ -2966,12 +2966,12 @@
      "proj": 10.9
     },
     {
-     "player": "Keenan Allen",
-     "nfl_team": "IND",
+     "player": "Roman Wilson",
+     "nfl_team": "PIT",
      "pos": "WR",
      "slot": "WR",
-     "opp": "@PIT",
-     "proj": 10.0
+     "opp": "IND",
+     "proj": 10.2
     },
     {
      "player": "Harold Fannin Jr.",
@@ -3008,7 +3008,7 @@
    ]
   },
   "Aidan Quigley": {
-   "proj_total": 120.8,
+   "proj_total": 120.6,
    "starters": [
     {
      "player": "Matthew Stafford",
@@ -3072,7 +3072,7 @@
      "pos": "D/ST",
      "slot": "D/ST",
      "opp": "@ATL",
-     "proj": 2.0
+     "proj": 1.8
     },
     {
      "player": "Chase McLaughlin",
@@ -3085,7 +3085,7 @@
    ]
   },
   "Ben Castaldo": {
-   "proj_total": 96.7,
+   "proj_total": 94.3,
    "starters": [
     {
      "player": "Deshaun Watson",
@@ -3096,12 +3096,12 @@
      "proj": 16.9
     },
     {
-     "player": "Kyle Monangai",
-     "nfl_team": "CHI",
+     "player": "Kendre Miller",
+     "nfl_team": "NO",
      "pos": "RB",
      "slot": "RB",
-     "opp": "@GB",
-     "proj": 10.6
+     "opp": "MIN",
+     "proj": 7.8
     },
     {
      "player": "Samaje Perine",
@@ -3125,7 +3125,7 @@
      "pos": "WR",
      "slot": "WR",
      "opp": "IND",
-     "proj": 12.0
+     "proj": 12.4
     },
     {
      "player": "Kyle Pitts Sr.",
@@ -3162,7 +3162,7 @@
    ]
   },
   "Ethan Radecki": {
-   "proj_total": 114.7,
+   "proj_total": 117.0,
    "starters": [
     {
      "player": "Jacoby Brissett",
@@ -3186,7 +3186,7 @@
      "pos": "RB",
      "slot": "RB",
      "opp": "@GB",
-     "proj": 14.1
+     "proj": 16.5
     },
     {
      "player": "Zay Flowers",
@@ -3239,7 +3239,7 @@
    ]
   },
   "Quin Gegwich": {
-   "proj_total": 105.8,
+   "proj_total": 105.0,
    "starters": [
     {
      "player": "Geno Smith",
@@ -3255,7 +3255,7 @@
      "pos": "RB",
      "slot": "RB",
      "opp": "@MIA",
-     "proj": 17.5
+     "proj": 17.4
     },
     {
      "player": "Quinshon Judkins",
@@ -3274,12 +3274,12 @@
      "proj": 13.5
     },
     {
-     "player": "Michael Pittman Jr.",
-     "nfl_team": "PIT",
+     "player": "Keon Coleman",
+     "nfl_team": "BUF",
      "pos": "WR",
      "slot": "WR",
-     "opp": "IND",
-     "proj": 8.4
+     "opp": "@LAR",
+     "proj": 7.7
     },
     {
      "player": "Isaiah Likely",
@@ -3290,12 +3290,12 @@
      "proj": 12.9
     },
     {
-     "player": "Keon Coleman",
-     "nfl_team": "BUF",
-     "pos": "WR",
+     "player": "Woody Marks",
+     "nfl_team": "HOU",
+     "pos": "RB",
      "slot": "FLEX",
-     "opp": "@LAR",
-     "proj": 7.7
+     "opp": "@TEN",
+     "proj": 7.6
     },
     {
      "player": "Jets D/ST",
@@ -3547,7 +3547,7 @@
    ]
   },
   "Charlie Gorman": {
-   "proj_total": 121.3,
+   "proj_total": 121.0,
    "starters": [
     {
      "player": "Trevor Lawrence",
@@ -3603,7 +3603,7 @@
      "pos": "WR",
      "slot": "FLEX",
      "opp": "NYG",
-     "proj": 13.2
+     "proj": 12.8
     },
     {
      "player": "Raiders D/ST",
@@ -3611,7 +3611,7 @@
      "pos": "D/ST",
      "slot": "D/ST",
      "opp": "@NE",
-     "proj": 3.6
+     "proj": 3.7
     },
     {
      "player": "Eddy Pineiro",
