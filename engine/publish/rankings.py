@@ -17,6 +17,12 @@ Decisions 7.9 and 7.13 (layout agreed 2026-10-05). A ranked week has three parts
                through the week before (regular-season games), prev_rank,
                rank_change, avg_rank (from the editorial ranks), and the manifest
 
+A week's editorial file can be a draft (`"status": "draft"`): the automatic
+Tuesday start (`engine rankings start`) and `engine rankings new` write drafts,
+and a draft never reaches the site until it is published (`engine rankings
+publish`, or the rankings editor), which sets `"status": "published"`. A file
+without a status is published (every week before 2026 week 6).
+
 Other editorial files in the folder (`<season>_playoff_<round>.json`, the
 playoff previews) are published as written.
 
@@ -79,6 +85,10 @@ TEAM_ORDER = ["manager", "rank", "prev_rank", "rank_change", "avg_rank", "ppg_to
               "screenshots", "proj_ppg_ros"]
 
 
+STATUS_DRAFT, STATUS_PUBLISHED = "draft", "published"
+EM_DASH = chr(0x2014)          # spelled out: the style check flags the character and its escape
+
+
 def week_stem(season: int, week: int) -> str:
     return f"{int(season)}_week{int(week):02d}"
 
@@ -114,6 +124,93 @@ def week_files(files: dict[str, dict]) -> dict[tuple[int, int], tuple[str, dict]
         if m:
             out[(int(m.group(1)), int(m.group(2)))] = (name, data)
     return dict(sorted(out.items()))
+
+
+def is_draft(editorial: dict) -> bool:
+    return isinstance(editorial, dict) and editorial.get("status") == STATUS_DRAFT
+
+
+def published(files: dict[str, dict]) -> dict[str, dict]:
+    """The editorial files the site shows: every file that is not a draft."""
+    return {n: d for n, d in files.items() if not is_draft(d)}
+
+
+def drafts(files: dict[str, dict]) -> dict[str, dict]:
+    return {n: d for n, d in files.items() if is_draft(d)}
+
+
+def problems(editorial: dict, expected: list[str] | None, lookup: dict[str, str]) -> tuple[list[str], list[str]]:
+    """(errors, warnings) for a week about to be published. Errors block publishing: an unknown or
+    repeated manager, a manager of the week's snapshot (`expected`) left out, ranks that are not
+    1..N once each, a matchup of the week naming an unknown manager or the same one twice, no
+    blurb written at all. Warnings do not block: empty blurbs or synopses, em dashes, no matchup of the week."""
+    key = lambda n: lookup.get(str(n or "").strip().lower())
+    errors, warnings = [], []
+    teams = editorial.get("teams") or []
+    keys = []
+    for t in teams:
+        k = key(t.get("manager"))
+        if k is None:
+            errors.append(f"unknown manager {t.get('manager')!r}")
+        elif k in keys:
+            errors.append(f"{t.get('manager')} is listed twice")
+        keys.append(k)
+    if expected:
+        missing = [m for m in expected if key(m) not in keys]
+        if missing:
+            errors.append(f"not ranked: {', '.join(missing)}")
+    ranks = [t.get("rank") for t in teams]
+    seen = {}
+    for t, r in zip(teams, ranks):
+        seen.setdefault(r, []).append(t.get("manager"))
+    shared = {r: who for r, who in seen.items() if len(who) > 1}
+    for r, who in shared.items():
+        errors.append(f"rank {r} given to {', '.join(map(str, who))}")
+    if not shared and sorted(r for r in ranks if isinstance(r, int)) != list(range(1, len(teams) + 1)):
+        errors.append(f"ranks must be 1 to {len(teams)}, once each")
+    if teams and not any(str(t.get("blurb") or "").strip() for t in teams):
+        errors.append("no blurbs written yet")
+    for t in teams:
+        if not str(t.get("blurb") or "").strip():
+            warnings.append(f"{t.get('manager')}: empty blurb")
+        if not str(t.get("synopsis") or "").strip():
+            warnings.append(f"{t.get('manager')}: empty synopsis")
+    motw = editorial.get(MOTW)
+    if not motw:
+        warnings.append("no matchup of the week")
+    else:
+        a, b = key(motw.get("team_a")), key(motw.get("team_b"))
+        if a is None or b is None:
+            errors.append("matchup of the week names an unknown manager")
+        elif a == b:
+            errors.append("matchup of the week names the same manager twice")
+        if not str(motw.get("blurb") or "").strip():
+            warnings.append("matchup of the week: empty blurb")
+    if EM_DASH in json.dumps(editorial, ensure_ascii=False):
+        warnings.append("contains an em dash")
+    return errors, warnings
+
+
+def next_week(tables: dict) -> tuple[tuple[int, int] | None, str]:
+    """The week to start ranking: in the latest live season, the week after its last finished one,
+    once the season's draft is done and while the regular season lasts (playoff previews are
+    written by hand). ((season, week), "") or (None, why not)."""
+    from engine.analytics.weeks import completed_weeks, live_seasons
+    live = live_seasons(tables)
+    if not live:
+        return None, "no live season"
+    season = max(live)
+    srow = tables["seasons"].set_index("season").loc[season]
+    regular = int(srow["regular_season_periods"])
+    done = completed_weeks(tables)
+    last = int(done.loc[done["season"] == season, "week"].max() or 0) if (done["season"] == season).any() else 0
+    week = last + 1
+    if week > regular:
+        return None, f"{season}: the regular season is over (week {last} of {regular} finished)"
+    picks = tables.get("draft_picks")
+    if picks is None or picks[(picks["season"] == season) & picks["player_id"].notna()].empty:
+        return None, f"{season}: the draft is not done yet"
+    return (season, week), ""
 
 
 def preview_files(files: dict[str, dict]) -> dict[str, dict]:

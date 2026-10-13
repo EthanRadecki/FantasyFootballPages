@@ -8,6 +8,9 @@
     engine update leagues/preach/league.yaml [--verify]      pull, normalize, analyze, build
     engine rankings new leagues/preach/league.yaml --week 5 [--season 2026] [--force]
                                                              the live week's rankings snapshot + editorial draft
+    engine rankings start leagues/preach/league.yaml          the next week's snapshot + draft, if not started
+    engine rankings publish leagues/preach/league.yaml --week 6 [--season 2026] [--force]
+                                                             mark a draft week published
 
 See docs/ARCHITECTURE.md and docs/PUBLISH_PLAN.md.
 """
@@ -448,10 +451,9 @@ def cmd_build(args: argparse.Namespace) -> int:
     return 0 if record["ok"] else 1
 
 
-def cmd_rankings_new(args: argparse.Namespace) -> int:
-    """Freeze the computed fields of a ranked week (decision 7.9) and start its editorial file."""
+def _rankings_ctx(args: argparse.Namespace):
+    """A BuildContext on the cached canonical and analysis tables, or None (message printed)."""
     from engine.publish.build import BuildContext
-    from engine.publish.pages.rankings import write_week
     from engine.publish.writer import build_info
     from engine.store import canonical_dir, read_tables
 
@@ -461,15 +463,57 @@ def cmd_rankings_new(args: argparse.Namespace) -> int:
     ana = Path(args.cache) / "analysis" / league["provider"] / str(league["league_id"])
     if not src.exists() or not ana.exists():
         print(f"error: run `engine update {args.path}` (or normalize and analyze) first")
+        return None
+    return BuildContext(cfg=cfg, tables=read_tables(src), analysis=read_tables(ana), build=build_info(),
+                        site_root=Path("."), league_dir=Path(args.path).parent)
+
+
+def cmd_rankings_new(args: argparse.Namespace) -> int:
+    """Freeze the computed fields of a ranked week (decision 7.9) and start its editorial file (a draft)."""
+    from engine.publish.pages.rankings import write_week
+
+    ctx = _rankings_ctx(args)
+    if ctx is None:
         return 1
-    ctx = BuildContext(cfg=cfg, tables=read_tables(src), analysis=read_tables(ana), build=build_info(),
-                       site_root=Path("."), league_dir=Path(args.path).parent)
     season = args.season or ctx.config.get("live_season")
     if season is None:
         print("error: no live season; pass --season")
         return 1
     for path in write_week(ctx, int(season), int(args.week), force=args.force):
         print(f"wrote {path}")
+    return 0
+
+
+def cmd_rankings_start(args: argparse.Namespace) -> int:
+    """The Tuesday run: start the next week (snapshot + draft) unless it is started already."""
+    from engine.publish.pages.rankings import start_week
+
+    ctx = _rankings_ctx(args)
+    if ctx is None:
+        return 1
+    written, what = start_week(ctx)
+    print(f"rankings: {what}")
+    for path in written:
+        print(f"wrote {path}")
+    return 0
+
+
+def cmd_rankings_publish(args: argparse.Namespace) -> int:
+    """Mark a draft week published (the push deploys it); refused while it has errors."""
+    from engine.legacy import name_to_key
+    from engine.publish.pages.rankings import publish_week
+
+    cfg = load_config(args.path)
+    path, errors, warnings = publish_week(Path(args.path).parent, args.season, args.week, name_to_key(cfg),
+                                          force=args.force)
+    for w in warnings:
+        print(f"warning: {w}")
+    for e in errors:
+        print(f"error: {e}")
+    if errors and not args.force:
+        print(f"not published: fix {path} first (or pass --force)")
+        return 1
+    print(f"published {path}: commit and push it to deploy the week")
     return 0
 
 
@@ -557,6 +601,16 @@ def main(argv: list[str] | None = None) -> int:
     new.add_argument("--cache", default=".cache", help="cache root (default .cache)")
     new.add_argument("--force", action="store_true", help="regenerate an existing (frozen) snapshot")
     new.set_defaults(func=cmd_rankings_new)
+    start = rk_sub.add_parser("start", help="Start the next week (snapshot + draft) if it is not started yet")
+    start.add_argument("path", help="league.yaml")
+    start.add_argument("--cache", default=".cache", help="cache root (default .cache)")
+    start.set_defaults(func=cmd_rankings_start)
+    pub = rk_sub.add_parser("publish", help="Mark a draft week published (then commit and push it)")
+    pub.add_argument("path", help="league.yaml")
+    pub.add_argument("--week", type=int, required=True)
+    pub.add_argument("--season", type=int, help="default: the latest season with that week")
+    pub.add_argument("--force", action="store_true", help="publish even with errors")
+    pub.set_defaults(func=cmd_rankings_publish)
 
     args = parser.parse_args(argv)
     return args.func(args)

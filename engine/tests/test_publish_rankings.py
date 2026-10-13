@@ -251,3 +251,102 @@ def test_rankings_page_lists_its_data():
 
     page = next(p for p in PAGES if p["id"] == "weekly-rankings")
     assert "data/v1/weekly-rankings/index.json" in page["data"]
+
+
+# ---------------------------------------------------------------- draft weeks (automatic Tuesday start)
+
+def _draft(**over):
+    teams = [{"manager": "Charlie Gorman", "rank": 1, "synopsis": "s", "blurb": "b"},
+             {"manager": "Ethan Radecki", "rank": 2, "synopsis": "s", "blurb": "b"}]
+    d = {"season": 2026, "week": 6, "status": "draft", "teams": teams,
+         "matchup_of_the_week": {"team_a": "Charlie Gorman", "team_b": "Ethan Radecki", "blurb": "m"}}
+    d.update(over)
+    return d
+
+
+def test_draft_weeks_stay_off_the_site():
+    files = {"2026_week05.json": {"season": 2026, "week": 5, "teams": []},
+             "2026_week06.json": _draft(),
+             "2026_week04.json": {"season": 2026, "week": 4, "status": "published", "teams": []}}
+    assert set(R.published(files)) == {"2026_week04.json", "2026_week05.json"}
+    assert set(R.drafts(files)) == {"2026_week06.json"}
+    assert [s["weeks"] for s in R.manifest(R.published(files))] == [[4, 5]]
+    # the status never reaches the published week file
+    assert "status" not in R.merge(files["2026_week04.json"], None, {}, LOOKUP)
+
+
+def test_publish_problems():
+    expected = ["Charlie Gorman", "Ethan Radecki"]
+    assert R.problems(_draft(), expected, LOOKUP) == ([], [])
+    dup = _draft(teams=[{**t, "rank": 1} for t in _draft()["teams"]])
+    assert R.problems(dup, expected, LOOKUP)[0] == ["rank 1 given to Charlie Gorman, Ethan Radecki"]
+    gap = _draft(teams=[{**t, "rank": r} for t, r in zip(_draft()["teams"], (1, 3))])
+    assert R.problems(gap, expected, LOOKUP)[0] == ["ranks must be 1 to 2, once each"]
+    errs, _ = R.problems(_draft(), expected + ["Max Malich"], LOOKUP)
+    assert errs == ["not ranked: Max Malich"]
+    empty = _draft(teams=[{**t, "blurb": "", "synopsis": ""} for t in _draft()["teams"]])
+    errs, warns = R.problems(empty, expected, LOOKUP)
+    assert errs == ["no blurbs written yet"] and len(warns) == 4
+    same = _draft(matchup_of_the_week={"team_a": "Charlie Gorman", "team_b": "charlie gorman", "blurb": "x"})
+    assert R.problems(same, expected, LOOKUP)[0] == ["matchup of the week names the same manager twice"]
+    dash = _draft(teams=[{**_draft()["teams"][0], "blurb": "a " + chr(0x2014) + " b"}, _draft()["teams"][1]])
+    assert R.problems(dash, expected, LOOKUP)[1] == ["contains an em dash"]
+    nomotw = {k: v for k, v in _draft().items() if k != "matchup_of_the_week"}
+    assert R.problems(nomotw, expected, LOOKUP) == ([], ["no matchup of the week"])
+
+
+def test_publish_week_flips_the_status(tmp_path):
+    ed = tmp_path / R.EDITORIAL_DIR
+    R.write_json(ed / "2026_week06.json", _draft(teams=[{**t, "rank": 1} for t in _draft()["teams"]]))
+    R.write_json(tmp_path / R.SNAPSHOT_DIR / "2026_week06.json",
+                 {"season": 2026, "week": 6, "teams": [{"manager": "Charlie Gorman"}, {"manager": "Ethan Radecki"}]})
+    path, errors, _ = pub.publish_week(tmp_path, None, 6, LOOKUP)
+    assert errors and R.is_draft(R.read_json(path))          # refused, file untouched
+    R.write_json(path, _draft())
+    path, errors, warnings = pub.publish_week(tmp_path, 2026, 6, LOOKUP)
+    out = R.read_json(path)
+    assert errors == [] and list(out)[:3] == ["season", "week", "status"] and out["status"] == "published"
+    assert not R.is_draft(out) and set(R.published(R.load_folder(tmp_path, R.EDITORIAL_DIR))) == {"2026_week06.json"}
+
+
+def _season_tables(finished_weeks: int, regular: int = 14, drafted: bool = True) -> dict:
+    rows = []
+    for w in range(1, regular + 4):
+        for tid in (1, 2):
+            rows.append({"season": 2026, "week": w, "is_bye": False, "is_playoff_week": w > regular,
+                         "tier": "WINNERS_BRACKET" if w > regular else None,
+                         "result": ("W" if tid == 1 else "L") if w <= finished_weeks else "UNDECIDED"})
+    seasons = pd.DataFrame([{"season": 2026, "regular_season_periods": regular, "final_scoring_period": regular + 3}])
+    picks = pd.DataFrame({"season": [2026], "player_id": [1 if drafted else None]})
+    return {"matchups": pd.DataFrame(rows), "seasons": seasons, "draft_picks": picks}
+
+
+def test_next_week_to_start():
+    assert R.next_week(_season_tables(5)) == ((2026, 6), "")
+    assert R.next_week(_season_tables(0)) == ((2026, 1), "")
+    assert R.next_week(_season_tables(0, drafted=False))[0] is None
+    assert R.next_week(_season_tables(14))[0] is None              # playoffs: previews are written by hand
+    assert R.next_week(_season_tables(17)) == (None, "no live season")
+
+
+def test_start_week_is_safe_to_repeat(tmp_path):
+    class Ctx:
+        tables = _season_tables(5)
+        league_dir = tmp_path
+    assert pub.start_week(Ctx()) == ([], "this league writes no weekly rankings (no editorial/rankings folder)")
+    (tmp_path / R.EDITORIAL_DIR).mkdir(parents=True)
+    R.write_json(tmp_path / R.SNAPSHOT_DIR / "2026_week06.json", {"season": 2026, "week": 6})
+    assert pub.start_week(Ctx()) == ([], "2026 week 6 is already started")
+
+
+def test_deploy_runs_tuesday_5am_new_york_and_starts_the_week():
+    import yaml
+    wf = yaml.safe_load((ROOT / ".github" / "workflows" / "deploy.yml").read_text(encoding="utf-8"))
+    crons = [c["cron"] for c in wf[True]["schedule"]]          # yaml reads the key `on` as True
+    assert {"7 9 * * 2", "7 10 * * 2"} <= set(crons)
+    gate = wf["jobs"]["gate"]["steps"][0]["run"]
+    assert all(c in gate for c in crons if c != "23 13 * * 5")
+    steps = wf["jobs"]["engine"]["steps"]
+    start = next(s for s in steps if "rankings start" in s.get("run", ""))
+    assert start["continue-on-error"] is True and "start_week" in start["if"]
+    assert wf["jobs"]["engine"]["permissions"]["contents"] == "write"

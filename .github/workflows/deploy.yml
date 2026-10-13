@@ -7,14 +7,28 @@ name: Deploy
 # A deploy happens only when the build, its checks and the page tests pass. Otherwise
 # nothing is deployed, the last good site stays up, and the run fails so GitHub emails it.
 # Runs on every push to main, from the Run workflow button, and on a schedule:
-# Tuesday after Monday Night Football and Friday for ESPN's stat corrections.
+# Tuesday 5 am New York time after Monday Night Football (Ethan, 2026-10-13), Tuesday
+# morning again as a backup, and Friday for ESPN's stat corrections.
+# Tuesday runs also start the next weekly rankings week (engine rankings start): its
+# snapshot and a draft editorial file, committed to main. The draft is not on the site
+# until it is published (the rankings editor or engine rankings publish). Commits made
+# with the workflow's own token start no new run, so this never loops.
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      start_week:
+        description: "Start the next rankings week (snapshot + draft) if it is not started yet"
+        type: boolean
+        default: false
   schedule:
-    # times are UTC: 9:23 am New York time in summer time, 8:23 am in winter
+    # GitHub's schedule is UTC with no daylight saving: 09:07 UTC is 5:07 am in New York in summer
+    # time, 10:07 UTC in winter. The gate job runs only the one that is 5 am in New York that day.
+    - cron: "7 9 * * 2"
+    - cron: "7 10 * * 2"
+    # backup, if ESPN had not finished Monday's week by 5 am (9:23 am summer, 8:23 am winter)
     - cron: "23 13 * * 2"
     - cron: "23 13 * * 5"
 
@@ -37,9 +51,38 @@ env:
   LEAGUES_EXTRA: "family=leagues/family/league.yaml"
 
 jobs:
+  gate:
+    # which run this is: the 5 am Tuesday cron that is not 5 am today does nothing
+    runs-on: ubuntu-24.04
+    outputs:
+      run: ${{ steps.gate.outputs.run }}
+      start_week: ${{ steps.gate.outputs.start_week }}
+    steps:
+      - id: gate
+        env:
+          EVENT: ${{ github.event_name }}
+          CRON: ${{ github.event.schedule }}
+          START_INPUT: ${{ inputs.start_week }}
+        shell: bash
+        run: |
+          offset=$(TZ=America/New_York date +%z)      # -0400 summer time, -0500 winter
+          run=true; start=false
+          case "$EVENT:$CRON" in
+            "schedule:7 9 * * 2")   [ "$offset" = "-0400" ] || run=false; start=true ;;
+            "schedule:7 10 * * 2")  [ "$offset" = "-0500" ] || run=false; start=true ;;
+            "schedule:23 13 * * 2") start=true ;;
+            workflow_dispatch:*)    if [ "$START_INPUT" = "true" ]; then start=true; fi ;;
+          esac
+          echo "run=$run" >> "$GITHUB_OUTPUT"; echo "start_week=$start" >> "$GITHUB_OUTPUT"
+          echo "event $EVENT, schedule '$CRON', New York offset $offset: run=$run start_week=$start"
+
   engine:
+    needs: gate
+    if: ${{ needs.gate.outputs.run == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 60
+    permissions:
+      contents: write                    # the rankings week start commits its two files to main
     steps:
       - uses: actions/checkout@v5
 
@@ -65,6 +108,28 @@ jobs:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
           SWID: ${{ secrets.SWID }}
         run: python -m engine.cli update "$LEAGUE" --out dist --verify
+
+      - name: Start the next rankings week (snapshot + draft, committed to main)
+        if: ${{ needs.gate.outputs.start_week == 'true' }}
+        # never holds back the deploy: the draft is not on the site either way; a failure shows as a
+        # warning on the run and the backup run (or the Run workflow box) tries again
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -eo pipefail
+          python -m engine.cli rankings start "$LEAGUE" | tee start-week.txt
+          echo "### Rankings week" >> "$GITHUB_STEP_SUMMARY"; sed 's/^/- /' start-week.txt >> "$GITHUB_STEP_SUMMARY"
+          dir="$(dirname "$LEAGUE")"
+          git add "$dir/snapshots/rankings" "$dir/editorial/rankings"
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "$(head -1 start-week.txt | sed 's/^rankings: //'): snapshot and draft (automatic)"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 10
+          done
+          echo "::warning::could not push the rankings week start to main"; exit 1
 
       - name: Other leagues (update, sanity, change report, page test)
         env:
