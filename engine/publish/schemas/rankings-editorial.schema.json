@@ -17,6 +17,13 @@
    "type": "integer",
    "minimum": 1
   },
+  "status": {
+   "enum": [
+    "draft",
+    "published"
+   ],
+   "description": "draft: not on the site yet (engine rankings start/new write drafts); published or absent: shown"
+  },
   "label": {
    "type": "string"
   },

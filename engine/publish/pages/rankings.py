@@ -10,6 +10,9 @@ Outputs
     data/rankings/<season>_playoff_<round>.json legacy views: the editorial previews as written
     data/rankings/manifest.json                 legacy view: generated from the editorial files
 
+Draft weeks (`"status": "draft"`, engine/publish/rankings.py) are left out of every output
+until they are published; `--verify` lists them with anything that would stop publishing.
+
 Sources: the league's editorial and snapshot folders (engine/publish/rankings.py,
 decision 7.9) and `games` for the derived fields. Stage A check: the files are
 rebuilt and compared with the published ones (golden `rankings/rankings_files.json`);
@@ -193,7 +196,7 @@ class RankingsPublisher:
 
     def _inputs(self, ctx):
         base = R.league_dir(ctx)
-        editorial = R.load_folder(base, R.EDITORIAL_DIR)
+        editorial = R.published(R.load_folder(base, R.EDITORIAL_DIR))
         snaps = R.load_folder(base, R.SNAPSHOT_DIR)
         games = ctx.analysis.get("games")
         if not editorial or games is None:
@@ -235,7 +238,8 @@ class RankingsPublisher:
             return []
         editorial, snaps, lookup, views = got
         gold = ctx.golden.get("rankings_files") or {}
-        checks: list = [self._check_inputs(editorial, snaps)]
+        all_files = R.load_folder(R.league_dir(ctx), R.EDITORIAL_DIR)
+        checks: list = [self._check_inputs(all_files, snaps)]
         regular = {s["season"]: s["regular_season_weeks"] for s in ctx.config["seasons"]}
         known = known_fn(gold, regular)
         seasons = sorted({d["season"] for n, d in gold.items() if R.WEEK_FILE.match(n)})
@@ -253,7 +257,19 @@ class RankingsPublisher:
                 checks += compare_json(f"legacy view data/rankings/{name}", data, gold[name], by_section=False)
         checks += self._check_generator(ctx, gold, snaps, lookup)
         checks += self._info_live(ctx, editorial, snaps)
+        checks += self._info_drafts(all_files, snaps, lookup)
         return checks
+
+    def _info_drafts(self, files: dict, snaps: dict, lookup: dict) -> list[str]:
+        """Draft weeks waiting to be published, and what would stop each one."""
+        out = []
+        for name, ed in R.drafts(files).items():
+            expected = [t["manager"] for t in (snaps.get(name) or {}).get("teams") or []]
+            errors, warnings = R.problems(ed, expected, lookup)
+            state = (f"cannot publish yet: {'; '.join(errors[:3])}" if errors else "ready to publish") + (
+                f" ({len(warnings)} warnings)" if warnings else "")
+            out.append(f"INFO  rankings draft {name} is not on the site: {state}")
+        return out
 
     def _check_inputs(self, editorial: dict, snaps: dict) -> Comparison:
         import jsonschema
@@ -412,8 +428,9 @@ class RankingsPublisher:
 
 
 def write_week(ctx, season: int, week: int, force: bool = False) -> list[str]:
-    """`engine rankings new`: the live week's snapshot (frozen from now on) and, when the week has no
-    editorial file yet, an editorial draft (last week's ranks, empty write-ups) to fill in."""
+    """`engine rankings new` / `start`: the live week's snapshot (frozen from now on) and, when the week
+    has no editorial file yet, an editorial draft (last week's ranks, empty write-ups, status draft:
+    off the site until published) to fill in."""
     base = R.league_dir(ctx)
     stem = R.week_stem(season, week) + ".json"
     snap_path = base / R.SNAPSHOT_DIR / stem
@@ -436,7 +453,7 @@ def write_week(ctx, season: int, week: int, force: bool = False) -> list[str]:
         teams = sorted(snap["teams"], key=lambda t: next((p["rank"] for p in (prev or {}).get("teams") or []
                                                           if name_to_key(ctx.cfg).get(p["manager"].lower()) ==
                                                           name_to_key(ctx.cfg).get(t["manager"].lower())), 99))
-        draft = {"season": season, "week": week,
+        draft = {"season": season, "week": week, "status": R.STATUS_DRAFT,
                  **({"hide_archetype_link": prev["hide_archetype_link"]} if prev and "hide_archetype_link" in prev
                     else {}),
                  "teams": [{"manager": t["manager"], "rank": i + 1, "synopsis": "", "blurb": "", "screenshots": []}
@@ -444,3 +461,50 @@ def write_week(ctx, season: int, week: int, force: bool = False) -> list[str]:
         R.write_json(ed_path, draft)
         written.append(str(ed_path))
     return written
+
+
+def start_week(ctx) -> tuple[list[str], str]:
+    """`engine rankings start`, run by the Tuesday deploy: start the next week (R.next_week) when the
+    league writes weekly rankings (it has an editorial rankings folder) and the week has no snapshot.
+    Safe to run any number of times. (paths written, what happened)."""
+    base = R.league_dir(ctx)
+    if base is None or not (base / R.EDITORIAL_DIR).is_dir():
+        return [], "this league writes no weekly rankings (no editorial/rankings folder)"
+    nxt, why = R.next_week(ctx.tables)
+    if nxt is None:
+        return [], f"no week to start: {why}"
+    season, week = nxt
+    if (base / R.SNAPSHOT_DIR / (R.week_stem(season, week) + ".json")).exists():
+        return [], f"{season} week {week} is already started"
+    return write_week(ctx, season, week), f"started {season} week {week}"
+
+
+def publish_week(base: Path, season: int | None, week: int, lookup: dict[str, str],
+                 force: bool = False) -> tuple[Path, list[str], list[str]]:
+    """`engine rankings publish`: mark a week's editorial file published (the push deploys it).
+    Refused while R.problems finds errors, unless force. season None: the latest season with the week.
+    (path, errors, warnings); the file is written only when there are no errors (or force)."""
+    folder = base / R.EDITORIAL_DIR
+    if season is None:
+        found = sorted(folder.glob(f"*_week{int(week):02d}.json"))
+        if not found:
+            raise SystemExit(f"error: no editorial file for week {week} in {folder}")
+        path = found[-1]
+    else:
+        path = folder / (R.week_stem(season, week) + ".json")
+        if not path.exists():
+            raise SystemExit(f"error: {path} does not exist")
+    ed = R.read_json(path)
+    snap_path = base / R.SNAPSHOT_DIR / path.name
+    expected = [t["manager"] for t in (R.read_json(snap_path).get("teams") or [])] if snap_path.exists() else None
+    errors, warnings = R.problems(ed, expected, lookup)
+    if errors and not force:
+        return path, errors, warnings
+    out = {}
+    for k, v in ed.items():               # status right after week, as drafts are written
+        if k != "status":
+            out[k] = v
+        if k == "week":
+            out["status"] = R.STATUS_PUBLISHED
+    R.write_json(path, out)
+    return path, errors, warnings

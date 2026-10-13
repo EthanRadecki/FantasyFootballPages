@@ -28,8 +28,10 @@ From milestone M1 (docs/PUBLISH_PLAN.md section 8) the live site is this build, 
 GitHub Pages deploys from `.github/workflows/deploy.yml`:
 
 - on every push to `main` (a weekly rankings commit, a code change);
-- on a schedule: Tuesday and Friday at 13:23 UTC (9:23 am New York time in summer time, 8:23 in winter), after Monday Night Football and after ESPN's stat corrections; GitHub can start scheduled runs some minutes late;
-- from Actions → Deploy → Run workflow, any time.
+- on a schedule: Tuesday at 5:07 am New York time, after Monday Night Football (Ethan, 2026-10-13; two schedule lines, 09:07 and 10:07 UTC, because GitHub's schedule is UTC with no daylight saving: the `gate` job runs only the one that is 5 am in New York that day), Tuesday again at 13:23 UTC as a backup in case ESPN had not finished Monday's week by 5 am, and Friday at 13:23 UTC after ESPN's stat corrections (9:23 am New York time in summer time, 8:23 in winter); GitHub can start scheduled runs some minutes late;
+- from Actions → Deploy → Run workflow, any time (tick "Start the next rankings week" to start the week by hand).
+
+The Tuesday runs also start the next weekly rankings week (see Weekly rankings below) and commit its two files to `main`. Commits made with the workflow's own token start no new run. If `main` gets branch protection that blocks direct pushes, that commit fails (a warning on the run; the deploy still happens).
 
 Each run does `engine update --verify` with the Actions secrets, the sanity checks against the last deploy (`deploy-stats.json`: no season loses games, the live week never goes backwards, every visible manager has its files), the change report, and the page test on the build and on the assembled site. Only when all of that passes is the build published; every published file is checked against the build (with `SITE_ROOT=legacy`, byte for byte, and every committed page, style and image is in it). When anything fails, nothing is deployed: the live site keeps the last good build and the run fails, so GitHub emails you; the first failed step's log says why.
 
@@ -84,11 +86,23 @@ CI runs the same steps on every push. Both folders are gitignored. After changin
 
 Each ranked week is an editorial file (`leagues/<league>/editorial/rankings/<season>_weekNN.json`: ranks, synopses, blurbs, the matchup of the week) plus a frozen snapshot of its computed fields (`leagues/<league>/snapshots/rankings/`); the build adds record, PPG, streak and the rank fields (docs/METRICS_REFERENCE.md, Weekly Rankings).
 
-Each week, in the Codespace once the week's games are final (Tuesday):
+**Every Tuesday, automatically** (from 2026 week 6): after the 5 am update the deploy runs `engine rankings start`, which works out the next week (the week after the live season's last finished week; regular season only, once the draft is done), and when that week has no snapshot yet writes the snapshot and a **draft** editorial file (`"status": "draft"`, last week's order, empty write-ups) and commits both to `main`. It does nothing when the week is already started, so the backup run and Run workflow are safe. Only leagues with an `editorial/rankings` folder write weekly rankings. The snapshot is taken Tuesday morning, before Thursday's game.
+
+**A draft is not on the site.** Write the week (the rankings editor, or by hand in the editorial file: ranks, synopses, blurbs and the matchup of the week, `"matchup_of_the_week": {"team_a": "<manager>", "team_b": "<manager>", "blurb": "..."}`), then publish it:
+
+```
+git pull
+python -m engine.cli rankings publish leagues/preach/league.yaml --week 6
+git add leagues/preach/editorial/rankings/2026_week06.json && git commit -m "2026 week 6 rankings" && git push
+```
+
+`publish` sets `"status": "published"` and refuses while the week has errors (a manager missing or twice, a shared or missing rank, a matchup of the week naming an unknown manager or the same one twice, no blurbs at all); empty blurbs, em dashes and a missing matchup of the week are warnings. `build --verify` lists each waiting draft and whether it is ready. The push deploys the week.
+
+By hand, as before (any week, or when the automatic start did not run):
 
 ```
 python -m engine.cli update leagues/preach/league.yaml --verify
-python -m engine.cli rankings new leagues/preach/league.yaml --week 5
+python -m engine.cli rankings new leagues/preach/league.yaml --week 6
 ```
 
-writes the week's snapshot (refused if one exists; `--force` regenerates it) and, when the week has no editorial file yet, a draft with last week's order to rewrite. Fill in the ranks, synopses, blurbs and the matchup of the week (`"matchup_of_the_week": {"team_a": "<manager>", "team_b": "<manager>", "blurb": "..."}`), then commit and push both files: the push deploys the week. `tools/split_rankings.py` imported the PC's weekly files before M1 and is no longer needed.
+writes the week's snapshot (refused if one exists; `--force` regenerates it) and, when the week has no editorial file yet, the same draft. `tools/split_rankings.py` imported the PC's weekly files before M1 and is no longer needed.
