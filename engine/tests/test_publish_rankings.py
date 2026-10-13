@@ -350,3 +350,20 @@ def test_deploy_runs_tuesday_5am_new_york_and_starts_the_week():
     start = next(s for s in steps if "rankings start" in s.get("run", ""))
     assert start["continue-on-error"] is True and "start_week" in start["if"]
     assert wf["jobs"]["engine"]["permissions"]["contents"] == "write"
+
+
+def test_publish_formats_plain_text_blurbs(tmp_path):
+    vocab = json.loads((GOLDEN / "blurbs" / "vocab_2026.json").read_text(encoding="utf-8"))
+    d = _draft()
+    d["teams"][0].update(blurb="Charlie scored 150 points. Next week is harder.", synopsis="")
+    d["teams"][1].update(blurb='<mark class="hl-player">Kept</mark> as written.', synopsis="Mine.")
+    d["matchup_of_the_week"]["blurb"] = "Both are 3-1. **Charlie wins.**"
+    R.write_json(tmp_path / R.EDITORIAL_DIR / "2026_week06.json", d)
+    path, errors, _ = pub.publish_week(tmp_path, 2026, 6, LOOKUP, vocab=vocab)
+    out = R.read_json(path)
+    a, b = out["teams"]
+    assert errors == [] and a["synopsis"] == "Charlie scored 150 points."
+    assert a["blurb"].startswith('<strong class="hl-key"><mark class="hl-manager"') and 'hl-stat">150<' in a["blurb"]
+    assert b == d["teams"][1]
+    assert out["matchup_of_the_week"]["blurb"].endswith('<strong class="hl-key"><mark class="hl-manager" '
+                                                        'style="color:#28843a;">Charlie</mark> wins.</strong>')

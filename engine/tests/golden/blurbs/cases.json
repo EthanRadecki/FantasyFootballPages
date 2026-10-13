@@ -1,0 +1,138 @@
+{
+ "note": "engine/publish/blurbs.py and web/assets/js/core/blurbs.js must both give these outputs; regenerate only on purpose, with both changed together",
+ "cases": [
+  {
+   "name": "first sentence is the key",
+   "text": "What a win in Week 4. Ben is now 3-1.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\">What a win in Week <strong class=\"hl-stat\">4</strong>.</strong> <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> is now <strong class=\"hl-stat\">3</strong>-<strong class=\"hl-stat\">1</strong>.",
+   "synopsis": "What a win in Week 4."
+  },
+  {
+   "name": "explicit key mid-text",
+   "text": "Not flashy. **I think Cole gets back on track here** and wins.",
+   "auto_key": false,
+   "html": "Not flashy. <strong class=\"hl-key\">I think <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> gets back on track here</strong> and wins.",
+   "synopsis": "I think Cole gets back on track here"
+  },
+  {
+   "name": "no key for other blurbs",
+   "text": "Cole leads the series 5-3.",
+   "auto_key": false,
+   "html": "<mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> leads the series <strong class=\"hl-stat\">5</strong>-<strong class=\"hl-stat\">3</strong>.",
+   "synopsis": ""
+  },
+  {
+   "name": "one sentence",
+   "text": "Ben wins",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> wins</strong>",
+   "synopsis": "Ben wins"
+  },
+  {
+   "name": "abbreviations do not end the first sentence",
+   "text": "Travis Etienne Jr. is still out for A$AP Monke. Next week matters.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\"><mark class=\"hl-player\">Travis Etienne Jr.</mark> is still out for <em class=\"hl-team\">A$AP Monke</em>.</strong> Next week matters.",
+   "synopsis": "Travis Etienne Jr. is still out for A$AP Monke."
+  },
+  {
+   "name": "suffix optional on players",
+   "text": "Kenneth Walker went off. Then Travis Etienne sat.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\"><mark class=\"hl-player\">Kenneth Walker</mark> went off.</strong> Then <mark class=\"hl-player\">Travis Etienne</mark> sat.",
+   "synopsis": "Kenneth Walker went off."
+  },
+  {
+   "name": "team with initials",
+   "text": "N.Y. Routensss rolled. Next.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\"><em class=\"hl-team\">N.Y. Routensss</em> rolled.</strong> Next.",
+   "synopsis": "N.Y. Routensss rolled."
+  },
+  {
+   "name": "possessive and curly quotes",
+   "text": "Ben's team said \"wow\" and 'fine'. Next.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark>’s team said “wow” and ‘fine’.</strong> Next.",
+   "synopsis": "Ben’s team said “wow” and ‘fine’."
+  },
+  {
+   "name": "word boundaries",
+   "text": "The Bengals and Benny max out; Max wins. Done.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\">The Bengals and Benny max out; <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> wins.</strong> Done.",
+   "synopsis": "The Bengals and Benny max out; Max wins."
+  },
+  {
+   "name": "positions plurals and ranks",
+   "text": "Two WRs, a QB11 and an RB2, but not RBX or WRT. Done.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\">Two <mark class=\"hl-pos-WR\">WR</mark>s, a <mark class=\"hl-pos-QB\">QB</mark><strong class=\"hl-stat\">11</strong> and an <mark class=\"hl-pos-RB\">RB</mark><strong class=\"hl-stat\">2</strong>, but not RBX or WRT.</strong> Done.",
+   "synopsis": "Two WRs, a QB11 and an RB2, but not RBX or WRT."
+  },
+  {
+   "name": "numbers",
+   "text": "Scored 1,234 points, 45%, 2nd place, 188.74-point game, #1 seed, $300 FAAB, .500 record, Q4. Done.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\">Scored <strong class=\"hl-stat\">1,234</strong> points, <strong class=\"hl-stat\">45%</strong>, <strong class=\"hl-stat\">2nd</strong> place, <strong class=\"hl-stat\">188.74</strong>-point game, #1 seed, $300 FAAB, .500 record, Q4.</strong> Done.",
+   "synopsis": "Scored 1,234 points, 45%, 2nd place, 188.74-point game, #1 seed, $300 FAAB, .500 record, Q4."
+  },
+  {
+   "name": "nickname and last name",
+   "text": "RPM and the Commish beat Gegwich. Done.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#bd0517;\">RPM</mark> and the <mark class=\"hl-manager\" style=\"color:#bd0517;\">Commish</mark> beat <mark class=\"hl-manager\" style=\"color:#131313;\">Gegwich</mark>.</strong> Done.",
+   "synopsis": "RPM and the Commish beat Gegwich."
+  },
+  {
+   "name": "screenshot markers kept",
+   "text": "Look [[img:ben_01]] here. Done.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\">Look [[img:ben_01]] here.</strong> Done.",
+   "synopsis": "Look here."
+  },
+  {
+   "name": "html escaped",
+   "text": "Ben & Max < Cole > all. Done.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> &amp; <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> &lt; <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> &gt; all.</strong> Done.",
+   "synopsis": "Ben & Max < Cole > all."
+  },
+  {
+   "name": "whitespace collapsed",
+   "text": "  Ben   wins.\n\nMax   loses.  ",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> wins.</strong> <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> loses.",
+   "synopsis": "Ben wins."
+  },
+  {
+   "name": "question and exclamation end sentences",
+   "text": "Who wins? Ben!",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\">Who wins?</strong> <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark>!",
+   "synopsis": "Who wins?"
+  },
+  {
+   "name": "decimal does not end a sentence",
+   "text": "He scored 12.5 points. Next.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\">He scored <strong class=\"hl-stat\">12.5</strong> points.</strong> Next.",
+   "synopsis": "He scored 12.5 points."
+  },
+  {
+   "name": "closing quote after the period",
+   "text": "He said \"done.\" Then left.",
+   "auto_key": true,
+   "html": "<strong class=\"hl-key\">He said “done.”</strong> Then left.",
+   "synopsis": "He said “done.”"
+  },
+  {
+   "name": "empty",
+   "text": "",
+   "auto_key": true,
+   "html": "",
+   "synopsis": ""
+  }
+ ]
+}

@@ -504,8 +504,12 @@ def cmd_rankings_publish(args: argparse.Namespace) -> int:
     from engine.publish.pages.rankings import publish_week
 
     cfg = load_config(args.path)
+    vocab_path = Path(args.vocab or Path(args.out) / "data" / "v1" / "editor" / "vocab.json")
+    vocab = json.loads(vocab_path.read_text(encoding="utf-8")) if vocab_path.is_file() else None
+    if vocab is None:
+        print(f"note: no {vocab_path} (run `engine build` first): plain-text blurbs are published as written")
     path, errors, warnings = publish_week(Path(args.path).parent, args.season, args.week, name_to_key(cfg),
-                                          force=args.force)
+                                          force=args.force, vocab=vocab)
     for w in warnings:
         print(f"warning: {w}")
     for e in errors:
@@ -610,6 +614,9 @@ def main(argv: list[str] | None = None) -> int:
     pub.add_argument("--week", type=int, required=True)
     pub.add_argument("--season", type=int, help="default: the latest season with that week")
     pub.add_argument("--force", action="store_true", help="publish even with errors")
+    pub.add_argument("--out", default="dist", help="the build whose data/v1/editor/vocab.json formats plain-text "
+                                                   "blurbs (default dist)")
+    pub.add_argument("--vocab", help="a vocab.json to use instead")
     pub.set_defaults(func=cmd_rankings_publish)
 
     args = parser.parse_args(argv)

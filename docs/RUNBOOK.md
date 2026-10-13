@@ -96,6 +96,8 @@ python -m engine.cli rankings publish leagues/preach/league.yaml --week 6
 git add leagues/preach/editorial/rankings/2026_week06.json && git commit -m "2026 week 6 rankings" && git push
 ```
 
+Blurbs can be written as plain text: `publish` formats every blurb that has no HTML tags yet with the same rules as the rankings editor (`engine/publish/blurbs.py`, the JavaScript twin `web/assets/js/core/blurbs.js`, using the build's `data/v1/editor/vocab.json`, so run `engine update` or `build` first): team names, player names, managers (full, first and last names only one manager has, aliases, nicknames from `editorial/blurbs.yaml`), QB/RB/WR/TE (also WRs, QB11), numbers, and the key sentence (the first sentence, or one marked `**like this**`; an empty synopsis takes the key sentence). The matchup of the week has a key sentence only when one is marked. `[[img:id]]` screenshot markers stay as written.
+
 `publish` sets `"status": "published"` and refuses while the week has errors (a manager missing or twice, a shared or missing rank, a matchup of the week naming an unknown manager or the same one twice, no blurbs at all); empty blurbs, em dashes and a missing matchup of the week are warnings. `build --verify` lists each waiting draft and whether it is ready. The push deploys the week.
 
 By hand, as before (any week, or when the automatic start did not run):

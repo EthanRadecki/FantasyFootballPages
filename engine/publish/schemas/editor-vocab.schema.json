@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "editor-vocab",
+  "title": "data/v1/editor/vocab.json: the names the rankings editor's blurb formatter marks (engine/publish/pages/editor.py)",
+  "type": "object",
+  "required": [
+    "meta",
+    "season",
+    "managers",
+    "teams",
+    "players"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object"
+    },
+    "season": {
+      "type": "integer"
+    },
+    "managers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "names"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "color": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "names": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "teams": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "players": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

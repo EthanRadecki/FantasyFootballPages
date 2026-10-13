@@ -479,10 +479,32 @@ def start_week(ctx) -> tuple[list[str], str]:
     return write_week(ctx, season, week), f"started {season} week {week}"
 
 
+def format_plain(ed: dict, vocab: dict) -> dict:
+    """Blurbs written as plain text (no tags) formatted with the editor's rules (engine/publish/blurbs.py):
+    a manager's blurb takes its first sentence (or its **marked** one) as the key and, when the
+    synopsis is empty, as the synopsis; the matchup of the week keys only a **marked** sentence."""
+    from engine.publish.blurbs import format_blurb
+    out = dict(ed)
+    teams = []
+    for t in ed.get("teams") or []:
+        t = dict(t)
+        if str(t.get("blurb") or "").strip() and "<" not in t["blurb"]:
+            t["blurb"], syn = format_blurb(t["blurb"], vocab, True)
+            if not str(t.get("synopsis") or "").strip():
+                t["synopsis"] = syn
+        teams.append(t)
+    out["teams"] = teams
+    m = ed.get(R.MOTW)
+    if m and str(m.get("blurb") or "").strip() and "<" not in m["blurb"]:
+        out[R.MOTW] = {**m, "blurb": format_blurb(m["blurb"], vocab, False)[0]}
+    return out
+
+
 def publish_week(base: Path, season: int | None, week: int, lookup: dict[str, str],
-                 force: bool = False) -> tuple[Path, list[str], list[str]]:
+                 force: bool = False, vocab: dict | None = None) -> tuple[Path, list[str], list[str]]:
     """`engine rankings publish`: mark a week's editorial file published (the push deploys it).
     Refused while R.problems finds errors, unless force. season None: the latest season with the week.
+    With `vocab` (data/v1/editor/vocab.json), plain-text blurbs are formatted first (format_plain).
     (path, errors, warnings); the file is written only when there are no errors (or force)."""
     folder = base / R.EDITORIAL_DIR
     if season is None:
@@ -495,6 +517,8 @@ def publish_week(base: Path, season: int | None, week: int, lookup: dict[str, st
         if not path.exists():
             raise SystemExit(f"error: {path} does not exist")
     ed = R.read_json(path)
+    if vocab is not None:
+        ed = format_plain(ed, vocab)
     snap_path = base / R.SNAPSHOT_DIR / path.name
     expected = [t["manager"] for t in (R.read_json(snap_path).get("teams") or [])] if snap_path.exists() else None
     errors, warnings = R.problems(ed, expected, lookup)
