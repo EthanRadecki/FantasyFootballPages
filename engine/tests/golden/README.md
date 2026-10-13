@@ -181,4 +181,13 @@ Added 2026-09-30. Checked by `engine analyze --verify` and `engine/tests/test_re
 |---|---|---|
 | `regressions/extra_analytics_regressions.json.gz` | extra-analytics.html: positional `DATA`, `STD_COEF`, `COEF_PVAL`, `CORR_R`, the R2 in the methodology text, and the quarterly `coefs`, `corrs`, `pvals` | the positional table reproduces exactly from `weekly_rosters_bracket_only.csv.gz` (game weeks) and `matchup_data.csv.gz`; its regression is within 0.005 (0.012 for p-values) of that fit; the quarterly correlations reproduce exactly, its coefficients and p-values do not (replaced, Ethan's decision) |
 
+## Blurb formatter (rankings editor)
+
+Added 2026-10-13. Not legacy files: fixtures for `engine/tests/test_blurbs.py`, which runs `engine/publish/blurbs.py` and its JavaScript twin `web/assets/js/core/blurbs.js` (with node) on them.
+
+| File | Source | Covers |
+|---|---|---|
+| `blurbs/vocab_2026.json` | `data/v1/editor/vocab.json` from the 2026-10-13 build (Preach) | the names the formatter marks; 2026 week 5's blurbs come back identical from their plain text |
+| `blurbs/cases.json` | `engine/publish/blurbs.py` outputs on hand-written inputs | key sentence, abbreviations, suffixes, quotes, word boundaries, positions, numbers, nicknames, screenshot markers, escaping; regenerate only when both twins change on purpose |
+
 Never edit these to make a check pass. If a legacy file is wrong, record the fix in the check (`engine/legacy.py`) with a comment explaining the legacy bug.

@@ -1,0 +1,10 @@
+# Weekly rankings blurb formatter (engine/publish/blurbs.py, the rankings editor).
+# Editorial, optional: without this file the formatter still marks full names, aliases
+# and the first and last names only one manager has.
+#
+#   nicknames   other names a blurb uses for a manager -> the manager's name in league.yaml;
+#               marked in the manager's color like the real name (exact case)
+
+nicknames:
+  RPM: Ryan McQuaid
+  Commish: Ryan McQuaid

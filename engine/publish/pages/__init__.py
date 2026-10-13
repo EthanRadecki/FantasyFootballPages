@@ -9,6 +9,7 @@ golden, plus INFO lines on what the live page changes to at M1).
 from engine.publish.pages.champions import ChampionsPublisher
 from engine.publish.pages.draft_analysis import DraftAnalysisPublisher
 from engine.publish.pages.draft_history import DraftHistoryPublisher
+from engine.publish.pages.editor import EditorPublisher
 from engine.publish.pages.extra_analytics import ExtraAnalyticsPublisher
 from engine.publish.pages.fingerprints import FingerprintsPublisher
 from engine.publish.pages.games import GamesPublisher
@@ -27,4 +28,4 @@ PUBLISHERS: list = [GamesPublisher(), ManagersPublisher(), TradesPublisher(), Im
                      OddsPublisher(), DraftHistoryPublisher(), FingerprintsPublisher(), SurplusPublisher(),
                      DraftAnalysisPublisher(), WaiversPublisher(), LineupEfficiencyPublisher(),
                      ExtraAnalyticsPublisher(), ChampionsPublisher(), SchedulePublisher(), RankingsPublisher(),
-                     HeadshotsPublisher()]
+                     HeadshotsPublisher(), EditorPublisher()]
