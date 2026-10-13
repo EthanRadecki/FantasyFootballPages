@@ -21,7 +21,7 @@ from engine.analytics import records as records_mod
 from engine.analytics import weeks as weeks_mod
 from engine.config import excluded_games, excluded_manager_keys
 from engine.legacy import Comparison, compare, legacy_week, name_to_key, resolve_names
-from engine.legacy_records import _sides, _tie_groups, through_golden_weeks
+from engine.legacy_records import _sides, _tie_groups, renamed_teams, through_golden_weeks
 from engine.publish.build import Output
 from engine.publish.legacy_view import Names, csv_text, info_diff, site_csv, site_json
 
@@ -145,7 +145,7 @@ def check_matchups_view(view: list[dict], golden: list[dict], cfg: dict) -> Comp
         df["game_id_text"] = [m[k] for k in zip(df["season"], df["week"], df["manager_key"])]
     r = compare("legacy view data/matchups.json vs matchups.json", exp, act, keys=["season", "week", "manager_key"],
                 values=["week_label", "is_playoff", "team_name", "points", "result", "starters", "bench_ties",
-                        "game_id_text"])
+                        "game_id_text"], known=renamed_teams(exp, act))
     both = exp.merge(act, on=["season", "week", "manager_key"], suffixes=("_l", "_e"))
     swapped = int((both["side_l"] != both["side_e"]).sum())
     if swapped:

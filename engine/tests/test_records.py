@@ -92,3 +92,17 @@ def test_excluded_managers_resolve_from_slugs():
     cfg = {"managers": [{"name": "Ann A", "id": A}, {"name": "Bob B", "id": B}],
            "analysis": {"exclude_managers": ["bob-b"]}}
     assert excluded_manager_keys(cfg) == {B}
+
+
+def test_renamed_teams_excuses_a_whole_season_rename_only():
+    import pandas as pd
+    from engine.legacy import compare
+    from engine.legacy_records import RENAMED, renamed_teams
+
+    keys = ["season", "week", "manager_key"]
+    exp = pd.DataFrame({"season": [2026] * 4, "week": [1, 2, 1, 2], "manager_key": ["a", "a", "b", "b"],
+                        "team_name": ["Old", "Old", "B1", "B1"]})
+    act = exp.assign(team_name=["New", "New", "B1", "B2"])   # a renamed all season; b differs in one week
+    r = compare("t", exp, act, keys=keys, values=["team_name"], known=renamed_teams(exp, act))
+    assert r.known == {RENAMED: 2}
+    assert r.mismatched["team_name"] == 1

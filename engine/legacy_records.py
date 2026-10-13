@@ -75,6 +75,25 @@ def _engine_sides(analysis: dict) -> pd.DataFrame:
     return out
 
 
+RENAMED = "team renamed on ESPN after the site's file was frozen (ESPN keeps only the current name); compared by manager"
+
+
+def renamed_teams(exp: pd.DataFrame, act: pd.DataFrame) -> pd.DataFrame:
+    """Known rows for team_name: a manager-season whose name differs in every row, with one name on
+    each side (a team renamed during the season; ESPN reports only the latest name). A name that
+    differs in only some of a season's weeks is still a mismatch."""
+    keys = ["season", "week", "manager_key"]
+    both = exp[keys + ["team_name"]].merge(act[keys + ["team_name"]], on=keys, suffixes=("_l", "_e"))
+    rows = []
+    for (season, mgr), g in both.groupby(["season", "manager_key"]):
+        diff = g["team_name_l"].astype(str) != g["team_name_e"].astype(str)
+        if diff.all() and g["team_name_l"].nunique() == 1 and g["team_name_e"].nunique() == 1:
+            rows.append(g[keys])
+    if not rows:
+        return pd.DataFrame(columns=keys + ["column", "reason"])
+    return pd.concat(rows, ignore_index=True).assign(column="team_name", reason=RENAMED)
+
+
 def _tie_groups(players: list) -> str:
     return json.dumps([sorted(g) for _, g in itertools.groupby(players, key=lambda p: p[3])])
 
@@ -87,7 +106,8 @@ def check_games(analysis: dict, games_json: list[dict], cfg: dict) -> Comparison
         df["starters"] = df["starters"].map(json.dumps)
         df["bench_ties"] = df["bench"].map(_tie_groups)
     r = compare("games vs matchups.json", exp, act, keys=["season", "week", "manager_key"],
-                values=["week_label", "is_playoff", "team_name", "points", "result", "starters", "bench_ties"])
+                values=["week_label", "is_playoff", "team_name", "points", "result", "starters", "bench_ties"],
+                known=renamed_teams(exp, act))
     both = exp.merge(act, on=["season", "week", "manager_key"], suffixes=("_l", "_e"))
     swapped = int((both["side_l"] != both["side_e"]).sum())
     if swapped:
