@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Rankings Editor</title>
+<link rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/pages/weekly-rankings.css">
+<link rel="stylesheet" href="../assets/css/pages/rankings-editor.css">
+</head>
+<body>
+
+<div class="bg-wrap"><div class="bg-grain"></div><div class="bg-gradient"></div></div>
+
+<div class="content">
+
+  <nav class="glass" id="site-nav"></nav>
+  <div class="mobile-menu" id="mobile-menu"></div>
+
+  <div class="re-hero glass">
+    <h1>Rankings Editor</h1>
+    <p class="re-hero-sub" id="reHeroSub">Loading&hellip;</p>
+  </div>
+
+  <section class="re-signin glass" id="reSignin" hidden>
+    <h2>Sign in</h2>
+    <p>Saving writes the week&rsquo;s file to the league&rsquo;s GitHub repository, so the editor needs a GitHub token that can write to it. The token stays in this browser only.</p>
+    <label class="re-label" for="reRepo">Repository</label>
+    <input type="text" id="reRepo" placeholder="owner/repository" autocomplete="off" spellcheck="false">
+    <label class="re-label" for="reToken">GitHub token</label>
+    <input type="password" id="reToken" placeholder="github_pat_&hellip;" autocomplete="off" spellcheck="false">
+    <button type="button" class="re-btn re-btn-main" id="reSigninBtn">Sign in</button>
+    <p class="re-signin-msg" id="reSigninMsg"></p>
+    <details class="re-help">
+      <summary>How to make a token (once per device, about 2 minutes)</summary>
+      <ol>
+        <li>On GitHub: your picture, <b>Settings</b>, <b>Developer settings</b>, <b>Personal access tokens</b>, <b>Fine-grained tokens</b>, <b>Generate new token</b>.</li>
+        <li>Name it (for example &ldquo;Rankings editor&rdquo;), pick an expiration, and under <b>Repository access</b> choose <b>Only select repositories</b> and this site&rsquo;s repository.</li>
+        <li>Under <b>Permissions</b>, <b>Repository permissions</b>: <b>Contents</b> Read and write, and <b>Actions</b> Read and write (for the Start week button).</li>
+        <li><b>Generate token</b>, copy it, paste it here. GitHub shows it only once; you can delete it there any time to lock the editor again.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section id="reEditor" hidden>
+    <div class="re-bar glass">
+      <div class="re-bar-row">
+        <select id="reWeek" aria-label="Week"></select>
+        <span class="re-status" id="reStatus"></span>
+        <button type="button" class="re-btn re-btn-quiet" id="reReload">Reload</button>
+        <span class="re-bar-spacer"></span>
+        <span id="reActions" hidden>
+          <button type="button" class="re-btn" id="reSave">Save draft</button>
+          <button type="button" class="re-btn re-btn-main" id="rePublish">Publish</button>
+        </span>
+      </div>
+      <div class="re-message" id="reMessage"></div>
+      <div class="re-checks" id="reChecks"></div>
+      <div class="re-who"><span id="reWho"></span> · <button type="button" class="re-link" id="reSignout">Sign out</button></div>
+    </div>
+
+    <div class="re-restore glass" id="reRestore" hidden></div>
+
+    <details class="re-help re-howto glass">
+      <summary>How writing works</summary>
+      <ul>
+        <li>Type plain text. Names, teams, positions and numbers are highlighted for you, as in the preview.</li>
+        <li>The first sentence is the key sentence (bold) and the synopsis. To pick another, wrap it in <code>**two asterisks**</code>.</li>
+        <li><code>[[img:id]]</code> places a screenshot the week already has.</li>
+        <li>Ranks: type a number or use the arrows. Save draft as often as you like; the week is not on the site until you publish it.</li>
+      </ul>
+    </details>
+
+    <div id="reCards"></div>
+    <section class="re-motw glass" id="reMotw" hidden></section>
+  </section>
+
+  <footer id="site-footer"></footer>
+</div>
+
+<script type="module" src="../assets/js/pages/rankings-editor.js"></script>
+</body>
+</html>

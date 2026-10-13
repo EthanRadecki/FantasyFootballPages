@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "editor-week",
+  "title": "data/v1/editor/week.json: the rankings editor's week to write and each manager's numbers (engine/publish/pages/editor.py)",
+  "type": "object",
+  "required": [
+    "meta",
+    "season",
+    "week",
+    "file",
+    "repo",
+    "managers"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object"
+    },
+    "season": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "week": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "file": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "why_none": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "repo": {
+      "type": "object",
+      "required": [
+        "name",
+        "branch",
+        "editorial_dir",
+        "snapshot_dir"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "branch": {
+          "type": "string"
+        },
+        "editorial_dir": {
+          "type": "string"
+        },
+        "snapshot_dir": {
+          "type": "string"
+        }
+      }
+    },
+    "managers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "name"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "prev_rank": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "record": {
+            "type": "string"
+          },
+          "ppg": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "last_score": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "streak": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_game": {
+            "type": "object"
+          },
+          "next_game": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

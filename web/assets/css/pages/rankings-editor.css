@@ -1,0 +1,91 @@
+/* Rankings Editor (pages/rankings-editor.html). The previews use weekly-rankings.css, so a blurb
+   looks here as it will on the page. */
+
+[hidden] { display:none !important; }
+
+.re-hero { padding:1.6rem 1.8rem; margin-bottom:1rem; }
+.re-hero h1 { font-family:var(--font-display); font-size:2rem; margin:0; letter-spacing:-0.02em; }
+.re-hero-sub { margin:0.35rem 0 0; color:var(--text-mid); font-size:0.9rem; }
+
+.re-signin { padding:1.4rem 1.6rem; max-width:560px; margin:0 auto 1rem; }
+.re-signin h2, .re-motw h2 { font-family:var(--font-display); font-size:1.3rem; margin:0 0 0.6rem; }
+.re-signin p { color:var(--text-mid); font-size:0.88rem; line-height:1.55; }
+.re-signin input { width:100%; margin-bottom:0.6rem; }
+.re-signin-msg { min-height:1.2em; color:var(--red) !important; }
+
+.re-label { display:block; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;
+  color:var(--muted); margin:0.7rem 0 0.25rem; }
+.re-hint-inline { text-transform:none; letter-spacing:0; font-weight:500; }
+.re-hint { font-size:0.75rem; color:var(--muted); margin-top:0.3rem; }
+
+.re-signin input, .re-card input, .re-card textarea, .re-motw textarea, .re-motw select, .re-bar select {
+  font:inherit; font-size:0.88rem; color:var(--text); background:rgba(255,255,255,0.6);
+  border:1px solid rgba(0,0,0,0.12); border-radius:var(--radius-sm); padding:0.5rem 0.65rem; box-sizing:border-box;
+}
+.re-card textarea, .re-motw textarea { width:100%; resize:vertical; line-height:1.55; min-height:8rem; }
+.re-card input.re-syn { width:100%; }
+textarea:focus, input:focus, select:focus { outline:2px solid rgba(var(--accent-rgb),0.45); outline-offset:1px; }
+
+.re-btn { font:inherit; font-size:0.82rem; font-weight:600; padding:0.45rem 0.9rem; border-radius:var(--radius-sm);
+  border:1px solid rgba(0,0,0,0.15); background:rgba(255,255,255,0.7); color:var(--text); cursor:pointer; }
+.re-btn:hover { background:#fff; }
+.re-btn:disabled { opacity:0.45; cursor:not-allowed; }
+.re-btn-main { background:var(--palm); color:#fff; border-color:var(--palm); }
+.re-btn-main:hover { background:#000; }
+.re-btn-quiet { background:none; }
+.re-link { font:inherit; background:none; border:none; padding:0; color:var(--text-mid); text-decoration:underline; cursor:pointer; }
+
+.re-bar { position:sticky; top:0.5rem; z-index:20; padding:0.8rem 1rem; margin-bottom:1rem; }
+.re-bar-row { display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; }
+.re-bar-spacer { flex:1; }
+.re-status { font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; padding:0.25rem 0.6rem; border-radius:999px; }
+.re-status-draft { background:rgba(160,112,16,0.15); color:#8a5f0c; }
+.re-status-live { background:rgba(74,122,74,0.15); color:#3f6b3f; }
+.re-status-none { background:rgba(0,0,0,0.06); color:var(--muted); }
+.re-message { font-size:0.85rem; margin-top:0.5rem; color:var(--text-mid); }
+.re-message:empty { display:none; }
+.re-message.re-error { color:var(--red); font-weight:600; }
+.re-message.re-ok { color:var(--green); font-weight:600; }
+.re-message .re-btn { margin-left:0.4rem; }
+.re-checks { font-size:0.8rem; margin-top:0.4rem; }
+.re-checks ul { margin:0.25rem 0 0; padding-left:1.2rem; }
+.re-errors { color:var(--red); }
+.re-ready { color:var(--green); font-weight:600; }
+.re-warnings summary { cursor:pointer; color:var(--muted); }
+.re-who { font-size:0.72rem; color:var(--muted); margin-top:0.4rem; }
+
+.re-restore { padding:0.8rem 1rem; margin-bottom:1rem; font-size:0.85rem; }
+.re-howto { padding:0.7rem 1rem; margin-bottom:1rem; font-size:0.85rem; }
+.re-help summary { cursor:pointer; font-weight:600; color:var(--text-mid); }
+.re-help li { margin:0.3rem 0; line-height:1.5; color:var(--text-mid); }
+.re-help code, .re-hint code { font-size:0.8em; background:rgba(0,0,0,0.06); padding:0.05rem 0.3rem; border-radius:4px; }
+
+#reCards { display:grid; gap:1rem; }
+.re-card { padding:1rem 1.2rem 1.1rem; }
+.re-card-head { display:flex; align-items:center; gap:0.9rem; }
+.re-rank { display:flex; align-items:center; gap:0.25rem; }
+.re-rank button { width:1.9rem; height:1.9rem; border-radius:50%; border:1px solid rgba(0,0,0,0.12); background:rgba(255,255,255,0.6);
+  cursor:pointer; font-size:0.7rem; color:var(--text-mid); }
+.re-rank button:hover { background:#fff; }
+.re-card .re-rank-input { width:3.4rem; text-align:center; font-family:var(--font-display); font-size:1.3rem; font-weight:800; padding:0.25rem; }
+.re-name { font-family:var(--font-display); font-size:1.35rem; margin:0; }
+.re-stats { font-size:0.8rem; color:var(--text-mid); line-height:1.6; margin:0.55rem 0 0.2rem; }
+.re-stats b { color:var(--text); }
+.re-preview-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); margin-top:0.8rem; }
+.re-preview.rank-blurb, .re-preview.motw-blurb { max-width:none; margin-top:0.3rem; padding:0.7rem 0.85rem; border:1px dashed rgba(var(--accent-rgb),0.35);
+  border-radius:var(--radius-sm); background:rgba(255,255,255,0.35); font-size:0.85rem; line-height:1.7; color:var(--text-mid); }
+.re-empty { color:var(--muted); font-style:italic; }
+.re-warn { margin:0.4rem 0 0; padding-left:1.1rem; color:var(--red); font-size:0.78rem; }
+.re-warn:empty { display:none; }
+
+.re-motw { padding:1rem 1.2rem 1.1rem; margin-top:1rem; }
+.re-motw-pick { display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; }
+.re-motw-pick select { flex:1; min-width:10rem; }
+
+@media (max-width: 640px) {
+  .re-hero { padding:1.2rem; }
+  .re-hero h1 { font-size:1.6rem; }
+  .re-bar { position:static; }
+  .re-card { padding:0.9rem; }
+  .re-name { font-size:1.15rem; }
+}

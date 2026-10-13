@@ -151,7 +151,7 @@ def problems(editorial: dict, expected: list[str] | None, lookup: dict[str, str]
     for t in teams:
         k = key(t.get("manager"))
         if k is None:
-            errors.append(f"unknown manager {t.get('manager')!r}")
+            errors.append(f"unknown manager {json.dumps(t.get('manager'), ensure_ascii=False)}")
         elif k in keys:
             errors.append(f"{t.get('manager')} is listed twice")
         keys.append(k)

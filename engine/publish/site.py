@@ -60,6 +60,9 @@ PAGES = [
      "parent": "extra-analytics", "feature": None, "nav": True, "data": ["data/v1/dst-impact.json"]},
     {"id": "schedule-release", "title": "Schedule Release", "path": "pages/schedule_release.html", "parent": None,
      "feature": None, "nav": False, "data": ["data/v1/schedule.json"]},
+    # the commissioner's rankings editor: not in the nav, only for a league that writes weekly rankings
+    {"id": "rankings-editor", "title": "Rankings Editor", "path": "pages/rankings-editor.html", "parent": None,
+     "feature": "weekly_rankings", "nav": False, "data": ["data/v1/editor/vocab.json", "data/v1/editor/week.json"]},
 ]
 
 
