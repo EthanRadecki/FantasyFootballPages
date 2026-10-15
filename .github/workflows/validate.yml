@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+env:
+  SMOKE_BROWSER_CHANNEL: chrome     # page tests use the runner's Google Chrome (no browser download)
+
 jobs:
   site-checks:
     runs-on: ubuntu-24.04
@@ -14,6 +17,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: JSON files parse
         run: python tools/check_json.py
@@ -32,6 +37,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install test dependencies
         run: pip install pyyaml pytest pandas pyarrow scipy scikit-learn jsonschema pillow
@@ -55,11 +62,13 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install dependencies
         run: |
           pip install pyyaml pandas pyarrow scipy scikit-learn jsonschema playwright pillow
-          python -m playwright install --with-deps chromium
+          google-chrome --version || python -m playwright install --with-deps chromium
 
       - name: Generate the synthetic league
         run: python tools/synthetic_league.py --cache .cache-synthetic
@@ -92,11 +101,13 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install Playwright and Chromium
         run: |
           pip install playwright
-          python -m playwright install --with-deps chromium
+          google-chrome --version || python -m playwright install --with-deps chromium
 
       - name: Open every page
         run: python tools/smoke_pages.py . --screenshots smoke-screenshots

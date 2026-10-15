@@ -346,10 +346,10 @@ def test_deploy_runs_tuesday_5am_new_york_and_starts_the_week():
     assert {"7 9 * * 2", "7 10 * * 2"} <= set(crons)
     gate = wf["jobs"]["gate"]["steps"][0]["run"]
     assert all(c in gate for c in crons if c != "23 13 * * 5")
-    steps = wf["jobs"]["engine"]["steps"]
+    steps = wf["jobs"]["build"]["steps"]
     start = next(s for s in steps if "rankings start" in s.get("run", ""))
     assert start["continue-on-error"] is True and "start_week" in start["if"]
-    assert wf["jobs"]["engine"]["permissions"]["contents"] == "write"
+    assert wf["jobs"]["build"]["permissions"]["contents"] == "write"
 
 
 def test_publish_formats_plain_text_blurbs(tmp_path):
@@ -367,3 +367,17 @@ def test_publish_formats_plain_text_blurbs(tmp_path):
     assert b == d["teams"][1]
     assert out["matchup_of_the_week"]["blurb"].endswith('<strong class="hl-key"><mark class="hl-manager" '
                                                         'style="color:#28843a;">Charlie</mark> wins.</strong>')
+
+
+def test_deploy_is_one_fast_job():
+    """Faster deploys (decision 7.17): one build job, leagues updated together without the Stage A
+    comparisons, cached packages, the runner's Chrome, one page test of the assembled site."""
+    import yaml
+    wf = yaml.safe_load((ROOT / ".github" / "workflows" / "deploy.yml").read_text(encoding="utf-8"))
+    assert set(wf["jobs"]) == {"gate", "build", "deploy", "report"} and wf["jobs"]["deploy"]["needs"] == "build"
+    job = wf["jobs"]["build"]
+    runs = "\n".join(s.get("run", "") for s in job["steps"])
+    assert runs.count("--skip-legacy-checks") == 2 and "wait" in runs
+    assert job["env"]["SMOKE_BROWSER_CHANNEL"] == "chrome"
+    assert any(s.get("uses", "").startswith("actions/cache@") for s in job["steps"])
+    assert runs.count("smoke_pages.py _site --screenshots screenshots\n") == 1 and "smoke_pages.py dist" not in runs

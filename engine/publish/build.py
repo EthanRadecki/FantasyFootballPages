@@ -288,7 +288,12 @@ def check_paths(result: BuildResult, site_root: Path) -> Comparison:
     return c
 
 
-def verify_build(ctx: BuildContext, result: BuildResult, publishers: list | None = None) -> list:
+def verify_build(ctx: BuildContext, result: BuildResult, publishers: list | None = None,
+                 legacy: bool = True) -> list:
+    """The build's checks: site files, schemas, size budget (and, for the Stage A site, assets and
+    paths), then each publisher's Stage A comparisons with the legacy goldens unless legacy=False
+    (the deploy: the new site does not serve the legacy views, and CI runs those comparisons on
+    every pull request)."""
     from engine.publish.pages import PUBLISHERS
 
     publishers = PUBLISHERS if publishers is None else publishers
@@ -297,6 +302,8 @@ def verify_build(ctx: BuildContext, result: BuildResult, publishers: list | None
         checks += [check_assets(result, ctx.config), check_paths(result, ctx.site_root)]
     if ctx.golden_dir is None:
         return checks + ["INFO  no legacy golden files for this league (legacy.golden_dir): Stage A checks skipped"]
+    if not legacy:
+        return checks + ["INFO  Stage A comparisons skipped (--skip-legacy-checks); CI runs them"]
     for pub in publishers:
         checks += pub.verify(ctx)
     return checks

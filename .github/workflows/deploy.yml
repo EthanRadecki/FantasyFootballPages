@@ -1,11 +1,12 @@
 name: Deploy
 
-# Milestone M1 (docs/PUBLISH_PLAN.md section 8): GitHub Pages serves the engine's build
-# (engine update --verify): the committed pages, styles and images with every data file
-# generated from ESPN data, plus the change report at /changes.html, and the Stage B pages
-# (web/) as a preview at /next/ until they replace the root (milestone M2).
-# A deploy happens only when the build, its checks and the page tests pass. Otherwise
+# GitHub Pages serves the engine's build (docs/PUBLISH_PLAN.md section 8): every league in one job,
+# updated at the same time (engine update --verify, without the Stage A comparisons, which CI runs),
+# then sanity checks, change reports (/changes.html), the site assembled as it will be served
+# (SITE_ROOT), and one page test of it. A deploy happens only when all of that passes. Otherwise
 # nothing is deployed, the last good site stays up, and the run fails so GitHub emails it.
+# Python packages are restored from a cache and the page test uses the runner's Google Chrome,
+# so a run spends its time on the update, not on installing (decision 7.17).
 # Runs on every push to main, from the Run workflow button, and on a schedule:
 # Tuesday 5 am New York time after Monday Night Football (Ethan, 2026-10-13), Tuesday
 # morning again as a backup, and Friday for ESPN's stat corrections.
@@ -76,24 +77,37 @@ jobs:
           echo "run=$run" >> "$GITHUB_OUTPUT"; echo "start_week=$start" >> "$GITHUB_OUTPUT"
           echo "event $EVENT, schedule '$CRON', New York offset $offset: run=$run start_week=$start"
 
-  engine:
+  build:
+    # one job (2026-10-15, faster deploys): every league updated at once, then sanity checks, change
+    # reports, the assembled site, and one page test of what will be served, pages six at a time
     needs: gate
     if: ${{ needs.gate.outputs.run == 'true' }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 45
     permissions:
       contents: write                    # the rankings week start commits its two files to main
+    env:
+      SMOKE_BROWSER_CHANNEL: chrome      # the runner's Google Chrome: no browser download each run
     steps:
       - uses: actions/checkout@v5
 
       - uses: actions/setup-python@v6
+        id: python
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
-        run: |
-          pip install pyyaml pandas pyarrow scipy scikit-learn jsonschema requests playwright pillow
-          python -m playwright install --with-deps chromium
+      - name: Restore the Python packages
+        id: pydeps
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.pythonLocation }}
+          key: pydeps-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('pyproject.toml', '.github/workflows/deploy.yml') }}
+
+      - name: Install dependencies (instant when restored)
+        run: pip install pyyaml pandas pyarrow scipy scikit-learn jsonschema requests playwright pillow
+
+      - name: Browser for the page test
+        run: google-chrome --version || python -m playwright install --with-deps chromium
 
       - name: Restore the ESPN cache (finished seasons are pulled once)
         uses: actions/cache/restore@v4
@@ -102,12 +116,30 @@ jobs:
           key: espn-raw-${{ github.run_id }}
           restore-keys: espn-raw-
 
-      - name: engine update (pull, normalize, analyze, build --verify)
+      - name: engine update, every league at once (pull, normalize, analyze, build --verify)
         id: update
         env:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
           SWID: ${{ secrets.SWID }}
-        run: python -m engine.cli update "$LEAGUE" --out dist --verify
+        shell: bash
+        run: |
+          mkdir -p logs
+          # the Stage A comparisons with the legacy goldens run in CI on every pull request, not here
+          python -m engine.cli update "$LEAGUE" --out dist --verify --skip-legacy-checks > logs/main.txt 2>&1 &
+          jobs=("$!:main")
+          for entry in $LEAGUES_EXTRA; do
+            path="${entry%%=*}"; yaml="${entry#*=}"
+            python -m engine.cli update "$yaml" --out "dist-$path" --verify --skip-legacy-checks > "logs/$path.txt" 2>&1 &
+            jobs+=("$!:$path")
+          done
+          status=0
+          for j in "${jobs[@]}"; do
+            pid="${j%%:*}"; name="${j#*:}"
+            if wait "$pid"; then result=done; else result=FAILED; status=1; fi
+            echo "::group::$name: $result"; cat "logs/$name.txt"; echo "::endgroup::"
+            [ "$result" = done ] || echo "::error::engine update failed for $name (open its log group above)"
+          done
+          exit $status
 
       - name: Start the next rankings week (snapshot + draft, committed to main)
         if: ${{ needs.gate.outputs.start_week == 'true' }}
@@ -131,24 +163,6 @@ jobs:
           done
           echo "::warning::could not push the rankings week start to main"; exit 1
 
-      - name: Other leagues (update, sanity, change report, page test)
-        env:
-          ESPN_S2: ${{ secrets.ESPN_S2 }}
-          SWID: ${{ secrets.SWID }}
-        shell: bash
-        run: |
-          set -eo pipefail
-          for entry in $LEAGUES_EXTRA; do
-            path="${entry%%=*}"; yaml="${entry#*=}"
-            echo "::group::$path ($yaml)"
-            python -m engine.cli update "$yaml" --out "dist-$path" --verify
-            python tools/deploy_site.py sanity --dist "dist-$path" --previous "$SITE_URL/$path/deploy-stats.json"
-            python tools/change_report.py --dist "dist-$path" --site "$SITE_URL/$path" --models | tee "change-report-$path.txt" || true
-            { echo "### What changed at /$path/"; echo; sed 's/^/- /' "change-report-$path.txt"; } >> "$GITHUB_STEP_SUMMARY" || true
-            python tools/smoke_pages.py "dist-$path/next" --screenshots "screenshots/$path"
-            echo "::endgroup::"
-          done
-
       - name: Save the ESPN cache
         if: ${{ !cancelled() }}
         uses: actions/cache/save@v4
@@ -157,22 +171,48 @@ jobs:
           key: espn-raw-${{ github.run_id }}
 
       - name: Sanity checks against the last deploy
-        # the M0 preview kept its stats at /next/; the root has them from the first M1 deploy on
+        shell: bash
         run: |
-          python tools/deploy_site.py sanity --dist dist \
-            --previous "$SITE_URL/deploy-stats.json" --previous "$SITE_URL/next/deploy-stats.json"
+          set -eo pipefail
+          python tools/deploy_site.py sanity --dist dist --previous "$SITE_URL/deploy-stats.json"
+          for entry in $LEAGUES_EXTRA; do
+            path="${entry%%=*}"
+            python tools/deploy_site.py sanity --dist "dist-$path" --previous "$SITE_URL/$path/deploy-stats.json"
+          done
 
-      - name: Change report against the live site (published at /changes.html)
+      - name: Change reports against the live site (published at /changes.html)
         continue-on-error: true            # release notes: a failure here never holds back the deploy
         shell: bash
         run: |
-          python tools/change_report.py --dist dist --site "$SITE_URL" --models | tee change-report.txt
+          python tools/change_report.py --dist dist --site "$SITE_URL" --models > change-report.txt &
+          for entry in $LEAGUES_EXTRA; do
+            path="${entry%%=*}"
+            python tools/change_report.py --dist "dist-$path" --site "$SITE_URL/$path" --models > "change-report-$path.txt" &
+          done
+          wait
           { echo "### What changed"; echo; sed 's/^/- /' change-report.txt; } >> "$GITHUB_STEP_SUMMARY"
+          for entry in $LEAGUES_EXTRA; do
+            path="${entry%%=*}"
+            { echo "### What changed at /$path/"; echo; sed 's/^/- /' "change-report-$path.txt"; } >> "$GITHUB_STEP_SUMMARY"
+          done
 
-      - name: Page test on the build
+      - name: Assemble the site (SITE_ROOT; every file checked against the build)
+        shell: bash
         run: |
-          python tools/smoke_pages.py dist --screenshots screenshots
-          python tools/smoke_pages.py dist/next --screenshots screenshots/next
+          args=()
+          for entry in $LEAGUES_EXTRA; do path="${entry%%=*}"; args+=(--league "$path=dist-$path"); done
+          python tools/deploy_site.py assemble --out _site --dist dist --root "$SITE_ROOT" "${args[@]}"
+
+      - name: Page test on the site as it will be served
+        shell: bash
+        run: |
+          set -eo pipefail
+          python tools/smoke_pages.py _site --screenshots screenshots
+          if [ "$SITE_ROOT" = legacy ]; then python tools/smoke_pages.py _site/next --screenshots screenshots/next; fi
+          for entry in $LEAGUES_EXTRA; do
+            path="${entry%%=*}"
+            python tools/smoke_pages.py "_site/$path" --screenshots "screenshots/$path"
+          done
 
       - name: Keep the build
         uses: actions/upload-artifact@v4
@@ -191,46 +231,12 @@ jobs:
           path: screenshots/
           retention-days: 14
 
-  site:
-    needs: engine
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: |
-          pip install pyyaml playwright
-          python -m playwright install --with-deps chromium
-
-      - name: Get the engine build
-        uses: actions/download-artifact@v4
-        with:
-          name: site
-          path: .
-
-      - name: Assemble the site (SITE_ROOT; every file checked against the build)
-        shell: bash
-        run: |
-          args=()
-          for entry in $LEAGUES_EXTRA; do path="${entry%%=*}"; args+=(--league "$path=dist-$path"); done
-          python tools/deploy_site.py assemble --out _site --dist dist --root "$SITE_ROOT" "${args[@]}"
-
-      - name: Page test on the assembled site
-        shell: bash
-        run: |
-          python tools/smoke_pages.py _site
-          for entry in $LEAGUES_EXTRA; do python tools/smoke_pages.py "_site/${entry%%=*}"; done
-
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site/
 
   deploy:
-    needs: site
+    needs: build
     runs-on: ubuntu-24.04
     permissions:
       pages: write
@@ -243,7 +249,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   report:
-    needs: [engine, site, deploy]
+    needs: [build, deploy]
     if: ${{ failure() }}
     runs-on: ubuntu-24.04
     steps:

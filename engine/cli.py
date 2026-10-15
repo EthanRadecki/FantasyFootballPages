@@ -439,7 +439,7 @@ def cmd_build(args: argparse.Namespace) -> int:
         print(f"Data through {cur['season']}{live} week {cur['last_completed_week']}")
     if not args.verify:
         return 0
-    checks = verify_build(ctx, result)
+    checks = verify_build(ctx, result, legacy=not getattr(args, "skip_legacy_checks", False))
     print("\nVerifying the build:")
     for c in checks:
         print(c if isinstance(c, str) else c.render())
@@ -532,7 +532,7 @@ def cmd_update(args: argparse.Namespace) -> int:
         ("normalize", cmd_normalize, argparse.Namespace(**common, verify=False)),
         ("analyze", cmd_analyze, argparse.Namespace(**common, verify=False)),
         ("build", cmd_build, argparse.Namespace(**common, out=args.out, site=args.site, build_id=args.build_id,
-                                                 verify=args.verify)),
+                                                 verify=args.verify, skip_legacy_checks=args.skip_legacy_checks)),
     ]
     for name, fn, ns in steps:
         print(f"\n=== engine {name} ===", flush=True)
@@ -584,6 +584,9 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--build-id", dest="build_id", help="build id (default: UTC time plus git commit)")
         p.add_argument("--verify", action="store_true", help="check the build (schemas, paths, goldens)")
         p.add_argument("--golden", default=None, help="golden files directory (default: the league's verify.golden_dir)")
+        p.add_argument("--skip-legacy-checks", dest="skip_legacy_checks", action="store_true",
+                       help="with --verify: skip the Stage A comparisons with the legacy goldens (the deploy; "
+                            "CI runs them)")
 
     build = sub.add_parser("build", help="Assemble the site in dist/ from the analysis tables")
     build_args(build)

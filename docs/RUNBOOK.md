@@ -33,7 +33,7 @@ GitHub Pages deploys from `.github/workflows/deploy.yml`:
 
 The Tuesday runs also start the next weekly rankings week (see Weekly rankings below) and commit its two files to `main`. Commits made with the workflow's own token start no new run. If `main` gets branch protection that blocks direct pushes, that commit fails (a warning on the run; the deploy still happens).
 
-Each run does `engine update --verify` with the Actions secrets, the sanity checks against the last deploy (`deploy-stats.json`: no season loses games, the live week never goes backwards, every visible manager has its files), the change report, and the page test on the build and on the assembled site. Only when all of that passes is the build published; every published file is checked against the build (with `SITE_ROOT=legacy`, byte for byte, and every committed page, style and image is in it). When anything fails, nothing is deployed: the live site keeps the last good build and the run fails, so GitHub emails you; the first failed step's log says why.
+Each run is one job (2026-10-15, about 3 minutes; it was about 9): every league's `engine update --verify --skip-legacy-checks` at the same time (the Stage A comparisons with the legacy goldens run in CI on every pull request instead), with the Python packages restored from a cache and the page test on the runner's own Google Chrome. In more detail, each run does `engine update --verify` with the Actions secrets, the sanity checks against the last deploy (`deploy-stats.json`: no season loses games, the live week never goes backwards, every visible manager has its files), the change report, and the page test on the build and on the assembled site. Only when all of that passes is the build published; every published file is checked against the build (with `SITE_ROOT=legacy`, byte for byte, and every committed page, style and image is in it). When anything fails, nothing is deployed: the live site keeps the last good build and the run fails, so GitHub emails you; the first failed step's log says why.
 
 One-time setup (done at M0): repository Settings → Secrets and variables → Actions → New repository secret, `ESPN_S2` and `SWID` (the same values as the Codespaces secrets); Settings → Pages → Build and deployment → Source: GitHub Actions.
 
@@ -61,7 +61,7 @@ The first M1 run compared with the PC's files and listed the reasons for each pa
 
 ## Page test and build provenance
 
-`python tools/smoke_pages.py` opens every page of the site in headless Chromium (needs `pip install playwright` and `python -m playwright install chromium`) and fails on JavaScript errors or a blank page; `--screenshots DIR` saves one PNG per page, `-v` lists resources that did not load. CI runs it on every push. `build-manifest.json` in each build lists what the build was made from (`provenance`): two builds with the same digests write the same data.
+`python tools/smoke_pages.py` opens every page of the site in headless Chromium, six pages at a time (`--workers`; `--channel chrome` or `SMOKE_BROWSER_CHANNEL=chrome` uses an installed Google Chrome), (needs `pip install playwright` and `python -m playwright install chromium`) and fails on JavaScript errors or a blank page; `--screenshots DIR` saves one PNG per page, `-v` lists resources that did not load. CI runs it on every push. `build-manifest.json` in each build lists what the build was made from (`provenance`): two builds with the same digests write the same data.
 
 ## The new pages (Stage B preview)
 
