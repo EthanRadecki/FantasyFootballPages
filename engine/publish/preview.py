@@ -148,8 +148,18 @@ def write_preview(root: Path, out: Path, legacy_site: bool) -> list[str]:
             if path.is_file() and (web / p["path"]).is_file():
                 rel = "../" * p["path"].count("/") + ICON
                 path.write_text(with_icon(path.read_text(encoding="utf-8"), rel), encoding="utf-8")
+    from engine.publish.images import Optimizer, light_config, light_data
+    from engine.publish.writer import dump, write_text
+    opt = Optimizer(root, dest)                       # small WebP copies of the images pages show (images.py)
     for src in sorted((out / "data" / "v1").rglob("*")):
-        if src.is_file():
+        if not src.is_file():
+            continue
+        text = src.read_text(encoding="utf-8") if src.suffix == ".json" else ""
+        if '"images/' in text:                        # page data naming images: point at the small copies
+            rel = src.relative_to(out)
+            write_text(dest / rel, dump(light_data(json.loads(text), opt)))
+            written.append(f"{PREVIEW}/{rel.as_posix()}")
+        else:
             put(src, src.relative_to(out))
     # the Stage A site's images (logos, champion photos); a league's own assets move to
     # leagues/<league>/assets in phase 5, so no other league gets this folder
@@ -157,7 +167,11 @@ def write_preview(root: Path, out: Path, legacy_site: bool) -> list[str]:
     for src in sorted(images.rglob("*")) if legacy_site and images.is_dir() else []:
         if src.is_file():
             put(src, src.relative_to(root))
-    (dest / "config.json").write_text(json.dumps(preview_config(config, web, legacy_site), indent=1,
+    (dest / "config.json").write_text(json.dumps(light_config(preview_config(config, web, legacy_site), opt), indent=1,
                                                  ensure_ascii=False) + "\n", encoding="utf-8")
     written.append(f"{PREVIEW}/config.json")
+    written += [f"{PREVIEW}/{rel}" for rel in opt.written]
+    if opt.written:
+        print(f"Light images: {len(opt.written)} small copies, {opt.bytes_before / 1e6:.1f} MB to "
+              f"{opt.bytes_after / 1e6:.1f} MB ({PREVIEW}/images/_opt)")
     return written
