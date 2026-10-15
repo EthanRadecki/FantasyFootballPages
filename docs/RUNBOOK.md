@@ -59,6 +59,10 @@ The first M1 run compared with the PC's files and listed the reasons for each pa
 
 (`--site .` compares with the files committed in the repo instead.)
 
+## Images
+
+Put a league's images (logos, champion photos, rankings screenshots) in at any size: the build makes small WebP copies of every image the site shows (`images/_opt/`, `engine/publish/images.py`: logos 192 px, league logos 256 px, photos and screenshots 1600 px) and the pages use those, so a large upload never slows a page. The originals are kept and still published.
+
 ## Page test and build provenance
 
 `python tools/smoke_pages.py` opens every page of the site in headless Chromium, six pages at a time (`--workers`; `--channel chrome` or `SMOKE_BROWSER_CHANNEL=chrome` uses an installed Google Chrome), (needs `pip install playwright` and `python -m playwright install chromium`) and fails on JavaScript errors or a blank page; `--screenshots DIR` saves one PNG per page, `-v` lists resources that did not load. CI runs it on every push. `build-manifest.json` in each build lists what the build was made from (`provenance`): two builds with the same digests write the same data.
