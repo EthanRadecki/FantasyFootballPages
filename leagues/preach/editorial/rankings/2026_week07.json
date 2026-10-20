@@ -1,0 +1,106 @@
+{
+ "season": 2026,
+ "week": 7,
+ "status": "draft",
+ "hide_archetype_link": true,
+ "teams": [
+  {
+   "manager": "Andrew Root",
+   "rank": 1,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Anthony Kelly",
+   "rank": 2,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Baylen Slansky",
+   "rank": 3,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Charlie Gorman",
+   "rank": 4,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Aidan Quigley",
+   "rank": 5,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Ben Castaldo",
+   "rank": 6,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Ethan Radecki",
+   "rank": 7,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Cole Maney",
+   "rank": 8,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Ryan P McQuaid",
+   "rank": 9,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Carmine Pittelli Jr.",
+   "rank": 10,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Quin Gegwich",
+   "rank": 11,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Deniz Bileydi",
+   "rank": 12,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Max Malich",
+   "rank": 13,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  },
+  {
+   "manager": "Brandon Hancock",
+   "rank": 14,
+   "synopsis": "",
+   "blurb": "",
+   "screenshots": []
+  }
+ ]
+}
