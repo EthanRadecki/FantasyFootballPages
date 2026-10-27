@@ -5,102 +5,107 @@
  "hide_archetype_link": true,
  "teams": [
   {
-   "manager": "Ben Castaldo",
+   "manager": "Baylen Slansky",
    "rank": 1,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Aidan Quigley",
+   "manager": "Ben Castaldo",
    "rank": 2,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Anthony Kelly",
+   "manager": "Charlie Gorman",
    "rank": 3,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Baylen Slansky",
+   "manager": "Aidan Quigley",
    "rank": 4,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Charlie Gorman",
+   "manager": "Anthony Kelly",
    "rank": 5,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Andrew Root",
+   "manager": "Quin Gegwich",
    "rank": 6,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Ryan P McQuaid",
+   "manager": "Ethan Radecki",
    "rank": 7,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Quin Gegwich",
+   "manager": "Max Malich",
    "rank": 8,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Max Malich",
+   "manager": "Andrew Root",
    "rank": 9,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Ethan Radecki",
+   "manager": "Ryan P McQuaid",
    "rank": 10,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Cole Maney",
+   "manager": "Deniz Bileydi",
    "rank": 11,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Carmine Pittelli Jr.",
+   "manager": "Cole Maney",
    "rank": 12,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Deniz Bileydi",
+   "manager": "Brandon Hancock",
    "rank": 13,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   },
   {
-   "manager": "Brandon Hancock",
+   "manager": "Carmine Pittelli Jr.",
    "rank": 14,
    "synopsis": "",
    "blurb": "",
    "screenshots": []
   }
- ]
+ ],
+ "matchup_of_the_week": {
+  "team_a": "Anthony Kelly",
+  "team_b": "Deniz Bileydi",
+  "blurb": "Two teams projected to score at least <strong class=\"hl-stat\">120</strong> points in Week <strong class=\"hl-stat\">8</strong>, <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> has the edge all-time with a <strong class=\"hl-stat\">4</strong>-<strong class=\"hl-stat\">2</strong> record against <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark>. Both teams’ Week <strong class=\"hl-stat\">7</strong> performances could not have been less alike each other with <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> putting up <strong class=\"hl-stat\">89</strong> points, his <strong class=\"hl-stat\">2nd</strong> lowest weekly total in <strong class=\"hl-stat\">2026</strong>, and <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> putting up <strong class=\"hl-stat\">143</strong> points, his highest weekly total in <strong class=\"hl-stat\">2026</strong>. Both teams at full strength and no BYEs for either side, should be a fun one."
+ }
 }
