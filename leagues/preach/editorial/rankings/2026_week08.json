@@ -1,7 +1,7 @@
 {
  "season": 2026,
  "week": 8,
- "status": "draft",
+ "status": "published",
  "hide_archetype_link": true,
  "teams": [
   {
@@ -28,8 +28,8 @@
   {
    "manager": "Aidan Quigley",
    "rank": 4,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "The only team in the top nine in this week’s edition of rankings to have a positive record.",
+   "blurb": "<strong class=\"hl-key\">The only team in the top nine in this week’s edition of rankings to have a positive record.</strong> In his own words, <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark>’s <strong class=\"hl-stat\">2026</strong> campaign can be summed up by “Draft and Pray”, and it has semi-worked out so far. Yes, you’d like the record to be better but the team is <strong class=\"hl-stat\">5th</strong> in points per week and is projected to win in Week <strong class=\"hl-stat\">8</strong>. Now, <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> does lead the league in my created depth metric, so maybe it would beneficial for the manager to make a move or two to bolster their starting lineup, but even without those changes I think the team has a fine case to make a playoff push and be a top contender in <strong class=\"hl-stat\">2026</strong>. Let’s see how Week <strong class=\"hl-stat\">8</strong> goes with a few players back from BYE and a couple now on BYE.",
    "screenshots": []
   },
   {
@@ -42,8 +42,8 @@
   {
    "manager": "Quin Gegwich",
    "rank": 6,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Quin again put up a great performance, but this time it ended with an unfortunate loss.",
+   "blurb": "<strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark> again put up a great performance, but this time it ended with an unfortunate loss.</strong> If <mark class=\"hl-player\">DeVonta Smith</mark> doesn’t suit up in Week <strong class=\"hl-stat\">8</strong> then the <mark class=\"hl-pos-WR\">WR</mark> room for <em class=\"hl-team\">The Gegwich Effect</em> is looking BLEAK, especially against what’s projected to be a tough matchup. <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark>’s trade last week looks to be a big win early on, especially if <mark class=\"hl-player\">Drake Maye</mark> and <mark class=\"hl-player\">Bijan Robinson</mark> continue to play like elite options at their positions. I think there’s room for even more improvement with this team and a playoff push in the <strong class=\"hl-stat\">2nd</strong> half of the season, but we’ll most likely have to wait until after Week <strong class=\"hl-stat\">8</strong> for that to come to fruition.",
    "screenshots": []
   },
   {
@@ -56,15 +56,15 @@
   {
    "manager": "Max Malich",
    "rank": 8,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Despite a mediocre performance in Week 7, Max wins his 4th matchup in a row.",
+   "blurb": "<strong class=\"hl-key\">Despite a mediocre performance in Week <strong class=\"hl-stat\">7</strong>, <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> wins his <strong class=\"hl-stat\">4th</strong> matchup in a row.</strong> This was the first time since Week <strong class=\"hl-stat\">1</strong> that the team produced more than <strong class=\"hl-stat\">101</strong> points. In Week <strong class=\"hl-stat\">8</strong>, <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> is favored to beat <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> so I would expect the team to continue to slowly look better and better and start to match the success with point production. A key point of <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark>’s success has been his ability to win the waiver wire, currently shown to be one of the best managers in the league in that department in <strong class=\"hl-stat\">2026</strong>. I’m going to be honest, at full strength the potential is there for this team to put up <strong class=\"hl-stat\">120</strong>+ consistently but we just haven’t gotten that yet. Maybe in Week <strong class=\"hl-stat\">8</strong>.",
    "screenshots": []
   },
   {
    "manager": "Andrew Root",
    "rank": 9,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Another poor performance in Week 7, but this time Andrew was able to get the win.",
+   "blurb": "<strong class=\"hl-key\">Another poor performance in Week <strong class=\"hl-stat\">7</strong>, but this time <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> was able to get the win.</strong> However, his Week <strong class=\"hl-stat\">8</strong> opponent doesn’t appear to be as easy of a matchup, but <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark>’s players have a plethora of good matchups so we could be in store for a tight high-scoring affair. The team is just trying to stay afloat until <mark class=\"hl-player\">Davante Adams</mark> comes back, so the current <strong class=\"hl-stat\">4</strong>-<strong class=\"hl-stat\">3</strong> record is nice to have. Now, we’re on records watch for a couple of <em class=\"hl-team\">N.Y. Routensss</em> players, including <mark class=\"hl-player\">Patrick Mahomes</mark> and <mark class=\"hl-player\">Travis Kelce</mark>. First, <mark class=\"hl-player\">Patrick Mahomes</mark> is just six points away from joining the <strong class=\"hl-stat\">400</strong>+ club for the team, he’d be the <strong class=\"hl-stat\">2nd</strong> player in N.Y. history to score that many for the ball club, joining <mark class=\"hl-player\">Josh Jacobs</mark>. <mark class=\"hl-player\">Travis Kelce</mark> is also only eight points away from becoming the franchise’s top scoring <mark class=\"hl-pos-TE\">TE</mark>, passing <mark class=\"hl-player\">Darren Waller</mark> at <strong class=\"hl-stat\">233</strong> points. Fun storylines.",
    "screenshots": []
   },
   {
