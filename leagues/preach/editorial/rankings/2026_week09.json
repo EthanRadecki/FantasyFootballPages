@@ -1,106 +1,111 @@
 {
  "season": 2026,
  "week": 9,
- "status": "draft",
+ "status": "published",
  "hide_archetype_link": true,
  "teams": [
   {
    "manager": "Baylen Slansky",
    "rank": 1,
-   "synopsis": "",
-   "blurb": "",
-   "screenshots": []
-  },
-  {
-   "manager": "Ben Castaldo",
-   "rank": 2,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "To nobodys surprise, Baylen rings number one again.",
+   "blurb": "<strong class=\"hl-key\">To nobodys surprise, <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark> rings number one again.</strong> The team has been electric with the emergence of <mark class=\"hl-player\">Luther Burden</mark> and <mark class=\"hl-player\">Tony Pollard</mark>. Combine that with the bench, this just may be one of the best preach teams in history if they can keep it up. Not much to say here besides, Heavy is the head that wears the crown.",
    "screenshots": []
   },
   {
    "manager": "Charlie Gorman",
+   "rank": 2,
+   "synopsis": "Just a solid win this week keeps Chuck near the top of the leaderboard.",
+   "blurb": "<strong class=\"hl-key\">Just a solid win this week keeps Chuck near the top of the leaderboard.</strong> Its hard to poke a hole in his lineup, especially with the emergence of Superstar tight end <mark class=\"hl-player\">Chig Okonkwo</mark>. If there would to be one, it would be a flex, but he just beat a team starting <mark class=\"hl-player\">keon coleman</mark>, <mark class=\"hl-player\">Omar cooper</mark>, and <mark class=\"hl-player\">caleb douglas</mark>, there are much worse options. Consistent quarterback play and <mark class=\"hl-player\">Jahmyr Gibbs</mark> can keep him in any game.",
+   "screenshots": []
+  },
+  {
+   "manager": "Ben Castaldo",
    "rank": 3,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Ben is in dire need of a qb after the loss of Lamar Jackson, but his record and his team still have strength.",
+   "blurb": "<strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> is in dire need of a qb after the loss of <mark class=\"hl-player\">Lamar Jackson</mark>, but his record and his team still have strength.</strong> The injury bug is biting, but if the rest of his team can pick up the slack, he may just keep his historic righting of course. The biggest question mark right now is <mark class=\"hl-player\">Kyle Monangai</mark>, <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> needs the depth. Only time will tell how the rest of his season will go.",
    "screenshots": []
   },
   {
    "manager": "Aidan Quigley",
    "rank": 4,
-   "synopsis": "",
-   "blurb": "",
-   "screenshots": []
-  },
-  {
-   "manager": "Anthony Kelly",
-   "rank": 5,
-   "synopsis": "",
-   "blurb": "",
-   "screenshots": []
-  },
-  {
-   "manager": "Quin Gegwich",
-   "rank": 6,
-   "synopsis": "",
-   "blurb": "",
-   "screenshots": []
-  },
-  {
-   "manager": "Ethan Radecki",
-   "rank": 7,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Another big win for Aidan sees him just outside of the top 3.",
+   "blurb": "<strong class=\"hl-key\">Another big win for <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> sees him just outside of the top <strong class=\"hl-stat\">3</strong>.</strong> <mark class=\"hl-player\">Javonte Williams</mark> and <mark class=\"hl-player\">Bhayshul Tuten</mark> just might be the best running back room in the league, and you can’t forget about <mark class=\"hl-player\">Ja’Marr Chase</mark>. Even with <mark class=\"hl-player\">Mike Evans</mark> and <mark class=\"hl-player\">Chris Olave</mark> missing from his lineup this week, he got the job done. I have a feeling this could be Aidans year, if he can keep this pace up, there just might be a deep playoff run in his future.",
    "screenshots": []
   },
   {
    "manager": "Max Malich",
-   "rank": 8,
-   "synopsis": "",
-   "blurb": "",
+   "rank": 5,
+   "synopsis": "Quite possibly one of the most controversial seasons in preach history, but that doesn’t phase him.",
+   "blurb": "<strong class=\"hl-key\">Quite possibly one of the most controversial seasons in preach history, but that doesn’t phase him.</strong> Despite the rumors of being a matchup fiend, <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> showed a strong performance this week led by <mark class=\"hl-player\">Tee Higgins</mark>. <mark class=\"hl-player\">Saquon Barkley</mark> returning could propel this team to the next level, but that eagles offense has severe question marks. I have no choice but to give the flowers to the team that is <strong class=\"hl-stat\">6</strong>-<strong class=\"hl-stat\">2</strong>, but the schedule still has some power.",
    "screenshots": []
   },
   {
-   "manager": "Andrew Root",
-   "rank": 9,
-   "synopsis": "",
-   "blurb": "",
-   "screenshots": []
-  },
-  {
-   "manager": "Ryan P McQuaid",
-   "rank": 10,
-   "synopsis": "",
-   "blurb": "",
+   "manager": "Anthony Kelly",
+   "rank": 6,
+   "synopsis": "Despite a loss in week 8, Anthony remains a good team to compete with.",
+   "blurb": "<strong class=\"hl-key\">Despite a loss in week <strong class=\"hl-stat\">8</strong>, <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> remains a good team to compete with.</strong> <mark class=\"hl-player\">Braelon Allen</mark> has been a beast, and its hard to see <mark class=\"hl-player\">Breece Hall</mark> coming back and taking over all of the carries. <mark class=\"hl-player\">Parker Washington</mark> has been hit or miss, and it has really shown, as <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> has lost games his team normally wins. But if AJ Brown can return to full strength, that team is dangerous.",
    "screenshots": []
   },
   {
    "manager": "Deniz Bileydi",
-   "rank": 11,
-   "synopsis": "",
-   "blurb": "",
+   "rank": 7,
+   "synopsis": "The RB duo of Josh Jacobs (sick deplorable piece of shit, he should not be allowed to be on a roster) and Bucky Irving have turned into one of the best in the league.",
+   "blurb": "<strong class=\"hl-key\">The <mark class=\"hl-pos-RB\">RB</mark> duo of <mark class=\"hl-player\">Josh Jacobs</mark> (sick deplorable piece of shit, he should not be allowed to be on a roster) and <mark class=\"hl-player\">Bucky Irving</mark> have turned into one of the best in the league.</strong> With a solid team about him, <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> has been finding a way to win consistently, and as some other managers in this league show, all you have to do is beat the man infront of you. If <mark class=\"hl-player\">Carnell Tate</mark> can get healthy, and <mark class=\"hl-player\">Antonio Williams</mark> takes over, this team might just be dangerous. But then again, that can be said about any team.",
    "screenshots": []
   },
   {
-   "manager": "Cole Maney",
-   "rank": 12,
-   "synopsis": "",
-   "blurb": "",
+   "manager": "Ethan Radecki",
+   "rank": 8,
+   "synopsis": "The loss of Lamar Jackson seemed to ruin Flowers fantasy outlook, but Jacoby Brissett may have just saved Ethans season.",
+   "blurb": "<strong class=\"hl-key\">The loss of <mark class=\"hl-player\">Lamar Jackson</mark> seemed to ruin Flowers fantasy outlook, but <mark class=\"hl-player\">Jacoby Brissett</mark> may have just saved Ethans season.</strong> Swift looks like he is a bonafide rb1, and <mark class=\"hl-player\">Jonah Coleman</mark> may have just taken over the Broncos runningback room. While there are a lot of teams in the hunt right now, and many of them could be ranked above or below ethan(I feel the <strong class=\"hl-stat\">6</strong>-<strong class=\"hl-stat\">10</strong> spots are all interchangeable), always bet on <mark class=\"hl-manager\" style=\"color:#985e0f;\">Radecki</mark>.",
+   "screenshots": []
+  },
+  {
+   "manager": "Quin Gegwich",
+   "rank": 9,
+   "synopsis": "What is there to be said about Quin?",
+   "blurb": "<strong class=\"hl-key\">What is there to be said about <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark>?</strong> Soft, pretty boy, a bitch. After a hot stretch, it seems like he has done nothing but slow down. He really missed Nabers this week, and his addition of Bijan has been underwhelming. But sitting at <strong class=\"hl-stat\">4</strong>-<strong class=\"hl-stat\">4</strong>, the roster is solid, Maye is performing very well and there is solid weekly upside. Right now, the season is depended on <mark class=\"hl-player\">Devonta Smith</mark>, and if he can get back on the field.",
+   "screenshots": []
+  },
+  {
+   "manager": "Andrew Root",
+   "rank": 10,
+   "synopsis": "Andrew sports a very solid roster, and there were teams who did much worse than he did this past week.",
+   "blurb": "<strong class=\"hl-key\"><mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> sports a very solid roster, and there were teams who did much worse than he did this past week.</strong> But there is nothing you can do against the juggernaut that are the <em class=\"hl-team\">Station Grits</em>. But despite this, <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> remains in the hunt for a playoff spot, he’s dealt with injuries before, but he has to hope that <mark class=\"hl-player\">Justin Jefferson</mark> can get it going with the subpar <mark class=\"hl-pos-QB\">QB</mark> play they see in Minnesota. Don’t count him out, but nows the time.",
+   "screenshots": []
+  },
+  {
+   "manager": "Ryan P McQuaid",
+   "rank": 11,
+   "synopsis": "With a win this week, Ryan has put himself in the right direction.",
+   "blurb": "<strong class=\"hl-key\">With a win this week, <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> has put himself in the right direction.</strong> But he still sports a <strong class=\"hl-stat\">3</strong>-<strong class=\"hl-stat\">5</strong> record. <mark class=\"hl-player\">Joe Burrow</mark> seems to be the man, and as he said, it feels like every time the tv flips to the bengals, <mark class=\"hl-player\">Joe Burrow</mark> is throwing a touchdown. If <mark class=\"hl-player\">Christian McCaffrey</mark> and <mark class=\"hl-player\">George Kittle</mark> can stay healthy, and <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> can keep on winning games, maybe we will see fantasy become great again.",
    "screenshots": []
   },
   {
    "manager": "Brandon Hancock",
-   "rank": 13,
-   "synopsis": "",
-   "blurb": "",
+   "rank": 12,
+   "synopsis": "A big win for Brandon against one of the top dogs in the league, even though they only scored 65 points, a win is a win.",
+   "blurb": "<strong class=\"hl-key\">A big win for <mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark> against one of the top dogs in the league, even though they only scored <strong class=\"hl-stat\">65</strong> points, a win is a win.</strong> <mark class=\"hl-player\">Jaylen Warren</mark> has been incredible for him, but <mark class=\"hl-player\">Jonathan Taylor</mark> needs to pick it up, whether that’s in Indianapolis or somewhere else. He comes upon a big chance to right the ship this next week, and he sees a familiar face in <mark class=\"hl-manager\" style=\"color:#131313;\">Gegwich</mark>, who he has DOMINATED historically.",
    "screenshots": []
   },
   {
    "manager": "Carmine Pittelli Jr.",
+   "rank": 13,
+   "synopsis": "Another rough loss for Carmine, but if he can point to anything it’s that Nico Collins and Isaiah Likely were on bye.",
+   "blurb": "<strong class=\"hl-key\">Another rough loss for <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark>, but if he can point to anything it’s that <mark class=\"hl-player\">Nico Collins</mark> and <mark class=\"hl-player\">Isaiah Likely</mark> were on bye.</strong> He will need both of those players to hit their stride quickly if he has any chance of turning the season around, unfortunately for him, <mark class=\"hl-player\">Breece Hall</mark> doesn’t look to be the clear <mark class=\"hl-pos-RB\">RB</mark><strong class=\"hl-stat\">1</strong> that he was drafted as. It will be interesting to see how him and <mark class=\"hl-player\">Braelon Allen</mark>, who has the hot hand, will share the rock when he’s back. I will never say that a season is over if there is any amount of a chance, but now is the time.",
+   "screenshots": []
+  },
+  {
+   "manager": "Cole Maney",
    "rank": 14,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Not much to be said for Coles season, especially with Jeremiyah Love now being placed on the IR.",
+   "blurb": "<strong class=\"hl-key\">Not much to be said for Coles season, especially with <mark class=\"hl-player\">Jeremiyah Love</mark> now being placed on the IR.</strong> Unfortunate for a team that had so much promise to be great. With the worst record in the league, <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> will hope for a miracle to right the ship, but it seems someone has cut his sail.",
    "screenshots": []
   }
- ]
+ ],
+ "matchup_of_the_week": {
+  "team_a": "Max Malich",
+  "team_b": "Andrew Root",
+  "blurb": "This should be a fun one, when an unstoppable force meets an immovable object. <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> owns <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> all-time <strong class=\"hl-stat\">6</strong> to <strong class=\"hl-stat\">1</strong>, but I have a feeling their <strong class=\"hl-stat\">2026</strong> matchup will be a different story. Over under <strong class=\"hl-stat\">34.5</strong> texts sent between these two on Sunday?"
+ }
 }
