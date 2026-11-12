@@ -1,111 +1,111 @@
 {
  "season": 2026,
  "week": 10,
- "status": "draft",
+ "status": "published",
  "hide_archetype_link": true,
  "teams": [
   {
    "manager": "Aidan Quigley",
    "rank": 1,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "F’ it, his time is now.",
+   "blurb": "<strong class=\"hl-key\">F’ it, his time is now.</strong> After a <strong class=\"hl-stat\">155</strong>-point performance in Week <strong class=\"hl-stat\">9</strong>, <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> rises a few spots to the top of the rankings. The team goes up against a weaker opponent in Week <strong class=\"hl-stat\">10</strong>, <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark>, so this spot at the top of the rankings most likely will stand in a week. In the depth metric I created on the Lineup Efficiency page, <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> ranks first out of every single team since <strong class=\"hl-stat\">2020</strong>, and on that page you can see that depth correlates with win percentage by about <strong class=\"hl-stat\">30%</strong>, so it’s not a reliable predictor but it’s more likely than not that <mark class=\"hl-manager\" style=\"color:#c53016;\">Aidan</mark> is better than his record suggests. Could this be <mark class=\"hl-manager\" style=\"color:#c53016;\">Quigley</mark>’s year.",
    "screenshots": []
   },
   {
    "manager": "Baylen Slansky",
    "rank": 2,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Despite dropping 122 points and getting the dominant win, I have dropped Baylen from the top spot.",
+   "blurb": "<strong class=\"hl-key\">Despite dropping <strong class=\"hl-stat\">122</strong> points and getting the dominant win, I have dropped <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark> from the top spot.</strong> Don’t get me wrong, this team is great and I wouldn’t be surprised if they win it all. <em class=\"hl-team\">STATION GRITS</em> is averaging <strong class=\"hl-stat\">128</strong> points per game, which ranks <strong class=\"hl-stat\">6th</strong> all-time, however, out of the five teams that have averaged more than <strong class=\"hl-stat\">128</strong> points per game only one of them has made it to and won the championship. Still, I think <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark> is in fine positioning to win his second Preach Fantasy championship. Losing <mark class=\"hl-player\">Michael Wilson</mark> hurts, but the team is deep enough to be alright.",
    "screenshots": []
   },
   {
    "manager": "Ben Castaldo",
    "rank": 3,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "No movement for Ben this week despite a 131-point performance and a win in Week 9.",
+   "blurb": "<strong class=\"hl-key\">No movement for <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> this week despite a <strong class=\"hl-stat\">131</strong>-point performance and a win in Week <strong class=\"hl-stat\">9</strong>.</strong> I just think the team is a little too top heavy for my liking. The team’s long-term success relies heavily on <mark class=\"hl-player\">Kenneth Walker III</mark> and <mark class=\"hl-player\">CeeDee Lamb</mark>, which isn’t an issue, but it gives this team a dangerous floor compared to the two ranked above them this week. Week <strong class=\"hl-stat\">10</strong> is projected to be a tight matchup, but if <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> wins then he’ll most likely secure his spot in the <strong class=\"hl-stat\">2026</strong> Preach Fantasy Playoffs.",
    "screenshots": []
   },
   {
    "manager": "Max Malich",
    "rank": 4,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Is 4th still too low for the team with the best record in the league coming off a 125-point performance?",
+   "blurb": "<strong class=\"hl-key\">Is <strong class=\"hl-stat\">4th</strong> still too low for the team with the best record in the league coming off a <strong class=\"hl-stat\">125</strong>-point performance?</strong> I don’t think so. I think this is exactly where <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> should be placed at this point in time. The team is starting to get hot and put up some solid performances, but there are still a few others that have performed better and are primed to make the <strong class=\"hl-stat\">2026</strong> Playoffs. Week <strong class=\"hl-stat\">10</strong> is shaping up to be a tight contest against an opponent that <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> has not played very often in the past <strong class=\"hl-stat\">6</strong> years, they’ve actually only squared off <strong class=\"hl-stat\">4</strong> times since <strong class=\"hl-stat\">2020</strong>. Anyway, <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> has won <strong class=\"hl-stat\">6</strong> straight matchups, which now ties ‘<strong class=\"hl-stat\">20</strong> and ‘<strong class=\"hl-stat\">24</strong> <mark class=\"hl-manager\" style=\"color:#985e0f;\">Ethan</mark>, ‘<strong class=\"hl-stat\">22</strong> <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark>, and ‘<strong class=\"hl-stat\">23</strong> <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark> as the other four teams to win <strong class=\"hl-stat\">6</strong> in a row. The only teams to win <strong class=\"hl-stat\">7</strong> in a row are ‘<strong class=\"hl-stat\">24</strong> <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> and ‘<strong class=\"hl-stat\">25</strong> <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark>, and the only teams to win <strong class=\"hl-stat\">8</strong> in a row are ‘<strong class=\"hl-stat\">21</strong> <mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark>, ‘<strong class=\"hl-stat\">21</strong> <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark>, ‘<strong class=\"hl-stat\">23</strong> <mark class=\"hl-manager\" style=\"color:#985e0f;\">Ethan</mark>, and ‘<strong class=\"hl-stat\">24</strong> <mark class=\"hl-manager\" style=\"color:#7269aa;\">Baylen</mark>, no team has ever won <strong class=\"hl-stat\">9</strong> straight. Pretty good company to find himself in if I do say so myself.",
    "screenshots": []
   },
   {
    "manager": "Ryan P McQuaid",
    "rank": 5,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Well Ryan didn’t need to work hard for that Week 9 win haha.",
+   "blurb": "<strong class=\"hl-key\">Well <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> didn’t need to work hard for that Week <strong class=\"hl-stat\">9</strong> win haha.</strong> In fact, <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> could have sat everyone except for <mark class=\"hl-player\">Joe Burrow</mark>, <mark class=\"hl-player\">Christian McCaffrey</mark>, and Texans Defense and he still would have won. Now, neither the win nor the <strong class=\"hl-stat\">109.8</strong>-point performance has led <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> to move up SIX spots in this week’s rankings, but rather the culmination of recent performances and the consistency of putting up between <strong class=\"hl-stat\">106</strong> and <strong class=\"hl-stat\">129</strong> points for over a month now, while other teams have yet to show that consistency over a prolonged period of time. But yeah getting the win and putting himself in striking distance of making the playoffs for the <strong class=\"hl-stat\">5th</strong> straight season also does help. <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> opens as a huge favorite in Week <strong class=\"hl-stat\">10</strong>’s Matchup of the Week, but let’s see if they can continue to execute.",
    "screenshots": []
   },
   {
    "manager": "Deniz Bileydi",
    "rank": 6,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "They understand it now.",
+   "blurb": "<strong class=\"hl-key\">They understand it now.</strong> <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> has led his team to <strong class=\"hl-stat\">3</strong> straight wins, which is the first time the franchise has done so since <strong class=\"hl-stat\">2021</strong>. I hate to be the bearer of bad news, but I think it may just stop at three as <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> is projected to lose in Week <strong class=\"hl-stat\">10</strong> by about <strong class=\"hl-stat\">14</strong> points, not a great opening spread. The rest of season schedule for <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> also doesn’t appear to be great, as they have the hardest projected strength of schedule from Week <strong class=\"hl-stat\">10</strong> to Week <strong class=\"hl-stat\">14</strong>. They match up against the <strong class=\"hl-stat\">5th</strong>, <strong class=\"hl-stat\">12th</strong>, <strong class=\"hl-stat\">2nd</strong>, <strong class=\"hl-stat\">9th</strong>, and <strong class=\"hl-stat\">4th</strong> ranked teams to finish the season. Good Luck.",
    "screenshots": []
   },
   {
    "manager": "Charlie Gorman",
    "rank": 7,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Oh man, what a fall from grace.",
+   "blurb": "<strong class=\"hl-key\">Oh man, what a fall from grace.</strong> The first time <mark class=\"hl-manager\" style=\"color:#28843a;\">Charlie</mark> has been ranked outside the top <strong class=\"hl-stat\">5</strong> all season, but I think now’s the perfect time to hit rock bottom. The team put up <strong class=\"hl-stat\">81.5</strong> points in Week <strong class=\"hl-stat\">9</strong>, which is their season low, but I have a feeling it’s only up from here. Week <strong class=\"hl-stat\">10</strong> is projected to be a tough matchup against a <em class=\"hl-team\">Rolls With Butter</em> squad that has disappointed as of recent and is hungry for a big win.",
    "screenshots": []
   },
   {
    "manager": "Quin Gegwich",
    "rank": 8,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "After Week 9, Quin’s trade for Bijan Robinson, Drake Maye, and Harold Fannin Jr. now ranks as the best of the season.",
+   "blurb": "<strong class=\"hl-key\">After Week <strong class=\"hl-stat\">9</strong>, <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark>’s trade for <mark class=\"hl-player\">Bijan Robinson</mark>, <mark class=\"hl-player\">Drake Maye</mark>, and <mark class=\"hl-player\">Harold Fannin Jr.</mark> now ranks as the best of the season.</strong> The team didn’t need to work too hard to earn the win in Week <strong class=\"hl-stat\">9</strong> but in Week <strong class=\"hl-stat\">10</strong> that may be a different story as they face a <mark class=\"hl-manager\" style=\"color:#696969;\">Max</mark> team that hasn’t lost since September. Be on the look out for <mark class=\"hl-player\">Quinshon Judkins</mark> and <mark class=\"hl-player\">Devonta Smith</mark> to be on the move in the coming days/weeks, <mark class=\"hl-manager\" style=\"color:#131313;\">Quin</mark>’s been focused on moving those two for a while now.",
    "screenshots": []
   },
   {
    "manager": "Andrew Root",
    "rank": 9,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Where to rank N.Y. Routensss?",
+   "blurb": "<strong class=\"hl-key\">Where to rank <em class=\"hl-team\">N.Y. Routensss</em>?</strong> That’s the question. <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> had a fine performance in Week <strong class=\"hl-stat\">9</strong>, and even though it ended in a loss, I still think it warrants moving up a spot in this week’s rankings. With <mark class=\"hl-player\">Kirk Cousins</mark> reuniting with the Vikings, keep an eye on <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark>’s first round pick in <mark class=\"hl-player\">Justin Jefferson</mark> to help the team make a playoff push. <mark class=\"hl-manager\" style=\"color:#2d5375;\">Andrew</mark> is projected to have a tight matchup in Week <strong class=\"hl-stat\">10</strong> against a tough <mark class=\"hl-manager\" style=\"color:#404c5b;\">Ben</mark> led team, but if the team can just hold off until <mark class=\"hl-player\">Davante Adams</mark> comes back then they’ll be in good positioning to make the <strong class=\"hl-stat\">2026</strong> Preach Fantasy Playoffs.",
    "screenshots": []
   },
   {
    "manager": "Anthony Kelly",
    "rank": 10,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Week 9 handed Anthony his 3rd straight loss and now he has a tough matchup again in Week 10.",
+   "blurb": "<strong class=\"hl-key\">Week <strong class=\"hl-stat\">9</strong> handed <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> his <strong class=\"hl-stat\">3rd</strong> straight loss and now he has a tough matchup again in Week <strong class=\"hl-stat\">10</strong>.</strong> Due to a recent trade that saw <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> trade for <mark class=\"hl-player\">Jonathan Taylor</mark> people have started to fear <em class=\"hl-team\">Rolls With Butter</em> yet again, but I’m going to have to see it first. <mark class=\"hl-manager\" style=\"color:#7f6647;\">Anthony</mark> won his <strong class=\"hl-stat\">2025</strong> Preach Fantasy Championship with a cake walk playoff run, but I don’t think he’ll get that lucky in back-to-back years so the team will need to be better going forward. Nevertheless, Rolls always finds a way to get it done and I’ll never count him out, but for now <strong class=\"hl-stat\">10th</strong> seems like a reasonable placement.",
    "screenshots": []
   },
   {
    "manager": "Ethan Radecki",
    "rank": 11,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Yeah, so Week 9 saw my team drop the lowest points in a single week in franchise history.",
+   "blurb": "<strong class=\"hl-key\">Yeah, so Week <strong class=\"hl-stat\">9</strong> saw my team drop the lowest points in a single week in franchise history.</strong> I am clearly not happy and morale has never been lower, but if the team can earn back a win this week against a soft <mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark> team then I think we’ll be just fine. If we lose however, then yeah maybe the season is a wash.",
    "screenshots": []
   },
   {
    "manager": "Brandon Hancock",
    "rank": 12,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "Woof, rounding out the bottom three teams in the league is The Minutemen.",
+   "blurb": "<strong class=\"hl-key\">Woof, rounding out the bottom three teams in the league is <em class=\"hl-team\">The Minutemen</em>.</strong> <mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark> has had one of his worst seasons to date, averaging just over <strong class=\"hl-stat\">96</strong> points per week, but Week <strong class=\"hl-stat\">10</strong> brings about a prime opportunity to turn things around. They match up against a team that has STRUGGLED in recent weeks and looks to continue doing the same this week. <mark class=\"hl-manager\" style=\"color:#416cab;\">Brandon</mark> also made a big trade this week, sending the <strong class=\"hl-stat\">4th</strong> overall pick, <mark class=\"hl-player\">Jonathan Taylor</mark>, away for what looks to be a bunch of eh. Although, I do have my hopes for <mark class=\"hl-player\">Zach Charbonnet</mark> to finish the season.",
    "screenshots": []
   },
   {
    "manager": "Carmine Pittelli Jr.",
    "rank": 13,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "That now makes five straight losses for Carmine as we enter Week 10.",
+   "blurb": "<strong class=\"hl-key\">That now makes five straight losses for <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark> as we enter Week <strong class=\"hl-stat\">10</strong>.</strong> Like <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark>, this team has failed to score points in recent weeks, <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark> has failed to eclipse <strong class=\"hl-stat\">95</strong> points for <strong class=\"hl-stat\">5</strong> straight weeks. The only bright part about his season as of right now is that he has one more win than his competition for last. <mark class=\"hl-manager\" style=\"color:#3a261d;\">Carmine</mark> now has a healthy team so no more excuses, if the team wants to make a playoff push then Week <strong class=\"hl-stat\">10</strong> is where it MUST begin.",
    "screenshots": []
   },
   {
    "manager": "Cole Maney",
    "rank": 14,
-   "synopsis": "",
-   "blurb": "",
+   "synopsis": "No question the worst team in the league.",
+   "blurb": "<strong class=\"hl-key\">No question the worst team in the league.</strong> The record shows it and the less than <strong class=\"hl-stat\">100</strong> points for <strong class=\"hl-stat\">4</strong> straight weeks shows it. With Puka now on Injury Reserve, <mark class=\"hl-manager\" style=\"color:#ba4b15;\">Cole</mark> will have to get clever to avoid last place and one of the four last place punishments. The odds on favorite to finish last through <strong class=\"hl-stat\">9</strong> weeks. The schedule also doesn’t appear to lighten up either. Good Luck.",
    "screenshots": []
   }
  ],
  "matchup_of_the_week": {
   "team_a": "Ryan P McQuaid",
   "team_b": "Deniz Bileydi",
-  "blurb": "Some bad blood definitely brewing between these two due to recent events. All of it comes to a head with <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> and <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> matching up in Week <strong class=\"hl-stat\">10</strong>, where <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> is projected to have the upper hand. However, <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> does control this matchup all-time with a <strong class=\"hl-stat\">5</strong>-<strong class=\"hl-stat\">2</strong> record against the commissioner."
+  "blurb": "Some bad blood definitely brewing between these two due to recent events. All of it comes to a head with <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> and <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> matching up in Week <strong class=\"hl-stat\">10</strong>, where <mark class=\"hl-manager\" style=\"color:#bd0517;\">Ryan</mark> is projected to have the upper hand. However, <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> does control this matchup all-time with a <strong class=\"hl-stat\">5</strong>-<strong class=\"hl-stat\">2</strong> record against the commissioner. Should be fun between Dusty <mark class=\"hl-manager\" style=\"color:#68733c;\">Deniz</mark> and Corrupt Quad."
  }
 }
