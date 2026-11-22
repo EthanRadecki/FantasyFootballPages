@@ -1,0 +1,41 @@
+# The Calvary Fantasy League (Ethan's brother's league, 2026-11-22): the first outside test league
+# (the "Little Brother league" in claude/PRODUCT_PLAN.md), served at /calvary/ (deploy.yml LEAGUES_EXTRA).
+# Ethan is not a member, so it is read with the owner's cookies: the ESPN_S2_CALVARY and SWID_CALVARY
+# secrets (league.credentials). Everything not set here comes from ESPN: seasons, lineups, playoff
+# rounds, team count; season and manager colors from the shared palettes (config_json).
+
+league:
+  name: Calvary Fantasy League
+  provider: espn
+  league_id: 1108687509
+  first_season: 2022
+  site_path: calvary             # served at <site>/calvary/
+  credentials: CALVARY           # ESPN_S2_CALVARY / SWID_CALVARY
+
+managers:                        # ids from tools/espn_members.py (hashed); seasons as of 2026
+  - name: AJ Chernack            # 2024-2026
+    id: m_7dd4bcc10967
+  - name: Aidan Hamilton         # 2022-2026
+    id: m_fccf45874ba6
+  - name: Aidan Rivoir           # 2 seasons between 2023 and 2026
+    id: m_946091951fab
+  - name: Anthony Sangiovanni    # 2022-2026
+    id: m_c98b2bd71dc4
+  - name: Brady Sullivan         # 2022-2026
+    id: m_9ce0e4d13302
+  - name: Connor Craig           # 2022-2026
+    id: m_cc29519024a4
+  - name: Dixon Charzuk          # 2023-2024
+    id: m_f227a962e1e8
+  - name: Jack Bunt              # 2022-2023
+    id: m_e781cf0aec26
+  - name: Joe Mamma              # 2025
+    id: m_6c435d3232c1
+  - name: Logan Radecki          # 2022-2026
+    id: m_2c0905660295
+  - name: Luke Oonnoonny         # 2024-2026
+    id: m_ae99118829cc
+  - name: Ryan Olson             # 2022-2026
+    id: m_add7249c9fd6
+  - name: Sam Brettschneider     # 2022-2026
+    id: m_b787247e5222

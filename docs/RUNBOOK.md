@@ -45,9 +45,11 @@ Undo: revert the commit that caused a problem (the push redeploys), or Run workf
 
 GitHub turns scheduled runs off in a repository with no commits for 60 days; the weekly rankings commits keep it on during the season. If the schedule stops in the offseason, Actions → Deploy → Enable workflow.
 
-### More leagues (the family league at /family/)
+### More leagues (the family league at /family/, Calvary at /calvary/)
 
 Every league in `LEAGUES_EXTRA` (deploy.yml, `PATH=league.yaml` pairs) is built, checked, page-tested and published at `/PATH/` after the first league, with its own `deploy-stats.json` and `changes.html` there. The ESPN cookies must be able to read every league (an ESPN account's cookies read every league that account is in). Any league failing deploys nothing; the live site keeps the last good build of all of them. To add one: write `leagues/<name>/league.yaml` (league id, first season, name, `site_path`, and the managers with their hashed ids from `python tools/espn_members.py --league ID --first YEAR --last YEAR`), build it once in the Codespace (`python -m engine.cli update leagues/<name>/league.yaml --out dist-<name> --verify`), then add `PATH=leagues/<name>/league.yaml` to `LEAGUES_EXTRA`.
+
+A league your ESPN account is not in (the Calvary league at /calvary/) is read with its owner's cookies: set `league.credentials: NAME` in its league.yaml, save the owner's cookies as the Actions secrets `ESPN_S2_NAME` and `SWID_NAME` (and as Codespaces secrets to run it in the Codespace), and add both to the `env:` of the engine update step in deploy.yml. The owner copies them from Chrome DevTools (Application, Cookies, espn.com) as text, never from a screenshot: one changed character and ESPN refuses them (the engine names non-Latin letters it finds). If the owner signs out of ESPN, the cookies stop working and the league's updates fail until new ones are saved. Members of such a league: `ESPN_S2="$ESPN_S2_NAME" SWID="$SWID_NAME" python tools/espn_members.py ...`.
 
 ### The change report
 

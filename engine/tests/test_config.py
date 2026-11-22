@@ -67,3 +67,17 @@ def test_unknown_color_role_fails():
 
 def test_unknown_record_game_type_fails():
     assert not validate_config(minimal(analysis={"record_games": ["regular_season", "exhibition"]})).ok
+
+
+def test_league_credentials_name():
+    ok = minimal(); ok["league"]["credentials"] = "CALVARY"
+    assert validate_config(ok).ok
+    for bad in ("calvary", "ESPN-S2", 7, ""):
+        cfg = minimal(); cfg["league"]["credentials"] = bad
+        assert any("league.credentials" in e for e in validate_config(cfg).errors), bad
+
+
+def test_every_committed_league_is_valid():
+    for path in sorted((REPO / "leagues").glob("*/league.yaml")):
+        report = validate_config(load_config(path))
+        assert report.ok, (path, report.errors)

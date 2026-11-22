@@ -78,6 +78,11 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
     if "first_season" in league and not isinstance(league["first_season"], int):
         errors.append("league.first_season must be an integer")
 
+    creds = league.get("credentials")
+    if creds is not None and not (isinstance(creds, str) and re.fullmatch(r"[A-Z][A-Z0-9_]*", creds)):
+        errors.append("league.credentials must be an upper-case name like CALVARY "
+                      "(reads the ESPN_S2_CALVARY and SWID_CALVARY secrets)")
+
     labels = league.get("conference_labels")
     if labels is not None and not (isinstance(labels, dict)
                                    and all(isinstance(k, int) and not isinstance(k, bool) for k in labels)

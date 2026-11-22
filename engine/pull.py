@@ -14,15 +14,31 @@ from pathlib import Path
 from engine.providers.espn import EspnClient, EspnProvider
 
 
-def load_credentials(auth_path: str | None = None) -> tuple[str, str]:
-    """ESPN cookies from an auth file, else the ESPN_S2 / SWID environment variables."""
+def credential_vars(cfg: dict | None = None) -> tuple[str, str]:
+    """The environment variables holding a league's ESPN cookies.
+
+    `league.credentials: NAME` in league.yaml reads ESPN_S2_NAME / SWID_NAME (a league read with
+    someone else's ESPN account, e.g. the Calvary league); without it, ESPN_S2 / SWID.
+    """
+    name = ((cfg or {}).get("league") or {}).get("credentials")
+    return (f"ESPN_S2_{name}", f"SWID_{name}") if name else ("ESPN_S2", "SWID")
+
+
+def load_credentials(auth_path: str | None = None, cfg: dict | None = None) -> tuple[str, str]:
+    """ESPN cookies from an auth file, else the league's environment variables (credential_vars)."""
     if auth_path:
         with open(auth_path, encoding="utf-8") as f:
             raw = {k.lower(): v for k, v in json.load(f).items()}
         return raw["espn_s2"], raw["swid"]
-    s2, swid = os.environ.get("ESPN_S2"), os.environ.get("SWID")
+    s2_var, swid_var = credential_vars(cfg)
+    s2, swid = (os.environ.get(s2_var) or "").strip(), (os.environ.get(swid_var) or "").strip()
     if not (s2 and swid):
-        raise SystemExit("No ESPN credentials: set ESPN_S2 and SWID (Codespaces secrets) or pass --auth.")
+        raise SystemExit(f"No ESPN credentials: set {s2_var} and {swid_var} (Actions or Codespaces secrets) "
+                         "or pass --auth.")
+    bad = [var for var, val in ((s2_var, s2), (swid_var, swid)) if not val.isascii()]
+    if bad:
+        raise SystemExit(f"{' and '.join(bad)} {'has' if len(bad) == 1 else 'have'} non-Latin characters (often letters swapped by a "
+                         "screenshot or phone keyboard): copy the cookie again from the browser as text.")
     return s2, swid
 
 
@@ -69,5 +85,5 @@ def make_provider(cfg: dict, auth_path: str | None) -> EspnProvider:
     league = cfg["league"]
     if league["provider"] != "espn":
         raise SystemExit(f"Provider '{league['provider']}' is not supported yet.")
-    s2, swid = load_credentials(auth_path)
+    s2, swid = load_credentials(auth_path, cfg)
     return EspnProvider(EspnClient(league["league_id"], s2, swid))

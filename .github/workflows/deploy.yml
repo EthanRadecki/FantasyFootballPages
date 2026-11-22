@@ -49,7 +49,7 @@ env:
   SITE_ROOT: ${{ vars.SITE_ROOT || 'web' }}
   # more leagues served beside the first, each at /PATH/ (PATH=league.yaml, space-separated; option B,
   # 2026-10-08). Each is built, checked and page-tested like the first; any failure deploys nothing.
-  LEAGUES_EXTRA: "family=leagues/family/league.yaml"
+  LEAGUES_EXTRA: "family=leagues/family/league.yaml calvary=leagues/calvary/league.yaml"
 
 jobs:
   gate:
@@ -121,6 +121,9 @@ jobs:
         env:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
           SWID: ${{ secrets.SWID }}
+          # leagues read with another account's cookies (league.credentials in their league.yaml)
+          ESPN_S2_CALVARY: ${{ secrets.ESPN_S2_CALVARY }}
+          SWID_CALVARY: ${{ secrets.SWID_CALVARY }}
         shell: bash
         run: |
           mkdir -p logs
