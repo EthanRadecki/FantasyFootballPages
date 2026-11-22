@@ -371,3 +371,29 @@ def test_live_projection_snapshot(tmp_path):
     pg = t["pro_games"].set_index("pro_team_id")
     assert (pg.loc[7, "week"], pg.loc[7, "opponent_pro_team_id"], bool(pg.loc[7, "home"])) == (3, 8, False)
     assert (pg.loc[8, "opponent_pro_team_id"], bool(pg.loc[8, "home"])) == (7, True)
+
+
+def test_other_ids_merge_a_second_espn_account():
+    import pandas as pd
+    from engine.normalize.corrections import account_aliases, merge_accounts
+    cfg = {"managers": [{"name": "Aidan Rivoir", "id": "m_main", "other_ids": ["m_joe"]},
+                        {"name": "Sam B", "id": "m_sam"}]}
+    aliases = account_aliases(cfg)
+    assert aliases == {"m_joe": "m_main"}
+    tables = {
+        "managers": pd.DataFrame({"manager_key": ["m_joe", "m_main", "m_sam"],
+                                  "espn_name": ["Joe Mamma", "Aidan Rivoir", "Sam B"]}),
+        "teams": pd.DataFrame({"season": [2025, 2025], "team_id": [1, 2], "manager_key": ["m_joe", "m_sam"],
+                               "co_owner_keys": ["m_main", "m_joe"]}),
+        "matchups": pd.DataFrame({"manager_key": ["m_joe", "m_sam"], "opponent_manager_key": ["m_sam", "m_joe"]}),
+        "players": pd.DataFrame({"player_id": [1]}),
+    }
+    out = merge_accounts(tables, aliases)
+    assert out["managers"].to_dict("records") == [{"manager_key": "m_main", "espn_name": "Aidan Rivoir"},
+                                                  {"manager_key": "m_sam", "espn_name": "Sam B"}]
+    assert out["teams"]["manager_key"].tolist() == ["m_main", "m_sam"]
+    assert out["teams"]["co_owner_keys"].tolist() == [None, "m_main"]   # own key dropped, alias mapped
+    assert out["matchups"].values.tolist() == [["m_main", "m_sam"], ["m_sam", "m_main"]]
+    assert out["players"] is tables["players"]
+    assert tables["teams"]["manager_key"].tolist() == ["m_joe", "m_sam"]   # input untouched
+    assert merge_accounts(tables, {}) is tables

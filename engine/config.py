@@ -113,6 +113,16 @@ def validate_config(cfg: dict[str, Any]) -> ConfigReport:
         else:
             ids.add(mid)
 
+        others = m.get("other_ids")
+        if others is not None:
+            if not (isinstance(others, list) and all(isinstance(o, str) and o.startswith("m_") for o in others)):
+                errors.append(f"{where} ({name}): other_ids must be a list of hashed ids (m_...)")
+            else:
+                for o in others:
+                    if o == mid or o in ids:
+                        errors.append(f"{where} ({name}): duplicate id {o}")
+                    ids.add(o)
+
         colors = m.get("colors")
         if colors is None:
             warnings.append(f"{where} ({name}): no colors set; generated colors will be used")

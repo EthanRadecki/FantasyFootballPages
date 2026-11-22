@@ -17,8 +17,9 @@ managers:                        # ids from tools/espn_members.py (hashed); seas
     id: m_7dd4bcc10967
   - name: Aidan Hamilton         # 2022-2026
     id: m_fccf45874ba6
-  - name: Aidan Rivoir           # 2 seasons between 2023 and 2026
+  - name: Aidan Rivoir           # 2023, 2025 (as "Joe Mamma", a second ESPN account), 2026
     id: m_946091951fab
+    other_ids: [m_6c435d3232c1]  # the 2025 account (Ethan, 2026-11-22)
   - name: Anthony Sangiovanni    # 2022-2026
     id: m_c98b2bd71dc4
   - name: Brady Sullivan         # 2022-2026
@@ -29,8 +30,6 @@ managers:                        # ids from tools/espn_members.py (hashed); seas
     id: m_f227a962e1e8
   - name: Jack Bunt              # 2022-2023
     id: m_e781cf0aec26
-  - name: Joe Mamma              # 2025
-    id: m_6c435d3232c1
   - name: Logan Radecki          # 2022-2026
     id: m_2c0905660295
   - name: Luke Oonnoonny         # 2024-2026

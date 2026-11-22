@@ -81,3 +81,13 @@ def test_every_committed_league_is_valid():
     for path in sorted((REPO / "leagues").glob("*/league.yaml")):
         report = validate_config(load_config(path))
         assert report.ok, (path, report.errors)
+
+
+def test_other_ids():
+    ok = minimal(); ok["managers"][0]["other_ids"] = ["m_second"]
+    assert validate_config(ok).ok
+    for bad in ("m_second", ["x1"], ["not_hashed"]):
+        cfg = minimal(); cfg["managers"][0]["other_ids"] = bad
+        assert not validate_config(cfg).ok, bad
+    clash = minimal(managers=[{"name": "A Person", "id": "m_a", "other_ids": ["m_b"]}, {"name": "B Person", "id": "m_b"}])
+    assert any("duplicate id m_b" in e for e in validate_config(clash).errors)

@@ -70,7 +70,48 @@ def add_draft_slots(picks: pd.DataFrame) -> pd.DataFrame:
     return picks.drop(columns="draft_slot", errors="ignore").merge(slots, on=["season", "manager_key"], how="left")
 
 
+def account_aliases(cfg: dict) -> dict[str, str]:
+    """Extra ESPN accounts of one person: {other id: the manager's main id}.
+
+    A manager who played a season from a second ESPN account (Calvary 2025: Aidan Rivoir as
+    "Joe Mamma") lists it under `other_ids` in league.yaml, so every season counts as one manager.
+    """
+    return {other: m["id"] for m in cfg.get("managers") or [] for other in m.get("other_ids") or []}
+
+
+def merge_accounts(tables: dict[str, pd.DataFrame], aliases: dict[str, str]) -> dict[str, pd.DataFrame]:
+    """Rewrite every manager key column through `aliases` (other account -> main id)."""
+    if not aliases:
+        return tables
+    out = {}
+    for name, df in tables.items():
+        cols = [c for c in df.columns if c.endswith("manager_key")]
+        if not cols and "co_owner_keys" not in df:
+            out[name] = df
+            continue
+        df = df.copy()
+        from_other = df["manager_key"].isin(list(aliases)) if "manager_key" in df else None
+        for c in cols:
+            df[c] = df[c].map(lambda k: aliases.get(k, k))
+        if "co_owner_keys" in df:
+            def co(row):
+                v = row["co_owner_keys"]
+                if not isinstance(v, str) or not v:
+                    return v
+                keys = [k for k in dict.fromkeys(aliases.get(k, k) for k in v.split(",")) if k != row.get("manager_key")]
+                return ",".join(keys) or None
+            df["co_owner_keys"] = pd.Series([co(r) for r in df.to_dict("records")], index=df.index, dtype=object)
+        if name == "managers":
+            # one row per person: the main account's row (and ESPN name) when ESPN has it
+            df = (df.assign(_other=from_other.values).sort_values("_other", kind="stable")
+                  .drop_duplicates("manager_key", keep="first").drop(columns="_other")
+                  .sort_index().reset_index(drop=True))
+        out[name] = df
+    return out
+
+
 def apply_corrections(tables: dict[str, pd.DataFrame], cfg: dict) -> dict[str, pd.DataFrame]:
+    tables = merge_accounts(tables, account_aliases(cfg))
     corrections = cfg.get("corrections") or {}
     slug_to_key = {slugify(m["name"]): m["id"] for m in cfg.get("managers") or []}
     picks = tables["draft_picks"]
