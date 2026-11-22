@@ -159,3 +159,25 @@ def test_finished_season_takes_no_projection_snapshot(tmp_path):
     list(run_pull(EspnProvider(FakeClient(weeks=2)), 123, [2024], tmp_path))
     season_dir = tmp_path / "espn" / "123" / "2024"
     assert not list(season_dir.glob("proj_week_*")) and not (season_dir / "pro_teams.json").exists()
+
+
+def test_league_credentials_pick_their_own_secrets(monkeypatch):
+    from engine.pull import credential_vars, load_credentials
+    monkeypatch.setenv("ESPN_S2", "mine"); monkeypatch.setenv("SWID", "{MINE}")
+    monkeypatch.setenv("ESPN_S2_CALVARY", " theirs\n"); monkeypatch.setenv("SWID_CALVARY", "{THEIRS}")
+    calvary = {"league": {"credentials": "CALVARY"}}
+    assert credential_vars(calvary) == ("ESPN_S2_CALVARY", "SWID_CALVARY")
+    assert credential_vars({"league": {}}) == ("ESPN_S2", "SWID")
+    assert load_credentials(None, calvary) == ("theirs", "{THEIRS}")   # pasted whitespace trimmed
+    assert load_credentials(None, {"league": {}}) == ("mine", "{MINE}")
+
+
+def test_league_credentials_missing_or_mangled(monkeypatch):
+    from engine.pull import load_credentials
+    calvary = {"league": {"credentials": "CALVARY"}}
+    monkeypatch.delenv("ESPN_S2_CALVARY", raising=False); monkeypatch.setenv("SWID_CALVARY", "{X}")
+    with pytest.raises(SystemExit, match="ESPN_S2_CALVARY and SWID_CALVARY"):
+        load_credentials(None, calvary)
+    monkeypatch.setenv("ESPN_S2_CALVARY", "AEBА%2B")             # a Cyrillic A from a screenshot
+    with pytest.raises(SystemExit, match="ESPN_S2_CALVARY has non-Latin"):
+        load_credentials(None, calvary)
